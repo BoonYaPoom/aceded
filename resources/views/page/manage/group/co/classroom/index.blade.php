@@ -78,7 +78,7 @@
                                         <td><a>{{ $m }}</a></td>
                                         <td><a>{{ $months }}</a></td>
                                         <td>
-                                            <a>{{ $register }} ยยนนททท</a>
+                                            <a>{{ $register }}</a>
                                         </td>
                                         <td>
                                             <a href="{{ route('register_page', [$m]) }}"><i
