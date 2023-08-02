@@ -1,0 +1,510 @@
+{
+    "month": {
+        "th": {
+            "1": "มกราคม",
+            "2": "กุมภาพันธ์",
+            "3": "มีนาคม",
+            "4": "เมษายน",
+            "5": "พฤษภาคม",
+            "6": "มิถุนายน",
+            "7": "กรกฎาคม",
+            "8": "สิงหาคม",
+            "9": "กันยายน",
+            "10": "ตุลาคม",
+            "11": "พฤศจิกายน",
+            "12": "ธันวาคม"
+        },
+        "en": {
+            "1": "January",
+            "2": "February",
+            "3": "March",
+            "4": "April",
+            "5": "May",
+            "6": "June",
+            "7": "July",
+            "8": "August",
+            "9": "September",
+            "10": "October",
+            "11": "November",
+            "12": "December"
+        }
+    },
+    "month_short": {
+        "th": {
+            "1": "ม.ค.",
+            "2": "ก.พ.",
+            "3": "มี.ค.",
+            "4": "เม.ย.",
+            "5": "พ.ค.",
+            "6": "มิ.ย.",
+            "7": "ก.ค.",
+            "8": "ส.ค.",
+            "9": "ก.ย.",
+            "10": "ต.ค.",
+            "11": "พ.ย.",
+            "12": "ธ.ค."
+        },
+        "en": {
+            "1": "Jan",
+            "2": "Feb",
+            "3": "Mar",
+            "4": "Apr",
+            "5": "May",
+            "6": "Jun",
+            "7": "Jul",
+            "8": "Aug",
+            "9": "Sep",
+            "10": "Oct",
+            "11": "Nov",
+            "12": "Dec"
+        }
+    },
+    "user_level": ["", "ผู้ดูแลระบบ", "ผู้ดูแลหลักสูตร", "ผู้สอน", "ผู้เรียน"],
+    "survey_type": [
+        "แบบสำรวจทั่วไป",
+        "แบบสำรวจความพึงพอใจ",
+        "แบบสำรวจความคุ้มค่า"
+    ],
+    "survey_question_type": {
+        "1": "ตัวเลือก",
+        "2": "หลายมิติ",
+        "3": "เขียนอธิบาย"
+    },
+    "department": {
+        "12": {
+            "department_id": "12",
+            "name_th": "สำนักงานคณะกรรมการป้องกันและปราบปรามการทุจริตแห่งชาติ",
+            "name_en": "สำนักงานคณะกรรมการป้องกันและปราบปรามการทุจริตแห่งชาติ",
+            "name_short_th": "ACED",
+            "name_short_en": "ACED",
+            "department_id_ref": null,
+            "department_status": "1"
+        }
+    },
+    "lesson_type": {
+        "1": { "lesson_type": "1", "type_th": "บทที่", "type_en": "Lesson" },
+        "2": { "lesson_type": "2", "type_th": "สัปดาห์ที่", "type_en": "Week" },
+        "3": { "lesson_type": "3", "type_th": "หัวข้อที่", "type_en": "Topic" },
+        "4": { "lesson_type": "4", "type_th": "หน่วยที่", "type_en": "Unit" },
+        "5": { "lesson_type": "5", "type_th": "ลำดับ", "type_en": "Number" }
+    },
+    "content_type": {
+        "1": {
+            "content_type": "1",
+            "content_th": "วิดีโอ",
+            "content_en": "video",
+            "icon": "far fa-file-video",
+            "filetype": "video/*",
+            "status": "1"
+        },
+        "2": {
+            "content_type": "2",
+            "content_th": "ข้อสอบ",
+            "content_en": "exam",
+            "icon": "fas fa-file-alt",
+            "filetype": ".csv|.txt",
+            "status": "0"
+        },
+        "3": {
+            "content_type": "3",
+            "content_th": "เว็บ",
+            "content_en": "html",
+            "icon": "fab fa-edge",
+            "filetype": ".html.html",
+            "status": "0"
+        },
+        "4": {
+            "content_type": "4",
+            "content_th": "เอกสาร",
+            "content_en": "document",
+            "icon": "far fa-file-pdf",
+            "filetype": ".pdf|.docx|.doc|.xlsx|.xls|.pptx|.ptt",
+            "status": "1"
+        },
+        "5": {
+            "content_type": "5",
+            "content_th": "เชื่อมโยง",
+            "content_en": "link",
+            "icon": "fas fa-link",
+            "filetype": ".json",
+            "status": "0"
+        },
+        "6": {
+            "content_type": "6",
+            "content_th": "คลังสื่อ",
+            "content_en": "digitallibrary",
+            "icon": "fas fa-book",
+            "filetype": ".json",
+            "status": "0"
+        },
+        "7": {
+            "content_type": "7",
+            "content_th": "เสียง",
+            "content_en": "sound",
+            "icon": "far fa-file-audio",
+            "filetype": ".mp3|.wav",
+            "status": "1"
+        },
+        "8": {
+            "content_type": "8",
+            "content_th": "รูปภาพ",
+            "content_en": "image",
+            "icon": "far fa-file-image",
+            "filetype": "image/*",
+            "status": "1"
+        },
+        "10": {
+            "content_type": "10",
+            "content_th": "Scorm Package",
+            "content_en": "Scorm",
+            "icon": "fas fa-file-alt",
+            "filetype": ".zip",
+            "status": "1"
+        }
+    },
+    "evaluation": {
+        "1": { "evaluation_id": "1", "evaluation": "เกณฑ์คะแนน" },
+        "2": { "evaluation_id": "2", "evaluation": "เกณฑ์เวลาเรียน" },
+        "3": { "evaluation_id": "3", "evaluation": "เกณฑ์คะแนนและเวลาเรียน" }
+    },
+    "person_type": {
+        "1": { "person_type": "1", "person": "ข้าราชการธุรการ" },
+        "2": { "person_type": "2", "person": "พนักงานอัยการ" },
+        "3": { "person_type": "3", "person": "บุคลากรภายนอก" }
+    },
+    "education_level": {
+        "1": { "education_level": "1", "education": "ต่ำกว่าป.ตรี" },
+        "2": { "education_level": "2", "education": "ป.ตรี" },
+        "3": { "education_level": "3", "education": "ป.โท" },
+        "4": { "education_level": "4", "education": "ป.เอก" }
+    },
+    "position_level": {
+        "1": {
+            "position_level_id": "1",
+            "position_level": "O1",
+            "position": "ปฏิบัติงาน",
+            "position_en": null
+        },
+        "2": {
+            "position_level_id": "2",
+            "position_level": "O2",
+            "position": "ชำนาญงาน",
+            "position_en": null
+        },
+        "3": {
+            "position_level_id": "3",
+            "position_level": "O3",
+            "position": "อาวุโส",
+            "position_en": null
+        },
+        "4": {
+            "position_level_id": "4",
+            "position_level": "O4",
+            "position": "ทักษะพิเศษ",
+            "position_en": null
+        },
+        "5": {
+            "position_level_id": "5",
+            "position_level": "K1",
+            "position": "ปฏิบัติการ",
+            "position_en": null
+        },
+        "6": {
+            "position_level_id": "6",
+            "position_level": "K2",
+            "position": "ชำนาญการ",
+            "position_en": null
+        },
+        "7": {
+            "position_level_id": "7",
+            "position_level": "K3",
+            "position": "ชำนาญการพิเศษ",
+            "position_en": null
+        },
+        "8": {
+            "position_level_id": "8",
+            "position_level": "K4",
+            "position": "เชี่ยวชาญ",
+            "position_en": null
+        },
+        "9": {
+            "position_level_id": "9",
+            "position_level": "K5",
+            "position": "ทรงคุณวุฒิ",
+            "position_en": null
+        },
+        "10": {
+            "position_level_id": "10",
+            "position_level": "D1",
+            "position": "อำนวยการต้น",
+            "position_en": null
+        },
+        "11": {
+            "position_level_id": "11",
+            "position_level": "D1",
+            "position": "อำนวยการสูง",
+            "position_en": null
+        },
+        "12": {
+            "position_level_id": "12",
+            "position_level": "M1",
+            "position": "บริหารต้น",
+            "position_en": null
+        },
+        "13": {
+            "position_level_id": "13",
+            "position_level": "M2",
+            "position": "บริหารสูง",
+            "position_en": null
+        }
+    },
+    "position_type": {
+        "1": {
+            "position_type_id": "1",
+            "position_type": "O",
+            "position": "ทั่วไป"
+        },
+        "2": {
+            "position_type_id": "2",
+            "position_type": "K",
+            "position": "วิชาการ"
+        },
+        "3": {
+            "position_type_id": "3",
+            "position_type": "D",
+            "position": "อำนวยการ"
+        },
+        "4": {
+            "position_type_id": "4",
+            "position_type": "M",
+            "position": "บริหาร"
+        }
+    },
+    "competencies": {
+        "1": {
+            "competencies_id": "1",
+            "competencies_type": "1",
+            "competencies_th": "การคิดเชิงกลยุทธ์",
+            "competencies_en": "Strategic Thinking"
+        },
+        "2": {
+            "competencies_id": "2",
+            "competencies_type": "1",
+            "competencies_th": "การปรับตัวพร้อมรับการเปลี่ยนแปลง",
+            "competencies_en": "Change and Adaptation"
+        },
+        "3": {
+            "competencies_id": "3",
+            "competencies_type": "1",
+            "competencies_th": "การดำเนินการเชิงรุก",
+            "competencies_en": "Proactiveness"
+        },
+        "4": {
+            "competencies_id": "4",
+            "competencies_type": "1",
+            "competencies_th": "การคิดเชิงบวก",
+            "competencies_en": "Positive Thinking"
+        },
+        "5": {
+            "competencies_id": "5",
+            "competencies_type": "2",
+            "competencies_th": "การคิดเชิงวิเคราะห์",
+            "competencies_en": "Analytical Thinking"
+        },
+        "6": {
+            "competencies_id": "6",
+            "competencies_type": "2",
+            "competencies_th": "การคิดเชิงสร้างสรรค์",
+            "competencies_en": "Create Thinking"
+        },
+        "7": {
+            "competencies_id": "7",
+            "competencies_type": "2",
+            "competencies_th": "การคิดเชิงนวัตกรรม",
+            "competencies_en": "Innovative Thinking"
+        },
+        "8": {
+            "competencies_id": "8",
+            "competencies_type": "2",
+            "competencies_th": "การปรับปรุงและพัฒนาอย่างต่อเนื่อง",
+            "competencies_en": "Continuous Improvement And Development"
+        },
+        "9": {
+            "competencies_id": "9",
+            "competencies_type": "3",
+            "competencies_th": "การมุ่งผลสัมฤทธิ์",
+            "competencies_en": "การมุ่งผลสัมฤทธิ์"
+        },
+        "11": {
+            "competencies_id": "11",
+            "competencies_type": "3",
+            "competencies_th": "การบริหารงานที่ดี",
+            "competencies_en": "การบริหารงานที่ดี"
+        },
+        "12": {
+            "competencies_id": "12",
+            "competencies_type": "3",
+            "competencies_th": "การสั่งสมความเชียวชาญในงานอาชีพ",
+            "competencies_en": "การสั่งสมความเชียวชาญในงานอาชีพ"
+        },
+        "13": {
+            "competencies_id": "13",
+            "competencies_type": "3",
+            "competencies_th": "จริยธรรม",
+            "competencies_en": "จริยธรรม"
+        },
+        "14": {
+            "competencies_id": "14",
+            "competencies_type": "3",
+            "competencies_th": "การทำงานเป็นทีม",
+            "competencies_en": "การทำงานเป็นทีม"
+        }
+    },
+    "competencies_type": {
+        "1": {
+            "competencies_type": "1",
+            "competencies_type_th": "สมรรถนะเฉพาะด้านภายใต้บริบทของกระทรวงพาณิชย์",
+            "competencies_type_en": "สมรรถนะเฉพาะด้านภายใต้บริบทของกระทรวงพาณิชย์"
+        },
+        "2": {
+            "competencies_type": "2",
+            "competencies_type_th": "สมรรถนะเฉพาะด้านภายใต้บริบทของสำนักงานคณะกรรมการการแข่งขันทางการค้า",
+            "competencies_type_en": "สมรรถนะเฉพาะด้านภายใต้บริบทของสำนักงานคณะกรรมการการแข่งขันทางการค้า"
+        },
+        "3": {
+            "competencies_type": "3",
+            "competencies_type_th": "สมรรถนะเฉพาะด้านภายใต้บริบทของ กพ.",
+            "competencies_type_en": "สมรรถนะเฉพาะด้านภายใต้บริบทของ กพ."
+        }
+    },
+    "course_level": {
+        "1": {
+            "course_level_id": "1",
+            "course_level": "1",
+            "course_level_th": "ระดับ 1",
+            "course_level_en": "Level 1"
+        },
+        "2": {
+            "course_level_id": "2",
+            "course_level": "2",
+            "course_level_th": "ระดับ 2",
+            "course_level_en": "Level 2"
+        },
+        "3": {
+            "course_level_id": "3",
+            "course_level": "3",
+            "course_level_th": "ระดับ 3",
+            "course_level_en": "Level 3"
+        },
+        "4": {
+            "course_level_id": "4",
+            "course_level": "4",
+            "course_level_th": "ระดับ 4",
+            "course_level_en": "Level 4"
+        },
+        "5": {
+            "course_level_id": "5",
+            "course_level": "5",
+            "course_level_th": "ระดับ 5",
+            "course_level_en": "Level 5"
+        },
+        "6": {
+            "course_level_id": "6",
+            "course_level": "1",
+            "course_level_th": "ระดับต้น",
+            "course_level_en": "Beginner"
+        },
+        "7": {
+            "course_level_id": "7",
+            "course_level": "2",
+            "course_level_th": "ระดับกลาง",
+            "course_level_en": "Normal"
+        },
+        "8": {
+            "course_level_id": "8",
+            "course_level": "3",
+            "course_level_th": "ระดับสูง",
+            "course_level_en": "Expert"
+        }
+    },
+    "course_supplymentary_type": {
+        "2": {
+            "supplymentary_type": "2",
+            "content_th": "e-book",
+            "content_en": "e-book",
+            "icon": null,
+            "filetype": null
+        },
+        "3": {
+            "supplymentary_type": "3",
+            "content_th": "มัลติมีเดีย",
+            "content_en": "multimedia",
+            "icon": null,
+            "filetype": null
+        },
+        "4": {
+            "supplymentary_type": "4",
+            "content_th": "เชื่อมโยง",
+            "content_en": "link",
+            "icon": null,
+            "filetype": null
+        },
+        "5": {
+            "supplymentary_type": "5",
+            "content_th": "คลังสื่อ",
+            "content_en": "digitallibrary",
+            "icon": null,
+            "filetype": null
+        },
+        "6": {
+            "supplymentary_type": "6",
+            "content_th": "เอกสาร",
+            "content_en": "document",
+            "icon": null,
+            "filetype": null
+        }
+    },
+    "question_type": {
+        "1": {
+            "question_type": "1",
+            "question_type_th": "ปรนัย",
+            "question_type_en": "multiple choice"
+        },
+        "2": {
+            "question_type": "2",
+            "question_type_th": "อัตนัย",
+            "question_type_en": "subjecttive"
+        },
+        "3": {
+            "question_type": "3",
+            "question_type_th": "ถูกผิด",
+            "question_type_en": "true/false"
+        },
+        "4": {
+            "question_type": "4",
+            "question_type_th": "จับคู่",
+            "question_type_en": "matching"
+        },
+        "5": {
+            "question_type": "5",
+            "question_type_th": "เรียงลำดับ",
+            "question_type_en": "ordering"
+        }
+    },
+    "teacher": {
+        "24130": {
+            "uid": "24130",
+            "username": "instructor001",
+            "firstname": "สำนักงานคณะกรรมการป้องกัน",
+            "lastname": "และปราบปรามการทุจริตแห่งชาติ",
+            "email": "",
+            "role": "3",
+            "per_id": null,
+            "department_id": "12",
+            "permission": null,
+            "ldap": "0",
+            "userstatus": "1",
+            "recommened": null
+        }
+    }
+}

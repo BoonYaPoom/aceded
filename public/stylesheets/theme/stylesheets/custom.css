@@ -1,0 +1,62 @@
+@charset "UTF-8";
+
+:root {
+    --primary-theme: #F04A23;
+    --second-theme: #EAEAEA;
+    --dark-primary-theme: #bd5e00;
+    --soft-primary-theme: #ffaa55;
+    --blue: #00A5E8;
+    --indigo: #2d1582;
+    --purple: #6f42c1;
+    --pink: #e83e8c;
+    --red: #de4437;
+    --orange: #fd7e14;
+    --yellow: #ffc107;
+    --green: #28a745;
+    --teal: #00c9a7;
+    --cyan: #00dffc;
+    --white: #fff;
+    --gray: #8c98a4;
+    --gray-dark: #343a40;
+    --primary: #00A5E8;
+    --secondary: #77838f;
+    --success: #00c9a7;
+    --info: #00dffc;
+    --warning: #ffc107;
+    --danger: #de4437;
+    --light: #f8f9fa;
+    --dark: #1e2022;
+    --indigo: #2d1582;
+    --breakpoint-xs: 0;
+    --breakpoint-sm: 576px;
+    --breakpoint-md: 768px;
+    --breakpoint-lg: 992px;
+    --breakpoint-xl: 1200px;
+    --font-family-sans-serif: "Poppins", Helvetica, Arial, sans-serif;
+    --font-family-monospace: SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+}
+
+.btn-primary-theme{
+    color: var(--white) !important;
+    background-color: var(--primary-theme);
+}
+
+.btn-primary-theme:hover {
+    color: #fff;
+    background-color: #C9161C;
+    border-color: #C9161C;
+}
+
+.btn-primary-theme:focus,
+.btn-primary-theme.focus {
+    box-shadow: 0 0 0 0.2rem rgba(255, 147, 85, 0.5);
+}
+.btn-primary-theme:not(:disabled):not(.disabled):active:focus,
+.btn-primary-theme:not(:disabled):not(.disabled).active:focus,
+.show>.btn-primary-theme.dropdown-toggle:focus {
+    box-shadow: 0 0 0 0.2rem rgba(255, 147, 85, 0.5);
+}
+
+.bg-theme-primary {
+    background-color: var(--primary-theme) !important;
+}
