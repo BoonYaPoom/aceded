@@ -18,6 +18,10 @@ class ActivityCategoryController extends Controller
         $actCat = ActivityCategory::findOrFail($category_id);
         return view('page.dls.cop.activitycat.activityfrom',compact('actCat'));
     }
+    public function storeAct($category_id){
+        $actCat = ActivityCategory::findOrFail($category_id);
+        return view('page.dls.cop.activitycat.activityfrom',compact('actCat'));
+    }
 
   
 
