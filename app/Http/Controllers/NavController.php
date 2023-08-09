@@ -35,8 +35,8 @@ class NavController extends Controller
     }
   
    
-    public function learn(){
-        $depart = Department::all();
+    public function learn($department_id){
+        $depart = Department::FindOrFail($department_id);
         return view('page.manage.index',compact('depart'));
     }
     public function home(){

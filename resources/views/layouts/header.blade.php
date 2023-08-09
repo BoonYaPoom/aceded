@@ -6,7 +6,7 @@
                 <button class="hamburger hamburger-squeeze mr-2 d-lg-none d-xl-none" type="button" data-toggle="aside"
                     aria-label="toggle menu"><span class="hamburger-box"><span
                             class="hamburger-inner"></span></span></button>
-                <a href="{{route('departmentpage')}}"><img src="{{ Storage::disk('external')->url('logo/1690433379.png') }}"
+                <a href="{{route('departmentpage')}}"><img src="{{ asset('upload/logo/1690433379.png') }}"
                         alt="" style="height: 50px;" class="bg-white border mt-3 mb-3"></a>
             </div>
             <div class="top-bar-list">
@@ -20,7 +20,7 @@
                         <li class="nav-item dropdown header-nav-dropdown">
                             <a class="nav-link" href="#" data-toggle="dropdown" aria-haspopup="true"
                                 aria-expanded="false"><span class=""><img
-                                        src="{{ Storage::disk('external')->url('land/thai.png') }}"></span></a>
+                                        src="{{ asset('upload/land/thai.png') }}"></span></a>
                             <div class="dropdown-arrow dropdown-arrow-left"></div>
                             <div class="dropdown-menu">
                                 <h6 class="dropdown-header d-none d-md-block d-lg-none"> {{ $data->firstname }} </h6>
@@ -29,10 +29,10 @@
                                 </h6>
                                 <div class="dropdown-divider"></div>
                                 <a class="dropdown-item" href=""><span class="dropdown-icon"><img
-                                            src="{{ Storage::disk('external')->url('land/thai.png') }}"></span>
+                                            src="{{ asset('upload/land/thai.png') }}"></span>
                                     ไทย</a>
                                 <a class="dropdown-item" href=""><span class="dropdown-icon"><img
-                                            src="{{ Storage::disk('external')->url('land/english.png') }}"></span>
+                                            src="{{ asset('upload/land/english.png') }}"></span>
                                     English</a>
                             </div>
                         </li>
@@ -41,7 +41,7 @@
                     <div class="dropdown">
                         <button class="btn-account d-none d-md-flex" type="button" data-toggle="dropdown"
                             aria-haspopup="true" aria-expanded="false"><span class="user-avatar user-avatar-md"> <img
-                                    src="{{ Storage::disk('external')->url('profile/' . $data->avatar) }}" alt="{{ $data->avatar }}"></span>
+                                    src="{{ asset('upload/profile/' . $data->avatar) }}" alt="{{ $data->avatar }}"></span>
                             <span class="account-summary pr-lg-4 d-none d-lg-block">
                                 <span class="account-name">
                                     {{ $data->firstname }}
@@ -70,7 +70,7 @@
                         class="hamburger-box"><span class="hamburger-inner"></span></span></button>
                 <button class="btn-account" type="button" data-toggle="collapse" data-target="#dropdown-aside"><span
                         class="user-avatar user-avatar-lg">
-                        <img src="{{ Storage::disk('external')->url('profile/' . $data->avatar) }}" alt="{{ $data->avatar }}"></span>
+                        <img src="{{ asset('upload/profile/' . $data->avatar) }}" alt="{{ $data->avatar }}"></span>
                     <span class="account-icon"><span class="fa fa-caret-down fa-lg"></span></span>
                     <span class="account-summary"><span class="account-name"> {{ $data->firstname }}</span>
                         <span class="account-description">ผู้ดูแลระบบ</span></span></button>
@@ -98,7 +98,7 @@
                                 class="hamburger-inner"></span></span></button>
                     <button class="btn-account collapsed" type="button" data-toggle="collapse"
                         data-target="#dropdown-aside" aria-expanded="false"><span class="user-avatar user-avatar-lg">
-                            <img src="{{ Storage::disk('external')->url('profile/' . $data->avatar) }}"
+                            <img src="{{ asset('upload/profile/' . $data->avatar) }}"
                                 alt="{{ $data->avatar }}"></span>
                         <span class="account-icon"><span class="fa fa-caret-down fa-lg"></span></span>
                         <span class="account-summary"><span class="account-name">{{ $data->firstname }}</span>
@@ -138,8 +138,8 @@
                                 <a href="{{ route('Reportview') }}" class="menu-link"><span class="menu-icon fas fa-chart-bar"></span>
                                     <span class="menu-text"> รายงาน</span></a>
                             </li>
-                            <li class="menu-item {{ Str::startsWith(request()->url(), route('learn')) || request()->is('learn', 'learn/*') ? 'has-active text-info' : '' }}">
-                                <a href="{{ route('learn') }}" class="menu-link"><span
+                            <li class="menu-item {{ Str::startsWith(request()->url(), route('departmentpage')) || request()->is('learn', 'learn/*') ? 'has-active text-info' : '' }}">
+                                <a href="{{ route('departmentpage') }}" class="menu-link"><span
                                         class="menu-icon fas fa-chalkboard-teacher"></span> <span
                                         class="menu-text">จัดการเรียนรู้</span></a>
                             </li>

@@ -31,7 +31,7 @@
                             <label for="cover">ภาพปก </label> <input type="file" class="form-control" id="cover"
                                 name="cover" placeholder="ภาพปก" accept="image/*">
                         </div><!-- /.form-group -->
-                        
+
                         <!-- .form-group -->
                         <div class="form-group">
                             <label for="web_th">ชื่อข่าว/กิจกรรม (ไทย) <span
@@ -65,29 +65,30 @@
                         <div class="form-group">
                             <label for="recommended">แนะนำ </label> <label
                                 class="switcher-control switcher-control-success switcher-control-lg"><input type="checkbox"
-                                    class="switcher-input" name="recommended" id="recommended" value="1"  {{ $webs->recommended == 1 ? 'checked' : '' }}> <span
+                                    class="switcher-input" name="recommended" id="recommended" value="1"
+                                    {{ $webs->recommended == 1 ? 'checked' : '' }}> <span
                                     class="switcher-indicator"></span> <span class="switcher-label-on">ON</span>
-                                     <span
-                                    class="switcher-label-off text-red">OFF</span></label>
+                                <span class="switcher-label-off text-red">OFF</span></label>
                         </div><!-- /.form-group -->
                         <div class="form-group">
                             <label for="web_status">สถานะ </label> <label
                                 class="switcher-control switcher-control-success switcher-control-lg"><input type="checkbox"
-                                    class="switcher-input" name="web_status" id="web_status" value="1" {{ $webs->web_status == 1 ? 'checked' : '' }}> <span
-                                    class="switcher-indicator"></span> <span class="switcher-label-on">ON</span> <span
+                                    class="switcher-input" name="web_status" id="web_status" value="1"
+                                    {{ $webs->web_status == 1 ? 'checked' : '' }}> <span class="switcher-indicator"></span>
+                                <span class="switcher-label-on">ON</span> <span
                                     class="switcher-label-off text-red">OFF</span></label>
                         </div><!-- /.form-group -->
                     </div><!-- /.card-body -->
-                   
+
             </div><!-- /.card -->
 
         </div><!-- /.page-section -->
     </div><!-- /.page-inner -->
- <!-- .form-actions -->
- <div class="form-actions">
-    <button class="btn btn-lg btn-primary ml-auto" type="submit"><i class="far fa-save"></i>
-        บันทึก</button>
-</div><!-- /.form-actions -->
-</form>
+    <!-- .form-actions -->
+    <div class="form-actions">
+        <button class="btn btn-lg btn-primary ml-auto" type="submit"><i class="far fa-save"></i>
+            บันทึก</button>
+    </div><!-- /.form-actions -->
+    </form>
     </div><!-- /.card -->
 @endsection

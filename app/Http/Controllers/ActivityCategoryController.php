@@ -18,10 +18,7 @@ class ActivityCategoryController extends Controller
         $actCat = ActivityCategory::findOrFail($category_id);
         return view('page.dls.cop.activitycat.activityfrom',compact('actCat'));
     }
-    public function activiList($category_id){
-        $actCat = ActivityCategory::findOrFail($category_id);
-        return view('page.dls.cop.activitycat.activitylist',compact('actCat'));
-    }
+
   
 
     public function meeti(){

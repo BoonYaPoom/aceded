@@ -1,9 +1,0 @@
-# Files
-composer.lock
-.env
-
-# Directories
-/vendor/
-/node_modules/
-/storage/
-/public/storage/

@@ -178,7 +178,7 @@
     </div>
     <header class="page-title-bar">
         <button type="button" class="btn btn-success btn-floated btn-add"
-            onclick="window.location='{{ route('subcreate', [$item->department_id]) }}'" data-toggle="tooltip"
+            onclick="window.location='{{ route('subcreate', [$depart->department_id]) }}'" data-toggle="tooltip"
             title="เพิ่ม"><span class="fas fa-plus"></span></button>
     </header>
 

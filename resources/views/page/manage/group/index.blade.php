@@ -24,7 +24,7 @@
         <div class="page-section">
             <div class="card card-fluid">
                 <div class="card-header bg-muted">หน่วยงาน /<a
-                        href="{{ route('learn') }}">หมวดหมู่</a>/  จัดการหลักสูตร</div>
+                        href="{{ route('departmentpage') }}">หมวดหมู่</a>/  จัดการหลักสูตร</div>
                 <div class="card-body">
                     <div class="table-responsive">
                         <table id="datatable2" class="table w3-hoverable">
@@ -107,7 +107,7 @@
             </div>
         </div>
         <header class="page-title-bar">
-            <button type="button" class="btn btn-success btn-floated btn-add" onclick="window.location='{{route('createcour', [$item->department_id])}}'" data-toggle="tooltip"
+            <button type="button" class="btn btn-success btn-floated btn-add" onclick="window.location='{{route('createcour', [$depart->department_id])}}'" data-toggle="tooltip"
                 title="เพิ่ม"><span class="fas fa-plus"></span></button>
         </header>
     </div>

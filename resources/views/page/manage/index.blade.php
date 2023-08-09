@@ -29,12 +29,12 @@
                             <tbody>
                                 <!-- tr -->
                               
-                                @foreach ($depart as $item)
+                 
                          
                                 <tr>
                                     <td>1</td>
                                     <td><i class="fas fa-folder-plus fa-lg text-primary"></i> <a
-                                        href="{{route('suppage',['department_id' =>$item ])}}">จัดการวิชา</a>
+                                        href="{{route('suppage',['department_id' => $depart->department_id ])}}">จัดการวิชา</a>
                                     </td>
                                     </td>
                                 </tr><!-- /tr -->
@@ -42,11 +42,11 @@
                                 <tr>
                                     <td>2</td>
                                     <td><i class="fas fa-folder-plus fa-lg text-primary"></i> <a
-                                            href="{{route('courgroup',['department_id' =>$item ])}}">จัดการหลักสูตร</a>
+                                            href="{{route('courgroup',['department_id' => $depart->department_id ])}}">จัดการหลักสูตร</a>
                                     </td>
                                     </td>
                                 </tr><!-- /tr -->
-                                @endforeach
+            
                             </tbody><!-- /tbody -->
                         </table><!-- /.table -->
                     </div><!-- /.table-responsive -->

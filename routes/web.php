@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ActivityCategoryController;
+use App\Http\Controllers\ActivityController;
 use App\Http\Controllers\ActivityInviteController;
 use App\Http\Controllers\BlogCategotyController;
 use App\Http\Controllers\BlogController;
@@ -148,7 +149,7 @@ Route::group(['middleware' => 'IsLoggedIn'], function () {
                 Route::get('/edit_surveyquestionform/{question_id}', [SurveyQuestionController::class, 'edit'])->name('editque');
                 Route::put('/update_surveyquestionform/{question_id}', [SurveyQuestionController::class, 'update'])->name('updateque');
                 Route::get('/{survey_id}/surveyreport', [SurveyQuestionController::class, 'reportpage'])->name('wmspage');
-                      Route::get('/changeStatuQuestion', [SurveyQuestionController::class, 'changeStatus'])->name('changeStatuQuestion');
+                Route::get('/changeStatuQuestion', [SurveyQuestionController::class, 'changeStatus'])->name('changeStatuQuestion');
 
 
                 Route::get('/{survey_id}/responsess', [SurResponseController::class, 'resPonse'])->name('responsess');
@@ -205,20 +206,45 @@ Route::group(['middleware' => 'IsLoggedIn'], function () {
                 Route::get('/home', [NavController::class, 'cop'])->name('cop');
                 Route::get('/activitycategory', [ActivityCategoryController::class, 'activi'])->name('activi');
                 Route::get('/activiFrom/{category_id}', [ActivityCategoryController::class, 'activiFrom'])->name('activiFrom');
-                Route::get('/activiList/{category_id}', [ActivityCategoryController::class, 'activiList'])->name('activiList');
+         
                 Route::get('/activiInvite/{category_id}', [ActivityInviteController::class, 'activiInvite'])->name('activiInvite');
 
+              
+
+                Route::prefix('acttivity')->group(function () {
+                    Route::get('/activiList/{category_id}', [ActivityController::class, 'activiList'])->name('activiList');
+
+                Route::get('/activiListform1_edit/{activity_id}', [ActivityController::class, 'formacttivityEdit1'])->name('activiListform1_edit');
+                
+                Route::get('/activiListForm1/{category_id}', [ActivityController::class, 'activiListForm1'])->name('activiListForm1');
+
+                Route::post('/act1store/{category_id}', [ActivityController::class, 'act1store'])->name('act1store');
+                Route::put('/act1update/{activity_id}', [ActivityController::class, 'act1update'])->name('act1update');
+              
+
+
+                Route::get('/activiListform_edit2/{activity_id}', [ActivityController::class, 'formacttivityEdit2'])->name('activiListform2_edit');
+                Route::get('/activiListForm2/{category_id}', [ActivityController::class, 'activiListForm2'])->name('activiListForm2');
+
+                Route::post('/act2store/{category_id}', [ActivityController::class, 'act2store'])->name('act2store');
+                Route::put('/act2update/{activity_id}', [ActivityController::class, 'act2update'])->name('act2update');
+
+                });
 
 
                 Route::get('/meetingcategory', [ActivityCategoryController::class, 'meeti'])->name('meeti');
                 Route::get('/ActivityChangeStatus', [ActivityCategoryController::class, 'changeStatus'])->name('ActivityChangeStatus');
             });
-            Route::get('/lms', [NavController::class, 'learn'])->name('learn');
+            
 
+            Route::get('/lms', [DepartmentController::class, 'departmentpage'])->name('departmentpage');
+            Route::get('/departmentform', [DepartmentController::class, 'departmentcreate'])->name('departmentcreate');
+            Route::post('/departmentform_add', [DepartmentController::class, 'store'])->name('departmentstore');
+            Route::get('/departmentform_edit/{department_id}', [DepartmentController::class, 'departmentedit'])->name('departmentedit');
+            Route::put('/departmentform_update/{department_id}', [DepartmentController::class, 'update'])->name('departmentupdate');
 
             Route::prefix('lms')->group(function () {
-                Route::get('/department', [DepartmentController::class, 'departmentpage'])->name('departmentpage');
-
+                Route::get('{department_id}', [NavController::class, 'learn'])->name('learn');
 
                 Route::get('{department_id}/group', [CourseGroupController::class, 'courgroup'])->name('courgroup');
                 Route::get('{department_id}/groupform', [CourseGroupController::class, 'create'])->name('createcour');
@@ -245,12 +271,11 @@ Route::group(['middleware' => 'IsLoggedIn'], function () {
 
 
                 Route::get('{course_id}/registeradd', [CourseClassController::class, 'registeradd'])->name('registeradd_page');
-                Route::get('{month}/register', [CourseClassController::class, 'register'])->name('register_page');
+                Route::get('{class_id}/register', [CourseClassController::class, 'register'])->name('register_page');
                 Route::get('{course_id}/report', [CourseClassController::class, 'report'])->name('report_page');
                 Route::get('{course_id}/congratuation', [CourseClassController::class, 'congratuation'])->name('congratuation_page');
                 Route::get('teacherinfo', [CourseClassController::class, 'teacherinfo'])->name('teacherinfo');
                 Route::post('/store_teacherinfo', [CourseClassController::class, 'Teacherinfoupdate'])->name('Teacherinfoupdate');
-  
             });
 
 
@@ -318,7 +343,7 @@ Route::group(['middleware' => 'IsLoggedIn'], function () {
                     Route::put('update_surveyquestionform/{question_id}', [SurveyQuestionController::class, 'updatereport'])->name('updatereport');
                     Route::post('add_surveyquestionform/{survey_id}', [SurveyQuestionController::class, 'savereport'])->name('savereport');
                     Route::get('surveyreport/{survey_id}', [SurveyQuestionController::class, 'reportpageSubject'])->name('reportpageSubject');
-        
+
 
 
                     Route::get('{subject_id}/category', [CategoryController::class, 'categoryac'])->name('categoryac');
@@ -328,15 +353,12 @@ Route::group(['middleware' => 'IsLoggedIn'], function () {
                     Route::put('{category_id}/categoryform_update', [CategoryController::class, 'update'])->name('categoryform_update');
                     Route::get('{category_id}/categoryform_destroy', [CategoryController::class, 'destroy'])->name('categoryform_destroy');
                     Route::get('/changeStatuCategory', [CategoryController::class, 'changeStatuCategory'])->name('changeStatuCategory');
-                  
-                   
-                              
+
+
+
                     Route::get('/topic/{category_id}', [CategoryTopicController::class, 'topicpage'])->name('topic');
                     Route::get('{topic_id}/topic_destroy', [CategoryTopicController::class, 'destroy'])->name('topic_destroy');
                     Route::get('/changeStatuCategoryTopic', [CategoryTopicController::class, 'changeStatuCategoryTopic'])->name('changeStatuCategoryTopic');
-                   
-               
-               
                 });
 
 
@@ -379,7 +401,7 @@ Route::group(['middleware' => 'IsLoggedIn'], function () {
             });
 
             Route::get('/ums', [EditManageUserController::class, 'UserManage'])->name('UserManage');
-        
+
             Route::prefix('ums')->group(function () {
                 Route::get('/add_umsform', [EditManageUserController::class, 'createUser'])->name('createUser');
                 Route::post('/store_umsform', [EditManageUserController::class, 'storeUser'])->name('storeUser');
@@ -414,7 +436,7 @@ Route::group(['middleware' => 'IsLoggedIn'], function () {
 
                 Route::get('/add_umsgroupform', [PersonController::class, 'create'])->name('createperson');
                 Route::post('/store_umsgroupform', [PersonController::class, 'store'])->name('storeperson');
-                       });
+            });
 
             Route::prefix('report')->group(function () {
                 Route::get('/home', [ReportAllController::class, 'Reportview'])->name('Reportview');

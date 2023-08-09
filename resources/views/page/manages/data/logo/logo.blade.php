@@ -34,7 +34,7 @@
                   @if ($item->id == 1)
                     <div class="form-group">
                         <div class="col-lg-10">
-                            <img src="{{ Storage::disk('external')->url($item->detail) }}" style="width:80%">
+                            <img src="{{ asset('upload/' . $item->detail) }}" style="width:80%">
                         </div>
 
                     </div>

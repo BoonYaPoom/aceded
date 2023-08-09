@@ -16,15 +16,20 @@ class Course extends Model
     public function cour() {
         return $this->belongsTo(CourseGroup::class,'group_id');
       }
+    public function depart() {
+        return $this->belongsTo(Department::class,'department_id');
+      }
       public function classCouse()
       {
-          return $this->hasMany(Course::class,'course_id');
+          return $this->hasMany(CourseClass::class,'course_id');
       }
-      public static function generateCourseCode()
-{
-    $count = static::count() + 1;
-    $code = 'ACED' . str_pad($count, 3, '0', STR_PAD_LEFT);
-    return $code;
-}
+      public static function generateCourseCode($department_id)
+      {
+          $code = static::count() + 1;
+        
+          return $code;
+      }
+      
+      
     
 }

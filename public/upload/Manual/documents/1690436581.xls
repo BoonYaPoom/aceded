@@ -1,0 +1,36 @@
+﻿<table border="1" style="font-size:14px;width:100%;" border="1" style="width:100%" id="section-to-print">
+									<!-- thead -->
+										<thead>
+										  <tr ><th class="text-center" colspan="6">ข้อมูล Log File ในรูปแบบรายงานทางสถิติ</th></tr>
+										  <tr class="text-center">
+										  <th align="center" width="5%" >ลำดับ</th>
+										  <th align="center" >เดือน</th>
+										  <th align="center" width="15%">Log File</th>
+	
+										  </tr><tr><td align="center" >1</td>
+										   <td >มกราคม</td>
+										   <td class="text-right">5</td></tr><tr><td align="center" >2</td>
+										   <td >กุมภาพันธ์</td>
+										   <td class="text-right">16</td></tr><tr><td align="center" >3</td>
+										   <td >มีนาคม</td>
+										   <td class="text-right">0</td></tr><tr><td align="center" >4</td>
+										   <td >เมษายน</td>
+										   <td class="text-right">26</td></tr><tr><td align="center" >5</td>
+										   <td >พฤษภาคม</td>
+										   <td class="text-right">39</td></tr><tr><td align="center" >6</td>
+										   <td >มิถุนายน</td>
+										   <td class="text-right">29</td></tr><tr><td align="center" >7</td>
+										   <td >กรกฎาคม</td>
+										   <td class="text-right">0</td></tr><tr><td align="center" >8</td>
+										   <td >สิงหาคม</td>
+										   <td class="text-right">0</td></tr><tr><td align="center" >9</td>
+										   <td >กันยายน</td>
+										   <td class="text-right">0</td></tr><tr><td align="center" >10</td>
+										   <td >ตุลาคม</td>
+										   <td class="text-right">22</td></tr><tr><td align="center" >11</td>
+										   <td >พฤศจิกายน</td>
+										   <td class="text-right">3</td></tr><tr><td align="center" >12</td>
+										   <td >ธันวาคม</td>
+										   <td class="text-right">1</td></tr>
+										</tbody><!-- /tbody -->
+									  </table><!-- /.table -->

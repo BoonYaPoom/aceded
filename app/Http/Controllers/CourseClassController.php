@@ -8,7 +8,7 @@ use App\Models\CourseLearner;
 use App\Models\Department;
 use App\Models\Users;
 use Illuminate\Http\Request;
-
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
 use Intervention\Image\Facades\Image;
@@ -25,7 +25,7 @@ class CourseClassController extends Controller
         $monthdata = $mms['month'];
         $month = $monthdata['th'];
 
-        return view('page.manage.group.co.classroom.index', compact('cour', 'class', 'month', 'learner'));
+        return view('page.manage.group.co.classrooms.index', compact('cour', 'class', 'month', 'learner'));
     }
 
 
@@ -36,7 +36,7 @@ class CourseClassController extends Controller
         $cour = Course::findOrFail($course_id);
         $class = $cour->classCouse()->where('course_id', $course_id)->get();
 
-        return view('page.manage.group.co.classroom.create', compact('cour', 'class'));
+        return view('page.manage.group.co.classrooms.create', compact('cour', 'class'));
     }
 
     public function store(Request $request, $course_id)
@@ -66,39 +66,6 @@ class CourseClassController extends Controller
     }
 
 
-    public function registeradd($course_id)
-    {
-        $cour = Course::findOrFail($course_id);
-        return view('page.manage.group.co.classroom.item.registeradd', compact('cour'));
-    }
-    public function register($month)
-    {
-
-        $jsonContent = file_get_contents('javascript/json/_data.json');
-        $mms = json_decode($jsonContent, true);
-        $monthdata = $mms['month'];
-        $month = $monthdata['th'];
-
-        return view('page.manage.group.co.classroom.item.register.register', compact('month'));
-    }
-    public function report($course_id)
-    {
-        $jsonContent = file_get_contents('javascript/json/_data.json');
-        $mms = json_decode($jsonContent, true);
-        $monthdata = $mms['month'];
-        $month = $monthdata['th'];
-
-        return view('page.manage.group.co.classroom.item.report.report', compact('month'));
-    }
-    public function congratuation($course_id)
-    {
-        $jsonContent = file_get_contents('javascript/json/_data.json');
-        $mms = json_decode($jsonContent, true);
-        $monthdata = $mms['month'];
-        $month = $monthdata['th'];
-
-        return view('page.manage.group.co.classroom.item.congratuation.congratuation', compact('month'));
-    }
     public function teacherinfo()
     {
 
@@ -160,5 +127,39 @@ class CourseClassController extends Controller
 
         // ส่งข้อความสำเร็จไปยังหน้าแก้ไขโปรไฟล์
         return redirect()->route('UserManage')->with('message', 'แก้ไขโปรไฟล์สำเร็จ');
+    }
+    
+    public function registeradd($course_id)
+    {
+        $cour = Course::findOrFail($course_id);
+        return view('page.manage.group.co.classroom.item.registeradd', compact('cour'));
+    }
+    public function register($month)
+    {
+
+        $jsonContent = file_get_contents('javascript/json/_data.json');
+        $mms = json_decode($jsonContent, true);
+        $monthdata = $mms['month'];
+        $month = $monthdata['th'];
+
+        return view('page.manage.group.co.classroom.item.register.register', compact('month'));
+    }
+    public function report($course_id)
+    {
+        $jsonContent = file_get_contents('javascript/json/_data.json');
+        $mms = json_decode($jsonContent, true);
+        $monthdata = $mms['month'];
+        $month = $monthdata['th'];
+
+        return view('page.manage.group.co.classroom.item.report.report', compact('month'));
+    }
+    public function congratuation($course_id)
+    {
+        $jsonContent = file_get_contents('javascript/json/_data.json');
+        $mms = json_decode($jsonContent, true);
+        $monthdata = $mms['month'];
+        $month = $monthdata['th'];
+
+        return view('page.manage.group.co.classroom.item.congratuation.congratuation', compact('month'));
     }
 }

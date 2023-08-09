@@ -18,10 +18,10 @@ a</aside>
                             จัดการข้อมูลและความรู้</a>
                         <a class="nav-link  font-weight-bold d-none" href=""><span
                                 class="menu-icon fas fa-users  "></span> กิจกรรม</a>
-                        <a class="nav-link  font-weight-bold {{ Str::startsWith(request()->url(), route('learn')) || request()->is('lms', 'lms/*')
+                        <a class="nav-link  font-weight-bold {{ Str::startsWith(request()->url(), route('departmentpage')) || request()->is('lms', 'lms/*')
                             ? ' active text-info'
                             : '' }}"
-                            href="{{ route('learn') }}"><span class="menu-icon fas fa-chalkboard-teacher  "></span>
+                            href="{{ route('departmentpage') }}"><span class="menu-icon fas fa-chalkboard-teacher  "></span>
                             จัดการเรียนรู้</a>
                         <a class="nav-link  font-weight-bold {{ Str::startsWith(request()->url(), route('Reportview')) || request()->is('report', 'report/*')
                             ? ' active text-info'

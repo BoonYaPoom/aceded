@@ -6,6 +6,7 @@ use App\Models\Course;
 
 use App\Models\CourseGroup;
 use App\Models\CourseSubject;
+use App\Models\Department;
 use App\Models\PersonType;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
@@ -36,10 +37,18 @@ class CourseController extends Controller
         ]);
 
 
-        $code = Course::generateCourseCode();
+        $code = Course::generateCourseCode($group_id);
+        $group = CourseGroup::find($group_id);
+        $department_id = $group->department_id;
+        $department = Department::find($department_id); 
+      
+  
+        $departmentId = $department->name_short_en;
+    
+        $codes =$departmentId . str_pad($code, 3, '0', STR_PAD_LEFT)  ;
 
         $cour = new Course;
-        $cour->course_code =  $code;
+        $cour->course_code =  $codes;
         $cour->course_th = $request->course_th;
         $cour->course_en = $request->course_en;
 
