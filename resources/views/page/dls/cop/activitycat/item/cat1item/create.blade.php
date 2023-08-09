@@ -10,11 +10,14 @@
                 <!-- .card -->
                 <div class="card card-fluid">
                     <!-- .card-header -->
-                    <div class="card-header bg-muted"><a href="http://tcct.localhost:8080/admin/cop.html"
-                            style="text-decoration: underline;">จัดการข้อมูลและความรู้</a> / <a
-                            href="http://tcct.localhost:8080/admin/cop/activitycategory.html"
-                            style="text-decoration: underline;">กิจกรรม</a> / <i> เพิ่มชื่อ</i></div><!-- /.card-header -->
-
+                    <div class="card-header bg-muted"><a href="{{ route('cop') }}"
+                      style="text-decoration: underline;">กิจกกรรม</a> / <a href="{{ route('activi') }}"
+                      style="text-decoration: underline;">ชุมนุมนักปฏิบัติ </a> / <i>
+                    
+                          <a href="{{ route('activiList' ,[$actCat->category_id]) }}"
+                            style="text-decoration: underline;">{{ $actCat->category_th }}</a>
+                      </i></div>
+                 
                     <!-- .card-body -->
                     <div class="card-body">
                         <!-- .form-group -->

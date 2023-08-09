@@ -60,4 +60,7 @@ class DepartmentController extends Controller
 
         return redirect()->route('departmentpage')->with('message','success Department control');
     }
+
+
+    
 }

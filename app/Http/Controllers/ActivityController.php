@@ -72,7 +72,7 @@ class ActivityController extends Controller
         if (Session::has('loginId')) {
             $loginId = Session::get('loginId');
         }
-        $act = ActivityCategory::findOrFail($activity_id);
+        $act = Activity::findOrFail($activity_id);
 
         $act->title = $request->title;
 
@@ -94,7 +94,7 @@ class ActivityController extends Controller
 
     public function activiListForm2($category_id)
     {
-        $act = ActivityCategory::findOrFail($category_id);
+        $actCat = ActivityCategory::findOrFail($category_id);
         return view('page.dls.cop.activitycat.item.cat2item.create', compact('actCat'));
     }
 
@@ -112,7 +112,13 @@ class ActivityController extends Controller
         $act = new Activity;
         $act->category_id = $category_id;
         $act->title = $request->title;
-        $act->media = null;
+        
+        if ($request->hasFile('media')) {
+            $fileName = time() . '.' . $request->media->getClientOriginalExtension();
+            $filePath = public_path('uploads'); // กำหนดพาธของโฟลเดอร์ที่เก็บไฟล์
+            $request->media->move($filePath, $fileName);
+        }
+        $act->media = $fileName;
         $act->location = null;
         $act->url = null;
         $act->startdate = now();
@@ -144,11 +150,15 @@ class ActivityController extends Controller
         if (Session::has('loginId')) {
             $loginId = Session::get('loginId');
         }
-        $act = ActivityCategory::findOrFail($activity_id);
+        $act = Activity::findOrFail($activity_id);
 
         $act->title = $request->title;
-        $act->media = null;
-
+        if ($request->hasFile('media')) {
+            $fileName = time() . '.' . $request->media->getClientOriginalExtension();
+            $filePath = public_path('uploads'); // กำหนดพาธของโฟลเดอร์ที่เก็บไฟล์
+            $request->media->move($filePath, $fileName);
+        }
+        $act->media = $fileName;
         $act->enddate = now();
         $act->activity_status = $request->input('activity_status', 0);
         $act->detail = $request->detail;
@@ -159,5 +169,19 @@ class ActivityController extends Controller
 
         return redirect()->route('activiList', ['category_id' => $act->category_id])->with('message', 'Success Acti');
     }
+
+    public function changeStatus(Request $request){
+        $act = Activity::find($request->activity_id);
+      
+        if ($act) {
+            $act->activity_status = $request->activity_status;
+            $act->save();
+          
+            return response()->json(['message' => 'สถานะถูกเปลี่ยนแปลงเรียบร้อยแล้ว']);
+        } else {
+            return response()->json(['message' => 'ไม่พบข้อมูล Activity']);
+        }
+    }
+
 
 }

@@ -21,4 +21,8 @@ class Department extends Model
     {
         return $this->hasMany(CourseGroup::class,'department_id');
     }
+    public function hightlight()
+    {
+        return $this->hasMany(Highlight::class,'department_id');
+    }
 }

@@ -1,7 +1,7 @@
 @extends('layouts.adminhome')
 @section('content')
     <!-- .page-inner -->
-    <form action="{{ route('act1update', ['activity_id' => $act]) }}" method="post" enctype="multipart/form-data">
+    <form action="{{ route('act1Update',['activity_id' => $act->activity_id] ) }}" method="post" enctype="multipart/form-data">
         @csrf
         @method('PUT')
     <div class="page-inner">
@@ -11,34 +11,35 @@
             <!-- .card -->
             <div class="card card-fluid">
                 <!-- .card-header -->
-                <div class="card-header bg-muted"><a href="http://tcct.localhost:8080/admin/cop.html"
-                        style="text-decoration: underline;">จัดการข้อมูลและความรู้</a> / <a
-                        href="http://tcct.localhost:8080/admin/cop/activitycategory.html"
-                        style="text-decoration: underline;">กิจกรรม</a> / <i> เพิ่มชื่อ</i></div><!-- /.card-header -->
-
+                <div class="card-header bg-muted"><a href="{{ route('cop') }}"
+                    style="text-decoration: underline;">กิจกกรรม</a> / <a href="{{ route('activi') }}"
+                    style="text-decoration: underline;">ชุมนุมนักปฏิบัติ </a> / <a href="{{ route('activiList' ,[$act->category_id]) }}"
+                    style="text-decoration: underline;">{{ $act->title }}</a>
+  
+                  </div>
                 <!-- .card-body -->
                 <div class="card-body">
                     <!-- .form-group -->
                     <div class="form-group">
                         <label for="title">ชื่อเรื่อง <span class="badge badge-warning">Required</span></label> <input
                             type="text" class="form-control" id="title" name="title" placeholder="ชื่อเรื่อง"
-                            required="" value="">
+                            required="" value="{{$act->title}}">
                     </div><!-- /.form-group -->
 
                     <!-- .form-group -->
                     <div class="form-group ">
                         <label for="detail">รายละเอียด </label>
-                        <textarea class="ckeditor" data-placeholder="รายละเอียด" data-height="200" name="detail"></textarea>
+                        <textarea class="ckeditor" data-placeholder="รายละเอียด" data-height="200" name="detail">{{$act->detail}}</textarea>
                     </div><!-- /.form-group -->
                     <div class="form-row">
                         <div class="col-md-6 mb-3">
                             <label for="flatpickr03">วันที่เริ่ม</label>
-                            <input id="flatpickr03" name="startdate" value="" type="text"
+                            <input id="flatpickr03" name="startdate" value="{{$act->startdate}}" type="text"
                                 class="form-control startdate " data-toggle="flatpickr">
                         </div>
                         <div class="col-md-6 mb-3">
                             <label for="flatpickr04">วันที่สิ้นสุด</label>
-                            <input id="flatpickr04" name="enddate" value="" type="text"
+                            <input id="flatpickr04" name="enddate" value="{{$act->enddate}}" type="text"
                                 class="form-control enddate " data-toggle="flatpickr">
                         </div>
                     </div>

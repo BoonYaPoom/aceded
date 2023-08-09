@@ -35,13 +35,15 @@
                     <!-- .form-group -->
                     <div class="form-group">
                         @foreach ($hights as $highlight)
+                        @if($highlight->department_id == 0)
+                        <div class="form-group">
                             <div class="row mb-5">
-                                
+
                                 <div class="col-lg-10">
                                     <img src="{{ asset('upload/banner/' . $highlight->highlight_path) }}"
-                                    alt="{{ $highlight->highlight_path }}" style="width:100%">
+                                        alt="{{ $highlight->highlight_path }}" style="width:100%">
                                     <img src="{{ Storage::disk('external')->url('banner/' . $highlight->highlight_path) }}"
-                                    style="width:100%">
+                                        style="width:100%">
                                 </div>
 
                                 <div class="col-lg-1">
@@ -86,7 +88,28 @@
                                         data-toggle="tooltip" title="ลบ"><i
                                             class="fas fa-trash-alt fa-lg text-warning "></i></a>
                                 </div>
+
                             </div>
+                            <form action="{{ route('updateLinkDep', ['highlight_id' => $highlight->highlight_id]) }}" method="post"
+                                enctype="multipart/form-data">
+                                @csrf
+                                @method('PUT')
+                            <div class="form-group">
+                                <label for="faq">ลิงค์เชื่อมโยง </label>
+                                <input type="text" class="form-control" id="highlight_link" name="highlight_link"
+                                    placeholder="ลิงค์เชื่อมโยง" value="{{ $highlight->highlight_link }}">
+                            </div><!-- /.form-group -->
+                            <div class="form-actions">
+                                <button class="btn btn-lg btn-primary ml-auto" type="submit"><i class="far fa-save"></i>
+                                    บันทึก</button>
+                            </div><!-- /.form-actions -->
+                        </form>
+                            <br>
+                            <div style="border-bottom: 1px solid #e7d8d5;">
+
+                            </div>
+                        </div><!-- .form-group -->
+                        @endif
                         @endforeach
                     </div><!-- .form-group -->
 

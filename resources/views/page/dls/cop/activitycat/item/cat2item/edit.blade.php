@@ -1,6 +1,9 @@
 @extends('layouts.adminhome')
 @section('content')
     <!-- .page-inner -->
+    <form action="{{ route('act2Update',['activity_id' => $act->activity_id] ) }}" method="post" enctype="multipart/form-data">
+        @csrf
+        @method('PUT')
     <div class="page-inner">
         <!-- .form -->
         <!-- .page-section -->
@@ -8,29 +11,38 @@
             <!-- .card -->
             <div class="card card-fluid">
                 <!-- .card-header -->
-                <div class="card-header bg-muted"><a href=""
-                        style="text-decoration: underline;">จัดการข้อมูลและความรู้</a> / <a
-                        href=""
-                        style="text-decoration: underline;">กิจกรรม</a> / <i> เพิ่มชื่อ</i></div><!-- /.card-header -->
-
+                <div class="card-header bg-muted"><a href="{{ route('cop') }}"
+                    style="text-decoration: underline;">กิจกกรรม</a> / <a href="{{ route('activi') }}"
+                    style="text-decoration: underline;">ชุมนุมนักปฏิบัติ </a> / <a href="{{ route('activiList' ,[$act->category_id]) }}"
+                    style="text-decoration: underline;">{{ $act->title }}</a>
+  
+                  </div>
                 <!-- .card-body -->
                 <div class="card-body">
                     <!-- .form-group -->
                     <div class="form-group">
                         <label for="title">ชื่อเรื่อง <span class="badge badge-warning">Required</span></label> <input
                             type="text" class="form-control" id="title" name="title" placeholder="ชื่อเรื่อง"
-                            required="" value="">
+                            required="" value="{{$act->title}}">
                     </div><!-- /.form-group -->
-
+                    <div class="col-lg-10">
+                            <video width="50%" id="videoplayer" controls="">
+                                <source
+                                src="{{ asset('uploads/' . $act->media) }}"
+                                    alt="{{ $act->media }}" type="video/mp4"
+                                    size="720" id="sourcevideo"
+                                    class="sourcecontent">
+                            </video>
+                    </div>
                     <!-- .form-group -->
                     <div class="form-group ">
-                        <label for="cover">VDO </label> <input type="file" class="form-control" id="vdo"
-                            name="vdo" placeholder="VDO" accept="video/mp4,video/x-m4v,video/*">
+                        <label for="media">VDO </label> <input type="file" class="form-control" id="media"
+                            name="media" placeholder="VDO" accept="video/mp4,video/x-m4v,video/*">
                     </div><!-- /.form-group -->
                     <!-- .form-group -->
                     <div class="form-group ">
                         <label for="detail">รายละเอียด </label>
-                        <textarea class="ckeditor" data-placeholder="รายละเอียด" data-height="200" name="detail"></textarea>
+                        <textarea class="ckeditor" data-placeholder="รายละเอียด" data-height="200" name="detail">{{$act->detail}}</textarea>
                     </div><!-- /.form-group -->
                     <div class="form-group">
                         <label for="activity_status">สถานะ </label> <label
@@ -48,4 +60,5 @@
             </div><!-- /.form-actions -->
         </div><!-- /.page-section -->
     </div><!-- /.page-inner -->
+    </form>
 @endsection

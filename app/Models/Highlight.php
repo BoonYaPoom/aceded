@@ -12,4 +12,8 @@ class Highlight extends Model
     protected $guarded =[];
     protected $primaryKey = 'highlight_id';
     public $timestamps = false;
+
+    public function Department() {
+        return $this->belongsTo(Department::class,'department_id');
+      }
 }

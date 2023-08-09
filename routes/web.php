@@ -103,6 +103,7 @@ Route::group(['middleware' => 'IsLoggedIn'], function () {
                 Route::get('/changeStatus', [HighlightController::class, 'changeStatus'])->name('changeStatus');
 
                 Route::post('/storeban', [HighlightController::class, 'store'])->name('storeban');
+
                 Route::get('/destoryban/{highlight_id}', [HighlightController::class, 'destory'])->name('destoryban');
 
 
@@ -205,37 +206,35 @@ Route::group(['middleware' => 'IsLoggedIn'], function () {
             Route::prefix('cop')->group(function () {
                 Route::get('/home', [NavController::class, 'cop'])->name('cop');
                 Route::get('/activitycategory', [ActivityCategoryController::class, 'activi'])->name('activi');
+                Route::get('/meetingcategory', [ActivityCategoryController::class, 'meeti'])->name('meeti');
                 Route::get('/activiFrom/{category_id}', [ActivityCategoryController::class, 'activiFrom'])->name('activiFrom');
-         
-                Route::get('/activiInvite/{category_id}', [ActivityInviteController::class, 'activiInvite'])->name('activiInvite');
-
-              
 
                 Route::prefix('acttivity')->group(function () {
                     Route::get('/activiList/{category_id}', [ActivityController::class, 'activiList'])->name('activiList');
 
-                Route::get('/activiListform1_edit/{activity_id}', [ActivityController::class, 'formacttivityEdit1'])->name('activiListform1_edit');
-                
-                Route::get('/activiListForm1/{category_id}', [ActivityController::class, 'activiListForm1'])->name('activiListForm1');
+                    Route::get('/activiListform1_edit/{activity_id}', [ActivityController::class, 'formacttivityEdit1'])->name('activiListform1_edit');
 
-                Route::post('/act1store/{category_id}', [ActivityController::class, 'act1store'])->name('act1store');
-                Route::put('/act1update/{activity_id}', [ActivityController::class, 'act1update'])->name('act1update');
+                    Route::get('/activiListForm1/{category_id}', [ActivityController::class, 'activiListForm1'])->name('activiListForm1');
+
+                    Route::post('/act1store/{category_id}', [ActivityController::class, 'act1store'])->name('act1store');
+                    Route::put('/act1Update/{activity_id}', [ActivityController::class, 'act1update'])->name('act1Update');
+
+
+
+                    Route::get('/activiListform_edit2/{activity_id}', [ActivityController::class, 'formacttivityEdit2'])->name('activiListform2_edit');
+                    Route::get('/activiListForm2/{category_id}', [ActivityController::class, 'activiListForm2'])->name('activiListForm2');
+
+                    Route::post('/act2store/{category_id}', [ActivityController::class, 'act2store'])->name('act2store');
+                    Route::put('/act2Update/{activity_id}', [ActivityController::class, 'act2update'])->name('act2Update');
+                });
+
               
 
 
-                Route::get('/activiListform_edit2/{activity_id}', [ActivityController::class, 'formacttivityEdit2'])->name('activiListform2_edit');
-                Route::get('/activiListForm2/{category_id}', [ActivityController::class, 'activiListForm2'])->name('activiListForm2');
-
-                Route::post('/act2store/{category_id}', [ActivityController::class, 'act2store'])->name('act2store');
-                Route::put('/act2update/{activity_id}', [ActivityController::class, 'act2update'])->name('act2update');
-
-                });
-
-
-                Route::get('/meetingcategory', [ActivityCategoryController::class, 'meeti'])->name('meeti');
                 Route::get('/ActivityChangeStatus', [ActivityCategoryController::class, 'changeStatus'])->name('ActivityChangeStatus');
+                Route::get('/ActChangeStatus', [ActivityController::class, 'changeStatus'])->name('ActChangeStatus');
             });
-            
+
 
             Route::get('/lms', [DepartmentController::class, 'departmentpage'])->name('departmentpage');
             Route::get('/departmentform', [DepartmentController::class, 'departmentcreate'])->name('departmentcreate');
@@ -292,6 +291,11 @@ Route::group(['middleware' => 'IsLoggedIn'], function () {
                 Route::get('/destorysub/{subject_id}', [CourseSubjectController::class, 'destory'])->name('destorysub');
 
                 Route::get('/changeStatusSubject', [CourseSubjectController::class, 'changeStatus'])->name('changeStatusSubject');
+            });
+            Route::prefix('lms')->group(function () {
+                Route::get('{department_id}/hightDep', [HighlightController::class, 'hightDep'])->name('hightDep');
+                Route::post('{department_id}/storeDep', [HighlightController::class, 'storeDep'])->name('storeDep');
+                Route::put('{highlight_id}/updateLinkDep', [HighlightController::class, 'updateLinkDep'])->name('updateLinkDep');
             });
             Route::prefix('lms')->group(function () {
                 Route::get('/navless/{subject_id}', [CourseLessonController::class, 'navless'])->name('navless');
