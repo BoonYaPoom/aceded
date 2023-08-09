@@ -1,7 +1,6 @@
 @extends('layouts.adminhome')
 @section('content')
-    <form action="http://tcct.localhost:8080/admin/cop/savedata/activitycategoryform/3" autocomplete="off" id="formnews"
-        enctype="multipart/form-data" method="post" accept-charset="utf-8">
+    <form action="" autocomplete="off" id="formnews" enctype="multipart/form-data" method="post" accept-charset="utf-8">
         <input type="hidden" name="__csrf_token_name" value="c4dd375d617e78d25f83e498dd205900" />
         <!-- .page-inner -->
         <div class="page-inner">
@@ -11,10 +10,9 @@
                 <!-- .card -->
                 <div class="card card-fluid">
                     <!-- .card-header -->
-                    <div class="card-header bg-muted"><a href="http://tcct.localhost:8080/admin/cop.html"
-                            style="text-decoration: underline;">กิจกรรม</a> / <a
-                            href="http://tcct.localhost:8080/admin/cop/activitycategory.html"
-                            style="text-decoration: underline;">ชุมนุมนักปฏิบัติ</a> /<i> แก้ไขหมวดหมู่</i></div>
+                    <div class="card-header bg-muted"><a href="" style="text-decoration: underline;">กิจกรรม</a> / <a
+                            href="" style="text-decoration: underline;">ชุมนุมนักปฏิบัติ</a> /<i> แก้ไขหมวดหมู่</i>
+                    </div>
                     <!-- /.card-header -->
 
                     <!-- .card-body -->
@@ -78,5 +76,4 @@
         </div><!-- /.page -->
         </div><!-- .app-footer -->
     </form><!-- /.form -->
-    
-    @endsection
+@endsection
