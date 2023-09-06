@@ -16,4 +16,9 @@ class CourseClass extends Model
     public function coCourse() {
         return $this->belongsTo(Course::class,'course_id');
       }
+
+      public function classLearn()
+      {
+          return $this->hasMany(CourseLearner::class,'class_id');
+      }
 }

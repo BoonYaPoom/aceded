@@ -1,5 +1,5 @@
-@extends('layouts.adminhome')
-@section('content')
+@extends('layouts.department.layout.departmenthome')
+@section('contentdepartment')
 
 @if (Session::has('message'))
 <script>
@@ -24,7 +24,7 @@
         <div class="page-section">
             <div class="card card-fluid">
                 <div class="card-header bg-muted">หน่วยงาน /<a
-                        href="{{ route('departmentpage') }}">หมวดหมู่</a>/  จัดการหลักสูตร</div>
+                        href="{{ route('departmentLearnpage') }}">หมวดหมู่</a>/  จัดการหลักสูตร</div>
                 <div class="card-body">
                     <div class="table-responsive">
                         <table id="datatable2" class="table w3-hoverable">

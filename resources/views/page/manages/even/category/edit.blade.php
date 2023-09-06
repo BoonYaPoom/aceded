@@ -1,5 +1,5 @@
-@extends('layouts.adminhome')
-@section('content')
+@extends('layouts.department.layout.departmenthome')
+@section('contentdepartment')
     <!-- .page-inner -->
     <div class="page-inner">
         <!-- .form -->
@@ -7,15 +7,17 @@
         <div class="page-section">
             <!-- .card -->
             <div class="card card-fluid" <!-- .card-header -->
-                <div class="card-header bg-muted"><a href="{{ route('manage') }}"
-                        style="text-decoration: underline;">จัดการเว็บ</a> / <a href="{{ route('evenpage') }}"
+                <div class="card-header bg-muted"><a
+                        href="{{ route('manage', ['department_id' => $category->department_id]) }}"
+                        style="text-decoration: underline;">จัดการเว็บ</a> / <a
+                        href="{{ route('Webpage', ['department_id' => $category->department_id]) }}"
                         style="text-decoration: underline;">
-                        @foreach ($category as $cate)
-                            {{ $cate->category_th }}
-                        @endforeach
+
+                        {{ $category->category_th }}
+
                     </a> / <a href="{{ route('catpage', ['category_id' => $webs->category_id]) }}"
                         style="text-decoration: underline;">
-                        กิจกรรม</a> / <i> เพิ่มข่าว/{{ $webs->web_th }}</i></div><!-- /.card-header -->
+                        กิจกรรม</a> / <i> เพิ่ม/{{ $webs->web_th }}</i></div><!-- /.card-header -->
 
                 <form action="{{ route('updatecat', ['web_id' => $webs]) }}" method="post" enctype="multipart/form-data">
                     @csrf

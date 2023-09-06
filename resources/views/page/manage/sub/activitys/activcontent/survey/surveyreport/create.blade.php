@@ -1,5 +1,5 @@
-@extends('layouts.adminhome')
-@section('content')
+@extends('layouts.department.layout.departmenthome')
+@section('contentdepartment')
     <!-- .page-inner -->
     <div class="page-inner">
         <!-- .form -->
@@ -10,9 +10,9 @@
                 <!-- .card-header -->
                 <div class="card-header bg-muted"><a href="{{ route('surveyact', [$sur->subject_id]) }}"
                         style="text-decoration: underline;"> จัดการวิชา </a> / <a
-                        href="{{ route('surveyReport', [$sur->survey_id]) }}"
+                        href="{{ route('surveyquestion', [$sur->survey_id]) }}"
                         style="text-decoration: underline;">แบบสำรวจ</a> / <a
-                        href="{{ route('surveyReport', [$sur->survey_id]) }}" style="text-decoration: underline;">{{$sur->survey_th}}</a> /
+                        href="{{ route('surveyquestion', [$sur->survey_id]) }}" style="text-decoration: underline;">{{$sur->survey_th}}</a> /
                     <i> เพิ่มแบบสำรวจ</i>
                 </div><!-- /.card-header -->
                 <form action="{{ route('savereport', ['survey_id' => $sur->survey_id]) }}" method="post"
@@ -24,6 +24,7 @@
                             <label class="control-label" for="question_type">ประเภทแบบสำรวจ</label>
                             <select id="question_type" name="question_type" class="form-control" data-toggle="select2"
                                 data-placeholder="ประเภทแบบสำรวจ" data-allow-clear="false">
+                                <option value="0" selected  disabled>เลือก</option>
                                 <option value="1">ตัวเลือก</option>
                                 <option value="2">หลายมิติ</option>
                                 <option value="3">เขียนอธิบาย</option>
@@ -71,14 +72,14 @@
                                 <select id="numchoice" name="numchoice" class="form-control" data-toggle="select2"
                                     data-placeholder="จำนวนตัวเลือก" data-allow-clear="false">
                                     @for ($i = 1; $i <= 8; $i++)
-                                        <option value="{{ $i }}" {{ $i == 1 ? 'selected' : '' }}>
+                                        <option value="{{ $i }}" {{ $i == 4 ? 'selected' : '' }}>
                                             {{ $i }}</option>
                                     @endfor
                                 </select>
 
                                 @for ($i = 1; $i <= 8; $i++)
                                     <div class="form-group qtype1" id="showchoice{{ $i }}"
-                                        style="{{ $i > 1 ? 'display:none' : '' }}">
+                                        style="{{ $i > 4 ? 'display:none' : '' }}">
                                         <label for="choice{{ $i }}">ตัวเลือกที่ {{ $i }}</label>
                                         <input type="text" class="form-control" id="choice{{ $i }}"
                                             name="choice{{ $i }}" placeholder="ตัวเลือกที่ {{ $i }}"

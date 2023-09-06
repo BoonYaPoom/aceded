@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\CourseSubject;
+use App\Models\Department;
 use App\Models\Survey;
 use App\Models\SurveyQuestion;
 
@@ -14,23 +15,26 @@ class SurveyQuestionController extends Controller
   {
     $sur = Survey::findOrFail($survey_id);
     $surques = $sur->surs()->where('survey_id', $survey_id)->get();
-
-    return view('page.manages.survey.surveyquestion.index', compact('sur', 'surques'));
+    $department_id   = $sur->department_id;
+    $depart = Department::findOrFail($department_id);
+    return view('page.manages.survey.surveyquestion.index', compact('sur', 'surques','depart'));
   }
   public function reportpage($survey_id)
   {
     $sur = Survey::findOrFail($survey_id);
     $surques = $sur->surs()->where('survey_id', $survey_id)->get();
     $respoe = $sur->surRes()->where('survey_id', $survey_id)->get();
-
-    return view('page.manages.survey.reportpage.index', compact('sur', 'surques', 'respoe'));
+    $department_id   = $sur->department_id;
+    $depart = Department::findOrFail($department_id);
+    return view('page.manages.survey.reportpage.index', compact('sur', 'surques', 'respoe','depart'));
   }
 
   public function create($survey_id)
   {
     $sur = Survey::findOrFail($survey_id);
-    
-    return view('page.manages.survey.surveyquestion.create', compact('sur'));
+    $department_id   = $sur->department_id;
+    $depart = Department::findOrFail($department_id);
+    return view('page.manages.survey.surveyquestion.create', compact('sur','depart'));
   }
 
   public function store(Request $request, $survey_id)
@@ -115,7 +119,11 @@ class SurveyQuestionController extends Controller
   public function edit($question_id)
   {
     $surques = SurveyQuestion::findOrFail($question_id);
-    return view('page.manages.survey.surveyquestion.edit', ['surques' => $surques]);
+    $survey_id     = $surques->survey_id;
+    $sur = Survey::findOrFail($survey_id);
+    $department_id   = $sur->department_id;
+    $depart = Department::findOrFail($department_id);
+    return view('page.manages.survey.surveyquestion.edit', ['surques' => $surques, 'sur' => $sur , 'depart' => $depart]);
   }
 
   public function update(Request $request, $question_id)
@@ -194,17 +202,20 @@ class SurveyQuestionController extends Controller
 
   public function surveyreport($survey_id)
   {
-    $sur = Survey::findOrFail($survey_id);
+    $sur  = Survey::findOrFail($survey_id);
     $surques = $sur->surs()->where('survey_id', $survey_id)->get();
-    return view('page.manage.sub.activitys.activcontent.survey.surveyreport.index', compact('sur', 'surques'));
+    $department_id   = $sur->department_id;
+    $depart = Department::findOrFail($department_id);
+    return view('page.manage.sub.activitys.activcontent.survey.surveyreport.index', compact('sur', 'surques','depart'));
   }
   public function reportpageSubject($survey_id)
   {
     $sur = Survey::findOrFail($survey_id);
     $surques = $sur->surs()->where('survey_id', $survey_id)->get();
     $respoe = $sur->surRes()->where('survey_id', $survey_id)->get();
-
-    return view('page.manage.sub.activitys.activcontent.survey.surveyreport.report', compact('sur', 'surques', 'respoe'));
+    $department_id   = $sur->department_id;
+    $depart = Department::findOrFail($department_id);
+    return view('page.manage.sub.activitys.activcontent.survey.surveyreport.report', compact('sur', 'surques', 'respoe','depart'));
   }
   public function createreport($survey_id)
   {
@@ -213,7 +224,9 @@ class SurveyQuestionController extends Controller
     $subject_id = $sur->subject_id;
     $subs  = CourseSubject::findOrFail($subject_id);
     $suracts = $subs->suyvs()->where('subject_id', $subject_id)->get();
-    return view('page.manage.sub.activitys.activcontent.survey.surveyreport.create', compact('sur', 'surques','subs','suracts'));
+    $department_id   = $sur->department_id;
+    $depart = Department::findOrFail($department_id);
+    return view('page.manage.sub.activitys.activcontent.survey.surveyreport.create', compact('sur', 'surques', 'subs', 'suracts','depart'));
   }
 
 
@@ -292,15 +305,20 @@ class SurveyQuestionController extends Controller
     $surques->save();
 
 
-    return redirect()->route('surveyReport', ['survey_id' => $survey_id])->with('message', 'surveyreport update successfully');
+    return redirect()->route('surveyquestion', ['survey_id' => $survey_id])->with('message', 'surveyreport update successfully');
   }
 
 
   public function editreport($question_id)
   {
     $surques = SurveyQuestion::findOrFail($question_id);
-
-    return view('page.manage.sub.activitys.activcontent.survey.surveyreport.edit', compact('surques'));
+    $survey_id  = $surques-> survey_id;
+    $sur = Survey::findOrFail($survey_id);
+    $subject_id   = $sur->subject_id;
+    $subs = CourseSubject::findOrFail($subject_id);
+    $department_id   = $subs->department_id;
+    $depart = Department::findOrFail($department_id);
+    return view('page.manage.sub.activitys.activcontent.survey.surveyreport.edit', compact('surques','subs','sur','depart'));
   }
 
   public function updatereport(Request $request, $question_id)
@@ -371,7 +389,7 @@ class SurveyQuestionController extends Controller
     $surques->save();
 
 
-    return redirect()->route('surveyReport', ['survey_id' => $surques->survey_id])->with('message', 'surveyreport update successfully');
+    return redirect()->route('surveyquestion', ['survey_id' => $surques->survey_id])->with('message', 'surveyreport update successfully');
   }
   public function destory($question_id)
   {

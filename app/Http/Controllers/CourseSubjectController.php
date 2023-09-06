@@ -10,6 +10,7 @@ use App\Models\Exam;
 use App\Models\Survey;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Validator;
 
 class CourseSubjectController extends Controller
 {
@@ -18,22 +19,32 @@ class CourseSubjectController extends Controller
 
         $depart  = Department::findOrFail($department_id);
         $subs = $depart->SubjectDe()->where('department_id', $department_id)->get();
+       
         return view('page.manage.sub.index', compact('subs', 'depart'));
     }
     public function create($department_id)
     {
         $depart  = Department::findOrFail($department_id);
-        return view('page.manage.sub.create', compact('depart'));
+        $users4 = $depart->UserDe()->where('department_id', $department_id)->get();
+        return view('page.manage.sub.create', compact('depart','users4'));
     }
 
     public function store(Request $request, $department_id)
     {
-        $request->validate([
+
+        $validator = Validator::make($request->all(), [
 
             'subject_code' => 'required',
             'subject_th' => 'required'
-
         ]);
+      
+        if ($validator->fails()) {
+            return back()
+                ->withErrors($validator)
+                ->withInput()
+                ->with('error', 'ข้อมูลไม่ถูกต้อง');
+        }
+
         $subs = new CourseSubject;
         $subs->subject_code = $request->subject_code;
         $subs->subject_th = $request->subject_th;
@@ -84,13 +95,13 @@ class CourseSubjectController extends Controller
 
         $selectedTeachers = $request->input('teacher', []);
 
-        $teachersToCreate = [24130, 24131]; // รหัสผู้สอนที่ต้องการสร้างเสมอ
 
-        foreach ($teachersToCreate as $teacherId) {
+        $Users4 = \App\Models\Users::all()->where('role', 3);
+        foreach ($Users4 as $teacherId) {
             $teach = new CourseTeacher;
-            $teach->uid = $teacherId;
+            $teach->uid = $teacherId->uid;
 
-            if (in_array($teacherId, $selectedTeachers)) {
+            if (in_array($teacherId->uid, $selectedTeachers)) {
                 $teach->teacher_status = 1;
             } else {
                 $teach->teacher_status = 0;
@@ -99,8 +110,7 @@ class CourseSubjectController extends Controller
             $teach->subject_id = $subs->subject_id;
             $teach->save();
         }
-
-
+       
 
         $exam1 = new Exam;
         $exam1->exam_th = 'แบบทดสอบก่อนเรียน';
@@ -165,6 +175,7 @@ class CourseSubjectController extends Controller
         $sur->detail_th = null;
         $sur->detail_en = null;
         $sur->survey_date = now();
+        $sur->department_id = $subs->department_id;;
 
         $sur->survey_status = 1;
         $sur->survey_type = 1;
@@ -180,7 +191,7 @@ class CourseSubjectController extends Controller
         $sur1->detail_th = null;
         $sur1->detail_en = null;
         $sur1->survey_date = now();
-
+        $sur1->department_id = $subs->department_id;;
         $sur1->survey_status = 1;
         $sur1->survey_type = 2;
         $sur1->recommended = null;
@@ -199,8 +210,10 @@ class CourseSubjectController extends Controller
     public function edit($subject_id)
     {
         $subs = CourseSubject::findOrFail($subject_id);
-
-        return view('page.manage.sub.edit', compact('subs'));
+        $department_id   = $subs->department_id;
+        $depart = Department::findOrFail($department_id);
+        $users4 = $depart->UserDe()->where('department_id', $department_id)->get();
+        return view('page.manage.sub.edit', compact('subs','depart','users4'));
     }
 
     public function update(Request $request, $subject_id)
@@ -261,7 +274,9 @@ class CourseSubjectController extends Controller
     public function editdetailsub($subject_id)
     {
         $subs = CourseSubject::findOrFail($subject_id);
-        return view('page.manage.sub.subjectdetail.subjectdetail', compact('subs'));
+        $department_id   = $subs->department_id;
+        $depart = Department::findOrFail($department_id);
+        return view('page.manage.sub.subjectdetail.subjectdetail', compact('subs','depart'));
     }
 
 

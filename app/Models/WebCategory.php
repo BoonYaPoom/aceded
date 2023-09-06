@@ -19,4 +19,7 @@ class WebCategory extends Model
     {
         return $this->hasMany(Web::class, 'category_id');
     }
+    public function DepartWeb() {
+        return $this->belongsTo(Department::class,'department_id');
+      }
 }

@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('title', 50)->collation('utf8_general_ci');
             $table->longText('detail')->nullable()->collation('utf8_general_ci');
             $table->string('status', 1)->nullable()->collation('utf8_general_ci');
-  
+            $table->integer('department_id')->nullable();
         });
     }
 

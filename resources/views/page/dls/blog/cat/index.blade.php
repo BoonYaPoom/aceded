@@ -1,5 +1,5 @@
-@extends('layouts.adminhome')
-@section('content')
+@extends('layouts.department.layout.departmenthome')
+@section('contentdepartment')
     @if (Session::has('message'))
         <script>
             toastr.options = {
@@ -22,8 +22,8 @@
         <div class="page-section">
             <div class="card card-fluid">
                 <div class="card-header bg-muted">
-                    <a href="{{ route('dls') }}" style="text-decoration: underline;">จัดการข้อมูลและความรู้</a> / <a
-                        href="{{ route('blogpage') }}"
+                    <a href="{{ route('dls',['department_id'=> $blogcat->department_id]) }}" style="text-decoration: underline;">จัดการข้อมูลและความรู้</a> / <a
+                        href="{{ route('blogpage',['department_id'=> $blogcat->department_id]) }}"
                         style="text-decoration: underline;">คลังความรู้</a> / <i> {{ $blogcat->category_th }}</i>
                 </div>
                 <!-- .card-body -->

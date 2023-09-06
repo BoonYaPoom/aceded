@@ -2,12 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Department;
 use App\Models\Log;
 use App\Models\Web;
 use App\Models\WebCategory;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Validator;
 
 class WebController extends Controller
 {
@@ -16,22 +18,34 @@ class WebController extends Controller
         $category  = WebCategory::findOrFail($category_id);
         $webs = $category->webs()->where('category_id', $category_id)->get();
         $sortedCategory = $webs->sortBy('sort');
-        return view('page.manages.even.category.index', ['webs' => $sortedCategory, 'category' => $category]);
+        $department_id   = $category->department_id;
+        $depart = Department::findOrFail($department_id);
+        return view('page.manages.even.category.index', ['webs' => $sortedCategory, 'category' => $category , 'depart' => $depart]);
     }
 
     public function create($category_id)
     {
         $category  = WebCategory::findOrFail($category_id);
-        return view('page.manages.even.category.create', compact('category'));
+        $department_id   = $category->department_id;
+        $depart = Department::findOrFail($department_id);
+        return view('page.manages.even.category.create', compact('category','depart'));
     }
 
     public function store(Request $request, $category_id)
     {
-        $request->validate([
-            'web_th' => 'required'
-
+  
+        $validator = Validator::make($request->all(), [
+            'web_th' => 'required',
+      
         ]);
-        $lastSort = Web::max('sort');
+    
+        if ($validator->fails()) {
+            return back()
+                ->withErrors($validator)
+                ->withInput()
+                ->with('error', 'ข้อมูลไม่ถูกต้อง');
+        }
+        $lastSort = Web::where('category_id',$category_id)->max('sort');
         $newSort = $lastSort + 1;
         $webs = new Web;
 
@@ -49,10 +63,10 @@ class WebController extends Controller
         $webs->detail_en = $request->detail_en;
         $webs->web_date = now();
         $webs->web_status = $request->input('web_status', 0);
-        $webs->web_type = '';
+        $webs->web_type = 0;
         $webs->recommended = $request->input('recommended', 0);
         $webs->sort = $newSort;;
-        $webs->web_option = '';
+        $webs->web_option =null;
         $webs->category_id = (int)$category_id;
         $webs->save();
 
@@ -112,8 +126,11 @@ class WebController extends Controller
     {
         $webs = Web::findOrFail($web_id);
         $category_id = $webs->category_id;
-        $category = WebCategory::where('category_id', $category_id)->get();
-        return view('page.manages.even.category.edit', compact('webs', 'category'));
+        $category  = WebCategory::findOrFail($category_id);
+        $department_id   = $category->department_id;
+        $depart = Department::findOrFail($department_id);
+     
+        return view('page.manages.even.category.edit', compact('webs', 'category','depart'));
     }
     public function update(Request $request, $web_id)
     {
@@ -140,7 +157,7 @@ class WebController extends Controller
         $webs->web_update = now();
         $webs->web_status = $request->input('web_status', 0);
         $webs->recommended = $request->input('recommended', 0);
-        $webs->web_option = '';
+
         $webs->save();
 
 
@@ -202,7 +219,7 @@ class WebController extends Controller
         $webs = Web::findOrFail($web_id);
 
         $webs->delete();
-        return redirect()->route('catpage', ['category_id' => $webs->category_id])->with('message', 'Data delete successfully');
+        return redirect()->back()->with('message', 'Data delete successfully');
     }
 
 

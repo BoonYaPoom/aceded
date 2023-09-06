@@ -26,7 +26,7 @@ return new class extends Migration
             $table->string('category_status', 1)->collation('utf8_general_ci');
             $table->longText('category_option')->nullable()->collation('utf8_general_ci');
             $table->string('recommended', 1)->collation('utf8_general_ci');
-            $table->string('cover', 200)->nullable()->collation('utf8_general_ci');
+            $table->string('cover', 400)->nullable()->collation('utf8_general_ci');
         });
     }
 

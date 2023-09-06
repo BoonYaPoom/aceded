@@ -1,5 +1,5 @@
-@extends('layouts.adminhome')
-@section('content')
+@extends('layouts.department.layout.departmenthome')
+@section('contentdepartment')
     <form action="{{ route('storecour',['department_id' => $depart]) }}" method="post" enctype="multipart/form-data">
         @csrf
         <div class="page-inner">

@@ -40,6 +40,7 @@
                 $s = 0 ;
                 @endphp
                 @foreach ($supplys as $item)
+                @if( $item->lesson_id == 0)
                 @php  
                 $s++ ;
                 @endphp
@@ -103,6 +104,7 @@
 
 
                     </tbody><!-- /tbody -->
+                    @endif
                 @endforeach
             </table><!-- /.table -->
         </div><!-- /.table-responsive -->

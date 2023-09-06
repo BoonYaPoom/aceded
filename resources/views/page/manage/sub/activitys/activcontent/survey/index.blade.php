@@ -82,10 +82,8 @@
                                 });
                             });
                         </script>
-
-
                             <td class="align-middle">
-                                <a href="{{ route('surveyReport', [$item->survey_id]) }}"><i
+                                <a href="{{ route('surveyquestion', [$item->survey_id]) }}"><i
                                         class="fas fa-plus-circle fa-lg text-info" data-toggle="tooltip"
                                         title="เพิ่มคำถาม"></i></a>
                                 <a href="{{ route('reportpageSubject', [$item->survey_id]) }}"><i

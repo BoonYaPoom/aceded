@@ -9,29 +9,39 @@ use Illuminate\Http\Request;
 
 class NavController extends Controller
 {
-    public function manage()
-    {
-        return view('page.manages.manage');
-    }
+    public function manage($department_id)
+{
+ 
+        $depart = Department::findOrFail($department_id);
+ 
+
+    return view('page.manages.manage', compact('depart'));
+}
+
 
     public function dataci()
     {
+
         $genaral = General::all();
-        return view('page.manages.data.dataci',compact('genaral'));
+        return view('layouts.department.item.data.dataci',compact('genaral'));
     }
 
 
 
     public function imghead()
     {
-        return view('page.manages.data.imghead.imgheadedit');
+        
+        return view('layouts.department.item.data.imghead.imgheadedit');
     }
-    public function dls()
+    public function dls($department_id)
     {
-        return view('page.dls.index');
+        $depart = Department::findOrFail($department_id);
+        return view('page.dls.index',compact('depart'));
     }
-    public function cop(){
-        return view('page.dls.cop.index');
+    public function cop($department_id){
+        
+        $depart = Department::findOrFail($department_id);
+        return view('page.dls.cop.index',compact('depart'));
     }
   
    
@@ -42,9 +52,15 @@ class NavController extends Controller
     public function home(){
         return view('layouts.adminhome');
     }
+    public function homedepartment($department_id){
+        $depart = Department::FindOrFail($department_id);
+        return view('layouts.department.layout.departmenthome',compact('depart'));
+    }
     public function activitypage($subject_id)
     {
         $subs  = CourseSubject::findOrFail($subject_id);
-        return view('page.manage.sub.activitys.index',compact('subs'));
+        $department_id   = $subs->department_id;
+        $depart = Department::findOrFail($department_id);
+        return view('page.manage.sub.activitys.index',compact('subs','depart'));
     }
 }

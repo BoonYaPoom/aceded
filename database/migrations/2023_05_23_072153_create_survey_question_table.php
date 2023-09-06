@@ -32,7 +32,6 @@ return new class extends Migration
             $table->integer('subject_id')->nullable();
             $table->integer('numchoice')->nullable();
             $table->string('required', 1)->nullable()->collation('utf8_general_ci');
-
         });
     }
 

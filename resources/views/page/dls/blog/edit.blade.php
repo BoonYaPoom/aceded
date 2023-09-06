@@ -1,5 +1,5 @@
-@extends('layouts.adminhome')
-@section('content')
+@extends('layouts.department.layout.departmenthome')
+@section('contentdepartment')
     <!-- .page-inner -->
     <div class="page-inner">
         <!-- .form -->
@@ -8,9 +8,9 @@
             <!-- .card -->
             <div class="card card-fluid">
                 <!-- .card-header -->
-                <div class="card-header bg-muted"><a href="{{ route('dls') }}"
+                <div class="card-header bg-muted"><a href="{{ route('dls',['department_id'=> $blogcat->department_id]) }}"
                         style="text-decoration: underline;">จัดการข้อมูลและความรู้</a> / <a
-                        href="{{ route('blogpage') }}"
+                        href="{{ route('blogpage',['department_id'=> $blogcat->department_id]) }}"
                         style="text-decoration: underline;">{{ $blogcat->category_th }}</a> / <i> แก้ไขหมวดหมู่</i></div>
                 <!-- /.card-header -->
 

@@ -1,5 +1,5 @@
-@extends('layouts.adminhome')
-@section('content')
+@extends('layouts.department.layout.departmenthome')
+@section('contentdepartment')
     @if (Session::has('message'))
         <script>
             toastr.options = {
@@ -32,16 +32,20 @@
                         style="text-decoration: underline;">จัดการวิชา</a> / <i>คลังข้อสอบ</i></div><!-- /.card-header -->
                 <!-- .card-body -->
                 <div class="card-body">
-                    <form action="{{ route('Questionimport') }}" method="POST" enctype="multipart/form-data">
+                    <form action="{{ route('Questionimport', ['subject_id' => $subs]) }}" method="POST" enctype="multipart/form-data">
                         @csrf
                         <input type="hidden" />
-
+                     
+                    
                         <div class="form-group">
+                   
                             <label for="fileexcel">เลือกไฟล์รายชื่อ <span
                                     class="badge badge-warning">Required</span></label> <a class="ml-3"
-                                href="{{ Storage::disk('external')->url('file/ข้อสอบ.xlsx') }}">ไฟล์ตัวอย่าง </a>
+                                href="{{ asset('upload/file/ข้อสอบ.xlsx')}}">ไฟล์ตัวอย่าง </a>
                         </div>
                         <div class="custom-file">
+                            <input type="hidden" name="subject_id" value="{{ $subs->subject_id }}" /> <!-- เพิ่มฟิลด์ subject_id ในแบบฟอร์ม -->
+
                             <input type="file" name="fileexcel" id="fileexcel" class="custom-file-input"
                                 accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel"
                                 multiple> <label class="custom-file-label" for="fileexcel-customInput">Choose files</label>
@@ -50,7 +54,7 @@
                 <div class="form-actions text-center">
                     <button type="submit" class="btn  btn-lg btn-primary "><i class="fas fa-save"></i> นำเข้าไฟล์ข้อสอบ
                     </button><br>&nbsp;
-                    <img src="{{ Storage::disk('external')->url('file/questionadd.png') }}">
+                    <img src="{{ asset('upload/file/questionadd.png')}}">
                 </div>
                 <div>
 

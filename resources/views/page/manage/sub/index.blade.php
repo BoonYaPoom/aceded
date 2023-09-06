@@ -1,5 +1,5 @@
-@extends('layouts.adminhome')
-@section('content')
+@extends('layouts.department.layout.departmenthome')
+@section('contentdepartment')
     @if (Session::has('message'))
         <script>
             toastr.options = {
@@ -23,7 +23,7 @@
             <div class="card card-fluid">
 
                 <div class="card-header bg-muted">หน่วยงาน /
-                    <a href="{{ route('departmentpage') }}">หมวดหมู่</a> / จัดการวิชา
+                    <a href="{{ route('departmentLearnpage') }}">หมวดหมู่</a> / จัดการวิชา
                 </div>
 
                 <div class="card-body">

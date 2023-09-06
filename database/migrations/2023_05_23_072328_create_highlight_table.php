@@ -15,9 +15,10 @@ return new class extends Migration
             $table->charset = 'utf8';
             $table->collation = 'utf8_general_ci';
             $table->increments('highlight_id');
-            $table->string('highlight_path', 200)->collation('utf8_general_ci');
+            $table->string('highlight_path', 400)->collation('utf8_general_ci');
             $table->string('highlight_status', 1)->collation('utf8_general_ci');
-  
+            $table->text('highlight_link')->nullable()->collation('utf8_general_ci');
+            $table->integer('department_id')->nullable();
         });
     }
 

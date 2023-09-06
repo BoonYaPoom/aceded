@@ -17,4 +17,7 @@ class ActivityCategory extends Model
     {
         return $this->hasMany(Activity::class,'category_id');
     }
+    public function Department() {
+        return $this->belongsTo(Department::class,'department_id');
+      }
 }

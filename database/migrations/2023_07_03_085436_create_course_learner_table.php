@@ -23,7 +23,7 @@ return new class extends Migration
             $table->string('congratulation', 1)->nullable()->collation('utf8_general_ci');
             $table->dateTime('congratulationdate')->nullable();
             $table->date('surveydate')->nullable();
-            $table->string('subject', 255)->nullable()->collation('utf8_general_ci');
+            $table->string('subject', 400)->nullable()->collation('utf8_general_ci');
             $table->dateTime('realcongratulationdate');
             $table->string('request_certificate', 1)->nullable()->collation('utf8_general_ci');
             $table->string('approve_certificate', 1)->nullable()->collation('utf8_general_ci');
@@ -35,6 +35,9 @@ return new class extends Migration
             $table->string('payment_file', 100)->nullable()->collation('utf8_general_ci');
             $table->string('payment_comment', 100)->nullable()->collation('utf8_general_ci');
             $table->string('payment_type', 100)->nullable()->collation('utf8_general_ci');
+            $table->smallInteger('book_year')->nullable();
+            $table->string('book_no', 20)->nullable()->collation('utf8_general_ci');
+            $table->string('number_no', 20)->nullable()->collation('utf8_general_ci');
         });
     }
 

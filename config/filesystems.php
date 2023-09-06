@@ -58,13 +58,16 @@ return [
 
         'external' => [
             'driver' => 'local',
-            'root' => 'C:/xampp/htdocs/upload', // ตำแหน่งของโฟลเดอร์ที่เก็บไฟล์นอกโปรเจกต์
-            'url' => env('APP_URL') . '/upload', // URL สำหรับเข้าถึงโฟลเดอร์นอกโปรเจกต์
-            'visibility' => 'public', // ตั้งค่าสิทธิ์ให้เป็น public
-            'throw' => false,
+            'root' => 'C:/Users/antis/OneDrive/Desktop/react/filevpn/ACED/App/upload', // ตำแหน่งของโฟลเดอร์ที่เก็บไฟล์นอกโปรเจกต์
+            
         ],
-
-
+        'uploadfile' => [
+            'driver' => 'local', // หรือ driver ที่เหมาะสม
+            'root' => 'C:\Users\antis\OneDrive\Desktop\react\filevpn\ACED\App\file', // ตำแหน่งของไฟล์ภายนอกโปรเจ็กต์
+            'url' => env('APP_URL') . '/file', // URL สำหรับเข้าถึงโฟลเดอร์นอกโปรเจกต์
+  
+        ],
+       
     ],
 
     /*

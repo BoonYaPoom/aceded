@@ -15,8 +15,8 @@ return new class extends Migration
             $table->charset = 'utf8';
             $table->collation = 'utf8_general_ci';
             $table->increments('blog_id');
-            $table->string('title',200)->collation('utf8_general_ci');
-            $table->string('title_en',200)->default('')->collation('utf8_general_ci');
+            $table->string('title',400)->collation('utf8_general_ci');
+            $table->string('title_en',400)->default('')->collation('utf8_general_ci');
             $table->longText('detail')->collation('utf8_general_ci');
             $table->longText('detail_en')->collation('utf8_general_ci');
             $table->dateTime('date');

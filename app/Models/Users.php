@@ -27,6 +27,9 @@ class Users extends Model
       public function perid() {
         return $this->belongsTo(PersonType::class,'person_type');
       }
+      public function DepartUs() {
+        return $this->belongsTo(Department::class,'department_id');
+      }
 
 
 

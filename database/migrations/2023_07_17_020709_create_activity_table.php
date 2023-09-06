@@ -16,7 +16,7 @@ return new class extends Migration
             $table->collation = 'utf8_general_ci';
             $table->increments('activity_id');
             $table->integer('category_id');
-            $table->string('title', 200)->collation('utf8_general_ci');
+            $table->string('title', 400)->collation('utf8_general_ci');
             $table->longText('media')->nullable()->collation('utf8_general_ci');
             $table->longText('location')->nullable()->collation('utf8_general_ci');
             $table->longText('url')->nullable()->collation('utf8_general_ci');
@@ -26,7 +26,7 @@ return new class extends Migration
             $table->string('endtime', 20)->nullable()->collation('utf8_general_ci');
             $table->string('frequency', 1)->nullable()->collation('utf8_general_ci');
             $table->longText('persontype')->nullable()->collation('utf8_general_ci');
-            $table->string('comment', 1)->collation('utf8_general_ci');
+            $table->string('comment', 1)->nullable()->collation('utf8_general_ci');
             $table->longText('options')->nullable()->collation('utf8_general_ci');
             $table->string('activity_status', 1)->collation('utf8_general_ci');
             $table->longText('detail')->collation('utf8_general_ci');

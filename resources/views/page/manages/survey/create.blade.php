@@ -1,5 +1,5 @@
-@extends('layouts.adminhome')
-@section('content')
+@extends('layouts.department.layout.departmenthome')
+@section('contentdepartment')
     <div class="page-inner">
         <!-- .form -->
         <!-- .page-section -->
@@ -7,12 +7,12 @@
             <!-- .card -->
             <div class="card card-fluid">
                 <!-- .card-header -->
-                <div class="card-header bg-muted"><a href="{{ route('manage') }}"
-                        style="text-decoration: underline;">จัดการเว็บ</a> / <a href="{{ route('surveypage') }}"
+                <div class="card-header bg-muted"><a href="{{ route('manage', ['department_id' => $depart]) }}"
+                        style="text-decoration: underline;">จัดการเว็บ</a> / <a href="{{ route('surveypage', ['department_id' => $depart]) }}"
                         style="text-decoration: underline;">แบบสำรวจ</a> /
                     <i> เพิ่มแบบสำรวจ</i>
                 </div><!-- /.card-header -->
-                <form action="{{ route('storesurvey') }}" method="post" enctype="multipart/form-data">
+                <form action="{{ route('storesurvey', ['department_id' => $depart]) }}" method="post" enctype="multipart/form-data">
                     @csrf
                     <!-- .card-body -->
                     <div class="card-body">
@@ -54,11 +54,11 @@
 
                         <div class="row">
                             <div class="form-group">
-                                <label class="control-label" for="survey_type">ภาษา</label>
-                                <select id="survey_type" name="survey_type" class="form-control" data-toggle="select2"
+                                <label class="control-label" for="survey_lang">ภาษา</label>
+                                <select id="survey_lang" name="survey_lang" class="form-control" data-toggle="select2"
                                     data-placeholder="ภาษา" data-allow-clear="false">
-                                    <option value="1">TH </option>
-                                    <option value="2">EN </option>
+                                    <option value="TH">TH </option>
+                                    <option value="EN">EN </option>
                                 </select>
                             </div><!-- /.form-group -->
                         </div>

@@ -1,5 +1,5 @@
-@extends('layouts.adminhome')
-@section('content')
+@extends('layouts.department.layout.departmenthome')
+@section('contentdepartment')
     <form action="{{ route('store_supplyform', ['subject_id' => $subs]) }}" method="post" enctype="multipart/form-data">
         @csrf
         <div class="page-inner">
@@ -61,9 +61,9 @@
                         </script>
 
 
-@error('supplymentary_type')
-<span class="badge badge-warning">{{ $message }}</span>
-@enderror
+                        @error('supplymentary_type')
+                            <span class="badge badge-warning">{{ $message }}</span>
+                        @enderror
 
                         <div id="data2" style="display:none;">
                             <div class="form-group digitallibrary ">
@@ -164,6 +164,7 @@
                 </div>
                 <div class="modal-body">
                     <!-- เนื้อหาภายในโมดัล -->
+                  
                     <div class="table-responsive">
                         <table class="table w3-hoverable">
                             <!-- thead -->

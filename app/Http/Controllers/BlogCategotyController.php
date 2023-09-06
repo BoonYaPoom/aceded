@@ -4,28 +4,40 @@ namespace App\Http\Controllers;
 
 
 use App\Models\BlogCategory;
+use App\Models\Department;
 use App\Models\Log;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Validator;
 
 class BlogCategotyController extends Controller
 {
-    public function blogpage(){
-        $blogcat = BlogCategory::all();
-       return view('page.dls.blog.index',compact('blogcat'));
+    public function blogpage($department_id){
+
+        $depart = Department::findOrFail($department_id);
+        $blogcat  = $depart->BlogCatDe()->where('department_id', $department_id)->get();
+       return view('page.dls.blog.index',compact('blogcat','depart'));
     }
 
-    public function create(){
-        return view('page.dls.blog.create');
+    public function create($department_id){
+        $depart = Department::findOrFail($department_id);
+        return view('page.dls.blog.create',compact('depart'));
     }
 
-    public function store(Request $request){
-        $request->validate([
+    public function store(Request $request , $department_id){
+     
+        $validator = Validator::make($request->all(), [
             'category_th' => 'required'
         
         ]);
 
+        if ($validator->fails()) {
+            return back()
+                ->withErrors($validator)
+                ->withInput()
+                ->with('error', 'ข้อมูลไม่ถูกต้อง');
+        }
         $blogcat = new BlogCategory;
         if ($request->hasFile('cover')) {
     
@@ -42,8 +54,9 @@ class BlogCategotyController extends Controller
         $blogcat->detail_en = '';
         $blogcat->category_date=now();
         $blogcat->category_status = $request->input('category_status', 0);
-        $blogcat->category_type ='';
-        $blogcat->category_option ='';
+        $blogcat->category_type =1;
+        $blogcat->category_option =null;
+        $blogcat->department_id =(int)$department_id;
         $blogcat->recommended =1;
         $blogcat->save();
 
@@ -104,12 +117,14 @@ class BlogCategotyController extends Controller
         
         $loginLog->save();
 
-        return redirect()->route('blogpage',)->with('message','blog สร้างเรียบร้อยแล้ว');
+        return redirect()->route('blogpage',['department_id'=>$department_id])->with('message','blog สร้างเรียบร้อยแล้ว');
     }
 
     public function edit($category_id){
         $blogcat = BlogCategory::findOrFail($category_id);
-        return view('page.dls.blog.edit',['blogcat'=>$blogcat]);
+        $department_id   = $blogcat->department_id;
+        $depart = Department::findOrFail($department_id);
+        return view('page.dls.blog.edit',['blogcat'=>$blogcat ,'depart'=>$depart]);
     }
 
     public function update(Request $request,$category_id){
@@ -192,7 +207,7 @@ class BlogCategotyController extends Controller
         $loginLog->save();
 
         
-        return redirect()->route('blogpage')->with('message','blog เปลี่ยนแปลงเรียบร้อยแล้ว');
+        return redirect()->route('blogpage',['department_id' => $blogcat->department_id])->with('message','blog เปลี่ยนแปลงเรียบร้อยแล้ว');
     }
 
     public function destroy($category_id){
@@ -206,7 +221,7 @@ class BlogCategotyController extends Controller
     }
     
         $blogcat->delete();
-        return redirect()->route('blogpage', ['category_id' => $blogcat->category_id])->with('message','blog ลบข้อมูลเรียบร้อยแล้ว');
+        return redirect()->back()->with('message','blog ลบข้อมูลเรียบร้อยแล้ว');
 
     }
 

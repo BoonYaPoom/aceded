@@ -15,8 +15,8 @@ return new class extends Migration
             $table->charset = 'utf8';
             $table->collation = 'utf8_general_ci';
             $table->increments('group_id');
-            $table->string('group_th', 200)->collation('utf8_general_ci');
-            $table->string('group_en', 200)->nullable()->collation('utf8_general_ci');
+            $table->string('group_th', 400)->collation('utf8_general_ci');
+            $table->string('group_en', 400)->nullable()->collation('utf8_general_ci');
             $table->integer('department_id')->nullable();
             $table->string('group_status', 1)->collation('utf8_general_ci');
  

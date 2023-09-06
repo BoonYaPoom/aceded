@@ -15,15 +15,15 @@ return new class extends Migration
             $table->charset = 'utf8';
             $table->collation = 'utf8_general_ci';
             $table->increments('category_id');
-            $table->string('category_th', 200)->collation('utf8_general_ci');
-            $table->string('category_en', 200)->nullable()->collation('utf8_general_ci');
+            $table->string('category_th', 400)->collation('utf8_general_ci');
+            $table->string('category_en', 400)->nullable()->collation('utf8_general_ci');
             $table->longText('detail_th')->nullable()->collation('utf8_general_ci');
             $table->longText('detail_en')->nullable()->collation('utf8_general_ci');
             $table->dateTime('category_date');
             $table->dateTime('category_update')->nullable();
             $table->string('category_status', 1)->collation('utf8_general_ci');
             $table->string('category_type', 1)->collation('utf8_general_ci');
-            $table->string('category_option', 200)->collation('utf8_general_ci');
+            $table->string('category_option', 400)->nullable()->collation('utf8_general_ci');
             $table->string('recommended', 1)->collation('utf8_general_ci');
             $table->integer('subject_id');
         });

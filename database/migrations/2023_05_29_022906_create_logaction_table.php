@@ -19,7 +19,7 @@ return new class extends Migration
             
         });
 
-      DB::statement("ALTER TABLE logaction ADD description LONGBLOB");
+      DB::statement("ALTER TABLE logaction ADD description BLOB");
     }
 
     /**

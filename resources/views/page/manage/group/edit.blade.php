@@ -1,5 +1,5 @@
-@extends('layouts.adminhome')
-@section('content')
+@extends('layouts.department.layout.departmenthome')
+@section('contentdepartment')
     <form action="{{ route('updatecour', ['group_id' => $courses->group_id]) }}" method="post" enctype="multipart/form-data">
         @csrf
         @method('PUT')

@@ -1,5 +1,5 @@
-@extends('layouts.adminhome')
-@section('content')
+@extends('layouts.department.layout.departmenthome')
+@section('contentdepartment')
 
 
     <script src="{{ asset('/javascript/Highcharts-6.0.7/code/highcharts.js') }}"></script>

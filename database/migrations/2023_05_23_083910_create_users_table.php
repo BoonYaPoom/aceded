@@ -16,10 +16,10 @@ return new class extends Migration
             $table->collation = 'utf8_general_ci';
             $table->increments('uid');
             $table->string('username', 50)->collation('utf8_general_ci');
-            $table->string('firstname', 200)->collation('utf8_general_ci');
-            $table->string('lastname', 200)->nullable()->collation('utf8_general_ci');
-            $table->string('middlename', 200)->nullable()->collation('utf8_general_ci');
-            $table->string('password', 255)->nullable()->collation('utf8_general_ci');
+            $table->string('firstname', 400)->collation('utf8_general_ci');
+            $table->string('lastname', 400)->nullable()->collation('utf8_general_ci');
+            $table->string('middlename', 400)->nullable()->collation('utf8_general_ci');
+            $table->string('password', 400)->nullable()->collation('utf8_general_ci');
             $table->string('citizen_id', 13)->nullable()->collation('utf8_general_ci');
             $table->string('prefix', 3)->nullable()->collation('utf8_general_ci');
             $table->string('gender', 1)->nullable()->collation('utf8_general_ci');
@@ -63,6 +63,8 @@ return new class extends Migration
             $table->integer('district_id')->nullable()->default(0);
             $table->integer('subdistrict_id')->nullable()->default(0);
             $table->string('recoverpassword', 1)->nullable()->collation('utf8_general_ci');
+            $table->string('employeecode', 20)->nullable()->collation('utf8_general_ci');
+            $table->string('organization', 400)->nullable()->collation('utf8_general_ci');
         });
     }
 

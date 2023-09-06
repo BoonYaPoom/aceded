@@ -1,5 +1,5 @@
-@extends('layouts.adminhome')
-@section('content')
+@extends('layouts.department.layout.departmenthome')
+@section('contentdepartment')
     @if (Session::has('message'))
         <script>
             toastr.options = {
@@ -47,7 +47,10 @@
                             <span class="badge badge-warning">{{$message}}</span>
                             
                             @enderror
+                       
+                                   
                             <script>
+                               
                                 $(document).ready(function() {
                                     $('#question_type').change(function() {
                                         var selectedValue = $(this).val();

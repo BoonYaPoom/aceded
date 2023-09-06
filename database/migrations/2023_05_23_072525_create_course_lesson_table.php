@@ -17,18 +17,19 @@ return new class extends Migration
             $table->increments('lesson_id');
             $table->integer('subject_id');
             $table->string('lesson_number', 50)->nullable()->collation('utf8_general_ci');
-            $table->string('lesson_th', 200)->collation('utf8_general_ci');
-            $table->string('lesson_en', 200)->nullable()->collation('utf8_general_ci');
+            $table->string('lesson_th', 400)->collation('utf8_general_ci');
+            $table->string('lesson_en', 400)->nullable()->collation('utf8_general_ci');
             $table->integer('lesson_id_ref')->nullable();
             $table->string('lesson_status', 1)->collation('utf8_general_ci');
             $table->integer('content_type');
-            $table->string('content_path', 200)->nullable()->collation('utf8_general_ci');
+            $table->string('content_path', 400)->nullable()->collation('utf8_general_ci');
             $table->integer('ordering')->nullable();
             $table->longText('permission')->nullable()->collation('utf8_general_ci');
             $table->string('exercise', 1)->nullable()->collation('utf8_general_ci');
             $table->longText('description')->nullable()->collation('utf8_general_ci');
             $table->longText('resultlesson')->nullable()->collation('utf8_general_ci');
-
+            $table->float('duration')->nullable();
+            $table->string('lessondocument', 400)->nullable()->collation('utf8_general_ci');
         });
     }
 

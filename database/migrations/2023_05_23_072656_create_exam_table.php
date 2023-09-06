@@ -15,8 +15,8 @@ return new class extends Migration
             $table->charset = 'utf8';
             $table->collation = 'utf8_general_ci';
             $table->increments('exam_id');
-            $table->string('exam_th', 200)->collation('utf8_general_ci');
-            $table->string('exam_en', 200)->nullable()->collation('utf8_general_ci');
+            $table->string('exam_th', 400)->collation('utf8_general_ci');
+            $table->string('exam_en', 400)->nullable()->collation('utf8_general_ci');
             $table->string('exam_type', 1)->collation('utf8_general_ci');
             $table->string('exam_status', 2)->collation('utf8_general_ci');
             $table->integer('exam_score');
@@ -29,7 +29,7 @@ return new class extends Migration
             $table->string('randomquestion', 1)->nullable()->collation('utf8_general_ci');
             $table->string('randomchoice', 1)->nullable()->collation('utf8_general_ci');
             $table->string('limitdatetime', 1)->nullable()->collation('utf8_general_ci');
-            $table->string('setdatetime', 200)->nullable()->collation('utf8_general_ci');
+            $table->string('setdatetime', 400)->nullable()->collation('utf8_general_ci');
             $table->string('limittime', 1)->nullable()->collation('utf8_general_ci');
             $table->string('settime', 50)->nullable()->collation('utf8_general_ci');
             $table->string('survey_before', 1)->nullable()->collation('utf8_general_ci');
@@ -38,6 +38,8 @@ return new class extends Migration
             $table->integer('subject_id')->nullable();
             $table->integer('perpage')->nullable();
             $table->integer('score_pass')->nullable();
+            $table->string('score_pass_type', 1)->nullable()->collation('utf8_general_ci');
+            $table->integer('timeoutalert')->nullable();
  
         });
     }

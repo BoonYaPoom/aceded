@@ -1,5 +1,5 @@
-@extends('layouts.adminhome')
-@section('content')
+@extends('layouts.department.layout.departmenthome')
+@section('contentdepartment')
     <div class="page-inner">
         @if (Session::has('message'))
             <script>
@@ -28,7 +28,7 @@
                 <!-- .card-header -->
                 <div class="card-header bg-muted"><a href="{{ route('surveyact', [$sur->subject_id]) }}"
                         style="text-decoration: underline;"> จัดการวิชา </a> / <a
-                        href="{{ route('surveyReport', [$sur->survey_id]) }}" style="text-decoration: underline;">แบบสำรวจ</a>
+                        href="{{ route('surveyquestion', [$sur->survey_id]) }}" style="text-decoration: underline;">แบบสำรวจ</a>
                     / <i>{{ $sur->survey_th }} </i></div><!-- /.card-header -->
                 <!-- .nav-scroller -->
 

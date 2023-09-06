@@ -28,8 +28,8 @@
                 <div class="col-md-3">
                     <div class=""><select id="selectyear" name="selectyear" class="form-control" data-toggle="select2"
                             data-placeholder="ปี" data-allow-clear="false" onchange="$('#formreport').submit();">
-                            <option value="2022"> {{$oneYearsAgo}} </option>
-                            <option value="2023" selected> {{$currentYear}} </option>
+                            <option value="2022"> {{ $oneYearsAgo }} </option>
+                            <option value="2023" selected> {{ $currentYear }} </option>
                         </select></div>
                 </div>
                 <div class="col-md-3 ">
@@ -38,8 +38,7 @@
                             onchange="$('#formreport').submit();">
                             <option value="0">เดือน</option>
                             @foreach ($month as $im => $m)
-                            <option value="{{$im}}"> {{$m}} </option>
-                           
+                                <option value="{{ $im }}"> {{ $m }} </option>
                             @endforeach
                         </select></div>
                 </div>
@@ -77,13 +76,37 @@
                                 <th align="center" width="15%">Log File</th>
 
                             </tr>
-                            @foreach($month as $im => $m)
-                            <tr>
-                                <td align="center">{{$im}}</td>
-                                <td>{{$m}}</td>
-                                <td class="text-right">{{$im}}</td>
-                            </tr>
-                          @endforeach
+                            @php
+                                $result = [];
+                                
+                                foreach ($logs as $key => $value) {
+                                    $dataLearn = $value->logdate;
+                                    $monthsa = \ltrim(\Carbon\Carbon::parse($dataLearn)->format('m'), '0');
+                                    $year = \Carbon\Carbon::parse($dataLearn)->year;
+                                        
+                                    $result[$monthsa]['register'] = isset($result[$monthsa]['register']) ? $result[$monthsa]['register'] + 1 : 1;
+               
+                                }
+                                  
+                            @endphp
+
+
+                            @endphp
+                            @foreach ($month as $im => $m)
+                       
+                                @php
+                                    $register = empty($result[$im]['register']) ? 0 : $result[$im]['register'];
+                                    $prefix = md5('moc' . date('Ymd'));
+                                    $idm = $monthsa = $im;
+                                    
+                                @endphp
+                                <tr>
+                                    <td align="center">{{ $im }}</td>
+                                    <td>{{ $m }}</td>
+                                    <td class="text-right">{{ $register }}</td>
+                                </tr>
+                    
+                            @endforeach
                             </tbody><!-- /tbody -->
                     </table><!-- /.table -->
                 </div><!-- /.table-responsive -->

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 
 use App\Models\CourseSubject;
 use App\Models\CourseTeacher;
+use App\Models\Department;
 use Illuminate\Http\Request;
 
 class CourseTeacherController extends Controller
@@ -12,9 +13,11 @@ class CourseTeacherController extends Controller
     public function teacherspage($subject_id) {
         $subs  = CourseSubject::findOrFail($subject_id);
         $teachers = $subs->teachersup()->where('subject_id', $subject_id)->get(); 
-        
+
+        $department_id   = $subs->department_id;
+        $depart = Department::findOrFail($department_id);
        
-        return view('page.manage.sub.teacher.index', compact('subs', 'teachers'));
+        return view('page.manage.sub.teacher.index', compact('subs', 'teachers','depart'));
     }
 
 

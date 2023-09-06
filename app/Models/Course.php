@@ -23,6 +23,10 @@ class Course extends Model
       {
           return $this->hasMany(CourseClass::class,'course_id');
       }
+      public function learnCouse()
+      {
+          return $this->hasMany(CourseLearner::class,'course_id');
+      }
       public static function generateCourseCode($department_id)
       {
           $code = static::count() + 1;

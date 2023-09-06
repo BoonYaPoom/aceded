@@ -12,8 +12,8 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('course_class', function (Blueprint $table) {
-            $table->charset = 'utf8';
-            $table->collation = 'utf8_general_ci';
+        $table->charset = 'utf8';
+        $table->collation = 'utf8_general_ci';
 		$table->increments('class_id');
         $table->string('class_name', 100)->collation('utf8_general_ci');
         $table->integer('course_id')->nullable();
@@ -31,6 +31,8 @@ return new class extends Migration
         $table->dateTime('startcourse')->nullable();
         $table->dateTime('endcourse')->nullable();
         $table->string('ageofcert', 10)->nullable()->collation('utf8_general_ci');
+        $table->dateTime('startregisterdate')->nullable();
+        $table->dateTime('endregisterdate')->nullable();
         });
     }
 

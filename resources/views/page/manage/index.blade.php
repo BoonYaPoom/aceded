@@ -1,5 +1,5 @@
-@extends('layouts.adminhome')
-@section('content')
+@extends('layouts.department.layout.departmenthome')
+@section('contentdepartment')
     <!-- .page-inner -->
     <div class="page-inner">
 
@@ -8,7 +8,8 @@
             <!-- .card -->
             <div class="card card-fluid">
                 <!-- .card-header -->
-                <div class="card-header bg-muted"><a href="/">หน่วยงาน</a> / จัดการเรียนรู้</div>
+                <div class="card-header bg-muted"><a href="{{ route('departmentLearnpage') }}">หน่วยงาน</a> / จัดการเรียนรู้
+                </div>
                 <!-- /.card-header -->
                 <!-- .card-body -->
                 <div class="card-body">
@@ -45,13 +46,7 @@
                                     </td>
                                     </td>
                                 </tr><!-- /tr -->
-                                <tr>
-                                    <td>3</td>
-                                    <td><i class="fas fa-folder-plus fa-lg text-primary"></i> <a
-                                            href="{{ route('hightDep', ['department_id' => $depart->department_id]) }}">ภาพประชาสัมพันธ์</a>
-                                    </td>
-                                    </td>
-                                </tr><!-- /tr -->
+
 
                             </tbody><!-- /tbody -->
                         </table><!-- /.table -->

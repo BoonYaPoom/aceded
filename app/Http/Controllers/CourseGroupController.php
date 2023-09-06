@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\CourseGroup;
 use App\Models\Department;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class CourseGroupController extends Controller
 {
@@ -36,14 +37,24 @@ class CourseGroupController extends Controller
    
    public function edit($group_id){
     $courses = CourseGroup::findOrFail($group_id);
-    
-    return view('page.manage.group.edit', compact('courses'));
+    $department_id = $courses->department_id;
+    $depart  = Department::findOrFail($department_id);
+    return view('page.manage.group.edit', compact('courses','depart'));
    }
 
    public function update(Request $request, $group_id){
-    $request->validate([
+
+    $validator = Validator::make($request->all(), [
         'group_th' => 'required'
+
     ]);
+  
+    if ($validator->fails()) {
+        return back()
+            ->withErrors($validator)
+            ->withInput()
+            ->with('error', 'ข้อมูลไม่ถูกต้อง');
+    }
     $courses = CourseGroup::findOrFail($group_id);
     $courses->group_th = $request->group_th;
     $courses->group_en = $request->group_en;

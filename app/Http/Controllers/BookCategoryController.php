@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 
 use App\Models\BookCategory;
+use App\Models\Department;
 use App\Models\Log;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
@@ -12,17 +13,20 @@ use Illuminate\Support\Facades\Storage;
 class BookCategoryController extends Controller
 {
 
-    public function bookpage()
+    public function bookpage($department_id)
     {
-        $book = BookCategory::all();
-        return view('page.dls.book.book', compact('book'));
+        $depart = Department::findOrFail($department_id);
+        $book  = $depart->BookCatDe()->where('department_id', $department_id)->get();
+
+        return view('page.dls.book.book', compact('book','depart'));
     }
-    public function create()
+    public function create($department_id)
     {
-        return view('page.dls.book.create');
+        $depart = Department::findOrFail($department_id);
+        return view('page.dls.book.create',compact('depart'));
     }
 
-    public function store(Request $request)
+    public function store(Request $request, $department_id)
     {
         $request->validate([
             'category_th' => 'required',
@@ -34,9 +38,11 @@ class BookCategoryController extends Controller
         $book->detail_th = '';
         $book->detail_en = '';
         $book->category_date = now();
+   
         $book->category_status = $request->input('category_status', 0);
         $book->category_type = 1;
-        $book->category_option = '';
+        $book->category_option =null;
+        $book->department_id = (int)$department_id;
         $book->recommended = 1;
 
         $image_name = time() . '.' . $request->cover->getClientOriginalExtension();
@@ -97,20 +103,22 @@ class BookCategoryController extends Controller
         $loginLog->save();
 
 
-        return redirect()->route('bookpage',)->with('message', 'book สร้างเรียบร้อยแล้ว');
+        return redirect()->route('bookpage', ['department_id' => $book->department_id])->with('message', 'book สร้างเรียบร้อยแล้ว');
     }
 
     public function edit($category_id)
     {
         $book = BookCategory::findOrFail($category_id);
-        return view('page.dls.book.edit', compact('book'));
+        $department_id   = $book->department_id;
+        $depart = Department::findOrFail($department_id);
+        return view('page.dls.book.edit', compact('book','depart'));
     }
 
     public function update(Request $request, $category_id)
     {
         $request->validate([
             'category_th' => 'required',
-            'cover' => 'required'
+
         ]);
         $book = BookCategory::findOrFail($category_id);
         $book->category_th = $request->category_th;
@@ -130,7 +138,7 @@ class BookCategoryController extends Controller
         }
 
         $book->save();
-        return redirect()->route('bookpage',)->with('message', 'book    เปลี่ยนแปลงเรียบร้อยแล้ว');
+        return redirect()->route('bookpage', ['department_id' => $book->department_id])->with('message', 'book    เปลี่ยนแปลงเรียบร้อยแล้ว');
     }
     public function destory($category_id)
     {

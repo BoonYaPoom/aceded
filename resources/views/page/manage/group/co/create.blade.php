@@ -1,5 +1,5 @@
-@extends('layouts.adminhome')
-@section('content')
+@extends('layouts.department.layout.departmenthome')
+@section('contentdepartment')
     @if (Session::has('message'))
         <script>
             toastr.options = {
@@ -700,8 +700,7 @@
                                     <div class="card card-figure">
                                         <!-- .card-figure -->
                                         <figure class="figure">
-                                            <img class="img-fluid"
-                                                src="{{ Storage::disk('external')->url('cer/certificate_1.png') }}"
+                                            <img class="img-fluid" src="{{ asset('upload/cer/certificate_1.png') }}"
                                                 alt="ใบประกาศนียบัตร  1 " style="cursor:zoom-in"
                                                 onclick="$('#previewimage').prop('src',$(this).prop('src'));$('#modal01').css('display','block');">
                                             <!-- .figure-caption -->
@@ -722,8 +721,8 @@
                             <div id="modal01" class="w3-modal" onclick="this.style.display='none'">
                                 <span class="w3-button w3-hover-red w3-xlarge w3-display-topright">×</span>
                                 <div class="w3-modal-content w3-animate-zoom">
-                                    <img src="{{ Storage::disk('external')->url('cer/certificate_1.png') }}"
-                                        style="width:100%" id="previewimage">
+                                    <img src="{{ asset('upload/cer/certificate_1.png') }}" style="width:100%"
+                                        id="previewimage">
                                 </div>
                             </div>
                             <!-- grid column -->

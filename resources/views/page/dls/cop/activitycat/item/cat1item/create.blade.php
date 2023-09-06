@@ -1,5 +1,5 @@
-@extends('layouts.adminhome')
-@section('content')
+@extends('layouts.department.layout.departmenthome')
+@section('contentdepartment')
     <form action="{{ route('act1store', ['category_id' => $actCat]) }}" method="post" enctype="multipart/form-data">
         @csrf
         <!-- .page-inner -->
@@ -10,8 +10,8 @@
                 <!-- .card -->
                 <div class="card card-fluid">
                     <!-- .card-header -->
-                    <div class="card-header bg-muted"><a href="{{ route('cop') }}"
-                      style="text-decoration: underline;">กิจกกรรม</a> / <a href="{{ route('activi') }}"
+                    <div class="card-header bg-muted"><a href="{{ route('cop', ['department_id' => $actCat]) }}"
+                      style="text-decoration: underline;">กิจกกรรม</a> / <a href="{{ route('activi', ['department_id' => $actCat]) }}"
                       style="text-decoration: underline;">ชุมนุมนักปฏิบัติ </a> / <i>
                     
                           <a href="{{ route('activiList' ,[$actCat->category_id]) }}"

@@ -22,7 +22,7 @@ return new class extends Migration
             $table->string('logplatform', 30)->collation('utf8_general_ci');
             $table->tinyInteger('logid');
             $table->tinyInteger('logaction')->nullable();
-            $table->string('logdetail', 200)->nullable()->collation('utf8_general_ci');
+            $table->string('logdetail', 400)->nullable()->collation('utf8_general_ci');
             $table->integer('idref')->nullable();
             $table->integer('subject_id')->nullable();
             $table->integer('duration')->nullable();

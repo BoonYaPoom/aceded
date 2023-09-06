@@ -40,6 +40,16 @@ return [
             'driver' => 'session',
             'provider' => 'users',
         ],
+        'api' => [
+            'driver' => 'token',
+            'provider' => 'users',
+            'hash' => false,
+        ],
+    
+        'ldap' => [
+            'driver' => 'session',
+            'provider' => 'ldap',
+        ],
     ],
 
     /*
@@ -60,15 +70,24 @@ return [
     */
 
     'providers' => [
-        'users' => [
-            'driver' => 'eloquent',
-            'model' => App\Models\User::class,
-        ],
+       // 'users' => [
+       //     'driver' => 'eloquent',
+      //      'model' => App\Models\User::class,
+      //  ],
 
         // 'users' => [
         //     'driver' => 'database',
         //     'table' => 'users',
         // ],
+        'ldap' => [
+            'driver' => 'ldap',
+            'model' => App\Models\LdapUser::class, // กำหนดโมเดลของผู้ใช้ LDAP
+        ],
+        'users' => [
+            'driver' => 'oracle',
+            'model' => App\User::class,
+        ],
+        
     ],
 
     /*

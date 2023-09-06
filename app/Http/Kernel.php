@@ -15,6 +15,7 @@ class Kernel extends HttpKernel
      */
     protected $middleware = [
         // \App\Http\Middleware\TrustHosts::class,
+
         \App\Http\Middleware\CheckUserLogin::class,
         \App\Http\Middleware\TrustProxies::class,
         \Illuminate\Http\Middleware\HandleCors::class,
@@ -53,7 +54,9 @@ class Kernel extends HttpKernel
      *
      * @var array<string, class-string|string>
      */
-    protected $middlewareAliases = [
+
+     protected $middlewareAliases = [
+        'mydepart' => \App\Http\Middleware\CheckDepartmentAccess::class,
         'CheckUserLogin' => \App\Http\Middleware\CheckUserLogin::class,
         'AlreadyLogIn' => \App\Http\Middleware\AlreadyLoggedIn::class,
         'IsLoggedIn' => \App\Http\Middleware\AuthCheck::class,

@@ -1,5 +1,5 @@
-@extends('layouts.adminhome')
-@section('content')
+@extends('layouts.department.layout.departmenthome')
+@section('contentdepartment')
     @if (Session::has('message'))
         <script>
             toastr.options = {
@@ -26,19 +26,20 @@
             <!-- .card -->
             <div class="card card-fluid">
                 <!-- .card-header -->
-                <div class="card-header bg-muted"><a href="{{ route('exampage', [$subs->subject_id]) }}" style="text-decoration: underline;">หมวดหมู่</a> / <a
-                        href="" style="text-decoration: underline;">จัดการวิชา</a>
-                    / <i>คลังข้อสอบ	</i></div><!-- /.card-header -->
+                <div class="card-header bg-muted"><a href="{{ route('exampage', [$subs->subject_id]) }}"
+                        style="text-decoration: underline;">หมวดหมู่</a> / <a href=""
+                        style="text-decoration: underline;">จัดการวิชา</a>
+                    / <i>คลังข้อสอบ </i></div><!-- /.card-header -->
 
                 <!-- .card-body -->
                 <div class="card-body">
                     <!-- .table-responsive -->
-                 
+
                     <div class="form-row mb-3">
                         <div class="col-md-9">
-                       
+
                         </div>
-                     
+
                         <div class="col-md-3">
                             <select id="lesson_id" name="lesson_id" class="form-control" data-toggle="select2"
                                 data-placeholder="เลือกทั้งหมด" data-allow-clear="false" style="width:30%"
@@ -55,15 +56,17 @@
                         <table id="datatable" class="table w3-hoverable">
                             <div id="datatable_wrapper" class="dataTables_wrapper dt-bootstrap4 no-footer">
                                 <div class="top">
-                                    <div class="dt-buttons btn-group"><button class="btn btn-secondary buttons-excel buttons-html5"
-                                        tabindex="0" aria-controls="datatable" type="button"
-                                        onclick="window.location='{{ route('questionExport') }}'"><span>Excel</span></button> </div>
-    
+                                    <div class="dt-buttons btn-group"><button
+                                            class="btn btn-secondary buttons-excel buttons-html5" tabindex="0"
+                                            aria-controls="datatable" type="button"
+                                            onclick="window.location='{{ route('questionExport', ['subject_id' => $subs]) }}'"><span>Excel</span></button>
+                                    </div>
+
                                     <div id="datatable_filter" class="dataTables_filter">
                                         <label>ค้นหา<input type="search" id="myInput" class="form-control" placeholder=""
                                                 aria-controls="datatable"></label>
                                     </div>
-    
+
                                 </div>
                             </div>
                             <thead>
@@ -80,11 +83,11 @@
                             <tbody>
                                 <!-- tr -->
                                 @php
-                                $rowNumber = 0 ;
-                            @endphp
+                                    $rowNumber = 0;
+                                @endphp
                                 @foreach ($ques as $item)
                                     @php
-                                        $rowNumber++ ;
+                                        $rowNumber++;
                                     @endphp
                                     @php
                                         $lessonItem = \App\Models\CourseLesson::find($item->content_type);
@@ -98,21 +101,21 @@
                                             <td><a href="#">{{ $rowNumber }}</a></td>
                                             <td>{!! $item->question !!}</td>
                                             <td>{{ $questionType->question_type_th }}</td>
-                                                @if($item->lesson_id == 0)
-                                            <td>ข้อสอบ</td>
-                                                @elseif($item->lesson_id > 0)  
-                                            <td>แบบทดสอบ</td>
-                                                @endif
+                                            @if ($item->lesson_id == 0)
+                                                <td>ข้อสอบ</td>
+                                            @elseif($item->lesson_id > 0)
+                                                <td>แบบทดสอบ</td>
+                                            @endif
                                             <td class="align-middle"> <label
-                                                class="switcher-control switcher-control-success switcher-control-lg">
-                                                <input type="checkbox" class="switcher-input switcher-edit"
-                                                    {{ $item->question_status == 1 ? 'checked' : '' }}
-                                                    data-question-id="{{ $item->question_id }}">
-                                                <span class="switcher-indicator"></span>
-                                                <span class="switcher-label-on">ON</span>
-                                                <span class="switcher-label-off text-red">OFF</span>
-                                            </label></td>
-    
+                                                    class="switcher-control switcher-control-success switcher-control-lg">
+                                                    <input type="checkbox" class="switcher-input switcher-edit"
+                                                        {{ $item->question_status == 1 ? 'checked' : '' }}
+                                                        data-question-id="{{ $item->question_id }}">
+                                                    <span class="switcher-indicator"></span>
+                                                    <span class="switcher-label-on">ON</span>
+                                                    <span class="switcher-label-off text-red">OFF</span>
+                                                </label></td>
+
                                             <script>
                                                 $(document).ready(function() {
                                                     $(document).on('change', '.switcher-input.switcher-edit', function() {
@@ -130,7 +133,7 @@
                                                             },
                                                             success: function(data) {
                                                                 console.log(data.message); // แสดงข้อความที่ส่งกลับ
-                                                                
+
                                                             },
                                                             error: function(xhr, status, error) {
                                                                 console.log('ข้อผิดพลาด');
@@ -150,36 +153,34 @@
                                                         class="fas fa-trash-alt fa-lg text-warning "></i></a>
                                             </td>
                                         </tr><!-- /tr -->
-                                        
                                     @endif
                                 @endforeach
                             </tbody><!-- /tbody -->
                             <script>
                                 $(document).ready(function() {
                                     var table = $('#datatable').DataTable({
-                                       
-                                       lengthChange: false,
-                                       responsive: true,
-                                       info: false,
-                                       language: {
-                                  
-                                           infoEmpty: "ไม่พบรายการ",
-                                           infoFiltered: "(ค้นหาจากทั้งหมด _MAX_ รายการ)",
-                                           paginate: {
-                                               first: "หน้าแรก",
-                                               last: "หน้าสุดท้าย",
-                                               previous: "ก่อนหน้า",
-                                               next: "ถัดไป" // ปิดการแสดงหน้าของ DataTables
-                                           }
-                                       }
-                        
-                                   });
-                        
+
+                                        lengthChange: false,
+                                        responsive: true,
+                                        info: false,
+                                        language: {
+
+                                            infoEmpty: "ไม่พบรายการ",
+                                            infoFiltered: "(ค้นหาจากทั้งหมด _MAX_ รายการ)",
+                                            paginate: {
+                                                first: "หน้าแรก",
+                                                last: "หน้าสุดท้าย",
+                                                previous: "ก่อนหน้า",
+                                                next: "ถัดไป" // ปิดการแสดงหน้าของ DataTables
+                                            }
+                                        }
+
+                                    });
+
                                     $('#myInput').on('keyup', function() {
                                         table.search(this.value).draw();
                                     });
                                 });
-                        
                             </script>
                         </table><!-- /.table -->
                     </div><!-- /.table-responsive -->

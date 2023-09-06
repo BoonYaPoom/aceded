@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\CourseLearner;
 use App\Models\Log;
 use App\Models\PersonType;
 use App\Models\Users;
@@ -27,13 +28,16 @@ class ReportAllController extends Controller
         $mms = json_decode($jsonContent, true);
         $monthdata = $mms['month'];
         $month = $monthdata['th'];
-        return view('page.report.reporta', compact('userper', 'count1', 'count3', 'count4','month'));
+        $perType = PersonType::all();
+        $learners =  CourseLearner::all();
+        return view('page.report.reporta', compact('userper', 'count1', 'count3', 'count4', 'month', 'perType', 'learners'));
     }
     public function ReportB()
     {
 
-        $userper = Users::all();
+    
         $logs = Log::all();
+        $userper = Users::all();
         $count1 = Users::where('role', 1)->count();
         $count3 = Users::where('role', 3)->count();
         $count4 = Users::where('role', 4)->count();
@@ -41,7 +45,10 @@ class ReportAllController extends Controller
         $mms = json_decode($jsonContent, true);
         $monthdata = $mms['month'];
         $month = $monthdata['th'];
-        return view('page.report.reportb', compact('userper', 'count1', 'count3', 'count4','month','logs'));
+        $perType = PersonType::all();
+        $learners =  CourseLearner::all();
+        $month = $monthdata['th'];
+        return view('page.report.reportb', compact('userper', 'count1', 'count3', 'count4', 'month', 'perType', 'learners', 'logs'));
     }
 
     public function ReportC()
@@ -60,9 +67,9 @@ class ReportAllController extends Controller
         $mms = json_decode($jsonContent, true);
         $monthdata = $mms['month'];
         $month = $monthdata['th'];
-        $currentYear = Carbon::now()->addYears(543)->year;
-        $oneYearsAgo = Carbon::now()->subYears(1)->addYears(543)->year;
-        return view('page.report.tables.t0101', compact('userper','oneYearsAgo','currentYear','month'));
+        $perType = PersonType::all();
+        $learners =  CourseLearner::all();
+        return view('page.report.tables.t0101', compact( 'month', 'learners', 'perType', 'userper'));
     }
     public function trainUserAuth()
     {
@@ -74,7 +81,7 @@ class ReportAllController extends Controller
         $month = $monthdata['th'];
         $currentYear = Carbon::now()->addYears(543)->year;
         $oneYearsAgo = Carbon::now()->subYears(1)->addYears(543)->year;
-        return view('page.report.tables.t0108',compact('oneYearsAgo','currentYear','month'));
+        return view('page.report.tables.t0108', compact('oneYearsAgo', 'currentYear', 'month'));
     }
     public function bookUserAuth()
     {
@@ -86,7 +93,7 @@ class ReportAllController extends Controller
         $month = $monthdata['th'];
         $currentYear = Carbon::now()->addYears(543)->year;
         $oneYearsAgo = Carbon::now()->subYears(1)->addYears(543)->year;
-        return view('page.report.tables.t0103', compact('userper', 'month','oneYearsAgo','currentYear'));
+        return view('page.report.tables.t0103', compact('userper', 'month', 'oneYearsAgo', 'currentYear'));
     }
     public function LoginUserAuth()
     {
@@ -96,7 +103,7 @@ class ReportAllController extends Controller
         $month = $monthdata['th'];
         $currentYear = Carbon::now()->addYears(543)->year;
         $oneYearsAgo = Carbon::now()->subYears(1)->addYears(543)->year;
-        return view('page.report.tables.t0104',compact( 'month','oneYearsAgo','currentYear'));
+        return view('page.report.tables.t0104', compact('month', 'oneYearsAgo', 'currentYear'));
     }
 
     public function getUserData(Request $request)
@@ -106,9 +113,9 @@ class ReportAllController extends Controller
 
         return response()->json(['user_data' => $userperselected]);
     }
-    
-    
-    
+
+
+
 
 
     public function BackUserAuth()
@@ -121,7 +128,7 @@ class ReportAllController extends Controller
         $mms = json_decode($jsonContent, true);
         $monthdata = $mms['month'];
         $month = $monthdata['th'];
-        return view('page.report.tables.t0110',compact('oneYearsAgo','currentYear','month'));
+        return view('page.report.tables.t0110', compact('oneYearsAgo', 'currentYear', 'month'));
     }
     public function reportMUserAuth()
     {
@@ -133,7 +140,7 @@ class ReportAllController extends Controller
         $month = $monthdata['th'];
         $currentYear = Carbon::now()->addYears(543)->year;
         $oneYearsAgo = Carbon::now()->subYears(1)->addYears(543)->year;
-        return view('page.report.tables.t0111', compact('userper', 'month','oneYearsAgo','currentYear'));
+        return view('page.report.tables.t0111', compact('userper', 'month', 'oneYearsAgo', 'currentYear'));
     }
     public function reportYeaAuth()
     {
@@ -150,7 +157,7 @@ class ReportAllController extends Controller
         $Quarter4 = Carbon::create($year, 10, 1);
         $currentYear = Carbon::now()->addYears(543)->year;
         $oneYearsAgo = Carbon::now()->subYears(1)->addYears(543)->year;
-        return view('page.report.tables.t0112', compact('userper','month','Quarter1','Quarter2','Quarter3','Quarter4','oneYearsAgo','currentYear'));
+        return view('page.report.tables.t0112', compact('userper', 'month', 'Quarter1', 'Quarter2', 'Quarter3', 'Quarter4', 'oneYearsAgo', 'currentYear'));
     }
     public function reportQuarterlyAuth()
     {
@@ -162,7 +169,7 @@ class ReportAllController extends Controller
         $mms = json_decode($jsonContent, true);
         $monthdata = $mms['month'];
         $month = $monthdata['th'];
-        return view('page.report.tables.t0113', compact('userper','currentYear','oneYearsAgo', 'month'));
+        return view('page.report.tables.t0113', compact('userper', 'currentYear', 'oneYearsAgo', 'month'));
     }
     public function BackupFullUserAuth()
     {
@@ -174,11 +181,11 @@ class ReportAllController extends Controller
         $month = $monthdata['th'];
         $currentYear = Carbon::now()->addYears(543)->year;
         $oneYearsAgo = Carbon::now()->subYears(1)->addYears(543)->year;
-        return view('page.report.tables.t0114', compact('userper', 'month','oneYearsAgo','currentYear'));
+        return view('page.report.tables.t0114', compact('userper', 'month', 'oneYearsAgo', 'currentYear'));
     }
     public function LogFileUserAuth()
     {
-
+            $logs = Log::all();
         $userper = Users::all();
         $jsonContent = file_get_contents('javascript/json/_data.json');
         $mms = json_decode($jsonContent, true);
@@ -187,6 +194,6 @@ class ReportAllController extends Controller
         $currentYear = Carbon::now()->addYears(543)->year;
         $oneYearsAgo = Carbon::now()->subYears(1)->addYears(543)->year;
 
-        return view('page.report.tables.t0115', compact('userper', 'month','oneYearsAgo','currentYear'));
+        return view('page.report.tables.t0115', compact('userper', 'month', 'oneYearsAgo', 'currentYear','logs'));
     }
 }

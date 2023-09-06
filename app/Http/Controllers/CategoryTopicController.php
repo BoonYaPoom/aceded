@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Category;
 use App\Models\CategoryTopic;
 use App\Models\CourseSubject;
+use App\Models\Department;
 use Illuminate\Http\Request;
 
 class CategoryTopicController extends Controller
@@ -16,7 +17,9 @@ class CategoryTopicController extends Controller
         $subject_id =  $Category->subject_id;
         $subs  = CourseSubject::findOrFail($subject_id);
         $catac = $subs->Catt()->where('subject_id', $subject_id)->get();
-        return view('page.manage.sub.activitys.activcontent.catego.view', compact('Category', 'topic', 'subs'));
+        $department_id =   $subs->department_id;
+        $depart = Department::findOrFail($department_id);
+        return view('page.manage.sub.activitys.activcontent.catego.view', compact('Category', 'topic', 'subs','depart'));
     }
     public function destroy($topic_id)
     {

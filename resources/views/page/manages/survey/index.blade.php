@@ -1,5 +1,5 @@
-@extends('layouts.adminhome')
-@section('content')
+@extends('layouts.department.layout.departmenthome')
+@section('contentdepartment')
     <!-- .page-inner -->
     <div class="page-inner">
 
@@ -8,7 +8,7 @@
             <!-- .card -->
             <div class="card card-fluid">
                 <!-- .card-header -->
-                <div class="card-header bg-muted"><a href="{{ route('manage') }}"
+                <div class="card-header bg-muted"><a href="{{ route('manage', ['department_id' => $depart]) }}"
                         style="text-decoration: underline;">จัดการเว็บ</a> / <i> แบบสำรวจ</i></div><!-- /.card-header -->
 
                 <!-- .card-body -->
@@ -41,7 +41,7 @@
                                             <td><a href="#">{{ $i++ }}</a></td>
                                             <td>{{ $item->survey_th }}</td>
                                             <td class="d-none"></td>
-                                            <td>{{ $item->survey_type == 1 ? 'TH' : 'EN' }}</td>
+                                            <td>{{ $item->survey_lang }}</td>
                                             <td class="text-center">
                                                 {!! QrCode::generate(route('responsess', [$item->survey_id])) !!}
                                             </td>
@@ -112,7 +112,7 @@
         <header class="page-title-bar">
             <!-- floating action -->
             <button type="button" class="btn btn-success btn-floated btn-addwms"
-                onclick="window.location='{{ route('createsurvey') }}'" data-toggle="tooltip" title="เพิ่ม"><span
+                onclick="window.location='{{ route('createsurvey', ['department_id' => $depart]) }}'" data-toggle="tooltip" title="เพิ่ม"><span
                     class="fas fa-plus"></span></button>
             <!-- /floating action -->
         </header><!-- /.page-title-bar -->

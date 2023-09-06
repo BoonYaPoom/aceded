@@ -12,4 +12,8 @@ class Links extends Model
     protected $guarded =[];
     protected $primaryKey = 'links_id';
     public $timestamps = false;
+
+    public function Department() {
+        return $this->belongsTo(Department::class,'department_id');
+      }
 }

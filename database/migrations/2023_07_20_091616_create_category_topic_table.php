@@ -15,13 +15,13 @@ return new class extends Migration
             $table->charset = 'utf8';
             $table->collation = 'utf8_general_ci';
             $table->increments('topic_id');
-            $table->string('topic_th', 200)->collation('utf8_general_ci');
+            $table->string('topic_th', 400)->collation('utf8_general_ci');
             $table->longText('topic_detail')->nullable()->collation('utf8_general_ci');
             $table->dateTime('topic_date');
             $table->dateTime('topic_update')->nullable();
             $table->string('topic_status', 1)->collation('utf8_general_ci');
             $table->string('topic_type', 1)->collation('utf8_general_ci');
-            $table->string('topic_option', 200)->nullable()->collation('utf8_general_ci');
+            $table->string('topic_option', 400)->nullable()->nullable()->collation('utf8_general_ci');
             $table->integer('category_id')->nullable();
             $table->integer('topic_ref_id')->nullable();
             $table->integer('uid')->nullable();

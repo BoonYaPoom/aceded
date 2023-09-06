@@ -34,63 +34,62 @@
     <div class="page-inner">
 
 
-            <div class="form-row">
-                <!-- form column -->
-                <div class="col-md-1"><span class="mt-1 ">ปี</span></div>
-                <div class="col-md-3">
-                    <div class=""><select id="selectyear" name="selectyear" class="form-control" data-toggle="select2"
-                            data-placeholder="ปี" data-allow-clear="false" onchange="$('#formreport').submit();">
-                            <option value="2022"> {{$oneYearsAgo}} </option>
-                            <option value="2023" selected> {{$currentYear}} </option>
-                        </select></div>
-                </div>
-                <div class="col-md-4 ">
-                    <div>
-                        <select id="selectuidt0104" name="selectuidt0104" class="form-control select2" data-toggle="select2"
-                            data-placeholder="ผู้ใช้งานทั้งหมด" data-allow-clear="false">
-                            <option value="" selected> ผู้ใช้งานทั้งหมด </option>
+        <div class="form-row">
+            <!-- form column -->
+            <div class="col-md-1"><span class="mt-1 ">ปี</span></div>
+            <div class="col-md-3">
+                <div class=""><select id="selectyear" name="selectyear" class="form-control" data-toggle="select2"
+                        data-placeholder="ปี" data-allow-clear="false" onchange="$('#formreport').submit();">
+                        <option value="2022"> {{ $oneYearsAgo }} </option>
+                        <option value="2023" selected> {{ $currentYear }} </option>
+                    </select></div>
+            </div>
+            <div class="col-md-4 ">
+                <div>
+                    <select id="selectuidt0104" name="selectuidt0104" class="form-control select2" data-toggle="select2"
+                        data-placeholder="ผู้ใช้งานทั้งหมด" data-allow-clear="false">
+                        <option value="" selected> ผู้ใช้งานทั้งหมด </option>
 
-                            @foreach ($user_data as $uLog)
-                                @php
-                                    $uid = $uLog->uid;
-                                    $logCount = isset($countLogsByUid[$uid]) ? $countLogsByUid[$uid]->count() : 0;
-                                @endphp
+                        @foreach ($user_data as $uLog)
+                            @php
+                                $uid = $uLog->uid;
+                                $logCount = isset($countLogsByUid[$uid]) ? $countLogsByUid[$uid]->count() : 0;
+                            @endphp
 
-                                @if ($logCount > 0)
-                                    <option value="{{ $uid }}">{{ $uLog->firstname }} {{ $uLog->lastname }}
-                                    </option>
-                                @endif
-                            @endforeach
-                 
-                        </select>
-                        
-                    </div>
-             
+                            @if ($logCount > 0)
+                                <option value="{{ $uid }}">{{ $uLog->firstname }} {{ $uLog->lastname }}
+                                </option>
+                            @endif
+                        @endforeach
 
-                  
-                </div>
-                <div class="col-md-3 ">
-                    <div class="d-none"><select id="selectmonth" name="selectmonth" class="form-control "
-                            data-toggle="select2" data-placeholder="เดือน" data-allow-clear="false"
-                            onchange="$('#formreport').submit();">
-                            <option value="0">เดือน</option>
-                            <option value="0">เดือน</option>
-                            @foreach ($month as $key => $m)
-                                <option value="{{ $key }}"> {{ $m }}</option>
-                            @endforeach
-                        </select></div>
-                    <button id="resetBtn" class="btn btn-secondary">Reset</button> <!-- เพิ่มปุ่ม Reset นี้ -->
+                    </select>
 
                 </div>
-                <div class="col-md-1 text-right"><button type="button" class="btn btn-light btn-icon d-xl-none"
-                        data-toggle="sidebar"><i class="fa fa-angle-double-left fa-lg"></i></button></div>
-                <!-- /form column -->
-            </div><!-- /form row -->
-            
+
+
+
+            </div>
+            <div class="col-md-3 ">
+                <div class="d-none"><select id="selectmonth" name="selectmonth" class="form-control " data-toggle="select2"
+                        data-placeholder="เดือน" data-allow-clear="false" onchange="$('#formreport').submit();">
+                        <option value="0">เดือน</option>
+                        <option value="0">เดือน</option>
+                        @foreach ($month as $key => $m)
+                            <option value="{{ $key }}"> {{ $m }}</option>
+                        @endforeach
+                    </select></div>
+                <button id="resetBtn" class="btn btn-secondary">Reset</button> <!-- เพิ่มปุ่ม Reset นี้ -->
+
+            </div>
+            <div class="col-md-1 text-right"><button type="button" class="btn btn-light btn-icon d-xl-none"
+                    data-toggle="sidebar"><i class="fa fa-angle-double-left fa-lg"></i></button></div>
+            <!-- /form column -->
+        </div><!-- /form row -->
+
         <!-- แสดงข้อมูลผู้ใช้งานที่เลือก -->
 
 
-        
+
         <!-- .table-responsive --><br><!-- .card -->
         <div class="card card-fluid">
             <!-- .card-header -->
@@ -126,7 +125,7 @@
                             @foreach ($user_data as $uLog)
                                 @php
                                     $logCount = isset($countLogsByUid[$uLog->uid]) ? $countLogsByUid[$uLog->uid]->count() : 0;
-
+                                    
                                 @endphp
 
                                 @if ($logCount > 0)
@@ -215,28 +214,27 @@
                         }
                     });
                 }
-             
 
-                    // เมื่อคลิกปุ่ม Reset
-                    $('#resetBtn').on('click', function() {
-                        // เคลียร์การเลือกใน Select element
-                        $('#selectuidt0104').val('');
 
-                        // ซ่อนทั้งหมดของ tbody และแสดงทั้งหมดของ tbody
-                        $('#section-to-print tbody tr').show();
+                // เมื่อคลิกปุ่ม Reset
+                $('#resetBtn').on('click', function() {
+                    // เคลียร์การเลือกใน Select element
+                    $('#selectuidt0104').val('');
 
-                        // เคลียร์ข้อความในส่วนแสดง uid ที่เลือก
-                        $('#selected-uid').text('');
+                    // ซ่อนทั้งหมดของ tbody และแสดงทั้งหมดของ tbody
+                    $('#section-to-print tbody tr').show();
 
-                        // เคลียร์ข้อมูลที่แสดงในส่วนข้อมูลผู้ใช้งานที่เลือก
-                        $('#user-data').empty();
+                    // เคลียร์ข้อความในส่วนแสดง uid ที่เลือก
+                    $('#selected-uid').text('');
 
-                     
-                    });
+                    // เคลียร์ข้อมูลที่แสดงในส่วนข้อมูลผู้ใช้งานที่เลือก
+                    $('#user-data').empty();
 
-                    
+
                 });
 
+
+            });
         </script>
 
 

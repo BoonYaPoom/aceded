@@ -27,6 +27,8 @@
                 </tr>
             </thead>
             <tbody>
+          
+               
                 @php
 
                 $c = 1;
@@ -39,6 +41,7 @@
                 $startregisterdate = Illuminate\Support\Carbon::parse($item->startregisterdate);
                 $endregisterdate = Illuminate\Support\Carbon::parse($item->endregisterdate);
                 @endphp
+                
                 
                     <tr>
                         <td><a>{{ $c++ }}</a></td>
@@ -63,13 +66,14 @@
                                 <span class="switcher-label-off text-red">OFF</span></label>
                         </td>
                         <td>
-                            <a href="http://tcct.localhost:8080/admin/lms/payment/0.html"><i
+                            <a href="{{ route('payment_page', ['class_id' => $item->class_id]) }}"><i
                                     class="fas fa-money-bill fa-lg text-primary" data-toggle="tooltip"
                                     title="รายชื่อรอชำระเงิน"></i></a>
+                               
                             <a href="{{ route('register_page', ['class_id' => $item->class_id]) }}"><i
                                     class="fas fa-user-plus fa-lg text-dark" data-toggle="tooltip"
                                     title="รายชื่อลงทะเบียน"></i></a>
-
+                               
                             <a href="http://tcct.localhost:8080/admin/lms/congratuation/0.html"><i
                                     class="fas fa-book-reader fa-lg text-info" data-toggle="tooltip"
                                     title="แจ้งเตือนวันสิ้นสุดบทเรียน"></i></a>
@@ -79,7 +83,7 @@
                             <a href="http://tcct.localhost:8080/admin/lms/congratuation/0.html"><i
                                     class="fas fa-user-graduate fa-lg text-info" data-toggle="tooltip"
                                     title="ผู้สำเร็จหลักสูตร"></i></a>
-                            <a href="http://tcct.localhost:8080/admin/lms/classroomform/0.html"><i
+                            <a href="{{ route('class_edit', ['class_id' => $item]) }}"><i
                                     class="fas fa-edit fa-lg text-success" data-toggle="tooltip" title="แก้ไข"></i></a>
                             <a href="#clientDeleteModal"
                                 id="4cf76b3dc0951b6a5a3d6fd9b9903f20__course_class__class_status__class_id__0__1691467017"

@@ -16,6 +16,9 @@ class CourseSupplymentary extends Model
     public function subsupply() {
         return $this->belongsTo(CourseSubject::class,'subject_id');
       }
+    public function supplyless() {
+        return $this->belongsTo(CourseLesson::class,'lesson_id');
+      }
     public function type() {
         return $this->belongsTo(CourseSupplymentaryType::class,'supplymentary_type');
       }

@@ -9,6 +9,8 @@ use Illuminate\Http\Request;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Exports\UsersExport;
 use App\Imports\QuestionsImportClass;
+use App\Models\CourseLesson;
+use App\Models\CourseSubject;
 use App\Models\Question;
 
 class ExcelController extends Controller
@@ -25,16 +27,23 @@ class ExcelController extends Controller
     {
         return Excel::download(new QuestionExport, 'Question System.xlsx');
     }
-    public function Questionimport(Request $request)
-    {
+    public function Questionimport(Request $request, $subject_id)
+    {   
 
-    
-        Excel::import(new QuestionsImportClass, $request->file('fileexcel'));
-        return redirect()->back()->with('message','Import Success successfully');
-        // Import successful
-        // You can redirect or return a response here
-    }
-    
-}
+        $questionsImport = new QuestionsImportClass($subject_id);
+
+        if ($request->hasFile('fileexcel')) {
+            try {
+                Excel::import($questionsImport, $request->file('fileexcel'));
+                return redirect()->route('questionadd', ['subject_id' => $subject_id])->with('message', 'Import successfully');
+            } catch (\Exception $e) {
+                return redirect()->route('questionadd', ['subject_id' => $subject_id])->with('error', 'Error importing data: ' . $e->getMessage());
+            }
+        } else {
+            return redirect()->route('questionadd', ['subject_id' => $subject_id])->with('error', 'No file uploaded');
+        }   }
   
 
+   
+
+}

@@ -1,5 +1,5 @@
-@extends('layouts.adminhome')
-@section('content')
+@extends('layouts.department.layout.departmenthome')
+@section('contentdepartment')
     <!-- .page-inner -->
     <div class="page-inner">
 
@@ -8,8 +8,8 @@
             <!-- .card -->
             <div class="card card-fluid">
                 <!-- .card-header -->
-                <div class="card-header bg-muted"><a href="{{ route('manage') }}"
-                        style="text-decoration: underline;">จัดการเว็บ</a> / <a href="{{ route('surveypage') }}"
+                <div class="card-header bg-muted"><a href="{{ route('manage', ['department_id' => $sur->department_id]) }}"
+                        style="text-decoration: underline;">จัดการเว็บ</a> / <a href="{{ route('surveypage', ['department_id' => $sur->department_id]) }}"
                         style="text-decoration: underline;">แบบสำรวจ</a> / <i>  {{ $sur->survey_th }}</i></div><!-- /.card-header -->
 
                 <!-- .card-body -->

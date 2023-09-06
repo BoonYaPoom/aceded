@@ -1,5 +1,5 @@
-@extends('layouts.adminhome')
-@section('content')
+@extends('layouts.department.layout.departmenthome')
+@section('contentdepartment')
     <!-- .page-inner -->
     <div class="page-inner">
         <!-- .form -->
@@ -9,12 +9,12 @@
             <div class="card card-fluid">
                 <!-- .card-header -->
                 <div class="card-header bg-muted">
-                    <a href="{{ route('bookpage') }}" style="text-decoration: underline;">จัดการข้อมูลและความรู้</a> /
+                    <a href="{{ route('bookpage', ['department_id' => $depart]) }}" style="text-decoration: underline;">จัดการข้อมูลและความรู้</a> /
                     <i>เพิ่มหมวดหมู่</i>
                 </div>
 
 
-                <form action="{{ route('storebook') }}" method="post" enctype="multipart/form-data">
+                <form action="{{ route('storebook', ['department_id' => $depart]) }}" method="post" enctype="multipart/form-data">
                     @csrf
                     <div class="card-body">
                         <!-- .form-group -->

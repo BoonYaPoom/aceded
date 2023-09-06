@@ -1,5 +1,5 @@
-@extends('layouts.adminhome')
-@section('content')
+@extends('layouts.department.layout.departmenthome')
+@section('contentdepartment')
     @if (Session::has('message'))
         <script>
             toastr.options = {
@@ -26,15 +26,15 @@
             <!-- .card -->
             <div class="card card-fluid">
                 <!-- .card-header -->
-                <div class="card-header bg-muted"><a href="{{ route('departmentpage') }}"
-                        style="text-decoration: underline;">หมวดหมู่</a> / <a href="{{ route('learn') }}"
+                <div class="card-header bg-muted"><a href="{{ route('departmentLearnpage') }}"
+                        style="text-decoration: underline;">หมวดหมู่</a> / <a
+                        href="{{ route('learn', ['department_id' => $courses->first()->department_id]) }}"
                         style="text-decoration: underline;">จัดการวิชา</a> / <i></i></div><!-- /.card-header -->
                 <!-- .nav-scroller -->
                 <div class="nav-scroller border-bottom">
                     <!-- .nav -->
                     <div class="nav nav-tabs bg-muted h3">
-                        <a class="nav-link active text-info" href=""><i
-                                class="fas fa-users"></i>
+                        <a class="nav-link active text-info" href="{{ route('class_page', ['course_id' => $courses]) }}"><i class="fas fa-users"></i>
                             ผู้เรียน รายวิชาเพิ่มเติม การป้องกันการทุจริต ระดับปฐมวัย </a>
                     </div><!-- /.nav -->
                 </div><!-- /.nav-scroller -->
@@ -52,22 +52,259 @@
                                     <th class="align-middle" style="width:10%"> ลำดับ </th>
                                     <th class="align-middle" style="width:15%"> รหัส </th>
                                     <th class="align-middle" style="width:30%"> ชื่อ-สกุล </th>
-                                    <th class="align-middle" style="width:15%">จำนวนเข้าเรียน </th>
-                                    <th class="align-middle" style="width:15%"> คะแนนสอบ </th>
-                                    <th class="align-middle" style="width:15%"> ผลการสอบ </th>
+                                    <th class="align-middle" style="width:10%">จำนวนเข้าเรียน </th>
+                                    <th class="align-middle" style="width:10%">เวลาวิดิโอ </th>
+                                    <th class="align-middle" style="width:10%"> คะแนนสอบ </th>
+                                    <th class="align-middle" style="width:10%"> ผลการสอบ </th>
+                                    <th class="align-middle" style="width:5%"> ประวัติ </th>
                                 </tr>
                             </thead><!-- /thead -->
                             <!-- tbody -->
                             <tbody>
                                 <!-- tr -->
-                                <tr>
-                                    <td>1</td>
-                                    <td> admin</td>
-                                    <td> aced_admin </td>
-                                    <td> 0</td>
-                                    <td> </td>
-                                    <td> ไม่ผ่าน</td>
-                                </tr><!-- /tr -->
+                                @php
+                                    $n = 1;
+                                    $result = []; // สร้างตัวแปรเก็บผลลัพธ์
+                                    $uniqueUserIds = [];
+                                    
+                                @endphp
+                                @foreach ($learners as $l => $learns)
+                                    @php
+                                        $dataLearn = $learns->registerdate;
+                                        $monthsa = \ltrim(\Carbon\Carbon::parse($dataLearn)->format('m'), '0');
+                                        $newDateTime = \Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $learns->registerdate)->format('d/m/Y H:i:s');
+                                        $users = \App\Models\Users::find($learns->uid);
+                                        $ScoreLog = \App\Models\Score::where('uid', $users->uid)
+                                            ->whereHas('examlog', function ($query) {
+                                                $query->where('exam_type', 2);
+                                            })
+                                            ->get();
+                                    @endphp
+
+                                    @if ($monthsa == $m)
+                                        @if (!in_array($learns->uid, $uniqueUserIds))
+                                            @php
+                                                array_push($uniqueUserIds, $learns->uid);
+                                                
+                                                $countUsersLogs = \App\Models\Log::where('uid', $users->uid)
+                                                    ->where('logid', 4)
+                                                    ->count();
+                                                $totalDuration = \App\Models\Log::where('uid', $users->uid)
+                                                    ->where('logid', 4)
+                                                    ->sum('duration');
+                                                $ScoreUser = \App\Models\Score::where('uid', $users->uid)
+                                                    ->whereHas('examlog', function ($query) {
+                                                        $query->where('exam_type', 2);
+                                                    })
+                                                    ->latest('date')
+                                                    ->get();
+                                                
+                                                $totalDurationInMinutes = $totalDuration / 60;
+                                                
+                                                $totalHours = floor($totalDurationInMinutes / 60); // จำนวนชั่วโมง
+                                                $totalMinutes = $totalDurationInMinutes % 60; // จำนวนนาทีที่เหลือ
+                                                
+                                                if ($totalMinutes > 60) {
+                                                    $totalHours += floor($totalMinutes / 60);
+                                                    $totalMinutes %= 60;
+                                                }
+                                                $latestScore = null;
+                                                $latfullScore = null;
+                                                $latestScorelog = null;
+                                                $latfullScorelog = null;
+                                                $percentage = 0;
+                                                
+                                                $percentagelog = 0;
+                                                
+                                            @endphp
+
+                                            @foreach ($ScoreUser as $score)
+                                                @php
+                                                    
+                                                    if ($score->score && $score->fullscore) {
+                                                        if (($latestScore === null && $latfullScore === null) || $score->date > $latestScoreDate) {
+                                                            $latestScore = $score->score;
+                                                            $latfullScore = $score->fullscore;
+                                                            $latestScoreDate = $score->date;
+                                                                                      
+                                                            if ($latfullScore) {
+                                                                $percentage = ($latestScore / $latfullScore) * 100;
+                                                            }
+                                                        }
+                                                    }
+                                                @endphp
+                                            @endforeach
+                                            <tr>
+                                                <td>{{ $n++ }}</td>
+
+                                                <td>{{ $users->username }}</td>
+                                                <td>{{ $users->firstname }} {{ $users->lastname }}</td>
+                                                <td>
+                                                    {{ $countUsersLogs }}
+                                                </td>
+                                                <td>
+                                                    {{ $totalHours }} ชั่วโมง
+                                                    {{ number_format($totalMinutes) }} นาที
+                                                </td>
+                                                <td>
+                                                    @if ($latestScore)
+                                                        {{ $latestScore }}
+                                                    @else
+                                                        ยังไม่ให้คะแนน
+                                                    @endif
+
+                                                </td>
+                                                <td>
+                                                    @if ($percentage > 50)
+                                                        ผ่าน
+                                                    @else
+                                                        ไม่ผ่าน
+                                                    @endif
+
+                                                </td>
+                                                <td>
+                                                    <a data-toggle="modal"
+                                                        data-target="#clientPermissionModal-{{ $users->uid }}"><i
+                                                            class="fas fa-chart-bar fa-lg text-danger" data-toggle="tooltip"
+                                                            title="ประวัติ"></i></a>
+                                                    <script>
+                                                        $(document).ready(function() {
+                                                            $('.modal').on('shown.bs.modal', function() {
+                                                                var uid = $(this).data('uid');
+                                                                console.log('ID ที่เข้าถึงโมเดล:', uid);
+                                                            });
+                                                        });
+                                                    </script>
+                                                    <div id="clientPermissionModal-{{ $users->uid }}"
+                                                        data-uid="{{ $users->uid }}" class="modal fade" aria-modal="true"
+                                                        tabindex="-1" role="dialog">
+                                                        <div class="modal-dialog modal-xl" role="document">
+
+                                                            <div class="modal-content">
+
+                                                                <!-- .modal-header -->
+                                                                <div class="modal-header bg-theme-primary">
+                                                                    <h6 id="clientPermissionModalLabel"
+                                                                        class="modal-title text-white">
+                                                                        <span class="sr-only">Permission</span> <span><i
+                                                                                class="fas fas fa-book text-white"></i>
+                                                                            ประวัติการสอบ แบบทดสอบหลังเรียน</span>
+                                                                    </h6>
+                                                                    <h6 id="clientPermissionModalLabel"
+                                                                        class="modal-title text-white">
+                                                                        <span class="sr-only">Permission</span> <span><i
+                                                                                class="fas fa-user text-white"></i> 
+                                                                            {{ $users->firstname }}
+                                                                            {{ $users->lastname }}</span>
+                                                                    </h6>
+                                                                </div><!-- /.modal-header -->
+
+                                                                <div class="modal-body">
+                                                                    <!-- .form-group -->
+                                                                    <div class="form-group">
+
+                                                                        <div class="table-responsive">
+                                                                            <table id="datatable2"
+                                                                                class="table w3-hoverable" border=0>
+                                                                                <!-- thead -->
+                                                                                <thead>
+                                                                                    <tr class="bg-infohead">
+
+                                                                                        <th class="align-middle"
+                                                                                            style="width:20%"> วันที่
+                                                                                        </th>
+                                                                                        <th class="align-middle"
+                                                                                            style="width:30%"> คะแนนสอบ
+                                                                                        </th>
+                                                                                        <th class="align-middle"
+                                                                                            style="width:30%">
+                                                                                            คะแนนเต็ม
+                                                                                        </th>
+                                                                                        <th class="align-middle"
+                                                                                            style="width:20%"> ผลการสอบ
+                                                                                        </th>
+
+                                                                                    </tr>
+                                                                                </thead><!-- /thead -->
+
+                                                                                <tbody>
+
+                                                                                    @foreach ($ScoreLog as $scoreog)
+                                                                                        @php
+                                                                                            if ($scoreog->score && $scoreog->fullscore) {
+                                                                                                $latestScorelog = $scoreog->score;
+                                                                                                $latfullScorelog = $scoreog->fullscore;
+                                                                                                $latestScoreDatelog = $scoreog->date;
+                                                                                                $ScoreDatelog = \ltrim(\Carbon\Carbon::parse($latestScoreDatelog)->format('m'), '0');
+                                                                                                $carbonDate = \Carbon\Carbon::parse($latestScoreDatelog);
+                                                                                                $thaiDate = $carbonDate->locale('th')->isoFormat('D MMMM');
+                                                                                                $buddhistYear = $carbonDate->addYears(543)->year;
+                                                                                                $thaiYear = $buddhistYear > 0 ? $buddhistYear : '';
+                                                                                                $thaiDateWithYear = $thaiDate . ' ' . $thaiYear;
+                                                                                                if ($latfullScorelog) {
+                                                                                                    $percentagelog = ($latestScorelog / $latfullScorelog) * 100;
+                                                                                                }
+                                                                                            }
+                                                                                            
+                                                                                        @endphp
+                                                                                        @if ($ScoreDatelog == $m)
+                                                                                            <tr>
+                                                                                                <td>
+                                                                                                    {{ $thaiDateWithYear }}
+                                                                                                </td>
+                                                                                                <td>
+
+                                                                                                    @if ($latestScorelog)
+                                                                                                        {{ $latestScorelog }}
+                                                                                                    @else
+                                                                                                        ยังไม่ทำการตรวจ
+                                                                                                    @endif
+                                                                                                </td>
+                                                                                                <td>
+
+                                                                                                    @if ($latfullScorelog)
+                                                                                                        {{ $latfullScorelog }}
+                                                                                                    @else
+                                                                                                        0
+                                                                                                    @endif
+                                                                                                </td>
+                                                                                                <td>
+                                                                                                    @if ($percentagelog > 50)
+                                                                                                        ผ่าน
+                                                                                                    @else
+                                                                                                        ไม่ผ่าน
+                                                                                                    @endif
+                                                                                                </td>
+
+                                                                                            </tr>
+                                                                                        @endif
+                                                                                    @endforeach
+                                                                                </tbody>
+                                                                            </table>
+
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="modal-footer">
+                                                                    <button type="submit" class="btn btn-primary-theme"
+                                                                        id="btnsetrole">
+                                                                        <i class="fas fa-user-shield"></i> เช็ค
+                                                                    </button>
+                                                                    <button type="button" class="btn btn-light"
+                                                                        data-dismiss="modal">ยกเลิก</button>
+                                                                </div>
+                                                            </div>
+
+                                                        </div>
+                                                    </div>
+
+
+
+                                                </td>
+                                            </tr><!-- /tr -->
+                                        @endif
+                                    @endif
+                                @endforeach
                             </tbody><!-- /tbody -->
                         </table><!-- /.table -->
                     </div><!-- /.table-responsive -->
@@ -79,9 +316,8 @@
         <header class="page-title-bar">
             <!-- floating action -->
             <input type="hidden" />
-            <button type="button" onclick="window.location=''"
-                class="btn btn-success btn-floated btn-add " id="registeradd" data-toggle="tooltip" title="เพิ่ม"><span
-                    class="fas fa-plus"></span></button>
+            <button type="button" onclick="window.location=''" class="btn btn-success btn-floated btn-add "
+                id="registeradd" data-toggle="tooltip" title="เพิ่ม"><span class="fas fa-plus"></span></button>
             <!-- /floating action -->
         </header><!-- /.page-title-bar -->
     </div><!-- /.page-inner -->

@@ -1,5 +1,5 @@
-@extends('layouts.adminhome')
-@section('content')
+@extends('layouts.department.layout.departmenthome')
+@section('contentdepartment')
     @if (Session::has('message'))
         <script>
             toastr.options = {
@@ -24,7 +24,7 @@
             <!-- .card -->
             <div class="card card-fluid">
                 <!-- .card-header -->
-                <div class="card-header bg-muted"><a href="{{ route('manage') }}"
+                <div class="card-header bg-muted"><a href="{{ route('manage', ['department_id' => $depart]) }}"
                         style="text-decoration: underline;">จัดการเว็บ </a> / <i>
                         คู่มือใช้งาน</i></div><!-- /.card-header -->
                 <!-- .card-body -->
@@ -117,7 +117,7 @@
         <header class="page-title-bar">
             <!-- floating action -->
             <button type="button" class="btn btn-success btn-floated btn-addwms"
-                onclick="window.location='{{ route('createmanual') }}'" data-toggle="tooltip" title="เพิ่ม"><span
+                onclick="window.location='{{ route('createmanual', ['department_id' => $depart]) }}'" data-toggle="tooltip" title="เพิ่ม"><span
                     class="fas fa-plus"></span></button>
             <!-- /floating action -->
         </header><!-- /.page-title-bar -->

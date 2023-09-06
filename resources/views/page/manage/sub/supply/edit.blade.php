@@ -1,5 +1,5 @@
-@extends('layouts.adminhome')
-@section('content')
+@extends('layouts.department.layout.departmenthome')
+@section('contentdepartment')
     <form action="{{ route('update_supplyform', ['supplymentary_id' => $supplys]) }}" method="post"
         enctype="multipart/form-data">
         @csrf

@@ -15,8 +15,8 @@ return new class extends Migration
             $table->charset = 'utf8';
             $table->collation = 'utf8_general_ci';
             $table->increments('subject_id');
-            $table->string('subject_th', 200)->collation('utf8_general_ci');
-            $table->string('subject_en', 200)->nullable()->collation('utf8_general_ci');
+            $table->string('subject_th', 400)->collation('utf8_general_ci');
+            $table->string('subject_en', 400)->nullable()->collation('utf8_general_ci');
             $table->integer('department_id')->nullable();
             $table->string('subject_status', 1)->collation('utf8_general_ci');
             $table->longText('teacher')->nullable()->collation('utf8_general_ci');

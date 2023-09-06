@@ -15,8 +15,8 @@ return new class extends Migration
             $table->charset = 'utf8';
             $table->collation = 'utf8_general_ci';
             $table->increments('supplymentary_id');
-            $table->string('title_th', 200)->collation('utf8_general_ci');
-            $table->string('title_en', 200)->nullable()->collation('utf8_general_ci');
+            $table->string('title_th', 400)->collation('utf8_general_ci');
+            $table->string('title_en', 400)->nullable()->collation('utf8_general_ci');
             $table->longText('path')->collation('utf8_general_ci');
             $table->longText('cover_image')->nullable()->collation('utf8_general_ci');
             $table->string('author', 100)->nullable()->collation('utf8_general_ci');

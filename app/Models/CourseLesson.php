@@ -20,4 +20,9 @@ class CourseLesson extends Model
     public function lessostype() {
         return $this->belongsTo(ContentType::class,'content_type')->select(['content_type', 'content_th']);
       }
+
+      public function supplyLesson()
+      {
+          return $this->hasMany(CourseSupplymentary::class,'lesson_id');
+      }
 }

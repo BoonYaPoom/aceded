@@ -14,7 +14,7 @@ class GenaralController extends Controller
     public function logo()
     {
         $genaral = General::all();
-        return view('page.manages.data.logo.logo', compact('genaral'));
+        return view('layouts.department.item.data.logo.logo', compact('genaral'));
     }
     public function update(Request $request, $id)
     {
@@ -27,12 +27,12 @@ class GenaralController extends Controller
         if ($request->hasFile('detail')) {
 
             // อัปโหลดไฟล์ใหม่ขึ้น Storage 'external'
-            $filename = time() . '.' . $request->detail->getClientOriginalExtension();
+            $filename = 'logo' . '.' . $request->detail->getClientOriginalExtension();
             Storage::disk('external')->put('logo/' . $filename, file_get_contents($request->detail));
 
             // อัปเดตข้อมูลในตาราง 'General'
             $genaral->detail = 'logo/' . $filename;
-            $genaral->title = pathinfo($request->detail->getClientOriginalName(), PATHINFO_FILENAME);
+            $genaral->title = 'logo';
             // ตรวจสอบว่ามีไฟล์เดิมอยู่ใน Storage 'external'
             if (Storage::disk('external')->exists('logo/' . $genaral->detail)) {
                 // ลบไฟล์เดิมออกจาก Storage 'external'

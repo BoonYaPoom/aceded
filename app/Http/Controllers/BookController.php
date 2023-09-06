@@ -5,8 +5,16 @@ namespace App\Http\Controllers;
 use App\Models\Book;
 
 use App\Models\BookCategory;
+use App\Models\Department;
+use Barryvdh\DomPDF\PDF as DomPDFPDF;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
+
+use Imagick;
+
+use Spatie\PdfToImage\Pdf;
+
 
 class BookController extends Controller
 {
@@ -14,14 +22,18 @@ class BookController extends Controller
     {
         $bookcat  = BookCategory::findOrFail($category_id);
         $books = $bookcat->books()->where('category_id', $category_id)->get();
-        return view('page.dls.book.bookcat.booke', compact('bookcat', 'books'));
+        $department_id   = $bookcat->department_id;
+        $depart = Department::findOrFail($department_id);
+        return view('page.dls.book.bookcat.booke', compact('bookcat', 'books', 'depart'));
     }
 
 
     public function create($category_id)
     {
         $bookcat  = BookCategory::findOrFail($category_id);
-        return view('page.dls.book.bookcat.create', compact('bookcat'));
+        $department_id   = $bookcat->department_id;
+        $depart = Department::findOrFail($department_id);
+        return view('page.dls.book.bookcat.create', compact('bookcat', 'depart'));
     }
 
     public function store(Request $request, $category_id)
@@ -30,19 +42,43 @@ class BookController extends Controller
             'book_name' => 'required'
         ]);
         $books = new Book;
+        $books->book_type = $request->book_type;
         if ($request->hasFile('cover')) {
 
             $image_name = time() . '.' . $request->cover->getClientOriginalExtension();
-            Storage::disk('external')->put('Book/image/' . $image_name, file_get_contents($request->cover));
+            Storage::disk('public')->put('lac/Book/' . $image_name, file_get_contents($request->cover));
             $books->cover = $image_name;
         }
+        // บันทึกไฟล์ PDF และแปลงเป็นรูปภาพ
+        if ($request->book_type == 0) {
+            if ($request->hasFile('bookfile')) {
+                // บันทึกไฟล์ PDF
+                $file_name = $request->file('bookfile');
+                $file_namess = $file_name->getClientOriginalName();
+                $file_name->move(public_path('lac/Book'), $file_namess);
 
-        if ($request->hasFile('bookfile')) {
-            $file_name = time() . '.' . $request->bookfile->getClientOriginalExtension();
-            Storage::disk('external')->put('Book/documents/' . $file_name, file_get_contents($request->bookfile));
+                // สร้างโฟลเดอร์เพื่อเก็บรูปภาพที่แปลง
+                $outputPath = public_path('lac/Book');
+                File::makeDirectory($outputPath, $mode = 0777, true, true);
 
-            $books->bookfile = $file_name;
+
+                $pdf = new Pdf($file_namess);
+
+                $pdf->saveAllPagesAsImages($outputPath);
+
+
+                $books->bookfile = $file_namess;
+            }
+        } elseif ($request->book_type == 1) {
+            // บันทึกไฟล์ PDF
+            if ($request->hasFile('bookfile')) {
+            $file_name = $request->file('bookfile');
+            $file_namess = $file_name->getClientOriginalName();
+            $file_name->move(public_path('lac/Book'), $file_namess);
+            $books->bookfile = $file_namess;
         }
+        }
+
 
 
         $books->book_name = $request->book_name;
@@ -52,7 +88,7 @@ class BookController extends Controller
         $books->book_date = now();
         $books->book_status = $request->input('book_status', 0);
         $books->book_option = '';
-        $books->book_type = $request->book_type;
+    
         $books->recommended = 0;
         $books->category_id = (int)$category_id;
         $books->book_member = 0;
@@ -64,7 +100,11 @@ class BookController extends Controller
     public function edit($book_id)
     {
         $books = Book::findOrFail($book_id);
-        return view('page.dls.book.bookcat.edit', ['books' => $books]);
+        $category_id = $books->category_id;
+        $bookcat  = BookCategory::findOrFail($category_id);
+        $department_id   = $bookcat->department_id;
+        $depart = Department::findOrFail($department_id);
+        return view('page.dls.book.bookcat.edit', ['books' => $books, 'bookcat' => $bookcat, 'depart' => $depart]);
     }
     public function update(Request $request, $book_id)
     {
@@ -116,7 +156,7 @@ class BookController extends Controller
     public function table(Request $request)
     {
         // Retrieve the book data
-        $books = Book::all(); // Fetch all books from the database
+        $books = Book::all();
 
         return response()->json($books);
     }

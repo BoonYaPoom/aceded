@@ -1,5 +1,5 @@
-@extends('layouts.adminhome')
-@section('content')
+@extends('layouts.department.layout.departmenthome')
+@section('contentdepartment')
     @if (Session::has('message'))
         <script>
             toastr.options = {
@@ -16,7 +16,8 @@
             toastr.success("{{ Session::get('message') }}");
         </script>
     @endif
-    <form action="{{route('courseform_update', ['course_id' => $cour->course_id])}}" method="post" enctype="multipart/form-data">
+    <form action="{{ route('courseform_update', ['course_id' => $cour->course_id]) }}" method="post"
+        enctype="multipart/form-data">
         @csrf
         @method('PUT')
         <!-- .page-inner -->
@@ -28,15 +29,15 @@
                 <div class="card card-fluid">
                     <!-- .card-header -->
                     <div class="card-header bg-muted">
-                        <a href="{{ route('learn') }}" style="text-decoration: underline;">จัดการหลักสูตร</a> / <a
-                        href="{{ route('courgroup', ['department_id' => $courses->first()->department_id]) }}"
-                        style="text-decoration: underline;">
-                            หมวดหมู่</a> / <a
-                            href="{{ route('courpag', ['group_id' => $cour->group_id]) }}"
-                            style="text-decoration: underline;">  
-                             @foreach ($courses as $course)
-                            {{ $course->group_th }}
-                        @endforeach</a> / <i>{{ $cour->course_th }}</i>
+                        <a href="{{ route('learn', ['department_id' => $courses->first()->department_id]) }}"
+                            style="text-decoration: underline;">จัดการหลักสูตร</a> / <a
+                            href="{{ route('courgroup', ['department_id' => $courses->first()->department_id]) }}"
+                            style="text-decoration: underline;">
+                            หมวดหมู่</a> / <a href="{{ route('courpag', ['group_id' => $cour->group_id]) }}"
+                            style="text-decoration: underline;">
+
+                            {{ $courses->group_th }}
+                        </a> / <i>{{ $cour->course_th }}</i>
                     </div><!-- /.card-header -->
                     <!-- .card-body -->
                     <div class="card-body">
@@ -66,7 +67,7 @@
                                 name="cover" placeholder="ภาพปก" accept="image/*">
                         </div><!-- /.form-group -->
                         <div class="col-lg-10">
-                            <img src="{{ Storage::disk('external')->url('Course/' .$cour->cover) }}"
+                            <img src="{{ Storage::disk('external')->url('Course/' . $cour->cover) }}"
                                 alt="{{ $cour->cover }}" style="width:70%">
                         </div>
                         <div class="form-group">
@@ -78,10 +79,9 @@
                                     @php
                                         $courArray2 = json_decode($cour->subject, true);
                                     @endphp
-                  <option value="{{ $subjects->subject_id }}"
-                    {{ in_array($subjects->subject_id, $courArray2) ? 'selected' : '' }}>
-                    {{ $subjects->subject_th }}</option>
-                  
+                                    <option value="{{ $subjects->subject_id }}"
+                                        {{ in_array($subjects->subject_id, $courArray2) ? 'selected' : '' }}>
+                                        {{ $subjects->subject_th }}</option>
                                 @endforeach
                             </select>
                         </div><!-- /.form-group -->
@@ -125,9 +125,9 @@
                                         name="levels" class="form-control" data-toggle="select2"
                                         data-placeholder="ระดับหลักสูตร" data-allow-clear="false">
                                         <option value="0">เลือกระดับ </option>
-                           
+
                                         @for ($i = 1; $i <= 5; $i++)
-                                        <option value="{{$i}}"> ระดับ {{$i}} </option>
+                                            <option value="{{ $i }}"> ระดับ {{ $i }} </option>
                                         @endfor
                                         <option value="6"> ระดับต้น </option>
                                         <option value="7"> ระดับกลาง </option>
@@ -159,9 +159,11 @@
                                 <div class="form-group">
                                     <label for="learn_format">รูปแบบการเรียน </label> <select id="learn_format"
                                         name="learn_format" class="form-control" data-toggle="select2">
-                                         <option value="0" {{ $cour->learn_format == 0 ? 'selected' : '' }}>อิสระ</option>
-                                        <option value="1" {{ $cour->learn_format == 1 ? 'selected' : '' }}>ตามลำดับ</option>
-                                    
+                                        <option value="0" {{ $cour->learn_format == 0 ? 'selected' : '' }}>อิสระ
+                                        </option>
+                                        <option value="1" {{ $cour->learn_format == 1 ? 'selected' : '' }}>ตามลำดับ
+                                        </option>
+
                                     </select>
                                 </div>
                             </div><!-- /grid column -->
@@ -171,8 +173,10 @@
                                     <label class="control-label" for="courseformat">รูปแบบหลักสูตร</label> <select
                                         id="courseformat" name="courseformat" class="form-control" data-toggle="select2"
                                         data-placeholder="รูปแบบหลักสูตร" data-allow-clear="false">
-                                        <option value="0" {{ $cour->courseformat == 0 ? 'selected' : '' }}> แบบสมัครใจ</option>
-                                        <option value="1" {{ $cour->courseformat == 1 ? 'selected' : '' }}> แบบบังคับ</option>
+                                        <option value="0" {{ $cour->courseformat == 0 ? 'selected' : '' }}>
+                                            แบบสมัครใจ</option>
+                                        <option value="1" {{ $cour->courseformat == 1 ? 'selected' : '' }}> แบบบังคับ
+                                        </option>
                                     </select>
                                 </div>
                             </div><!-- /grid column -->
@@ -455,16 +459,16 @@
                                 <div class="col-md-6 d-none">
                                     <!-- .form-group -->
                                     <div class="form-group">
-                                        <label class="control-label" for="age">อายุบุคลากร</label> <select id="age"
-                                                name="age" class="form-control" data-toggle="select2"
-                                                data-placeholder="อายุบุคลากร" data-allow-clear="true">
-                                                <option value="0"> </option>
-        
-                                                @for ($i = 18; $i <= 100; $i++)
+                                        <label class="control-label" for="age">อายุบุคลากร</label> <select
+                                            id="age" name="age" class="form-control" data-toggle="select2"
+                                            data-placeholder="อายุบุคลากร" data-allow-clear="true">
+                                            <option value="0"> </option>
+
+                                            @for ($i = 18; $i <= 100; $i++)
                                                 <option value="{{ $i }}"> {{ $i }} </option>
                                             @endfor
 
-                                            </select>
+                                        </select>
                                     </div><!-- /.form-group -->
                                 </div><!-- /grid column -->
                                 <!-- grid column -->
@@ -563,10 +567,12 @@
                                             data-toggle="select2" data-placeholder="ชำระค่าลงทะเบียน"
                                             data-allow-clear="false"
                                             onchange="if(this.value==1) $('.showpayment').removeClass('d-none'); else $('.showpayment').addClass('d-none');">
-                                            <option value="0" {{ $cour->paymentstatus == 0 ? 'selected' : '' }}>ไม่มีค่าลงทะเบียน </option>
-                                            <option value="1" {{ $cour->paymentstatus == 1 ? 'selected' : '' }}>มีค่าลงทะเบียน </option>
-                                 
-                                
+                                            <option value="0" {{ $cour->paymentstatus == 0 ? 'selected' : '' }}>
+                                                ไม่มีค่าลงทะเบียน </option>
+                                            <option value="1" {{ $cour->paymentstatus == 1 ? 'selected' : '' }}>
+                                                มีค่าลงทะเบียน </option>
+
+
                                         </select>
                                     </div><!-- /.form-group -->
                                 </div><!-- /grid column -->
@@ -575,7 +581,7 @@
                                     <div class="form-group showpayment d-none ">
                                         <label for="person_type">ราคาหลักสูตร (บาท) </label>
                                         <input type="text" class="form-control number" name="price" id="price"
-                                            placeholder="ราคาหลักสูตร (บาท)" value="{{$cour->price}}" />
+                                            placeholder="ราคาหลักสูตร (บาท)" value="{{ $cour->price }}" />
                                     </div>
                                 </div><!-- /grid column -->
                             </div><!-- /grid row -->
@@ -605,7 +611,7 @@
                                     <div class="form-group">
                                         <label class="control-label" for="paymentdetail">ข้อมูลการชำระเงิน</label>
                                         <textarea class="ckeditor" data-placeholder="ข้อมูลการชำระเงิน" data-height="200" id="paymentdetail"
-                                            name="paymentdetail"> {{$cour->paymentdetail}}</textarea>
+                                            name="paymentdetail"> {{ $cour->paymentdetail }}</textarea>
                                     </div>
                                 </div><!-- /grid column -->
 
@@ -622,9 +628,11 @@
                                             name="discount" class="form-control" data-toggle="select2"
                                             data-placeholder="ส่วนลด" data-allow-clear="false"
                                             onchange="if(this.value==1) $('.showdiscount').removeClass('d-none'); else $('.showdiscount').addClass('d-none');">
-                                            <option value="0"  {{ $cour->discount == 0 ? 'selected' : '' }}>ไม่มีส่วนลด </option>
-                                            <option value="1"  {{ $cour->discount == 1 ? 'selected' : '' }}>มีส่วนลด </option>
-                                          
+                                            <option value="0" {{ $cour->discount == 0 ? 'selected' : '' }}>
+                                                ไม่มีส่วนลด </option>
+                                            <option value="1" {{ $cour->discount == 1 ? 'selected' : '' }}>มีส่วนลด
+                                            </option>
+
                                         </select>
                                     </div>
                                 </div><!-- /grid column -->
@@ -633,8 +641,11 @@
                                         <label class="control-label" for="">ประเภทการลด</label> <select
                                             id="discount_type" name="discount_type" class="form-control"
                                             data-toggle="select2" data-placeholder="ส่วนลด" data-allow-clear="false">
-                                            <option value="percent"  {{ $cour->discount_type == 'percent' ? 'selected' : '' }}>เปอร์เซ็นต์ </option>
-                                            <option value="price"  {{ $cour->discount_type == 'price' ? 'selected' : '' }}>ราคาบาท </option>
+                                            <option value="percent"
+                                                {{ $cour->discount_type == 'percent' ? 'selected' : '' }}>เปอร์เซ็นต์
+                                            </option>
+                                            <option value="price"
+                                                {{ $cour->discount_type == 'price' ? 'selected' : '' }}>ราคาบาท </option>
                                         </select>
                                     </div>
                                 </div><!-- /grid column -->
@@ -683,8 +694,10 @@
                                         <label class="control-label" for="">ธนาคาร</label> <select id="bank"
                                             name="bank" class="form-control" data-toggle="select2"
                                             data-placeholder="ธนาคาร" data-allow-clear="false">
-                                            <option value="0"  {{ $cour->bank == 0 ? 'selected' : '' }}>เลือกธนาคาร </option>
-                                            <option value="ktb"  {{ $cour->bank == 'ktb' ? 'selected' : '' }}>ธนาคารกรุงไทย </option>
+                                            <option value="0" {{ $cour->bank == 0 ? 'selected' : '' }}>เลือกธนาคาร
+                                            </option>
+                                            <option value="ktb" {{ $cour->bank == 'ktb' ? 'selected' : '' }}>
+                                                ธนาคารกรุงไทย </option>
                                         </select>
                                     </div>
                                 </div><!-- /grid column -->
@@ -692,7 +705,7 @@
                                     <div class="form-group">
                                         <label for="person_type">Comp Code </label>
                                         <input type="text" class="form-control number" name="compcode" id="compcode"
-                                            placeholder="Comp Code" value="{{$cour->compcode}}" />
+                                            placeholder="Comp Code" value="{{ $cour->compcode }}" />
                                     </div>
                                 </div><!-- /grid column -->
                             </div><!-- /grid row -->
@@ -701,14 +714,15 @@
                                     <div class="form-group">
                                         <label for="person_type">Tax ID </label>
                                         <input type="text" class="form-control number" name="taxid" id="taxid"
-                                            placeholder="Tax ID" value="{{$cour->taxid}}" />
+                                            placeholder="Tax ID" value="{{ $cour->taxid }}" />
                                     </div>
                                 </div><!-- /grid column -->
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label for="person_type">Suffix Code</label>
                                         <input type="text" class="form-control number" name="suffixcode"
-                                            id="suffixcode" placeholder="Suffix Code" value="{{$cour->suffixcode}}" maxlength="3" />
+                                            id="suffixcode" placeholder="Suffix Code" value="{{ $cour->suffixcode }}"
+                                            maxlength="3" />
                                     </div>
                                 </div><!-- /grid column -->
                             </div><!-- /grid row -->
@@ -726,7 +740,8 @@
                                     <div class="card card-figure">
                                         <!-- .card-figure -->
                                         <figure class="figure">
-                                            <img class="img-fluid" src="{{ Storage::disk('external')->url('cer/certificate_1.png') }}"
+                                            <img class="img-fluid"
+                                            src="{{ asset('upload/cer/certificate_1.png') }}"
                                                 alt="ใบประกาศนียบัตร  1 " style="cursor:zoom-in"
                                                 onclick="$('#previewimage').prop('src',$(this).prop('src'));$('#modal01').css('display','block');">
                                             <!-- .figure-caption -->
@@ -747,7 +762,7 @@
                             <div id="modal01" class="w3-modal" onclick="this.style.display='none'">
                                 <span class="w3-button w3-hover-red w3-xlarge w3-display-topright">×</span>
                                 <div class="w3-modal-content w3-animate-zoom">
-                                    <img src="{{ Storage::disk('external')->url('cer/certificate_1.png') }}" style="width:100%"
+                                    <img src="{{ asset('upload/cer/certificate_1.png') }}" style="width:100%"
                                         id="previewimage">
                                 </div>
                             </div>
@@ -789,7 +804,8 @@
                                     <div class="form-group">
                                         <label class="control-label" for="days">ชื่อ-นามสกุล</label> <input
                                             type="text" class="form-control" name="signature_name"
-                                            id="signature_name" placeholder="ชื่อ-นามสกุล" value="{{$cour->signature_name}}" />
+                                            id="signature_name" placeholder="ชื่อ-นามสกุล"
+                                            value="{{ $cour->signature_name }}" />
                                     </div>
                                 </div><!-- /grid column -->
                                 <!-- grid column -->
@@ -797,7 +813,7 @@
                                     <div class="form-group">
                                         <label class="control-label" for="hours">ตำแหน่ง</label> <input type="text"
                                             class="form-control" name="signature_position" id="signature_position"
-                                            placeholder="ตำแหน่ง" value="{{$cour->signature_position}}" />
+                                            placeholder="ตำแหน่ง" value="{{ $cour->signature_position }}" />
                                     </div>
                                 </div><!-- /grid column -->
                             </div><!-- /grid row -->

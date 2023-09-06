@@ -75,6 +75,19 @@
       <link rel="stylesheet" href="{{ asset('/stylesheets/logincss/logincss.css') }}">
 
   </head>
+
+  @php
+  use Illuminate\Support\Facades\DB;
+  
+  try {
+      $connectionName = 'oracle';
+      $dbName = DB::connection($connectionName)->select("SELECT ora_database_name FROM dual")[0]->ora_database_name;
+      echo "Connected successfully to Oracle database named: $dbName";
+  } catch (\Exception $e) {
+      echo 'Connection failed: ' . $e->getMessage();
+  }
+  @endphp
+  
   <div class="wrapper fadeInDown">
       <div id="formContent">
           <!-- Tabs Titles -->
@@ -87,7 +100,7 @@
 
           <!-- Icon -->
           <div class="fadeIn first">
-              <img src="{{ Storage::disk('external')->url('logo/1690433379.png') }}" id="icon" alt="User Icon" />
+              <img src="{{ asset('lac/logo.png') }}" id="icon" alt="User Icon" />
           </div>
 
           <!-- Login Form -->
@@ -117,15 +130,15 @@
               </span>
               <br>
               <div class="row mb-3">
-                <div class="col-6">
-                    <div class="form-check">
-                        <input class="form-check-input" type="checkbox" id="remember-me" onclick="myFunction()">
-                        <label class="form-check-label" for="remember-me">Remember Me</label>
-                    </div>
-                 
-                </div>
-     
-                </div>
+                  <div class="col-6">
+                      <div class="form-check">
+                          <input class="form-check-input" type="checkbox" id="remember-me" onclick="myFunction()">
+                          <label class="form-check-label" for="remember-me">Remember Me</label>
+                      </div>
+
+                  </div>
+
+              </div>
 
               <br>
               <input type="submit" class="fadeIn fourth" value="Log In">

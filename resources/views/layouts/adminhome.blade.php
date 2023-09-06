@@ -13,6 +13,8 @@
     <meta name="description" content="">
     <meta property="og:description" content="">
     <link rel="canonical" href="">
+    <link rel="icon" type="image/png" href="{{ asset('upload/logo/1690433379.png') }}">
+
     <meta property="og:url" content="">
     <meta property="og:site_name" content="">
     <script type="application/ld+json">
@@ -46,13 +48,15 @@
     <link href="{{ asset('/javascript/vendor/bootstrap-touchspin/jquery.bootstrap-touchspin.min.css') }}"
         rel="stylesheet">
 
-    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <link rel="stylesheet" href="{{ asset('/w3/w3.css') }}">
     <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.12/dist/sweetalert2.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
     <style>
         @font-face {
             font-family: 'DB-Heavent';
-            src: url('{{ asset('fonts/DB-Heavent-v3.2.1.woff2') }}') format('woff2');
+            src: url('{{ asset('fonts/DB-Heavent-v3.2.1.woff2') }}') format('woff2'),
+                url('{{ asset('fonts/DB-Heavent-v3.2.1.woff') }}') format('woff'),
+                url('{{ asset('fonts/DB-Heavent-v3.2.1.ttf') }}') format('truetype');
 
         }
 

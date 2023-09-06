@@ -5,57 +5,66 @@ namespace App\Http\Controllers;
 use Illuminate\Support\Facades\Storage;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
 use App\Models\CourseSubject;
+use App\Models\Department;
 use App\Models\Survey;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 
 class SurveyController extends Controller
 {
-   public function surveypage()
+   public function surveypage($department_id)
    {
-      $sur = Survey::all();
-      return view('page.manages.survey.index', compact('sur'));
+      $depart = Department::findOrFail($department_id);
+      $sur  = $depart->SurDe()->where('department_id', $department_id)->get();
+
+      return view('page.manages.survey.index', compact('sur', 'depart'));
    }
-   public function create()
+   public function create($department_id)
    {
-      return view('page.manages.survey.create');
+      $depart = Department::findOrFail($department_id);
+      return view('page.manages.survey.create', compact('depart'));
    }
-   public function store(Request $request)
+   public function store(Request $request, $department_id)
    {
       $request->validate([
          'survey_th' => 'required',
          'detail_th' => 'required'
       ]);
-      $content = 'เนื้อหาที่ต้องการใส่ในรหัส QR';
 
-      $qrCode = QrCode::format('png')->size(399)->color(40, 40, 40)->encoding('UTF-8')->generate($content);
-      $imageData = 'data:image/png;base64,' . base64_encode($qrCode);
       $filename = 'qrcode_' . time() . '.png';
-      $folder = 'qr_codes';
-      Storage::disk('public')->put($folder . '/' . $filename, file_get_contents($imageData));
+
 
 
       $sur = new Survey;
       $sur->survey_th = $request->survey_th;
-      $sur->survey_en = $request->survey_th;
+      $sur->survey_en = 0;
       $sur->detail_th = $request->detail_th;
       $sur->detail_en = null;
       $sur->survey_date = now();
       $sur->cover = $filename;
 
       $sur->survey_status = $request->input('survey_status', 0);
-      $sur->survey_type = $request->survey_type;
+      $sur->survey_lang = $request->survey_lang;
+      $sur->survey_type = 0;
       $sur->recommended = null;
       $sur->class_id = null;
+      $sur->department_id = (int)$department_id;
+      $saveSuccess = $sur->save();
 
-      $sur->save();
-
-      return redirect()->route('surveypage')->with('success', 'Survey บันทึกข้อมูลสำเร็จ');
+      if ($saveSuccess) {
+         return redirect()->route('surveypage', ['department_id' => $sur->department_id])->with('success', 'Survey บันทึกข้อมูลสำเร็จ');
+      } else {
+         // กรณีที่บันทึกไม่สำเร็จ
+         return redirect()->back()->with('error', 'ไม่สามารถบันทึก Survey ได้');
+      }
    }
 
    public function edit($survey_id)
    {
       $sur = Survey::findOrFail($survey_id);
-      return view('page.manages.survey.edit', ['sur' => $sur]);
+      $department_id   = $sur->department_id;
+      $depart = Department::findOrFail($department_id);
+      return view('page.manages.survey.edit', ['sur' => $sur, 'depart' => $depart]);
    }
 
    public function update(Request $request, $survey_id)
@@ -70,21 +79,20 @@ class SurveyController extends Controller
       $sur->detail_th = $request->detail_th;
       $sur->detail_en = null;
       $sur->survey_date = now();
-
-      $sur->survey_type = $request->survey_type;
+      $sur->survey_lang = $request->survey_lang;
       $sur->recommended = null;
       $sur->class_id = null;
       $sur->cover = null;
       $sur->save();
 
-      return redirect()->route('surveypage')->with('success', 'Survey บันทึกข้อมูลสำเร็จ');
+      return redirect()->route('surveypage', ['department_id' => $sur->department_id])->with('success', 'Survey บันทึกข้อมูลสำเร็จ');
    }
    public function destory($survey_id)
    {
       $sur = Survey::findOrFail($survey_id);
       $sur->surs()->delete();
       $sur->delete();
-      return redirect()->route('surveypage')->with('success', 'Survey ลบข้อมูลสำเร็จ');
+      return redirect()->back()->with('success', 'Survey ลบข้อมูลสำเร็จ');
    }
 
 
@@ -95,14 +103,19 @@ class SurveyController extends Controller
       $subs  = CourseSubject::findOrFail($subject_id);
       $suracts = $subs->suyvs()->where('subject_id', $subject_id)->get();
 
+      $department_id =   $subs->department_id;
+      $depart = Department::findOrFail($department_id);
 
-      return view('page.manage.sub.activitys.activcontent.survey.index', compact('subs', 'suracts'));
+      return view('page.manage.sub.activitys.activcontent.survey.index', compact('subs', 'suracts', 'depart'));
    }
 
    public function suycreate($subject_id)
    {
       $subs  = CourseSubject::findOrFail($subject_id);
-      return view('page.manage.sub.activitys.activcontent.survey.create', compact('subs'));
+
+      $department_id =   $subs->department_id;
+      $depart = Department::findOrFail($department_id);
+      return view('page.manage.sub.activitys.activcontent.survey.create', compact('subs', 'depart'));
    }
 
    public function storesuySupject(Request $request, $subject_id)
@@ -138,7 +151,10 @@ class SurveyController extends Controller
       $subject_id = $suruy->subject_id;
       $subs  = CourseSubject::findOrFail($subject_id);
       $suracts = $subs->suyvs()->where('subject_id', $subject_id)->get();
-      return view('page.manage.sub.activitys.activcontent.survey.edit', compact('suruy', 'subs'));
+
+      $department_id =   $subs->department_id;
+      $depart = Department::findOrFail($department_id);
+      return view('page.manage.sub.activitys.activcontent.survey.edit', compact('suruy', 'subs', 'depart'));
    }
    public function Updatesuy(Request $request, $survey_id)
    {

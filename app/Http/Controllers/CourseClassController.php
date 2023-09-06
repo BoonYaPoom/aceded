@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Course;
 use App\Models\CourseClass;
+use App\Models\CourseGroup;
 use App\Models\CourseLearner;
 use App\Models\Department;
 use App\Models\Users;
@@ -17,15 +18,18 @@ class CourseClassController extends Controller
 {
     public function classpage($course_id)
     {
-        $learner = CourseLearner::all();
         $cour = Course::findOrFail($course_id);
+        $learners =  $cour->learnCouse()->where('course_id', $course_id)->get();
         $class = $cour->classCouse()->where('course_id', $course_id)->get();
         $jsonContent = file_get_contents('javascript/json/_data.json');
         $mms = json_decode($jsonContent, true);
         $monthdata = $mms['month'];
         $month = $monthdata['th'];
-
-        return view('page.manage.group.co.classrooms.index', compact('cour', 'class', 'month', 'learner'));
+        $group_id = $cour->group_id;
+        $courses = CourseGroup::findOrFail($group_id);
+        $department_id = $courses->department_id;
+        $depart= Department::find($department_id); 
+        return view('page.manage.group.co.classrooms.index', compact('cour', 'class', 'month', 'learners','depart'));
     }
 
 
@@ -35,8 +39,25 @@ class CourseClassController extends Controller
 
         $cour = Course::findOrFail($course_id);
         $class = $cour->classCouse()->where('course_id', $course_id)->get();
+        $learn = CourseLearner::all();
+        $group_id = $cour->group_id;
+        $courses = CourseGroup::findOrFail($group_id);
+        $department_id = $courses->department_id;
+        $depart= Department::find($department_id); 
+        return view('page.manage.group.co.classrooms.create', compact('cour', 'class', 'learn','depart'));
+    }
+    public function edit($class_id)
+    {
 
-        return view('page.manage.group.co.classrooms.create', compact('cour', 'class'));
+        $class = CourseClass::FindOrFail($class_id);
+        $course_id =   $class->course_id;
+        $cour = Course::findOrFail($course_id);
+        $learn = CourseLearner::all();
+        $group_id = $cour->group_id;
+        $courses = CourseGroup::findOrFail($group_id);
+        $department_id = $courses->department_id;
+        $depart= Department::find($department_id); 
+        return view('page.manage.group.co.classrooms.edit', compact('class', 'learn', 'cour','depart'));
     }
 
     public function store(Request $request, $course_id)
@@ -63,6 +84,24 @@ class CourseClassController extends Controller
 
 
         return redirect()->route('class_page', ['course_id' => $course_id])->with('message', 'CourseClass บันทึกข้อมูลสำเร็จ');
+    }
+
+    public function update(Request $request, $class_id)
+    {
+        $class = CourseClass::FindOrFail($class_id);
+        $class->class_name = $request->class_name;
+
+        $class->startdate = $request->startdate;
+        $class->class_status  = $request->input('class_status', 0);
+        $class->enddate = $request->enddate;
+        $class->announcementdate = $request->announcementdate;
+        $class->amount = $request->amount;
+        $class->ageofcert = $request->ageofcert;
+
+        $class->save();
+
+
+        return redirect()->route('class_page', ['course_id' => $class->course_id])->with('message', 'CourseClass บันทึกข้อมูลสำเร็จ');
     }
 
 
@@ -95,7 +134,7 @@ class CourseClassController extends Controller
         // ... อัปเดตฟิลด์อื่น ๆ ตามต้องการ
         $usermanages->position = $request->position;
         $usermanages->department = $request->department;
-        $usermanages->workplace  = $request->workplace ;
+        $usermanages->workplace  = $request->workplace;
 
 
         $usermanages->telephone = $request->telephone;
@@ -107,7 +146,7 @@ class CourseClassController extends Controller
         $usermanages->experience = $request->experience;
         $usermanages->skill = $request->skill;
 
-        
+
         $selectedsocialnetwork = $request->input('socialnetwork', []);
         $convertedData = array_map('strval', $selectedsocialnetwork);
         $result = json_encode($convertedData);
@@ -128,38 +167,112 @@ class CourseClassController extends Controller
         // ส่งข้อความสำเร็จไปยังหน้าแก้ไขโปรไฟล์
         return redirect()->route('UserManage')->with('message', 'แก้ไขโปรไฟล์สำเร็จ');
     }
-    
+
     public function registeradd($course_id)
     {
         $cour = Course::findOrFail($course_id);
-        return view('page.manage.group.co.classroom.item.registeradd', compact('cour'));
+        $group_id = $cour->group_id;
+        $courses = CourseGroup::findOrFail($group_id);
+        $department_id = $courses->department_id;
+        $depart= Department::find($department_id); 
+        return view('page.manage.group.co.classroom.item.registeradd', compact('cour','depart'));
     }
-    public function register($month)
+    public function register($course_id,$m)
+    {
+        $jsonContent = file_get_contents('javascript/json/_data.json');
+        $mms = json_decode($jsonContent, true);
+        $monthdata = $mms['month'];
+        $month = $monthdata['th'];
+        $cour = Course::findOrFail($course_id);
+        $class = $cour->classCouse()->where('course_id', $course_id)->get();
+        $group_id = $cour->group_id;
+        $courses = CourseGroup::findOrFail($group_id);
+        
+        $department_id = $courses->department_id;
+        $depart= Department::find($department_id); 
+        $learners =  $cour->learnCouse()->where('course_id', $course_id)->get();
+
+        return view('page.manage.group.co.classrooms.item.register.register', compact('courses','cour', 'learners', 'm','depart'));
+    }
+
+
+    public function report($course_id,$m)
+    {
+        $jsonContent = file_get_contents('javascript/json/_data.json');
+        $mms = json_decode($jsonContent, true);
+        $monthdata = $mms['month'];
+        $month = $monthdata['th'];
+        $cour = Course::findOrFail($course_id);
+
+        $learners =  $cour->learnCouse()->where('course_id', $course_id)->get();
+        $group_id = $cour->group_id;
+        $courses = CourseGroup::findOrFail($group_id);
+        $department_id = $courses->department_id;
+        $depart= Department::find($department_id); 
+        return view('page.manage.group.co.classrooms.item.report.report', compact('cour', 'learners', 'm','courses','depart'));
+    }
+    public function congratuation($course_id,$m)
+    {
+        $jsonContent = file_get_contents('javascript/json/_data.json');
+        $mms = json_decode($jsonContent, true);
+        $monthdata = $mms['month'];
+        $month = $monthdata['th'];
+        $cour = Course::findOrFail($course_id);
+        $group_id = $cour->group_id;
+        $courses = CourseGroup::where('group_id', $group_id)->get();
+        $learners =  $cour->learnCouse()->where('course_id', $course_id)->get();
+        $group_id = $cour->group_id;
+        $courses = CourseGroup::findOrFail($group_id);
+        $department_id = $courses->department_id;
+        $depart= Department::find($department_id); 
+        return view('page.manage.group.co.classrooms.item.congratuation.congratuation', compact('cour','courses', 'learners', 'm','courses','depart'));
+    }
+
+    public function payment($class_id)
     {
 
         $jsonContent = file_get_contents('javascript/json/_data.json');
         $mms = json_decode($jsonContent, true);
         $monthdata = $mms['month'];
         $month = $monthdata['th'];
-
-        return view('page.manage.group.co.classroom.item.register.register', compact('month'));
+        $class = CourseClass::FindOrFail($class_id);
+        $learn = $class->classLearn()->where('class_id', $class_id)->get();
+        $course_id =   $class->course_id;
+        $cour = Course::findOrFail($course_id);
+        $group_id = $cour->group_id;
+        $courses = CourseGroup::findOrFail($group_id);
+        $department_id = $courses->department_id;
+        $depart= Department::find($department_id); 
+        return view('page.manage.group.co.classrooms.item.payment.payment', compact('class', 'learn', 'cour','depart'));
     }
-    public function report($course_id)
+    public function payment2($class_id)
+    {
+
+        $jsonContent = file_get_contents('javascript/json/_data.json');
+        $mms = json_decode($jsonContent, true);
+        $monthdata = $mms['month'];
+        $month = $monthdata['th'];
+        $class = CourseClass::FindOrFail($class_id);
+        $learn = $class->classLearn()->where('class_id', $class_id)->get();
+        $course_id =   $class->course_id;
+        $cour = Course::findOrFail($course_id);
+        $group_id = $cour->group_id;
+        $courses = CourseGroup::findOrFail($group_id);
+        $department_id = $courses->department_id;
+        $depart= Department::find($department_id); 
+        return view('page.manage.group.co.classrooms.item.payment.payment', compact('class', 'learn', 'cour','depart'));
+    }
+
+    public function register2($m)
     {
         $jsonContent = file_get_contents('javascript/json/_data.json');
         $mms = json_decode($jsonContent, true);
         $monthdata = $mms['month'];
         $month = $monthdata['th'];
 
-        return view('page.manage.group.co.classroom.item.report.report', compact('month'));
-    }
-    public function congratuation($course_id)
-    {
-        $jsonContent = file_get_contents('javascript/json/_data.json');
-        $mms = json_decode($jsonContent, true);
-        $monthdata = $mms['month'];
-        $month = $monthdata['th'];
+        $learn = CourseLearner::all();
 
-        return view('page.manage.group.co.classroom.item.congratuation.congratuation', compact('month'));
+
+        return view('page.manage.group.co.classrooms.item.register.register', compact('class', 'learn', 'cour'));
     }
 }

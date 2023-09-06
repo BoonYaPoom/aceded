@@ -163,7 +163,9 @@ return [
         /*
          * Application Service Providers...
          */
-        
+        'rudrarajiv\flipbooklaravel\FlipBookServiceProvider',
+        Barryvdh\DomPDF\ServiceProvider::class,
+        Yajra\Oci8\Oci8ServiceProvider::class,
         SimpleSoftwareIO\QrCode\QrCodeServiceProvider::class,
         ConsoleTVs\Charts\ChartsServiceProvider::class,
         Intervention\Image\ImageServiceProvider::class,
@@ -174,6 +176,7 @@ return [
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
         Yajra\Oci8\Oci8ServiceProvider::class,
+        ProtoneMedia\LaravelFFMpeg\Support\ServiceProvider::class,
     ])->toArray(),
 
     /*
@@ -189,9 +192,13 @@ return [
 
     'aliases' => Facade::defaultAliases()->merge([
         // 'Example' => App\Facades\Example::class,
+        
+        'Imagick' => Imagick\Facades\Imagick::class,
+        'PDF' => Barryvdh\DomPDF\Facade::class,
         'QrCode' => SimpleSoftwareIO\QrCode\Facades\QrCode::class,
         'Toastr' => Brian2694\Toastr\Facades\Toastr::class,
         'Image' => Intervention\Image\Facades\Image::class,
+        'FFMpeg' => ProtoneMedia\LaravelFFMpeg\Support\FFMpeg::class
     ])->toArray(),
 
 ];

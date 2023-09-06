@@ -1,5 +1,5 @@
-@extends('layouts.adminhome')
-@section('content')
+@extends('layouts.department.layout.departmenthome')
+@section('contentdepartment')
     <!-- .page-inner -->
     <div class="page-inner">
         <!-- .page-section -->
@@ -7,8 +7,8 @@
             <!-- .card -->
             <div class="card card-fluid">
                 <!-- .card-header -->
-                <div class="card-header bg-muted"><a href="{{ route('cop') }}"
-                        style="text-decoration: underline;">กิจกกรรม</a> / <a href="{{ route('meeti') }}"
+                <div class="card-header bg-muted"><a href="{{ route('cop', ['department_id' => $depart]) }}"
+                        style="text-decoration: underline;">กิจกกรรม</a> / <a href="{{ route('meeti', ['department_id' => $depart]) }}"
                         style="text-decoration: underline;">
                         ชุมนุมนักปฏิบัติ</a> / <i> ประชุมออนไลน์</i></div><!-- /.card-header -->
                 <!-- .card-body -->

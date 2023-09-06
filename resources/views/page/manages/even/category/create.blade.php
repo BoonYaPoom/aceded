@@ -1,5 +1,5 @@
-@extends('layouts.adminhome')
-@section('content')
+@extends('layouts.department.layout.departmenthome')
+@section('contentdepartment')
     <!-- .page-inner -->
     <div class="page-inner">
         <!-- .form -->
@@ -7,12 +7,12 @@
         <div class="page-section">
             <!-- .card -->
             <div class="card card-fluid" >
-                <div class="card-header bg-muted"><a href="{{ route('manage') }}"
-                    style="text-decoration: underline;">จัดการเว็บ</a> / <a href="{{ route('evenpage') }}"
+                <div class="card-header bg-muted"><a href="{{ route('manage', ['department_id' => $category->department_id]) }}"
+                    style="text-decoration: underline;">จัดการเว็บ</a> / <a href="{{ route('Webpage', ['department_id' => $category->department_id]) }}"
                     style="text-decoration: underline;">ข่าว/{{ $category->category_th }}</a> / <a
                     href="{{ route('catpage', ['category_id' => $category->category_id]) }}"
                     style="text-decoration: underline;">
-                    กิจกรรม</a> / <i> เพิ่มข่าว</i></div><!-- /.card-header -->
+                    กิจกรรม</a> / <i> เพิ่ม</i></div><!-- /.card-header -->
 
 
                 <form action="{{ route('catstore', ['category_id' => $category]) }}" method="post"

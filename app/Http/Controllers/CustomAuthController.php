@@ -46,9 +46,7 @@ class CustomAuthController extends Controller
             'workplace'=> 'required',
             'mobile'=> 'required',
             'user_type'=> 'required',
-            'province_id'=> 'required',
-            'district_id'=> 'required',
-            'subdistrict_id'=> 'required'
+          
 
         ]);
        

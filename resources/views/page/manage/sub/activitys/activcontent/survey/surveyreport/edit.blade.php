@@ -1,5 +1,5 @@
-@extends('layouts.adminhome')
-@section('content')
+@extends('layouts.department.layout.departmenthome')
+@section('contentdepartment')
     <!-- .page-inner -->
     <div class="page-inner">
         <!-- .form -->
@@ -8,10 +8,10 @@
             <!-- .card -->
             <div class="card card-fluid">
                 <!-- .card-header -->
-                <div class="card-header bg-muted"><a href="{{ route('surveyact', [$surques->subject_id]) }}" style="text-decoration: underline;"> จัดการวิชา </a> / <a
-                        href="{{ route('surveyReport', [$surques->survey_id]) }}"
+                <div class="card-header bg-muted"><a href="{{ route('surveyact', [$sur->subject_id]) }}" style="text-decoration: underline;"> จัดการวิชา </a> / <a
+                        href="{{ route('surveyquestion', [$surques->survey_id]) }}"
                         style="text-decoration: underline;">แบบสำรวจ</a> / <a
-                        href="{{ route('surveyReport', [$surques->survey_id]) }}"
+                        href="{{ route('surveyquestion', [$surques->survey_id]) }}"
                         style="text-decoration: underline;"></a> 
                     <i> {!! $surques->question !!}</i>
                 </div><!-- /.card-header -->
@@ -50,6 +50,7 @@
                                     } else if (selectedValue == '2') {
                                         $('#data2').show();
                                     }
+                                    
                                 });
                             });
                         </script>

@@ -33,7 +33,8 @@ return new class extends Migration
             $table->integer('ordering')->nullable();
             $table->integer('lesson_id');
             $table->integer('subject_id');
-            $table->string('explainquestion', 255)->nullable()->collation('utf8_general_ci');
+            $table->string('explainquestion', 400)->nullable()->collation('utf8_general_ci');
+            $table->string('question_level', 1)->nullable()->collation('utf8_general_ci');
         });
     }
 

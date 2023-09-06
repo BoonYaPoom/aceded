@@ -15,7 +15,7 @@ class HighlightController extends Controller
     public function hightpage()
     {
         $hights = Highlight::all();
-        return view('page.manages.data.imghead.imgheadedit', compact('hights'));
+        return view('layouts.department.item.data.imghead.imgheadedit', compact('hights'));
     }
 
     public function store(Request $request)
@@ -27,7 +27,7 @@ class HighlightController extends Controller
         $hights = new Highlight;
 
         $image_name = time() . '.' . $request->highlight_path->getClientOriginalExtension();
-        Storage::disk('external')->put('banner/' . $image_name, file_get_contents($request->highlight_path));
+        Storage::disk('uploadfile')->put('banner/' . $image_name, file_get_contents($request->highlight_path));
 
         $hights->highlight_path = $image_name;
         $hights->department_id = 0;
@@ -131,7 +131,7 @@ class HighlightController extends Controller
 
         $depart  = Department::findOrFail($department_id);
         $hights = $depart->hightlight()->where('department_id', $department_id)->get();
-        return view('page.manage.imghead.imgheadedit', compact('hights', 'depart'));
+        return view('page.manages.imghead.imgheadedit', compact('hights', 'depart'));
     }
 
     public function storeDep(Request $request ,$department_id)
@@ -143,7 +143,7 @@ class HighlightController extends Controller
         $hights = new Highlight;
 
         $image_name = time() . '.' . $request->highlight_path->getClientOriginalExtension();
-        Storage::disk('external')->put('banner/' . $image_name, file_get_contents($request->highlight_path));
+        Storage::disk('uploadfile')->put('banner/' . $image_name, file_get_contents($request->highlight_path));
 
         $hights->highlight_path = $image_name;
 

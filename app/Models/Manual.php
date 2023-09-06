@@ -12,4 +12,7 @@ class Manual extends Model
     protected $guarded =[];
     protected $primaryKey = 'manual_id';
     public $timestamps = false;
+    public function Department() {
+        return $this->belongsTo(Department::class,'department_id');
+      }
 }

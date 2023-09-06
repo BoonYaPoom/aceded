@@ -1,5 +1,5 @@
-@extends('layouts.adminhome')
-@section('content')
+@extends('layouts.department.layout.departmenthome')
+@section('contentdepartment')
     @if (Session::has('message'))
         <script>
             toastr.options = {
@@ -109,10 +109,15 @@
                                 <div class="form-group">
                                     <label for="course_en">ผู้สอน</label>
                                     <select id="teacher" name="teacher[]" class="form-control" data-toggle="select2" data-placeholder="ผู้สอน" data-allow-clear="false" multiple>
-                                        <option value="0">เลือกผู้สอน</option>
-                                        <option value="24130" {{ in_array('24130', explode(',', $subs->teacher)) ? 'selected' : '' }}>สำนักงาน ป.ป.ช.</option>
-                                        <option value="24131" {{ in_array('24131', explode(',', $subs->teacher)) ? 'selected' : '' }}>สำนักงานคณะกรรมการป้องกันและปราบปรามการทุจริตแห่งชาติ</option>
-                                    </select>
+                                        <option value="0" disabled>เลือกผู้สอน</option>
+
+                                    @foreach ($users4 as $u => $users)
+                                    @if($users->role == 3)
+                                        <option value="{{ $users->uid }}"  {{ in_array($users->uid , explode(',', $subs->teacher)) ? 'selected' : '' }}> {{ $users->firstname }}
+                                            {{ $users->lastname }} </option>
+                                            @endif
+                                    @endforeach
+                                                      </select>
                                 </div>
                             </div>
                         </div>

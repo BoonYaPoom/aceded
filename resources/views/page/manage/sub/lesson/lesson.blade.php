@@ -23,10 +23,11 @@
                 <thead>
                     <tr class="bg-infohead">
                         <th class="align-middle" style="width:10%"> ลำดับ </th>
-                        <th class="align-middle" style="width:25%"> ชื่อ (ไทย) </th>
-                        <th class="align-middle w3-hide-small" style="width:25%"> ชื่อ (อังกฤษ) </th>
+                        <th class="align-middle" style="width:20%"> ชื่อ (ไทย) </th>
+                        <th class="align-middle w3-hide-small" style="width:20%"> ชื่อ (อังกฤษ) </th>
                         <th class="align-middle" style="width:10%"> ชนิดสื่อ </th>
                         <th class="align-middle" style="width:10%"> สถานะ </th>
+                        <th class="align-middle" style="width:10%"> เวลาวิดิโอ </th>
                         <th class="align-middle" style="width:10%"> กระทำ</th>
                     </tr>
                 </thead>
@@ -40,13 +41,17 @@
                     @foreach ($lessons as $index => $item)
                         @php
                             $lesson_id = $item->lesson_id;
-                            
-                            if (empty($level)) {
-                                $sublesson = '';
-                            } else {
-                                $sublesson = 'small';
-                            }
                             $level++;
+                            $totalDuration =  $item->duration;
+                            $totalDurationInMinutes = $totalDuration;
+                                                
+                                                $totalMinutes = floor($totalDurationInMinutes / 60); // จำนวนชั่วโมง
+                                                $totalMin = $totalDurationInMinutes % 60; // จำนวนนาทีที่เหลือ
+                                                
+                                                if ($totalMin > 60) {
+                                                    $totalMinutes += floor($totalMin / 60);
+                                                    $totalMin %= 60;
+                                                }
                         @endphp
                         @php
                             $contentType = \App\Models\ContentType::where('content_type', $item->content_type)->first();
@@ -66,16 +71,19 @@
 
                         <!--  Lessons Small -->
                         @php
-                            $left += $level + 5;
+                            $left += $level + 30;
                         @endphp
                         @foreach ($lessons as $subitem)
-                            @if ($subitem->lesson_status == 2 && $subitem->lesson_id_ref === $item->lesson_id)
+                            @if ($subitem->lesson_id_ref === $item->lesson_id)
+                               
                                 @include('page.manage.sub.lesson.item.subitem')
-
                                 <!--  Model -->
                                 @include('page.manage.sub.lesson.item.modelLessonSmall')
+                               
                             @endif
+              
                         @endforeach
+                        
                     @endforeach
                 </tbody><!-- /tbody -->
             </table><!-- /.table -->
@@ -87,9 +95,7 @@
             $(".rows_" + id).toggle();
             var obj1 = document.getElementById("icon1_" + id);
             var obj2 = document.getElementById("icon2_" + id);
-            //obj.classList.add('MyClass');
-            //document.getElementById("MyElement").classList.remove('MyClass');
-            //if ( document.getElementById("MyElement").classList.contains('MyClass') )
+
             if (obj1.classList.contains('fa-plus-circle')) {
                 obj1.classList.remove('fa-plus-circle');
                 obj1.classList.add('fa-minus-circle');

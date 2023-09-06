@@ -15,8 +15,8 @@ return new class extends Migration
             $table->charset = 'utf8';
             $table->collation = 'utf8_general_ci';
             $table->increments('survey_id');
-            $table->string('survey_th', 200)->collation('utf8_general_ci');
-            $table->string('survey_en', 200)->nullable()->collation('utf8_general_ci');
+            $table->string('survey_th', 400)->collation('utf8_general_ci');
+            $table->string('survey_en', 400)->nullable()->collation('utf8_general_ci');
             $table->longText('detail_th')->nullable()->collation('utf8_general_ci');
             $table->longText('detail_en')->nullable()->collation('utf8_general_ci');
             $table->dateTime('survey_date');
@@ -26,8 +26,9 @@ return new class extends Migration
             $table->string('recommended', 1)->nullable()->collation('utf8_general_ci');
             $table->integer('subject_id')->default(0)->nullable();
             $table->integer('class_id')->nullable();
-            $table->string('cover', 200)->nullable()->collation('utf8_general_ci');
-            
+            $table->string('cover', 400)->nullable()->collation('utf8_general_ci');
+            $table->string('survey_lang', 2)->nullable()->default('th')->collation('utf8_general_ci');
+            $table->integer('department_id')->nullable();
         });
     }
 

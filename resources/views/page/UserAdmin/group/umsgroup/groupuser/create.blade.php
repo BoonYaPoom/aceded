@@ -1,6 +1,5 @@
 @extends('layouts.adminhome')
 @section('content')
-    <!-- .page-inner -->
 
     <div class="page-inner">
         <!-- .page-section -->

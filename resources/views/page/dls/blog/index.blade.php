@@ -1,5 +1,5 @@
-@extends('layouts.adminhome')
-@section('content')
+@extends('layouts.department.layout.departmenthome')
+@section('contentdepartment')
     @if (Session::has('message'))
         <script>
             toastr.options = {
@@ -24,7 +24,7 @@
             <div class="card card-fluid">
                 <!-- .card-header -->
                 <div class="card-header bg-muted">
-                    <a href="{{ route('dls') }}" style="text-decoration: underline;">จัดการข้อมูลและความรู้</a> /
+                    <a href="{{ route('dls', ['department_id' => $depart]) }}" style="text-decoration: underline;">จัดการข้อมูลและความรู้</a> /
                     <i>คลังความรู้</i>
                 </div>
                 <!-- /.card-header -->
@@ -95,7 +95,7 @@
                                                     title="ข้อมูล"></i>
                                             </a>
                                             <a href="{{ route('editblogcat', [$item->category_id]) }}">
-                                                <i class="far fa-edit fa-lg text-success" data-toggle="tooltip"
+                                                <i class="fas fa-edit fa-lg text-success" data-toggle="tooltip"
                                                     title="แก้ไข"></i></a>
                                             <a href="{{ route('destoryblogcat', [$item->category_id]) }}"
                                                 onclick="deleteRecord(event)" rel="เกร็ดความรู้...สู้ทุจริต"
@@ -117,7 +117,7 @@
         <header class="page-title-bar">
             <!-- floating action -->
             <button type="button" class="btn btn-success btn-floated btn-addcop"
-                onclick="window.location='{{ route('createblogcat') }}'" data-toggle="tooltip" title="เพิ่ม"><span
+                onclick="window.location='{{ route('createblogcat', ['department_id' => $depart]) }}'" data-toggle="tooltip" title="เพิ่ม"><span
                     class="fas fa-plus"></span></button>
             <!-- /floating action -->
         </header><!-- /.page-title-bar -->

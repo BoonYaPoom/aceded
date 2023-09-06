@@ -1,5 +1,5 @@
-@extends('layouts.adminhome')
-@section('content')
+@extends('layouts.department.layout.departmenthome')
+@section('contentdepartment')
     <!-- .page-inner -->
     <div class="page-inner">
         <!-- .page-section -->
@@ -7,8 +7,8 @@
             <!-- .card -->
             <div class="card card-fluid">
                 <!-- .card-header -->
-                <div class="card-header bg-muted"><a href="{{ route('cop') }}"
-                    style="text-decoration: underline;">กิจกกรรม</a> / <a href="{{ route('activi') }}"
+                <div class="card-header bg-muted"><a href="{{ route('cop', ['department_id' => $actCat->department_id]) }}"
+                    style="text-decoration: underline;">กิจกกรรม</a> / <a href="{{ route('activi', ['department_id' => $actCat->department_id]) }}"
                     style="text-decoration: underline;">ชุมนุมนักปฏิบัติ </a> / <i>
                         {{ $actCat->category_th }}
                     </i></div>
@@ -78,14 +78,14 @@
             });
         </script>
         <!-- .page-title-bar -->
-        @if ($a->category_id == 1)
+        @if ($actCat->category_id == 1  || $actCat->category_id == 3)
             <button type="button"
-                onclick="window.location='{{ route('activiListForm1', ['category_id' => $a->category_id]) }}'"
+                onclick="window.location='{{ route('activiListForm1', ['category_id' => $actCat->category_id]) }}'"
                 class="btn btn-success btn-floated btn-addcop" id="add_activityform" data-toggle="tooltip"
                 title="เพิ่ม"><span class="fas fa-plus"></span></button>
-        @elseif($a->category_id == 2)
+        @elseif($actCat->category_id == 2  || $actCat->category_id == 4)
             <button type="button"
-                onclick="window.location='{{ route('activiListForm2', ['category_id' => $a->category_id]) }}'"
+                onclick="window.location='{{ route('activiListForm2', ['category_id' => $actCat->category_id]) }}'"
                 class="btn btn-success btn-floated btn-addcop" id="add_activityform" data-toggle="tooltip"
                 title="เพิ่ม"><span class="fas fa-plus"></span></button>
         @endif

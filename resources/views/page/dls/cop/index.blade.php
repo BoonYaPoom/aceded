@@ -1,5 +1,5 @@
-@extends('layouts.adminhome')
-@section('content')
+@extends('layouts.department.layout.departmenthome')
+@section('contentdepartment')
 
 
 <!-- .page-inner -->
@@ -29,15 +29,15 @@
                               <tbody>
                                 <tr>
                                            <td><a>1</a></td>
-                                           <td><i class="fas fa-folder-plus  fa-lg text-primary"></i>  <a >ถ่ายทอดสด</a></td>
-                                           <td><a href="{{route('activi')}}" >
+                                           <td><a href="{{route('activi', ['department_id' => $depart])}}" ><i class="fas fa-folder-plus  fa-lg text-primary"></i> ถ่ายทอดสด</a></td>
+                                           <td><a href="{{route('activi', ['department_id' => $depart])}}" >
                                                 <i class="fas fa-edit fa-lg text-success" data-toggle="tooltip" title="จัดการ"></i>
                                                </a>
                                            </td>
                                            </tr><tr>
                                            <td><a>2</a></td>
-                                           <td><i class="fas fa-folder-plus  fa-lg text-primary"></i>  <a >ประชุมออนไลน์</a></td>
-                                           <td><a href="{{route('meeti')}}" >
+                                           <td> <a href="{{route('meeti', ['department_id' => $depart])}}" ><i class="fas fa-folder-plus  fa-lg text-primary"></i> ประชุมออนไลน์</a></td>
+                                           <td><a href="{{route('meeti', ['department_id' => $depart])}}" >
                                                 <i class="fas fa-edit fa-lg text-success" data-toggle="tooltip" title="จัดการ"></i>
                                                </a>
                                            </td>

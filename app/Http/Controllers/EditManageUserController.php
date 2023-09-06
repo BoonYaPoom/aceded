@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Department;
 use App\Models\Users;
 
 use Illuminate\Http\Request;
@@ -14,6 +15,7 @@ class EditManageUserController extends Controller
 {
     public function UserManage()
     {
+
         $usermanages = Users::all();
         return view('page.UserAdmin.indexview', compact('usermanages'));
     }
@@ -61,7 +63,7 @@ class EditManageUserController extends Controller
 
         $usermanages->modifieddate = now();
 
-
+        $usermanages->province_id = $request->province_id;
 
         $usermanages->user_type = $request->input('user_type', 0);
         $usermanages->mobile = $request->mobile;
@@ -103,6 +105,7 @@ class EditManageUserController extends Controller
 
     public function createUser()
     {
+
         return view('page.UserAdmin.add.add_umsform');
     }
 
@@ -112,7 +115,7 @@ class EditManageUserController extends Controller
         $usermanages = Users::find($request->uid);
 
         if ($usermanages) {
-            $usermanages->usermanagestatus = $request->usermanagestatus;
+            $usermanages->userstatus = $request->userstatus;
             $usermanages->save();
 
             return response()->json(['message' => 'สถานะถูกเปลี่ยนแปลงเรียบร้อยแล้ว']);
@@ -149,6 +152,7 @@ class EditManageUserController extends Controller
             'mobile' => 'required',
             'user_type' => 'required',
             'pos_name' => 'required',
+            'role' => 'required',
 
 
         ]);
@@ -162,9 +166,9 @@ class EditManageUserController extends Controller
         $usermanages->prefix  = '';
         $usermanages->gender = $request->input('gender', 0);
         $usermanages->email = $request->email;
-        $usermanages->role = 1;
+        $usermanages->role =  $request->role;
         $usermanages->per_id = null;
-        $usermanages->department_id = 12;
+        $usermanages->department_id = $request->department_id;
 
         $usermanages->permission = null;
         $usermanages->ldap = 0;
@@ -196,7 +200,7 @@ class EditManageUserController extends Controller
         $usermanages->office_id = 0;
 
         $usermanages->user_type = $request->input('user_type', 0);
-        $usermanages->province_id = null;
+        $usermanages->province_id = $request->province_id;
         $usermanages->district_id = null;
         $usermanages->subdistrict_id = null;
 
@@ -204,4 +208,18 @@ class EditManageUserController extends Controller
 
         return redirect()->route('UserManage')->with('message', 'แก้ไขโปรไฟล์สำเร็จ');
     }
+
+
+    public function fetchUsersByDepartment(Request $request)
+    {
+        if ($request->ajax()) {
+            $departmentId = $request->input('department_id');
+            $usermanages = Users::where('department_id', $departmentId)->get();
+            return response()->json(['usermanages' => $usermanages]);
+        } else {
+            return response()->json(['message' => 'ไม่พบข้อมูลผู้ใช้']);
+        }
+    }
+    
+
 }

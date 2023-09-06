@@ -158,13 +158,18 @@
                         <!-- /form row -->
 
                         <!-- form row -->
-                        <div class="form-row d-none " id="set_province_id">
+                        <div class="form-row " id="set_province_id">
                             <label for="province_id" class="col-md-2">จังหวัด </label>
                             <div class="col-md-9 mb-3">
                                 <select id="province_id" name="province_id" class="form-control form-control-sm"
                                     data-toggle="select2" data-allow-clear="false">
-                                    <option value="1"> กรุงเทพมหานคร </option>
-                                   
+                                    <option value="0">โปรดเลือกจังหวัด</option>
+                                    @php
+                                    $Provinces = \App\Models\Provinces::all();
+                                @endphp
+                                @foreach ($Provinces as $provin)
+                                    <option value="{{ $provin->id }}"{{  $usermanages->province_id == $provin->id  ? 'selected' : '0' }}> {{ $provin->name_in_thai }} </option>
+                                @endforeach
                                 </select>
                             </div>
                         </div>
@@ -213,8 +218,7 @@
                             <div class="col-md-9 mb-3">
                                 <input type="text" class="form-control " id="pos_name" name="pos_name"
                                     value="{{$usermanages->pos_name}}" placeholder="ตำแหน่ง">
-                                <!-- <select id="pos_namexx" name="pos_namexx" class="form-control form-control-sm" data-toggle="select2" data-allow-clear="false">
-                                                    </select> -->
+                  
                             </div>
                         </div>
                         <!--/form row -->

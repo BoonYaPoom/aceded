@@ -10,6 +10,7 @@ use App\Models\Department;
 use App\Models\PersonType;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Validator;
 
 class CourseController extends Controller
 {
@@ -18,7 +19,9 @@ class CourseController extends Controller
     {
         $courses = CourseGroup::findOrFail($group_id);
         $cour = $courses->group()->where('group_id', $group_id)->get();
-        return view('page.manage.group.co.index', compact('courses', 'cour'));
+        $department_id = $courses->department_id;
+        $depart= Department::find($department_id); 
+        return view('page.manage.group.co.index', compact('courses', 'cour','depart'));
     }
 
     public function create($group_id)
@@ -26,17 +29,26 @@ class CourseController extends Controller
         $courses = CourseGroup::findOrFail($group_id);
         $subs = CourseSubject::all();
         $pertype = PersonType::all();
-        return view('page.manage.group.co.create', compact('courses', 'subs', 'pertype'));
+        $department_id = $courses->department_id;
+        $depart= Department::find($department_id); 
+        return view('page.manage.group.co.create', compact('courses', 'subs', 'pertype','depart'));
     }
 
     public function store(Request $request, $group_id)
     {
-        $request->validate([
+      
+
+        $validator = Validator::make($request->all(), [
             'course_code' => 'required',
             'course_th' => 'required'
         ]);
-
-
+      
+        if ($validator->fails()) {
+            return back()
+                ->withErrors($validator)
+                ->withInput()
+                ->with('error', 'ข้อมูลไม่ถูกต้อง');
+        }
         $code = Course::generateCourseCode($group_id);
         $group = CourseGroup::find($group_id);
         $department_id = $group->department_id;
@@ -176,8 +188,10 @@ class CourseController extends Controller
         $subs = CourseSubject::all();
         $pertype = PersonType::all();
         $group_id = $cour->group_id;
-        $courses = CourseGroup::where('group_id', $group_id)->get();
-        return view('page.manage.group.co.edit', compact('cour', 'subs', 'pertype', 'courses'));
+        $courses = CourseGroup::findOrFail($group_id);
+        $department_id = $courses->department_id;
+        $depart= Department::find($department_id); 
+        return view('page.manage.group.co.edit', compact('cour', 'subs', 'pertype', 'courses','depart'));
     }
     public function update(Request $request, $course_id)
     {
@@ -261,12 +275,15 @@ class CourseController extends Controller
     {
         $cour = Course::findOrFail($course_id);
         $group_id = $cour->group_id;
-        $courses = CourseGroup::where('group_id', $group_id)->get();
-        return view('page.manage.group.co.structure.index', compact('cour', 'courses'));
+        $courses = CourseGroup::findOrFail($group_id);
+        $department_id = $courses->department_id;
+        $depart= Department::find($department_id); 
+        return view('page.manage.group.co.structure.index', compact('cour', 'courses','depart'));
     }
 
     public function update_structure(Request $request, $course_id)
     {
+        set_time_limit(0);
         $cour = Course::findOrFail($course_id);
         $cour->description_th = $request->description_th;
         $cour->description_en = $request->description_en;

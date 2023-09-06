@@ -15,7 +15,7 @@ return new class extends Migration
             $table->charset = 'utf8';
             $table->collation = 'utf8_general_ci';
             $table->increments('person_type');
-            $table->string('person', 50)->collation('utf8_general_ci');
+            $table->string('person', 100)->collation('utf8_general_ci');
         });
     }
 

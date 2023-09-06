@@ -43,21 +43,19 @@
                         $n = 0;
                     @endphp
                     @foreach ($teachers as $item)
+                        
+                        @if ($item->teacher_status == 1)
                         @php
                             $n++;
+                            $Users = \App\Models\Users::find($item->uid);
                         @endphp
-                        @if ($item->teacher_status == 1)
                             <tr>
 
                                 <td><a href="#">{{ $n }} </a></td>
                                 <td>
-                                    @if ($item->uid == '24130')
-                                        สำนักงาน ป.ป.ช.
-                                    @elseif ($item->uid == '24131')
-                                        สำนักงานคณะกรรมการป้องกันและปราบปรามการทุจริตแห่งชาติ
-                                    @else
-                                        {{ $item->uid }}
-                                    @endif
+
+                                    {{ $Users->firstname }} {{ $Users->lastname }}
+
                                 </td>
 
                                 <td class="align-middle">
@@ -93,65 +91,61 @@
 
                     <!-- tr -->
                     @php
-                        $n = 0;
+                        $l = 0;
                     @endphp
                     @foreach ($teachers as $item)
-                        @php
-                            $n++;
+                       
+           
+                            @if ($item->teacher_status == 0)
+                            @php
+                            $l++;
+                            $Users1 = \App\Models\Users::find($item->uid);
                         @endphp
-                        @if ($item->teacher_status == 0)
-                            <tr>
-                                <td><a href="#">{{ $n }}</a></td>
-                                <td>
-                                    @if ($item->uid == '24130')
-                                        สำนักงาน ป.ป.ช.
-                                    @elseif ($item->uid == '24131')
-                                        สำนักงานคณะกรรมการป้องกันและปราบปรามการทุจริตแห่งชาติ
-                                    @else
-                                        {{ $item->uid }}
-                                    @endif
-                                </td>
+                                <tr>
+                                    <td><a href="#">{{ $l }}</a></td>
+                                    <td>
+                                        {{ $Users1->firstname }} {{ $Users1->lastname }}
+                                    </td>
 
-                                <td class="align-middle">
-                                    <a href="#" class="change-status" data-teacher-id="{{ $item->teacher_id }}">
-                                        <i class="fas fa-user-plus fa-lg text-success" data-toggle="tooltip"
-                                            title="ข้อมูล"></i>
-                                    </a>
-                                </td>
+                                    <td class="align-middle">
+                                        <a href="#" class="change-status" data-teacher-id="{{ $item->teacher_id }}">
+                                            <i class="fas fa-user-plus fa-lg text-success" data-toggle="tooltip"
+                                                title="ข้อมูล"></i>
+                                        </a>
+                                    </td>
 
-                                </td>
-                            </tr><!-- /tr -->
+                                    </td>
+                                </tr><!-- /tr -->
 
-                            <script>
-                                $(document).ready(function() {
-                                    $('.change-status').on('click', function(event) {
-                                        event.preventDefault();
+                                <script>
+                                    $(document).ready(function() {
+                                        $('.change-status').on('click', function(event) {
+                                            event.preventDefault();
 
-                                        var teacherId = $(this).data('teacher-id');
+                                            var teacherId = $(this).data('teacher-id');
 
-                                        $.ajax({
-                                            url: "{{ route('TeacherStatus') }}",
-                                            method: "GET",
-                                            data: {
-                                                teacher_id: teacherId,
-                                                teacher_status: 1
-                                            },
-                                            success: function(response) {
-                                                console.log(response); // ล็อกข้อมูลเพื่อตรวจสอบในคอนโซล
+                                            $.ajax({
+                                                url: "{{ route('TeacherStatus') }}",
+                                                method: "GET",
+                                                data: {
+                                                    teacher_id: teacherId,
+                                                    teacher_status: 1
+                                                },
+                                                success: function(response) {
+                                                    console.log(response); // ล็อกข้อมูลเพื่อตรวจสอบในคอนโซล
 
-                                                // อัปเดตสถานะสำเร็จ
-                                                // คุณอาจทำตามขั้นตอนอื่น ๆ ที่คุณต้องการหรืออัปเดตอินเตอร์เฟซของคุณ
-                                                location.reload(); // รีเฟรชหน้าเว็บ
-                                            },
-                                            error: function(xhr, status, error) {
-                                                // เกิดข้อผิดพลาดในการส่งคำขอ
-                                                console.log(error);
-                                            }
+                                                    location.reload(); // รีเฟรชหน้าเว็บ
+                                                },
+                                                error: function(xhr, status, error) {
+                                                    // เกิดข้อผิดพลาดในการส่งคำขอ
+                                                    console.log(error);
+                                                }
+                                            });
                                         });
                                     });
-                                });
-                            </script>
-                        @endif
+                                </script>
+                            @endif
+               
                     @endforeach
                 </tbody><!-- /tbody -->
             </table><!-- /.table -->

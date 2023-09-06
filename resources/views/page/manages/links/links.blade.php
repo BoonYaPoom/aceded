@@ -1,5 +1,5 @@
-@extends('layouts.adminhome')
-@section('content')
+@extends('layouts.department.layout.departmenthome')
+@section('contentdepartment')
     @if (Session::has('message'))
         <script>
             toastr.options = {
@@ -23,8 +23,8 @@
             <!-- .card -->
             <div class="card card-fluid">
                 <!-- .card-header -->
-                <div class="card-header bg-muted"><a href="{{ route('manage') }}" style="text-decoration: underline;">จัดการเว็บ</a> / <a
-                        href="{{ route('linkpage') }}" style="text-decoration: underline;">ลิงค์ที่น่าสนใจ</a> </div><!-- /.card-header -->
+                <div class="card-header bg-muted"><a href="{{ route('manage', ['department_id' => $depart]) }}" style="text-decoration: underline;">จัดการเว็บ</a> / <a
+                        href="{{ route('linkpage', ['department_id' => $depart]) }}" style="text-decoration: underline;">ลิงค์ที่น่าสนใจ</a> </div><!-- /.card-header -->
                 <!-- .card-body -->
                 <div class="card-body">
 
@@ -154,7 +154,7 @@
         <header class="page-title-bar">
             <!-- floating action -->
             <button type="button" class="btn btn-success btn-floated btn-addwms"
-                onclick="window.location='{{ route('linkcreate') }}'" data-toggle="tooltip" title="เพิ่ม"><span
+                onclick="window.location='{{ route('linkcreate', ['department_id' => $depart]) }}'" data-toggle="tooltip" title="เพิ่ม"><span
                     class="fas fa-plus"></span></button>
             <!-- /floating action -->
         </header><!-- /.page-title-bar -->

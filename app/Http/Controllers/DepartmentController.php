@@ -2,65 +2,218 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\ActivityCategory;
 use App\Models\Department;
 use Illuminate\Http\Request;
 
 class DepartmentController extends Controller
 {
-    public function departmentpage() {
+    public function aced()
+    {
         $department  = Department::all();
-     
-        return view('layouts.department', compact('department'));
+        $from = 'lms';
+        return view('nolog.aced',  compact('department'));
     }
-    public function departmentcreate() {
+    public function departmentLearnpage()
+    {
+        $department  = Department::all();
+        $from = 'lms';
+        return view('layouts.department.item.departmentLearn',  compact('department', 'from'));
+    }
+    public function departmentdlspage()
+    {
+        $department  = Department::all();
+        $from = 'dls';
+        return view('layouts.department.item.departmentdls',  compact('department', 'from'));
+    }
+    public function departmentwmspage()
+    {
+        $department  = Department::all();
+        $from = 'wms';
+        return view('layouts.department.item.departmentwms', compact('department', 'from'));
+    }
+    public function departmentums()
+    {
+        $department  = Department::all();
+        $from = 'ums';
+        return view('layouts.department.item.departmentums', compact('department', 'from'));
+    }
+    public function departmentcreate($from)
+    {
+        $departmentLink = '';
 
-        return view('layouts.department.create');
+        if ($from === 'lms') {
+            $departmentLink = route('departmentLearnpage');
+        } elseif ($from === 'dls') {
+            $departmentLink = route('departmentdlspage');
+        } elseif ($from === 'wms') {
+            $departmentLink = route('departmentwmspage');
+        } elseif ($from === 'ums') {
+            $departmentLink = route('departmentumspage');
+        }
+
+        return view('layouts.department.create', compact('departmentLink','from'));
     }
-    public function store(Request $request) {
+    public function store( Request $request)
+    {
 
         $depart = new Department;
         $depart->name_th = $request->name_th;
         $depart->name_en = $request->name_en;
-
-        $depart->name_short_en = $request->name_short_en;
-        $depart->department_id_ref = $request->department_id_ref;
-        $depart->department_status = $request->input('department_status', 0);
-        if ($request->hasFile('name_short_th')) {
-            $image = $request->file('name_short_th');
-            $imageName = time() . '_' . $image->getClientOriginalName();
-           $image->move(public_path('uploads'), $imageName);
-
-        }
-        $depart->name_short_th = $imageName;
-        $depart->save();
-
-        return redirect()->route('departmentpage')->with('message','success Department control');
-    }
-    public function departmentedit($department_id) {
-        $depart  = Department::findOrFail($department_id);
-        return view('layouts.department.edit',compact('depart'));
-    }
-    public function update(Request $request ,$department_id) {
-
-        $depart =  Department::findOrFail($department_id);
-        $depart->name_th = $request->name_th;
-        $depart->name_en = $request->name_en;
-
+    
         $depart->name_short_en = $request->name_short_en;
         $depart->department_id_ref = $request->department_id_ref;
         $depart->department_status = $request->input('department_status', 0);
         if ($request->hasFile('name_short_th')) {
             $image = $request->file('name_short_th');
             $imageName =  $image->getClientOriginalName();
-            $image->move(public_path('uploads'), $imageName);
-
+            $image->move(public_path('lac'), $imageName);
+            $depart->name_short_th = $imageName;
         }
-        $depart->name_short_th = $imageName;
+
+        $depart->color = $request->color;
         $depart->save();
 
-        return redirect()->route('departmentpage')->with('message','success Department control');
+        $actcat = new ActivityCategory ;
+        $actcat->category_th = 'ห้องถ่ายทอดสด';
+        $actcat->category_en = 'Live Streaming';
+        $actcat->detail_th = '';
+        $actcat->detail_en = '';
+        $actcat->department_id = $depart->department_id;
+        $actcat->category_date = now();
+        $actcat->category_update = null;
+        $actcat->category_type = 1;
+        $actcat->category_status = 0;
+        $actcat->category_option = null;
+        $actcat->recommended = '0';
+        $actcat->cover = '';
+
+        $actcat->save();
+        $actcat = new ActivityCategory ;
+        $actcat->category_th = 'คลังวิดีโอ';
+        $actcat->category_en = 'Video on demand';
+        $actcat->detail_th = '';
+        $actcat->detail_en = '';
+        $actcat->department_id = $depart->department_id;
+        $actcat->category_date = now();
+        $actcat->category_update = null;
+        $actcat->category_type = 1;
+        $actcat->category_status = 0;
+        $actcat->category_option = null;
+        $actcat->recommended = '0';
+        $actcat->cover = '';
+
+        $actcat->save();
+        $actcat = new ActivityCategory ;
+        $actcat->category_th = 'ห้องประชุม';
+        $actcat->category_en = 'Meeting Room';
+        $actcat->detail_th = '';
+        $actcat->detail_en = '';
+        $actcat->department_id = $depart->department_id;
+        $actcat->category_date = now();
+        $actcat->category_update = null;
+        $actcat->category_type = 2;
+        $actcat->category_status = 0;
+        $actcat->category_option = null;
+        $actcat->recommended = '0';
+        $actcat->cover = '';
+
+        $actcat->save();
+        $actcat = new ActivityCategory ;
+        $actcat->category_th = 'คลังวิดีโอ';
+        $actcat->category_en = 'Video on demand';
+        $actcat->detail_th = '';
+        $actcat->detail_en = '';
+        $actcat->department_id = $depart->department_id;
+        $actcat->category_date = now();
+        $actcat->category_update = null;
+        $actcat->category_type = 2;
+        $actcat->category_status = 0;
+        $actcat->category_option = null;
+        $actcat->recommended = '0';
+        $actcat->cover = '';
+
+        $actcat->save();
+
+        $from = request('from'); 
+        if ($from === 'lms') {
+
+            return redirect()->route('departmentLearnpage')->with('message', 'success Department control');
+        } elseif ($from === 'dls') {
+
+            return redirect()->route('departmentdlspage')->with('message', 'success Department control');
+        } elseif ($from === 'wms') {
+
+            return redirect()->route('departmentwmspage')->with('message', 'success Department control');
+        } elseif ($from === 'ums') {
+
+            return redirect()->route('departmentumspage')->with('message', 'success Department control');
+        }
+
+
+    }
+    public function departmentedit($from, $department_id)
+    {
+        $depart  = Department::findOrFail($department_id);
+        $departmentLink = '';
+
+        if ($from === 'lms') {
+            $departmentLink = route('departmentLearnpage');
+        } elseif ($from === 'dls') {
+            $departmentLink = route('departmentdlspage');
+        } elseif ($from === 'wms') {
+            $departmentLink = route('departmentwmspage');
+        }elseif ($from === 'ums') {
+            $departmentLink = route('departmentumspage');
+        }
+        return view('layouts.department.edit', compact('depart', 'from', 'departmentLink'));
+    }
+    public function update(Request $request,$from , $department_id)
+    {
+
+        $depart =  Department::findOrFail($department_id);
+        $depart->name_th = $request->name_th;
+        $depart->name_en = $request->name_en;
+
+
+        $depart->department_id_ref = $request->department_id_ref;
+        $depart->department_status = $request->input('department_status', 0);
+        if ($request->hasFile('name_short_th')) {
+            $image = $request->file('name_short_th');
+            $imageName =  $image->getClientOriginalName();
+            $image->move(public_path('uploads'), $imageName);
+            $depart->name_short_th = $imageName;
+        }
+        $depart->color = $request->color;
+        $depart->save();
+
+
+        if ($from === 'lms') {
+
+            return redirect()->route('departmentLearnpage')->with('message', 'success Department control');
+        } elseif ($from === 'dls') {
+
+            return redirect()->route('departmentdlspage')->with('message', 'success Department control');
+        } elseif ($from === 'wms') {
+
+            return redirect()->route('departmentwmspage')->with('message', 'success Department control');
+        }elseif ($from === 'ums') {
+
+            return redirect()->route('departmentumspage')->with('message', 'success Department control');
+        }
     }
 
+    public function changeStatus(Request $request)
+    {
+        $Depart = Department::find($request->department_id);
 
-    
+        if ($Depart) {
+            $Depart->department_status = $request->department_status;
+            $Depart->save();
+
+            return response()->json(['message' => 'สถานะถูกเปลี่ยนแปลงเรียบร้อยแล้ว']);
+        } else {
+            return response()->json(['message' => 'ไม่พบข้อมูล web']);
+        }
+    }
 }

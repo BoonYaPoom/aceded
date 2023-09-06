@@ -28,8 +28,8 @@
                 <div class="col-md-3">
                     <div class=""><select id="selectyear" name="selectyear" class="form-control" data-toggle="select2"
                             data-placeholder="ปี" data-allow-clear="false" onchange="$('#formreport').submit();">
-                            <option value="2022"> {{$oneYearsAgo}} </option>
-                            <option value="2023" selected> {{$currentYear}} </option>
+                            <option value="2022"> </option>
+                            <option value="2023" selected> </option>
                         </select></div>
                 </div>
                 <div class="col-md-4 ">
@@ -59,8 +59,7 @@
                             onchange="$('#formreport').submit();">
                             <option value="0">เดือน</option>
                             @foreach ($month as $im => $m)
-                            <option value="{{$im}}"> {{$m}} </option>
-                           
+                                <option value="{{ $im }}"> {{ $m }} </option>
                             @endforeach
                         </select></div>
                 </div>
@@ -102,29 +101,62 @@
                                 <th align="center" width="10%">วันที่ลงทะเบียนเรียน</th>
                                 <th align="center" width="10%">วันที่จบหลักสูตร</th>
                             </tr>
-                            @php
-                                $i = 1;
+
+
+
+                            <!-- tr --> @php
+                                $n = 1;
+                                $result = []; // สร้างตัวแปรเก็บผลลัพธ์
+                                $uniqueUserIds = [];
                                 
                             @endphp
-                            @foreach ($userper as $index => $userall)
-                                @if ($userall->role == 3)
-                                    @php
-                                        $carbonDate = \Carbon\Carbon::parse($userall->createdate);
-                                        $thaiDate = $carbonDate->locale('th')->isoFormat('D MMMM');
-                                        $buddhistYear = $carbonDate->addYears(543)->year;
-                                        $thaiYear = $buddhistYear > 0 ? 'พ.ศ. ' . $buddhistYear : '';
-                                        $thaiDateWithYear = $thaiDate . ' ' . $thaiYear;
-                                    @endphp
-                                    <tr>
-                                        <td align="center">{{ $i++ }}</td>
-                                        <td>{{ $userall->username }}</td>
-                                        <td>{{ $userall->firstname }} {{ $userall->lastname }}</td>
+                            @foreach ($learners as $l => $learns)
+                                @php
+                                    
+                                    $dataLearn = $learns->registerdate;
+                                    $congrateLearn = $learns->congratulationdate;
+                                    $congrate = $learns->congratulation;
+                                    $monthsa = \ltrim(\Carbon\Carbon::parse($dataLearn)->format('m'), '0');
+                                    $newDateTime = \Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $learns->registerdate)->format('d/m/Y H:i:s');
+                                    $users = \App\Models\Users::find($learns->uid);
+                                    $courses = \App\Models\Course::find($learns->course_id);
+                                    
+                                    if ($courses) {
+                                        // Access properties of the $courses object here
+                                        $course_th = $courses->course_th;
+                                        // ...
+                                    } else {
+                                    }
+                                    $carbonDate = \Carbon\Carbon::parse($congrateLearn);
+                                    $thaiDate = $carbonDate->locale('th')->isoFormat('D MMMM');
+                                    $buddhistYear = $carbonDate->addYears(543)->year;
+                                    $thaiYear = $buddhistYear > 0 ?  $buddhistYear : '';
+                                    $thaiDateWithYear = $thaiDate . ' ' . $thaiYear;
+                                    
+                                    $carbonDa = \Carbon\Carbon::parse($dataLearn);
+                                    $thaiDa = $carbonDa->locale('th')->isoFormat('D MMMM');
+                                    $buddhistYe = $carbonDa->addYears(543)->year;
+                                    $thai = $buddhistYe > 0 ?  $buddhistYe : '';
+                                    $thaiDat = $thaiDa . ' ' . $thai;
+                                    
+                                @endphp
 
-                                        <td></td>
-                                        <td align="center">{{ $thaiDateWithYear }}</td>
-                                        <td align="center">-</td>
-                                    </tr>
-                                @endif
+
+                                <tr>
+                                    <td align="center">{{ $n++ }}</td>
+                                    <td>{{ $users->username }}</td>
+                                    <td>{{ $users->firstname }} {{ $users->lastname }}</td>
+
+                                    <td>{{ $course_th }}</td>
+                                    <td align="center">{{ $thaiDat }}</td>
+                                    <td align="center">
+                                        @if ($congrate == 1)
+                                            {{ $thaiDateWithYear }}
+                                        @elseif($congrate == 0)
+                                            -
+                                        @endif
+                                    </td>
+                                </tr>
                             @endforeach
                             </tbody><!-- /tbody -->
                     </table><!-- /.table -->

@@ -4,7 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Models\Category;
 use App\Models\CourseSubject;
+use App\Models\Department;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class CategoryController extends Controller
 {
@@ -12,19 +14,34 @@ class CategoryController extends Controller
     {
         $subs  = CourseSubject::findOrFail($subject_id);
         $catac = $subs->Catt()->where('subject_id', $subject_id)->get();
-        return view('page.manage.sub.activitys.activcontent.catego.index', compact('subs', 'catac'));
+        $department_id =   $subs->department_id;
+        $depart = Department::findOrFail($department_id);
+        return view('page.manage.sub.activitys.activcontent.catego.index', compact('subs', 'catac','depart'));
     }
 
     public function create($subject_id)
     {
         $subs  = CourseSubject::findOrFail($subject_id);
         $catac = $subs->Catt()->where('subject_id', $subject_id)->get();
-        return view('page.manage.sub.activitys.activcontent.catego.create', compact('subs', 'catac'));
+        $department_id =   $subs->department_id;
+        $depart = Department::findOrFail($department_id);
+        return view('page.manage.sub.activitys.activcontent.catego.create', compact('subs', 'catac','depart'));
     }
 
     public function store(Request $request, $subject_id)
     {
 
+        $validator = Validator::make($request->all(), [
+            'category_th' => 'required',
+
+        ]);
+      
+        if ($validator->fails()) {
+            return back()
+                ->withErrors($validator)
+                ->withInput()
+                ->with('error', 'ข้อมูลไม่ถูกต้อง');
+        }
         $catac = new Category;
 
         $catac->category_th = $request->category_th;
@@ -47,7 +64,11 @@ class CategoryController extends Controller
     public function edit($category_id)
     {
         $catac  = Category::findOrFail($category_id);
-        return view('page.manage.sub.activitys.activcontent.catego.edit', compact('catac'));
+        $subject_id =  $catac->subject_id;
+        $subs  = CourseSubject::findOrFail($subject_id);
+        $department_id =   $subs->department_id;
+        $depart = Department::findOrFail($department_id);
+        return view('page.manage.sub.activitys.activcontent.catego.edit', compact('catac','depart','subs'));
     }
     public function update(Request $request, $category_id)
     {

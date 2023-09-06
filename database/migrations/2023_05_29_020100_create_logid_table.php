@@ -16,7 +16,7 @@ return new class extends Migration
             $table->collation = 'utf8_general_ci';
             $table->increments('logid');
             $table->string('name', 50)->collation('utf8_general_ci');
-            $table->string('description', 200)->nullable()->collation('utf8_general_ci');
+            $table->string('description', 400)->nullable()->collation('utf8_general_ci');
 
 
         });

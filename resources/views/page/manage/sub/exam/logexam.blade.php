@@ -18,7 +18,7 @@
         @endif
 
 
-     
+
         <div class="page-inner">
 
             <!-- .page-section -->
@@ -26,10 +26,11 @@
                 <!-- .card -->
                 <div class="card card-fluid">
                     <!-- .card-header -->
-                    <div class="card-header bg-muted"><a href="{{ route('lessonpage', [$exams->subject_id]) }}" style="text-decoration: underline;">หมวดหมู่</a> / <a
+                    <div class="card-header bg-muted"><a href="{{ route('lessonpage', [$exams->subject_id]) }}"
+                            style="text-decoration: underline;">หมวดหมู่</a> / <a
                             href="{{ route('exampage', [$exams->subject_id]) }}"
-                            style="text-decoration: underline;">จัดการวิชา</a> / <i>{{ $exams->exam_th }}</i></div>  
-                <!-- .card-body -->
+                            style="text-decoration: underline;">จัดการวิชา</a> / <i>{{ $exams->exam_th }}</i></div>
+                    <!-- .card-body -->
                     <div class="card-body">
 
                         <!-- .table-responsive -->
@@ -51,16 +52,24 @@
                                 <!-- tbody -->
                                 <tbody>
                                     <!-- tr -->
-                                             @php
-                                            $sc = 0 ;
-                                        @endphp
+                                    @php
+                                        $sc = 0;
+                                    @endphp
                                     @foreach ($score as $scores)
                                         @php
                                             $user = \App\Models\Users::find($scores->uid);
-                                            $fullscore = $scores->fullscore;
-                                            $scoreexam = $scores->score;
-                                            $ansscore = ($scoreexam / $fullscore) * 100 ;
-                                            $sc++ ;
+                                                
+                                            if ($user !== null) {
+                                                $fullscore = $scores->fullscore;
+                                                $scoreexam = $scores->score;
+                                                $ansscore = 0; // Initialize $ansscore to 0
+                                            
+                                                if ($fullscore != 0) {
+                                                    $ansscore = ($scoreexam / $fullscore) * 100;
+                                                }
+                                            $sc++;
+
+                                        
                                         @endphp
 
                                         <tr>
@@ -72,6 +81,9 @@
                                             <td>{{ number_format($ansscore, 2) }} %</td>
                                             <td>{{ $scores->date }}</td>
                                         </tr><!-- /tr -->
+                                        @php
+                                            }
+                                        @endphp
                                     @endforeach
                                 </tbody><!-- /tbody -->
                             </table><!-- /.table -->
@@ -82,29 +94,28 @@
             <script>
                 $(document).ready(function() {
                     var table = $('#datatable').DataTable({
-                       
-                       lengthChange: false,
-                       responsive: true,
-                       info: false,
-                       language: {
-                  
-                           infoEmpty: "ไม่พบรายการ",
-                           infoFiltered: "(ค้นหาจากทั้งหมด _MAX_ รายการ)",
-                           paginate: {
-                               first: "หน้าแรก",
-                               last: "หน้าสุดท้าย",
-                               previous: "ก่อนหน้า",
-                               next: "ถัดไป" // ปิดการแสดงหน้าของ DataTables
-                           }
-                       }
-        
-                   });
-        
+
+                        lengthChange: false,
+                        responsive: true,
+                        info: false,
+                        language: {
+
+                            infoEmpty: "ไม่พบรายการ",
+                            infoFiltered: "(ค้นหาจากทั้งหมด _MAX_ รายการ)",
+                            paginate: {
+                                first: "หน้าแรก",
+                                last: "หน้าสุดท้าย",
+                                previous: "ก่อนหน้า",
+                                next: "ถัดไป" // ปิดการแสดงหน้าของ DataTables
+                            }
+                        }
+
+                    });
+
                     $('#myInput').on('keyup', function() {
                         table.search(this.value).draw();
                     });
                 });
-        
             </script>
             <!-- .page-title-bar -->
             <header class="page-title-bar">

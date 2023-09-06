@@ -1,4 +1,3 @@
-
 <tr>
     <td><a href="#">{{ $rowNumber }}</a></td>
     <td> {!! $item->question !!}
@@ -125,7 +124,7 @@
         </tr>
         @php
             $chart[] = [
-                'choic' => ${'c' . $c}, 
+                'choic' => ${'c' . $c},
                 'coun' => $averageValueFormatted > 1 ? $averageValueFormatted : ${'d' . $c},
             ];
         @endphp
@@ -136,63 +135,62 @@
 
 <table>
 
-<div id="bar6{{ $item->question_id }}"></div>
+    <div id="bar6{{ $item->question_id }}"></div>
 
 </table>
 
 <script>
-var questi = {!! json_encode(strip_tags($item->question)) !!};
-var chart = {!! json_encode($chart) !!};
-console.log(chart)
-Highcharts.chart("bar6{{ $item->question_id }}", {
-chart: {
-type: 'column'
-},
-title: {
-text: questi
-},
-subtitle: {
-text: 'ความพึงพอใจ'
-},
-xAxis: {
-type: 'category'
-},
-yAxis: {
-title: {
-text: 'ความพึงพอใจ'
-}
-},
-legend: {
-enabled: true
-},
-plotOptions: {
-lang: {
-thousandsSep: ','
-},
-series: {
-borderWidth: 0,
-dataLabels: {
-    enabled: true,
-    format: '{point.y}',
-    style: {
-        textOutline: false
-    }
-}
-}
-},
+    var questi = {!! json_encode(strip_tags($item->question)) !!};
+    var chart = {!! json_encode($chart) !!};
+    console.log(chart)
+    Highcharts.chart("bar6{{ $item->question_id }}", {
+        chart: {
+            type: 'column'
+        },
+        title: {
+            text: questi
+        },
+        subtitle: {
+            text: 'ความพึงพอใจ'
+        },
+        xAxis: {
+            type: 'category'
+        },
+        yAxis: {
+            title: {
+                text: 'ความพึงพอใจ'
+            }
+        },
+        legend: {
+            enabled: true
+        },
+        plotOptions: {
+            lang: {
+                thousandsSep: ','
+            },
+            series: {
+                borderWidth: 0,
+                dataLabels: {
+                    enabled: true,
+                    format: '{point.y}',
+                    style: {
+                        textOutline: false
+                    }
+                }
+            }
+        },
 
-tooltip: {
-headerFormat: '<span style="font-size:12px">{series.name}</span><br>',
-pointFormat: '<span>{point.name}</span> : <b>{point.y}</b> คะแนน<br/>'
-},
-series: [{
-name: 'จำนวน',
-colorByPoint: true,
-data: chart.map(item => ({
-name: item.choic,
-y: parseFloat(item.coun)
-}))
-}]
-});
+        tooltip: {
+            headerFormat: '<span style="font-size:12px">{series.name}</span><br>',
+            pointFormat: '<span>{point.name}</span> : <b>{point.y}</b> คะแนน<br/>'
+        },
+        series: [{
+            name: 'จำนวน',
+            colorByPoint: true,
+            data: chart.map(item => ({
+                name: item.choic,
+                y: parseFloat(item.coun)
+            }))
+        }]
+    });
 </script>
-

@@ -3,11 +3,14 @@
 namespace App\Http\Controllers;
 
 use App\Models\Book;
+use App\Models\CourseLesson;
 use App\Models\CourseSubject;
 use App\Models\CourseSupplymentary;
 use App\Models\CourseSupplymentaryType;
+use App\Models\Department;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Validator;
 
 class CourseSupplymentaryController extends Controller
 {
@@ -16,8 +19,10 @@ class CourseSupplymentaryController extends Controller
         $subs  = CourseSubject::findOrFail($subject_id);
         $supplys = $subs->supplysub()->where('subject_id', $subject_id)->get();
 
+        $department_id =   $subs->department_id;
+        $depart = Department::findOrFail($department_id);
 
-        return view('page.manage.sub.supply.index', compact('subs', 'supplys'));
+        return view('page.manage.sub.supply.index', compact('subs', 'supplys','depart'));
     }
 
     public function create($subject_id)
@@ -25,15 +30,26 @@ class CourseSupplymentaryController extends Controller
         $subs  = CourseSubject::findOrFail($subject_id);
         $types = CourseSupplymentaryType::all();
         $books = Book::all();
-        return view('page.manage.sub.supply.create', compact('subs', 'books', 'types'));
+  
+        $department_id =   $subs->department_id;
+        $depart = Department::findOrFail($department_id);
+        return view('page.manage.sub.supply.create', compact('subs', 'books', 'types','depart'));
     }
     public function store(Request $request, $subject_id)
     {
-        $request->validate([
-
-            'supplymentary_type' => 'required',
-            
+    
+        $validator = Validator::make($request->all(), [
+            'title_th' => 'required',
+            'title_en' => 'required',
+            // เพิ่มรายการตรวจสอบข้อมูลที่ต้องการตรวจสอบ
         ]);
+    
+        if ($validator->fails()) {
+            return back()
+                ->withErrors($validator)
+                ->withInput()
+                ->with('error', 'ข้อมูลไม่ถูกต้อง');
+        }
         $supplys = new CourseSupplymentary;
 
 
@@ -64,7 +80,11 @@ class CourseSupplymentaryController extends Controller
         $supplys  = CourseSupplymentary::findOrFail($supplymentary_id);
         $types = CourseSupplymentaryType::all();
         $books = Book::all();
-        return view('page.manage.sub.supply.edit', compact('supplys', 'types', 'books'));
+        $subject_id =  $supplys->subject_id;
+        $subs = CourseSubject::findOrFail($subject_id);
+        $department_id =   $subs->department_id;
+        $depart = Department::findOrFail($department_id);
+        return view('page.manage.sub.supply.edit', compact('supplys', 'types', 'books','depart'));
     }
     public function update(Request $request, $supplymentary_id)
     {
@@ -105,7 +125,98 @@ class CourseSupplymentaryController extends Controller
 
             return response()->json(['message' => 'สถานะถูกเปลี่ยนแปลงเรียบร้อยแล้ว']);
         } else {
-            return response()->json(['message' => 'ไม่พบข้อมูล Blog']);
+            return response()->json(['message' => 'ไม่พบข้อมูล Supply']);
         }
+    }
+    public function supplyLess($subject_id, $lesson_id)
+    {
+        $subs  = CourseSubject::findOrFail($subject_id);
+        $lessonsSub = $subs->subjs()->where('subject_id', $subject_id)->get();
+        $lesson = CourseLesson::findOrFail($lesson_id);
+        $supplys = $lesson->supplyLesson()->where('lesson_id', $lesson_id)->get();
+ 
+        $department_id =   $subs->department_id;
+        $depart = Department::findOrFail($department_id);
+        return view('page.manage.sub.lesson.supply.index', compact('lesson', 'supplys', 'subs', 'lessonsSub','depart'));
+    }
+
+    public function createLess($subject_id, $lesson_id)
+    {
+        $subs  = CourseSubject::findOrFail($subject_id);
+        $lessonsSub = $subs->subjs()->where('subject_id', $subject_id)->get();
+        $lesson = CourseLesson::findOrFail($lesson_id);
+        $types = CourseSupplymentaryType::all();
+        $books = Book::all();
+
+        $department_id =   $subs->department_id;
+        $depart = Department::findOrFail($department_id);
+        return view('page.manage.sub.lesson.supply.create', compact('lesson', 'books', 'types', 'subs', 'lessonsSub','depart'));
+    }
+
+    public function storeLess(Request $request, $subject_id, $lesson_id)
+    {
+
+        $request->validate([
+
+            'supplymentary_type' => 'required',
+
+        ]);
+        $supplys = new CourseSupplymentary;
+
+
+        $supplys->title_th = $request->title_th;
+        $supplys->title_en = $request->title_en;
+        $supplys->cover_image = $request->cover;
+        $supplys->author = $request->author;
+        $supplys->supplymentary_status = $request->input('supplymentary_status', 0);
+        $supplys->supplymentary_type = $request->supplymentary_type;
+        if ($request->hasFile('path')) {
+
+            $image_name = time() . '.' . $request->path->getClientOriginalExtension();
+            Storage::disk('external')->put('Subject/Supplymentary/path/' . $image_name, file_get_contents($request->path));
+        } else {
+            $image_name = '';
+        }
+        $supplys->path = $image_name;
+        $supplys->lesson_id = (int)$lesson_id;
+        $supplys->subject_id = (int)$subject_id;
+
+        $supplys->save();
+
+        return redirect()->route('Supply_lessonform', ['subject_id' => $subject_id, 'lesson_id' => $lesson_id])->with('message', 'Course_lesson บันทึกข้อมูลสำเร็จ');
+    }
+    public function editLess($supplymentary_id)
+    {
+        $supplys  = CourseSupplymentary::findOrFail($supplymentary_id);
+        $types = CourseSupplymentaryType::all();
+        $books = Book::all();
+        $subject_id =  $supplys->subject_id;
+        $subs = CourseSubject::findOrFail($subject_id);
+        $department_id =   $subs->department_id;
+        $depart = Department::findOrFail($department_id);
+        return view('page.manage.sub.lesson.supply.edit', compact('supplys', 'types', 'books','depart'));
+    }
+
+    public function updateLess(Request $request, $supplymentary_id)
+    {
+        $supplys  = CourseSupplymentary::findOrFail($supplymentary_id);
+
+        $supplys->title_th = $request->title_th;
+        $supplys->title_en = $request->title_en;
+        $supplys->cover_image = $request->cover;
+        $supplys->author = $request->author;
+        $supplys->supplymentary_status = $request->input('supplymentary_status', 0);
+        $supplys->supplymentary_type = $request->type;
+        if ($request->hasFile('path')) {
+            $image_name = time() . '.' . $request->path->getClientOriginalExtension();
+            Storage::disk('external')->put('Subject/Supplymentary/path/' . $image_name, file_get_contents($request->path));
+            $supplys->path = $image_name;
+        }
+
+
+
+        $supplys->save();
+
+        return redirect()->route('Supply_lessonform', ['subject_id' => $supplys->subject_id , 'lesson_id' => $supplys->lesson_id])->with('message', 'Course_lesson บันทึกข้อมูลสำเร็จ');
     }
 }

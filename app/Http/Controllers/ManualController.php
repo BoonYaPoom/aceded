@@ -2,30 +2,45 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Department;
 use App\Models\Log;
 use App\Models\Manual;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Validator;
 
 class ManualController extends Controller
 {
-    public function index()
+    public function index($department_id)
     {
-        $manuals = Manual::all();
-        return view('page.manages.manual.index', compact('manuals'));
+        $depart = Department::findOrFail($department_id);
+        $manuals  = $depart->ManualsDe()->where('department_id', $department_id)->get();
+
+        return view('page.manages.manual.index', compact('manuals','depart'));
     }
-    public function create()
+    public function create($department_id)
     {
-        return view('page.manages.manual.create');
+        $depart = Department::findOrFail($department_id);
+        
+        return view('page.manages.manual.create',compact('depart'));
     }
-    public function store(Request $request)
+    public function store(Request $request,$department_id)
     {
-        $request->validate([
+
+        
+        $validator = Validator::make($request->all(), [
             'manual' => 'required',
             'manual_path' => 'required'
 
         ]);
+    
+        if ($validator->fails()) {
+            return back()
+                ->withErrors($validator)
+                ->withInput()
+                ->with('error', 'ข้อมูลไม่ถูกต้อง');
+        }
         $manuals = new Manual;
         $manuals->manual = $request->manual;
         if ($request->hasFile('cover')) {
@@ -41,9 +56,10 @@ class ManualController extends Controller
         $manuals->cover = $image_name;
         $manuals->manual_path = $file_name;
         $manuals->detail = '';
+        $manuals->department_id = (int)$department_id;
         $manuals->manual_status = 0;
 
-        $manuals->manual_type = '';
+        $manuals->manual_type = 1;
         $manuals->save();
 
 
@@ -99,12 +115,14 @@ class ManualController extends Controller
         $loginLog->save();
 
 
-        return redirect()->route('manualpage')->with('message', 'manuals บันทึกข้อมูลสำเร็จ');
+        return redirect()->route('manualpage',['department_id' =>$department_id])->with('message', 'manuals บันทึกข้อมูลสำเร็จ');
     }
     public function edit($manual_id)
     {
         $manuals = Manual::findOrFail($manual_id);
-        return view('page.manages.manual.edit', compact('manuals'));
+        $department_id   = $manuals->department_id;
+        $depart = Department::findOrFail($department_id);
+        return view('page.manages.manual.edit', compact('manuals','depart'));
     }
     public function update(Request $request, $manual_id)
     {
@@ -189,7 +207,7 @@ class ManualController extends Controller
         $loginLog->save();
 
 
-        return redirect()->route('manualpage')->with('message', 'manuals บันทึกข้อมูลสำเร็จ');
+        return redirect()->route('manualpage',['department_id' =>$manuals->department_id])->with('message', 'manuals บันทึกข้อมูลสำเร็จ');
     }
 
 
@@ -201,7 +219,7 @@ class ManualController extends Controller
         $manuals->delete();
 
 
-        return redirect()->route('manualpage')->with('message', 'manuals ลบข้อมูลสำเร็จ');
+        return redirect()->back()->with('message', 'manuals ลบข้อมูลสำเร็จ');
     }
 
     public function changeStatus(Request $request)

@@ -1,5 +1,5 @@
-@extends('layouts.adminhome')
-@section('content')
+@extends('layouts.department.layout.departmenthome')
+@section('contentdepartment')
     @if (Session::has('message'))
         <script>
             toastr.options = {
@@ -44,8 +44,8 @@
             <!-- .card -->
             <div class="card card-fluid">
                 <!-- .card-header -->
-                <div class="card-header bg-muted"><a href="{{ route('manage') }}"
-                        style="text-decoration: underline;">จัดการเว็บ</a> / <a href="{{ route('evenpage') }}"
+                <div class="card-header bg-muted"><a href="{{ route('manage', ['department_id' => $category->department_id]) }}"
+                        style="text-decoration: underline;">จัดการเว็บ</a> / <a href="{{ route('Webpage', ['department_id' => $category->department_id]) }}"
                         style="text-decoration: underline;">ข่าว/กิจกรรม</a> / <i> {{ $category->category_th }}</i></div>
                 <!-- /.card-header -->
                 <!-- .card-body -->
@@ -87,36 +87,7 @@
                                                     <option value="{{ $i }}">{{ $i }}</option>
                                                 @endfor
                                             </select>
-                                            <script>
-                                                $(document).ready(function() {
-                                                    $(document).on('change', '#sort', function() {
-                                                        var sort = $(this).val();
-                                                        var webId = $(this).data('web-id');
-                                                        console.log('Sort:', sort);
-                                                        console.log('Web ID:', webId);
-                                                        $.ajax({
-                                                            type: "GET",
-                                                            dataType: "json",
-                                                            url: '{{ route('changeSortWeb') }}',
-                                                            data: {
-                                                                'sort': sort,
-                                                                'web_id': webId
-                                                            },
-                                                            success: function(data) {
-                                                                console.log(data.message); // Display the returned message
-                                                                location.reload();
-                                                            },
-                                                            error: function(xhr, status, error) {
-                                                                console.log('An error occurred.');
-                                                            }
-                                                        });
-                                                    });
-                                                });
-                                            </script>
-
-
-
-
+                                          
 
 
                                         </td>
@@ -189,4 +160,31 @@
             <!-- /floating action -->
         </header><!-- /.page-title-bar -->
     </div><!-- /.page-inner -->
+
+    <script>
+        $(document).ready(function() {
+            $(document).on('change', '#sort', function() {
+                var sort = $(this).val();
+                var webId = $(this).data('web-id');
+                console.log('Sort:', sort);
+                console.log('Web ID:', webId);
+                $.ajax({
+                    type: "GET",
+                    dataType: "json",
+                    url: '{{ route('changeSortWeb') }}',
+                    data: {
+                        'sort': sort,
+                        'web_id': webId
+                    },
+                    success: function(data) {
+                        console.log(data.message); // Display the returned message
+                        location.reload();
+                    },
+                    error: function(xhr, status, error) {
+                        console.log('An error occurred.');
+                    }
+                });
+            });
+        });
+    </script>
 @endsection

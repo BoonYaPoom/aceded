@@ -1,5 +1,5 @@
-@extends('layouts.adminhome')
-@section('content')
+@extends('layouts.department.layout.departmenthome')
+@section('contentdepartment')
     <form action="" autocomplete="off" id="formnews" enctype="multipart/form-data" method="post" accept-charset="utf-8">
         <input type="hidden" name="__csrf_token_name" value="c4dd375d617e78d25f83e498dd205900" />
         <!-- .page-inner -->
@@ -10,8 +10,8 @@
                 <!-- .card -->
                 <div class="card card-fluid">
                     <!-- .card-header -->
-                    <div class="card-header bg-muted"><a href="" style="text-decoration: underline;">กิจกรรม</a> / <a
-                            href="" style="text-decoration: underline;">ชุมนุมนักปฏิบัติ</a> /<i> แก้ไขหมวดหมู่</i>
+                    <div class="card-header bg-muted"><a href="{{ route('cop', ['department_id' => $actCat->department_id]) }}" style="text-decoration: underline;">กิจกรรม</a> / <a
+                            href="{{ route('activi', ['department_id' => $actCat->department_id]) }}" style="text-decoration: underline;">ชุมนุมนักปฏิบัติ</a> /<i> แก้ไขหมวดหมู่</i>
                     </div>
                     <!-- /.card-header -->
 
@@ -30,7 +30,7 @@
                                 id="category_en" name="category_en" placeholder="ชื่อหมวด (อังกฤษ)" value="Meeting Room">
                         </div><!-- /.form-group --> <!-- .form-group -->
                         <div class="form-group">
-                            <label for="cover"><img src="http://tcct.localhost:8080/admin/upload-activity/3/cover.png">
+                            <label for="cover"><img src="{{ asset('lac/cover.png') }}">
                         </div><!-- /.form-group -->
                         <div class="form-group">
                             <label for="cover">ภาพปก </label> <input type="file" class="form-control" id="cover"

@@ -15,13 +15,14 @@ return new class extends Migration
             $table->charset = 'utf8';
             $table->collation = 'utf8_general_ci';
             $table->increments('links_id');
-            $table->string('links_title', 200)->collation('utf8_general_ci');
+            $table->string('links_title', 400)->collation('utf8_general_ci');
             $table->longText('links')->nullable()->collation('utf8_general_ci');
             $table->dateTime('links_date');
             $table->dateTime('links_update')->nullable();
             $table->string('links_status', 1)->collation('utf8_general_ci');
-            $table->string('cover', 200)->nullable()->collation('utf8_general_ci');
+            $table->string('cover', 400)->nullable()->collation('utf8_general_ci');
             $table->integer('sort')->default(1);
+            $table->integer('department_id')->nullable();
         });
     }
 

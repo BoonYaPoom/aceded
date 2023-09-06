@@ -1,6 +1,6 @@
 
         <tr class="rows_{{ $item->lesson_id }} small" style="display: none;">
-            <td>{{ $item->lesson_id }}</td>
+            <td>{{ $item->lesson_number }}</td>
 
             <td class="w3-hide-small" style="padding-left:{{ $left }}px">
                 <i class="fa fas fa-minus-circle text-success pointer" style="cursor:pointer"
@@ -53,8 +53,13 @@
                     <span class="switcher-label-on">ON</span>
                     <span class="switcher-label-off text-red">OFF</span></label>
             </td>
+            <td>
+                {{ $totalMinutes }} : {{ $totalMin }}
+                
+        
+            </td>
             <td class="align-middle">
-                <a href="{{ route('smallcreate', ['subject_id' => $subs, 'lesson_id' => $subitem]) }}
+                <a href="{{ route('smallsmallcreate', ['subject_id' => $subs, 'lesson_id' => $subitem]) }}
 "
                     data-toggle="tooltip" title="เพิ่มย่อย"><i
                         class="fas fa-plus-circle fa-lg text-danger mr-1"></i></a>

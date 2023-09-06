@@ -1,5 +1,5 @@
-@extends('layouts.adminhome')
-@section('content')
+@extends('layouts.department.layout.departmenthome')
+@section('contentdepartment')
     <div class="page-inner">
         <!-- .page-title-bar -->
 
@@ -9,7 +9,7 @@
             <div class="card card-fluid">
                 <!-- .card-header -->
                 <div class="card-header bg-muted">
-                    จัดการเว็บ
+                    <a href="{{ route('departmentwmspage') }}">หน่วยงาน</a> / จัดการเว็บ
                 </div>
                 <!-- .card-body -->
                 <div class="card-body">
@@ -29,41 +29,53 @@
                             <!-- tbody -->
                             <tbody>
                                 <!-- tr -->
+
                                 <tr>
                                     <td><a>1</a></td>
-                                    <td><i class="fas fa-folder-plus  fa-lg text-primary"></i> <a>ข้อมูลพื้นฐาน</a></td>
-                                    <td><a href="{{ route('dataci') }}"><i class="fas fa-edit fa-lg text-success"
-                                                data-toggle="tooltip" title="จัดการ"></i></a></td>
+                                    <td><a href="{{ route('hightDep', ['department_id' => $depart]) }}"><i
+                                                class="fas fa-folder-plus  fa-lg text-primary"></i> ภาพประชาสัมพันธ์</a>
+                                    </td>
+                                    <td><a href="{{ route('hightDep', ['department_id' => $depart]) }}"><i
+                                                class="fas fa-edit fa-lg text-success" data-toggle="tooltip"
+                                                title="จัดการ"></i></a></td>
                                 </tr><!-- /tr -->
-                                <!-- tr -->
                                 <tr>
                                     <td><a>2</a></td>
-                                    <td><i class="fas fa-folder-plus  fa-lg text-primary"></i> <a>ข่าว/กิจกรรม</a></td>
-                                    <td><a href="{{ route('evenpage') }}"><i class="fas fa-edit fa-lg text-success"
-                                                data-toggle="tooltip" title="จัดการ"></i></a></td>
+                                    <td><a href="{{ route('Webpage', ['department_id' => $depart]) }}"><i
+                                                class="fas fa-folder-plus  fa-lg text-primary"></i> ข่าว/กิจกรรม</a></td>
+                                    <td><a href="{{ route('Webpage', ['department_id' => $depart]) }}"><i
+                                                class="fas fa-edit fa-lg text-success" data-toggle="tooltip"
+                                                title="จัดการ"></i></a></td>
                                 </tr><!-- /tr -->
                                 <!-- tr -->
                                 <tr>
                                     <td><a>3</a></td>
-                                    <td><i class="fas fa-folder-plus  fa-lg text-primary"></i> <a>ลิงค์ที่น่าสนใจ</a></td>
-                                    <td><a href="{{ route('linkpage') }}"><i class="fas fa-edit fa-lg text-success"
-                                                data-toggle="tooltip" title="จัดการ"></i></a></td>
+                                    <td><a href="{{ route('linkpage', ['department_id' => $depart]) }}"><i
+                                                class="fas fa-folder-plus  fa-lg text-primary"></i> ลิงค์ที่น่าสนใจ</a></td>
+                                    <td><a href="{{ route('linkpage', ['department_id' => $depart]) }}"><i
+                                                class="fas fa-edit fa-lg text-success" data-toggle="tooltip"
+                                                title="จัดการ"></i></a></td>
                                 </tr><!-- /tr -->
                                 <!-- tr -->
                                 <tr>
                                     <td><a>4</a></td>
-                                    <td><i class="fas fa-folder-plus  fa-lg text-primary"></i> <a>แบบสำรวจ</a></td>
-                                    <td><a href="{{ route('surveypage') }}"><i class="fas fa-edit fa-lg text-success"
-                                                data-toggle="tooltip" title="จัดการ"></i></a></td>
+                                    <td><a href="{{ route('surveypage', ['department_id' => $depart]) }}"><i
+                                                class="fas fa-folder-plus  fa-lg text-primary"></i> แบบสำรวจ</a></td>
+                                    <td><a href="{{ route('surveypage', ['department_id' => $depart]) }}"><i
+                                                class="fas fa-edit fa-lg text-success" data-toggle="tooltip"
+                                                title="จัดการ"></i></a></td>
                                 </tr><!-- /tr -->
                                 <!-- tr -->
                                 <tr>
                                     <td><a>5</a></td>
-                                    <td><i class="fas fa-folder-plus  fa-lg text-primary"></i> <a>คู่มือแนะนำการเรียน</a>
+                                    <td><a href="{{ route('manualpage', ['department_id' => $depart]) }}"><i
+                                                class="fas fa-folder-plus  fa-lg text-primary"></i> คู่มือแนะนำการเรียน</a>
                                     </td>
-                                    <td><a href="{{ route('manualpage') }}"><i class="fas fa-edit fa-lg text-success"
-                                                data-toggle="tooltip" title="จัดการ"></i></a></td>
+                                    <td><a href="{{ route('manualpage', ['department_id' => $depart]) }}"><i
+                                                class="fas fa-edit fa-lg text-success" data-toggle="tooltip"
+                                                title="จัดการ"></i></a></td>
                                 </tr><!-- /tr -->
+
                             </tbody><!-- /tbody -->
                         </table><!-- /.table -->
                     </div><!-- /.table-responsive -->

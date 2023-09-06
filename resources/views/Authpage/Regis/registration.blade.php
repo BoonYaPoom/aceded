@@ -395,7 +395,7 @@
                                 <label for="province_id" class="col-md-3">จังหวัด <span
                                         class="text-primary-theme">*</span></label>
                                 <div class="col-md-9 mb-3">
-                                  <select required="" id="province_id" name="province_id" 
+                                  <select  id="province_id" name="province_id" 
                                   class="form-control form-control-sm" data-toggle="select2" data-placeholder="จังหวัด"
                                   data-allow-clear="false">
                                   <option value="0">จังหวัด</option>
@@ -413,7 +413,7 @@
                                 <label for="district_id" class="col-md-3">เขต/อำเภอ <span
                                         class="text-primary-theme">*</span></label>
                                 <div class="col-md-9 mb-3">
-                                    <select required="" id="district_id" name="district_id" class="form-control form-control-sm" data-toggle="select2" data-placeholder="เขต/อำเภอ" data-allow-clear="false">
+                                    <select  id="district_id" name="district_id" class="form-control form-control-sm" data-toggle="select2" data-placeholder="เขต/อำเภอ" data-allow-clear="false">
                                         <option value="">เขต/อำเภอ</option>
                                         @foreach ($districts as $district)
                                             <option value="{{ $district->id }}">{{ $district->name_in_thai }}</option>
@@ -431,7 +431,7 @@
                                 <label for="subdistrict_id" class="col-md-3">แขวง/ตำบล <span
                                         class="text-primary-theme">*</span></label>
                                 <div class="col-md-9 mb-3">
-                                    <select required="" id="subdistrict_id" name="subdistrict_id"
+                                    <select  id="subdistrict_id" name="subdistrict_id"
                                         class="form-control form-control-sm" data-toggle="select2"
                                         data-placeholder="แขวง/ตำบล" data-allow-clear="false">
                                         <option value="0">แขวง/ตำบล</option>

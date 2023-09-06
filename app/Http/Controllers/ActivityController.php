@@ -4,9 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Models\Activity;
 use App\Models\ActivityCategory;
+use App\Models\Department;
 use App\Models\Users;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Validator;
 
 class ActivityController extends Controller
 {
@@ -14,13 +16,16 @@ class ActivityController extends Controller
     {
         $actCat = ActivityCategory::findOrFail($category_id);
         $act = $actCat->activa()->where('category_id', $category_id)->get();
-        return view('page.dls.cop.activitycat.activitylist', compact('actCat', 'act'));
+        $department_id   = $actCat->department_id;
+        $depart = Department::findOrFail($department_id);
+        return view('page.dls.cop.activitycat.activitylist', compact('actCat', 'act','depart'));
     }
     public function activiListForm1($category_id)
     {
         $actCat = ActivityCategory::findOrFail($category_id);
-
-        return view('page.dls.cop.activitycat.item.cat1item.create', compact('actCat'));
+        $department_id   = $actCat->department_id;
+        $depart = Department::findOrFail($department_id);
+        return view('page.dls.cop.activitycat.item.cat1item.create', compact('actCat','depart'));
     }
     public function act1store(Request $request, $category_id)
     {
@@ -63,7 +68,11 @@ class ActivityController extends Controller
     public function formacttivityEdit1($activity_id)
     {
         $act = Activity::findOrFail($activity_id);
-        return view('page.dls.cop.activitycat.item.cat1item.edit', compact('act'));
+        $category_id = $act->category_id;
+        $actCat = ActivityCategory::findOrFail($category_id);
+        $department_id   = $actCat->department_id;
+        $depart = Department::findOrFail($department_id);
+        return view('page.dls.cop.activitycat.item.cat1item.edit', compact('act','actCat','depart'));
     }
     public function act1update(Request $request, $activity_id)
     {
@@ -95,24 +104,32 @@ class ActivityController extends Controller
     public function activiListForm2($category_id)
     {
         $actCat = ActivityCategory::findOrFail($category_id);
-        return view('page.dls.cop.activitycat.item.cat2item.create', compact('actCat'));
+        $department_id   = $actCat->department_id;
+        $depart = Department::findOrFail($department_id);
+        return view('page.dls.cop.activitycat.item.cat2item.create', compact('actCat','depart'));
     }
 
     public function act2store(Request $request, $category_id)
     {
-
-        $request->validate([
+        $validator = Validator::make($request->all(), [
             'title' => 'required',
             'detail' => 'required'
         ]);
 
+        if ($validator->fails()) {
+            return back()
+                ->withErrors($validator)
+                ->withInput()
+                ->with('error', 'ข้อมูลไม่ถูกต้อง');
+        }
+        
         if (Session::has('loginId')) {
             $loginId = Session::get('loginId');
         }
         $act = new Activity;
         $act->category_id = $category_id;
         $act->title = $request->title;
-        
+
         if ($request->hasFile('media')) {
             $fileName = time() . '.' . $request->media->getClientOriginalExtension();
             $filePath = public_path('uploads'); // กำหนดพาธของโฟลเดอร์ที่เก็บไฟล์
@@ -122,7 +139,7 @@ class ActivityController extends Controller
         $act->location = null;
         $act->url = null;
         $act->startdate = now();
-        $act->enddate = null;
+        $act->enddate =  now();
         $act->starttime = null;
         $act->endtime = null;
         $act->frequency = null;
@@ -140,7 +157,11 @@ class ActivityController extends Controller
     public function formacttivityEdit2($activity_id)
     {
         $act = Activity::findOrFail($activity_id);
-        return view('page.dls.cop.activitycat.item.cat2item.edit', compact('act'));
+        $category_id = $act->category_id;
+        $actCat = ActivityCategory::findOrFail($category_id);
+        $department_id   = $actCat->department_id;
+        $depart = Department::findOrFail($department_id);
+        return view('page.dls.cop.activitycat.item.cat2item.edit', compact('act','actCat','depart'));
     }
 
     public function act2update(Request $request, $activity_id)
@@ -170,18 +191,17 @@ class ActivityController extends Controller
         return redirect()->route('activiList', ['category_id' => $act->category_id])->with('message', 'Success Acti');
     }
 
-    public function changeStatus(Request $request){
+    public function changeStatus(Request $request)
+    {
         $act = Activity::find($request->activity_id);
-      
+
         if ($act) {
             $act->activity_status = $request->activity_status;
             $act->save();
-          
+
             return response()->json(['message' => 'สถานะถูกเปลี่ยนแปลงเรียบร้อยแล้ว']);
         } else {
             return response()->json(['message' => 'ไม่พบข้อมูล Activity']);
         }
     }
-
-
 }

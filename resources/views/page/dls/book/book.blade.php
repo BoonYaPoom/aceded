@@ -1,5 +1,5 @@
-@extends('layouts.adminhome')
-@section('content')
+@extends('layouts.department.layout.departmenthome')
+@section('contentdepartment')
     @if (Session::has('message'))
         <script>
             toastr.options = {
@@ -30,9 +30,9 @@
                                 <tr class="bg-infohead">
                                     <th class="align-middle" style="width:5%"> ลำดับ </th>
                                     <th class="align-middle" style="width:30%"> ชื่อหมวด (ไทย) </th>
-                                    <th class="align-middle" style="width:30%"> ชื่อหมวด (อังกฤษ) </th>
+                                    <th class="align-middle" style="width:25%"> ชื่อหมวด (อังกฤษ) </th>
                                     <th class="align-middle" style="width:5%"> สถานะ </th>
-                                    <th class="align-middle" style="width:5%"> กระทำ</th>
+                                    <th class="align-middle" style="width:10%"> กระทำ</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -103,7 +103,7 @@
         <header class="page-title-bar">
             <!-- floating action -->
             <button type="button" class="btn btn-success btn-floated btn-addwms"
-                onclick="window.location='{{ route('createbook') }}'" data-toggle="tooltip" title="เพิ่ม"><span
+                onclick="window.location='{{ route('createbook', ['department_id' => $depart]) }}'" data-toggle="tooltip" title="เพิ่ม"><span
                     class="fas fa-plus"></span></button>
             <!-- /floating action -->
         </header><!-- /.page-title-bar -->
