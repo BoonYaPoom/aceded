@@ -174,4 +174,8 @@ class BookController extends Controller
             return response()->json(['message' => 'ไม่พบข้อมูล Book']);
         }
     }
+    public function changeS(Request $request)
+    {
+   
+    }
 }
