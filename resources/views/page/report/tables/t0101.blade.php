@@ -24,14 +24,14 @@
         <form method="post" id="formreport">
             <div class="form-row">
                 <!-- form column -->
-                <div class="col-md-1"><span class="mt-1 ">ปี</span></div>
+             <!--   <div class="col-md-1"><span class="mt-1 ">ปี</span></div>
                 <div class="col-md-3">
                     <div class=""><select id="selectyear" name="selectyear" class="form-control" data-toggle="select2"
                             data-placeholder="ปี" data-allow-clear="false" onchange="$('#formreport').submit();">
                             <option value="2022"> </option>
                             <option value="2023" selected> </option>
                         </select></div>
-                </div>
+                </div>-->
                 <div class="col-md-4 ">
                     <div><select id="selectcourse" name="selectcourse" class="form-control" data-toggle="select2"
                             data-placeholder="หลักสูตร" data-allow-clear="false" onchange="$('#formreport').submit();">

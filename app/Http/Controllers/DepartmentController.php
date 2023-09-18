@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\ActivityCategory;
 use App\Models\Department;
+use App\Models\Users;
 use Illuminate\Http\Request;
 
 class DepartmentController extends Controller
@@ -33,9 +34,10 @@ class DepartmentController extends Controller
     }
     public function departmentwmspage()
     {
+        $users = Users::all();
         $department  = Department::all();
         $from = 'wms';
-        return view('layouts.department.item.departmentwms', compact('department', 'from'));
+        return view('layouts.department.item.departmentwms', compact('department', 'from','users'));
     }
     public function departmentums()
     {

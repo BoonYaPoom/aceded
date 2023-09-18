@@ -51,7 +51,21 @@
                         </div>
 
                         <!-- /form row -->
-
+                        <div class="form-row " id="department_id">
+                            <label for="department_id" class="col-md-2">เลือกหน่วยงาน </label>
+                            <div class="col-md-9 mb-3">
+                                <select id="department_id" name="department_id" class="form-control form-control-sm"
+                                    data-toggle="select2" data-allow-clear="false">
+                                    <option value="0"selected disabled>เลือกหน่วยงาน</option>
+                                    @php
+                                    $Department = \App\Models\Department::all();
+                                @endphp
+                                @foreach ($Department as $part)
+                                    <option value="{{ $part->department_id }}"> {{ $part->name_th }} </option>
+                                @endforeach
+                                </select>
+                            </div>
+                        </div>
                         <!-- form row -->
                         <div class="form-row">
                             <label for="username" class="col-md-2">Username <span

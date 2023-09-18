@@ -127,7 +127,7 @@ class CustomAuthController extends Controller
             if (Hash::check($request->password, $user->password)) {
                 if ($user->role == 1 || $user->role == 3 && $user->userstatus == 1) {
                     $request->session()->put('loginId', $user->uid);
-                    return redirect()->route('departmentdlspage')->with('message', 'ผู้ใช้เข้าสู่ระบบ');
+                    return redirect()->route('departmentwmspage')->with('message', 'ผู้ใช้เข้าสู่ระบบ');
                 } else {
                     return back()->with('fail', 'ผู้ใช้ไม่มีสิทธิ์ในการเข้าสู่ระบบ');
                 }

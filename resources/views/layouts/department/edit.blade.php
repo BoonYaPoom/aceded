@@ -30,10 +30,10 @@
             <div class="card card-fluid">
                 <div class="card-header bg-muted"><a href="{{ $departmentLink }}"
                         style="text-decoration: underline;">หน่วยงาน</a> </div><!-- /.card-header -->
-                  
 
-                <form action="{{ route('departmentupdate', ['from' => $from ,'department_id' => $depart->department_id]) }}" method="post"
-                    enctype="multipart/form-data">
+
+                <form action="{{ route('departmentupdate', ['from' => $from, 'department_id' => $depart->department_id]) }}"
+                    method="post" enctype="multipart/form-data">
                     @csrf
                     @method('PUT')
                     <!-- .card-body -->
@@ -72,26 +72,43 @@
                         <div class="form-group">
                             <label for="department_status">สถานะ </label> <label
                                 class="switcher-control switcher-control-success switcher-control-lg"><input type="checkbox"
-                                    class="switcher-input" name="department_status" id="department_status" value="1">
-                                <span class="switcher-indicator"></span> <span class="switcher-label-on">ON</span> <span
-                                    class="switcher-label-off text-red">OFF</span></label>
+                                    class="switcher-input" name="department_status" id="department_status" value="1"
+                                    {{ $depart->department_status == 1 ? 'checked' : '' }}>
+                                <span class="switcher-indicator"></span> <span class="switcher-label-on">ON</span>
+                                 <span class="switcher-label-off text-red">OFF</span></label>
                         </div><!-- /.form-group -->
 
                         <div class="container mt-2">
 
 
+                        
                             <div class="form-group">
                                 <label for="color">Select a color:</label>
-                                <input type="color" id="color" class="form-control" name="color"
-                                    value="{{ $depart->color }}">
+                                <input type="color" id="colorPicker" class="form-control"  value="{{ $depart->color }}" data-mdb-color-picker oninput="updateColorCode()">
+                                <input type="text" id="colorCode" class="form-control" name="color"  value="{{ $depart->color }}" oninput="updateColorPicker()">
                             </div>
-
+                            
+                            <script>
+                            function updateColorCode() {
+                                var colorPicker = document.getElementById('colorPicker');
+                                var colorCodeInput = document.getElementById('colorCode');
+                                var colorCode = colorPicker.value;
+                                colorCodeInput.value = colorCode;
+                            }
+                            
+                            function updateColorPicker() {
+                                var colorPicker = document.getElementById('colorPicker');
+                                var colorCodeInput = document.getElementById('colorCode');
+                                var colorCode = colorCodeInput.value;
+                                colorPicker.value = colorCode;
+                            }
+                            </script>
 
                         </div>
                     </div><!-- /.card-body -->
 
-     
-       
+
+
 
             </div><!-- /.card -->
 

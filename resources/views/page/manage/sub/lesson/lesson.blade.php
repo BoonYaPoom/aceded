@@ -27,7 +27,7 @@
                         <th class="align-middle w3-hide-small" style="width:20%"> ชื่อ (อังกฤษ) </th>
                         <th class="align-middle" style="width:10%"> ชนิดสื่อ </th>
                         <th class="align-middle" style="width:10%"> สถานะ </th>
-                        <th class="align-middle" style="width:10%"> เวลาวิดิโอ </th>
+                    <!--    <th class="align-middle" style="width:10%"> เวลาวิดิโอ </th>-->
                         <th class="align-middle" style="width:10%"> กระทำ</th>
                     </tr>
                 </thead>

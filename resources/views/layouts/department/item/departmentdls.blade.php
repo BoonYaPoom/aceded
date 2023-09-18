@@ -34,7 +34,7 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach ($department as $depart)
+                                @foreach ($department->sortBy('department_id') as $depart)
                                     <tr>
                                         <td><a href="{{ route('dls', ['department_id' => $depart->department_id]) }}">
                                                 {{ $depart->name_short_en }}</a>

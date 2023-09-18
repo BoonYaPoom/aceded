@@ -52,7 +52,7 @@
                     </div>
                     <div class="row">
 
-                        @foreach ($department as $depart)
+                        @foreach ($department->sortBy('department_id') as $depart)
                             @if ($depart->department_status == 1)
                                 <div class="col-sm-12 col-md-6 col-lg-4 pb-3">
                                     <!-- Product -->

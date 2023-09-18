@@ -2,7 +2,7 @@
     <form method="post" id="formclassroom">
         <div class="form-row">
             <label for="selectyear text-center" class="col-md-4 w3-hide-small ">&nbsp;</label>
-            <div class="col-md-4">
+          <!--  <div class="col-md-4">
                 <p>
                     <select id="selectyear" name="selectyear" class="form-control " data-toggle="select2"
                         data-placeholder="ปี" data-allow-clear="false" onchange="$('#formclassroom').submit();">
@@ -10,7 +10,7 @@
                         <option value="2023" selected> 2023 </option>
                     </select>
                 </p>
-            </div>
+            </div> -->
         </div>
     </form>
     <div class="table-responsive">

@@ -53,6 +53,10 @@
                     href="{{ route('personTypes') }}"><i class="fas fa-users"></i>
                         กลุ่มผู้ใช้งาน</a>
 
+                <!--    <a class="ml-1 btn btn-info btn-md " style="color:#fff" 
+                    href="{{ route('personTypes') }}"><i class="fas fa-users"></i>
+                        ประเภทผู้ใช้งาน</a> -->
+
 
 
 
@@ -156,8 +160,6 @@
                                                     $('#uploadForm')[0].reset();
                                                     $('#clientUploadModal').modal(
                                                         'hide');
-
-
                                                     location.reload();
                                                 }
 
@@ -187,8 +189,6 @@
                                         onclick="window.location='{{ route('UsersExport') }}'">
                                         <span>Excel</span>
                                     </button>
-
-
                                 </div>
 
                                 <div class="dataTables_filter ">
@@ -290,10 +290,7 @@
                                             ->pluck('name_in_thai')
                                             ->first();
                                     @endphp
-
-
                                     @include('page.UserAdmin.DataUser.userAll')
-
                                     @include('page.UserAdmin.group.ModelUser.modelRole')
                                     @include('page.UserAdmin.group.ModelUser.modelPass')
                                 @endforeach

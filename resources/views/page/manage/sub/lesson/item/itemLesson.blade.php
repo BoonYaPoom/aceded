@@ -73,11 +73,11 @@
         });
     </script>
 
-
+<!--  
     <td>
         {{ $totalMinutes }} : {{ $totalMin }}
     </td>
-
+-->
 
 
     <td class="align-middle">

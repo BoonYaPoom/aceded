@@ -76,6 +76,7 @@ class EditManageUserController extends Controller
         $usermanages->modifieddate = now();
 
         $usermanages->province_id = $request->province_id;
+        $usermanages->department_id = $request->department_id;
 
         $usermanages->user_type = $request->input('user_type', 0);
         $usermanages->mobile = $request->mobile;

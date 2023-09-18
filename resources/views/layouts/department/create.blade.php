@@ -81,12 +81,32 @@
                     <div class="container mt-2">
                         <div class="form-group">
                             <label for="color">Select a color:</label>
-                            <input type="color" id="color" class="form-control" name="color" value="#F04A23"
-                                data-mdb-color-picker>
+                            <input type="color" id="colorPicker" class="form-control" value="#F04A23" data-mdb-color-picker oninput="updateColorCode()">
+                            <input type="text" id="colorCode" class="form-control" name="color" oninput="updateColorPicker()">
                         </div>
+                        
+                        <script>
+                        function updateColorCode() {
+                            var colorPicker = document.getElementById('colorPicker');
+                            var colorCodeInput = document.getElementById('colorCode');
+                            var colorCode = colorPicker.value;
+                            colorCodeInput.value = colorCode;
+                        }
+                        
+                        function updateColorPicker() {
+                            var colorPicker = document.getElementById('colorPicker');
+                            var colorCodeInput = document.getElementById('colorCode');
+                            var colorCode = colorCodeInput.value;
+                            colorPicker.value = colorCode;
+                        }
+                        </script>
+                        
+                        
+                      
+                       
                     </div>
                 </div><!-- /.card -->
-
+              
                 <div class="form-actions">
                     <button class="btn btn-lg btn-primary ml-auto" type="submit"><i class="far fa-save"></i>
                         บันทึก</button>

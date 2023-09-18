@@ -21,16 +21,19 @@ class ReportAllController extends Controller
     {
 
         $userper = Users::all();
-        $count1 = Users::where('role', 1)->count();
+        $count1 = Users::where('role',1)->count();
         $count3 = Users::where('role', 3)->count();
         $count4 = Users::where('role', 4)->count();
+        $role1 = Users::where('role', 1)->first();
+        $role3 = Users::where('role',3)->first();
+        $role4 = Users::where('role',4)->first();
         $jsonContent = file_get_contents('javascript/json/_data.json');
         $mms = json_decode($jsonContent, true);
         $monthdata = $mms['month'];
         $month = $monthdata['th'];
         $perType = PersonType::all();
         $learners =  CourseLearner::all();
-        return view('page.report.reporta', compact('userper', 'count1', 'count3', 'count4', 'month', 'perType', 'learners'));
+        return view('page.report.reporta', compact('userper', 'count1', 'count3', 'count4','role1','role3','role4', 'month', 'perType', 'learners'));
     }
     public function ReportB()
     {

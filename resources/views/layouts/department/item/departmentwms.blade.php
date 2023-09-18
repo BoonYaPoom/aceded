@@ -49,7 +49,9 @@
                                     </td>
 
                                 </tr>
-                                @foreach ($department as $depart)
+                                @foreach ($department->sortBy('department_id') as $depart)
+                              
+                                @if($data->department_id == $depart->department_id || $data->role == 1)
                                     <tr>
                                         <td><a href="{{ route('manage', ['department_id' => $depart->department_id]) }}">
                                                 {{ $depart->name_short_en }}</a>
@@ -100,6 +102,7 @@
 
                                         </td>
                                     </tr>
+                                    @endif
                                 @endforeach
                             </tbody><!-- /tbody -->
                         </table><!-- /.table -->
