@@ -17,7 +17,7 @@ return new class extends Migration
             $table->increments('department_id');
             $table->string('name_th', 400)->collation('utf8_general_ci');
             $table->string('name_en', 400)->nullable()->collation('utf8_general_ci');
-            $table->string('name_short_th', 20)->nullable()->collation('utf8_general_ci');
+            $table->string('name_short_th', 400)->nullable()->collation('utf8_general_ci');
             $table->string('name_short_en', 20)->nullable()->collation('utf8_general_ci');
             $table->integer('department_id_ref')->nullable();
             $table->string('department_status', 1)->nullable()->collation('utf8_general_ci');

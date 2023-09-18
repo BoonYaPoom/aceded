@@ -8,6 +8,11 @@ use Illuminate\Http\Request;
 
 class DepartmentController extends Controller
 {
+    public function bookif()
+    {
+     
+        return view('book.index');
+    }
     public function aced()
     {
         $department  = Department::all();
@@ -67,9 +72,10 @@ class DepartmentController extends Controller
         if ($request->hasFile('name_short_th')) {
             $image = $request->file('name_short_th');
             $imageName =  $image->getClientOriginalName();
-            $image->move(public_path('lac'), $imageName);
-            $depart->name_short_th = $imageName;
+            $image->move(public_path('upload/Department/'), $imageName);
+            $depart->name_short_th = 'upload/Department/' . $imageName;
         }
+       
 
         $depart->color = $request->color;
         $depart->save();
@@ -181,8 +187,8 @@ class DepartmentController extends Controller
         if ($request->hasFile('name_short_th')) {
             $image = $request->file('name_short_th');
             $imageName =  $image->getClientOriginalName();
-            $image->move(public_path('uploads'), $imageName);
-            $depart->name_short_th = $imageName;
+            $image->move(public_path('upload/Department/'), $imageName);
+            $depart->name_short_th = 'upload/Department/' . $imageName;
         }
         $depart->color = $request->color;
         $depart->save();

@@ -27,9 +27,16 @@ class HighlightController extends Controller
         $hights = new Highlight;
 
         $image_name = time() . '.' . $request->highlight_path->getClientOriginalExtension();
-        Storage::disk('uploadfile')->put('banner/' . $image_name, file_get_contents($request->highlight_path));
+        $uploadDirectory = public_path('upload/Highlight/Main/');
+        if (!file_exists($uploadDirectory)) {
+            mkdir($uploadDirectory, 0755, true);
+        }
+        if (file_exists($uploadDirectory)) {
 
-        $hights->highlight_path = $image_name;
+            file_put_contents(public_path('upload/Highlight/Main/' . $image_name), file_get_contents($request->highlight_path));
+            $hights->highlight_path = 'upload/Highlight/Main/' . $image_name;
+        }
+
         $hights->department_id = 0;
         $hights->highlight_status = $request->input('links_status', 0);
         $hights->save();
@@ -97,8 +104,11 @@ class HighlightController extends Controller
     public function destory($highlight_id)
     {
         $hights = Highlight::findOrFail($highlight_id);
-        if (Storage::disk('external')->exists('banner/' . $hights->highlight_path)) {
-            Storage::disk('external')->delete('banner/' . $hights->highlight_path);
+        $filePath = public_path($hights->highlight_path);
+
+        if (file_exists($filePath)) {
+
+            unlink($filePath);
         }
 
         $hights->delete();
@@ -134,7 +144,7 @@ class HighlightController extends Controller
         return view('page.manages.imghead.imgheadedit', compact('hights', 'depart'));
     }
 
-    public function storeDep(Request $request ,$department_id)
+    public function storeDep(Request $request, $department_id)
     {
         $request->validate([
             'highlight_path' => 'required'
@@ -142,10 +152,19 @@ class HighlightController extends Controller
         ]);
         $hights = new Highlight;
 
+      
         $image_name = time() . '.' . $request->highlight_path->getClientOriginalExtension();
-        Storage::disk('uploadfile')->put('banner/' . $image_name, file_get_contents($request->highlight_path));
+        $uploadDirectory = public_path('upload/Highlight/Department/');
+        if (!file_exists($uploadDirectory)) {
+            mkdir($uploadDirectory, 0755, true);
+        }
+        if (file_exists($uploadDirectory)) {
 
-        $hights->highlight_path = $image_name;
+            file_put_contents(public_path('upload/Highlight/Department/' . $image_name), file_get_contents($request->highlight_path));
+            $hights->highlight_path = 'upload/Highlight/Department/' . $image_name;
+        }
+
+
 
         $hights->highlight_link = $request->highlight_link;
         $hights->highlight_status = $request->input('links_status', 0);
@@ -205,6 +224,6 @@ class HighlightController extends Controller
         $loginLog->save();
 
 
-        return redirect()->route('hightDep',['department_id'=> $hights->department_id])->with('message', 'hightpage บันทึกข้อมูลสำเร็จ');
+        return redirect()->route('hightDep', ['department_id' => $hights->department_id])->with('message', 'hightpage บันทึกข้อมูลสำเร็จ');
     }
 }

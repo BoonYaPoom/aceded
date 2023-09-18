@@ -94,8 +94,10 @@
                                       
                                     @endif
                                 @endforeach
+                           
                             </tbody><!-- /tbody -->
                         </table><!-- /.table -->
+                        
                     </div><!-- /.table-responsive -->
                 </div><!-- /.card-body -->
             </div><!-- /.card -->

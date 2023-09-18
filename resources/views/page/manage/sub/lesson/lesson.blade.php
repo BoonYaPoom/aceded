@@ -42,16 +42,16 @@
                         @php
                             $lesson_id = $item->lesson_id;
                             $level++;
-                            $totalDuration =  $item->duration;
+                            $totalDuration = $item->duration;
                             $totalDurationInMinutes = $totalDuration;
-                                                
-                                                $totalMinutes = floor($totalDurationInMinutes / 60); // จำนวนชั่วโมง
-                                                $totalMin = $totalDurationInMinutes % 60; // จำนวนนาทีที่เหลือ
-                                                
-                                                if ($totalMin > 60) {
-                                                    $totalMinutes += floor($totalMin / 60);
-                                                    $totalMin %= 60;
-                                                }
+                            
+                            $totalMinutes = floor($totalDurationInMinutes / 60); // จำนวนชั่วโมง
+                            $totalMin = $totalDurationInMinutes % 60; // จำนวนนาทีที่เหลือ
+                            
+                            if ($totalMin > 60) {
+                                $totalMinutes += floor($totalMin / 60);
+                                $totalMin %= 60;
+                            }
                         @endphp
                         @php
                             $contentType = \App\Models\ContentType::where('content_type', $item->content_type)->first();
@@ -73,22 +73,29 @@
                         @php
                             $left += $level + 30;
                         @endphp
+                        @php
+                            $subItems = $lessons->where('lesson_id_ref', $item->lesson_id)->sortBy('ordering');
+                            
+                            $Orderings = $lessons->where('lesson_id_ref', $item->lesson_id)->pluck('ordering');
+                            
+                        @endphp
                         @foreach ($lessons as $subitem)
-                            @if ($subitem->lesson_id_ref === $item->lesson_id)
-                               
+                        @php
+                        $contentTypesubitem = \App\Models\ContentType::where('content_type', $subitem->content_type)->first();
+                    @endphp
+                            @if ($subitem->ordering != $item->ordering  && $subitem->lesson_id_ref == $item->lesson_id )
                                 @include('page.manage.sub.lesson.item.subitem')
-                                <!--  Model -->
+                                <!-- Model -->
                                 @include('page.manage.sub.lesson.item.modelLessonSmall')
-                               
                             @endif
-              
+                     
                         @endforeach
-                        
                     @endforeach
                 </tbody><!-- /tbody -->
             </table><!-- /.table -->
         </div><!-- /.table-responsive -->
     </div><!-- /.card-body -->
+
 
     <script>
         function togglerows(id) {
@@ -107,12 +114,7 @@
                 obj2.classList.remove('fa-minus-circle');
                 obj2.classList.add('fa-plus-circle');
             }
-            if (id > 0) {
-                var tdElement = obj2.parent(); // Get the parent td element
-                var currentPadding = parseInt(tdElement.css("padding-left"), 10); // Get the current padding-left value
-                var newPadding = Math.max(currentPadding - 25, 0); // Calculate the new padding value (minimum 0)
-                tdElement.css("padding-left", newPadding + "px"); // Set the new padding value
-            }
+
         }
     </script>
 

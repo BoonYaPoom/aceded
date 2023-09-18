@@ -39,10 +39,9 @@
                             <div class="row mb-5">
 
                                 <div class="col-lg-10">
-                                    <img src="{{ asset('upload/banner/' . $highlight->highlight_path) }}"
+                                    <img src="{{ asset($highlight->highlight_path) }}"
                                         alt="{{ $highlight->highlight_path }}" style="width:100%">
-                                    <img src="{{ Storage::disk('external')->url('banner/' . $highlight->highlight_path) }}"
-                                        style="width:100%">
+                                
                                 </div>
 
                                 <div class="col-lg-1">

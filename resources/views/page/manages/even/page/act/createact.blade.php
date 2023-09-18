@@ -11,7 +11,7 @@
                 <div class="card-header bg-muted"><a href="{{ route('manage', ['department_id' => $depart]) }}"
                         style="text-decoration: underline;">จัดการเว็บ</a> / <a href="{{ route('Webpage', ['department_id' => $depart]) }}"
                             style="text-decoration: underline;">ข่าว/กิจกรรม</a> / <a href="{{ route('acteven', ['department_id' => $depart]) }}"
-                                style="text-decoration: underline;">ข่าว</a> / <i> เพิ่มหมวดกิจกรรม</i></div>
+                                style="text-decoration: underline;">กิจกรรม</a> / <i> เพิ่มหมวดกิจกรรม</i></div>
                 <!-- /.card-header -->
 
                 <!-- .card-body -->
@@ -33,7 +33,18 @@
                             <input type="text" class="form-control" name="category_en" placeholder="ชื่อหมวด (อังกฤษ)"
                                 value="">
                         </div><!-- /.form-group -->
-
+                        <div class="form-row">
+                            <div class="col-md-6 mb-3">
+                                <label for="flatpickr03">วันที่เริ่ม</label>
+                                <input id="flatpickr03" name="startdate" value="" type="text"
+                                    class="form-control startdate " data-toggle="flatpickr">
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="flatpickr04">วันที่สิ้นสุด</label>
+                                <input id="flatpickr04" name="enddate" value="" type="text"
+                                    class="form-control enddate " data-toggle="flatpickr">
+                            </div>
+                        </div>
 
                         <div class="form-group">
                             <label for="cover">ภาพปก </label>

@@ -115,19 +115,7 @@
                 </div><!-- /.card -->
             </div><!-- /grid column -->
         </div><!-- .page-title-bar -->
-        @php
-        $n = 0;
-        
-        $result = []; // สร้างตัวแปรเก็บผลลัพธ์
-    
-        foreach ($learners as $l => $learn) {
-            $totallearn = \App\Models\Users::where('uid', $learn->uid)
-                                                ->where('role', 4)
-                                                ->count();
-        }
 
-        
-    @endphp
 
 
         @php
@@ -139,7 +127,15 @@
             $results = [];
             $regis = [];
             $subjectName = \App\Models\CourseSubject::all();
+            $n = 0;
             
+            $result = []; // สร้างตัวแปรเก็บผลลัพธ์
+            $totallearn = [];
+            foreach ($learners as $l => $learn) {
+                $totallearn = \App\Models\Users::where('uid', $learn->uid)
+                    ->where('role', 4)
+                    ->count();
+            }
             foreach ($subjectName as $s => $subject) {
                 foreach ($learners as $l => $lrean) {
                     $dataLearn = $lrean->registerdate;
@@ -619,6 +615,7 @@
             $dateAll = ['ม.ค.', 'ก.พ.', 'มี.ค.', 'เม.ย.', 'พ.ค.', 'มิ.ย.', 'ก.ค.', 'ส.ค.', 'ก.ย.', 'ต.ค.', 'พ.ย.', 'ธ.ค.'];
             $chartLog = [];
             $result = [];
+
             $processedplatforms = [];
             $dateAllIndexed = array_values($dateAll);
             foreach ($Logs as $l => $Log) {
@@ -629,8 +626,7 @@
                     $result[$monthsa]['logplatform'] = isset($result[$monthsa]['logplatform']) ? $result[$monthsa]['logplatform'] + 1 : 1;
             
                     $year = \Carbon\Carbon::parse($dataLog)->year;
-                    if($year == 2022){
-
+            
                     if (!in_array($Log->logplatform, $processedplatforms)) {
                         $processedplatforms[] = $Log->logplatform;
                         $register = [];
@@ -638,21 +634,22 @@
                             $register[] = empty($result[$m]['logplatform']) ? null : $result[$m]['logplatform'];
                         }
                         $chartLog[] = [
-                            'name' => $Log->logplatform, // เปลี่ยน 'choice' เป็น 'name'
-                            'data' => $register, // ค่า count ที่คุณต้องการ
-                        ];
+                'name' => $processedplatforms, // เปลี่ยน 'choice' เป็น 'name'
+                'data' => $register, // ค่า count ที่คุณต้องการ
+            ];
                     }
                     
-            }
                 }
+                
             }
+           
         @endphp
 
         <script>
             var dateAll = {!! json_encode($dateAllIndexed) !!};
+            var chartLog = @json($chartLog);
 
-            var chartLog = {!! json_encode($chartLog) !!};
-            console.log(chartLog);
+            console.log(dateAll);
             Highcharts.chart("courselogin", {
                 chart: {
                     type: 'column'
@@ -695,6 +692,9 @@
 
             });
         </script>
+
+
+
 
     </div><!-- /.page-inner -->
 @endsection

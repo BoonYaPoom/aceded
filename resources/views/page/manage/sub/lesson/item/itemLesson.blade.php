@@ -76,8 +76,6 @@
 
     <td>
         {{ $totalMinutes }} : {{ $totalMin }}
-        
-
     </td>
 
 

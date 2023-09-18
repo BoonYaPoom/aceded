@@ -49,14 +49,8 @@ class WebController extends Controller
         $newSort = $lastSort + 1;
         $webs = new Web;
 
-        if ($request->hasFile('cover')) {
-
-            $file_name = time() . '.' . $request->cover->getClientOriginalExtension();
-            Storage::disk('external')->put('Web/' . $file_name, file_get_contents($request->cover));
-        } else {
-            $file_name = '';
-        }
-        $webs->cover = $file_name;
+     
+    
         $webs->web_th = $request->web_th;
         $webs->web_en = $request->web_en;
         $webs->detail_th = $request->detail_th;
@@ -69,7 +63,21 @@ class WebController extends Controller
         $webs->web_option =null;
         $webs->category_id = (int)$category_id;
         $webs->save();
+        if ($request->hasFile('cover')) {
+            $file_name = 'cover'.  $webs->web_id  . '.' . $request->cover->getClientOriginalExtension();
+            $uploadDirectory = public_path('upload/Web/');
+            if (!file_exists($uploadDirectory)) {
+                mkdir($uploadDirectory, 0755, true);
+            }
+            if (file_exists($uploadDirectory)) {
 
+                file_put_contents(public_path('upload/Web/' . $file_name), file_get_contents($request->cover));
+                $webs->cover = 'upload/Web/' . $file_name;
+            }
+        } else {
+            $file_name = '';
+            $webs->cover = $file_name;
+        }
         if (Session::has('loginId')) {
             $loginId = Session::get('loginId');
 
@@ -140,16 +148,18 @@ class WebController extends Controller
         ]);
         $webs = Web::findOrFail($web_id);
         if ($request->hasFile('cover')) {
-            
-            $file_name = time() . '.' . $request->cover->getClientOriginalExtension();
-            if (Storage::disk('external')->exists('Web/' . $file_name)) {
-                Storage::disk('external')->delete('Web/' . $file_name);
+            $file_name = 'cover'.  $web_id  . '.' . $request->cover->getClientOriginalExtension();
+            $uploadDirectory = public_path('upload/Web/');
+            if (!file_exists($uploadDirectory)) {
+                mkdir($uploadDirectory, 0755, true);
             }
-            
-            Storage::disk('external')->put('Web/' . $file_name, file_get_contents($request->cover));
-    
-            $webs->cover = $file_name;
+            if (file_exists($uploadDirectory)) {
+
+                file_put_contents(public_path('upload/Web/' . $file_name), file_get_contents($request->cover));
+                $webs->cover = 'upload/Web/' . $file_name;
+            }
         }
+    
         $webs->web_th = $request->web_th;
         $webs->web_en = $request->web_en;
         $webs->detail_th = $request->detail_th;

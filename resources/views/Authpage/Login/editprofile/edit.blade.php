@@ -1,5 +1,5 @@
-@extends('layouts.department.layout.departmenthome')
-@section('contentdepartment')
+@extends('layouts.adminhome')
+@section('content')
     <!-- .page-inner -->
     <form action="{{ route('update-profile') }}" method="post" enctype="multipart/form-data">
         @csrf
@@ -14,7 +14,7 @@
                             <div class="media mb-3">
                                 <div class="user-avatar user-avatar-xl fileinput-button">
                                     <div class="fileinput-button-label"> Change photo </div>
-                                    <img src="{{ asset('upload/profile/' . $data->avatar) }}"
+                                    <img src="{{ asset($data->avatar) }}"
                                         alt="{{ $data->avatar }}">
 
                                     <input id="fileupload-avatar" type="file" name="avatar" accept="image/*">

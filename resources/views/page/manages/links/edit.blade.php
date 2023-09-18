@@ -18,7 +18,7 @@
                     <!-- .card-body -->
                     <div class="card-body">
                         <div class="form-group">
-                            <label for="cover"><img src="{{ Storage::disk('external')->url('links/' . $links->cover) }}"
+                            <label for="cover"><img src="{{ asset($links->cover) }} " style="width:50%"
                                     alt="{{ $links->cover }}">
                         </div>
                         <!-- .form-group -->

@@ -59,7 +59,7 @@
                                     <div class="card">
                                         <div class="position-relative  img-hover">
                                             <a href="{{ $depart->name_en }}"><img class="card-img-top"
-                                                    src="{{ asset('lac/' . $depart->name_short_th) }}"
+                                                    src="{{ asset($depart->name_short_th) }}"
                                                     alt="Image Description"></a>
                                         </div>
                                         <div class="card-body pt-4 px-3 pb-0 bg-theme-second">

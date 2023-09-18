@@ -35,21 +35,19 @@ class EditProfileController extends Controller
             $users = Users::where('uid', '=', Session::get('loginId'))->first();
             
             if ($request->hasFile('avatar')) {
-                // ลบรูปภาพเก่า (ถ้ามี)
-                if ($users->avatar) {
-                    $oldImagePath = public_path('profile') . '/' . $users->avatar;
-                    if (file_exists($oldImagePath)) {
-                        unlink($oldImagePath);
-                    }
+                $image_name = 'avatar' . '.' . $request->avatar->getClientOriginalExtension();
+                $image = Image::make($request->avatar)->resize(400, 400);
+                $uploadDirectory = public_path('upload/Profile/' . $image_name);
+                
+                if (!file_exists(dirname($uploadDirectory))) {
+                    mkdir(dirname($uploadDirectory), 0755, true);
                 }
             
-                $image_name = time() . '.' . $request->avatar->getClientOriginalExtension();
-                Storage::disk('external')->put('profile/' . $image_name, file_get_contents($request->avatar));
-                $image = Image::make($request->avatar)->resize(400, 400);
-                Storage::disk('external')->put('profile/' . $image_name, $image->stream());
-                $users->avatar = $image_name;
+                $image->save($uploadDirectory);
+                $users->avatar = 'upload/Profile/' . 'avatar' . '.' . $request->avatar->getClientOriginalExtension();
+            } else {
+                $users->avatar = ''; // Set to empty if no avatar is uploaded
             }
-            
             // ... อัปเดตฟิลด์อื่น ๆ ตามต้องการ
             $users->username = $request->username;
             $users->firstname = $request->firstname;

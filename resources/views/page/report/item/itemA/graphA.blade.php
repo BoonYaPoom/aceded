@@ -1,5 +1,53 @@
 
+@php
+$chartData = [];
+$chartDataRe = [];
+$chartDataAll = [];
+$dateAll = ['ม.ค.', 'ก.พ.', 'มี.ค.', 'เม.ย.', 'พ.ค.', 'มิ.ย.', 'ก.ค.', 'ส.ค.', 'ก.ย.', 'ต.ค.', 'พ.ย.', 'ธ.ค.'];
 
+foreach ($perType as $per) {
+    $uniqueUserIds = [];
+    $personType = $per->person_type;
+    $totalCount = 0;
+    $totalCountRE = 0;
+    $totalCountAll = 0;
+
+    foreach ($learners as $l => $lrean) {
+        $dataLearn = $lrean->registerdate;
+        $monthsa = \ltrim(\Carbon\Carbon::parse($dataLearn)->format('m'), '0');
+
+        $year = \Carbon\Carbon::parse($dataLearn)->year + 543;
+        $newDateTime = \Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $lrean->registerdate)->format('d/m/Y H:i:s');
+
+        if (!in_array($lrean->uid, $uniqueUserIds)) {
+            array_push($uniqueUserIds, $lrean->uid);
+            if ($lrean->congratulation == 1) {
+                $count = \App\Models\Users::where('uid', $lrean->uid)
+                    ->where('user_type', $personType)
+                    ->count();
+
+                $totalCount += $count;
+            }
+            if ($lrean->registerdate) {
+                $countregis = \App\Models\Users::where('uid', $lrean->uid)
+                    ->where('user_type', $personType)
+                    ->count();
+
+                $totalCountRE += $countregis;
+            }
+        }
+    }
+    $chartData[] = [
+        'choice' => $per->person,
+        'count' => $totalCount,
+    ];
+    $chartDataRe[] = [
+        'choice' => $per->person,
+        'count' => $totalCountRE,
+    ];
+}
+
+@endphp
 <script>
     var chartData = {!! json_encode($chartData) !!};
     var chartDataRe = {!! json_encode($chartDataRe) !!};

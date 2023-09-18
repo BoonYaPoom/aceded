@@ -23,8 +23,10 @@
             <!-- .card -->
             <div class="card card-fluid">
                 <!-- .card-header -->
-                <div class="card-header bg-muted"><a href="{{ route('manage', ['department_id' => $depart]) }}" style="text-decoration: underline;">จัดการเว็บ</a> / <a
-                        href="{{ route('linkpage', ['department_id' => $depart]) }}" style="text-decoration: underline;">ลิงค์ที่น่าสนใจ</a> </div><!-- /.card-header -->
+                <div class="card-header bg-muted"><a href="{{ route('manage', ['department_id' => $depart]) }}"
+                        style="text-decoration: underline;">จัดการเว็บ</a> / <a
+                        href="{{ route('linkpage', ['department_id' => $depart]) }}"
+                        style="text-decoration: underline;">ลิงค์ที่น่าสนใจ</a> </div><!-- /.card-header -->
                 <!-- .card-body -->
                 <div class="card-body">
 
@@ -45,89 +47,68 @@
                             <!-- tbody -->
                             <tbody>
                                 <!-- tr -->
-                                @php 
-                                $l = 1;
-                                
+                                @php
+                                    $l = 1;
+                                    
                                 @endphp
+                                    @if ($links->isEmpty())
+                                    <tr class="odd">
+                                        <td valign="top" colspan="4" class="dataTables_empty">ไม่พบรายการแสดงข้อมูล
+                                        </td>
+                                    </tr>
+                                @else
                                 @foreach ($links as $item)
-                                
                                     <tr>
                                         <td>{{ $l++ }}</td>
                                         <td>{{ $item->links_title }}</td>
                                         <td><select name="sort" id="sort" class="form-control" data-toggle="select2"
                                                 data-placeholder="เรียงลำดับ" data-allow-clear="false"
                                                 data-links-id="{{ $item->links_id }}">
-                                                <option value="{{ $item->sort }}" selected disabled>{{ $item->sort }}</option>
+                                                <option value="{{ $item->sort }}" selected disabled>{{ $item->sort }}
+                                                </option>
                                                 @for ($i = 1; $i <= count($links); $i++)
                                                     <option value="{{ $i }}">{{ $i }}</option>
                                                 @endfor
                                             </select>
                                         </td>
-                                        
-                                    <script>
-                                        $(document).ready(function() {
-                                            $(document).on('change', '#sort', function() {
-                                                var sort = $(this).val();
-                                                var linksId = $(this).data('links-id');
-                                                console.log('Sort:', sort);
-                                                console.log('links ID:', linksId);
-                                                $.ajax({
-                                                    type: "GET",
-                                                    dataType: "json",
-                                                    url: '{{ route('changeSortIink') }}',
-                                                    data: {
-                                                        'sort': sort,
-                                                        'links_id': linksId
-                                                    },
-                                                    success: function(data) {
-                                                        console.log(data.message); // Display the returned message
-                                                        location.reload();
-                                                    },
-                                                    error: function(xhr, status, error) {
-                                                        console.log('An error occurred.');
-                                                    }
+
+                                        <script>
+                                            $(document).ready(function() {
+                                                $(document).on('change', '#sort', function() {
+                                                    var sort = $(this).val();
+                                                    var linksId = $(this).data('links-id');
+                                                    console.log('Sort:', sort);
+                                                    console.log('links ID:', linksId);
+                                                    $.ajax({
+                                                        type: "GET",
+                                                        dataType: "json",
+                                                        url: '{{ route('changeSortIink') }}',
+                                                        data: {
+                                                            'sort': sort,
+                                                            'links_id': linksId
+                                                        },
+                                                        success: function(data) {
+                                                            console.log(data.message); // Display the returned message
+                                                            location.reload();
+                                                        },
+                                                        error: function(xhr, status, error) {
+                                                            console.log('An error occurred.');
+                                                        }
+                                                    });
                                                 });
                                             });
-                                        });
-                                    </script>
+                                        </script>
 
-                                    <td class="align-middle">
-                                        <label class="switcher-control switcher-control-success switcher-control-lg">
-                                            <input type="checkbox" class="switcher-input switcher-edit"
-                                            {{ $item->links_status == 1 ? 'checked' : '' }} 
-                                                data-links-id="{{  $item->links_id }}">
-                                            <span class="switcher-indicator"></span>
-                                            <span class="switcher-label-on" >ON</span>
-                                            <span class="switcher-label-off text-red" >OFF</span>
-                                        </label>
-                                  </td>
-                                 
-                         
-                            <script>
-                                $(document).ready(function() {
-                                    $(document).on('change', '.switcher-input.switcher-edit', function() {
-                                        var links_status = $(this).prop('checked') ? 1 : 0;
-                                        var links_id = $(this).data('links-id');
-                                        console.log('links_status:', links_status);
-                                        console.log('links_id:', links_id);
-                                        $.ajax({
-                                            type: "GET",
-                                            dataType: "json",
-                                            url: '{{ route('changeStatusLinks') }}',
-                                            data: {
-                                                'links_status': links_status,
-                                                'links_id': links_id
-                                            },
-                                            success: function(data) {
-                                                console.log(data.message); // แสดงข้อความที่ส่งกลับ
-                                            },
-                                            error: function(xhr, status, error) {
-                                                console.log('ข้อผิดพลาด');
-                                            }
-                                        });
-                                    });
-                                });
-                            </script>
+                                        <td class="align-middle">
+                                            <label class="switcher-control switcher-control-success switcher-control-lg">
+                                                <input type="checkbox" class="switcher-input switcher-edit"
+                                                    {{ $item->links_status == 1 ? 'checked' : '' }}
+                                                    data-links-id="{{ $item->links_id }}">
+                                                <span class="switcher-indicator"></span>
+                                                <span class="switcher-label-on">ON</span>
+                                                <span class="switcher-label-off text-red">OFF</span>
+                                            </label>
+                                        </td>
 
 
 
@@ -142,7 +123,36 @@
                                         </td>
                                     </tr><!-- /tr -->
                                     <!-- tr -->
+                                    
+                                        <script>
+                                            $(document).ready(function() {
+                                                $(document).on('change', '.switcher-input.switcher-edit', function() {
+                                                    var links_status = $(this).prop('checked') ? 1 : 0;
+                                                    var links_id = $(this).data('links-id');
+                                                    console.log('links_status:', links_status);
+                                                    console.log('links_id:', links_id);
+                                                    $.ajax({
+                                                        type: "GET",
+                                                        dataType: "json",
+                                                        url: '{{ route('changeStatusLinks') }}',
+                                                        data: {
+                                                            'links_status': links_status,
+                                                            'links_id': links_id
+                                                        },
+                                                        success: function(data) {
+                                                            console.log(data.message); // แสดงข้อความที่ส่งกลับ
+                                                        },
+                                                        error: function(xhr, status, error) {
+                                                            console.log('ข้อผิดพลาด');
+                                                        }
+                                                    });
+                                                });
+                                            });
+                                        </script>
+                                       
+
                                 @endforeach
+                                @endif
                             </tbody><!-- /tbody -->
                         </table><!-- /.table -->
                     </div><!-- /.table-responsive -->
@@ -154,8 +164,8 @@
         <header class="page-title-bar">
             <!-- floating action -->
             <button type="button" class="btn btn-success btn-floated btn-addwms"
-                onclick="window.location='{{ route('linkcreate', ['department_id' => $depart]) }}'" data-toggle="tooltip" title="เพิ่ม"><span
-                    class="fas fa-plus"></span></button>
+                onclick="window.location='{{ route('linkcreate', ['department_id' => $depart]) }}'" data-toggle="tooltip"
+                title="เพิ่ม"><span class="fas fa-plus"></span></button>
             <!-- /floating action -->
         </header><!-- /.page-title-bar -->
     </div><!-- /.page-inner -->

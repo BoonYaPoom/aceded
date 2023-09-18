@@ -49,24 +49,12 @@ class CourseSubjectController extends Controller
         $subs->subject_code = $request->subject_code;
         $subs->subject_th = $request->subject_th;
         $subs->subject_en = $request->subject_en;
-
-        if ($request->hasFile('banner')) {
-
-            $image_name = time() . '.' . $request->banner->getClientOriginalExtension();
-            Storage::disk('external')->put('Subject/SubBanner/' . $image_name, file_get_contents($request->banner));
-        } else {
-            $image_name = '';
-        }
-
-        $subs->banner = $image_name;
         $subs->learn_format = $request->input('learn_format', 0);
         $subs->evaluation = $request->input('evaluation', 0);
         $subs->checkscore = $request->checkscore;
-
         $selectedTeachers = $request->input('teacher', []);
         $teachers = implode(',', $selectedTeachers);
         $subs->teacher = $teachers;
-
         $subs->department_id = (int)$department_id;
         $subs->subject_status = $request->input('subject_status', 0);
         $subs->intro_th = '';
@@ -92,6 +80,24 @@ class CourseSubjectController extends Controller
         $subs->result_learn_en = null;
         $subs->save();
 
+      
+        if ($request->hasFile('banner')) {
+            $image_name = 'banner'. $subs->subject_id . '.' . $request->banner->getClientOriginalExtension();
+            $uploadDirectory = public_path('upload/Subject/SubBanner/');
+            if (!file_exists($uploadDirectory)) {
+                mkdir($uploadDirectory, 0755, true);
+            }
+            if (file_exists($uploadDirectory)) {
+
+                file_put_contents(public_path('upload/Subject/SubBanner/' . $image_name), file_get_contents($request->banner));
+                $subs->banner = 'upload/Subject/SubBanner/' .  'banner' . $subs->subject_id . '.' . $request->banner->getClientOriginalExtension();
+                $subs->save();
+            }
+        } else {
+            $image_name = '';
+            $subs->cover = $image_name;
+            $subs->save();
+        }
 
         $selectedTeachers = $request->input('teacher', []);
 
@@ -231,13 +237,6 @@ class CourseSubjectController extends Controller
         $subs->subject_th = $request->subject_th;
         $subs->subject_en = $request->subject_en;
 
-        if ($request->hasFile('banner')) {
-
-            $image_name = time() . '.' . $request->banner->getClientOriginalExtension();
-            Storage::disk('external')->put('Subject/SubBanner/' . $image_name, file_get_contents($request->banner));
-            $subs->banner = $image_name;
-        }
-
 
         $subs->learn_format = $request->input('learn_format', 0);
         $subs->evaluation = $request->input('evaluation', 0);
@@ -259,6 +258,20 @@ class CourseSubjectController extends Controller
         $subs->result_learn_en = null;
         $subs->save();
 
+ 
+        if ($request->hasFile('banner')) {
+            $image_name = 'banner'. $subs->subject_id . '.' . $request->banner->getClientOriginalExtension();
+            $uploadDirectory = public_path('upload/Subject/SubBanner/');
+            if (!file_exists($uploadDirectory)) {
+                mkdir($uploadDirectory, 0755, true);
+            }
+            if (file_exists($uploadDirectory)) {
+
+                file_put_contents(public_path('upload/Subject/SubBanner/' . $image_name), file_get_contents($request->banner));
+                $subs->banner = 'upload/Subject/SubBanner/' .  'banner' . $subs->subject_id . '.' . $request->banner->getClientOriginalExtension();
+                $subs->save();
+            }
+        } 
 
         return redirect()->route('suppage', ['department_id' => $subs->department_id])->with('message', 'CourseSub บันทึกข้อมูลสำเร็จ');
     }

@@ -1,6 +1,6 @@
 
-        <tr class="rows_{{ $item->lesson_id }} small" style="display: none;">
-            <td>{{ $item->lesson_number }}</td>
+        <tr class="rows_{{ $subitem->lesson_id_ref }} small" style="display: none;">
+            <td>{{ $subitem->lesson_number }}</td>
 
             <td class="w3-hide-small" style="padding-left:{{ $left }}px">
                 <i class="fa fas fa-minus-circle text-success pointer" style="cursor:pointer"
@@ -16,18 +16,18 @@
             </td>
 
             <td>
-                @if ($contentType)
+                @if ($contentTypesubitem)
                     @if ($uploadSuccess)
                         @if ($subitem->content_path)
                             <i style="cursor:pointer;"
-                                class="{{ $contentType->icon }} fa-lg text-success switcher-upload"
+                                class="{{ $contentTypesubitem->icon }} fa-lg text-success switcher-upload"
                                 data-toggle="modal"
                                 data-target="#clientUploadModal-{{ $subitem->lesson_id }}"
                                 title="">
                                 <span class="d-none"></span>
                             </i>
                         @else
-                            <i style="cursor:pointer;" class="{{ $contentType->icon }} fa-lg"
+                            <i style="cursor:pointer;" class="{{ $contentTypesubitem->icon }} fa-lg"
                                 data-toggle="modal"
                                 data-target="#clientUploadModal-{{ $subitem->lesson_id }}"
                                 title="">
@@ -35,7 +35,7 @@
                             </i>
                         @endif
                     @else
-                        <i style="cursor:pointer;" class="{{ $contentType->icon }} fa-lg"
+                        <i style="cursor:pointer;" class="{{ $contentTypesubitem->icon }} fa-lg"
                             data-toggle="modal"
                             data-target="#clientUploadModal-{{ $subitem->lesson_id }}"
                             title="">
@@ -65,7 +65,12 @@
                         class="fas fa-plus-circle fa-lg text-danger mr-1"></i></a>
                 <a href="{{ route('edit_lessonform', ['lesson_id' => $subitem]) }}"
                     data-toggle="tooltip" title="แก้ไข"><i
-                        class="far fa-edit fa-lg text-success mr-1"></i></a><a
+                        class="far fa-edit fa-lg text-success mr-1"></i></a>
+                        <a href="{{ route('Supply_lessonform', ['subject_id' => $subitem, 'lesson_id' => $subitem]) }}" data-toggle="tooltip"
+                            title="สื่อเสริม"><i class="fas fa-file-video fa-lg text-success mr-1"></i>
+                        </a>
+                        
+                        <a
                     href="{{ route('destroy_lessonform', ['lesson_id' => $subitem]) }}"
                     onclick="deleteRecord(event)" class="switcher-delete"
                     data-toggle="tooltip" title="ลบ"><i

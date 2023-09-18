@@ -26,36 +26,81 @@
             <!-- .card -->
             <div class="card card-fluid">
                 <!-- .card-header -->
-                <div class="card-header bg-muted"><a href="{{route('exampage', [$subs->subject_id])}}"
-                        style="text-decoration: underline;">หมวดหมู่</a> / <a
-                        href=""
+                <div class="card-header bg-muted"><a href="{{ route('exampage', [$subs->subject_id]) }}"
+                        style="text-decoration: underline;">หมวดหมู่</a> / <a href=""
                         style="text-decoration: underline;">จัดการวิชา</a> / <i>คลังข้อสอบ</i></div><!-- /.card-header -->
                 <!-- .card-body -->
                 <div class="card-body">
-                    <form action="{{ route('Questionimport', ['subject_id' => $subs]) }}" method="POST" enctype="multipart/form-data">
+                    <form id="uploadForm" enctype="multipart/form-data">
                         @csrf
-                        <input type="hidden" />
-                     
-                    
-                        <div class="form-group">
-                   
-                            <label for="fileexcel">เลือกไฟล์รายชื่อ <span
-                                    class="badge badge-warning">Required</span></label> <a class="ml-3"
-                                href="{{ asset('upload/file/ข้อสอบ.xlsx')}}">ไฟล์ตัวอย่าง </a>
-                        </div>
-                        <div class="custom-file">
-                            <input type="hidden" name="subject_id" value="{{ $subs->subject_id }}" /> <!-- เพิ่มฟิลด์ subject_id ในแบบฟอร์ม -->
 
+                        <div class="form-group">
+                            <label for="fileexcel">เลือกไฟล์รายชื่อ <span
+                                    class="badge badge-warning">Required</span></label>
+                            <a class="ml-3"
+                                href="https://view.officeapps.live.com/op/view.aspx?src=https%3A%2F%2Felearning.tcct.or.th%2Fadmin%2Fupload-files%2F%25E0%25B8%2582%25E0%25B9%2589%25E0%25B8%25AD%25E0%25B8%25AA%25E0%25B8%25AD%25E0%25B8%259A.xlsx&wdOrigin=BROWSELINK"
+                                target="_blank">ไฟล์ตัวอย่าง
+                            </a>
+                        </div>
+
+                        <div class="custom-file">
+                            <input type="hidden" name="subject_id" value="{{ $subs->subject_id }}" />
                             <input type="file" name="fileexcel" id="fileexcel" class="custom-file-input"
                                 accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel"
-                                multiple> <label class="custom-file-label" for="fileexcel-customInput">Choose files</label>
+                                multiple>
+                            <label class="custom-file-label" for="fileexcel">Choose files</label>
                         </div>
+
+                        <div class="form-actions text-center">
+                            <button type="submit" class="btn  btn-lg btn-primary "><i class="fas fa-save"></i>
+                                นำเข้าไฟล์ข้อสอบ
+                            </button><br>&nbsp;
+                            <img src="{{ asset('upload/file/questionadd.png') }}">
+                        </div>
+                    </form>
                 </div>
-                <div class="form-actions text-center">
-                    <button type="submit" class="btn  btn-lg btn-primary "><i class="fas fa-save"></i> นำเข้าไฟล์ข้อสอบ
-                    </button><br>&nbsp;
-                    <img src="{{ asset('upload/file/questionadd.png')}}">
-                </div>
+                <script>
+                    $(document).ready(function() {
+                        $('#uploadForm').on('submit', function(e) {
+                            e.preventDefault();
+
+                            var formData = new FormData(this);
+
+                            $.ajax({
+                                url: '{{ route('Questionimport', ['subject_id' => $subs]) }}',
+                                type: 'POST',
+                                data: formData,
+                                dataType: 'json',
+                                cache: false,
+                                contentType: false,
+                                processData: false,
+                                success: function(response) {
+                                    console.log(response); // ดูค่า response ในคอนโซล
+                                    if (response.message) {
+                                        // แสดง SweetAlert เมื่อการนำเข้าสำเร็จ
+                                        Swal.fire({
+                                            title: 'Excel Successful',
+                                            text: 'ข้อมูล Excel ถูกบันทึกเรียบร้อย',
+                                            icon: 'success',
+                                            confirmButtonText: 'OK'
+                                        }).then(function(result) {
+                                            // หลังจากกดปุ่ม OK
+                                            if (result.isConfirmed) {
+                                                // ทำสิ่งที่คุณต้องการหลังจากกด OK
+                                            }
+                                        });
+                                    } else {
+                                        alert('Import failed: ' + response.error);
+                                    }
+                                },
+                                error: function(xhr, status, error) {
+                                    alert('Import failed: ' + error);
+                                }
+                            });
+                        });
+                    });
+                </script>
+
                 <div>
 
                 </div>
@@ -79,6 +124,7 @@
                         </thead><!-- /thead -->
                         <!-- tbody -->
                         <tbody>
+
                         </tbody><!-- /tbody -->
                     </table><!-- /.table -->
                 </div><!-- /.table-responsive -->
@@ -89,4 +135,29 @@
     <!-- .page-title-bar -->
 
     </div><!-- /.page-inner -->
+    <div class="modal fade" id="importSuccessModal" tabindex="-1" role="dialog" aria-labelledby="importSuccessModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="importSuccessModalLabel">Import Successful</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+
+
+                    <div class="table-responsive ">
+                        Import Successful
+                    </div>
+
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
 @endsection

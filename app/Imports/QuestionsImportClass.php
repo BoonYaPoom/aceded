@@ -25,7 +25,7 @@ class QuestionsImportClass implements ToModel
         // ใช้ $this->subjectId เพื่อเข้าถึงค่า subject_id ที่ถูกส่งเข้ามา
         $subjectId = $this->subjectId;
 
-        if ($row[0] <= 2) {
+        if ($row[0] >= 1) {
         return DB::transaction(function () use ($row,$subjectId) {
             $lastQuestionId = Question::max('question_id');
 

@@ -17,44 +17,35 @@ class ManualController extends Controller
         $depart = Department::findOrFail($department_id);
         $manuals  = $depart->ManualsDe()->where('department_id', $department_id)->get();
 
-        return view('page.manages.manual.index', compact('manuals','depart'));
+        return view('page.manages.manual.index', compact('manuals', 'depart'));
     }
     public function create($department_id)
     {
         $depart = Department::findOrFail($department_id);
-        
-        return view('page.manages.manual.create',compact('depart'));
+
+        return view('page.manages.manual.create', compact('depart'));
     }
-    public function store(Request $request,$department_id)
+    public function store(Request $request, $department_id)
     {
 
-        
-        $validator = Validator::make($request->all(), [
-            'manual' => 'required',
-            'manual_path' => 'required'
+      
 
-        ]);
-    
-        if ($validator->fails()) {
-            return back()
-                ->withErrors($validator)
-                ->withInput()
-                ->with('error', 'ข้อมูลไม่ถูกต้อง');
-        }
         $manuals = new Manual;
         $manuals->manual = $request->manual;
-        if ($request->hasFile('cover')) {
+        if ($request->hasFile('manual_path')) {
+            $filename = time()  . '.' . $request->manual_path->getClientOriginalExtension();
+            $uploadDirectory = public_path('upload/Manual/documents/');
+            if (!file_exists($uploadDirectory)) {
+                mkdir($uploadDirectory, 0755, true);
+            }
+            if (file_exists($uploadDirectory)) {
 
-            $image_name = time() . '.' . $request->cover->getClientOriginalExtension();
-            Storage::disk('external')->put('Manual/image/' . $image_name, file_get_contents($request->cover));
-        } else {
-            $image_name = '';
+                file_put_contents(public_path('upload/Manual/documents/' . $filename), file_get_contents($request->manual_path));
+                $manuals->manual_path = 'upload/Manual/documents/' .   $filename;
+            }
+            
         }
-        $file_name = time() . '.' . $request->manual_path->getClientOriginalExtension();
-        Storage::disk('external')->put('Manual/documents/' . $file_name, file_get_contents($request->manual_path));
-
-        $manuals->cover = $image_name;
-        $manuals->manual_path = $file_name;
+      
         $manuals->detail = '';
         $manuals->department_id = (int)$department_id;
         $manuals->manual_status = 0;
@@ -62,7 +53,23 @@ class ManualController extends Controller
         $manuals->manual_type = 1;
         $manuals->save();
 
+        if ($request->hasFile('cover')) {
+            $image_name = 'cover' .  $manuals->manual_id . '.' . $request->cover->getClientOriginalExtension();
+            $uploadDirectory = public_path('upload/Manual/image/');
+            if (!file_exists($uploadDirectory)) {
+                mkdir($uploadDirectory, 0755, true);
+            }
+            if (file_exists($uploadDirectory)) {
 
+                file_put_contents(public_path('upload/Manual/image/' . $image_name), file_get_contents($request->cover));
+                $manuals->cover = 'upload/Manual/image/' .   $image_name;
+            }
+        } else {
+            $image_name = '';
+            $manuals->cover = $image_name;
+        }
+
+     
 
         if (Session::has('loginId')) {
             $loginId = Session::get('loginId');
@@ -114,15 +121,15 @@ class ManualController extends Controller
 
         $loginLog->save();
 
-
-        return redirect()->route('manualpage',['department_id' =>$department_id])->with('message', 'manuals บันทึกข้อมูลสำเร็จ');
+        return redirect()->route('manualpage', ['department_id' => $department_id])->with('message', 'manuals บันทึกข้อมูลสำเร็จ');
+    
     }
     public function edit($manual_id)
     {
         $manuals = Manual::findOrFail($manual_id);
         $department_id   = $manuals->department_id;
         $depart = Department::findOrFail($department_id);
-        return view('page.manages.manual.edit', compact('manuals','depart'));
+        return view('page.manages.manual.edit', compact('manuals', 'depart'));
     }
     public function update(Request $request, $manual_id)
     {
@@ -130,28 +137,35 @@ class ManualController extends Controller
         $manuals = Manual::findOrFail($manual_id);
         $manuals->manual = $request->manual;
         if ($request->hasFile('cover')) {
-       
-            if (Storage::disk('external')->exists('Manual/documents/' . $manuals->cover)) {
-                Storage::disk('external')->delete('Manual/documents/' . $manuals->cover); // ลบไฟล์เดิม
+            $image_name = 'cover' .  $manual_id . '.' . $request->cover->getClientOriginalExtension();
+            $uploadDirectory = public_path('upload/Manual/image/');
+            if (!file_exists($uploadDirectory)) {
+                mkdir($uploadDirectory, 0755, true);
             }
-            
-            $image_name = time() . '.' . $request->cover->getClientOriginalExtension();
-            Storage::disk('external')->put('Manual/image/' . $image_name, file_get_contents($request->cover));
+            if (file_exists($uploadDirectory)) {
+
+                file_put_contents(public_path('upload/Manual/image/' . $image_name), file_get_contents($request->cover));
+                $manuals->cover = 'upload/Manual/image/' .   $image_name;
+            }
+        } else {
+            $image_name = '';
             $manuals->cover = $image_name;
         }
+
         if ($request->hasFile('manual_path')) {
-            if (Storage::disk('external')->exists('Manual/documents/' . $manuals->manual_path)) {
-                Storage::disk('external')->delete('Manual/documents/' . $manuals->manual_path); // ลบไฟล์เดิม
+            $filename = 'manual_path' .  $manual_id . '.' . $request->manual_path->getClientOriginalExtension();
+            $uploadDirectory = public_path('upload/Manual/documents/');
+            if (!file_exists($uploadDirectory)) {
+                mkdir($uploadDirectory, 0755, true);
             }
-            $file_name = time() . '.' . $request->manual_path->getClientOriginalExtension();
-            Storage::disk('external')->put('Manual/documents/' . $file_name, file_get_contents($request->manual_path));
-            $manuals->manual_path = $file_name;
+            if (file_exists($uploadDirectory)) {
+
+                file_put_contents(public_path('upload/Manual/documents/' . $filename), file_get_contents($request->manual_path));
+            }
         }
-   
-   
         $manuals->detail = '';
         $manuals->manual_status = 0;
-        $manuals->manual_type = '';
+        $manuals->manual_type = 1;
         $manuals->save();
 
 
@@ -207,7 +221,7 @@ class ManualController extends Controller
         $loginLog->save();
 
 
-        return redirect()->route('manualpage',['department_id' =>$manuals->department_id])->with('message', 'manuals บันทึกข้อมูลสำเร็จ');
+        return redirect()->route('manualpage', ['department_id' => $manuals->department_id])->with('message', 'manuals บันทึกข้อมูลสำเร็จ');
     }
 
 

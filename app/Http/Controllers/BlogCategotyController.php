@@ -39,15 +39,9 @@ class BlogCategotyController extends Controller
                 ->with('error', 'ข้อมูลไม่ถูกต้อง');
         }
         $blogcat = new BlogCategory;
-        if ($request->hasFile('cover')) {
-    
-        $image_name = time() . '.' . $request->cover->getClientOriginalExtension();
-        Storage::disk('external')->put('Blog/' . $image_name, file_get_contents($request->cover));
-        } else {
-            $image_name = '';
-        }
 
-        $blogcat->cover = $image_name;
+      
+
         $blogcat -> category_th =$request->category_th;
         $blogcat -> category_en =$request->category_en;
         $blogcat->detail_th = '';
@@ -60,7 +54,24 @@ class BlogCategotyController extends Controller
         $blogcat->recommended =1;
         $blogcat->save();
 
+        if ($request->hasFile('cover')) {
+            $image_name = 'cover' . $blogcat->category_id . '.' . $request->cover->getClientOriginalExtension();
+            $uploadDirectory = public_path('upload/Blogcategory/');
+            if (!file_exists($uploadDirectory)) {
+                mkdir($uploadDirectory, 0755, true);
+            }
+            if (file_exists($uploadDirectory)) {
 
+                file_put_contents(public_path('upload/Blogcategory/' . $image_name), file_get_contents($request->cover));
+                $blogcat->cover = 'upload/Blogcategory/' .   'cover' . $blogcat->category_id . '.' . $request->cover->getClientOriginalExtension();
+                $blogcat->save();
+            }
+        } 
+         else {
+            $image_name = '';
+            $blogcat->cover = $image_name;
+            $blogcat->save();
+        }
         
         if(Session::has('loginId')){
             $loginId = Session::get('loginId');
@@ -79,11 +90,11 @@ class BlogCategotyController extends Controller
         
         $os = '';
         
-        // Loop through the conditions and check the user agent for the operating system
+  
         foreach ($conditions as $osName => $pattern) {
             if (preg_match("/$pattern/i", $userAgent)) {
                 $os = $osName;
-                break; // Exit the loop once a match is found
+                break;
             }
         }
         if (preg_match('/(Chrome|Firefox|Safari|Opera|Edge|IE|Edg)[\/\s](\d+\.\d+)/i', $userAgent, $matches)) {
@@ -130,17 +141,10 @@ class BlogCategotyController extends Controller
     public function update(Request $request,$category_id){
         $request->validate([
             'category_th' => 'required',
-            'category_en' => 'required',
-            'cover' => 'required'
         ]);
         
         $blogcat = BlogCategory::findOrFail($category_id);
-        if ($request->hasFile('cover')) {
-            $image_name = time() . '.' . $request->cover->getClientOriginalExtension();
-            Storage::disk('external')->put('Blog/' . $image_name, file_get_contents($request->cover));
-            $blogcat->cover = $image_name;
-         
-        } 
+      
         $blogcat -> category_th =$request->category_th;
         $blogcat -> category_en =$request->category_en;
         $blogcat->detail_th = '';
@@ -151,6 +155,20 @@ class BlogCategotyController extends Controller
         $blogcat->category_option ='';
         $blogcat->recommended =1;
         $blogcat->save();
+        if ($request->hasFile('cover')) {
+            $image_name = 'cover' . $category_id . '.' . $request->cover->getClientOriginalExtension();
+            $uploadDirectory = public_path('upload/Blogcategory/');
+            if (!file_exists($uploadDirectory)) {
+                mkdir($uploadDirectory, 0755, true);
+            }
+            if (file_exists($uploadDirectory)) {
+
+                file_put_contents(public_path('upload/Blogcategory/' . $image_name), file_get_contents($request->cover));
+                $blogcat->cover = 'upload/Blogcategory/' .   'cover' . $category_id . '.' . $request->cover->getClientOriginalExtension();
+                $blogcat->save();
+            }
+        } 
+
         if(Session::has('loginId')){
             $loginId = Session::get('loginId');
          
@@ -167,12 +185,11 @@ class BlogCategotyController extends Controller
         ];
         
         $os = '';
-        
-        // Loop through the conditions and check the user agent for the operating system
+
         foreach ($conditions as $osName => $pattern) {
             if (preg_match("/$pattern/i", $userAgent)) {
                 $os = $osName;
-                break; // Exit the loop once a match is found
+                break; 
             }
         }
         if (preg_match('/(Chrome|Firefox|Safari|Opera|Edge|IE|Edg)[\/\s](\d+\.\d+)/i', $userAgent, $matches)) {

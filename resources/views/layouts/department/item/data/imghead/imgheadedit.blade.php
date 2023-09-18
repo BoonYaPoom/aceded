@@ -40,7 +40,7 @@
                                     <div class="row mb-5">
                                  
                                         <div class="col-lg-10">
-                                            <img src="{{ Storage::disk('uploadfile')->url('banner/' . $highlight->highlight_path) }}"
+                                            <img src="{{ asset($highlight->highlight_path) }}"
                                                 alt="{{ $highlight->highlight_path }}" style="width:100%">
                                             <img src="" style="width:100%">
                                         </div>
@@ -81,6 +81,7 @@
                                                 });
                                             });
                                         </script>
+                                        
                                         <div class="col-lg-1">
                                             <a href="{{ route('destoryban', ['highlight_id' => $highlight->highlight_id]) }}"
                                                 onclick="deleteRecord(event)" rel="ภาพประชาสัมพันธ์" class="switcher-delete"

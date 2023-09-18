@@ -67,7 +67,7 @@
                                 name="cover" placeholder="ภาพปก" accept="image/*">
                         </div><!-- /.form-group -->
                         <div class="col-lg-10">
-                            <img src="{{ Storage::disk('external')->url('Course/' . $cour->cover) }}"
+                            <img src="{{ asset($cour->cover) }}"
                                 alt="{{ $cour->cover }}" style="width:70%">
                         </div>
                         <div class="form-group">

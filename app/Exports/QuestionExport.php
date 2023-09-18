@@ -24,15 +24,28 @@ WithEvents
     */
     public function collection()
     {
-        $ques = Question::select('question_id', 'question', 'question_type.question_type_th', 'course_lesson.lesson_th', 'question_status')
-        ->join('question_type', 'question.question_type', '=', 'question_type.question_type')
-        ->join('course_lesson', 'question.lesson_id', '=', 'course_lesson.lesson_id')
+        $ques = Question::select('question_id', 'question', 'question_type', 'lesson_id', 'question_status')
+
         ->get()
         ->map(function ($item, $index) {
             $item->question_id = $index + 1;
             $item->question_status = $item->question_status == 1 ? 'on' : 'off';
-
-            return $item;
+            $item->lesson_id = $item->lesson_id == 0 ? 'ข้อสอบ' : 'แบบทดสอบ';
+            if ($item->question_type == 1) {
+                $questionType = 'ปรนัย';
+            } elseif ($item->question_type == 2) {
+                $questionType = 'อัตนัย';
+            } elseif ($item->question_type == 3) {
+                $questionType = 'ถูกผิด';
+            } elseif ($item->question_type == 4) {
+                $questionType = 'จับคู่';
+            } elseif ($item->question_type == 5) {
+                $questionType = 'เรียงลำดับ';
+            } else {
+                $questionType = 'ไม่รู้จักประเภท';
+            }
+            $item->question_type =  $questionType ;
+                    return $item;
         });
     
     

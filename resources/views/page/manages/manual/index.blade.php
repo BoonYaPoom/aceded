@@ -33,7 +33,7 @@
                     <!-- .table-responsive -->
                     <div class="table-responsive">
                         <!-- .table -->
-                        <table id="datatable2" class="table w3-hoverable">
+                        <table id="datatable" class="table w3-hoverable">
                             <!-- thead -->
                             <thead>
                                 <tr class="bg-infohead">
@@ -46,66 +46,93 @@
                             <!-- tbody -->
                             <tbody>
                                 <!-- tr -->
-                                @php 
-                                $m = 1;                          
+                                @php
+                                    $m = 1;
                                 @endphp
-                                @foreach ($manuals as $item)
-                                    <tr>
-                                        <td>{{ $m++ }}</td>
-                                        <td>{{ $item->manual }}</td>
+                            
+                                    @foreach ($manuals as $item)
+                                        <tr>
+                                            <td>{{ $m++ }}</td>
+                                            <td>{{ $item->manual }}</td>
 
 
 
-                                        <td class="align-middle">
-                                            <label class="switcher-control switcher-control-success switcher-control-lg">
-                                                <input type="checkbox" class="switcher-input switcher-edit"
-                                                    {{ $item->manual_status == 1 ? 'checked' : '' }}
-                                                    data-manual-id="{{ $item->manual_id }}">
-                                                <span class="switcher-indicator"></span>
-                                                <span class="switcher-label-on">ON</span>
-                                                <span class="switcher-label-off text-red">OFF</span>
-                                            </label>
-                                        </td>
+                                            <td class="align-middle">
+                                                <label
+                                                    class="switcher-control switcher-control-success switcher-control-lg">
+                                                    <input type="checkbox" class="switcher-input switcher-edit"
+                                                        {{ $item->manual_status == 1 ? 'checked' : '' }}
+                                                        data-manual-id="{{ $item->manual_id }}">
+                                                    <span class="switcher-indicator"></span>
+                                                    <span class="switcher-label-on">ON</span>
+                                                    <span class="switcher-label-off text-red">OFF</span>
+                                                </label>
+                                            </td>
 
 
-                                        <script>
-                                            $(document).ready(function() {
-                                                $(document).on('change', '.switcher-input.switcher-edit', function() {
-                                                    var manual_status = $(this).prop('checked') ? 1 : 0;
-                                                    var manual_id = $(this).data('manual-id');
-                                                    console.log('manual_status:', manual_status);
-                                                    console.log('manual_id:', manual_id);
-                                                    $.ajax({
-                                                        type: "GET",
-                                                        dataType: "json",
-                                                        url: '{{ route('changeStatusManual') }}',
-                                                        data: {
-                                                            'manual_status': manual_status,
-                                                            'manual_id': manual_id
-                                                        },
-                                                        success: function(data) {
-                                                            console.log(data.message); // แสดงข้อความที่ส่งกลับ
-                                                        },
-                                                        error: function(xhr, status, error) {
-                                                            console.log('ข้อผิดพลาด');
-                                                        }
+                                            <script>
+                                                $(document).ready(function() {
+                                                    $(document).on('change', '.switcher-input.switcher-edit', function() {
+                                                        var manual_status = $(this).prop('checked') ? 1 : 0;
+                                                        var manual_id = $(this).data('manual-id');
+                                                        console.log('manual_status:', manual_status);
+                                                        console.log('manual_id:', manual_id);
+                                                        $.ajax({
+                                                            type: "GET",
+                                                            dataType: "json",
+                                                            url: '{{ route('changeStatusManual') }}',
+                                                            data: {
+                                                                'manual_status': manual_status,
+                                                                'manual_id': manual_id
+                                                            },
+                                                            success: function(data) {
+                                                                console.log(data.message); // แสดงข้อความที่ส่งกลับ
+                                                            },
+                                                            error: function(xhr, status, error) {
+                                                                console.log('ข้อผิดพลาด');
+                                                            }
+                                                        });
                                                     });
                                                 });
-                                            });
-                                        </script>
+                                            </script>
 
-                                        <td class="align-middle">
-                                            <a href="{{ route('editmanual', ['manual_id' => $item->manual_id]) }}"><i
-                                                    class="fas fa-edit fa-lg text-success" data-toggle="tooltip"
-                                                    title="แก้ไข"></i></a>
-                                            <a href="{{ route('destorymanual', ['manual_id' => $item->manual_id]) }}"
-                                                onclick="deleteRecord(event)"
-                                                rel="คู่มือการใช้งานระบบ TCCT e-learning สำหรับผู้ใช้งานระบบ"
-                                                class="switcher-delete" data-toggle="tooltip" title="ลบ">
-                                                <i class="fas fa-trash-alt fa-lg text-warning "></i></a>
-                                        </td>
-                                    </tr><!-- /tr -->
-                                @endforeach
+                                            <td class="align-middle">
+                                                <a href="{{ route('editmanual', ['manual_id' => $item->manual_id]) }}"><i
+                                                        class="fas fa-edit fa-lg text-success" data-toggle="tooltip"
+                                                        title="แก้ไข"></i></a>
+                                                <a href="{{ route('destorymanual', ['manual_id' => $item->manual_id]) }}"
+                                                    onclick="deleteRecord(event)"
+                                                    rel="คู่มือการใช้งานระบบ TCCT e-learning สำหรับผู้ใช้งานระบบ"
+                                                    class="switcher-delete" data-toggle="tooltip" title="ลบ">
+                                                    <i class="fas fa-trash-alt fa-lg text-warning "></i></a>
+                                            </td>
+                                        </tr><!-- /tr -->
+                                    @endforeach
+                   
+                                <script>
+                                    $(document).ready(function() {
+                                        var table = $('#datatable').DataTable({
+
+                                            lengthChange: false,
+                                            responsive: true,
+                                            info: true,
+                                            pageLength: 50,
+                                            language: {
+                                                info: "ลำดับที่ _START_ ถึง _END_ จากทั้งหมด _TOTAL_ รายการ",
+                                                infoEmpty: "ไม่พบรายการ",
+                                                infoFiltered: "(ค้นหาจากทั้งหมด _MAX_ รายการ)",
+                                                paginate: {
+                                                    first: "หน้าแรก",
+                                                    last: "หน้าสุดท้าย",
+                                                    previous: "ก่อนหน้า",
+
+                                                    next: "ถัดไป"
+                                                },
+                                                emptyTable: "ไม่พบรายการแสดงข้อมูล"
+                                            },
+                                        });
+                                    });
+                                </script>
                             </tbody><!-- /tbody -->
                         </table><!-- /.table -->
                     </div><!-- /.table-responsive -->
@@ -117,8 +144,8 @@
         <header class="page-title-bar">
             <!-- floating action -->
             <button type="button" class="btn btn-success btn-floated btn-addwms"
-                onclick="window.location='{{ route('createmanual', ['department_id' => $depart]) }}'" data-toggle="tooltip" title="เพิ่ม"><span
-                    class="fas fa-plus"></span></button>
+                onclick="window.location='{{ route('createmanual', ['department_id' => $depart]) }}'" data-toggle="tooltip"
+                title="เพิ่ม"><span class="fas fa-plus"></span></button>
             <!-- /floating action -->
         </header><!-- /.page-title-bar -->
     </div><!-- /.page-inner -->

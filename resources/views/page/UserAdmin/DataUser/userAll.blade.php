@@ -2,11 +2,13 @@
     <td>{{ $rowNumber }}</td>
     <td>{{ $item->username }}</td>
     <td>{{ $item->firstname }} {{ $item->lastname }}</td>
-    <td>{{ $item->department_id }}</td>
+ 
     <td>{{ substr($item->mobile, 0, 3) }}-{{ substr($item->mobile, 3, 3) }}-{{ substr($item->mobile, 6, 4) }}
     </td>
 
     <td>{{ $item->email }}</td>
+    <td>{{  $proviUser  }}</td>
+    <td>{{ $name_short_en }}</td>
     <td class="align-middle"> <label class="switcher-control switcher-control-success switcher-control-lg">
             <input type="checkbox" class="switcher-input switcher-edit" {{ $item->userstatus == 1 ? 'checked' : '' }}
                 data-uid="{{ $item->uid }}">
@@ -61,14 +63,7 @@
         @endif
     </td>
 </tr><!-- /tr -->
-<script>
-    $(document).ready(function() {
-        $('.modal').on('shown.bs.modal', function() {
-            var uid = $(this).data('uid');
-            console.log('ID ที่เข้าถึงโมเดล:', uid);
-        });
-    });
-</script>
+
 <script>
     // เมื่อตัวเลือกถูกเลือก
     document.querySelectorAll('input[name="role"]').forEach(function(radio) {

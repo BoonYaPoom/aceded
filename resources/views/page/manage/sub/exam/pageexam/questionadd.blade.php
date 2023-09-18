@@ -41,13 +41,17 @@
                         </div>
 
                         <div class="col-md-3">
-                            <select id="lesson_id" name="lesson_id" class="form-control" data-toggle="select2"
-                                data-placeholder="เลือกทั้งหมด" data-allow-clear="false" style="width:30%"
-                                onchange="window.location.href=''">
-                                <option value="">เลือกทั้งหมด </option>
-                                @foreach ($lossen as $losse)
-                                    <option value="{{ $losse->lesson_id }}">{{ $losse->lesson_th }} </option>
-                                @endforeach
+                            <select id="drop2" name="drop2" class="form-control" data-toggle="select2"
+                                data-placeholder="เลือกทั้งหมด" data-allow-clear="false" style="width:30%">
+                                <option value="0" >เลือกทั้งหมด </option>
+
+                                <option value="แบบทดสอบ ">
+                                    แบบทดสอบ
+                                </option>
+                                <option value="ข้อสอบ ">
+                                    ข้อสอบ
+                                </option>
+
                             </select>
                         </div>
                     </div>
@@ -180,6 +184,16 @@
                                     $('#myInput').on('keyup', function() {
                                         table.search(this.value).draw();
                                     });
+                                    $('#drop2').on('change', function() {
+                                        var selecteddrop2Id = $(this).val();
+                                        if (selecteddrop2Id == 0) {
+                                            table.columns(3).search('').draw();
+                                        } else {
+                                            // กรองข้อมูลใน DataTables ด้วยหน่วยงานที่เลือก
+                                            table.columns(3).search(selecteddrop2Id).draw();
+                                        }
+                                    });
+
                                 });
                             </script>
                         </table><!-- /.table -->

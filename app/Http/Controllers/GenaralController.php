@@ -26,18 +26,20 @@ class GenaralController extends Controller
 
         if ($request->hasFile('detail')) {
 
-            // อัปโหลดไฟล์ใหม่ขึ้น Storage 'external'
             $filename = 'logo' . '.' . $request->detail->getClientOriginalExtension();
-            Storage::disk('external')->put('logo/' . $filename, file_get_contents($request->detail));
-
-            // อัปเดตข้อมูลในตาราง 'General'
-            $genaral->detail = 'logo/' . $filename;
-            $genaral->title = 'logo';
-            // ตรวจสอบว่ามีไฟล์เดิมอยู่ใน Storage 'external'
-            if (Storage::disk('external')->exists('logo/' . $genaral->detail)) {
-                // ลบไฟล์เดิมออกจาก Storage 'external'
-                Storage::disk('external')->delete('logo/' . $genaral->detail);
+            $uploadDirectory = public_path('upload/LOGO/');
+            if (!file_exists($uploadDirectory)) {
+                mkdir($uploadDirectory, 0755, true);
             }
+            if (file_exists($uploadDirectory)) {
+
+                file_put_contents(public_path('upload/LOGO/' . $filename), file_get_contents($request->detail));
+                $genaral->detail = 'upload/LOGO/' . 'logo' . '.' . $request->detail->getClientOriginalExtension();
+            }
+            // อัปเดตข้อมูลในตาราง 'General'
+ 
+            $genaral->title = 'logo';
+            
         }
 
         $genaral->save();

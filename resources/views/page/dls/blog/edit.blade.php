@@ -39,7 +39,7 @@
                             <span class="badge badge-warning">{{ $message }}</span>
                         @enderror
                         <div class="form-group">
-                            <label for="cover"><img src="{{ Storage::disk('external')->url('Blog/' . $blogcat->cover) }}"
+                            <label for="cover"><img src="{{ asset( $blogcat->cover) }}"
                                     alt="{{ $blogcat->cover }}" style="height:300px">
                         </div>
                         <div class="form-group">

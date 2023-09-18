@@ -51,7 +51,7 @@
 
                         <!-- .form-group -->
                         <div class="form-group">
-                            <label for="cover"><img src="{{ Storage::disk('external')->url('Book/image/' . $books->cover) }}" alt="{{ $books->cover }}"
+                            <label for="cover"><img src="{{ asset($books->cover) }}" alt="{{ $books->cover }}"
                                     style="height:300px">
                         </div>
                         <div class="form-group">

@@ -59,18 +59,30 @@ class CourseSupplymentaryController extends Controller
         $supplys->author = $request->author;
         $supplys->supplymentary_status = $request->input('supplymentary_status', 0);
         $supplys->supplymentary_type = $request->type;
-        if ($request->hasFile('path')) {
 
-            $image_name = time() . '.' . $request->path->getClientOriginalExtension();
-            Storage::disk('external')->put('Subject/Supplymentary/path/' . $image_name, file_get_contents($request->path));
-        } else {
-            $image_name = '';
-        }
-        $supplys->path = $image_name;
+ 
         $supplys->subject_id = (int)$subject_id;
         $supplys->lesson_id = 0;
 
         $supplys->save();
+ 
+        if ($request->hasFile('path')) {
+            $image_name = 'path' . '.' . $request->path->getClientOriginalExtension();
+            $uploadDirectory = public_path('upload/Subject/Supplys/');
+            if (!file_exists($uploadDirectory)) {
+                mkdir($uploadDirectory, 0755, true);
+            }
+            if (file_exists($uploadDirectory)) {
+
+                file_put_contents(public_path('upload/Subject/Supplys/' . $image_name), file_get_contents($request->path));
+                $supplys->path = 'upload/Subject/Supplys/' . 'path' . '.' . $request->path->getClientOriginalExtension();
+                $supplys->save();
+            }
+        } else {
+            $image_name = '';
+            $supplys->path = $image_name;
+            $supplys->save();
+        }
 
         return redirect()->route('supplypage', ['subject_id' => $subject_id])->with('message', 'Course_lesson บันทึกข้อมูลสำเร็จ');
     }
@@ -96,9 +108,20 @@ class CourseSupplymentaryController extends Controller
         $supplys->author = $request->author;
         $supplys->supplymentary_status = $request->input('supplymentary_status', 0);
         $supplys->supplymentary_type = $request->type;
+   
         if ($request->hasFile('path')) {
-            $image_name = time() . '.' . $request->path->getClientOriginalExtension();
-            Storage::disk('external')->put('Subject/Supplymentary/path/' . $image_name, file_get_contents($request->path));
+            $image_name = 'path' .  $supplys->supplymentary_id . '.' . $request->path->getClientOriginalExtension();
+            $uploadDirectory = public_path('upload/Subject/Supplys/');
+            if (!file_exists($uploadDirectory)) {
+                mkdir($uploadDirectory, 0755, true);
+            }
+            if (file_exists($uploadDirectory)) {
+
+                file_put_contents(public_path('upload/Subject/Supplys/' . $image_name), file_get_contents($request->path));
+                $supplys->path = 'upload/Subject/Supplys/' . 'path'.  $supplys->supplymentary_id . '.' . $request->path->getClientOriginalExtension();
+            }
+        } else {
+            $image_name = '';
             $supplys->path = $image_name;
         }
 
@@ -170,14 +193,24 @@ class CourseSupplymentaryController extends Controller
         $supplys->author = $request->author;
         $supplys->supplymentary_status = $request->input('supplymentary_status', 0);
         $supplys->supplymentary_type = $request->supplymentary_type;
+       
         if ($request->hasFile('path')) {
+            $image_name = 'path' . $lesson_id . '.' . $request->path->getClientOriginalExtension();
+            $uploadDirectory = public_path('upload/Subject/Lesson/Supplymentary/');
+            if (!file_exists($uploadDirectory)) {
+                mkdir($uploadDirectory, 0755, true);
+            }
+            if (file_exists($uploadDirectory)) {
 
-            $image_name = time() . '.' . $request->path->getClientOriginalExtension();
-            Storage::disk('external')->put('Subject/Supplymentary/path/' . $image_name, file_get_contents($request->path));
+                file_put_contents(public_path('upload/Subject/Lesson/Supplymentary/' . $image_name), file_get_contents($request->path));
+                $supplys->path = 'upload/Subject/Lesson/Supplymentary/' . 'path'  . $lesson_id . '.' . $request->path->getClientOriginalExtension();
+            }
         } else {
             $image_name = '';
+            $supplys->path = $image_name;
         }
-        $supplys->path = $image_name;
+
+       
         $supplys->lesson_id = (int)$lesson_id;
         $supplys->subject_id = (int)$subject_id;
 
@@ -207,13 +240,20 @@ class CourseSupplymentaryController extends Controller
         $supplys->author = $request->author;
         $supplys->supplymentary_status = $request->input('supplymentary_status', 0);
         $supplys->supplymentary_type = $request->type;
+
         if ($request->hasFile('path')) {
-            $image_name = time() . '.' . $request->path->getClientOriginalExtension();
-            Storage::disk('external')->put('Subject/Supplymentary/path/' . $image_name, file_get_contents($request->path));
-            $supplys->path = $image_name;
-        }
+            $image_name = 'path' . '.' . $request->path->getClientOriginalExtension();
+            $uploadDirectory = public_path('upload/Subject/Supplys/');
+            if (!file_exists($uploadDirectory)) {
+                mkdir($uploadDirectory, 0755, true);
+            }
+            if (file_exists($uploadDirectory)) {
 
-
+                file_put_contents(public_path('upload/Subject/Supplys/' . $image_name), file_get_contents($request->path));
+                $supplys->path = 'upload/Subject/Supplys/' . 'path' . '.' . $request->path->getClientOriginalExtension();
+               
+            }
+        } 
 
         $supplys->save();
 

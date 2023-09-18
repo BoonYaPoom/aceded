@@ -17,7 +17,7 @@
                     <!-- .table-responsive -->
                     <div class="table-responsive">
                         <!-- .table -->
-                        <table id="datatable2" class="table w3-hoverable">
+                        <table id="datatable" class="table w3-hoverable">
                             <!-- thead -->
                             <thead>
                                 <tr class="bg-infohead">
@@ -101,6 +101,30 @@
                                     @endif
                                     <!-- tr -->
                                 @endforeach
+                                <script>
+                                    $(document).ready(function() {
+                                        var table = $('#datatable').DataTable({
+
+                                            lengthChange: false,
+                                            responsive: true,
+                                            info: true,
+                                            pageLength: 50,
+                                            language: {
+                                                info: "ลำดับที่ _START_ ถึง _END_ จากทั้งหมด _TOTAL_ รายการ",
+                                                infoEmpty: "ไม่พบรายการ",
+                                                infoFiltered: "(ค้นหาจากทั้งหมด _MAX_ รายการ)",
+                                                paginate: {
+                                                    first: "หน้าแรก",
+                                                    last: "หน้าสุดท้าย",
+                                                    previous: "ก่อนหน้า",
+
+                                                    next: "ถัดไป"
+                                                },
+                                                emptyTable: "ไม่พบรายการแสดงข้อมูล"
+                                            },
+                                        });
+                                    });
+                                </script>
                             </tbody><!-- /tbody -->
                         </table><!-- /.table -->
                     </div><!-- /.table-responsive -->

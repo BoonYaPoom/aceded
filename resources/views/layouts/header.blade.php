@@ -6,7 +6,7 @@
                 <button class="hamburger hamburger-squeeze mr-2 d-lg-none d-xl-none" type="button" data-toggle="aside"
                     aria-label="toggle menu"><span class="hamburger-box"><span
                             class="hamburger-inner"></span></span></button>
-                <a href="{{route('aced')}}"><img src="{{ asset('upload/logo/1690433379.png') }}"
+                <a href="{{route('aced')}}"><img src="{{ asset('upload/logo/logo.png') }}"
                         alt="" style="height: 50px;" class="bg-white border mt-3 mb-3"></a>
             </div>
             <div class="top-bar-list">
@@ -41,7 +41,7 @@
                     <div class="dropdown">
                         <button class="btn-account d-none d-md-flex" type="button" data-toggle="dropdown"
                             aria-haspopup="true" aria-expanded="false"><span class="user-avatar user-avatar-md"> <img
-                                    src="{{ asset('upload/profile/' . $data->avatar) }}" alt="{{ $data->avatar }}"></span>
+                                    src="{{ asset($data->avatar) }}" alt="{{ $data->avatar }}"></span>
                             <span class="account-summary pr-lg-4 d-none d-lg-block">
                                 <span class="account-name">
                                     {{ $data->firstname }}
@@ -70,7 +70,7 @@
                         class="hamburger-box"><span class="hamburger-inner"></span></span></button>
                 <button class="btn-account" type="button" data-toggle="collapse" data-target="#dropdown-aside"><span
                         class="user-avatar user-avatar-lg">
-                        <img src="{{ asset('upload/profile/' . $data->avatar) }}" alt="{{ $data->avatar }}"></span>
+                        <img src="{{ asset($data->avatar) }}" alt="{{ $data->avatar }}"></span>
                     <span class="account-icon"><span class="fa fa-caret-down fa-lg"></span></span>
                     <span class="account-summary"><span class="account-name"> {{ $data->firstname }}</span>
                         <span class="account-description">ผู้ดูแลระบบ</span></span></button>
@@ -98,7 +98,7 @@
                                 class="hamburger-inner"></span></span></button>
                     <button class="btn-account collapsed" type="button" data-toggle="collapse"
                         data-target="#dropdown-aside" aria-expanded="false"><span class="user-avatar user-avatar-lg">
-                            <img src="{{ asset('upload/profile/' . $data->avatar) }}"
+                            <img src="{{ asset($data->avatar) }}"
                                 alt="{{ $data->avatar }}"></span>
                         <span class="account-icon"><span class="fa fa-caret-down fa-lg"></span></span>
                         <span class="account-summary"><span class="account-name">{{ $data->firstname }}</span>

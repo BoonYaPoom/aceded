@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Department;
+use App\Models\Districts;
+use App\Models\Subdistricts;
 use App\Models\Users;
 
 use Illuminate\Http\Request;
@@ -13,13 +15,23 @@ use Intervention\Image\Facades\Image;
 
 class EditManageUserController extends Controller
 {
-    public function UserManage()
-    {
 
-        $usermanages = Users::all();
+    public function UserManage(Request $request, $role = null)
+    {
+        $usermanages = Users::query();
+    
+        if ($role !== null) {
+            $usermanages->where('role', $role);
+        }
+    
+        $usermanages = $usermanages->get();
+    
         return view('page.UserAdmin.indexview', compact('usermanages'));
     }
-
+    
+    
+    
+    
 
     public function edit($uid)
     {
@@ -34,20 +46,20 @@ class EditManageUserController extends Controller
         $usermanages = Users::findOrFail($uid);
 
         if ($request->hasFile('avatar')) {
-            // ลบรูปภาพเก่า (ถ้ามี)
-            if ($usermanages->avatar) {
-                $oldImagePath = public_path('profile') . '/' . $usermanages->avatar;
-                if (file_exists($oldImagePath)) {
-                    unlink($oldImagePath);
-                }
-            }
-            $image_name = time() . '.' . $request->avatar->getClientOriginalExtension();
-            Storage::disk('external')->put('profile/' . $image_name, file_get_contents($request->avatar));
+            $image_name = 'avatar' .  $uid . '.' . $request->avatar->getClientOriginalExtension();
             $image = Image::make($request->avatar)->resize(400, 400);
-            Storage::disk('external')->put('profile/' . $image_name, $image->stream());
-            $usermanages->avatar = $image_name;
+            $uploadDirectory = public_path('upload/Profile/' . $image_name);
+            
+            if (!file_exists(dirname($uploadDirectory))) {
+                mkdir(dirname($uploadDirectory), 0755, true);
+            }
+        
+            $image->save($uploadDirectory);
+            $usermanages->avatar = 'upload/Profile/' . 'avatar' .  $uid .'.' . $request->avatar->getClientOriginalExtension();
+        } else {
+            $usermanages->avatar = ''; // Set to empty if no avatar is uploaded
         }
-
+        
         // ... อัปเดตฟิลด์อื่น ๆ ตามต้องการ
         $usermanages->username = $request->username;
         $usermanages->firstname = $request->firstname;
@@ -210,16 +222,6 @@ class EditManageUserController extends Controller
     }
 
 
-    public function fetchUsersByDepartment(Request $request)
-    {
-        if ($request->ajax()) {
-            $departmentId = $request->input('department_id');
-            $usermanages = Users::where('department_id', $departmentId)->get();
-            return response()->json(['usermanages' => $usermanages]);
-        } else {
-            return response()->json(['message' => 'ไม่พบข้อมูลผู้ใช้']);
-        }
-    }
-    
 
+   
 }

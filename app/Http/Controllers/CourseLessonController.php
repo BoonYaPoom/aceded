@@ -5,11 +5,14 @@ namespace App\Http\Controllers;
 
 use App\Models\ContentType;
 use App\Models\CourseLesson;
+use ZipArchive;
 
 
 use App\Models\CourseSubject;
 use App\Models\Department;
+use Faker\Provider\File;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\File as FacadesFile;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 
@@ -41,7 +44,9 @@ class CourseLessonController extends Controller
     {
         $subs  = CourseSubject::findOrFail($subject_id);
         $content_types = ContentType::where('status', 1)->get(['content_type', 'content_th']);
-        $department_id =   $subs->department_id;
+        $department_id =  $subs->department_id;
+        $count1 = ContentType::all()->count();
+
         $depart = Department::findOrFail($department_id);
         return view('page.manage.sub.lesson.create', compact('subs', 'content_types', 'depart'));
     }
@@ -54,7 +59,7 @@ class CourseLessonController extends Controller
             'lesson_number' => 'required',
             'lesson_th' => 'required'
         ]);
-      
+
         if ($validator->fails()) {
             return back()
                 ->withErrors($validator)
@@ -93,7 +98,7 @@ class CourseLessonController extends Controller
         $sub = CourseSubject::findOrFail($subject_id);
         $department_id =   $sub->department_id;
         $depart = Department::findOrFail($department_id);
-        return view('page.manage.sub.lesson.edit', compact('lessons', 'content_types','sub','depart'));
+        return view('page.manage.sub.lesson.edit', compact('lessons', 'content_types', 'sub', 'depart'));
     }
     public function update(Request $request, $lesson_id)
     {
@@ -128,16 +133,62 @@ class CourseLessonController extends Controller
     public function uploadfile(Request $request, $lesson_id)
     {
         $lessons = CourseLesson::findOrFail($lesson_id);
+        $content_type = $lessons->content_type;
         if ($request->hasFile('content_path')) {
-            // ลบไฟล์เดิม (ถ้ามี)
-            //if ($lessons->content_path && file_exists(public_path('alld/' . $lessons->content_path))) {
-            //   unlink(public_path('alld/' . $lessons->content_path));
-            // }
+            $uploadedFile = $request->file('content_path');
 
-            $image_name = time() . '.' . $request->content_path->getClientOriginalExtension();
-            Storage::disk('external')->put('Subject/Lesson/alld/' . $image_name, file_get_contents($request->content_path));
-            $lessons->content_path = $image_name;
+            $image_name = time() . '.' . $uploadedFile->getClientOriginalExtension();
+            if ($content_type == 10) {
+                // ตรวจสอบว่าไฟล์ที่อัปโหลดเป็นไฟล์ zip
+
+                if ($uploadedFile->getClientOriginalExtension() == 'zip') {
+                    $directory = 'upload/Subject/Lesson/alld/Scorm/';
+             
+                    $folderName = 'lesson_' .  $lesson_id;
+
+                    // ตรวจสอบว่าโฟลเดอร์ปลายทางมีอยู่หรือไม่ หากไม่มีให้สร้าง
+                    $destinationFolder = public_path($directory . $folderName);
+                    if (!file_exists($destinationFolder)) {
+                        mkdir($destinationFolder, 0755, true);
+                    }
+                    // ย้ายไฟล์ zip ไปยังโฟลเดอร์ปลายทาง
+
+           
+
+                    $uploadedFile->move($destinationFolder, $uploadedFile->getClientOriginalName());
+                    $zipFilePath = $destinationFolder . '/' . $uploadedFile->getClientOriginalName();
+                    // ตรวจสอบว่าไฟล์ zip ถูกเปิดเรียบร้อย
+                    $zip = new ZipArchive;
+
+                    // เปิดไฟล์ ZIP
+                    if ($zip->open($zipFilePath) === TRUE) {
+                        // ตรวจสอบว่าไฟล์ ZIP ถูกเปิดเรียบร้อย
+                        // กำหนดโฟลเดอร์ปลายทางสำหรับการแตกไฟล์
+                        $extractPath = $destinationFolder ;
+                    
+                        // สร้างโฟลเดอร์ปลายทางหากยังไม่มี
+                        if (!file_exists($extractPath)) {
+                            mkdir($extractPath, 0755, true);
+                        }
+                    
+                        // แตกไฟล์ ZIP ไปยังโฟลเดอร์ปลายทาง
+                        $zip->extractTo($extractPath);
+                    
+                        // ปิดไฟล์ ZIP
+                        $zip->close();
+                    }
+
+                    $lessons->content_path = 'upload/Subject/Lesson/alld/Scorm/' . $folderName;
+                }
+            } else {
+
+                // บันทึกไฟล์ใน public_path โดยใช้ public_path()
+                file_put_contents(public_path('upload/Subject/Lesson/alld/' . $image_name), file_get_contents($request->content_path));
+
+                $lessons->content_path =  'upload/Subject/Lesson/alld/' . $image_name;
+            }
         }
+
         $lessons->save(); // เพิ่มบรรทัดนี้เพื่อบันทึกข้อมูล
 
 
@@ -153,10 +204,10 @@ class CourseLessonController extends Controller
         $lessons = CourseLesson::findOrFail($lesson_id);
 
         $content_types = ContentType::where('status', 1)->get(['content_type', 'content_th']);
-      
+
         $department_id =   $subs->department_id;
         $depart = Department::findOrFail($department_id);
-        return view('page.manage.sub.lesson.small.createsmall', compact('lessons', 'content_types', 'lessonsSub', 'subs','depart'));
+        return view('page.manage.sub.lesson.small.createsmall', compact('lessons', 'content_types', 'lessonsSub', 'subs', 'depart'));
     }
     public function smallsmallcreate($subject_id, $lesson_id)
     {
@@ -165,10 +216,10 @@ class CourseLessonController extends Controller
         $lessons = CourseLesson::findOrFail($lesson_id);
 
         $content_types = ContentType::where('status', 1)->get(['content_type', 'content_th']);
-     
+
         $department_id =   $subs->department_id;
         $depart = Department::findOrFail($department_id);
-        return view('page.manage.sub.lesson.small.createsmallsmall', compact('lessons', 'content_types', 'lessonsSub', 'subs','depart'));
+        return view('page.manage.sub.lesson.small.createsmallsmall', compact('lessons', 'content_types', 'lessonsSub', 'subs', 'depart'));
     }
 
     public function smailstore(Request $request, $subject_id, $lesson_id)
@@ -184,9 +235,20 @@ class CourseLessonController extends Controller
         $lessons->exercise = $request->input('exercise', 0);
         $lessons->subject_id = (int)$subject_id;
         $lessons->lesson_id_ref = (int)$lesson_id;
-
         $lessons->content_path = '';
-        $lessons->ordering = CourseLesson::max('ordering') + 1;
+
+        $existingSubLessons = CourseLesson::where('lesson_id_ref', $lesson_id)->get();
+        if ($existingSubLessons->isEmpty()) {
+            // ถ้าไม่มีข้อมูลย่อยในฐานข้อมูลที่มี ref_id เท่ากับ lesson_id ที่ถูกส่งมา
+            // ให้กำหนด ordering เริ่มต้นเป็น 1
+            $lessons->ordering = 1;
+        } else {
+            // ถ้ามีข้อมูลย่อยในฐานข้อมูลที่มี ref_id เท่ากับ lesson_id ที่ถูกส่งมา
+            // ให้หาค่า ordering สูงสุดและเพิ่มขึ้นอีก 1
+            $maxOrdering = $existingSubLessons->max('ordering');
+            $lessons->ordering = $maxOrdering + 1;
+        }
+        
         $lessons->permission = null;
         $lessons->save();
 

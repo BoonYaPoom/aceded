@@ -24,12 +24,12 @@
                             @if ($contentType)
                                 @if ($contentType->content_type === 1)
                                     <h1>video</h1> <a
-                                        href="{{ Storage::disk('external')->url('Subject/Lesson/alld/' . $subitem->content_path) }}"
+                                        href="{{ asset($subitem->content_path) }}"
                                         class="btn btn-primary" download>ดาวน์โหลดไฟล์</a>
                                     <div class="showcontent show-video">
                                         <video width="80%" id="videoplayer" controls="">
                                             <source
-                                                src="{{ Storage::disk('external')->url('Subject/Lesson/alld/' . $subitem->content_path) }}"
+                                                src="{{ asset($subitem->content_path) }}"
                                                 alt="{{ $subitem->content_path }}" type="video/mp4"
                                                 size="720" id="sourcevideo"
                                                 class="sourcecontent">
@@ -66,10 +66,10 @@
                                     </div>
                                 @elseif ($contentType->content_type === 8)
                                     <h1>Image</h1> <a
-                                        href="{{ Storage::disk('external')->url('Subject/Lesson/alld/' . $subitem->content_path) }}"
+                                        href="{{ asset($subitem->content_path) }}"
                                         class="btn btn-primary" download>ดาวน์โหลดไฟล์</a>
                                     <div class="showcontent show-image "><img id="sourceimage"
-                                            src="{{ Storage::disk('external')->url('Subject/Lesson/alld/' . $subitem->content_path) }}"
+                                            src="{{ asset($subitem->content_path) }}"
                                             alt="{{ $subitem->content_path }}" width="80%"
                                             height="510px">
                                         <p>{{ $subitem->content_path }}</p>
@@ -104,10 +104,10 @@
                                     </div>
                                 @elseif ($contentType->content_type === 4)
                                     <h1>document</h1><a
-                                        href="{{ Storage::disk('external')->url('Subject/Lesson/alld/' . $subitem->content_path) }}"
+                                        href="{{ asset($subitem->content_path) }}"
                                         class="btn btn-primary" download>ดาวน์โหลดไฟล์</a>
                                     <div class="showcontent show-document "><object
-                                            data="{{ Storage::disk('external')->url('Subject/Lesson/alld/' . $subitem->content_path) }}"
+                                            data="{{ asset($subitem->content_path) }}"
                                             width="100%" height="200px">
                                             <p>{{ $subitem->content_path }}</p>
 
@@ -144,12 +144,12 @@
                                     </div>
                                 @elseif ($contentType->content_type === 7)
                                     <h1>sound</h1><a
-                                        href="{{ Storage::disk('external')->url('Subject/Lesson/alld/' . $subitem->content_path) }}"
+                                        href="{{ asset($subitem->content_path) }}"
                                         class="btn btn-primary" download>ดาวน์โหลดไฟล์</a>
                                     <div class="showcontent show-sound "><audio id="soundplayer"
                                             controls="">
                                             <source
-                                                src="{{ Storage::disk('external')->url('Subject/Lesson/alld/' . $subitem->content_path) }}"
+                                                src="{{ asset($subitem->content_path) }}"
                                                 alt="{{ $subitem->content_path }}" type="audio/mp3"
                                                 id="sourcesounce" class="sourcecontent">
 
@@ -187,10 +187,10 @@
                                     </div>
                                 @elseif ($contentType->content_type === 10)
                                     <h1>zip</h1><a
-                                        href="{{ Storage::disk('external')->url('Subject/Lesson/alld/' . $subitem->content_path) }}"
+                                        href="{{ asset($subitem->content_path) }}"
                                         class="btn btn-primary" download>ดาวน์โหลดไฟล์</a>
                                     <div class="showcontent show-zip "><object
-                                            src="{{ Storage::disk('external')->url('Subject/Lesson/alld/' . $subitem->content_path) }}"
+                                            src="{{ asset($subitem->content_path) }}"
                                             alt="{{ $subitem->content_path }}" id="sourcezip"
                                             width="100%" height="200px" data="">
                                         </object>

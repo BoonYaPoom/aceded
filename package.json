@@ -23,6 +23,7 @@
   "license": "ISC",
   "dependencies": {
     "chart.js": "^4.3.0",
+    "datatables.net-bs4": "^1.13.6",
     "flipjs": "^2.0.0",
     "turn.js": "^1.0.5"
   }

@@ -24,18 +24,18 @@ class LinkController extends Controller
     public function create($department_id)
     {
         $depart = Department::findOrFail($department_id);
-        return view('page.manages.links.create',compact('depart'));
+        return view('page.manages.links.create', compact('depart'));
     }
 
-    public function store(Request $request,$department_id)
+    public function store(Request $request, $department_id)
     {
-     
+
         $validator = Validator::make($request->all(), [
             'links_title' => 'required',
             'links' => 'required'
 
         ]);
-    
+
         if ($validator->fails()) {
             return back()
                 ->withErrors($validator)
@@ -43,13 +43,8 @@ class LinkController extends Controller
                 ->with('error', 'ข้อมูลไม่ถูกต้อง');
         }
         $links = new Links;
-        if ($request->hasFile('cover')) {
-            $filename = time() . '.' . $request->cover->getClientOriginalExtension();
-            Storage::disk('external')->put('links/' . $filename, file_get_contents($request->cover));
-        } else {
-            $filename = '';
-        }
-        $links->cover = $filename;
+
+ 
         $links->links_title = $request->links_title;
         $links->links_title = $request->links_title;
         $links->links = $request->links;
@@ -58,6 +53,24 @@ class LinkController extends Controller
         $links->links_status = $request->input('links_status', 0);
         $links->sort  = Links::max('sort') + 1;
         $links->save();
+        
+        if ($request->hasFile('cover')) {
+            $filename = 'cover' . $links->link_id . '.' . $request->cover->getClientOriginalExtension();
+            $uploadDirectory = public_path('upload/Links/');
+            if (!file_exists($uploadDirectory)) {
+                mkdir($uploadDirectory, 0755, true);
+            }
+            if (file_exists($uploadDirectory)) {
+
+                file_put_contents(public_path('upload/Links/' . $filename), file_get_contents($request->cover));
+                $links->cover = 'upload/Links/' .   'cover' . $links->link_id . '.' . $request->cover->getClientOriginalExtension();
+                $links->save();
+            }
+        } else {
+            $filename = '';
+            $links->cover = $filename;
+            $links->save();
+        }
 
 
 
@@ -120,7 +133,7 @@ class LinkController extends Controller
         $links = Links::findOrFail($links_id);
         $department_id   = $links->department_id;
         $depart = Department::findOrFail($department_id);
-        return view('page.manages.links.edit', ['links' => $links ,'depart' => $depart]);
+        return view('page.manages.links.edit', ['links' => $links, 'depart' => $depart]);
     }
 
     public function update(Request $request, $links_id)
@@ -131,17 +144,25 @@ class LinkController extends Controller
 
         ]);
         $links = Links::findOrFail($links_id);
+            
         if ($request->hasFile('cover')) {
-            if (Storage::disk('external')->exists('links/' . $links->cover)) {
-                // ลบไฟล์เดิมออกจาก Storage 'external'
-                Storage::disk('external')->delete('links/' . $links->cover);
+            $filename = 'cover' . $links_id . '.' . $request->cover->getClientOriginalExtension();
+            $uploadDirectory = public_path('upload/Links/');
+            if (!file_exists($uploadDirectory)) {
+                mkdir($uploadDirectory, 0755, true);
             }
+            if (file_exists($uploadDirectory)) {
 
-            $filename = time() . '.' . $request->cover->getClientOriginalExtension();
-            Storage::disk('external')->put('links/' . $filename, file_get_contents($request->cover));
-
+                file_put_contents(public_path('upload/Links/' . $filename), file_get_contents($request->cover));
+                $links->cover = 'upload/Links/' .   'cover' . $links_id . '.' . $request->cover->getClientOriginalExtension();
+                $links->save();
+            }
+        } else {
+            $filename = '';
             $links->cover = $filename;
+            $links->save();
         }
+
         $links->links_title = $request->links_title;
         $links->links_title = $request->links_title;
         $links->links = $request->links;

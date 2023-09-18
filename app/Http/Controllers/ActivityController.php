@@ -59,7 +59,6 @@ class ActivityController extends Controller
         $act->uid = $loginId;
         $act->save();
 
-
         return redirect()->route('activiList', ['category_id' => $category_id])->with('message', 'Success Acti');
     }
 

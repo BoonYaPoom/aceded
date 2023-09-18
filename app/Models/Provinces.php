@@ -9,12 +9,7 @@ class Provinces extends Model
 {
     use HasFactory;
     protected $table = 'provinces';
-    protected $fillable = [
-        'code',
-        'name_in_thai',
-        'name_in_english',
-    ];
-
+    protected $guarded =[];
     public function districts()
     {
         return $this->hasMany(Districts::class, 'province_id');
@@ -24,6 +19,6 @@ class Provinces extends Model
     
     public function userpor()
     {
-        return $this->hasMany(User::class,'province_id');
+        return $this->hasMany(Users::class,'province_id');
     }
 }

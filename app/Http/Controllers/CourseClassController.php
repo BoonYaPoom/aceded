@@ -66,8 +66,9 @@ class CourseClassController extends Controller
         $class = new CourseClass;
         $class->class_name = $request->class_name;
         $class->course_id = (int)$course_id;
-        $class->startdate = $request->startdate;
+   
         $class->class_status  = $request->input('class_status', 0);
+        $class->startdate = $request->startdate;
         $class->enddate = $request->enddate;
         $class->announcementdate = $request->announcementdate;
         $class->amount = $request->amount;

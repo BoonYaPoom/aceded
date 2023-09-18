@@ -98,7 +98,8 @@ Route::group(['middleware' => 'IsLoggedIn'], function () {
 
             Route::get('/wms', [DepartmentController::class, 'departmentwmspage'])->name('departmentwmspage');
             Route::get('/lms', [DepartmentController::class, 'departmentLearnpage'])->name('departmentLearnpage');
-
+            Route::get('/bss', [DepartmentController::class, 'bookif'])->name('bookif');
+         
             Route::get('/dls', [DepartmentController::class, 'departmentdlspage'])->name('departmentdlspage');
 
             Route::get('{from}/departmentform', [DepartmentController::class, 'departmentcreate'])->name('departmentcreate');
@@ -129,18 +130,22 @@ Route::group(['middleware' => 'IsLoggedIn'], function () {
 
                 Route::get('{department_id}/Webpage', [WedCategoryController::class, 'Webpage'])->name('Webpage');
                 Route::get('{department_id}/webcategory', [WedCategoryController::class, 'evenpage'])->name('evenpage');
-                Route::get('{department_id}/acteven', [WedCategoryController::class, 'acteven'])->name('acteven');
-                Route::get('{department_id}/add_webevencategoryform', [WedCategoryController::class, 'create'])->name('evencreate');
+                  Route::get('{department_id}/add_webevencategoryform', [WedCategoryController::class, 'create'])->name('evencreate');
                 Route::post('{department_id}/store_webevencategoryform', [WedCategoryController::class, 'store'])->name('evenstore');
                 Route::get('/edit_webcategoryform/{category_id}', [WedCategoryController::class, 'edit'])->name('evenedit');
-
-                Route::get('{department_id}/add_webactcategoryform', [WedCategoryController::class, 'createact'])->name('createact');
-                Route::post('{department_id}/store_webactcategoryform', [WedCategoryController::class, 'storeact'])->name('storeact');
-
+        
                 Route::get('/edit_webcategoryform/{category_id}', [WedCategoryController::class, 'edit'])->name('evenedit');
                 Route::put('/update_webcategoryform/{category_id}', [WedCategoryController::class, 'update'])->name('updateeven');
                 Route::get('/delete_webcategoryform/{category_id}', [WedCategoryController::class, 'destroy'])->name('evendelete');
                 Route::get('/changeStatusWebCat', [WedCategoryController::class, 'changeStatus'])->name('changeStatusWebCat');
+
+      
+                Route::get('{department_id}/acteven', [WedCategoryController::class, 'acteven'])->name('acteven');
+                Route::get('{department_id}/add_webactcategoryform', [WedCategoryController::class, 'createact'])->name('createact');
+                Route::post('{department_id}/store_webactcategoryform', [WedCategoryController::class, 'storeact'])->name('storeact');
+                Route::get('/edit_webactcategoryform/{category_id}', [WedCategoryController::class, 'editact'])->name('actedit');
+                Route::put('/update_webactcategoryform/{category_id}', [WedCategoryController::class, 'updateact'])->name('updateact');
+             
 
                 Route::get('/{category_id}/web', [WebController::class, 'catpage'])->name('catpage');
                 Route::get('/{category_id}/add_webform', [WebController::class, 'create'])->name('createcat');
@@ -413,7 +418,7 @@ Route::group(['middleware' => 'IsLoggedIn'], function () {
 
 
                     Route::post('{subject_id}/Questionimport', [ExcelController::class, 'Questionimport'])->name('Questionimport');
-
+  
                     Route::get('{subject_id}/add_examform', [ExamController::class, 'createexam'])->name('add_examform');
                     Route::post('{subject_id}/store_examform', [ExamController::class, 'storeexam'])->name('store_examform');
                     Route::get('edit_examform/{exam_id}', [ExamController::class, 'edit_examform'])->name('edit_examform');
@@ -437,7 +442,7 @@ Route::group(['middleware' => 'IsLoggedIn'], function () {
                 Route::get('/booktable', [BookController::class, 'table'])->name('book.table');
             });
 
-            Route::get('/ums', [EditManageUserController::class, 'UserManage'])->name('UserManage');
+            Route::get('/ums/{role?}', [EditManageUserController::class, 'UserManage'])->name('UserManage')->where('role', '[0-9]+');
 
             Route::prefix('ums')->group(function () {
 
@@ -468,6 +473,7 @@ Route::group(['middleware' => 'IsLoggedIn'], function () {
                 Route::put('/update_umsgroupuser/{person_type}', [PersonController::class, 'updateusertype'])->name('updateusertype');
 
                 Route::post('/search', [PersonController::class, 'search'])->name('search');
+                Route::post('UsersImport', [ExcelController::class, 'UsersImport'])->name('UsersImport');
 
 
                 Route::get('/person_delete/{person_type}', [PersonController::class, 'personDelete'])->name('personDelete');

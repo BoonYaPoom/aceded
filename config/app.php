@@ -163,7 +163,9 @@ return [
         /*
          * Application Service Providers...
          */
-        'rudrarajiv\flipbooklaravel\FlipBookServiceProvider',
+        
+         'rudrarajiv\flipbooklaravel\FlipBookServiceProvider',
+         Yajra\DataTables\DataTablesServiceProvider::class,
         Barryvdh\DomPDF\ServiceProvider::class,
         Yajra\Oci8\Oci8ServiceProvider::class,
         SimpleSoftwareIO\QrCode\QrCodeServiceProvider::class,
@@ -192,7 +194,7 @@ return [
 
     'aliases' => Facade::defaultAliases()->merge([
         // 'Example' => App\Facades\Example::class,
-        
+        'DataTables' => Yajra\DataTables\Facades\DataTables::class,
         'Imagick' => Imagick\Facades\Imagick::class,
         'PDF' => Barryvdh\DomPDF\Facade::class,
         'QrCode' => SimpleSoftwareIO\QrCode\Facades\QrCode::class,
