@@ -84,8 +84,10 @@ class ExcelController extends Controller
                                 'subject_id' => $subject_id,
                                 'question_level' => $question_level,
                             ]);
-
+                            
                             $newQuestion->save();
+
+                     
                         }
                     }
 
@@ -209,6 +211,7 @@ class ExcelController extends Controller
                                 'employeecode' =>  $employeecode,
                                 'organization' =>  $organization,
                             ]);
+                    
 
                             $newUsers->save();
                         }

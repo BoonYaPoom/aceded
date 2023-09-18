@@ -76,17 +76,17 @@
 
   </head>
 
-  @php
-  use Illuminate\Support\Facades\DB;
-  
-  try {
-      $connectionName = 'oracle';
-      $dbName = DB::connection($connectionName)->select("SELECT ora_database_name FROM dual")[0]->ora_database_name;
-      echo "Connected successfully to Oracle database named: $dbName";
-  } catch (\Exception $e) {
-      echo 'Connection failed: ' . $e->getMessage();
-  }
-  @endphp
+          <!--  @php
+                use Illuminate\Support\Facades\DB;
+                
+                try {
+                    $connectionName = 'oracle';
+                    $dbName = DB::connection($connectionName)->select("SELECT ora_database_name FROM dual")[0]->ora_database_name;
+                    echo "Connected successfully to Oracle database named: $dbName";
+                } catch (\Exception $e) {
+                    echo 'Connection failed: ' . $e->getMessage();
+                }
+                @endphp  -->
   
   <div class="wrapper fadeInDown">
       <div id="formContent">

@@ -59,7 +59,7 @@ class CustomAuthController extends Controller
         $users->prefix  = '';
         $users->gender = $request->input('gender', 0);
         $users->email = $request->email;
-        $users->role = 1;
+        $users->role = 5;
         $users->per_id = null;
         $users->department_id = 12;
 
@@ -114,32 +114,31 @@ class CustomAuthController extends Controller
 
 
 
-
-    public function loginUser(Request $request){
+    public function loginUser(Request $request)
+    {
         $request->validate([
-
-            'username'=> 'required',
-            'password'=> 'required|min:3|max:20'
-
+            'username' => 'required',
+            'password' => 'required|min:3|max:20'
         ]);
-
-        $users = Users::where('username','=',$request->username)->first();
-        if($users){
-
-            if(Hash::check($request->password,$users->password)) {
-                $request->session()->put('loginId',$users->uid);
-
-                return redirect()->route('adminhome');
-
-            } else{
-                return back()->with('fail','Password ผิดพลาด');
+    
+        $user = Users::where('username', '=', $request->username)->first();
+    
+        if ($user) {
+            if (Hash::check($request->password, $user->password)) {
+                if ($user->role == 1 || $user->role == 3 && $user->userstatus == 1) {
+                    $request->session()->put('loginId', $user->uid);
+                    return redirect()->route('departmentdlspage')->with('message', 'ผู้ใช้เข้าสู่ระบบ');
+                } else {
+                    return back()->with('fail', 'ผู้ใช้ไม่มีสิทธิ์ในการเข้าสู่ระบบ');
+                }
+            } else {
+                return back()->with('fail', 'รหัสผ่านไม่ถูกต้อง');
             }
-
-        }else{
-            return back()->with('fail','Something weong');
+        } else {
+            return back()->with('fail', 'ไม่พบผู้ใช้ในระบบ');
         }
     }
-
+    
    
    
     public function adminpage(){
@@ -154,7 +153,7 @@ class CustomAuthController extends Controller
         if(Session::has('loginId')){
             Session::pull('loginId');
             
-           return redirect()->route('homelogin');
+           return redirect()->route('homelogin')->with('message', 'ผู้ใช้ออกจากระบบ');
         }
        
     }

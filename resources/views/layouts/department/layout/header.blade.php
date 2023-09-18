@@ -119,34 +119,28 @@
                     <nav id="stacked-menu" class="stacked-menu stacked-menu-has-collapsible">
                         <ul class="menu">
                             <li class="menu-item ">
-                                <a href="/" class="menu-link "><span class="menu-icon fas fa-home"></span>
+                                <a href="{{ route('departmentdlspage') }}" class="menu-link "><span class="menu-icon fas fa-home"></span>
                                     <span class="menu-text">หน้าแรก</span></a>
                             </li>
                             <li class="menu-item {{ Str::startsWith(request()->url(), route('departmentwmspage')) || request()->is('wms', 'wms/*') ? ' has-active text-info' : '' }}">
-                                <a href="{{ route('departmentwmspage') }}" class="menu-link "><span class="menu-icon fas fa-globe"></span>
+                                <a href="{{ route('manage', ['department_id' => $depart->department_id]) }}" class="menu-link "><span class="menu-icon fas fa-globe"></span>
                                     <span class="menu-text">จัดการเว็บ</span></a>
                             </li>
                             <li class="menu-item {{ Str::startsWith(request()->url(), route('departmentdlspage')) || request()->is('dls', 'dls/*') ? ' has-active text-info' : '' }} ">
-                                <a href="{{ route('departmentdlspage') }}" class="menu-link "><span class="menu-icon fas fa-book"></span>
+                                <a href="{{ route('dls', ['department_id' => $depart->department_id]) }}" class="menu-link "><span class="menu-icon fas fa-book"></span>
                                     <span class="menu-text">จัดการข้อมูลและความรู้</span></a>
                             </li>
-                            <li class="menu-item ">
+                           <!-- <li class="menu-item ">
                                 <a href="/" class="menu-link "><span class="menu-icon fas fa fa-users"></span>
                                     <span class="menu-text">กิจกรรม</span></a>
-                            </li>
-                            <li class="menu-item {{ Str::startsWith(request()->url(), route('Reportview')) || request()->is('report', 'report/*') ? ' has-active text-info' : '' }}">
-                                <a href="{{ route('Reportview') }}" class="menu-link"><span class="menu-icon fas fa-chart-bar"></span>
-                                    <span class="menu-text"> รายงาน</span></a>
-                            </li>
+                            </li> -->
+                   
                             <li class="menu-item {{ Str::startsWith(request()->url(), route('departmentLearnpage')) || request()->is('learn', 'learn/*') ? 'has-active text-info' : '' }}">
-                                <a href="{{ route('departmentLearnpage') }}" class="menu-link"><span
+                                <a href="{{ route('learn', ['department_id' => $depart->department_id]) }}" class="menu-link"><span
                                         class="menu-icon fas fa-chalkboard-teacher"></span> <span
                                         class="menu-text">จัดการเรียนรู้</span></a>
                             </li>
-                            <li class="menu-item {{ Str::startsWith(request()->url(), route('UserManage')) || request()->is('ums', 'ums/*') ? ' has-active text-info' : '' }}">
-                                <a href="{{ route('UserManage') }}" class="menu-link"><span class="menu-icon fas fa-users-cog"></span>
-                                    <span class="menu-text"> จัดการผู้ใช้</span></a>
-                            </li>
+                          
                             <li class="menu-item ">
                                 <a href="{{ route('logout') }}" class="menu-link"><span class="menu-icon fas fa-power-off"></span>
                                     <span class="menu-text"> ออกจากระบบ</span></a>

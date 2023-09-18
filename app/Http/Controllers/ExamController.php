@@ -186,6 +186,7 @@ class ExamController extends Controller
     return view('page.manage.sub.exam.pageexam.create', compact('subs', 'subject_id', 'typequs', 'lossen', 'depart'));
   }
 
+
   public function store(Request $request, $subject_id)
   {
 

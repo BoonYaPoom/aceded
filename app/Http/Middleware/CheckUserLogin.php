@@ -24,27 +24,26 @@ class CheckUserLogin
         if (Session::has('loginId')) {
             $loginId = Session::get('loginId');
             $data = Users::where('uid', '=', $loginId)->first();
-
-            FacadesView::share('data', $data);
-
+          
+            FacadesView::share('data', $data); // แชร์ข้อมูลผู้ใช้ให้กับทุก View หรือ Layout
             $ip = $request->ip();
             $loginTime = now()->format('Y-m-d H:i:s');
-
+        
             // ดึงข้อมูล User Agent จาก Header ของคำขอ
             $userAgent = $request->header('User-Agent');
-
+        
             // แยกแยะ User Agent เพื่อตรวจสอบระบบปฏิบัติการ
             $os = $this->getOperatingSystemFromUserAgent($userAgent);
-
+        
             // ดึงข้อมูลเบาเซอร์
             $browser = $this->getBrowserFromUserAgent($userAgent);
-
-
+        
             $this->saveLoginLog($loginId, $ip, $loginTime, $os, $browser);
         }
-
-
+        
         return $next($request);
+        
+       
     }
     private function getBrowserFromUserAgent($userAgent)
     {
