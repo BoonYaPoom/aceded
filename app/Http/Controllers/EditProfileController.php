@@ -35,7 +35,7 @@ class EditProfileController extends Controller
             $users = Users::where('user_id', '=', Session::get('loginId'))->first();
             
             if ($request->hasFile('avatar')) {
-                $image_name = 'avatar' . '.' . $request->avatar->getClientOriginalExtension();
+                $image_name = 'avatar' . $users->user_id . '.' . $request->avatar->getClientOriginalExtension();
                 $image = Image::make($request->avatar)->resize(400, 400);
                 $uploadDirectory = public_path('upload/Profile/' . $image_name);
                 
@@ -44,7 +44,7 @@ class EditProfileController extends Controller
                 }
             
                 $image->save($uploadDirectory);
-                $users->avatar = 'upload/Profile/' . 'avatar' . '.' . $request->avatar->getClientOriginalExtension();
+                $users->avatar = 'upload/Profile/' . 'avatar' . $users->user_id . '.' . $request->avatar->getClientOriginalExtension();
             } 
             $users->username = $request->username;
             $users->firstname = $request->firstname;

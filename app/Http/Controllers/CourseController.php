@@ -27,10 +27,12 @@ class CourseController extends Controller
     public function create($group_id)
     {
         $courses = CourseGroup::findOrFail($group_id);
-        $subs = CourseSubject::all();
+
         $pertype = PersonType::all();
+        
         $department_id = $courses->department_id;
         $depart= Department::find($department_id); 
+        $subs = $depart->SubjectDe()->where('department_id', $department_id)->get();
         return view('page.manage.group.co.create', compact('courses', 'subs', 'pertype','depart'));
     }
 
@@ -192,12 +194,13 @@ class CourseController extends Controller
     public function edit($course_id)
     {
         $cour = Course::findOrFail($course_id);
-        $subs = CourseSubject::all();
+
         $pertype = PersonType::all();
         $group_id = $cour->group_id;
         $courses = CourseGroup::findOrFail($group_id);
         $department_id = $courses->department_id;
-        $depart= Department::find($department_id); 
+        $depart= Department::find($department_id);
+        $subs = $depart->SubjectDe()->where('department_id', $department_id)->get();
         return view('page.manage.group.co.edit', compact('cour', 'subs', 'pertype', 'courses','depart'));
     }
     public function update(Request $request, $course_id)

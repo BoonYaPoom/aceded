@@ -670,11 +670,13 @@
                     }
                 },
                 legend: {
-                    enabled: true
+                    enabled: false,
+                    
                 },
                 plotOptions: {
                     lang: {
-                        thousandsSep: ','
+                        thousandsSep: ',',
+                        
                     },
                     series: {
                         borderWidth: 0,

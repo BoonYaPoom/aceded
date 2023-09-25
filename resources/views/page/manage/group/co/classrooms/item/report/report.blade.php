@@ -67,7 +67,10 @@
                                     $n = 1;
                                     $result = []; // สร้างตัวแปรเก็บผลลัพธ์
                                     $uniqueUserIds = [];
-                                    
+                                    $countUsersLogs =null;
+                                    $totalDuration=null;
+                                    $ScoreUser=null;
+                                    $ScoreLog=[];
                                 @endphp
                                 @foreach ($learners as $l => $learns)
                                     @php
@@ -87,7 +90,7 @@
                                                 })
                                                 ->get();
                                         }
-                                        
+                                  
                                     @endphp
 
                                     @if ($monthsa == $m)
@@ -105,7 +108,7 @@
                                                     ->whereHas('examlog', function ($query) {
                                                         $query->where('exam_type', 2);
                                                     })
-                                                    ->latest('date')
+                                                    ->latest('score_date')
                                                     ->get();
                                                 
                                                 $totalDurationInMinutes = $totalDuration / 60;
@@ -131,10 +134,10 @@
                                                 @php
                                                     
                                                     if ($score->score && $score->fullscore) {
-                                                        if (($latestScore === null && $latfullScore === null) || $score->date > $latestScoreDate) {
+                                                        if (($latestScore === null && $latfullScore === null) || $score->score_date > $latestScoreDate) {
                                                             $latestScore = $score->score;
                                                             $latfullScore = $score->fullscore;
-                                                            $latestScoreDate = $score->date;
+                                                            $latestScoreDate = $score->score_date;
                                                     
                                                             if ($latfullScore) {
                                                                 $percentage = ($latestScore / $latfullScore) * 100;
@@ -192,7 +195,7 @@
                                                             <div class="modal-content">
 
                                                                 <!-- .modal-header -->
-                                                                <div class="modal-header bg-theme-primary">
+                                                                <div class="modal-header bg-theme-primary ">
                                                                     <h6 id="clientPermissionModalLabel"
                                                                         class="modal-title text-white">
                                                                         <span class="sr-only">Permission</span> <span><i
@@ -243,7 +246,7 @@
                                                                                             if ($scoreog->score && $scoreog->fullscore) {
                                                                                                 $latestScorelog = $scoreog->score;
                                                                                                 $latfullScorelog = $scoreog->fullscore;
-                                                                                                $latestScoreDatelog = $scoreog->date;
+                                                                                                $latestScoreDatelog = $scoreog->score_date;
                                                                                                 $ScoreDatelog = \ltrim(\Carbon\Carbon::parse($latestScoreDatelog)->format('m'), '0');
                                                                                                 $carbonDate = \Carbon\Carbon::parse($latestScoreDatelog);
                                                                                                 $thaiDate = $carbonDate->locale('th')->isoFormat('D MMMM');
@@ -346,13 +349,13 @@
             </div><!-- /.card -->
         </div><!-- /.page-section -->
 
-        <!-- .page-title-bar -->
+        <!-- 
         <header class="page-title-bar">
-            <!-- floating action -->
+          
             <input type="hidden" />
             <button type="button" onclick="window.location=''" class="btn btn-success btn-floated btn-add "
                 id="registeradd" data-toggle="tooltip" title="เพิ่ม"><span class="fas fa-plus"></span></button>
-            <!-- /floating action -->
-        </header><!-- /.page-title-bar -->
+            
+        </header> -->
     </div><!-- /.page-inner -->
 @endsection

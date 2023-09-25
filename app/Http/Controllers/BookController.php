@@ -43,7 +43,7 @@ class BookController extends Controller
             'bookfile' => 'required'
         ]);
         $bookId = $request->input('book_id');
-        if (!$this->isBookIdExists($bookId)) {
+
         $books = new Book;
         $books->book_type = $request->book_type;
 
@@ -185,7 +185,7 @@ class BookController extends Controller
 
                     $books->bookfile =  'upload/Book/' . $books->book_id . '/' . 'index.html';
                     $books->save();
-                }
+               
             }
         } elseif ($request->book_type == 1) {
             if ($request->hasFile('bookfile')) {

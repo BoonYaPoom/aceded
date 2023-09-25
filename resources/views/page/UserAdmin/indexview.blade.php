@@ -17,22 +17,27 @@
                             <div class="col-md-6 mb-3">
                                 <select id="user_role" name="user_role" class="form-control form-control-sm"
                                     data-toggle="select2" data-allow-clear="false">
-                                    <option value="" >ทั้งหมด</option>
-                                    <option value="4" {{ request('user_role') == '4' ? 'selected' : '' }}>ผู้เรียน</option>
-                                    <option value="3" {{ request('user_role') == '3' ? 'selected' : '' }}>ผู้สอน</option>
-                                    <option value="5" {{ request('user_role') == '5' ? 'selected' : '' }}>ผู้เยี่ยมชม</option>
-                                    <option value="1" {{ request('user_role') == '1' ? 'selected' : '' }}>ผู้ดูแลระบบ</option>
+                                    <option value="">ทั้งหมด</option>
+                                    <option value="4" {{ request('user_role') == '4' ? 'selected' : '' }}>ผู้เรียน
+                                    </option>
+                                    <option value="3" {{ request('user_role') == '3' ? 'selected' : '' }}>ผู้สอน
+                                    </option>
+                                    <option value="5" {{ request('user_role') == '5' ? 'selected' : '' }}>ผู้เยี่ยมชม
+                                    </option>
+                                    <option value="1" {{ request('user_role') == '1' ? 'selected' : '' }}>ผู้ดูแลระบบ
+                                    </option>
                                 </select>
                             </div>
-                            <button type="button" class="btn btn-primary-theme btn-md" onclick="filterResults()"> Filter</button>
-             
+                            <button type="button" class="btn btn-primary-theme btn-md" onclick="filterResults()">
+                                Filter</button>
+
                     </form>
-                    
+
                     <script>
                         function filterResults() {
                             var user_roleValue = document.getElementById('user_role').value;
-                            var baseUrl = '{{ route("UserManage") }}';
-                    
+                            var baseUrl = '{{ route('UserManage') }}';
+
                             if (user_roleValue) {
                                 window.location.href = baseUrl + '/' + user_roleValue;
                             } else {
@@ -40,22 +45,22 @@
                             }
                         }
                     </script>
-                    
-                   
-                    
+
+
+
 
 
                     <button type="button" class="ml-1 btn btn-success btn-md"
                         onclick="$('#clientUploadModal').modal('toggle');"><i class="fas fa-user-plus"></i>
                         นำเข้าผู้ใช้งาน</button>
 
-                    <a class="ml-1 btn btn-info btn-md " style="color:#fff" 
-                    href="{{ route('personTypes') }}"><i class="fas fa-users"></i>
+                    <a class="ml-1 btn btn-info btn-md " style="color:#fff" href="{{ route('personTypes') }}"><i
+                            class="fas fa-users"></i>
                         กลุ่มผู้ใช้งาน</a>
 
-                <!--    <a class="ml-1 btn btn-info btn-md " style="color:#fff" 
-                    href="{{ route('personTypes') }}"><i class="fas fa-users"></i>
-                        ประเภทผู้ใช้งาน</a> -->
+                    <!--    <a class="ml-1 btn btn-info btn-md " style="color:#fff"
+                            href="{{ route('personTypes') }}"><i class="fas fa-users"></i>
+                                ประเภทผู้ใช้งาน</a> -->
 
 
 
@@ -69,8 +74,8 @@
                             @php
                                 $department = \App\Models\Department::all();
                             @endphp
-                            @foreach ($department as $depart)
-                                <option value="{{ $depart->name_short_en }}"> {{ $depart->name_short_en }} </option>
+                            @foreach ($department->sortBy('department_id') as $depart)
+                                <option value="{{ $depart->name_en }}"> {{ $depart->name_en }} </option>
                             @endforeach
                         </select>
                     </div>
@@ -165,13 +170,22 @@
 
                                             });
                                         } else {
-                                            alert('Import failed: ' + response.error);
+                                            Swal.fire({
+                                                title: 'Error!',
+                                                text: 'Import failed: ' + response.error,
+                                                icon: 'error',
+                                                confirmButtonText: 'OK'
+                                            });
                                         }
                                     },
                                     error: function(xhr, status, error) {
-                                        console.log(xhr.responseJSON
-                                            .error);
-                                        alert('Import failed: ' + xhr.responseJSON.error);
+                                        console.log(xhr.responseJSON.error);
+                                        Swal.fire({
+                                            title: 'Error!',
+                                            text: 'Import failed: ' + xhr.responseJSON.error,
+                                            icon: 'error',
+                                            confirmButtonText: 'OK'
+                                        });
                                     }
                                 });
                             });
@@ -224,7 +238,7 @@
                                         $('#myInput').on('keyup', function() {
                                             table.search(this.value).draw();
                                         });
-                            
+
 
                                         $('#department_id').on('change', function() {
                                             var selectedDepartmentId = $(this).val();
@@ -284,7 +298,7 @@
                                     @php
                                         $clientPermissionModal = 'clientPermissionModal-' . $item->user_id;
                                         $name_short_en = \App\Models\Department::where('department_id', $item->department_id)
-                                            ->pluck('name_short_en')
+                                            ->pluck('name_en')
                                             ->first();
                                         $proviUser = \App\Models\Provinces::where('id', $item->province_id)
                                             ->pluck('name_in_thai')

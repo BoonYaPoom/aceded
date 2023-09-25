@@ -1,5 +1,22 @@
 @extends('layouts.adminhome')
 @section('content')
+
+@if (Session::has('message'))
+<script>
+    toastr.options = {
+        "progressBar": true,
+        "positionClass": 'toast-top-full-width',
+        "extendedTimeOut ": 0,
+        "timeOut": 3000,
+        "fadeOut": 250,
+        "fadeIn": 250,
+        "positionClass": 'toast-top-right',
+
+
+    }
+    toastr.success("{{ Session::get('message') }}");
+</script>
+@endif
     <!-- .page-inner -->
     <form action="{{ route('update-profile') }}" method="post" enctype="multipart/form-data">
         @csrf

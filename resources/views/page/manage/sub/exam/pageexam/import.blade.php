@@ -89,13 +89,24 @@
                                                 // ทำสิ่งที่คุณต้องการหลังจากกด OK
                                             }
                                         });
-                                    } else {
-                                        alert('Import failed: ' + response.error);
+                                    }  else {
+                                            Swal.fire({
+                                                title: 'Error!',
+                                                text: 'Import failed: ' + response.error,
+                                                icon: 'error',
+                                                confirmButtonText: 'OK'
+                                            });
+                                        }
+                                    },
+                                    error: function(xhr, status, error) {
+                                        console.log(xhr.responseJSON.error);
+                                        Swal.fire({
+                                            title: 'Error!',
+                                            text: 'Import failed: ' + xhr.responseJSON.error,
+                                            icon: 'error',
+                                            confirmButtonText: 'OK'
+                                        });
                                     }
-                                },
-                                error: function(xhr, status, error) {
-                                    alert('Import failed: ' + error);
-                                }
                             });
                         });
                     });
