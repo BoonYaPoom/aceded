@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('lesson_type', function (Blueprint $table) {
             $table->charset = 'utf8';
             $table->collation = 'utf8_general_ci';
-            $table->increments('lesson_type');
+            $table->increments('lesson_type')->start(10000)->nocache();
             $table->string('type_th', 50)->collation('utf8_general_ci');
             $table->string('type_en', 50)->nullable()->collation('utf8_general_ci');
         });

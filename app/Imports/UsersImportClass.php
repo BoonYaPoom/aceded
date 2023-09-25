@@ -64,7 +64,7 @@ class UsersImportClass implements ToModel
             $organization = null;
 
             return new users([
-                'uid' =>  $uidplus + 1,
+                'user_id' =>  $uidplus + 1,
                 'username' => $row[1],
                 'password' => Hash::make($row[2]),
                 'firstname' => $row[3],
@@ -74,7 +74,7 @@ class UsersImportClass implements ToModel
                 
                 'prefix' =>  $prefix,
                 'gender' => $gender,
-                'role' => $role,
+                'user_role' => $role,
                 'per_id' => $per_id,
                 'department_id' => $department_id,
                 'permission' => $permission,

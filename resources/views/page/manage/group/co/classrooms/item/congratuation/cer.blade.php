@@ -59,13 +59,13 @@
                                     
                                 @endphp
                                 @foreach ($learners as $l => $learns)
-                                    @if (!in_array($learns->uid, $uniqueUserIds))
+                                    @if (!in_array($learns->user_id, $uniqueUserIds))
                                         @php
-                                            array_push($uniqueUserIds, $learns->uid);
+                                            array_push($uniqueUserIds, $learns->user_id);
                                             $dataLearn = $learns->registerdate;
                                             $monthsa = \ltrim(\Carbon\Carbon::parse($dataLearn)->format('m'), '0');
                                             $newDateTime = \Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $learns->registerdate)->format('d/m/Y H:i:s');
-                                            $users = \App\Models\Users::find($learns->uid);
+                                            $users = \App\Models\Users::find($learns->user_id);
                                             
                                         @endphp
 

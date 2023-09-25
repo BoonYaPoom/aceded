@@ -14,9 +14,9 @@ return new class extends Migration
         Schema::create('certificate', function (Blueprint $table) {
             $table->charset = 'utf8';
             $table->collation = 'utf8_general_ci';
-            $table->increments('cert_id');
+            $table->increments('cert_id')->start(10000)->nocache();
             $table->integer('course_id');
-            $table->integer('uid');
+            $table->integer('user_id');
             $table->integer('score');
             $table->dateTime('date');
         });

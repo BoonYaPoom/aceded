@@ -57,7 +57,7 @@
                                     @endphp
                                     @foreach ($score as $scores)
                                         @php
-                                            $user = \App\Models\Users::find($scores->uid);
+                                            $user = \App\Models\Users::find($scores->user_id);
                                                 
                                             if ($user !== null) {
                                                 $fullscore = $scores->fullscore;

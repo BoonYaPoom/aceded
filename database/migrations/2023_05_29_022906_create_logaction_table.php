@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('logaction', function (Blueprint $table) {
             $table->charset = 'utf8';
             $table->collation = 'utf8_general_ci';
-            $table->increments('actionid');
+            $table->increments('actionid')->start(10000)->nocache();
             $table->string('actions', 50)->collation('utf8_general_ci');
             
         });

@@ -21,14 +21,14 @@
     </style>
 
     @php
-        // Fetch logs with logid = 1 and group them by uid
-        $countLogsByUid = \App\Models\Log::where('logid', 1)
+        // Fetch logs with logid = 1 and group them by user_id
+        $countLogsByuser_id = \App\Models\Log::where('logid', 1)
             ->get()
-            ->groupBy('uid');
+            ->groupBy('user_id');
         $i = 1;
         
-        // Fetch users with role 4
-        $user_data = \App\Models\Users::where('role', 4)->get();
+        // Fetch users with user_role 4
+        $user_data = \App\Models\Users::where('user_role', 4)->get();
     @endphp
 
     <div class="page-inner">
@@ -46,18 +46,18 @@
             </div>-->
             <div class="col-md-4 ">
                 <div>
-                    <select id="selectuidt0104" name="selectuidt0104" class="form-control select2" data-toggle="select2"
+                    <select id="selectuser_idt0104" name="selectuser_idt0104" class="form-control select2" data-toggle="select2"
                         data-placeholder="ผู้ใช้งานทั้งหมด" data-allow-clear="false">
                         <option value="" selected> ผู้ใช้งานทั้งหมด </option>
 
                         @foreach ($user_data as $uLog)
                             @php
-                                $uid = $uLog->uid;
-                                $logCount = isset($countLogsByUid[$uid]) ? $countLogsByUid[$uid]->count() : 0;
+                                $user_id = $uLog->user_id;
+                                $logCount = isset($countLogsByuser_id[$user_id]) ? $countLogsByuser_id[$user_id]->count() : 0;
                             @endphp
 
                             @if ($logCount > 0)
-                                <option value="{{ $uid }}">{{ $uLog->firstname }} {{ $uLog->lastname }}
+                                <option value="{{ $user_id }}">{{ $uLog->firstname }} {{ $uLog->lastname }}
                                 </option>
                             @endif
                         @endforeach
@@ -124,12 +124,12 @@
                         <tbody>
                             @foreach ($user_data as $uLog)
                                 @php
-                                    $logCount = isset($countLogsByUid[$uLog->uid]) ? $countLogsByUid[$uLog->uid]->count() : 0;
+                                    $logCount = isset($countLogsByuser_id[$uLog->user_id]) ? $countLogsByuser_id[$uLog->user_id]->count() : 0;
                                     
                                 @endphp
 
                                 @if ($logCount > 0)
-                                    <tr data-uid="{{ $uLog->uid }}">
+                                    <tr data-user_id="{{ $uLog->user_id }}">
                                         <td align="center">{{ $loop->iteration }}</td>
                                         <td>{{ $uLog->username }}</td>
                                         <td>{{ $uLog->firstname }} {{ $uLog->lastname }}</td>
@@ -147,7 +147,7 @@
         <script>
             $(document).ready(function() {
                 // เมื่อมีการเลือก option ใน select
-                $('#selectuidt0104').on('change', function() {
+                $('#selectuser_idt0104').on('change', function() {
                     const selectedUser = $(this).val();
                     // แสดงค่า id ของ element ที่เลือก
                     console.log('Selected id:', selectedUser);
@@ -155,17 +155,17 @@
                     $('#section-to-print tbody tr').hide();
 
                     // แสดงแถวที่มีชื่อที่เลือก
-                    $('#section-to-print tbody tr[data-uid="' + selectedUser + '"]').show();
+                    $('#section-to-print tbody tr[data-user_id="' + selectedUser + '"]').show();
 
-                    // แสดง uid ที่เลือก
-                    $('#selected-uid').text(selectedUser);
+                    // แสดง user_id ที่เลือก
+                    $('#selected-user_id').text(selectedUser);
 
                     // ทำการร้องขอข้อมูลผู้ใช้งานจาก Controller ผ่าน Ajax
                     $.ajax({
                         url: '{{ route('get-Uata') }}',
                         type: 'POST',
                         data: {
-                            selected_uid: selectedUser,
+                            selected_user_id: selectedUser,
                             _token: '{{ csrf_token() }}', // ใส่ CSRF Token ในรูปแบบนี้
                         },
                         dataType: 'json',
@@ -183,7 +183,7 @@
 
                 // ฟังก์ชันสำหรับรีเฟรชตาราง
                 function refreshTable() {
-                    const selectedUser = $('#selectuidt0104').val();
+                    const selectedUser = $('#selectuser_idt0104').val();
                     console.log('Selected user:', selectedUser); // ตรวจสอบค่า selectedUser ใน Console Log
 
                     // ทำการร้องขอข้อมูลผู้ใช้งานจาก Controller ผ่าน Ajax
@@ -191,7 +191,7 @@
                         url: '{{ route('get-Uata') }}',
                         type: 'POST',
                         data: {
-                            selected_uid: selectedUser,
+                            selected_user_id: selectedUser,
                             _token: '{{ csrf_token() }}', // ใส่ CSRF Token ในรูปแบบนี้
                         },
                         dataType: 'json',
@@ -200,10 +200,10 @@
                             $('#section-to-print tbody tr').hide();
 
                             // แสดงแถวที่มีชื่อที่เลือก
-                            $('#section-to-print tbody tr[data-uid="' + selectedUser + '"]').show();
+                            $('#section-to-print tbody tr[data-user_id="' + selectedUser + '"]').show();
 
-                            // แสดง uid ที่เลือก
-                            $('#selected-uid').text(selectedUser);
+                            // แสดง user_id ที่เลือก
+                            $('#selected-user_id').text(selectedUser);
 
                             // แสดงข้อมูลผู้ใช้งานที่เลือก
                             $('#user-data').html('<pre>' + JSON.stringify(response.user_data, null, 2) +
@@ -219,13 +219,13 @@
                 // เมื่อคลิกปุ่ม Reset
                 $('#resetBtn').on('click', function() {
                     // เคลียร์การเลือกใน Select element
-                    $('#selectuidt0104').val('');
+                    $('#selectuser_idt0104').val('');
 
                     // ซ่อนทั้งหมดของ tbody และแสดงทั้งหมดของ tbody
                     $('#section-to-print tbody tr').show();
 
-                    // เคลียร์ข้อความในส่วนแสดง uid ที่เลือก
-                    $('#selected-uid').text('');
+                    // เคลียร์ข้อความในส่วนแสดง user_id ที่เลือก
+                    $('#selected-user_id').text('');
 
                     // เคลียร์ข้อมูลที่แสดงในส่วนข้อมูลผู้ใช้งานที่เลือก
                     $('#user-data').empty();

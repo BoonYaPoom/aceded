@@ -14,9 +14,9 @@ return new class extends Migration
         Schema::create('course_learner', function (Blueprint $table) {
             $table->charset = 'utf8';
             $table->collation = 'utf8_general_ci';
-            $table->increments('learner_id');
+            $table->increments('learner_id')->start(10000)->nocache();
             $table->integer('class_id')->nullable();
-            $table->integer('uid');
+            $table->integer('user_id');
             $table->dateTime('registerdate')->nullable();
             $table->string('learner_status', 1)->collation('utf8_general_ci');
             $table->integer('course_id')->nullable();
@@ -24,13 +24,13 @@ return new class extends Migration
             $table->dateTime('congratulationdate')->nullable();
             $table->date('surveydate')->nullable();
             $table->string('subject', 400)->nullable()->collation('utf8_general_ci');
-            $table->dateTime('realcongratulationdate');
+            $table->dateTime('realcongratulationdate')->nullable();
             $table->string('request_certificate', 1)->nullable()->collation('utf8_general_ci');
             $table->string('approve_certificate', 1)->nullable()->collation('utf8_general_ci');
             $table->dateTime('printed_certificate')->nullable();
             $table->float('payment_amount')->nullable();
             $table->float('payment_price')->nullable();
-            $table->string('payment_status', 1)->collation('utf8_general_ci');
+            $table->string('payment_status', 1)->nullable()->collation('utf8_general_ci');
             $table->dateTime('payment_date')->nullable();
             $table->string('payment_file', 100)->nullable()->collation('utf8_general_ci');
             $table->string('payment_comment', 100)->nullable()->collation('utf8_general_ci');

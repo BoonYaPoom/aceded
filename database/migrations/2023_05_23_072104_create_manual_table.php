@@ -12,7 +12,9 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('manual', function (Blueprint $table) {
-            $table->increments('manual_id');
+            $table->charset = 'utf8';
+            $table->collation = 'utf8_general_ci';
+            $table->increments('manual_id')->start(10000)->nocache();
             $table->string('manual', 400)->collation('utf8_general_ci');
             $table->longText('manual_path')->collation('utf8_general_ci');
             $table->longText('detail')->nullable()->collation('utf8_general_ci');
@@ -20,6 +22,7 @@ return new class extends Migration
             $table->string('manual_type', 1)->collation('utf8_general_ci');
             $table->string('cover', 400)->nullable()->collation('utf8_general_ci');
             $table->integer('department_id')->nullable();
+   
         });
     }
 

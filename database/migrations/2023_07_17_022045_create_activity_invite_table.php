@@ -14,9 +14,9 @@ return new class extends Migration
         Schema::create('activity_invite', function (Blueprint $table) {
             $table->charset = 'utf8';
             $table->collation = 'utf8_general_ci';
-            $table->increments('invite_id');
+            $table->increments('invite_id')->start(10000)->nocache();
             $table->integer('activity_id');
-            $table->integer('uid')->nullable();
+            $table->integer('user_id')->nullable();
             $table->longText('message')->nullable()->collation('utf8_general_ci');
             $table->dateTime('date');
             $table->string('status',1)->collation('utf8_general_ci');

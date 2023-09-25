@@ -80,7 +80,7 @@
                                             $amount = $le->payment_amount;
                                         }
 
-                                        $users = \App\Models\Users::find($le->uid);
+                                        $users = \App\Models\Users::find($le->user_id);
                                         $n++;
                                     @endphp
 

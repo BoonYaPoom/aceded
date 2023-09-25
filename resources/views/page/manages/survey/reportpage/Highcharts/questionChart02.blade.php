@@ -1,5 +1,4 @@
-<tr>
-    <td><a href="#">{{ $rowNumber }}</a></td>
+
     <td> {!! $item->question !!}
     </td>
     <td>{{ $item->question_type == 1 ? 'ตัวเลือก' : ($item->question_type == 2 ? 'หลายมิติ' : 'เขียนอธิบาย') }}

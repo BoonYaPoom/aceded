@@ -42,7 +42,8 @@ class BookController extends Controller
             'book_name' => 'required',
             'bookfile' => 'required'
         ]);
-
+        $bookId = $request->input('book_id');
+        if (!$this->isBookIdExists($bookId)) {
         $books = new Book;
         $books->book_type = $request->book_type;
 
@@ -79,7 +80,7 @@ class BookController extends Controller
             $books->cover = $image_name;
             $books->save();
         }
-
+        set_time_limit(0);
         // บันทึกไฟล์ PDF และแปลงเป็นรูปภาพ
         if ($request->book_type == 0) {
             if ($request->hasFile('bookfile')) {
@@ -201,10 +202,11 @@ class BookController extends Controller
                 }
             }
         }
-
-
         return redirect()->route('bookcatpage', ['category_id' => $category_id])->with('message', 'book สร้างเรียบร้อยแล้ว');
+ 
     }
+    return redirect()->back()->with('error', 'ID นี้มีอยู่แล้ว กรุณาเลือก ID อื่น');
+        }
 
     public function edit($book_id)
     {
@@ -231,7 +233,7 @@ class BookController extends Controller
         $books->book_type = $request->book_type;
 
         $books->book_year = date('Y');
-        
+        set_time_limit(0);
         if ($request->hasFile('cover')) {
             $image_name = 'cover' . '.' . $request->cover->getClientOriginalExtension();
             $uploadDirectory = public_path('upload/Book/' . $book_id);
@@ -239,27 +241,23 @@ class BookController extends Controller
             // ตรวจสอบว่าโฟลเดอร์เป้าหมายไม่มีอยู่แล้ว
             if (!file_exists($uploadDirectory)) {
                 mkdir($uploadDirectory, 0755, true);
+                $oldCoverPath = public_path($books->cover);
+                if (file_exists($oldCoverPath)) {
+                    // ลบไฟล์ cover เดิม
+                    unlink($oldCoverPath);
+                }
+            
             }
         
             // ตรวจสอบว่าไฟล์ cover เดิมมีอยู่หรือไม่
-            $oldCoverPath = public_path($books->cover);
-            if (file_exists($oldCoverPath)) {
-                // ลบไฟล์ cover เดิม
-                unlink($oldCoverPath);
-            }
-        
+         
             // อัปโหลดไฟล์ cover ใหม่
             $request->cover->move($uploadDirectory, $image_name);
         
             // สร้างและบันทึกพาธใหม่ลงในโมเดล
             $books->cover = 'upload/Book/' .  $book_id . '/' . $image_name;
             $books->save();
-        } else {
-            // ถ้าไม่มีไฟล์ cover ใหม่ถูกอัปโหลด
-            // กำหนด cover เป็นค่าว่างและบันทึก
-            $books->cover = '';
-            $books->save();
-        }
+        } 
         
         
 

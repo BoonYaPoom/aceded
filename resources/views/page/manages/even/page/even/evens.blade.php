@@ -125,9 +125,9 @@
                                                 title="ลบ"><i class="fas fa-trash-alt fa-lg text-warning "></i></a>
 
                                             <!-- Delete Confirmation Modal -->
-                                            <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog"
+                                            <div class="modal fade" id="deleteModal" tabindex="-1" user_role="dialog"
                                                 aria-labelledby="clientDeleteModalLabel" aria-hidden="true">
-                                                <div class="modal-dialog" role="document">
+                                                <div class="modal-dialog" user_role="document">
                                                     <div class="modal-content">
                                                         <div class="modal-header bg-warning">
                                                             <h6 id="clientDeleteModalLabel"

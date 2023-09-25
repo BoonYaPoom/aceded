@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('districts', function (Blueprint $table) {
             $table->charset = 'utf8';
             $table->collation = 'utf8_general_ci';
-            $table->increments('id');
+            $table->increments('id')->start(10000)->nocache();
             $table->integer('code');
             $table->string('name_in_thai', 150)->collation('utf8_general_ci');
             $table->string('name_in_english', 150)->collation('utf8_general_ci');

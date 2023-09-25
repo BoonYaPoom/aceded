@@ -14,7 +14,8 @@
             <div class="card card-fluid">
                 <!-- .card-header -->
                 <div class="card-header bg-muted"><a href="{{ route('manage', ['department_id' => $sur->department_id]) }}"
-                        style="text-decoration: underline;">จัดการเว็บ</a> / <a href="{{ route('surveypage', ['department_id' => $sur->department_id]) }}"
+                        style="text-decoration: underline;">จัดการเว็บ</a> / <a
+                        href="{{ route('surveypage', ['department_id' => $sur->department_id]) }}"
                         style="text-decoration: underline;">แบบสำรวจ</a> / <i>
                         {{ $sur->survey_th }}</i></div>
                 <!-- /.card-header -->
@@ -41,25 +42,29 @@
                             </thead><!-- /thead -->
                             <!-- tbody -->
                             <tbody>
-                                @foreach ($surques as $q => $item)
+                                @php
+                                $rowNumber =  1;
+                            @endphp
+                                @foreach ($surques->sortBy('question_id') as $q => $item)
                                     <!-- tr -->
-                                    @php
-                                        $rowNumber = $q + 1;
-                                    @endphp
-                                    <!-- question_type == 1 -->
-                                    @if ($item->question_type == 1)
-                                        @include('page.manages.survey.reportpage.Highcharts.questionChart01')
-                                    @endif
+                           
 
-                                    @if ($item->question_type == 2)
-                                        <!-- question_type == 2 -->
-                                        @include('page.manages.survey.reportpage.Highcharts.questionChart02')
-                                    @endif
+                                    <tr>
+                                        <td><a href="#">{{ $rowNumber++ }}</a></td>
+                                        <!-- question_type == 1 -->
+                                        @if ($item->question_type == 1)
+                                            @include('page.manages.survey.reportpage.Highcharts.questionChart01')
+                                        @endif
 
-                                    @if ($item->question_type == 3)
-                                        <!-- question_type == 3 -->
-                                        @include('page.manages.survey.reportpage.Highcharts.questionChart03')
-                                    @endif
+                                        @if ($item->question_type == 2)
+                                            <!-- question_type == 2 -->
+                                            @include('page.manages.survey.reportpage.Highcharts.questionChart02')
+                                        @endif
+
+                                        @if ($item->question_type == 3)
+                                            <!-- question_type == 3 -->
+                                            @include('page.manages.survey.reportpage.Highcharts.questionChart03')
+                                        @endif
                                 @endforeach
 
                             </tbody><!-- /tbody -->

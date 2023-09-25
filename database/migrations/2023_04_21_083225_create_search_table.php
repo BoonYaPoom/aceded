@@ -14,10 +14,10 @@ return new class extends Migration
         Schema::create('search', function (Blueprint $table) {
             $table->charset = 'utf8';
             $table->collation = 'utf8_general_ci';
-            $table->increments('id');
+            $table->increments('id')->start(10000)->nocache();
             $table->string('keyword', 100)->collation('utf8_general_ci');
-            $table->dateTime('datetime');
-            $table->integer('uid');
+            $table->dateTime('dateTime');
+            $table->integer('user_id');
         });
     }
 

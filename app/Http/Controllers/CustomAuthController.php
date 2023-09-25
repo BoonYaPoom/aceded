@@ -59,9 +59,9 @@ class CustomAuthController extends Controller
         $users->prefix  = '';
         $users->gender = $request->input('gender', 0);
         $users->email = $request->email;
-        $users->role = 5;
+        $users->user_role = 5;
         $users->per_id = null;
-        $users->department_id = 12;
+        $users->department_id = 1;
 
         $users->permission = null;
         $users->ldap = 0;
@@ -69,7 +69,7 @@ class CustomAuthController extends Controller
         $users->createdate = now();
         $users->createby = 2;
         $users->avatar = '';
-        $users->position = '';
+        $users->user_position = '';
         $users->workplace = $request->workplace;
         $users->telephone = '';
         $users->mobile = $request->mobile;
@@ -125,8 +125,8 @@ class CustomAuthController extends Controller
     
         if ($user) {
             if (Hash::check($request->password, $user->password)) {
-                if ($user->role == 1 || $user->role == 3 && $user->userstatus == 1) {
-                    $request->session()->put('loginId', $user->uid);
+                if ($user->user_role == 1 || $user->user_role == 3 && $user->userstatus == 1) {
+                    $request->session()->put('loginId', $user->user_id);
                     return redirect()->route('departmentwmspage')->with('message', 'ผู้ใช้เข้าสู่ระบบ');
                 } else {
                     return back()->with('fail', 'ผู้ใช้ไม่มีสิทธิ์ในการเข้าสู่ระบบ');
@@ -145,7 +145,7 @@ class CustomAuthController extends Controller
 
         $data = array();
         if(Session::has('loginId')){
-           $data = Users::where('uid', '=', Session::get('loginId'))->first();
+           $data = Users::where('user_id', '=', Session::get('loginId'))->first();
         }
         return   view('layouts.adminhome',compact('data'));
     }

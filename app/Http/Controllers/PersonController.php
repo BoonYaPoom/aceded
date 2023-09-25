@@ -51,7 +51,7 @@ class PersonController extends Controller
     
     public function updateusertype(Request $request,$person_type){
         $pertype = PersonType::findOrFail($person_type);
-        $usersnulls = Users::whereIn('uid', $request->input('user_data'))->get();
+        $usersnulls = Users::whereIn('user_id', $request->input('user_data'))->get();
     
     foreach ($usersnulls as $user) {
         $user->user_type = $pertype->person_type;
@@ -66,7 +66,7 @@ public function search(Request $request)
 
     // Perform the search logic based on your requirements
     $results = Users::where('firstname', 'like', '%' . $searchTerm . '%')
-                        ->orWhere('uid', 'like', '%' . $searchTerm . '%')
+                        ->orWhere('user_id', 'like', '%' . $searchTerm . '%')
                         ->get();
 
     return view('page.UserAdmin.group.umsgroup.groupuser.create', ['results' => $results]);

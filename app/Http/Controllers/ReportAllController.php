@@ -21,29 +21,30 @@ class ReportAllController extends Controller
     {
 
         $userper = Users::all();
-        $count1 = Users::where('role',1)->count();
-        $count3 = Users::where('role', 3)->count();
-        $count4 = Users::where('role', 4)->count();
-        $role1 = Users::where('role', 1)->first();
-        $role3 = Users::where('role',3)->first();
-        $role4 = Users::where('role',4)->first();
+        $count1 = Users::where('user_role',1)->count();
+        $count3 = Users::where('user_role', 3)->count();
+        $count4 = Users::where('user_role', 4)->count();
+        $user_role1 = Users::where('user_role', 1)->first();
+        $user_role3 = Users::where('user_role',3)->first();
+        $user_role4 = Users::where('user_role',4)->first();
         $jsonContent = file_get_contents('javascript/json/_data.json');
         $mms = json_decode($jsonContent, true);
         $monthdata = $mms['month'];
         $month = $monthdata['th'];
         $perType = PersonType::all();
         $learners =  CourseLearner::all();
-        return view('page.report.reporta', compact('userper', 'count1', 'count3', 'count4','role1','role3','role4', 'month', 'perType', 'learners'));
+        return view('page.report.reporta', compact('userper', 'count1', 'count3', 'count4','user_role1','user_role3','user_role4', 'month', 'perType', 'learners'));
     }
     public function ReportB()
     {
 
     
         $logs = Log::all();
+  
         $userper = Users::all();
-        $count1 = Users::where('role', 1)->count();
-        $count3 = Users::where('role', 3)->count();
-        $count4 = Users::where('role', 4)->count();
+        $count1 = Users::where('user_role', 1)->count();
+        $count3 = Users::where('user_role', 3)->count();
+        $count4 = Users::where('user_role', 4)->count();
         $jsonContent = file_get_contents('javascript/json/_data.json');
         $mms = json_decode($jsonContent, true);
         $monthdata = $mms['month'];
@@ -111,8 +112,8 @@ class ReportAllController extends Controller
 
     public function getUserData(Request $request)
     {
-        $selectedUid = $request->input('selected_uid');
-        $userperselected = Users::where('uid', $selectedUid)->get();
+        $selecteduser_id = $request->input('selected_user_id');
+        $userperselected = Users::where('user_id', $selecteduser_id)->get();
 
         return response()->json(['user_data' => $userperselected]);
     }

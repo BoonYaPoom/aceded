@@ -1,8 +1,8 @@
 
       
 <div id="clientUploadModal-{{ $item->lesson_id }}" class="modal fade" tabindex="-1"
-    role="dialog" aria-labelledby="clientUploadModalLabel">
-    <div class="modal-dialog modal-xl" role="document">
+    user_role="dialog" aria-labelledby="clientUploadModalLabel">
+    <div class="modal-dialog modal-xl" user_role="document">
         <div class="modal-content">
             <form id="uploadfile" method="POST"
                 action="{{ route('uploadfile', ['lesson_id' => $item->lesson_id]) }}"
@@ -50,7 +50,7 @@
                                         <div id="progress"
                                             class="progress progress-xs rounded-0 fade">
                                             <div class="progress-bar progress-bar-striped progress-bar-animated bg-success"
-                                                role="progressbar" aria-valuemin="0"
+                                                user_role="progressbar" aria-valuemin="0"
                                                 aria-valuemax="100"></div>
                                         </div>
                                         <div id="uploadList"
@@ -88,7 +88,7 @@
                                         <div id="progress"
                                             class="progress progress-xs rounded-0 fade">
                                             <div class="progress-bar progress-bar-striped progress-bar-animated bg-success"
-                                                role="progressbar" aria-valuemin="0"
+                                                user_role="progressbar" aria-valuemin="0"
                                                 aria-valuemax="100"></div>
                                         </div>
                                         <div id="uploadList"
@@ -128,7 +128,7 @@
                                         <div id="progress"
                                             class="progress progress-xs rounded-0 fade">
                                             <div class="progress-bar progress-bar-striped progress-bar-animated bg-success"
-                                                role="progressbar" aria-valuemin="0"
+                                                user_role="progressbar" aria-valuemin="0"
                                                 aria-valuemax="100"></div>
                                         </div>
                                         <div id="uploadList"
@@ -171,7 +171,7 @@
                                         <div id="progress"
                                             class="progress progress-xs rounded-0 fade">
                                             <div class="progress-bar progress-bar-striped progress-bar-animated bg-success"
-                                                role="progressbar" aria-valuemin="0"
+                                                user_role="progressbar" aria-valuemin="0"
                                                 aria-valuemax="100"></div>
                                         </div>
                                         <div id="uploadList"
@@ -190,8 +190,8 @@
                                         href="{{ asset($item->content_path) }}"
                                         class="btn btn-primary" download>ดาวน์โหลดไฟล์</a>
                                     <div class="showcontent show-zip "><object
-                                            src="{{ asset($item->content_path) }}"
-                                            alt="{{ $item->content_path }}" id="sourcezip"
+                                            src="{{ asset($item->content_path . '/index.html') }}"
+                                            alt="{{ $item->content_path . '/index.html'}}" id="sourcezip"
                                             width="100%" height="200px" data="">
                                         </object>
 
@@ -212,7 +212,7 @@
                                         <div id="progress"
                                             class="progress progress-xs rounded-0 fade">
                                             <div class="progress-bar progress-bar-striped progress-bar-animated bg-success"
-                                                role="progressbar" aria-valuemin="0"
+                                                user_role="progressbar" aria-valuemin="0"
                                                 aria-valuemax="100"></div>
                                         </div>
                                         <div id="uploadList"

@@ -24,7 +24,7 @@
             <!-- .card -->
             <div class="card card-fluid">
                 <!-- .card-header -->
-                <div class="card-header bg-muted"><a href="{{ route('departmentwmspage') }}"
+                <div class="card-header bg-muted"><a href="{{ route('manage', ['department_id' => $depart->department_id]) }}"
                         style="text-decoration: underline;">จัดการเว็บ </a> / <i> ข่าว/กิจกรรม</i></div>
                 <!-- .card-body -->
                 <div class="card-body">

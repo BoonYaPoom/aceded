@@ -54,13 +54,16 @@
                             <a> {{ $register }}</a>
                         </td>
                         <td>
-                            <a href="{{ route('register_page', [ 'm' => $m,'course_id' => $cour]) }}"><i class="fas fa-user-plus fa-lg text-dark"
-                                    data-toggle="tooltip" title="รายชื่อลงทะเบียน"></i></a>
+                         
+                                 <!--      <a href="{{ route('register_page', [ 'm' => $m,'course_id' => $cour]) }}"><i class="fas fa-user-plus fa-lg text-dark"
+                                    data-toggle="tooltip" title="รายชื่อลงทะเบียน"></i></a>-->
                             <a href="{{ route('report_page', [ 'm' => $m,'course_id' => $cour]) }}"><i class="fas fa-chart-bar fa-lg text-danger"
                                     data-toggle="tooltip" title="รายงาน"></i></a>
-                            <a href="{{ route('congratuation_page', [ 'm' => $m,'course_id' => $cour]) }}"><i
+                           
+                           
+                                 <!--    <a href="{{ route('congratuation_page', [ 'm' => $m,'course_id' => $cour]) }}"><i
                                     class="fas fa-user-graduate fa-lg text-info" data-toggle="tooltip"
-                                    title="ผู้สำเร็จหลักสูตร"></i></a>
+                                    title="ผู้สำเร็จหลักสูตร"></i></a>-->
 
 
                             <!--  -->

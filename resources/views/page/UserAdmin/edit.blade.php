@@ -1,7 +1,7 @@
 @extends('layouts.adminhome')
 @section('content')
     <!-- .page-inner -->
-    <form action="{{ route('updateUser',['uid'=>$usermanages->uid]) }}" method="post" enctype="multipart/form-data">
+    <form action="{{ route('updateUser',['user_id'=>$usermanages->user_id]) }}" method="post" enctype="multipart/form-data">
         @csrf 
         @method('PUT')
     <div class="page-inner">
@@ -28,7 +28,7 @@
                                 <!-- The avatar upload progress bar -->
                                 <div id="progress-avatar" class="progress progress-xs fade">
                                     <div class="progress-bar progress-bar-striped progress-bar-animated bg-success"
-                                        role="progressbar" aria-valuemin="0" aria-valuemax="100"></div>
+                                        user_role="progressbar" aria-valuemin="0" aria-valuemax="100"></div>
                                 </div><!-- /avatar upload progress bar -->
                             </div>
                             <!-- /.media-body -->
@@ -295,7 +295,7 @@
                             <div class="col-md-9 mb-3">
                                 <label class="switcher-control switcher-control-success switcher-control-lg">
                                     <input type="checkbox" class="switcher-input switcher-edit" checked value="1"
-                                        id="8cd306b95d82314da5402c4bd7fc299b__users__editflag__uid__2__1684987166"
+                                        id="8cd306b95d82314da5402c4bd7fc299b__users__editflag__user_id__2__1684987166"
                                         name="editflag">
                                     <span class="switcher-indicator"></span> <span class="switcher-label-on">ON</span>
                                     <span class="switcher-label-off text-red">OFF</span>

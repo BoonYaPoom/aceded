@@ -32,7 +32,7 @@
 
 
 
-                    <table id="datatable" class="table w3-hoverable table-striped no-footer" role="grid"
+                    <table id="datatable" class="table w3-hoverable table-striped no-footer" user_role="grid"
                         aria-describedby="datatable_info">
                         <div class="table-responsive">
                             <div id="datatable_wrapper" class="dataTables_wrapper dt-bootstrap4 no-footer">
@@ -51,7 +51,7 @@
                                 </div>
                             </div>
                             <thead>
-                                <tr class="bg-infohead" role="row">
+                                <tr class="bg-infohead" user_role="row">
                                     <th class="align-middle sorting" style="width: 34.6875px;" aria-controls="datatable"
                                         rowspan="1" colspan="1"
                                         aria-label=" ลำดับ : activate to sort column ascending"> ลำดับ </th>

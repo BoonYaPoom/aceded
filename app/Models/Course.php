@@ -27,9 +27,9 @@ class Course extends Model
       {
           return $this->hasMany(CourseLearner::class,'course_id');
       }
-      public static function generateCourseCode($department_id)
+      public static function generateCourseCode($group_id)
       {
-          $code = static::count() + 1;
+        $code = Course::where('group_id', $group_id)->count() + 1;
         
           return $code;
       }

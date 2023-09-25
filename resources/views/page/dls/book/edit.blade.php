@@ -54,7 +54,7 @@
                                 accept="image/*">
                         </div> <!-- /.form-group -->
                         <div class="form-group">
-                            <label for="cover"><img src="{{ Storage::disk('external')->url('BookCategory/' . $book->cover) }}" alt="{{ $book->cover }}"
+                            <label for="cover"><img src="{{ asset($book->cover) }}" alt="{{ $book->cover }}"
                                     style="height:300px ">
                         </div>
                         @error('cover')

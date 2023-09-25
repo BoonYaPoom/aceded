@@ -35,7 +35,7 @@
                                 <!-- tr -->
 
                                 @php($i = 1)
-                                @foreach ($sur as $item)
+                                @foreach ($sur->sortBy('survey_id') as $item)
                                     @if ($item->subject_id == 0)
                                         <tr>
                                             <td><a href="#">{{ $i++ }}</a></td>

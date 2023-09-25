@@ -99,7 +99,7 @@
                                                     title="แก้ไข"></i></a>
                                             <a href="{{ route('destoryblogcat', [$item->category_id]) }}"
                                                 onclick="deleteRecord(event)" rel="เกร็ดความรู้...สู้ทุจริต"
-                                                class="switcher-delete" data-toggle="tooltip" title="ลบ" role="button">
+                                                class="switcher-delete" data-toggle="tooltip" title="ลบ" user_role="button">
                                                 <i class="fas fa-trash-alt fa-lg text-warning "></i>
                                             </a>
                                         </td>

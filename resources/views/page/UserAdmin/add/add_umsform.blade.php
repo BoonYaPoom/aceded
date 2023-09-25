@@ -46,10 +46,10 @@
                                     </select>
                                 </div>
                             </div>
-                            <div class="form-row " id="role">
-                                <label for="role" class="col-md-2">เลือกประเภทผู้ใช้งาน </label>
+                            <div class="form-row " id="user_role">
+                                <label for="user_role" class="col-md-2">เลือกประเภทผู้ใช้งาน </label>
                                 <div class="col-md-9 mb-3">
-                                    <select id="role" name="role" class="form-control form-control-sm"
+                                    <select id="user_role" name="user_role" class="form-control form-control-sm"
                                         data-toggle="select2" data-allow-clear="false">
                                         <option value="0"selected disabled>เลือกประเภทผู้ใช้งาน</option>
                                         <option value="4">ผู้เรียน</option>
@@ -285,7 +285,7 @@
                                 <div class="col-md-9 mb-3">
                                     <label class="switcher-control switcher-control-success switcher-control-lg">
                                         <input type="checkbox" class="switcher-input switcher-edit" value="1"
-                                            id="2d9ccf81cb655e2b71796f3083674343__users__editflag__uid____1690788225"
+                                            id="2d9ccf81cb655e2b71796f3083674343__users__editflag__user_id____1690788225"
                                             name="editflag">
                                         <span class="switcher-indicator"></span> <span class="switcher-label-on">ON</span>
                                         <span class="switcher-label-off text-red">OFF</span>

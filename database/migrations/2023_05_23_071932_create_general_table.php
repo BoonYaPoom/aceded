@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('general', function (Blueprint $table) {
             $table->charset = 'utf8';
             $table->collation = 'utf8_general_ci';
-            $table->increments('id');
+            $table->increments('id')->start(10)->nocache();
             $table->string('title', 50)->collation('utf8_general_ci');
             $table->longText('detail')->nullable()->collation('utf8_general_ci');
             $table->string('status', 1)->nullable()->collation('utf8_general_ci');

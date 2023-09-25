@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('users', function (Blueprint $table) {
             $table->charset = 'utf8';
             $table->collation = 'utf8_general_ci';
-            $table->increments('uid');
+            $table->increments('user_id')->start(40000)->nocache();
             $table->string('username', 50)->collation('utf8_general_ci');
             $table->string('firstname', 400)->collation('utf8_general_ci');
             $table->string('lastname', 400)->nullable()->collation('utf8_general_ci');
@@ -24,7 +24,7 @@ return new class extends Migration
             $table->string('prefix', 3)->nullable()->collation('utf8_general_ci');
             $table->string('gender', 1)->nullable()->collation('utf8_general_ci');
             $table->string('email', 100)->nullable()->collation('utf8_general_ci');
-            $table->string('role', 1)->collation('utf8_general_ci');
+            $table->string('user_role', 1)->collation('utf8_general_ci');
             $table->integer('per_id')->nullable();
             $table->integer('department_id')->nullable();
             $table->string('permission', 50)->nullable()->collation('utf8_general_ci');
@@ -34,9 +34,9 @@ return new class extends Migration
             $table->dateTime('modifieddate')->nullable();
             $table->string('createby', 50)->nullable()->collation('utf8_general_ci');
             $table->string('avatar', 100)->nullable()->collation('utf8_general_ci');
-            $table->string('position', 100)->nullable()->collation('utf8_general_ci');
+            $table->string('user_position', 100)->nullable()->collation('utf8_general_ci');
             $table->string('department', 100)->nullable()->collation('utf8_general_ci');
-            $table->string('workplace', 100)->nullable()->collation('utf8_general_ci');
+            $table->string('workplace', 800)->nullable()->collation('utf8_general_ci');
             $table->string('telephone', 50)->nullable()->collation('utf8_general_ci');
             $table->string('mobile', 50)->nullable()->collation('utf8_general_ci');
             $table->longText('socialnetwork')->nullable()->collation('utf8_general_ci');

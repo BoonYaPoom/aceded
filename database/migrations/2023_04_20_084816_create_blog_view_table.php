@@ -14,10 +14,10 @@ return new class extends Migration
         Schema::create('blog_view', function (Blueprint $table) {
             $table->charset = 'utf8';
             $table->collation = 'utf8_general_ci';
-            $table->increments('view_id');
+            $table->increments('view_id')->start(10000)->nocache();
             $table->integer('blog_id');
-            $table->dateTime('date');
-            $table->integer('uid')->nullable();
+            $table->dateTime('blog_date');
+            $table->integer('user_id')->nullable();
 		;
         });
     }

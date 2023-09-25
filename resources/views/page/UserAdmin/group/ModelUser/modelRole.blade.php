@@ -1,8 +1,8 @@
-<div id="clientPermissionModal-{{ $item->uid }}" data-uid="{{ $item->uid }}" class="modal fade" aria-modal="true"
-    tabindex="-1" role="dialog">
-    <div class="modal-dialog" role="document">
+<div id="clientPermissionModal-{{ $item->user_id }}" data-user_id="{{ $item->user_id }}" class="modal fade" aria-modal="true"
+    tabindex="-1" user_role="dialog">
+    <div class="modal-dialog" user_role="document">
         <div class="modal-content">
-            <form action="{{ route('updateRoleUser', ['uid' => $item->uid]) }}" method="post"
+            <form action="{{ route('updateRoleUser', ['user_id' => $item->user_id]) }}" method="post"
                 enctype="multipart/form-data">
                 @csrf
                 @method('PUT')
@@ -22,11 +22,11 @@
                             <div class="section-block text-center text-sm">
                                 <div class="visual-picker visual-picker-sm has-peek px-3">
                                     <br>
-                                    <input type="radio" id="role1" name="role" value="1"
-                                        {{ $item->role == 1 ? 'checked' : '' }}>
-                                    <label class="visual-picker-figure" for="role1">
+                                    <input type="radio" id="user_role1" name="user_role" value="1"
+                                        {{ $item->user_role == 1 ? 'checked' : '' }}>
+                                    <label class="visual-picker-figure" for="user_role1">
                                         <span class="visual-picker-content">
-                                            <span class="tile tile-sm role1 roleactive bg-muted">
+                                            <span class="tile tile-sm user_role1 user_roleactive bg-muted">
                                                 <i class="fas fa-user-cog fa-lg"></i>
                                             </span>
                                         </span>
@@ -34,17 +34,17 @@
                                     <span class="visual-picker-peek">ผู้ดูแลระบบ</span>
                                 </div>
                                 <!-- <div class="visual-picker visual-picker-sm has-peek px-3 d-none">
-<input type="radio" id="role2" name="role" value="2" {{ $item->role == 2 ? 'checked' : '' }}>
-<label class="visual-picker-figure" for="role2">
-<span class="visual-picker-content"><span class="tile tile-sm role2 roleactive bg-muted"><i class="fas fa-user-edit fa-lg"></i></span></span>  </label>
+<input type="radio" id="user_role2" name="user_role" value="2" {{ $item->user_role == 2 ? 'checked' : '' }}>
+<label class="visual-picker-figure" for="user_role2">
+<span class="visual-picker-content"><span class="tile tile-sm user_role2 user_roleactive bg-muted"><i class="fas fa-user-edit fa-lg"></i></span></span>  </label>
 <span class="visual-picker-peek">ผู้จัดการหลักสูตร</span>
 </div>  -->
                                 <div class="visual-picker visual-picker-sm has-peek px-3">
-                                    <input type="radio" id="role3" name="role" value="3"
-                                        {{ $item->role == 3 ? 'checked' : '' }}>
-                                    <label class="visual-picker-figure" for="role3">
+                                    <input type="radio" id="user_role3" name="user_role" value="3"
+                                        {{ $item->user_role == 3 ? 'checked' : '' }}>
+                                    <label class="visual-picker-figure" for="user_role3">
                                         <span class="visual-picker-content">
-                                            <span class="tile tile-sm role3 roleactive bg-muted">
+                                            <span class="tile tile-sm user_role3 user_roleactive bg-muted">
                                                 <i class="fas fa-user-tie fa-lg"></i>
                                             </span>
                                         </span>
@@ -53,11 +53,11 @@
                                 </div>
 
                                 <div class="visual-picker visual-picker-sm has-peek px-3">
-                                    <input type="radio" id="role4" name="role" value="4"
-                                        {{ $item->role == 4 ? 'checked' : '' }}>
-                                    <label class="visual-picker-figure" for="role4">
+                                    <input type="radio" id="user_role4" name="user_role" value="4"
+                                        {{ $item->user_role == 4 ? 'checked' : '' }}>
+                                    <label class="visual-picker-figure" for="user_role4">
                                         <span class="visual-picker-content">
-                                            <span class="tile tile-sm role4 roleactive bg-muted">
+                                            <span class="tile tile-sm user_role4 user_roleactive bg-muted">
                                                 <i class="fas fa-user-graduate fa-lg"></i>
                                             </span>
                                         </span>
@@ -66,11 +66,11 @@
                                 </div>
 
                                 <div class="visual-picker visual-picker-sm has-peek px-3">
-                                    <input type="radio" id="role5" name="role" value="5"
-                                        {{ $item->role == 5 ? 'checked' : '' }}>
-                                    <label class="visual-picker-figure" for="role5">
+                                    <input type="radio" id="user_role5" name="user_role" value="5"
+                                        {{ $item->user_role == 5 ? 'checked' : '' }}>
+                                    <label class="visual-picker-figure" for="user_role5">
                                         <span class="visual-picker-content">
-                                            <span class="tile tile-sm role5 roleactive bg-muted">
+                                            <span class="tile tile-sm user_role5 user_roleactive bg-muted">
                                                 <i class="fas fa-user fa-lg"></i>
                                             </span>
                                         </span>
@@ -81,7 +81,7 @@
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="submit" class="btn btn-primary-theme" id="btnsetrole">
+                        <button type="submit" class="btn btn-primary-theme" id="btnsetuser_role">
                             <i class="fas fa-user-shield"></i> กำหนดสิทธิ์
                         </button>
                         <button type="button" class="btn btn-light" data-dismiss="modal">ยกเลิก</button>

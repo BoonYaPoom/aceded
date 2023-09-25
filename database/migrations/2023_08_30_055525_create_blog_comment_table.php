@@ -14,13 +14,13 @@ return new class extends Migration
         Schema::create('blog_comment', function (Blueprint $table) {
             $table->charset = 'utf8';
             $table->collation = 'utf8_general_ci';
-            $table->increments('comment_id');
+            $table->increments('comment_id')->start(10000)->nocache();
             $table->integer('blog_id');   
             $table->longText('comment')->collation('utf8_general_ci');        
             $table->dateTime('date');
             $table->string('status',1)->collation('utf8_general_ci');
             $table->string('author',100)->nullable()->collation('utf8_general_ci');
-            $table->integer('uid')->nullable();
+            $table->integer('user_id')->nullable();
 		    $table->string('pathfile',400)->nullable()->collation('utf8_general_ci');
  
         });

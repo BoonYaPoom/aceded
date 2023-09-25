@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('grade', function (Blueprint $table) {
             $table->charset = 'utf8';
             $table->collation = 'utf8_general_ci';
-            $table->increments('grade_id');
+            $table->increments('grade_id')->start(10000)->nocache();
             $table->integer('course_id');
             $table->string('grade', 1)->collation('utf8_general_ci');
             $table->integer('minscore');

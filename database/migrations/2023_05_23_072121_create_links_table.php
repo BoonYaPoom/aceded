@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('links', function (Blueprint $table) {
             $table->charset = 'utf8';
             $table->collation = 'utf8_general_ci';
-            $table->increments('links_id');
+            $table->increments('links_id')->start(10000)->nocache();
             $table->string('links_title', 400)->collation('utf8_general_ci');
             $table->longText('links')->nullable()->collation('utf8_general_ci');
             $table->dateTime('links_date');

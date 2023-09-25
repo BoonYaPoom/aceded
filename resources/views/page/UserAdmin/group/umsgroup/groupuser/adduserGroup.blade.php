@@ -11,9 +11,9 @@ action="{{ route('updateusertype', ['person_type' => $pertype->person_type]) }}"
 
             <div class="custom-control custom-checkbox">
                 <input type="checkbox" class="custom-control-input" name="user_data[]"
-                    id="user_data{{ $user->uid }}" value="{{ $user->uid }}">
+                    id="user_data{{ $user->user_id }}" value="{{ $user->user_id }}">
                 <label class="custom-control-label"
-                    for="user_data{{ $user->uid }}"></label>
+                    for="user_data{{ $user->user_id }}"></label>
 
             </div>
         </td>

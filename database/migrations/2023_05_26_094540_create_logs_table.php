@@ -14,8 +14,8 @@ return new class extends Migration
         Schema::create('logs', function (Blueprint $table) {
             $table->charset = 'utf8';
             $table->collation = 'utf8_general_ci';
-            $table->increments('logsid');
-            $table->integer('uid');
+            $table->increments('logsid')->start(10000)->nocache();
+            $table->integer('user_id');
             $table->dateTime('logdate');
             $table->string('logip', 30)->collation('utf8_general_ci');
             $table->string('logagents', 30)->collation('utf8_general_ci');

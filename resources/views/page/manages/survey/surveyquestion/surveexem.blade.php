@@ -47,7 +47,7 @@
         <!-- card block 1-->
         <div class="col-lg-12  shadow-soft p-1 pt-1 pl-0 pr-0  ">
             <!-- title block -->
-            <div class="col-lg-12 tab-pane active" id="tab-f-index" role="tabpanel" aria-labelledby="tab-1">
+            <div class="col-lg-12 tab-pane active" id="tab-f-index" user_role="tabpanel" aria-labelledby="tab-1">
                 <div class="d-flex">
                     <h4 class="h5 text-primary mt-1">แบบประเมินความพึงพอใจที่มีต่อบทเรียนออนไลน์ รายวิชาเพิ่มเติม
                         การป้องกันการทุจริต ระดับปฐมวัย</h4>

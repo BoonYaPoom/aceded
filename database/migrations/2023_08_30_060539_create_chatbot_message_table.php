@@ -14,11 +14,11 @@ return new class extends Migration
         Schema::create('chatbot_message', function (Blueprint $table) {
             $table->charset = 'utf8';
             $table->collation = 'utf8_general_ci';
-            $table->increments('chat_id');
+            $table->increments('chat_id')->start(10000)->nocache();
             $table->string('to_user_id',50)->collation('utf8_general_ci');
             $table->string('from_user_id',50)->collation('utf8_general_ci');
             $table->longText('chat_message')->collation('utf8_general_ci');
-            $table->dateTime('timestamp');
+            $table->dateTime('dateTime');
             $table->string('status',1)->nullable()->collation('utf8_general_ci');
             $table->string('answer',1)->nullable()->collation('utf8_general_ci');
             $table->string('question',100)->nullable()->collation('utf8_general_ci');

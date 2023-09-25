@@ -94,7 +94,7 @@
                                             class="fas fa-chart-bar text-teal mr-2"></i></a></td>
 
                             </tr>
-                            <tr>
+                           <!-- <tr>
                                 <td align="center">5</td>
                                 <td>การสำรองและการกู้คืนข้อมูล</td>
                                 <td align="center"><a href="{{route('BackUserAuth')}}"><i
@@ -130,9 +130,9 @@
                                         href="{{route('BackupFullUserAuth')}}"><i
                                             class="fas fa-chart-bar text-teal mr-2"></i></a></td>
 
-                            </tr>
+                            </tr>-->
                             <tr>
-                                <td align="center">10</td>
+                                <td align="center">5</td>
                                 <td>ข้อมูล Log File ในรูปแบบรายงานทางสถิติ</td>
                                 <td align="center"><a
                                         href="{{route('LogFileUserAuth')}}"><i

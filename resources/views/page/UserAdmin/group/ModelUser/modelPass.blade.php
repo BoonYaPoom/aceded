@@ -1,8 +1,8 @@
-<div class="modal fade " id="clientWarningModal-{{ $item->uid }}" data-uid="{{ $item->uid }}" tabindex="-1"
-    role="dialog" aria-labelledby="clientWarningModalLabel" aria-modal="true">
+<div class="modal fade " id="clientWarningModal-{{ $item->user_id }}" data-user_id="{{ $item->user_id }}" tabindex="-1"
+    user_role="dialog" aria-labelledby="clientWarningModalLabel" aria-modal="true">
     <!-- .modal-dialog -->
-    <div class="modal-dialog" role="document">
-        <form action="{{ route('updatePassword', ['uid' => $item->uid]) }}" method="post" enctype="multipart/form-data">
+    <div class="modal-dialog" user_role="document">
+        <form action="{{ route('updatePassword', ['user_id' => $item->user_id]) }}" method="post" enctype="multipart/form-data">
             @csrf
             @method('PUT')
             <!-- .modal-content -->

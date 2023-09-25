@@ -1,6 +1,5 @@
 
-<tr>
-    <td><a href="#"> {{ $rowNumber }}</a></td>
+
     <td>
         {!! $item->question !!}
     </td>

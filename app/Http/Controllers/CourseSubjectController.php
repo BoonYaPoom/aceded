@@ -95,19 +95,19 @@ class CourseSubjectController extends Controller
             }
         } else {
             $image_name = '';
-            $subs->cover = $image_name;
+            $subs->banner = $image_name;
             $subs->save();
         }
 
         $selectedTeachers = $request->input('teacher', []);
 
 
-        $Users4 = \App\Models\Users::all()->where('role', 3);
+        $Users4 = \App\Models\Users::all()->where('user_role', 3);
         foreach ($Users4 as $teacherId) {
             $teach = new CourseTeacher;
-            $teach->uid = $teacherId->uid;
+            $teach->user_id = $teacherId->user_id;
 
-            if (in_array($teacherId->uid, $selectedTeachers)) {
+            if (in_array($teacherId->user_id, $selectedTeachers)) {
                 $teach->teacher_status = 1;
             } else {
                 $teach->teacher_status = 0;

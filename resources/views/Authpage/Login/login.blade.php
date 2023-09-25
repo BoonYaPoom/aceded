@@ -76,7 +76,7 @@
 
   </head>
 
-          <!--  @php
+         <!--     @php
                 use Illuminate\Support\Facades\DB;
                 
                 try {
@@ -91,18 +91,18 @@
   <div class="wrapper fadeInDown">
       <div id="formContent">
           <!-- Tabs Titles -->
-          <h2 class="active">
+      <h2 class="active">
               <a class="navbar-brand" href="{{ route('homelogin') }}">Sign In</a>
           </h2>
-          <h2 class="inactive underlineHover">
+             <!--   <h2 class="inactive underlineHover">
               <a class="navbar-brand" href="{{ route('homeRegis') }}">Sign Up </a>
-          </h2>
+          </h2>-->  
 
           <!-- Icon -->
           <div class="fadeIn first">
               <img src="{{ asset('lac/logo.png') }}" id="icon" alt="User Icon" />
           </div>
-
+            <br>
           <!-- Login Form -->
           <form action="{{ route('login-user') }}" method="post" accept-charset="utf-8">
               @csrf
@@ -132,8 +132,8 @@
               <div class="row mb-3">
                   <div class="col-6">
                       <div class="form-check">
-                          <input class="form-check-input" type="checkbox" id="remember-me" onclick="myFunction()">
-                          <label class="form-check-label" for="remember-me">Remember Me</label>
+                          <input class="form-check-input" type="checkbox" id="Check-Password" onclick="myFunction()">
+                          <label class="form-check-label" for="Check-Password">Check Password</label>
                       </div>
 
                   </div>

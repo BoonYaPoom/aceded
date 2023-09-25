@@ -32,7 +32,7 @@
                             <option value="2023" selected> </option>
                         </select></div>
                 </div>-->
-                <div class="col-md-4 ">
+            <!--    <div class="col-md-4 ">
                     <div><select id="selectcourse" name="selectcourse" class="form-control" data-toggle="select2"
                             data-placeholder="หลักสูตร" data-allow-clear="false" onchange="$('#formreport').submit();">
                             <option value="" selected> เลือกหลักสูตร </option>
@@ -40,9 +40,9 @@
                             <option value="รายวิชาเพิ่มเติม การป้องกันการทุจริต ระดับปฐมวัย"> รายวิชาเพิ่มเติม
                                 การป้องกันการทุจริต ระดับปฐมวัย </option>
                         </select></div>
-                </div>
-                <div class="col-md-4 ">
-                    <div><select id="selectuid" name="selectuid" class="form-control" data-toggle="select2"
+                </div>-->
+              <!--  <div class="col-md-4 ">
+                    <div><select id="selectuser_id" name="selectuser_id" class="form-control" data-toggle="select2"
                             data-placeholder="ผู้ใช้งานทั้งหมด" data-allow-clear="false"
                             onchange="$('#formreport').submit();">
                             <option value=""> ผู้ใช้งานทั้งหมด </option>
@@ -52,7 +52,7 @@
                             <option value="ธนภัทร วงษ์กล่อม"> ธนภัทร วงษ์กล่อม </option>
                             <option value="TCCT1 user"> TCCT1 user </option>
                         </select></div>
-                </div>
+                </div>-->
                 <div class="col-md-3 ">
                     <div class="d-none"><select id="selectmonth" name="selectmonth" class="form-control "
                             data-toggle="select2" data-placeholder="เดือน" data-allow-clear="false"
@@ -108,17 +108,19 @@
                                 $n = 1;
                                 $result = []; // สร้างตัวแปรเก็บผลลัพธ์
                                 $uniqueUserIds = [];
-                                
+                                $users = null;
                             @endphp
                             @foreach ($learners as $l => $learns)
-                                @php
-                                    
+                            @if($users !== null) 
+                                @php                       
                                     $dataLearn = $learns->registerdate;
                                     $congrateLearn = $learns->congratulationdate;
                                     $congrate = $learns->congratulation;
                                     $monthsa = \ltrim(\Carbon\Carbon::parse($dataLearn)->format('m'), '0');
                                     $newDateTime = \Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $learns->registerdate)->format('d/m/Y H:i:s');
-                                    $users = \App\Models\Users::find($learns->uid);
+                                    $users = \App\Models\Users::find($learns->user_id);
+                                    
+                                    
                                     $courses = \App\Models\Course::find($learns->course_id);
                                     
                                     if ($courses) {
@@ -144,9 +146,10 @@
 
                                 <tr>
                                     <td align="center">{{ $n++ }}</td>
+                                    @if(isset($users) && $users)
                                     <td>{{ $users->username }}</td>
                                     <td>{{ $users->firstname }} {{ $users->lastname }}</td>
-
+                                    @endif
                                     <td>{{ $course_th }}</td>
                                     <td align="center">{{ $thaiDat }}</td>
                                     <td align="center">
@@ -157,6 +160,8 @@
                                         @endif
                                     </td>
                                 </tr>
+                                @else 
+                                @endif
                             @endforeach
                             </tbody><!-- /tbody -->
                     </table><!-- /.table -->

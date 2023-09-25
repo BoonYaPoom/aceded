@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('category_topic', function (Blueprint $table) {
             $table->charset = 'utf8';
             $table->collation = 'utf8_general_ci';
-            $table->increments('topic_id');
+            $table->increments('topic_id')->start(10000)->nocache();
             $table->string('topic_th', 400)->collation('utf8_general_ci');
             $table->longText('topic_detail')->nullable()->collation('utf8_general_ci');
             $table->dateTime('topic_date');
@@ -24,7 +24,7 @@ return new class extends Migration
             $table->string('topic_option', 400)->nullable()->nullable()->collation('utf8_general_ci');
             $table->integer('category_id')->nullable();
             $table->integer('topic_ref_id')->nullable();
-            $table->integer('uid')->nullable();
+            $table->integer('user_id')->nullable();
         });
     }
 

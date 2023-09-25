@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('exam', function (Blueprint $table) {
             $table->charset = 'utf8';
             $table->collation = 'utf8_general_ci';
-            $table->increments('exam_id');
+            $table->increments('exam_id')->start(10000)->nocache();
             $table->string('exam_th', 400)->collation('utf8_general_ci');
             $table->string('exam_en', 400)->nullable()->collation('utf8_general_ci');
             $table->string('exam_type', 1)->collation('utf8_general_ci');
@@ -28,8 +28,8 @@ return new class extends Migration
             $table->string('showanswer', 1)->nullable()->collation('utf8_general_ci');
             $table->string('randomquestion', 1)->nullable()->collation('utf8_general_ci');
             $table->string('randomchoice', 1)->nullable()->collation('utf8_general_ci');
-            $table->string('limitdatetime', 1)->nullable()->collation('utf8_general_ci');
-            $table->string('setdatetime', 400)->nullable()->collation('utf8_general_ci');
+            $table->string('limitdateTime', 1)->nullable()->collation('utf8_general_ci');
+            $table->string('setdateTime', 400)->nullable()->collation('utf8_general_ci');
             $table->string('limittime', 1)->nullable()->collation('utf8_general_ci');
             $table->string('settime', 50)->nullable()->collation('utf8_general_ci');
             $table->string('survey_before', 1)->nullable()->collation('utf8_general_ci');

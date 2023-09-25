@@ -51,10 +51,29 @@
                         @enderror
                         <div class="form-group">
                             <label for="name_short_en">URL (EN)</label>
-                            <input type="text" class="form-control" name="name_short_en" placeholder="URL (EN)"
-                                required="" value="">
+                            <input type="text" class="form-control" name="name_short_en" id="name_short_en" placeholder="URL (EN)"
+                                required="" value="" maxlength="4">
                         </div><!-- /.form-group -->
-
+                        
+                        <script>
+                            const inputElement = document.getElementById("name_short_en");
+                        
+                            inputElement.addEventListener("input", function () {
+                                const inputValue = this.value;
+                                const englishOnlyValue = inputValue.replace(/[^A-Za-z]/g, "").toUpperCase();
+                                this.value = englishOnlyValue;
+                            });
+                        
+                            inputElement.addEventListener("keypress", function (event) {
+                                const charCode = event.charCode;
+                                if (charCode >= 3585 && charCode <= 3675) {
+                                    event.preventDefault(); // หยุดการป้อนอักษรไทย
+                                }
+                            });
+                        </script>
+                        
+                        
+                        
                         @error('name_short_en')
                             <span class="badge badge-warning">{{ $message }}</span>
                         @enderror
@@ -82,7 +101,7 @@
                         <div class="form-group">
                             <label for="color">Select a color:</label>
                             <input type="color" id="colorPicker" class="form-control" value="#F04A23" data-mdb-color-picker oninput="updateColorCode()">
-                            <input type="text" id="colorCode" class="form-control" name="color" oninput="updateColorPicker()">
+                            <input type="text" id="colorCode" class="form-control" name="color" value="#F04A23" oninput="updateColorPicker()">
                         </div>
                         
                         <script>

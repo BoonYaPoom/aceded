@@ -198,32 +198,32 @@
                                             <div class="list-group-item-figure h6"></div>
                                             <div class="list-group-item-body"> <input type="text" class="form-control"
                                                     id="c1" name="c1" placeholder="ตัวเลือก"
-                                                    value="">
+                                                    value="น้อยที่สุด">
                                             </div>
                                         </div>
                                         <div class="list-group-item">
                                             <div class="list-group-item-figure h6"></div>
                                             <div class="list-group-item-body"> <input type="text" class="form-control"
-                                                    id="c2" name="c2" placeholder="ตัวเลือก" value="">
+                                                    id="c2" name="c2" placeholder="ตัวเลือก" value="น้อย">
                                             </div>
                                         </div>
                                         <div class="list-group-item">
                                             <div class="list-group-item-figure h6"></div>
                                             <div class="list-group-item-body"> <input type="text" class="form-control"
                                                     id="c3" name="c3" placeholder="ตัวเลือก"
-                                                    value=""></div>
+                                                    value="ปานกลาง"></div>
                                         </div>
                                         <div class="list-group-item">
                                             <div class="list-group-item-figure h6"></div>
                                             <div class="list-group-item-body"> <input type="text" class="form-control"
-                                                    id="c4" name="c4" placeholder="ตัวเลือก" value="">
+                                                    id="c4" name="c4" placeholder="ตัวเลือก" value="มาก">
                                             </div>
                                         </div>
                                         <div class="list-group-item">
                                             <div class="list-group-item-figure h6"></div>
                                             <div class="list-group-item-body"> <input type="text" class="form-control"
                                                     id="c5" name="c5" placeholder="ตัวเลือก"
-                                                    value="">
+                                                    value="มากที่สุด">
                                             </div>
                                         </div>
                                         <div class="list-group-item">

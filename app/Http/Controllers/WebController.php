@@ -34,6 +34,7 @@ class WebController extends Controller
     public function store(Request $request, $category_id)
     {
   
+       
         $validator = Validator::make($request->all(), [
             'web_th' => 'required',
       
@@ -106,7 +107,7 @@ class WebController extends Controller
 
 
         if ($loginId) {
-            $loginLog = Log::where('uid', $loginId)->where('logaction', 2)->first();
+            $loginLog = Log::where('user_id', $loginId)->where('logaction', 2)->first();
 
 
             $loginLog = new Log;
@@ -117,7 +118,7 @@ class WebController extends Controller
             $loginLog->subject_id  = 1;
             $loginLog->duration = 1;
             $loginLog->status  = 0;
-            $loginLog->uid = $loginId;
+            $loginLog->user_id = $loginId;
             $loginLog->logagents = $browser;
             $loginLog->logip = $request->ip();
 
@@ -127,7 +128,7 @@ class WebController extends Controller
 
 
         $loginLog->save();
-
+        
         return redirect()->route('catpage', ['category_id' => $category_id])->with('message', 'Data update successfully');
     }
     public function edit($web_id)
@@ -199,7 +200,7 @@ class WebController extends Controller
 
 
         if ($loginId) {
-            $loginLog = Log::where('uid', $loginId)->where('logaction', 3)->first();
+            $loginLog = Log::where('user_id', $loginId)->where('logaction', 3)->first();
 
 
             $loginLog = new Log;
@@ -210,7 +211,7 @@ class WebController extends Controller
             $loginLog->subject_id  = 1;
             $loginLog->duration = 1;
             $loginLog->status  = 0;
-            $loginLog->uid = $loginId;
+            $loginLog->user_id = $loginId;
             $loginLog->logagents = $browser;
             $loginLog->logip = $request->ip();
 

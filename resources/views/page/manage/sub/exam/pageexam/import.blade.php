@@ -135,9 +135,9 @@
     <!-- .page-title-bar -->
 
     </div><!-- /.page-inner -->
-    <div class="modal fade" id="importSuccessModal" tabindex="-1" role="dialog" aria-labelledby="importSuccessModalLabel"
+    <div class="modal fade" id="importSuccessModal" tabindex="-1" user_role="dialog" aria-labelledby="importSuccessModalLabel"
         aria-hidden="true">
-        <div class="modal-dialog" role="document">
+        <div class="modal-dialog" user_role="document">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="importSuccessModalLabel">Import Successful</h5>

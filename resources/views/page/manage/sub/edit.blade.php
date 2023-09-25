@@ -54,8 +54,8 @@
 
                         <div class="form-group"></div>
                             <div class="form-group">
-                                <label for="banner"><img src="{{ Storage::disk('external')->url('Subject/SubBanner/' . $subs->banner) }}"
-                                        alt="{{ $subs->banner }}" style="max-height:350px" >
+                                <label for="banner"><img src="{{ asset($subs->banner) }}"
+                                        alt="{{ $subs->banner }}" width="70%" >
                             </div>
                             <label for="banner">ภาพแบนเนอร์ </label>
                             <input type="file" class="form-control" id="banner" name="banner"
@@ -112,8 +112,8 @@
                                         <option value="0" disabled>เลือกผู้สอน</option>
 
                                     @foreach ($users4 as $u => $users)
-                                    @if($users->role == 3)
-                                        <option value="{{ $users->uid }}"  {{ in_array($users->uid , explode(',', $subs->teacher)) ? 'selected' : '' }}> {{ $users->firstname }}
+                                    @if($users->user_role == 3)
+                                        <option value="{{ $users->user_id }}"  {{ in_array($users->user_id , explode(',', $subs->teacher)) ? 'selected' : '' }}> {{ $users->firstname }}
                                             {{ $users->lastname }} </option>
                                             @endif
                                     @endforeach

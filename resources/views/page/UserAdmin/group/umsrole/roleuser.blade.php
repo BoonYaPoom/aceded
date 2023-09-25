@@ -14,16 +14,16 @@
 
                     <form action="{{ route('UserManage') }}" method="GET">
                         <div class="form-row">
-                            <label for="role" class="col-md-3 text-right mt-1">เลือกประเภทผู้ใช้งาน</label>
+                            <label for="user_role" class="col-md-3 text-right mt-1">เลือกประเภทผู้ใช้งาน</label>
                             <div class="col-md-6 mb-3">
-                                <select id="role" name="role" class="form-control form-control-sm"
+                                <select id="user_role" name="user_role" class="form-control form-control-sm"
                                     data-toggle="select2" data-allow-clear="false">
                                     <option value="">ทั้งหมด</option>
-                                    <option value="4" {{ request('role') == '4' ? 'selected' : '' }}>ผู้เรียน</option>
-                                    <option value="3" {{ request('role') == '3' ? 'selected' : '' }}>ผู้สอน</option>
-                                    <option value="5" {{ request('role') == '5' ? 'selected' : '' }}>ผู้เยี่ยมชม
+                                    <option value="4" {{ request('user_role') == '4' ? 'selected' : '' }}>ผู้เรียน</option>
+                                    <option value="3" {{ request('user_role') == '3' ? 'selected' : '' }}>ผู้สอน</option>
+                                    <option value="5" {{ request('user_role') == '5' ? 'selected' : '' }}>ผู้เยี่ยมชม
                                     </option>
-                                    <option value="1" {{ request('role') == '1' ? 'selected' : '' }}>ผู้ดูแลระบบ
+                                    <option value="1" {{ request('user_role') == '1' ? 'selected' : '' }}>ผู้ดูแลระบบ
                                     </option>
 
                                 </select>
@@ -76,12 +76,12 @@
 
                 </div>
 
-                <div class="modal fade " id="clientUploadModal" tabindex="-1" role="dialog"
+                <div class="modal fade " id="clientUploadModal" tabindex="-1" user_role="dialog"
                     aria-labelledby="clientUploadModalLabel" aria-modal="true">
                     <!-- .modal-dialog -->
                     <form id="uploadForm" enctype="multipart/form-data">
                         @csrf
-                        <div class="modal-dialog" role="document">
+                        <div class="modal-dialog" user_role="document">
                             <!-- .modal-content -->
                             <div class="modal-content">
                                 <!-- .modal-header -->
@@ -106,7 +106,7 @@
                                 </div><!-- /.modal-body -->
                                 <!-- .modal-footer -->
                                 <div class="modal-footer">
-                                    <button type="submit" class="btn btn-success" id="btnsetrole"><i
+                                    <button type="submit" class="btn btn-success" id="btnsetuser_role"><i
                                             class="fas fa-user-plus"></i> นำเข้าผู้ใช้งาน</button>
                                     <button type="button" class="btn btn-light" data-dismiss="modal">ยกเลิก</button>
                                 </div><!-- /.modal-footer -->
@@ -264,14 +264,14 @@
                                         $rowNumber = $index + 1;
                                     @endphp
                                     @php
-                                        $roleadmin = $item->role == 1;
+                                        $user_roleadmin = $item->user_role == 1;
                                     @endphp
                                     @php
                                         $statususerss = $item->userstatus == 0;
                                     @endphp
 
                                     @php
-                                        $clientPermissionModal = 'clientPermissionModal-' . $item->uid;
+                                        $clientPermissionModal = 'clientPermissionModal-' . $item->user_id;
                                         $name_short_en = \App\Models\Department::where('department_id', $item->department_id)
                                             ->pluck('name_short_en')
                                             ->first();
@@ -283,7 +283,7 @@
 
                                     @include('page.UserAdmin.DataUser.userAll')
 
-                                    @include('page.UserAdmin.group.ModelUser.modelRole')
+                                    @include('page.UserAdmin.group.ModelUser.modeluser_role')
                                     @include('page.UserAdmin.group.ModelUser.modelPass')
                                 @endforeach
 

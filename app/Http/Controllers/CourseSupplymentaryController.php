@@ -59,12 +59,6 @@ class CourseSupplymentaryController extends Controller
         $supplys->author = $request->author;
         $supplys->supplymentary_status = $request->input('supplymentary_status', 0);
         $supplys->supplymentary_type = $request->type;
-
- 
-        $supplys->subject_id = (int)$subject_id;
-        $supplys->lesson_id = 0;
-
-        $supplys->save();
  
         if ($request->hasFile('path')) {
             $image_name = 'path' . '.' . $request->path->getClientOriginalExtension();
@@ -76,13 +70,15 @@ class CourseSupplymentaryController extends Controller
 
                 file_put_contents(public_path('upload/Subject/Supplys/' . $image_name), file_get_contents($request->path));
                 $supplys->path = 'upload/Subject/Supplys/' . 'path' . '.' . $request->path->getClientOriginalExtension();
-                $supplys->save();
+           
             }
-        } else {
-            $image_name = '';
-            $supplys->path = $image_name;
-            $supplys->save();
         }
+
+ 
+        $supplys->subject_id = (int)$subject_id;
+        $supplys->lesson_id = 0;
+
+        $supplys->save();
 
         return redirect()->route('supplypage', ['subject_id' => $subject_id])->with('message', 'Course_lesson บันทึกข้อมูลสำเร็จ');
     }
@@ -189,7 +185,6 @@ class CourseSupplymentaryController extends Controller
 
         $supplys->title_th = $request->title_th;
         $supplys->title_en = $request->title_en;
-        $supplys->cover_image = $request->cover;
         $supplys->author = $request->author;
         $supplys->supplymentary_status = $request->input('supplymentary_status', 0);
         $supplys->supplymentary_type = $request->supplymentary_type;
@@ -206,10 +201,10 @@ class CourseSupplymentaryController extends Controller
                 $supplys->path = 'upload/Subject/Lesson/Supplymentary/' . 'path'  . $lesson_id . '.' . $request->path->getClientOriginalExtension();
             }
         } else {
-            $image_name = '';
-            $supplys->path = $image_name;
+      
+            $supplys->path = $request->cover;
         }
-
+        $supplys->cover_image = $request->cover;
        
         $supplys->lesson_id = (int)$lesson_id;
         $supplys->subject_id = (int)$subject_id;

@@ -176,13 +176,13 @@
 
                     <div>
                         <!--class="card-body"-->
-                            <div id="step-0" class="tab-pane " role="tabpanel" aria-labelledby="step-0">
+                            <div id="step-0" class="tab-pane " user_role="tabpanel" aria-labelledby="step-0">
 
 
                                 <h4 class="card-header"> เงื่อนไขการใช้บริการระบบแพลตฟอร์มต้านทุจริตศึกษา
                                     ของสำนักงานคณะกรรมการป้องกันและปราบปรามการทุจริตแห่งชาติ</h4>
                                 <div>
-                                    <div id="step-0" class="tab-pane " role="tabpanel" aria-labelledby="step-0">
+                                    <div id="step-0" class="tab-pane " user_role="tabpanel" aria-labelledby="step-0">
 
                                         <ul class="list-group">
 

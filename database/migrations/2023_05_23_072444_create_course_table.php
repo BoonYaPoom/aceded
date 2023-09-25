@@ -14,8 +14,8 @@ return new class extends Migration
         Schema::create('course', function (Blueprint $table) {
             $table->charset = 'utf8';
             $table->collation = 'utf8_general_ci';
-            $table->increments('course_id');
-            $table->string('course_code', 10)->collation('utf8_general_ci');
+            $table->increments('course_id')->start(10000)->nocache();
+            $table->string('course_code', 50)->collation('utf8_general_ci');
             $table->string('course_th', 400)->collation('utf8_general_ci');
             $table->string('course_en', 400)->nullable()->collation('utf8_general_ci');
             $table->integer('group_id');

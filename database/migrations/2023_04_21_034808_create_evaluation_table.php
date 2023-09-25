@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('evaluation', function (Blueprint $table) {
             $table->charset = 'utf8';
             $table->collation = 'utf8_general_ci';
-            $table->increments('evaluation_id');
+            $table->increments('evaluation_id')->start(10000)->nocache();
             $table->string('evaluation', 50)->collation('utf8_general_ci');
         });
     }

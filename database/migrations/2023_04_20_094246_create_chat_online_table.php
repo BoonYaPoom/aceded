@@ -14,9 +14,9 @@ return new class extends Migration
         Schema::create('chat_online', function (Blueprint $table) {
             $table->charset = 'utf8';
             $table->collation = 'utf8_general_ci';
-            $table->increments('online_id');
-            $table->integer('uid');
-            $table->dateTime('timestamp');
+            $table->increments('online_id')->start(10000)->nocache();
+            $table->integer('user_id');
+            $table->dateTime('dateTime');
             $table->string('is_type')->collation('utf8_general_ci');
         });
     }

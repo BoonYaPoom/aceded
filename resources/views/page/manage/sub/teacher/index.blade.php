@@ -47,7 +47,7 @@
                         @if ($item->teacher_status == 1)
                         @php
                             $n++;
-                            $Users = \App\Models\Users::find($item->uid);
+                            $Users = \App\Models\Users::find($item->user_id);
                         @endphp
                             <tr>
 
@@ -99,7 +99,7 @@
                             @if ($item->teacher_status == 0)
                             @php
                             $l++;
-                            $Users1 = \App\Models\Users::find($item->uid);
+                            $Users1 = \App\Models\Users::find($item->user_id);
                         @endphp
                                 <tr>
                                     <td><a href="#">{{ $l }}</a></td>

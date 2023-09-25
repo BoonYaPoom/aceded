@@ -1,8 +1,8 @@
  <!--  Model 0 -->
- <div class="modal fade show has-shown" id="clientQuestionModal0" tabindex="-1" role="dialog"
+ <div class="modal fade show has-shown" id="clientQuestionModal0" tabindex="-1" user_role="dialog"
  aria-labelledby="clientQuestionModalLabel" aria-modal="true" style="padding-right: 17px;">
  <!-- .modal-dialog -->
- <div class="modal-dialog modal-xl" role="document">
+ <div class="modal-dialog modal-xl" user_role="document">
      <!-- .modal-content -->
      <div class="modal-content">
          <!-- .modal-header -->
@@ -109,10 +109,10 @@
 
 
 <!--  Model 1 -->
-<div class="modal fade show has-shown" id="clientQuestionModal1" tabindex="-1" role="dialog"
+<div class="modal fade show has-shown" id="clientQuestionModal1" tabindex="-1" user_role="dialog"
  aria-labelledby="clientQuestionModalLabel" aria-modal="true" style="padding-right: 17px;">
  <!-- .modal-dialog -->
- <div class="modal-dialog modal-xl" role="document">
+ <div class="modal-dialog modal-xl" user_role="document">
      <!-- .modal-content -->
      <div class="modal-content">
          <!-- .modal-header -->

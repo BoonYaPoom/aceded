@@ -110,7 +110,7 @@
                             </tbody><!-- /tbody -->
                         </table><!-- /.table -->
                     </div><!-- /.table-responsive -->
-                    <input type="hidden" id="userrole" name="userrole">
+                    <input type="hidden" id="useruser_role" name="useruser_role">
                 </div><!-- /.card-body -->
             </div><!-- /.card -->
         </div><!-- /.page-section -->

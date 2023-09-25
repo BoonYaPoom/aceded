@@ -168,7 +168,7 @@
                     <li class="nav-item">
                         <a id="sidebarNavToggler"
                             class="btn btn-xs btn-text-secondary u-sidebar--account__toggle-bg ml-1 target-of-invoker-has-unfolds"
-                            href="#sidebarContent" role="button" aria-controls="sidebarContent" aria-haspopup="true"
+                            href="#sidebarContent" user_role="button" aria-controls="sidebarContent" aria-haspopup="true"
                             aria-expanded="false" data-toggle="collapse" data-target="#sidebarContent"
                             aria-label="Toggle Sidebar">
                             <span class="position-relative">

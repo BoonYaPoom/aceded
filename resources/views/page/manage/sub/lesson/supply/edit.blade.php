@@ -156,9 +156,9 @@
 
 
 
-    <div class="modal fade" id="clientDigitalLibrryModal" tabindex="-1" role="dialog"
+    <div class="modal fade" id="clientDigitalLibrryModal" tabindex="-1" user_role="dialog"
         aria-labelledby="clientDigitalLibrryModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-xl" role="document">
+        <div class="modal-dialog modal-xl" user_role="document">
             <div class="modal-content">
                 <div class="modal-header bg-success">
                     <h6 class="modal-title inline-editable">

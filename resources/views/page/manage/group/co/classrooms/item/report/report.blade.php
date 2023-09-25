@@ -34,7 +34,8 @@
                 <div class="nav-scroller border-bottom">
                     <!-- .nav -->
                     <div class="nav nav-tabs bg-muted h3">
-                        <a class="nav-link active text-info" href="{{ route('class_page', ['course_id' => $courses]) }}"><i class="fas fa-users"></i>
+                        <a class="nav-link active text-info"
+                            href="{{ route('class_page', ['course_id' => $cour->course_id]) }}"><i class="fas fa-users"></i>
                             ผู้เรียน รายวิชาเพิ่มเติม การป้องกันการทุจริต ระดับปฐมวัย </a>
                     </div><!-- /.nav -->
                 </div><!-- /.nav-scroller -->
@@ -73,26 +74,34 @@
                                         $dataLearn = $learns->registerdate;
                                         $monthsa = \ltrim(\Carbon\Carbon::parse($dataLearn)->format('m'), '0');
                                         $newDateTime = \Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $learns->registerdate)->format('d/m/Y H:i:s');
-                                        $users = \App\Models\Users::find($learns->uid);
-                                        $ScoreLog = \App\Models\Score::where('uid', $users->uid)
-                                            ->whereHas('examlog', function ($query) {
-                                                $query->where('exam_type', 2);
-                                            })
-                                            ->get();
+                                        $users = \App\Models\Users::find($learns->user_id);
+                                        
+                                        if ($users !== null) {
+                                            // กระทำอะไรกับผู้ใช้ที่พบ
+                                        } else {
+                                            $users = null; // กำหนด $users เป็น null เมื่อไม่พบผู้ใช้
+                                            // กระทำอะไรกับผู้ใช้ที่ไม่พบ (เป็น null)
+                                            $ScoreLog = \App\Models\Score::where('user_id', $learns->user_id)
+                                                ->whereHas('examlog', function ($query) {
+                                                    $query->where('exam_type', 2);
+                                                })
+                                                ->get();
+                                        }
+                                        
                                     @endphp
 
                                     @if ($monthsa == $m)
-                                        @if (!in_array($learns->uid, $uniqueUserIds))
+                                        @if (!in_array($learns->user_id, $uniqueUserIds))
                                             @php
-                                                array_push($uniqueUserIds, $learns->uid);
+                                                array_push($uniqueUserIds, $learns->user_id);
                                                 
-                                                $countUsersLogs = \App\Models\Log::where('uid', $users->uid)
+                                                $countUsersLogs = \App\Models\Log::where('user_id', $users->user_id)
                                                     ->where('logid', 4)
                                                     ->count();
-                                                $totalDuration = \App\Models\Log::where('uid', $users->uid)
+                                                $totalDuration = \App\Models\Log::where('user_id', $users->user_id)
                                                     ->where('logid', 4)
                                                     ->sum('duration');
-                                                $ScoreUser = \App\Models\Score::where('uid', $users->uid)
+                                                $ScoreUser = \App\Models\Score::where('user_id', $users->user_id)
                                                     ->whereHas('examlog', function ($query) {
                                                         $query->where('exam_type', 2);
                                                     })
@@ -126,7 +135,7 @@
                                                             $latestScore = $score->score;
                                                             $latfullScore = $score->fullscore;
                                                             $latestScoreDate = $score->date;
-                                                                                      
+                                                    
                                                             if ($latfullScore) {
                                                                 $percentage = ($latestScore / $latfullScore) * 100;
                                                             }
@@ -164,21 +173,21 @@
                                                 </td>
                                                 <td>
                                                     <a data-toggle="modal"
-                                                        data-target="#clientPermissionModal-{{ $users->uid }}"><i
+                                                        data-target="#clientPermissionModal-{{ $users->user_id }}"><i
                                                             class="fas fa-chart-bar fa-lg text-danger" data-toggle="tooltip"
                                                             title="ประวัติ"></i></a>
                                                     <script>
                                                         $(document).ready(function() {
                                                             $('.modal').on('shown.bs.modal', function() {
-                                                                var uid = $(this).data('uid');
-                                                                console.log('ID ที่เข้าถึงโมเดล:', uid);
+                                                                var user_id = $(this).data('user_id');
+                                                                console.log('ID ที่เข้าถึงโมเดล:', user_id);
                                                             });
                                                         });
                                                     </script>
-                                                    <div id="clientPermissionModal-{{ $users->uid }}"
-                                                        data-uid="{{ $users->uid }}" class="modal fade" aria-modal="true"
-                                                        tabindex="-1" role="dialog">
-                                                        <div class="modal-dialog modal-xl" role="document">
+                                                    <div id="clientPermissionModal-{{ $users->user_id }}"
+                                                        data-user_id="{{ $users->user_id }}" class="modal fade"
+                                                        aria-modal="true" tabindex="-1" user_role="dialog">
+                                                        <div class="modal-dialog modal-xl" user_role="document">
 
                                                             <div class="modal-content">
 
@@ -193,7 +202,7 @@
                                                                     <h6 id="clientPermissionModalLabel"
                                                                         class="modal-title text-white">
                                                                         <span class="sr-only">Permission</span> <span><i
-                                                                                class="fas fa-user text-white"></i> 
+                                                                                class="fas fa-user text-white"></i>
                                                                             {{ $users->firstname }}
                                                                             {{ $users->lastname }}</span>
                                                                     </h6>
@@ -287,7 +296,7 @@
                                                                 </div>
                                                                 <div class="modal-footer">
                                                                     <button type="submit" class="btn btn-primary-theme"
-                                                                        id="btnsetrole">
+                                                                        id="btnsetuser_role">
                                                                         <i class="fas fa-user-shield"></i> เช็ค
                                                                     </button>
                                                                     <button type="button" class="btn btn-light"
@@ -305,7 +314,7 @@
                                         @endif
                                     @endif
                                 @endforeach
-                                
+
                                 <script>
                                     $(document).ready(function() {
                                         var table = $('#datatable').DataTable({

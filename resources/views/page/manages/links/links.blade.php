@@ -52,10 +52,11 @@
                                     
                                 @endphp
                                     @if ($links->isEmpty())
-                                    <tr class="odd">
-                                        <td valign="top" colspan="4" class="dataTables_empty">ไม่พบรายการแสดงข้อมูล
-                                        </td>
-                                    </tr>
+                           
+                                        <tr class="odd">
+                                            <td valign="middle" colspan="5" class="dataTables_empty" style="text-align: center; vertical-align: middle;">ไม่พบรายการแสดงข้อมูล</td>
+                                        </tr>
+                               
                                 @else
                                 @foreach ($links as $item)
                                     <tr>

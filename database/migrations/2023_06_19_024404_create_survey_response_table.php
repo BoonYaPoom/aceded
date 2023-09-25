@@ -14,10 +14,10 @@ return new class extends Migration
         Schema::create('survey_response', function (Blueprint $table) {
             $table->charset = 'utf8';
             $table->collation = 'utf8_general_ci';
-            $table->increments('response_id');
+            $table->increments('response_id')->start(10000)->nocache();
             $table->integer('survey_id');
             $table->dateTime('date')->nullable();
-            $table->integer('uid');
+            $table->integer('user_id');
             $table->longText('response')->nullable()->collation('utf8_general_ci');
 
         });

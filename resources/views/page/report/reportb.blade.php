@@ -5,14 +5,14 @@
         <form method="post" id="formreport">
             <div class="form-row">
                 <!-- form column -->
-               <!--    <div class="col-md-1"><span class="mt-1 ">ปี</span></div>
-                <div class="col-md-3">
-                 <div class=""><select id="selectyear" name="selectyear" class="form-control" data-toggle="select2"
-                            data-placeholder="ปี" data-allow-clear="false" onchange="$('#formreport').submit();">
-                            <option value="2022"> 2565 </option>
-                            <option value="2023" selected> 2566 </option>
-                        </select></div>
-                </div>-->
+                <!--    <div class="col-md-1"><span class="mt-1 ">ปี</span></div>
+                            <div class="col-md-3">
+                             <div class=""><select id="selectyear" name="selectyear" class="form-control" data-toggle="select2"
+                                        data-placeholder="ปี" data-allow-clear="false" onchange="$('#formreport').submit();">
+                                        <option value="2022"> 2565 </option>
+                                        <option value="2023" selected> 2566 </option>
+                                    </select></div>
+                            </div>-->
                 <div class="col-md-3 ">
                     <div class="d-none"><select id="selectmonth" name="selectmonth" class="form-control "
                             data-toggle="select2" data-placeholder="เดือน" data-allow-clear="false"
@@ -132,8 +132,8 @@
             $result = []; // สร้างตัวแปรเก็บผลลัพธ์
             $totallearn = [];
             foreach ($learners as $l => $learn) {
-                $totallearn = \App\Models\Users::where('uid', $learn->uid)
-                    ->where('role', 4)
+                $totallearn = \App\Models\Users::where('user_id', $learn->user_id)
+                    ->where('user_role', 4)
                     ->count();
             }
             foreach ($subjectName as $s => $subject) {
@@ -615,34 +615,33 @@
             $dateAll = ['ม.ค.', 'ก.พ.', 'มี.ค.', 'เม.ย.', 'พ.ค.', 'มิ.ย.', 'ก.ค.', 'ส.ค.', 'ก.ย.', 'ต.ค.', 'พ.ย.', 'ธ.ค.'];
             $chartLog = [];
             $result = [];
-
+            $monthsa = [];
             $processedplatforms = [];
             $dateAllIndexed = array_values($dateAll);
             foreach ($Logs as $l => $Log) {
-                if ($Log->logid === 1) {
-                    $platform = $Log->logplatform;
-                    $dataLog = $Log->logdate;
-                    $monthsa = \ltrim(\Carbon\Carbon::parse($dataLog)->format('m'), '0');
-                    $result[$monthsa]['logplatform'] = isset($result[$monthsa]['logplatform']) ? $result[$monthsa]['logplatform'] + 1 : 1;
+                $platform = $Log->logplatform;
+                $dataLog = $Log->logdate;
+                $monthsa = \ltrim(\Carbon\Carbon::parse($dataLog)->format('m'), '0');
+                $result[$monthsa]['logplatform'] = isset($result[$monthsa]['logplatform']) ? $result[$monthsa]['logplatform'] + 1 : 1;
             
-                    $year = \Carbon\Carbon::parse($dataLog)->year;
+         
             
-                    if (!in_array($Log->logplatform, $processedplatforms)) {
-                        $processedplatforms[] = $Log->logplatform;
-                        $register = [];
-                        foreach ($dateAll as $m => $month) {
-                            $register[] = empty($result[$m]['logplatform']) ? null : $result[$m]['logplatform'];
-                        }
+                if (!in_array($Log->logplatform, $processedplatforms)) {
+                    $processedplatforms[] = $Log->logplatform;
+                    $register = [];
+                    foreach ($dateAll as $m => $month) {
+                        $register[] = empty($result[$m]['logplatform']) ? null : $result[$m]['logplatform'];
                         $chartLog[] = [
-                'name' => $processedplatforms, // เปลี่ยน 'choice' เป็น 'name'
-                'data' => $register, // ค่า count ที่คุณต้องการ
-            ];
+                        'name' => $processedplatforms, 
+                        'data' => $register, 
+                    ];
                     }
-                    
+                 
                 }
-                
+               
+                 
             }
-           
+            
         @endphp
 
         <script>
@@ -650,6 +649,7 @@
             var chartLog = @json($chartLog);
 
             console.log(dateAll);
+            console.log(chartLog);
             Highcharts.chart("courselogin", {
                 chart: {
                     type: 'column'

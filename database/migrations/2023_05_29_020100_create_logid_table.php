@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('logid', function (Blueprint $table) {
             $table->charset = 'utf8';
             $table->collation = 'utf8_general_ci';
-            $table->increments('logid');
+            $table->increments('logid')->start(10000)->nocache();
             $table->string('name', 50)->collation('utf8_general_ci');
             $table->string('description', 400)->nullable()->collation('utf8_general_ci');
 

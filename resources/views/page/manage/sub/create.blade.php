@@ -112,8 +112,8 @@
                                         <option value="0">เลือกผู้สอน </option>
                                 
                                         @foreach ($users4 as $u => $users)
-                                        @if($users->role == 3)
-                                            <option value="{{ $users->uid }}"> {{ $users->firstname }}
+                                        @if($users->user_role == 3)
+                                            <option value="{{ $users->user_id }}"> {{ $users->firstname }}
                                                 {{ $users->lastname }} </option>
                                                 @endif
                                         @endforeach

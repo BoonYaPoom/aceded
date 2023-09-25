@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('kcj', function (Blueprint $table) {
             $table->charset = 'utf8';
             $table->collation = 'utf8_general_ci';
-            $table->increments('kcj_id');
+            $table->increments('kcj_id')->start(10000)->nocache();
             $table->string('title', 250)->nullable()->collation('utf8_general_ci');
             $table->string('cover', 400)->nullable()->collation('utf8_general_ci');
             $table->string('pathfile', 400)->nullable()->collation('utf8_general_ci');

@@ -33,7 +33,7 @@
                             <tbody>
                                 <!-- tr -->
                                 @php($i = 1)
-                                @foreach ($surques as $item)
+                                @foreach ($surques->sortBy('question_id') as $item)
                                     <tr>
                                         <td><a href="#">{{ $i++ }}</a></td>
                                         <td>{!! $item->question !!}</td>

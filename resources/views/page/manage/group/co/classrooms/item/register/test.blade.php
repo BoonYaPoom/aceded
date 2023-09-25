@@ -65,7 +65,7 @@
                                 @foreach ($learn as $le)
                                 @php
                                 $newDateTime = \Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $le->registerdate)->format('d/m/Y H:i:s');
-                                $users = \App\Models\Users::find($le->uid);
+                                $users = \App\Models\Users::find($le->user_id);
                                 $n++;
                             @endphp
                             @if($le->class_id  > 0)
@@ -90,10 +90,10 @@
 
 
 
-                                            <div class="modal fade" id="clientChangeModal" tabindex="-1" role="dialog"
+                                            <div class="modal fade" id="clientChangeModal" tabindex="-1" user_role="dialog"
                                                 aria-labelledby="clientChangeModal" aria-hidden="true">
                                                 <!-- .modal-dialog -->
-                                                <div class="modal-dialog" role="document">
+                                                <div class="modal-dialog" user_role="document">
                                                     <!-- .modal-content -->
                                                     <div class="modal-content">
                                                         <!-- .modal-header -->

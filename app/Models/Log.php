@@ -13,7 +13,7 @@ class Log extends Model
     protected $primaryKey = 'logsid';
     public $timestamps = false;
     public function logsa() {
-        return $this->belongsTo(Users::class,'uid');
+        return $this->belongsTo(Users::class,'user_id');
       }
     public function logid() {
         return $this->belongsTo(LogId::class,'logid');

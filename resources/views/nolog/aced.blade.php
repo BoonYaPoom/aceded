@@ -37,7 +37,7 @@
 <body>
 
     <!-- ========== MAIN CONTENT ========== -->
-    <main id="content" role="main">
+    <main id="content" user_role="main">
 
         <!-- Pricing Section -->
         <div class="container space-top-1">

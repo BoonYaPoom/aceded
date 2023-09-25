@@ -51,8 +51,11 @@
                             @enderror
                 </div><!-- /.form-group -->
          
-                @endif
                 
+                @endif
+
+
+
                 @endforeach
             </div>
             <div class="form-actions">

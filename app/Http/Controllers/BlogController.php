@@ -52,7 +52,7 @@ class BlogController extends Controller
         $blogs->title_en = $request->title;
         $blogs->detail = $request->detail;
         $blogs->detail_en =  $request->detail;
-        $blogs->date = now();
+        $blogs->blog_date = now();
         $blogs->blog_status = $request->input('blog_status', 0);
         $blogs->author = 'TCCT';
         $blogs->comment = 1;
@@ -61,7 +61,7 @@ class BlogController extends Controller
         $blogs->options = 2;
         $blogs->sort = $new_sort;
         $blogs->groupselect = 0;
-        $blogs->uid = 2;
+        $blogs->user_id = 2;
         $blogs->templete = '';
         $blogs->bgcustom = null;
         $blogs->category_id = (int)$category_id;
@@ -96,7 +96,7 @@ class BlogController extends Controller
 
 
         if ($loginId) {
-            $loginLog = Log::where('uid', $loginId)->where('logaction', 2)->first();
+            $loginLog = Log::where('user_id', $loginId)->where('logaction', 2)->first();
 
 
             $loginLog = new Log;
@@ -107,7 +107,7 @@ class BlogController extends Controller
             $loginLog->subject_id  = 1;
             $loginLog->duration = 1;
             $loginLog->status  = 0;
-            $loginLog->uid = $loginId;
+            $loginLog->user_id = $loginId;
             $loginLog->logagents = $browser;
             $loginLog->logip = $request->ip();
 
@@ -143,7 +143,7 @@ class BlogController extends Controller
 
         $blogs->title = $request->title;
         $blogs->detail = $request->detail;
-        $blogs->date = now();
+        $blogs->blog_date = now();
         $blogs->blog_status = $request->input('blog_status', 0);
         $blogs->author = 'TCCT';
         $blogs->comment = 1;
@@ -151,7 +151,7 @@ class BlogController extends Controller
         $blogs->options = null;
         $blogs->options = 2;
         $blogs->groupselect = 0;
-        $blogs->uid = 2;
+        $blogs->user_id = 2;
         $blogs->templete = '';
         $blogs->bgcustom = null;
         $blogs->save();
@@ -185,7 +185,7 @@ class BlogController extends Controller
 
 
         if ($loginId) {
-            $loginLog = Log::where('uid', $loginId)->where('logaction', 3)->first();
+            $loginLog = Log::where('user_id', $loginId)->where('logaction', 3)->first();
 
 
             $loginLog = new Log;
@@ -196,7 +196,7 @@ class BlogController extends Controller
             $loginLog->subject_id  = 1;
             $loginLog->duration = 1;
             $loginLog->status  = 0;
-            $loginLog->uid = $loginId;
+            $loginLog->user_id = $loginId;
             $loginLog->logagents = $browser;
             $loginLog->logip = $request->ip();
 

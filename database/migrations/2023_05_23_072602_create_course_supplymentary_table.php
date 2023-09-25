@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('course_supplymentary', function (Blueprint $table) {
             $table->charset = 'utf8';
             $table->collation = 'utf8_general_ci';
-            $table->increments('supplymentary_id');
+            $table->increments('supplymentary_id')->start(10000)->nocache();
             $table->string('title_th', 400)->collation('utf8_general_ci');
             $table->string('title_en', 400)->nullable()->collation('utf8_general_ci');
             $table->longText('path')->collation('utf8_general_ci');

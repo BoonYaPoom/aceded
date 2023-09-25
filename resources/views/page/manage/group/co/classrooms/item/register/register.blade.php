@@ -33,7 +33,7 @@
                 <div class="nav-scroller border-bottom">
                     <!-- .nav -->
                     <div class="nav nav-tabs bg-muted h3">
-                        <a class="nav-link active text-info" href="{{ route('class_page', ['course_id' => $courses]) }}"><i class="fas fa-users"></i>
+                        <a class="nav-link active text-info" href="{{ route('class_page', ['course_id' => $cour->course_id]) }}"><i class="fas fa-users"></i>
                             ผู้เรียน รายวิชาเพิ่มเติม การป้องกันการทุจริต ระดับปฐมวัย </a>
                     </div><!-- /.nav -->
                 </div><!-- /.nav-scroller -->
@@ -70,7 +70,7 @@
                                         $dataLearn = $learns->registerdate;
                                         $monthsa = \ltrim(\Carbon\Carbon::parse($dataLearn)->format('m'), '0');
                                         $newDateTime = \Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $learns->registerdate)->format('d/m/Y H:i:s');
-                                        $users = \App\Models\Users::find($learns->uid);
+                                        $users = \App\Models\Users::find($learns->user_id);
                                     @endphp
                                     @if ($monthsa == $m)
                                         <tr>
@@ -95,10 +95,10 @@
 
 
 
-                                                <div class="modal fade" id="clientChangeModal" tabindex="-1" role="dialog"
+                                                <div class="modal fade" id="clientChangeModal" tabindex="-1" user_role="dialog"
                                                     aria-labelledby="clientChangeModal" aria-hidden="true">
                                                     <!-- .modal-dialog -->
-                                                    <div class="modal-dialog" role="document">
+                                                    <div class="modal-dialog" user_role="document">
                                                         <!-- .modal-content -->
                                                         <div class="modal-content">
                                                             <!-- .modal-header -->

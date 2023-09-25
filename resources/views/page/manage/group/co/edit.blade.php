@@ -66,10 +66,13 @@
                             <label for="cover">ภาพปก </label> <input type="file" class="form-control" id="cover"
                                 name="cover" placeholder="ภาพปก" accept="image/*">
                         </div><!-- /.form-group -->
-                        <div class="col-lg-10">
-                            <img src="{{ asset($cour->cover) }}"
-                                alt="{{ $cour->cover }}" style="width:70%">
-                        </div>
+                        <div class="form-group">
+                            <div class="col-lg-10">
+                                <img src="{{ asset($cour->cover) }}"
+                                    alt="{{ $cour->cover }}" style="width:50%">
+                            </div>
+                        </div><!-- /.form-group -->
+            
                         <div class="form-group">
                             <label for="subject">วิชาในหลักสูตร</label> <select id="subject" name="subject[]"
                                 class="form-control" data-toggle="select2" data-placeholder="วิชาในหลักสูตร"
@@ -740,7 +743,7 @@
                                     <div class="card card-figure">
                                         <!-- .card-figure -->
                                         <figure class="figure">
-                                            <img class="img-fluid"
+                                            <img class="img-fluser_id"
                                             src="{{ asset('upload/cer/certificate_1.png') }}"
                                                 alt="ใบประกาศนียบัตร  1 " style="cursor:zoom-in"
                                                 onclick="$('#previewimage').prop('src',$(this).prop('src'));$('#modal01').css('display','block');">
@@ -771,7 +774,7 @@
                                 <!-- .card -->
                                 <div class="card card-figure">
                                     <!-- .card-figure -->
-                                    <figure class="figure"><img class="img-fluid"
+                                    <figure class="figure"><img class="img-fluser_id"
                                             src="https://aced.dlex.ai/childhood/admin/" alt="ใบประกาศนียบัตร  6 "
                                             style="cursor:zoom-in"
                                             onclick="$('#previewimage').prop('src',$(this).prop('src'));$('#modal01').css('display','block');">

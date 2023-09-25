@@ -112,28 +112,26 @@ class CourseClassController extends Controller
         return view('page.manage.group.co.classroom.item.congratuation.teacherinfo');
     }
 
-    public function Teacherinfoupdate(Request $request, $uid)
+    public function Teacherinfoupdate(Request $request, $user_id)
     {
 
-        $usermanages = Users::findOrFail($uid);
-
+        $usermanages = Users::findOrFail($user_id);
         if ($request->hasFile('avatar')) {
-            // ลบรูปภาพเก่า (ถ้ามี)
-            if ($usermanages->avatar) {
-                $oldImagePath = public_path('profile') . '/' . $usermanages->avatar;
-                if (file_exists($oldImagePath)) {
-                    unlink($oldImagePath);
-                }
-            }
-            $image_name = time() . '.' . $request->avatar->getClientOriginalExtension();
-            Storage::disk('external')->put('profile/' . $image_name, file_get_contents($request->avatar));
+            $image_name = 'avatar' .  $user_id . '.' . $request->avatar->getClientOriginalExtension();
             $image = Image::make($request->avatar)->resize(400, 400);
-            Storage::disk('external')->put('profile/' . $image_name, $image->stream());
-            $usermanages->avatar = $image_name;
+            $uploadDirectory = public_path('upload/Profile/' . $image_name);
+            
+            if (!file_exists(dirname($uploadDirectory))) {
+                mkdir(dirname($uploadDirectory), 0755, true);
+            }
+        
+            $image->save($uploadDirectory);
+            $usermanages->avatar = 'upload/Profile/' . 'avatar' .  $user_id .'.' . $request->avatar->getClientOriginalExtension();
         }
+        
 
         // ... อัปเดตฟิลด์อื่น ๆ ตามต้องการ
-        $usermanages->position = $request->position;
+        $usermanages->user_position = $request->user_position;
         $usermanages->department = $request->department;
         $usermanages->workplace  = $request->workplace;
 

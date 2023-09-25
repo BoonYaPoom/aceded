@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('media', function (Blueprint $table) {
             $table->charset = 'utf8';
             $table->collation = 'utf8_general_ci';
-            $table->increments('media_id');
+            $table->increments('media_id')->start(10000)->nocache();
             $table->integer('category_id');
             $table->string('media_th', 400)->collation('utf8_general_ci');
             $table->string('media_en', 400)->collation('utf8_general_ci');

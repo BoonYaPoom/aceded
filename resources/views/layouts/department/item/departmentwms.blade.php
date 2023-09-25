@@ -36,6 +36,7 @@
                                 </tr>
                             </thead>
                             <tbody>
+                                @if($data->user_role == 1)
                                 <tr>
                                     <td><a href="{{ route('dataci') }}">
                                             DPM</a>
@@ -49,9 +50,10 @@
                                     </td>
 
                                 </tr>
+                                @endif
                                 @foreach ($department->sortBy('department_id') as $depart)
                               
-                                @if($data->department_id == $depart->department_id || $data->role == 1)
+                                @if($data->department_id == $depart->department_id && $data->user_role == 3 || $data->user_role == 1)
                                     <tr>
                                         <td><a href="{{ route('manage', ['department_id' => $depart->department_id]) }}">
                                                 {{ $depart->name_short_en }}</a>
@@ -60,6 +62,7 @@
                                                 {{ $depart->name_th }}</a>
                                         </td>
                                         <td class="align-middle">
+                                            @if ($data->user_role == 1)    
                                             <label class="switcher-control switcher-control-success switcher-control-lg">
                                                 <input type="checkbox" class="switcher-input switcher-edit"
                                                     {{ $depart->department_status == 1 ? 'checked' : '' }}
@@ -68,6 +71,7 @@
                                                 <span class="switcher-label-on">ON</span>
                                                 <span class="switcher-label-off text-red">OFF</span>
                                             </label>
+                                            @endif
                                         </td>
                                         <script>
                                             $(document).ready(function() {
@@ -110,11 +114,14 @@
                 </div><!-- /.card-body -->
             </div><!-- /.card -->
         </div><!-- /.page-section -->
+        @if ($data->user_role == 1)    
+      
         <header class="page-title-bar">
             <button type="button" class="btn btn-success btn-floated btn-add"
                 onclick="window.location='{{ route('departmentcreate', ['from' => $from]) }}'" data-toggle="tooltip"
                 title="เพิ่ม"><span class="fas fa-plus"></span></button>
         </header>
+        @endif
         <!-- .page-title-bar -->
     </div><!-- /.page-inner -->
 @endsection

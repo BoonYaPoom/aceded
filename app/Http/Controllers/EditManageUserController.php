@@ -16,12 +16,12 @@ use Intervention\Image\Facades\Image;
 class EditManageUserController extends Controller
 {
 
-    public function UserManage(Request $request, $role = null)
+    public function UserManage(Request $request, $user_role = null)
     {
         $usermanages = Users::query();
     
-        if ($role !== null) {
-            $usermanages->where('role', $role);
+        if ($user_role !== null) {
+            $usermanages->where('user_role', $user_role);
         }
     
         $usermanages = $usermanages->get();
@@ -33,20 +33,20 @@ class EditManageUserController extends Controller
     
     
 
-    public function edit($uid)
+    public function edit($user_id)
     {
-        $usermanages = Users::findOrFail($uid);
+        $usermanages = Users::findOrFail($user_id);
         return view('page.UserAdmin.edit', ['usermanages' => $usermanages]);
     }
 
 
-    public function update(Request $request, $uid)
+    public function update(Request $request, $user_id)
     {
 
-        $usermanages = Users::findOrFail($uid);
+        $usermanages = Users::findOrFail($user_id);
 
         if ($request->hasFile('avatar')) {
-            $image_name = 'avatar' .  $uid . '.' . $request->avatar->getClientOriginalExtension();
+            $image_name = 'avatar' .  $user_id . '.' . $request->avatar->getClientOriginalExtension();
             $image = Image::make($request->avatar)->resize(400, 400);
             $uploadDirectory = public_path('upload/Profile/' . $image_name);
             
@@ -55,9 +55,7 @@ class EditManageUserController extends Controller
             }
         
             $image->save($uploadDirectory);
-            $usermanages->avatar = 'upload/Profile/' . 'avatar' .  $uid .'.' . $request->avatar->getClientOriginalExtension();
-        } else {
-            $usermanages->avatar = ''; // Set to empty if no avatar is uploaded
+            $usermanages->avatar = 'upload/Profile/' . 'avatar' .  $user_id .'.' . $request->avatar->getClientOriginalExtension();
         }
         
         // ... อัปเดตฟิลด์อื่น ๆ ตามต้องการ
@@ -92,23 +90,23 @@ class EditManageUserController extends Controller
 
 
 
-    public function updateRoleUser(Request $request, $uid)
+    public function updateRoleUser(Request $request, $user_id)
     {
-        $roleValue = $request->input('role');
+        $user_roleValue = $request->input('user_role');
 
-        // อัปเดตค่า role ในฐานข้อมูล
-        $usermanages = Users::findOrFail($uid);
-        $usermanages->role = $roleValue;
+        // อัปเดตค่า user_role ในฐานข้อมูล
+        $usermanages = Users::findOrFail($user_id);
+        $usermanages->user_role = $user_roleValue;
         $usermanages->save();
 
         return redirect()->back()->with('success', 'บันทึกข้อมูลสำเร็จ');
     }
-    public function updatepassword(Request $request, $uid)
+    public function updatepassword(Request $request, $user_id)
     {
 
 
-        // อัปเดตค่า role ในฐานข้อมูล
-        $usermanages = Users::findOrFail($uid);
+        // อัปเดตค่า user_role ในฐานข้อมูล
+        $usermanages = Users::findOrFail($user_id);
 
         $usermanages->password = Hash::make($request->usearch);
         $usermanages->save();
@@ -125,7 +123,7 @@ class EditManageUserController extends Controller
 
     public function changeStatus(Request $request)
     {
-        $usermanages = Users::find($request->uid);
+        $usermanages = Users::find($request->user_id);
 
         if ($usermanages) {
             $usermanages->userstatus = $request->userstatus;
@@ -140,12 +138,12 @@ class EditManageUserController extends Controller
 
 
     // ใน Controller
-    public function showByRole(Request $request, $role)
+    public function showByuser_role(Request $request, $user_role)
     {
-        if ($role === '0') {
+        if ($user_role === '0') {
             $usermanages = Users::all();
         } else {
-            $usermanages = Users::where('role', $role)->get();
+            $usermanages = Users::where('user_role', $user_role)->get();
         }
 
         return view('page.UserAdmin.indexview', compact('usermanages'));
@@ -165,7 +163,7 @@ class EditManageUserController extends Controller
             'mobile' => 'required',
             'user_type' => 'required',
             'pos_name' => 'required',
-            'role' => 'required',
+            'user_role' => 'required',
 
 
         ]);
@@ -179,7 +177,7 @@ class EditManageUserController extends Controller
         $usermanages->prefix  = '';
         $usermanages->gender = $request->input('gender', 0);
         $usermanages->email = $request->email;
-        $usermanages->role =  $request->role;
+        $usermanages->user_role =  $request->user_role;
         $usermanages->per_id = null;
         $usermanages->department_id = $request->department_id;
 
@@ -189,7 +187,7 @@ class EditManageUserController extends Controller
         $usermanages->createdate = now();
         $usermanages->createby = 2;
         $usermanages->avatar = '';
-        $usermanages->position = '';
+        $usermanages->user_position = '';
         $usermanages->workplace = $request->workplace;
         $usermanages->telephone = '';
         $usermanages->mobile = $request->mobile;

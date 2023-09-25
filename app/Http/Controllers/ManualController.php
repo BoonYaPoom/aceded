@@ -6,6 +6,7 @@ use App\Models\Department;
 use App\Models\Log;
 use App\Models\Manual;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
@@ -27,32 +28,41 @@ class ManualController extends Controller
     }
     public function store(Request $request, $department_id)
     {
+        DB::commit();
 
-      
+    
+        try {
+            $manuals = new Manual;
 
-        $manuals = new Manual;
-        $manuals->manual = $request->manual;
-        if ($request->hasFile('manual_path')) {
-            $filename = time()  . '.' . $request->manual_path->getClientOriginalExtension();
-            $uploadDirectory = public_path('upload/Manual/documents/');
-            if (!file_exists($uploadDirectory)) {
-                mkdir($uploadDirectory, 0755, true);
+            $manuals->manual = $request->manual;
+            if ($request->hasFile('manual_path')) {
+                $filename = time()  . '.' . $request->manual_path->getClientOriginalExtension();
+                $uploadDirectory = public_path('upload/Manual/documents/');
+                if (!file_exists($uploadDirectory)) {
+                    mkdir($uploadDirectory, 0755, true);
+                }
+                if (file_exists($uploadDirectory)) {
+
+                    file_put_contents(public_path('upload/Manual/documents/' . $filename), file_get_contents($request->manual_path));
+                    $manuals->manual_path = 'upload/Manual/documents/' .   $filename;
+                }
             }
-            if (file_exists($uploadDirectory)) {
 
-                file_put_contents(public_path('upload/Manual/documents/' . $filename), file_get_contents($request->manual_path));
-                $manuals->manual_path = 'upload/Manual/documents/' .   $filename;
-            }
+            $manuals->detail = '';
+            $manuals->department_id = (int)$department_id;
+            $manuals->manual_status = 0;
+
+            $manuals->manual_type = 1;
+            $manuals->save();
+        
+            DB::commit();
+        } catch (\Exception $e) {
+    
+            DB::rollBack();
             
+            return response()->view('errors.500', [], 500);
         }
-      
-        $manuals->detail = '';
-        $manuals->department_id = (int)$department_id;
-        $manuals->manual_status = 0;
-
-        $manuals->manual_type = 1;
-        $manuals->save();
-
+    
         if ($request->hasFile('cover')) {
             $image_name = 'cover' .  $manuals->manual_id . '.' . $request->cover->getClientOriginalExtension();
             $uploadDirectory = public_path('upload/Manual/image/');
@@ -69,7 +79,7 @@ class ManualController extends Controller
             $manuals->cover = $image_name;
         }
 
-     
+
 
         if (Session::has('loginId')) {
             $loginId = Session::get('loginId');
@@ -99,7 +109,7 @@ class ManualController extends Controller
 
 
         if ($loginId) {
-            $loginLog = Log::where('uid', $loginId)->where('logaction', 2)->first();
+            $loginLog = Log::where('user_id', $loginId)->where('logaction', 2)->first();
 
 
             $loginLog = new Log();
@@ -110,7 +120,7 @@ class ManualController extends Controller
             $loginLog->subject_id  = 1;
             $loginLog->duration = 1;
             $loginLog->status  = 0;
-            $loginLog->uid = $loginId;
+            $loginLog->user_id = $loginId;
             $loginLog->logagents = $browser;
             $loginLog->logip = $request->ip();
 
@@ -121,8 +131,8 @@ class ManualController extends Controller
 
         $loginLog->save();
 
+
         return redirect()->route('manualpage', ['department_id' => $department_id])->with('message', 'manuals บันทึกข้อมูลสำเร็จ');
-    
     }
     public function edit($manual_id)
     {
@@ -198,7 +208,7 @@ class ManualController extends Controller
 
 
         if ($loginId) {
-            $loginLog = Log::where('uid', $loginId)->where('logaction', 2)->first();
+            $loginLog = Log::where('user_id', $loginId)->where('logaction', 2)->first();
 
 
             $loginLog = new Log();
@@ -209,7 +219,7 @@ class ManualController extends Controller
             $loginLog->subject_id  = 1;
             $loginLog->duration = 1;
             $loginLog->status  = 0;
-            $loginLog->uid = $loginId;
+            $loginLog->user_id = $loginId;
             $loginLog->logagents = $browser;
             $loginLog->logip = $request->ip();
 
@@ -228,8 +238,7 @@ class ManualController extends Controller
     public function destory($manual_id)
     {
         $manuals = Manual::findOrFail($manual_id);
-        Storage::disk('external')->delete('Manual/documents/' . $manuals->cover); // ลบไฟล์เดิม
-        Storage::disk('external')->delete('Manual/documents/' . $manuals->manual_path); // ลบไฟล์เดิม
+
         $manuals->delete();
 
 

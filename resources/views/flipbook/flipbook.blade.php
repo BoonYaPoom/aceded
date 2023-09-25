@@ -131,7 +131,7 @@
         backgroundOpacity: "100",
         autoDoublePage: "Yes",
         searchKeywordFontColor: "#FFB000",
-        backgroundPosition: "Stretch",
+        backgroundposition: "Stretch",
         CurlingPageCorner: "Yes",
         updatePageURL: "True",
         isTheBookOpen: "No",
@@ -160,7 +160,7 @@
         TitleBarColor: "#444444",
         CreatedTime: 1584517118,
         searchTextJS: "",
-        searchPositionJS: "page/search/text_position[%d].js",
+        searchpositionJS: "page/search/text_position[%d].js",
       };
       var language = [
         {
@@ -227,7 +227,7 @@
           btnSlideShow: "Slideshow",
           pnlSearchInputInvalid: "The search text is too short.",
           btnDragToMove: "Move by mouse drag",
-          btnPositionToMove: "Move by mouse position",
+          btnpositionToMove: "Move by mouse position",
           lblHelp1: "Drag the page corner to view",
           lblHelp2: "Double click to zoom in, out",
           lblCopy: "Copy",

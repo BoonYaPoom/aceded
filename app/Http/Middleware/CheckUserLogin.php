@@ -3,6 +3,7 @@
 namespace App\Http\Middleware;
 
 use App\Models\Department;
+use App\Models\General;
 use App\Models\Log;
 use App\Models\Users;
 use Closure;
@@ -21,30 +22,32 @@ class CheckUserLogin
      */
     public function handle(Request $request, Closure $next): Response
     {
-        if (Session::has('loginId')) {
-            $loginId = Session::get('loginId');
-            $data = Users::where('uid', '=', $loginId)->first();
-          
-            FacadesView::share('data', $data); // แชร์ข้อมูลผู้ใช้ให้กับทุก View หรือ Layout
-            $ip = $request->ip();
-            $loginTime = now()->format('Y-m-d H:i:s');
-        
-            // ดึงข้อมูล User Agent จาก Header ของคำขอ
-            $userAgent = $request->header('User-Agent');
-        
-            // แยกแยะ User Agent เพื่อตรวจสอบระบบปฏิบัติการ
-            $os = $this->getOperatingSystemFromUserAgent($userAgent);
-        
-            // ดึงข้อมูลเบาเซอร์
-            $browser = $this->getBrowserFromUserAgent($userAgent);
-        
-            $this->saveLoginLog($loginId, $ip, $loginTime, $os, $browser);
+        try {
+            if (Session::has('loginId')) {
+                $loginId = Session::get('loginId');
+                $data = Users::where('user_id', '=', $loginId)->first();
+                $logo = General::where('id', 1)->first();
+                FacadesView::share('logo', $logo);
+                FacadesView::share('data', $data);
+                $ip = $request->ip();
+                $loginTime = now()->format('Y-m-d H:i:s');
+            
+                $userAgent = $request->header('User-Agent');
+            
+                $os = $this->getOperatingSystemFromUserAgent($userAgent);
+            
+                $browser = $this->getBrowserFromUserAgent($userAgent);
+            
+                $this->saveLoginLog($loginId, $ip, $loginTime, $os, $browser);
+
+            }
+        } catch (\Exception $e) {
+            return response()->view('errors.500', [], 500);
         }
-        
+            
         return $next($request);
-        
-       
     }
+    
     private function getBrowserFromUserAgent($userAgent)
     {
         $browser = 'Unknown';
@@ -80,7 +83,7 @@ class CheckUserLogin
     private function saveLoginLog($loginId, $ip, $loginTime, $os, $browser)
     {
         if ($loginId) {
-            $loginLog = Log::where('uid', $loginId)->where('logid', 1)->first();
+            $loginLog = Log::where('user_id', $loginId)->where('logid', 1)->first();
 
             if (!$loginLog) {
                 $loginLog = new Log();
@@ -91,7 +94,7 @@ class CheckUserLogin
                 $loginLog->subject_id  = 1;
                 $loginLog->duration = 1;
                 $loginLog->status  = 0;
-                $loginLog->uid = $loginId;
+                $loginLog->user_id = $loginId;
                 $loginLog->logagents = $browser;
                 $loginLog->logip = $ip;
                 $loginLog->logdate = $loginTime;

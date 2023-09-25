@@ -19,17 +19,17 @@ foreach ($perType as $per) {
         $year = \Carbon\Carbon::parse($dataLearn)->year + 543;
         $newDateTime = \Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $lrean->registerdate)->format('d/m/Y H:i:s');
 
-        if (!in_array($lrean->uid, $uniqueUserIds)) {
-            array_push($uniqueUserIds, $lrean->uid);
+        if (!in_array($lrean->user_id, $uniqueUserIds)) {
+            array_push($uniqueUserIds, $lrean->user_id);
             if ($lrean->congratulation == 1) {
-                $count = \App\Models\Users::where('uid', $lrean->uid)
+                $count = \App\Models\Users::where('user_id', $lrean->user_id)
                     ->where('user_type', $personType)
                     ->count();
 
                 $totalCount += $count;
             }
             if ($lrean->registerdate) {
-                $countregis = \App\Models\Users::where('uid', $lrean->uid)
+                $countregis = \App\Models\Users::where('user_id', $lrean->user_id)
                     ->where('user_type', $personType)
                     ->count();
 

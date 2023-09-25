@@ -56,7 +56,7 @@ class ActivityController extends Controller
         $act->activity_status = $request->input('activity_status', 0);
         $act->detail = $request->detail;
         $act->invite = null;
-        $act->uid = $loginId;
+        $act->user_id = $loginId;
         $act->save();
 
         return redirect()->route('activiList', ['category_id' => $category_id])->with('message', 'Success Acti');
@@ -90,7 +90,7 @@ class ActivityController extends Controller
         $act->activity_status = $request->input('activity_status', 0);
         $act->detail = $request->detail;
 
-        $act->uid = $loginId;
+        $act->user_id = $loginId;
         $act->save();
 
 
@@ -148,7 +148,7 @@ class ActivityController extends Controller
         $act->activity_status = $request->input('activity_status', 0);
         $act->detail = $request->detail;
         $act->invite = null;
-        $act->uid = $loginId;
+        $act->user_id = $loginId;
         $act->save();
         return redirect()->route('activiList', ['category_id' => $category_id])->with('message', 'Success Acti');
     }
@@ -183,7 +183,7 @@ class ActivityController extends Controller
         $act->activity_status = $request->input('activity_status', 0);
         $act->detail = $request->detail;
 
-        $act->uid = $loginId;
+        $act->user_id = $loginId;
         $act->save();
 
 

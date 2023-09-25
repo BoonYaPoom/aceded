@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('answer', function (Blueprint $table) {
             $table->charset = 'utf8';
             $table->collation = 'utf8_general_ci';
-            $table->increments('answer_id');
+            $table->increments('answer_id')->start(10000)->nocache();
             $table->longText('question')->collation('utf8_general_ci');
             $table->longText('choice')->collation('utf8_general_ci');
             $table->integer('question_original')->nullable();

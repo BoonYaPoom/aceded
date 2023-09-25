@@ -80,18 +80,18 @@
                                 <th align="center" width="15%">จำนวนลงทะเบียน</th>
                             </tr>
                             @php
-                            // Fetch logs with logid = 1 and group them by uid
-                            $countLogsByUid = \App\Models\Log::where('logid', 1)
+                            // Fetch logs with logid = 1 and group them by user_id
+                            $countLogsByuser_id = \App\Models\Log::where('logid', 1)
                                 ->get()
-                                ->groupBy('uid');
+                                ->groupBy('user_id');
                             $i = 1;
                             
-                            // Fetch users with role 4
-                            $user_data = \App\Models\Users::where('role', 4)->get();
+                            // Fetch users with user_role 4
+                            $user_data = \App\Models\Users::where('user_role', 4)->get();
                         @endphp
                             @foreach ($user_data as $uLog)
                             @php
-                            $logCount = isset($countLogsByUid[$uLog->uid]) ? $countLogsByUid[$uLog->uid]->count() : 0;
+                            $logCount = isset($countLogsByuser_id[$uLog->user_id]) ? $countLogsByuser_id[$uLog->user_id]->count() : 0;
                         @endphp
                          @if ($logCount > 0)
                             <tr>

@@ -14,10 +14,10 @@ return new class extends Migration
         Schema::create('signature', function (Blueprint $table) {
             $table->charset = 'utf8';
             $table->collation = 'utf8_general_ci';
-            $table->increments('signature_id');
-            $table->integer('uid1')->nullable();
-            $table->integer('uid2')->nullable();
-            $table->integer('uid3')->nullable();
+            $table->increments('signature_id')->start(10000)->nocache();
+            $table->integer('user_id1')->nullable();
+            $table->integer('user_id2')->nullable();
+            $table->integer('user_id3')->nullable();
             $table->integer('course_id');
         });
     }

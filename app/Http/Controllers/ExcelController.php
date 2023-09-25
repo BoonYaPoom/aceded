@@ -119,8 +119,8 @@ class ExcelController extends Controller
                         }
                         // ข้อมูลถูกต้อง
                         if ($row[0] >= 1) {
-                            $uidplus = Users::max('uid') ?? 0;
-                            $role = 5;
+                            $user_idplus = Users::max('user_id') ?? 0;
+                            $user_role = 5;
                             $prefix = null;
                             $gender = null;
                             $per_id = null;
@@ -131,7 +131,7 @@ class ExcelController extends Controller
                             $createdate = now();
                             $createby = 2;
                             $avatar = '';
-                            $position = '';
+                            $user_position = '';
                             $workplace = '';
                             $telephone = '';
                             $citizen_id = '';
@@ -163,7 +163,7 @@ class ExcelController extends Controller
                             $organization = null;
 
                             $newUsers = new Users([
-                                'uid' =>  $uidplus + 1,
+                                'user_id' =>  $user_idplus + 1,
                                 'username' => $row[1],
                                 'password' => Hash::make($row[2]),
                                 'firstname' => $row[3],
@@ -172,7 +172,7 @@ class ExcelController extends Controller
                                 'email' => $row[6],
                                 'prefix' =>  $prefix,
                                 'gender' => $gender,
-                                'role' => $role,
+                                'user_role' => $user_role,
                                 'per_id' => $per_id,
                                 'department_id' => $department_id,
                                 'permission' => $permission,
@@ -181,7 +181,7 @@ class ExcelController extends Controller
                                 'createdate' => $createdate,
                                 'createby' => $createby,
                                 'avatar' => $avatar,
-                                'position' =>  $position,
+                                'user_position' =>  $user_position,
                                 'workplace' =>  $workplace,
                                 'telephone' =>  $telephone,
                                 'citizen_id' =>  $citizen_id,

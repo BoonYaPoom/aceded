@@ -8,11 +8,17 @@ use Illuminate\Database\Eloquent\Model;
 class Manual extends Model
 {
     use HasFactory;
+
     protected $table = 'manual';
-    protected $guarded =[];
     protected $primaryKey = 'manual_id';
+    protected $guarded =[];
+    
+    public $incrementing = false;
     public $timestamps = false;
+    
     public function Department() {
+
         return $this->belongsTo(Department::class,'department_id');
+
       }
 }

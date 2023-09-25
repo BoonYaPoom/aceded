@@ -307,6 +307,15 @@ input[type="password"]:placeholder {
 
 #icon {
     width: 60%;
+   
+    transition: width 0.2s ease-in-out;
+    
+}
+
+#icon:hover {
+    width: 70%;
+   
+    transition: width 0.2s ease-in-out;
 }
 
 * {

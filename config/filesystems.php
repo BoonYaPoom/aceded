@@ -56,18 +56,6 @@ return [
             'throw' => false,
         ],
 
-        'external' => [
-            'driver' => 'local',
-            'root' => 'C:/Users/antis/OneDrive/Desktop/react/filevpn/ACED/App/upload', // ตำแหน่งของโฟลเดอร์ที่เก็บไฟล์นอกโปรเจกต์
-            
-        ],
-        'uploadfile' => [
-            'driver' => 'local',
-            'root' => 'C:/Users/antis/OneDrive/Desktop/react/filevpn/ACED/App/upload',
-            'url' => env('APP_URL') . '/upload',
-            'visibility' => 'public',
-            'throw' => false,
-        ],
         
        
     ],

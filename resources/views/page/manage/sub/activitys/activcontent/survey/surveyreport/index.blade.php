@@ -67,7 +67,8 @@
                             <!-- tbody -->
 
                             <tbody>
-                                @foreach ($surques as $item)
+                       
+                                @foreach ($surques->sortBy('question_id') as $item)
                                     <tr>
                                         <td><a href="#">{{ $item->question_id }}</a></td>
                                         <td>{!! $item->question !!}</td>

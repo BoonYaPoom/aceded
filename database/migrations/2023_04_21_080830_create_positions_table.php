@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('positions', function (Blueprint $table) {
             $table->charset = 'utf8';
             $table->collation = 'utf8_general_ci';
-            $table->increments('position_id');
+            $table->increments('position_id')->start(10000)->nocache();
             $table->string('position_th', 400)->nullable()->collation('utf8_general_ci');
             $table->string('position_en', 400)->nullable()->collation('utf8_general_ci');
             $table->string('position_code', 10)->nullable()->collation('utf8_general_ci');

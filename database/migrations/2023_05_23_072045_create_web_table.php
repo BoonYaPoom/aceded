@@ -14,9 +14,9 @@ return new class extends Migration
         Schema::create('web', function (Blueprint $table) {
             $table->charset = 'utf8';
             $table->collation = 'utf8_general_ci';
-            $table->increments('web_id');
-            $table->string('web_th', 400)->collation('utf8_general_ci');
-            $table->string('web_en', 400)->nullable()->collation('utf8_general_ci');
+            $table->increments('web_id')->start(10000)->nocache();
+            $table->string('web_th', 900)->collation('utf8_general_ci');
+            $table->string('web_en', 900)->nullable()->collation('utf8_general_ci');
             $table->longText('detail_th')->nullable()->collation('utf8_general_ci');
             $table->longText('detail_en')->nullable()->collation('utf8_general_ci');
             $table->dateTime('web_date');

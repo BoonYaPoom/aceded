@@ -37,6 +37,7 @@ use App\Http\Controllers\SurveyQuestionController;
 use App\Http\Controllers\UserLogController;
 use App\Http\Controllers\WebController;
 use App\Http\Controllers\WedCategoryController;
+use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -51,8 +52,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 
-
-
+// Clear application cache:
 
 
 
@@ -63,25 +63,24 @@ Route::get('/exportSubject', [ExcelController::class, 'exportSubject'])->name('e
 Route::get('/UsersExport', [ExcelController::class, 'exportUsers'])->name('UsersExport');
 Route::get('/QuestionExport', [ExcelController::class, 'questionExport'])->name('questionExport');
 
-Route::group(['middleware' => 'AlreadyLogIn'], function () {
-    Route::get('/aced', [DepartmentController::class, 'aced'])->name('aced');
-    Route::get('/login', [CustomAuthController::class, 'login'])->name('homelogin');
-    Route::get('/regis', [CustomAuthController::class, 'regis'])->name('homeregis');
+Route::group(['middleware' => ['web', 'App\Http\Middleware\ClearOptimizeCacheMiddleware']], function () {
 
-    // เส้นทางอื่นๆที่ต้องใช้ middleware เช่นเดียวกัน
+    // เส้นทางของคุณที่ต้องการให้ Middleware นี้ทำงาน
+
+    Route::group(['middleware' => 'AlreadyLogIn'], function () {
+        Route::get('/aced', [DepartmentController::class, 'aced'])->name('aced');
+        Route::get('/login', [CustomAuthController::class, 'login'])->name('homelogin');
+        Route::get('/regis', [CustomAuthController::class, 'regis'])->name('homeregis');
+
+        // เส้นทางอื่นๆที่ต้องใช้ middleware เช่นเดียวกัน
+    });
+
+    Route::post('/register-user', [CustomAuthController::class, 'registerUser'])->name('register-user');
+    Route::post('/login-user', [CustomAuthController::class, 'loginUser'])->name('login-user');
+    Route::get('/home', [CustomAuthController::class, 'homeregis'])->name('homeRegis');
 });
 
-
-
-
-Route::post('/register-user', [CustomAuthController::class, 'registerUser'])->name('register-user');
-Route::post('/login-user', [CustomAuthController::class, 'loginUser'])->name('login-user');
-Route::get('/home', [CustomAuthController::class, 'homeregis'])->name('homeRegis');
-
 // middleware Isloggedin ต้องสมัครก่อนถึงเข้าได้
-
-
-
 
 Route::group(['middleware' => 'IsLoggedIn'], function () {
     Route::middleware(['CheckUserLogin'])->group(function () {
@@ -99,7 +98,7 @@ Route::group(['middleware' => 'IsLoggedIn'], function () {
             Route::get('/wms', [DepartmentController::class, 'departmentwmspage'])->name('departmentwmspage');
             Route::get('/lms', [DepartmentController::class, 'departmentLearnpage'])->name('departmentLearnpage');
             Route::get('/bss', [DepartmentController::class, 'bookif'])->name('bookif');
-         
+
             Route::get('/dls', [DepartmentController::class, 'departmentdlspage'])->name('departmentdlspage');
 
             Route::get('{from}/departmentform', [DepartmentController::class, 'departmentcreate'])->name('departmentcreate');
@@ -110,7 +109,7 @@ Route::group(['middleware' => 'IsLoggedIn'], function () {
 
 
             Route::prefix('wms')->group(function () {
-                
+
                 Route::get('{department_id}/home', [NavController::class, 'manage'])->name('manage');
                 Route::get('/general', [NavController::class, 'dataci'])->name('dataci');
                 Route::get('/logo', [GenaralController::class, 'logo'])->name('logo');
@@ -121,7 +120,7 @@ Route::group(['middleware' => 'IsLoggedIn'], function () {
                 Route::get('{department_id}/hightDep', [HighlightController::class, 'hightDep'])->name('hightDep');
                 Route::post('{department_id}/storeDep', [HighlightController::class, 'storeDep'])->name('storeDep');
                 Route::put('{highlight_id}/updateLinkDep', [HighlightController::class, 'updateLinkDep'])->name('updateLinkDep');
-          
+
 
                 Route::post('/storeban', [HighlightController::class, 'store'])->name('storeban');
 
@@ -130,22 +129,22 @@ Route::group(['middleware' => 'IsLoggedIn'], function () {
 
                 Route::get('{department_id}/Webpage', [WedCategoryController::class, 'Webpage'])->name('Webpage');
                 Route::get('{department_id}/webcategory', [WedCategoryController::class, 'evenpage'])->name('evenpage');
-                  Route::get('{department_id}/add_webevencategoryform', [WedCategoryController::class, 'create'])->name('evencreate');
+                Route::get('{department_id}/add_webevencategoryform', [WedCategoryController::class, 'create'])->name('evencreate');
                 Route::post('{department_id}/store_webevencategoryform', [WedCategoryController::class, 'store'])->name('evenstore');
                 Route::get('/edit_webcategoryform/{category_id}', [WedCategoryController::class, 'edit'])->name('evenedit');
-        
+
                 Route::get('/edit_webcategoryform/{category_id}', [WedCategoryController::class, 'edit'])->name('evenedit');
                 Route::put('/update_webcategoryform/{category_id}', [WedCategoryController::class, 'update'])->name('updateeven');
                 Route::get('/delete_webcategoryform/{category_id}', [WedCategoryController::class, 'destroy'])->name('evendelete');
                 Route::get('/changeStatusWebCat', [WedCategoryController::class, 'changeStatus'])->name('changeStatusWebCat');
 
-      
+
                 Route::get('{department_id}/acteven', [WedCategoryController::class, 'acteven'])->name('acteven');
                 Route::get('{department_id}/add_webactcategoryform', [WedCategoryController::class, 'createact'])->name('createact');
                 Route::post('{department_id}/store_webactcategoryform', [WedCategoryController::class, 'storeact'])->name('storeact');
                 Route::get('/edit_webactcategoryform/{category_id}', [WedCategoryController::class, 'editact'])->name('actedit');
                 Route::put('/update_webactcategoryform/{category_id}', [WedCategoryController::class, 'updateact'])->name('updateact');
-             
+
 
                 Route::get('/{category_id}/web', [WebController::class, 'catpage'])->name('catpage');
                 Route::get('/{category_id}/add_webform', [WebController::class, 'create'])->name('createcat');
@@ -323,7 +322,7 @@ Route::group(['middleware' => 'IsLoggedIn'], function () {
 
                 Route::get('/changeStatusSubject', [CourseSubjectController::class, 'changeStatus'])->name('changeStatusSubject');
             });
-            
+
             Route::prefix('lms')->group(function () {
                 Route::get('/navless/{subject_id}', [CourseLessonController::class, 'navless'])->name('navless');
 
@@ -418,7 +417,7 @@ Route::group(['middleware' => 'IsLoggedIn'], function () {
 
 
                     Route::post('{subject_id}/Questionimport', [ExcelController::class, 'Questionimport'])->name('Questionimport');
-  
+
                     Route::get('{subject_id}/add_examform', [ExamController::class, 'createexam'])->name('add_examform');
                     Route::post('{subject_id}/store_examform', [ExamController::class, 'storeexam'])->name('store_examform');
                     Route::get('edit_examform/{exam_id}', [ExamController::class, 'edit_examform'])->name('edit_examform');
@@ -442,23 +441,23 @@ Route::group(['middleware' => 'IsLoggedIn'], function () {
                 Route::get('/booktable', [BookController::class, 'table'])->name('book.table');
             });
 
-            Route::get('/ums/{role?}', [EditManageUserController::class, 'UserManage'])->name('UserManage')->where('role', '[0-9]+');
+            Route::get('/ums/{user_role?}', [EditManageUserController::class, 'UserManage'])->name('UserManage')->where('user_role', '[0-9]+');
 
             Route::prefix('ums')->group(function () {
 
 
                 Route::get('/add_umsform', [EditManageUserController::class, 'createUser'])->name('createUser');
                 Route::post('/store_umsform', [EditManageUserController::class, 'storeUser'])->name('storeUser');
-                Route::get('/ums/{role}', [EditManageUserController::class, 'UserManage'])->name('UserManageByRole');
+                Route::get('/ums/{user_role}', [EditManageUserController::class, 'UserManage'])->name('UserManageByRole');
 
-                Route::get('/edit/{uid}', [EditManageUserController::class, 'edit'])->name('editUser');
+                Route::get('/edit/{user_id}', [EditManageUserController::class, 'edit'])->name('editUser');
 
-                Route::put('/update/{uid}', [EditManageUserController::class, 'update'])->name('updateUser');
+                Route::put('/update/{user_id}', [EditManageUserController::class, 'update'])->name('updateUser');
 
-                Route::get('/umslogsuser/{uid}', [UserLogController::class, 'logusers'])->name('logusers');
+                Route::get('/umslogsuser/{user_id}', [UserLogController::class, 'logusers'])->name('logusers');
 
-                Route::put('/update-role/{uid}', [EditManageUserController::class, 'updateRoleUser'])->name('updateRoleUser');
-                Route::put('/update-password/{uid}', [EditManageUserController::class, 'updatepassword'])->name('updatePassword');
+                Route::put('/update-role/{user_id}', [EditManageUserController::class, 'updateRoleUser'])->name('updateRoleUser');
+                Route::put('/update-password/{user_id}', [EditManageUserController::class, 'updatepassword'])->name('updatePassword');
 
 
 

@@ -17,7 +17,7 @@ class EditProfileController extends Controller
         // ตรวจสอบว่ามีการเข้าสู่ระบบหรือไม่
         if (Session::has('loginId')) {
             // ดึงข้อมูลผู้ใช้จากฐานข้อมูล
-            $data = Users::where('uid', '=', Session::get('loginId'))->first();
+            $data = Users::where('user_id', '=', Session::get('loginId'))->first();
 
             // ส่งข้อมูลผู้ใช้ไปยังหน้าแก้ไขโปรไฟล์
             return view('Authpage.Login.editprofile.edit', ['data' => $data]);
@@ -32,7 +32,7 @@ class EditProfileController extends Controller
         // ตรวจสอบว่ามีการเข้าสู่ระบบหรือไม่
         if (Session::has('loginId')) {
             // ดึงข้อมูลผู้ใช้จากฐานข้อมูล
-            $users = Users::where('uid', '=', Session::get('loginId'))->first();
+            $users = Users::where('user_id', '=', Session::get('loginId'))->first();
             
             if ($request->hasFile('avatar')) {
                 $image_name = 'avatar' . '.' . $request->avatar->getClientOriginalExtension();
@@ -45,10 +45,7 @@ class EditProfileController extends Controller
             
                 $image->save($uploadDirectory);
                 $users->avatar = 'upload/Profile/' . 'avatar' . '.' . $request->avatar->getClientOriginalExtension();
-            } else {
-                $users->avatar = ''; // Set to empty if no avatar is uploaded
-            }
-            // ... อัปเดตฟิลด์อื่น ๆ ตามต้องการ
+            } 
             $users->username = $request->username;
             $users->firstname = $request->firstname;
             $users->lastname = $request->lastname;

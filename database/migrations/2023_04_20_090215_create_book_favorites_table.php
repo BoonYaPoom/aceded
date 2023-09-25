@@ -14,11 +14,11 @@ return new class extends Migration
         Schema::create('book_favorites', function (Blueprint $table) {
             $table->charset = 'utf8';
             $table->collation = 'utf8_general_ci';
-            $table->increments('favorites_id');
+            $table->increments('favorites_id')->start(10000)->nocache();
             $table->integer('book_id');
             $table->dateTime('date');
             $table->string('status')->collation('utf8_general_ci'); 
-            $table->integer('uid');
+            $table->integer('user_id');
         });
     }
 

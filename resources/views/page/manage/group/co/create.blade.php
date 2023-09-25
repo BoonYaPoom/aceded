@@ -700,7 +700,7 @@
                                     <div class="card card-figure">
                                         <!-- .card-figure -->
                                         <figure class="figure">
-                                            <img class="img-fluid" src="{{ asset('upload/cer/certificate_1.png') }}"
+                                            <img class="img-fluser_id" src="{{ asset('upload/cer/certificate_1.png') }}"
                                                 alt="ใบประกาศนียบัตร  1 " style="cursor:zoom-in"
                                                 onclick="$('#previewimage').prop('src',$(this).prop('src'));$('#modal01').css('display','block');">
                                             <!-- .figure-caption -->
@@ -730,7 +730,7 @@
                                 <!-- .card -->
                                 <div class="card card-figure">
                                     <!-- .card-figure -->
-                                    <figure class="figure"><img class="img-fluid"
+                                    <figure class="figure"><img class="img-fluser_id"
                                             src="https://aced.dlex.ai/childhood/admin/" alt="ใบประกาศนียบัตร  6 "
                                             style="cursor:zoom-in"
                                             onclick="$('#previewimage').prop('src',$(this).prop('src'));$('#modal01').css('display','block');">

@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('question_type', function (Blueprint $table) {
             $table->charset = 'utf8';
             $table->collation = 'utf8_general_ci';
-            $table->increments('question_type');
+            $table->increments('question_type')->start(10000)->nocache();
             $table->string('question_type_th', 50)->collation('utf8_general_ci');
             $table->string('question_type_en', 50)->nullable()->collation('utf8_general_ci');
 

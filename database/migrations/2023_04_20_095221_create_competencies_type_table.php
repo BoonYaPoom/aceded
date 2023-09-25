@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('competencies_type', function (Blueprint $table) {
             $table->charset = 'utf8';
             $table->collation = 'utf8_general_ci';
-            $table->increments('competencies_type');
+            $table->increments('competencies_type')->start(10000)->nocache();
             $table->string('competencies_type_th', 100)->collation('utf8_general_ci');
             $table->string('competencies_type_en', 100)->collation('utf8_general_ci');
         });

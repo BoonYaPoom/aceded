@@ -77,11 +77,11 @@ if (in_array($module, array('T0101'))) {
 	echo '</select>';
 	echo '</div></div>';
 	echo '<div class="col-md-4 ">
-					<div ><select id="selectuid" name="selectuid" class="form-control" data-toggle="select2" data-placeholder="ผู้ใช้งานทั้งหมด" data-allow-clear="false" onchange="$(\'#formreport\').submit();">';
+					<div ><select id="selectuser_id" name="selectuser_id" class="form-control" data-toggle="select2" data-placeholder="ผู้ใช้งานทั้งหมด" data-allow-clear="false" onchange="$(\'#formreport\').submit();">';
 	echo '<option value="" ' . $selected . '> ผู้ใช้งานทั้งหมด </option>';
-	foreach ($select_uid as $uid_name) {
-		$selected = ($uid_name == $selectuid) ? "selected" : "";
-		echo '<option value="' . $uid_name . '" ' . $selected . '> ' . $uid_name . ' </option>';
+	foreach ($select_user_id as $user_id_name) {
+		$selected = ($user_id_name == $selectuser_id) ? "selected" : "";
+		echo '<option value="' . $user_id_name . '" ' . $selected . '> ' . $user_id_name . ' </option>';
 	}
 	echo '</select>';
 	echo '</div></div>';
@@ -111,11 +111,11 @@ if (in_array($module, array('T0102'))) {
 
 if (in_array($module, array('T0104'))) {
 	echo '<div class="col-md-4 ">
-						<div ><select id="selectuidt0104" name="selectuidt0104" class="form-control" data-toggle="select2" data-placeholder="ผู้ใช้งานทั้งหมด" data-allow-clear="false" onchange="$(\'#formreport\').submit();">';
+						<div ><select id="selectuser_idt0104" name="selectuser_idt0104" class="form-control" data-toggle="select2" data-placeholder="ผู้ใช้งานทั้งหมด" data-allow-clear="false" onchange="$(\'#formreport\').submit();">';
 	echo '<option value="" ' . $selected . '> ผู้ใช้งานทั้งหมด </option>';
-	foreach ($select_uid as $uid_name) {
-		$selected = ($uid_name == $selectuid) ? "selected" : "";
-		echo '<option value="' . $uid_name . '" ' . $selected . '> ' . $uid_name . ' </option>';
+	foreach ($select_user_id as $user_id_name) {
+		$selected = ($user_id_name == $selectuser_id) ? "selected" : "";
+		echo '<option value="' . $user_id_name . '" ' . $selected . '> ' . $user_id_name . ' </option>';
 	}
 	echo '</select>';
 	echo '</div></div>';
@@ -123,11 +123,11 @@ if (in_array($module, array('T0104'))) {
 
 if (in_array($module, array('T0106'))) {
 	echo '<div class="col-md-4 ">
-							<div ><select id="selectuidt0106" name="selectuidt0106" class="form-control" data-toggle="select2" data-placeholder="ผู้ใช้งานทั้งหมด" data-allow-clear="false" onchange="$(\'#formreport\').submit();">';
+							<div ><select id="selectuser_idt0106" name="selectuser_idt0106" class="form-control" data-toggle="select2" data-placeholder="ผู้ใช้งานทั้งหมด" data-allow-clear="false" onchange="$(\'#formreport\').submit();">';
 	echo '<option value="" ' . $selected . '> ผู้ใช้งานทั้งหมด </option>';
-	foreach ($select_uid as $uid_name) {
-		$selected = ($uid_name == $selectuid) ? "selected" : "";
-		echo '<option value="' . $uid_name . '" ' . $selected . '> ' . $uid_name . ' </option>';
+	foreach ($select_user_id as $user_id_name) {
+		$selected = ($user_id_name == $selectuser_id) ? "selected" : "";
+		echo '<option value="' . $user_id_name . '" ' . $selected . '> ' . $user_id_name . ' </option>';
 	}
 	echo '</select>';
 	echo '</div></div>';
@@ -135,11 +135,11 @@ if (in_array($module, array('T0106'))) {
 
 if (in_array($module, array('T0107'))) {
 	echo '<div class="col-md-4 ">
-								<div ><select id="selectuidt0107" name="selectuidt0107" class="form-control" data-toggle="select2" data-placeholder="ผู้สอนทั้งหมด" data-allow-clear="false" onchange="$(\'#formreport\').submit();">';
+								<div ><select id="selectuser_idt0107" name="selectuser_idt0107" class="form-control" data-toggle="select2" data-placeholder="ผู้สอนทั้งหมด" data-allow-clear="false" onchange="$(\'#formreport\').submit();">';
 	echo '<option value="" ' . $selected . '> ผู้สอนทั้งหมด </option>';
-	foreach ($select_uid as $uid_name) {
-		$selected = ($uid_name == $selectuid) ? "selected" : "";
-		echo '<option value="' . $uid_name . '" ' . $selected . '> ' . $uid_name . ' </option>';
+	foreach ($select_user_id as $user_id_name) {
+		$selected = ($user_id_name == $selectuser_id) ? "selected" : "";
+		echo '<option value="' . $user_id_name . '" ' . $selected . '> ' . $user_id_name . ' </option>';
 	}
 	echo '</select>';
 	echo '</div></div>';

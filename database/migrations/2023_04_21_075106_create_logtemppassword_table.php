@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('logtemppassword', function (Blueprint $table) {
             $table->charset = 'utf8';
             $table->collation = 'utf8_general_ci';
-            $table->increments('log_id');
+            $table->increments('log_id')->start(10000)->nocache();
             $table->dateTime('temp_date')->nullable();
             $table->string('email', 400)->nullable()->collation('utf8_general_ci');
         });

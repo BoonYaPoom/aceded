@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('activity', function (Blueprint $table) {
             $table->charset = 'utf8';
             $table->collation = 'utf8_general_ci';
-            $table->increments('activity_id');
+            $table->increments('activity_id')->start(10000)->nocache();
             $table->integer('category_id');
             $table->string('title', 400)->collation('utf8_general_ci');
             $table->longText('media')->nullable()->collation('utf8_general_ci');
@@ -31,7 +31,7 @@ return new class extends Migration
             $table->string('activity_status', 1)->collation('utf8_general_ci');
             $table->longText('detail')->collation('utf8_general_ci');
             $table->string('invite', 1)->nullable()->collation('utf8_general_ci');
-            $table->integer('uid');
+            $table->integer('user_id');
         });
     }
 

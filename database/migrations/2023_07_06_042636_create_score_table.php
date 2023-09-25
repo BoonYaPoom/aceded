@@ -14,14 +14,14 @@ return new class extends Migration
         Schema::create('score', function (Blueprint $table) {
             $table->charset = 'utf8';
             $table->collation = 'utf8_general_ci';
-            $table->increments('score_id');
+            $table->increments('score_id')->start(10000)->nocache();
             $table->integer('exam_id');
             $table->integer('usetime')->nullable();
             $table->integer('score')->nullable();
             $table->integer('fullscore')->nullable();
             $table->dateTime('startdate')->nullable();
-            $table->dateTime('date')->nullable();
-            $table->integer('uid');
+            $table->dateTime('score_date')->nullable();
+            $table->integer('user_id');
             $table->integer('lesson_id')->nullable();
             $table->longText('question')->nullable()->collation('utf8_general_ci');
             $table->longText('answer')->nullable()->collation('utf8_general_ci');

@@ -102,7 +102,7 @@ class LinkController extends Controller
 
 
         if ($loginId) {
-            $loginLog = Log::where('uid', $loginId)->where('logaction', 2)->first();
+            $loginLog = Log::where('user_id', $loginId)->where('logaction', 2)->first();
 
 
             $loginLog = new Log;
@@ -113,7 +113,7 @@ class LinkController extends Controller
             $loginLog->subject_id  = 1;
             $loginLog->duration = 1;
             $loginLog->status  = 0;
-            $loginLog->uid = $loginId;
+            $loginLog->user_id = $loginId;
             $loginLog->logagents = $browser;
             $loginLog->logip = $request->ip();
 
@@ -198,7 +198,7 @@ class LinkController extends Controller
 
 
         if ($loginId) {
-            $loginLog = Log::where('uid', $loginId)->where('logaction', 3)->first();
+            $loginLog = Log::where('user_id', $loginId)->where('logaction', 3)->first();
 
 
             $loginLog = new Log;
@@ -209,7 +209,7 @@ class LinkController extends Controller
             $loginLog->subject_id  = 1;
             $loginLog->duration = 1;
             $loginLog->status  = 0;
-            $loginLog->uid = $loginId;
+            $loginLog->user_id = $loginId;
             $loginLog->logagents = $browser;
             $loginLog->logip = $request->ip();
 

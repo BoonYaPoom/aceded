@@ -26,8 +26,8 @@
             <!-- .card -->
             <div class="card card-fluid">
                 <!-- .card-header -->
-                <div class="card-header bg-muted"><a href="{{ route('manage', ['department_id' => $depart]) }}"
-                        style="text-decoration: underline;">จัดการเว็บ</a> / <a href="{{ route('hightpage', ['department_id' => $depart]) }}"
+                <div class="card-header bg-muted"><a href="{{ route('manage', ['department_id' => $depart->department_id]) }}"
+                        style="text-decoration: underline;">จัดการเว็บ</a> / <a href="{{ route('hightDep', ['department_id' => $depart->department_id]) }}"
                         style="text-decoration: underline;"> ภาพประชาสัมพันธ์ </a> /<i> แก้ไขข้อมูล</i></div>
                 <!-- /.card-header -->
                 <!-- .card-body -->
