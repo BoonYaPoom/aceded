@@ -58,9 +58,9 @@
                             class="fas fa-users"></i>
                         กลุ่มผู้ใช้งาน</a>
 
-                    <!--    <a class="ml-1 btn btn-info btn-md " style="color:#fff"
-                            href="{{ route('personTypes') }}"><i class="fas fa-users"></i>
-                                ประเภทผู้ใช้งาน</a> -->
+                      <a class="ml-1 btn btn-info btn-md " style="color:#fff"
+                                href="{{ route('RoleTypes') }}"><i class="fas fa-users"></i>
+                                    ประเภทผู้ใช้งาน</a> 
 
 
 
@@ -283,11 +283,13 @@
                             <!-- tbody -->
                             <tbody>
                                 <!-- tr -->
-
-                                @foreach ($usermanages as $index => $item)
-                                    @php
-                                        $rowNumber = $index + 1;
-                                    @endphp
+                                @php
+                                $r =  0;
+                                @endphp
+                                @foreach ($usermanages->sortBy('user_id') as  $item)
+                                @php
+                                $r++;
+                                @endphp
                                     @php
                                         $user_roleadmin = $item->user_role == 1;
                                     @endphp

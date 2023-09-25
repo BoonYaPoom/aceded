@@ -1,5 +1,6 @@
+
 <tr>
-    <td>{{ $rowNumber }}</td>
+    <td>{{ $r }}</td>
     <td>{{ $item->username }}</td>
     <td>{{ $item->firstname }} {{ $item->lastname }}</td>
 

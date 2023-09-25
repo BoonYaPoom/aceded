@@ -30,6 +30,7 @@ use App\Http\Controllers\ManualController;
 use App\Http\Controllers\NavController;
 use App\Http\Controllers\PersonController;
 use App\Http\Controllers\ReportAllController;
+use App\Http\Controllers\RolemanageController;
 use App\Http\Controllers\ScoreController;
 use App\Http\Controllers\SurResponseController;
 use App\Http\Controllers\SurveyController;
@@ -466,7 +467,7 @@ Route::group(['middleware' => 'IsLoggedIn'], function () {
 
 
 
-
+                Route::get('/umsrole', [RolemanageController::class, 'RoleTypes'])->name('RoleTypes');
                 Route::get('/umsgroup', [PersonController::class, 'personTypes'])->name('personTypes');
                 Route::get('/umsgroupuser/{person_type}', [PersonController::class, 'pageperson'])->name('pageperson');
                 Route::put('/update_umsgroupuser/{person_type}', [PersonController::class, 'updateusertype'])->name('updateusertype');

@@ -67,10 +67,10 @@
                                     $n = 1;
                                     $result = []; // สร้างตัวแปรเก็บผลลัพธ์
                                     $uniqueUserIds = [];
-                                    $countUsersLogs =null;
-                                    $totalDuration=null;
-                                    $ScoreUser=null;
-                                    $ScoreLog=[];
+                                    $countUsersLogs = null;
+                                    $totalDuration = null;
+                                    $ScoreUser = null;
+                                   
                                 @endphp
                                 @foreach ($learners as $l => $learns)
                                     @php
@@ -80,19 +80,19 @@
                                         $users = \App\Models\Users::find($learns->user_id);
                                         
                                         if ($users !== null) {
-                                            // กระทำอะไรกับผู้ใช้ที่พบ
-                                        } else {
-                                            $users = null; // กำหนด $users เป็น null เมื่อไม่พบผู้ใช้
-                                            // กระทำอะไรกับผู้ใช้ที่ไม่พบ (เป็น null)
                                             $ScoreLog = \App\Models\Score::where('user_id', $learns->user_id)
                                                 ->whereHas('examlog', function ($query) {
                                                     $query->where('exam_type', 2);
                                                 })
                                                 ->get();
-                                        }
+                                        } else {
                                   
+                                            $ScoreLog = NULL;
+                                         
+                                        }
+                                        
                                     @endphp
-
+                                 @if ($users !== null)    
                                     @if ($monthsa == $m)
                                         @if (!in_array($learns->user_id, $uniqueUserIds))
                                             @php
@@ -146,11 +146,13 @@
                                                     }
                                                 @endphp
                                             @endforeach
+
                                             <tr>
                                                 <td>{{ $n++ }}</td>
-
-                                                <td>{{ $users->username }}</td>
-                                                <td>{{ $users->firstname }} {{ $users->lastname }}</td>
+                                            
+                                                    <td>{{ $users->username }}</td>
+                                                    <td>{{ $users->firstname }} {{ $users->lastname }}</td>
+                                           
                                                 <td>
                                                     {{ $countUsersLogs }}
                                                 </td>
@@ -314,6 +316,9 @@
 
                                                 </td>
                                             </tr><!-- /tr -->
+                                            @elseif ($users == null)
+                                            
+                                        @endif
                                         @endif
                                     @endif
                                 @endforeach
@@ -349,13 +354,13 @@
             </div><!-- /.card -->
         </div><!-- /.page-section -->
 
-        <!-- 
-        <header class="page-title-bar">
-          
-            <input type="hidden" />
-            <button type="button" onclick="window.location=''" class="btn btn-success btn-floated btn-add "
-                id="registeradd" data-toggle="tooltip" title="เพิ่ม"><span class="fas fa-plus"></span></button>
-            
-        </header> -->
+        <!--
+            <header class="page-title-bar">
+              
+                <input type="hidden" />
+                <button type="button" onclick="window.location=''" class="btn btn-success btn-floated btn-add "
+                    id="registeradd" data-toggle="tooltip" title="เพิ่ม"><span class="fas fa-plus"></span></button>
+                
+            </header> -->
     </div><!-- /.page-inner -->
 @endsection
