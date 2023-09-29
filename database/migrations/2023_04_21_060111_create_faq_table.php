@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('faq', 400)->collation('utf8_general_ci');
             $table->longText('detail')->nullable()->collation('utf8_general_ci');
             $table->string('faq_status', 1)->collation('utf8_general_ci');
-            $table->string('faq_type', 1)->collation('utf8_general_ci');
+            $table->string('faq_type', 1)->nullable()->collation('utf8_general_ci');
         });
     }
 

@@ -7,6 +7,7 @@ use App\Models\Log;
 use App\Models\Web;
 use App\Models\WebCategory;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
@@ -46,6 +47,8 @@ class WebController extends Controller
                 ->withInput()
                 ->with('error', 'ข้อมูลไม่ถูกต้อง');
         }
+
+        try{
         $lastSort = Web::where('category_id',$category_id)->max('sort');
         $newSort = $lastSort + 1;
         $webs = new Web;
@@ -128,7 +131,13 @@ class WebController extends Controller
 
 
         $loginLog->save();
-        
+        DB::commit();
+    } catch (\Exception $e) {
+
+        DB::rollBack();
+
+        return response()->view('errors.500', [], 500);
+    }
         return redirect()->route('catpage', ['category_id' => $category_id])->with('message', 'Data update successfully');
     }
     public function edit($web_id)

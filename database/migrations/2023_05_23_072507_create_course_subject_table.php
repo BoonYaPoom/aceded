@@ -20,7 +20,7 @@ return new class extends Migration
             $table->integer('department_id')->nullable();
             $table->string('subject_status', 1)->collation('utf8_general_ci');
             $table->longText('teacher')->nullable()->collation('utf8_general_ci');
-            $table->string('subject_code', 12)->nullable()->collation('utf8_general_ci');
+            $table->string('subject_code', 24)->nullable()->collation('utf8_general_ci');
             $table->longText('intro_th')->nullable()->collation('utf8_general_ci');
             $table->longText('intro_en')->nullable()->collation('utf8_general_ci');
             $table->longText('description_th')->nullable()->collation('utf8_general_ci');

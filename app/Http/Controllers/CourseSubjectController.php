@@ -9,6 +9,7 @@ use App\Models\Department;
 use App\Models\Exam;
 use App\Models\Survey;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 
@@ -19,14 +20,14 @@ class CourseSubjectController extends Controller
 
         $depart  = Department::findOrFail($department_id);
         $subs = $depart->SubjectDe()->where('department_id', $department_id)->get();
-       
+
         return view('page.manage.sub.index', compact('subs', 'depart'));
     }
     public function create($department_id)
     {
         $depart  = Department::findOrFail($department_id);
         $users4 = $depart->UserDe()->where('department_id', $department_id)->get();
-        return view('page.manage.sub.create', compact('depart','users4'));
+        return view('page.manage.sub.create', compact('depart', 'users4'));
     }
 
     public function store(Request $request, $department_id)
@@ -37,52 +38,52 @@ class CourseSubjectController extends Controller
             'subject_code' => 'required',
             'subject_th' => 'required'
         ]);
-      
+
         if ($validator->fails()) {
             return back()
                 ->withErrors($validator)
                 ->withInput()
                 ->with('error', 'ข้อมูลไม่ถูกต้อง');
         }
-
-        $subs = new CourseSubject;
-        $subs->subject_code = $request->subject_code;
-        $subs->subject_th = $request->subject_th;
-        $subs->subject_en = $request->subject_en;
-        $subs->learn_format = $request->input('learn_format', 0);
-        $subs->evaluation = $request->input('evaluation', 0);
-        $subs->checkscore = $request->checkscore;
-        $selectedTeachers = $request->input('teacher', []);
-        $teachers = implode(',', $selectedTeachers);
-        $subs->teacher = $teachers;
-        $subs->department_id = (int)$department_id;
-        $subs->subject_status = $request->input('subject_status', 0);
-        $subs->intro_th = '';
-        $subs->intro_en = '';
-        $subs->description_th = '';
-        $subs->description_en = '';
-        $subs->objectives_th = '';
-        $subs->objectives_en = '';
-        $subs->qualification_th = '';
-        $subs->qualification_en = '';
-        $subs->evaluation_th = '';
-        $subs->evaluation_en = '';
-        $subs->document_th = '';
-        $subs->document_en = '';
-        $subs->schedule_th = '';
-        $subs->schedule_en = '';
-        $subs->create_date = now();
-        $subs->setting = null;
-        $subs->permission = '';
-        $subs->checktime  = 0;
-        $subs->subject_approve  = 0;
-        $subs->result_learn_th = null;
-        $subs->result_learn_en = null;
-        $subs->save();
+        try {
+            $subs = new CourseSubject;
+            $subs->subject_code = $request->subject_code;
+            $subs->subject_th = $request->subject_th;
+            $subs->subject_en = $request->subject_en;
+            $subs->learn_format = $request->input('learn_format', 0);
+            $subs->evaluation = $request->input('evaluation', 0);
+            $subs->checkscore = $request->checkscore;
+            $selectedTeachers = $request->input('teacher', []);
+            $teachers = implode(',', $selectedTeachers);
+            $subs->teacher = $teachers;
+            $subs->department_id = (int)$department_id;
+            $subs->subject_status = $request->input('subject_status', 0);
+            $subs->intro_th = '';
+            $subs->intro_en = '';
+            $subs->description_th = '';
+            $subs->description_en = '';
+            $subs->objectives_th = '';
+            $subs->objectives_en = '';
+            $subs->qualification_th = '';
+            $subs->qualification_en = '';
+            $subs->evaluation_th = '';
+            $subs->evaluation_en = '';
+            $subs->document_th = '';
+            $subs->document_en = '';
+            $subs->schedule_th = '';
+            $subs->schedule_en = '';
+            $subs->create_date = now();
+            $subs->setting = null;
+            $subs->permission = '';
+            $subs->checktime  = 0;
+            $subs->subject_approve  = 0;
+            $subs->result_learn_th = null;
+            $subs->result_learn_en = null;
+            $subs->save();
 
       
         if ($request->hasFile('banner')) {
-            $image_name = 'banner'. $subs->subject_id . '.' . $request->banner->getClientOriginalExtension();
+            $image_name = 'banner' . $subs->subject_id . '.' . $request->banner->getClientOriginalExtension();
             $uploadDirectory = public_path('upload/Subject/SubBanner/');
             if (!file_exists($uploadDirectory)) {
                 mkdir($uploadDirectory, 0755, true);
@@ -116,7 +117,7 @@ class CourseSubjectController extends Controller
             $teach->subject_id = $subs->subject_id;
             $teach->save();
         }
-       
+
 
         $exam1 = new Exam;
         $exam1->exam_th = 'แบบทดสอบก่อนเรียน';
@@ -206,7 +207,13 @@ class CourseSubjectController extends Controller
         $sur1->subject_id = $subs->subject_id;
         $sur1->save();
 
+        DB::commit();
+    } catch (\Exception $e) {
 
+        DB::rollBack();
+
+        return response()->view('errors.500', [], 500);
+    }
         return redirect()->route('suppage', ['department_id' => $department_id])->with('message', 'CourseSub บันทึกข้อมูลสำเร็จ');
     }
 
@@ -219,7 +226,7 @@ class CourseSubjectController extends Controller
         $department_id   = $subs->department_id;
         $depart = Department::findOrFail($department_id);
         $users4 = $depart->UserDe()->where('department_id', $department_id)->get();
-        return view('page.manage.sub.edit', compact('subs','depart','users4'));
+        return view('page.manage.sub.edit', compact('subs', 'depart', 'users4'));
     }
 
     public function update(Request $request, $subject_id)
@@ -258,9 +265,9 @@ class CourseSubjectController extends Controller
         $subs->result_learn_en = null;
         $subs->save();
 
- 
+
         if ($request->hasFile('banner')) {
-            $image_name = 'banner'. $subs->subject_id . '.' . $request->banner->getClientOriginalExtension();
+            $image_name = 'banner' . $subs->subject_id . '.' . $request->banner->getClientOriginalExtension();
             $uploadDirectory = public_path('upload/Subject/SubBanner/');
             if (!file_exists($uploadDirectory)) {
                 mkdir($uploadDirectory, 0755, true);
@@ -271,7 +278,7 @@ class CourseSubjectController extends Controller
                 $subs->banner = 'upload/Subject/SubBanner/' .  'banner' . $subs->subject_id . '.' . $request->banner->getClientOriginalExtension();
                 $subs->save();
             }
-        } 
+        }
 
         return redirect()->route('suppage', ['department_id' => $subs->department_id])->with('message', 'CourseSub บันทึกข้อมูลสำเร็จ');
     }
@@ -289,7 +296,7 @@ class CourseSubjectController extends Controller
         $subs = CourseSubject::findOrFail($subject_id);
         $department_id   = $subs->department_id;
         $depart = Department::findOrFail($department_id);
-        return view('page.manage.sub.subjectdetail.subjectdetail', compact('subs','depart'));
+        return view('page.manage.sub.subjectdetail.subjectdetail', compact('subs', 'depart'));
     }
 
 

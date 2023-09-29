@@ -8,6 +8,7 @@ use App\Models\BookCategory;
 use App\Models\Department;
 use Barryvdh\DomPDF\PDF as DomPDFPDF;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
 use Intervention\Image\ImageManagerStatic as Image;
@@ -43,25 +44,32 @@ class BookController extends Controller
             'bookfile' => 'required'
         ]);
         $bookId = $request->input('book_id');
+        try {
 
-        $books = new Book;
-        $books->book_type = $request->book_type;
+            $books = new Book;
+            $books->book_type = $request->book_type;
 
 
-        $books->book_name = $request->book_name;
-        $books->book_author = $request->book_author;
-        $books->detail = '';
-        $books->contents = $request->contents;
-        $books->book_date = now();
-        $books->book_status = $request->input('book_status', 0);
-        $books->book_option = '';
+            $books->book_name = $request->book_name;
+            $books->book_author = $request->book_author;
+            $books->detail = '';
+            $books->contents = $request->contents;
+            $books->book_date = now();
+            $books->book_status = $request->input('book_status', 0);
+            $books->book_option = '';
 
-        $books->recommended = 0;
-        $books->category_id = (int) $category_id;
-        $books->book_member = 0;
-        $books->book_year = date('Y');
-        $books->save();
+            $books->recommended = 0;
+            $books->category_id = (int) $category_id;
+            $books->book_member = 0;
+            $books->book_year = date('Y');
+            $books->save();
+            DB::commit();
+        } catch (\Exception $e) {
 
+            DB::rollBack();
+
+            return response()->view('errors.500', [], 500);
+        }
 
         if ($request->hasFile('cover')) {
             $image_name = 'cover' . '.' . $request->cover->getClientOriginalExtension();
@@ -185,28 +193,26 @@ class BookController extends Controller
 
                     $books->bookfile =  'upload/Book/' . $books->book_id . '/' . 'index.html';
                     $books->save();
-               
-            }
-        } elseif ($request->book_type == 1) {
-            if ($request->hasFile('bookfile')) {
-                $image_bookfile = 'book' . '.' . $request->bookfile->getClientOriginalExtension();
-                $uploadDirectory = public_path('upload/Book/' . $books->book_id);
-                if (!file_exists($uploadDirectory)) {
-                    mkdir($uploadDirectory, 0755, true);
                 }
-                if (file_exists($uploadDirectory)) {
+            } elseif ($request->book_type == 1) {
+                if ($request->hasFile('bookfile')) {
+                    $image_bookfile = 'book' . '.' . $request->bookfile->getClientOriginalExtension();
+                    $uploadDirectory = public_path('upload/Book/' . $books->book_id);
+                    if (!file_exists($uploadDirectory)) {
+                        mkdir($uploadDirectory, 0755, true);
+                    }
+                    if (file_exists($uploadDirectory)) {
 
-                    file_put_contents(public_path('upload/Book/' . $books->book_id  . '/' . $image_bookfile), file_get_contents($request->bookfile));
-                    $books->bookfile = 'upload/Book/' . $books->book_id . '/' . $image_bookfile;
-                    $books->save();
+                        file_put_contents(public_path('upload/Book/' . $books->book_id  . '/' . $image_bookfile), file_get_contents($request->bookfile));
+                        $books->bookfile = 'upload/Book/' . $books->book_id . '/' . $image_bookfile;
+                        $books->save();
+                    }
                 }
             }
+            return redirect()->route('bookcatpage', ['category_id' => $category_id])->with('message', 'book สร้างเรียบร้อยแล้ว');
         }
-        return redirect()->route('bookcatpage', ['category_id' => $category_id])->with('message', 'book สร้างเรียบร้อยแล้ว');
- 
+        return redirect()->back()->with('error', 'ID นี้มีอยู่แล้ว กรุณาเลือก ID อื่น');
     }
-    return redirect()->back()->with('error', 'ID นี้มีอยู่แล้ว กรุณาเลือก ID อื่น');
-        }
 
     public function edit($book_id)
     {
@@ -237,7 +243,7 @@ class BookController extends Controller
         if ($request->hasFile('cover')) {
             $image_name = 'cover' . '.' . $request->cover->getClientOriginalExtension();
             $uploadDirectory = public_path('upload/Book/' . $book_id);
-        
+
             // ตรวจสอบว่าโฟลเดอร์เป้าหมายไม่มีอยู่แล้ว
             if (!file_exists($uploadDirectory)) {
                 mkdir($uploadDirectory, 0755, true);
@@ -246,20 +252,19 @@ class BookController extends Controller
                     // ลบไฟล์ cover เดิม
                     unlink($oldCoverPath);
                 }
-            
             }
-        
+
             // ตรวจสอบว่าไฟล์ cover เดิมมีอยู่หรือไม่
-         
+
             // อัปโหลดไฟล์ cover ใหม่
             $request->cover->move($uploadDirectory, $image_name);
-        
+
             // สร้างและบันทึกพาธใหม่ลงในโมเดล
             $books->cover = 'upload/Book/' .  $book_id . '/' . $image_name;
             $books->save();
-        } 
-        
-        
+        }
+
+
 
 
         // บันทึกไฟล์ PDF และแปลงเป็นรูปภาพ
@@ -367,7 +372,6 @@ class BookController extends Controller
                     }
 
                     $books->bookfile =  'upload/Book/' . $book_id . '/' . 'index.html';
-            
                 }
             }
         } elseif ($request->book_type == 1) {
@@ -386,7 +390,6 @@ class BookController extends Controller
 
                     $books->bookfile = 'upload/Book/' .  $book_id . '/' . $image_bookfile;
                 }
-              
             }
         }
 

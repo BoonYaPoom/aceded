@@ -12,6 +12,7 @@ use App\Models\CourseSubject;
 use App\Models\Department;
 use Faker\Provider\File;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File as FacadesFile;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
@@ -66,7 +67,7 @@ class CourseLessonController extends Controller
                 ->withInput()
                 ->with('error', 'ข้อมูลไม่ถูกต้อง');
         }
-
+try{
         $lessons = new CourseLesson;
         $lessons->lesson_number = $request->lesson_number;
         $lessons->lesson_th = $request->lesson_th;
@@ -85,7 +86,13 @@ class CourseLessonController extends Controller
 
 
         $lessons->save();
+        DB::commit();
+    } catch (\Exception $e) {
 
+        DB::rollBack();
+
+        return response()->view('errors.500', [], 500);
+    }
         return redirect()->route('lessonpage', ['subject_id' => $subject_id])->with('message', 'Course_lesson บันทึกข้อมูลสำเร็จ');
     }
 

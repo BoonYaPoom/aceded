@@ -15,7 +15,7 @@ return new class extends Migration
             $table->charset = 'utf8';
             $table->collation = 'utf8_general_ci';
             $table->increments('kcj_id')->start(10000)->nocache();
-            $table->string('title', 250)->nullable()->collation('utf8_general_ci');
+            $table->string('title', 500)->nullable()->collation('utf8_general_ci');
             $table->string('cover', 400)->nullable()->collation('utf8_general_ci');
             $table->string('pathfile', 400)->nullable()->collation('utf8_general_ci');
             $table->longText('detail')->nullable()->collation('utf8_general_ci');
@@ -26,8 +26,8 @@ return new class extends Migration
             $table->string('recommended', 1)->nullable()->collation('utf8_general_ci');
             $table->dateTime('updatedate');
             $table->longText('reference')->nullable()->collation('utf8_general_ci');
-            $table->string('createby_position', 150)->nullable()->collation('utf8_general_ci');
-            $table->string('kcj_case_id', 50)->nullable()->collation('utf8_general_ci');
+            $table->string('createby_position', 300)->nullable()->collation('utf8_general_ci');
+            $table->string('kcj_case_id', 100)->nullable()->collation('utf8_general_ci');
             $table->string('kcj_member', 1)->nullable()->collation('utf8_general_ci');
         });
     }

@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('exam_th', 400)->collation('utf8_general_ci');
             $table->string('exam_en', 400)->nullable()->collation('utf8_general_ci');
             $table->string('exam_type', 1)->collation('utf8_general_ci');
-            $table->string('exam_status', 2)->collation('utf8_general_ci');
+            $table->string('exam_status', 2)->nullable()->collation('utf8_general_ci');
             $table->integer('exam_score');
             $table->longText('exam_options')->nullable()->collation('utf8_general_ci');
             $table->string('exam_select', 1)->nullable()->collation('utf8_general_ci');

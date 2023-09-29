@@ -42,6 +42,7 @@ class LinkController extends Controller
                 ->withInput()
                 ->with('error', 'ข้อมูลไม่ถูกต้อง');
         }
+        try{
         $links = new Links;
 
  
@@ -125,7 +126,13 @@ class LinkController extends Controller
 
 
         $loginLog->save();
+        DB::commit();
+    } catch (\Exception $e) {
 
+        DB::rollBack();
+
+        return response()->view('errors.500', [], 500);
+    }
         return redirect()->route('linkpage', ['department_id' => $department_id])->with('message', 'links บันทึกข้อมูลสำเร็จ');
     }
     public function edit($links_id)

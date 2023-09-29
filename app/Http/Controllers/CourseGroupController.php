@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\CourseGroup;
 use App\Models\Department;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 
 class CourseGroupController extends Controller
@@ -23,14 +24,20 @@ class CourseGroupController extends Controller
     $request->validate([
         'group_th' => 'required'
     ]);
-
+try{
     $courses = new CourseGroup;
     $courses->group_th = $request->group_th;
     $courses->group_en = $request->group_en;
     $courses->department_id = (int)$department_id;
     $courses->group_status  = $request->input('group_status ', 0);
     $courses->save();
+    DB::commit();
+} catch (\Exception $e) {
 
+    DB::rollBack();
+
+    return response()->view('errors.500', [], 500);
+}
     return redirect()->route('courgroup',['department_id' => $department_id])->with('message','CourseGroup บันทึกข้อมูลสำเร็จ');
 
    }

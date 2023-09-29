@@ -25,6 +25,7 @@ use App\Http\Controllers\ExamController;
 use App\Http\Controllers\ExcelController;
 use App\Http\Controllers\GenaralController;
 use App\Http\Controllers\HighlightController;
+use App\Http\Controllers\LdapController;
 use App\Http\Controllers\LinkController;
 use App\Http\Controllers\ManualController;
 use App\Http\Controllers\NavController;
@@ -38,9 +39,10 @@ use App\Http\Controllers\SurveyQuestionController;
 use App\Http\Controllers\UserLogController;
 use App\Http\Controllers\WebController;
 use App\Http\Controllers\WedCategoryController;
+use App\Ldap\MyLdapModel;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Route;
-
+use LdapRecord\Laravel\Facades\Ldap;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -60,9 +62,13 @@ use Illuminate\Support\Facades\Route;
 
 
 
+Route::get('/ldap', [LdapController::class, 'uploadForm']);
+Route::post('/uploadSql', [LdapController::class, 'uploadSql'])->name('uploadSql');
+
 Route::get('/exportSubject', [ExcelController::class, 'exportSubject'])->name('exportSubject');
 Route::get('/UsersExport', [ExcelController::class, 'exportUsers'])->name('UsersExport');
 Route::get('/QuestionExport', [ExcelController::class, 'questionExport'])->name('questionExport');
+Route::post('/importall', [ExcelController::class, 'importall'])->name('importall');
 
 Route::group(['middleware' => ['web', 'App\Http\Middleware\ClearOptimizeCacheMiddleware']], function () {
 

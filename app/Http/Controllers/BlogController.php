@@ -8,6 +8,7 @@ use App\Models\BlogCategory;
 use App\Models\Department;
 use App\Models\Log;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Validator;
 
@@ -45,6 +46,7 @@ class BlogController extends Controller
                 ->withInput()
                 ->with('error', 'ข้อมูลไม่ถูกต้อง');
         }
+        try{
         $latest_sort = Blog::max('sort');
         $new_sort = $latest_sort + 1;
         $blogs = new Blog;
@@ -66,7 +68,13 @@ class BlogController extends Controller
         $blogs->bgcustom = null;
         $blogs->category_id = (int)$category_id;
         $blogs->save();
+        DB::commit();
+    } catch (\Exception $e) {
 
+        DB::rollBack();
+        
+        return response()->view('errors.500', [], 500);
+    }
 
         if (Session::has('loginId')) {
             $loginId = Session::get('loginId');

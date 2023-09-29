@@ -29,7 +29,7 @@ return new class extends Migration
             $table->string('comment', 1)->nullable()->collation('utf8_general_ci');
             $table->longText('options')->nullable()->collation('utf8_general_ci');
             $table->string('activity_status', 1)->collation('utf8_general_ci');
-            $table->longText('detail')->collation('utf8_general_ci');
+            $table->longText('detail')->nullable()->collation('utf8_general_ci');
             $table->string('invite', 1)->nullable()->collation('utf8_general_ci');
             $table->integer('user_id');
         });

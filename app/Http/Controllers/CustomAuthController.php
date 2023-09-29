@@ -10,6 +10,7 @@ use App\Models\Users;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use LdapRecord\Container;
 
 
 class CustomAuthController extends Controller
@@ -113,7 +114,7 @@ class CustomAuthController extends Controller
     }
 
 
-
+    
     public function loginUser(Request $request)
     {
         $request->validate([
@@ -122,7 +123,7 @@ class CustomAuthController extends Controller
         ]);
     
         $user = Users::where('username', '=', $request->username)->first();
-    
+
         if ($user) {
             if (Hash::check($request->password, $user->password)) {
                 if ($user->user_role == 1 || $user->user_role == 3 && $user->userstatus == 1) {
@@ -139,7 +140,28 @@ class CustomAuthController extends Controller
         }
     }
     
-   
+    public function loginLdapUser(Request $request)
+    {
+        $request->validate([
+            'username' => 'required',
+            'password' => 'required|min:3|max:20'
+        ]);
+    
+        $user = Users::where('username', '=', $request->username)->first();
+
+        if ($user) {
+            if (Hash::check($request->password, $user->password)) {
+              
+
+            } else {
+                return back()->with('fail', 'รหัสผ่านไม่ถูกต้อง');
+            }
+
+        } else
+         {
+            return back()->with('fail', 'ไม่พบผู้ใช้ในระบบ');
+        }
+    }
    
     public function adminpage(){
 

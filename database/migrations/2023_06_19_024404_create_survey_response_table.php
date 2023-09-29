@@ -16,7 +16,7 @@ return new class extends Migration
             $table->collation = 'utf8_general_ci';
             $table->increments('response_id')->start(10000)->nocache();
             $table->integer('survey_id');
-            $table->dateTime('date')->nullable();
+            $table->dateTime('survey_date')->nullable();
             $table->integer('user_id');
             $table->longText('response')->nullable()->collation('utf8_general_ci');
 

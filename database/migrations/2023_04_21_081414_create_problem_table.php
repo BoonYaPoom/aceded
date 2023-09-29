@@ -17,7 +17,7 @@ return new class extends Migration
             $table->increments('problem_id')->start(10000)->nocache();
             $table->string('title', 400)->collation('utf8_general_ci');
             $table->string('detail', 400)->collation('utf8_general_ci');
-            $table->string('firsname', 400)->collation('utf8_general_ci');
+            $table->string('firstname', 400)->collation('utf8_general_ci');
             $table->string('lastname', 400)->nullable()->collation('utf8_general_ci');
             $table->string('email', 400)->collation('utf8_general_ci');
             $table->string('telephone', 50)->collation('utf8_general_ci');

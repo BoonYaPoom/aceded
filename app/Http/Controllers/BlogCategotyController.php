@@ -7,6 +7,7 @@ use App\Models\BlogCategory;
 use App\Models\Department;
 use App\Models\Log;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
@@ -38,6 +39,8 @@ class BlogCategotyController extends Controller
                 ->withInput()
                 ->with('error', 'ข้อมูลไม่ถูกต้อง');
         }
+        try {
+       
         $blogcat = new BlogCategory;
 
       
@@ -72,7 +75,13 @@ class BlogCategotyController extends Controller
             $blogcat->cover = $image_name;
             $blogcat->save();
         }
+        DB::commit();
+    } catch (\Exception $e) {
+
+        DB::rollBack();
         
+        return response()->view('errors.500', [], 500);
+    }
         if(Session::has('loginId')){
             $loginId = Session::get('loginId');
          

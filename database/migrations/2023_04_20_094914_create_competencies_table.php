@@ -16,8 +16,8 @@ return new class extends Migration
             $table->collation = 'utf8_general_ci';
             $table->increments('competencies_id')->start(10000)->nocache();
             $table->string('competencies_type', 1)->collation('utf8_general_ci');
-            $table->string('competencies_th', 50)->collation('utf8_general_ci');
-            $table->string('competencies_en', 50)->collation('utf8_general_ci');
+            $table->string('competencies_th', 200)->collation('utf8_general_ci');
+            $table->string('competencies_en', 200)->collation('utf8_general_ci');
         });
     }
 

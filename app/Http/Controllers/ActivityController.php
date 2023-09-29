@@ -7,6 +7,7 @@ use App\Models\ActivityCategory;
 use App\Models\Department;
 use App\Models\Users;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Validator;
 
@@ -125,6 +126,9 @@ class ActivityController extends Controller
         if (Session::has('loginId')) {
             $loginId = Session::get('loginId');
         }
+        
+        try {
+          
         $act = new Activity;
         $act->category_id = $category_id;
         $act->title = $request->title;
@@ -150,6 +154,14 @@ class ActivityController extends Controller
         $act->invite = null;
         $act->user_id = $loginId;
         $act->save();
+        
+        DB::commit();
+    } catch (\Exception $e) {
+
+        DB::rollBack();
+        
+        return response()->view('errors.500', [], 500);
+    }
         return redirect()->route('activiList', ['category_id' => $category_id])->with('message', 'Success Acti');
     }
 

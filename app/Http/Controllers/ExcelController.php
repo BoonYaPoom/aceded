@@ -8,6 +8,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Exports\UsersExport;
+use App\Imports\CouseImport;
 use App\Imports\QuestionsImportClass;
 use App\Imports\UsersImportClass;
 use App\Models\CourseLesson;
@@ -29,6 +30,16 @@ class ExcelController extends Controller
     public function questionExport()
     {
         return Excel::download(new QuestionExport, 'Question System.xlsx');
+    }
+
+    public function importall(Request $request) 
+    {
+
+
+        // ใช้คำสั่ง Excel::import เพื่อนำเข้าข้อมูล CSV
+        Excel::import(new CouseImport, $request->file('csv'));
+
+        return back()->with('success', 'Imported successfully');
     }
     public function Questionimport(Request $request, $subject_id)
     {

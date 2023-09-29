@@ -10,6 +10,7 @@ use App\Models\Department;
 use App\Models\Users;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
 use Intervention\Image\Facades\Image;
@@ -62,7 +63,7 @@ class CourseClassController extends Controller
 
     public function store(Request $request, $course_id)
     {
-
+            try{
         $class = new CourseClass;
         $class->class_name = $request->class_name;
         $class->course_id = (int)$course_id;
@@ -83,7 +84,13 @@ class CourseClassController extends Controller
         $class->endcourse = null;
         $class->save();
 
+        DB::commit();
+    } catch (\Exception $e) {
 
+        DB::rollBack();
+
+        return response()->view('errors.500', [], 500);
+    }
         return redirect()->route('class_page', ['course_id' => $course_id])->with('message', 'CourseClass บันทึกข้อมูลสำเร็จ');
     }
 

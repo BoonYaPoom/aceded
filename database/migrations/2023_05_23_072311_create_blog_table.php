@@ -16,9 +16,9 @@ return new class extends Migration
             $table->collation = 'utf8_general_ci';
             $table->increments('blog_id')->start(10000)->nocache();
             $table->string('title',400)->collation('utf8_general_ci');
-            $table->string('title_en',400)->default('')->collation('utf8_general_ci');
-            $table->longText('detail')->collation('utf8_general_ci');
-            $table->longText('detail_en')->collation('utf8_general_ci');
+            $table->string('title_en',400)->nullable()->default('')->collation('utf8_general_ci');
+            $table->longText('detail')->nullable()->collation('utf8_general_ci');
+            $table->longText('detail_en')->nullable()->collation('utf8_general_ci');
             $table->dateTime('blog_date');
             $table->string('blog_status',1)->collation('utf8_general_ci');
             $table->string('author',100)->nullable()->collation('utf8_general_ci');

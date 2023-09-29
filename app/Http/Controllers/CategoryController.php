@@ -6,6 +6,7 @@ use App\Models\Category;
 use App\Models\CourseSubject;
 use App\Models\Department;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 
 class CategoryController extends Controller
@@ -42,6 +43,7 @@ class CategoryController extends Controller
                 ->withInput()
                 ->with('error', 'ข้อมูลไม่ถูกต้อง');
         }
+        try{
         $catac = new Category;
 
         $catac->category_th = $request->category_th;
@@ -58,7 +60,13 @@ class CategoryController extends Controller
         $catac->subject_id = (int)$subject_id;
         $catac->save();
 
+        DB::commit();
+    } catch (\Exception $e) {
 
+        DB::rollBack();
+
+        return response()->view('errors.500', [], 500);
+    }
         return redirect()->route('categoryac', ['subject_id' => $subject_id])->with('message', 'Category บันทึกข้อมูลสำเร็จ');
     }
     public function edit($category_id)

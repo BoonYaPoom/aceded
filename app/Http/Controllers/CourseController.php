@@ -9,6 +9,7 @@ use App\Models\CourseSubject;
 use App\Models\Department;
 use App\Models\PersonType;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 
@@ -51,6 +52,7 @@ class CourseController extends Controller
                 ->withInput()
                 ->with('error', 'ข้อมูลไม่ถูกต้อง');
         }
+        try{
         $code = Course::generateCourseCode($group_id);
         $group = CourseGroup::find($group_id);
         $department_id = $group->department_id;
@@ -188,7 +190,13 @@ class CourseController extends Controller
             $cour->cert_custom = $image_cert_custom;
             $cour->save();
         }
+        DB::commit();
+    } catch (\Exception $e) {
 
+        DB::rollBack();
+
+        return response()->view('errors.500', [], 500);
+    }
         return redirect()->route('courpag', ['group_id' => $cour->group_id])->with('message', 'CourseGroup บันทึกข้อมูลสำเร็จ');
     }
     public function edit($course_id)

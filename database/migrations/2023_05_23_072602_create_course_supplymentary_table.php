@@ -17,7 +17,7 @@ return new class extends Migration
             $table->increments('supplymentary_id')->start(10000)->nocache();
             $table->string('title_th', 400)->collation('utf8_general_ci');
             $table->string('title_en', 400)->nullable()->collation('utf8_general_ci');
-            $table->longText('path')->collation('utf8_general_ci');
+            $table->longText('path')->nullable()->collation('utf8_general_ci');
             $table->longText('cover_image')->nullable()->collation('utf8_general_ci');
             $table->string('author', 100)->nullable()->collation('utf8_general_ci');
             $table->string('supplymentary_status', 1)->nullable()->collation('utf8_general_ci');

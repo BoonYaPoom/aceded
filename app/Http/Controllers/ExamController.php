@@ -10,6 +10,7 @@ use App\Models\Question;
 use App\Models\QuestionType;
 use App\Models\SurveyQuestion;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 
 class ExamController extends Controller
@@ -37,53 +38,60 @@ class ExamController extends Controller
   }
   public function storeexam(Request $request, $subject_id)
   {
-    $exams = new Exam;
-    $exams->exam_th = $request->exam_th;
-    $exams->exam_en = $request->exam_en;
-    $exams->exam_type = 2;
-    $exams->exam_status  = $request->exam_status;
-    $exams->exam_score  = $request->exam_score;
-    $exams->exam_options  = null;
-    $exam_status = $request->input('exam_status', 0);
-    $exams->exam_status = $exam_status;
-    $exam_select = $request->input('exam_select', 0);
-    $exams->exam_select = $exam_select;
-    $showanswer = $request->input('showanswer', 0);
-    $exams->showanswer = $showanswer;
-    $showscore = $request->input('showscore', 0);
-    $exams->showscore = $showscore;
-    $limitdatetime = $request->input('limitdatetime', 0);
-    $exams->limitdatetime = $limitdatetime;
-    $limittime = $request->input('limittime', 0);
-    $exams->limittime = $limittime;
-    if ($exam_select == 0) {
-      $exam_data = $request->input('exam_data');
-      $exams->exam_data = !empty($exam_data) ? json_encode($exam_data) : '';
-    } elseif ($exam_select == 1) {
-      $exam_data1 = $request->input('randomdata');
-      $exams->exam_data = !empty($exam_data1) ? json_encode($exam_data1) : '';
+    try {
+      $exams = new Exam;
+      $exams->exam_th = $request->exam_th;
+      $exams->exam_en = $request->exam_en;
+      $exams->exam_type = 2;
+      $exams->exam_status  = $request->exam_status;
+      $exams->exam_score  = $request->exam_score;
+      $exams->exam_options  = null;
+      $exam_status = $request->input('exam_status', 0);
+      $exams->exam_status = $exam_status;
+      $exam_select = $request->input('exam_select', 0);
+      $exams->exam_select = $exam_select;
+      $showanswer = $request->input('showanswer', 0);
+      $exams->showanswer = $showanswer;
+      $showscore = $request->input('showscore', 0);
+      $exams->showscore = $showscore;
+      $limitdatetime = $request->input('limitdatetime', 0);
+      $exams->limitdatetime = $limitdatetime;
+      $limittime = $request->input('limittime', 0);
+      $exams->limittime = $limittime;
+      if ($exam_select == 0) {
+        $exam_data = $request->input('exam_data');
+        $exams->exam_data = !empty($exam_data) ? json_encode($exam_data) : '';
+      } elseif ($exam_select == 1) {
+        $exam_data1 = $request->input('randomdata');
+        $exams->exam_data = !empty($exam_data1) ? json_encode($exam_data1) : '';
+      }
+      $exams->maxtake  = $request->maxtake;
+      $exams->randomquestion   = $request->randomquestion;
+      $exams->randomchoice   = $request->randomchoice;
+      $time1 = $request->input('time1');
+      $time2 = $request->input('time2');
+      $data1 = $request->input('date1');
+      $data2 = $request->input('date2');
+      $exams->setdatetime = !empty($time1) || !empty($time2) || !empty($data1) || !empty($data2) ? json_encode(['date1' => $data1, 'date2' => $data2, 'time1' => $time1, 'time2' => $time2]) : '';
+      $setminute = $request->input('setminute');
+      $sethour = $request->input('sethour');
+      $exams->settime = !empty($setminute) || !empty($sethour) ? json_encode(['hour' => $sethour, 'minute' => $setminute]) : '';
+      $exams->survey_before   = $request->survey_before;
+      $exams->survey_after   = $request->survey_after;
+      $exams->lesson_id    = 0;
+      $exams->perpage    = $request->perpage;
+      $exams->score_pass   = $request->score_pass;
+      $exams->subject_id = $subject_id;
+
+      $exams->save();
+
+      DB::commit();
+    } catch (\Exception $e) {
+
+      DB::rollBack();
+
+      return response()->view('errors.500', [], 500);
     }
-    $exams->maxtake  = $request->maxtake;
-    $exams->randomquestion   = $request->randomquestion;
-    $exams->randomchoice   = $request->randomchoice;
-    $time1 = $request->input('time1');
-    $time2 = $request->input('time2');
-    $data1 = $request->input('date1');
-    $data2 = $request->input('date2');
-    $exams->setdatetime = !empty($time1) || !empty($time2) || !empty($data1) || !empty($data2) ? json_encode(['date1' => $data1, 'date2' => $data2, 'time1' => $time1, 'time2' => $time2]) : '';
-    $setminute = $request->input('setminute');
-    $sethour = $request->input('sethour');
-    $exams->settime = !empty($setminute) || !empty($sethour) ? json_encode(['hour' => $sethour, 'minute' => $setminute]) : '';
-    $exams->survey_before   = $request->survey_before;
-    $exams->survey_after   = $request->survey_after;
-    $exams->lesson_id    = 0;
-    $exams->perpage    = $request->perpage;
-    $exams->score_pass   = $request->score_pass;
-    $exams->subject_id = $subject_id;
-
-    $exams->save();
-
-
 
     return redirect()->route('exampage', ['subject_id' => $subject_id])->with('message', 'Exam add successfully');
   }

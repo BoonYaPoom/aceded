@@ -22,11 +22,13 @@ return new class extends Migration
             $table->dateTime('category_date');
             $table->dateTime('category_update')->nullable();
             $table->string('category_status', 1)->collation('utf8_general_ci');
-            $table->string('category_type', 1)->collation('utf8_general_ci');
+            $table->string('category_type', 1)->nullable()->collation('utf8_general_ci');
             $table->string('category_option', 400)->nullable()->collation('utf8_general_ci');
             $table->string('recommended', 1)->collation('utf8_general_ci');
             $table->string('cover', 400)->nullable()->collation('utf8_general_ci');
             $table->integer('department_id')->nullable();
+            $table->string('startdate', 50)->collation('utf8_general_ci')->nullable();
+            $table->string('enddate', 50)->collation('utf8_general_ci')->nullable();
         });
     }
 

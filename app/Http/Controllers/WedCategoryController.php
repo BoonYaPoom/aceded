@@ -6,6 +6,7 @@ use App\Models\Department;
 use App\Models\Log;
 use App\Models\WebCategory;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
@@ -54,6 +55,7 @@ class WedCategoryController extends Controller
                 ->withInput()
                 ->with('error', 'ข้อมูลไม่ถูกต้อง');
         }
+        try{
         $wed = new WebCategory;
        
 
@@ -138,7 +140,13 @@ class WedCategoryController extends Controller
 
 
         $loginLog->save();
+        DB::commit();
+    } catch (\Exception $e) {
 
+        DB::rollBack();
+
+        return response()->view('errors.500', [], 500);
+    }
 
         return redirect()->route('evenpage', ['department_id' => $department_id])->with('message', 'Data saved successfully');
     }
@@ -148,6 +156,7 @@ class WedCategoryController extends Controller
             'category_th' => 'required'
 
         ]);
+        try{
         $wed = new WebCategory;
       
       
@@ -232,7 +241,14 @@ class WedCategoryController extends Controller
 
         $loginLog->save();
 
+        $loginLog->save();
+        DB::commit();
+    } catch (\Exception $e) {
 
+        DB::rollBack();
+
+        return response()->view('errors.500', [], 500);
+    }
         return redirect()->route('acteven', ['department_id' => $department_id])->with('message', 'Data saved successfully');
     }
     public function edit($category_id)

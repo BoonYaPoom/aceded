@@ -55,6 +55,7 @@ class ManualController extends Controller
             $manuals->manual_type = 1;
             $manuals->save();
         
+    
             DB::commit();
         } catch (\Exception $e) {
     

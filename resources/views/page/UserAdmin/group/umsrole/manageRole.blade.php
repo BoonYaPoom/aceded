@@ -9,7 +9,7 @@
             <div class="card card-fluid">
                 <!-- .card-header -->
                 <div class="card-header bg-muted"><a href="{{ route('UserManage') }}">ผู้ใช้งาน</a> / <a
-                        href="{{ route('personTypes') }}">กลุ่มผู้ใช้งาน</a></div>
+                        href="{{ route('personTypes') }}">กลุ่มประเภทผู้ใช้งาน</a></div>
                 <!-- .card-body -->
                 <div class="card-body">
                     <div class="form-actions ">
@@ -31,7 +31,7 @@
                             <thead>
                                 <tr class="bg-infohead">
                                     <th width="5%">ลำดับ</th>
-                                    <th>กลุ่มผู้ใช้งาน</th>
+                                    <th>ประเภทผู้ใช้งาน</th>
                                     <th width="8%">จำนวน</th>
                                     <th width="8%">เพิ่มสมาชิก</th>
                                     <th width="12%" class="text-center">กระทำ</th>

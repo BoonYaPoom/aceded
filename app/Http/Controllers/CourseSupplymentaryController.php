@@ -9,6 +9,7 @@ use App\Models\CourseSupplymentary;
 use App\Models\CourseSupplymentaryType;
 use App\Models\Department;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 
@@ -50,6 +51,7 @@ class CourseSupplymentaryController extends Controller
                 ->withInput()
                 ->with('error', 'ข้อมูลไม่ถูกต้อง');
         }
+        try{
         $supplys = new CourseSupplymentary;
 
 
@@ -79,7 +81,13 @@ class CourseSupplymentaryController extends Controller
         $supplys->lesson_id = 0;
 
         $supplys->save();
+        DB::commit();
+    } catch (\Exception $e) {
 
+        DB::rollBack();
+
+        return response()->view('errors.500', [], 500);
+    }
         return redirect()->route('supplypage', ['subject_id' => $subject_id])->with('message', 'Course_lesson บันทึกข้อมูลสำเร็จ');
     }
 

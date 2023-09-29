@@ -7,6 +7,7 @@ use App\Models\Highlight;
 use App\Models\Log;
 use App\Models\Users;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Storage;
 
@@ -24,6 +25,7 @@ class HighlightController extends Controller
             'highlight_path' => 'required'
 
         ]);
+        try{
         $hights = new Highlight;
 
         $image_name = time() . '.' . $request->highlight_path->getClientOriginalExtension();
@@ -92,7 +94,13 @@ class HighlightController extends Controller
 
 
         $loginLog->save();
+        DB::commit();
+    } catch (\Exception $e) {
 
+        DB::rollBack();
+
+        return response()->view('errors.500', [], 500);
+    }
 
         return redirect()->route('hightpage')->with('message', 'hightpage บันทึกข้อมูลสำเร็จ');
     }

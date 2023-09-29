@@ -36,7 +36,7 @@
                                 @php($i = 0)
                                 @foreach ($act as $a)
                                     @php($i++)
-                                    @if ($a->category_id == 1)
+                                    @if ($a->category_id == 10000)
                                         @include('page.dls.cop.activitycat.item.cat1item.cat1')
                                     @elseif($a->category_id == 2)
                                         @include('page.dls.cop.activitycat.item.cat2item.cat2')
