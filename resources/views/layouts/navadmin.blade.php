@@ -9,7 +9,8 @@ a</aside>
                                 class="menu-icon fas fa-home "></span>
                             หน้าแรก</a>
                         
-                        <a class="nav-link  font-weight-bold {{ Str::startsWith(request()->url(), route('Reportview')) || request()->is('report', 'report/*')
+                            @if($data->user_role == 1)
+                                  <a class="nav-link  font-weight-bold {{ Str::startsWith(request()->url(), route('Reportview')) || request()->is('report', 'report/*')
                             ? ' active text-info'
                             : '' }}"
                             href="{{ route('D0100') }}"><span class="menu-icon fas fa-chart-bar  "></span> รายงาน</a>
@@ -19,7 +20,7 @@ a</aside>
                             href="{{ route('UserManage') }}"><span class="menu-icon fas fa-users-cog  "></span>
                             จัดการผู้ใช้</a>
 
-
+@endif
                         <!-- End Account Sidebar Toggle Button -->
                         </li>
                     </div>

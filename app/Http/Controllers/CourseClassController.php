@@ -6,6 +6,7 @@ use App\Models\Course;
 use App\Models\CourseClass;
 use App\Models\CourseGroup;
 use App\Models\CourseLearner;
+use App\Models\CourseSubject;
 use App\Models\Department;
 use App\Models\Users;
 use Illuminate\Http\Request;
@@ -89,7 +90,7 @@ class CourseClassController extends Controller
 
         DB::rollBack();
 
-        return response()->view('errors.500', [], 500);
+        return response()->view('error.error-500', [], 500);
     }
         return redirect()->route('class_page', ['course_id' => $course_id])->with('message', 'CourseClass บันทึกข้อมูลสำเร็จ');
     }
@@ -216,6 +217,24 @@ class CourseClassController extends Controller
         $department_id = $courses->department_id;
         $depart= Department::find($department_id); 
         return view('page.manage.group.co.classrooms.item.report.report', compact('cour', 'learners', 'm','courses','depart'));
+    }
+    public function gpapage($course_id,$m)
+    {
+        $jsonContent = file_get_contents('javascript/json/_data.json');
+        $mms = json_decode($jsonContent, true);
+        $monthdata = $mms['month'];
+        $month = $monthdata['th'];
+        $cour = Course::findOrFail($course_id);
+
+        $learners =  $cour->learnCouse()->where('course_id', $course_id)->get();
+        $group_id = $cour->group_id;
+        $courses = CourseGroup::findOrFail($group_id);
+        $department_id = $courses->department_id;
+        $depart= Department::find($department_id); 
+
+     
+      
+        return view('page.manage.group.co.classrooms.item.report.gpapage', compact('cour', 'learners', 'm','courses','depart'));
     }
     public function congratuation($course_id,$m)
     {

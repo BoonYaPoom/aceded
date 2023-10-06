@@ -317,7 +317,7 @@
                 </div><!-- /.card -->
                 @include('page.manage.sub.exam.Model.modelExamEdit')
 
-               
+
 
 
                 <!-- .form-actions -->
@@ -335,30 +335,35 @@
                 $("#checkall").click(function() {
                     $('.custom-control-input').prop('checked', $(this).prop('checked'));
                 });
-
+        
                 $('#examselectdata').click(function(e) {
                     e.preventDefault();
                     var all_qusr = [];
-
+        
                     $("input:checkbox[name='exam_data[]']:checked").each(function() {
                         all_qusr.push($(this).val());
                     });
-
+        
                     var all_less = [];
                     $('select[name^="randomdata"]').each(function(index) {
                         var selectedValue = $(this).val();
                         var selectId = $(this).attr('id');
-                        var data = {
-                            [selectId]: selectedValue
-                        };
-                        all_less.push(data);
+                        
+                        // เพิ่มเงื่อนไขเช็ค selectedValue ไม่เป็น 0 ก่อนเพิ่มข้อมูลลงใน all_less
+                        if (selectedValue !== '0') {
+                            var data = {
+                                [selectId]: selectedValue
+                            };
+                            all_less.push(data);
+                        }
                     });
-
+        
                     console.log(all_qusr);
                     console.log(all_less);
                 });
             });
         </script>
+        
 
         <script>
             var limittimeCheckbox = document.getElementById('limittime');

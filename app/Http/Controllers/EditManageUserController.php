@@ -19,19 +19,19 @@ class EditManageUserController extends Controller
     public function UserManage(Request $request, $user_role = null)
     {
         $usermanages = Users::query();
-    
+
         if ($user_role !== null) {
             $usermanages->where('user_role', $user_role);
         }
-    
+
         $usermanages = $usermanages->get();
-    
+
         return view('page.UserAdmin.indexview', compact('usermanages'));
     }
-    
-    
-    
-    
+
+
+
+
 
     public function edit($user_id)
     {
@@ -49,15 +49,15 @@ class EditManageUserController extends Controller
             $image_name = 'avatar' .  $user_id . '.' . $request->avatar->getClientOriginalExtension();
             $image = Image::make($request->avatar)->resize(400, 400);
             $uploadDirectory = public_path('upload/Profile/' . $image_name);
-            
+
             if (!file_exists(dirname($uploadDirectory))) {
                 mkdir(dirname($uploadDirectory), 0755, true);
             }
-        
+
             $image->save($uploadDirectory);
-            $usermanages->avatar = 'upload/Profile/' . 'avatar' .  $user_id .'.' . $request->avatar->getClientOriginalExtension();
+            $usermanages->avatar = 'upload/Profile/' . 'avatar' .  $user_id . '.' . $request->avatar->getClientOriginalExtension();
         }
-        
+
         // ... อัปเดตฟิลด์อื่น ๆ ตามต้องการ
         $usermanages->username = $request->username;
         $usermanages->firstname = $request->firstname;
@@ -219,8 +219,4 @@ class EditManageUserController extends Controller
 
         return redirect()->route('UserManage')->with('message', 'แก้ไขโปรไฟล์สำเร็จ');
     }
-
-
-
-   
 }

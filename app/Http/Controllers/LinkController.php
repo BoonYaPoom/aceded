@@ -131,7 +131,7 @@ class LinkController extends Controller
 
         DB::rollBack();
 
-        return response()->view('errors.500', [], 500);
+        return response()->view('error.error-500', [], 500);
     }
         return redirect()->route('linkpage', ['department_id' => $department_id])->with('message', 'links บันทึกข้อมูลสำเร็จ');
     }

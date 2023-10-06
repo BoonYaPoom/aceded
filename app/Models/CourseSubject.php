@@ -50,4 +50,5 @@ class CourseSubject extends Model
     {
         return $this->hasMany(Category::class, 'subject_id');
     }
+  
 }

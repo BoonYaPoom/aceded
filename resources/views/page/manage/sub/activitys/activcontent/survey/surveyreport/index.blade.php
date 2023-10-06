@@ -67,10 +67,12 @@
                             <!-- tbody -->
 
                             <tbody>
-                       
+                                                    @php
+                                                        $qi = 1 ;
+                                                    @endphp
                                 @foreach ($surques->sortBy('question_id') as $item)
                                     <tr>
-                                        <td><a href="#">{{ $item->question_id }}</a></td>
+                                        <td><a href="#">{{ $qi++ }}</a></td>
                                         <td>{!! $item->question !!}</td>
                                         <td>{{ $item->question_type == 1 ? 'ตัวเลือก' : ($item->question_type == 2 ? 'หลายมิติ' : 'เขียนอธิบาย') }}
                                         </td>

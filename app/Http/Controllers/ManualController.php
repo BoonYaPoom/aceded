@@ -61,7 +61,7 @@ class ManualController extends Controller
     
             DB::rollBack();
             
-            return response()->view('errors.500', [], 500);
+            return response()->view('error.error-500', [], 500);
         }
     
         if ($request->hasFile('cover')) {

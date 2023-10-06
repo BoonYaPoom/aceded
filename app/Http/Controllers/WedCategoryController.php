@@ -145,7 +145,7 @@ class WedCategoryController extends Controller
 
         DB::rollBack();
 
-        return response()->view('errors.500', [], 500);
+        return response()->view('error.error-500', [], 500);
     }
 
         return redirect()->route('evenpage', ['department_id' => $department_id])->with('message', 'Data saved successfully');
@@ -247,7 +247,7 @@ class WedCategoryController extends Controller
 
         DB::rollBack();
 
-        return response()->view('errors.500', [], 500);
+        return response()->view('error.error-500', [], 500);
     }
         return redirect()->route('acteven', ['department_id' => $department_id])->with('message', 'Data saved successfully');
     }

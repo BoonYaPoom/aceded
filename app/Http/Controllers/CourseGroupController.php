@@ -36,7 +36,7 @@ try{
 
     DB::rollBack();
 
-    return response()->view('errors.500', [], 500);
+    return response()->view('error.error-500', [], 500);
 }
     return redirect()->route('courgroup',['department_id' => $department_id])->with('message','CourseGroup บันทึกข้อมูลสำเร็จ');
 

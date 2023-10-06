@@ -32,7 +32,7 @@
                         </div><!-- /.form-group -->
                         <div class="form-group">
                             <label for="detail_th">รายละเอียด </label>
-                            <textarea class="ckeditor" data-placeholder="รายละเอียด" data-height="200" name="detail_th"
+                            <textarea class="editor" data-placeholder="รายละเอียด" data-height="200" name="detail_th"
                                 value="{{ $sur->detail_th }}">{{ $sur->detail_th }}</textarea>
                         </div><!-- /.form-group -->
                         @error('detail_th')
@@ -41,7 +41,7 @@
                         <!-- .form-group -->
                         <div class="form-group d-none">
                             <label for="detail_en">รายละเอียด (อังกฤษ)</label>
-                            <textarea class="ckeditor" data-placeholder="รายละเอียด (อังกฤษ)" data-height="200" name="detail_en"></textarea>
+                            <textarea class="editor" data-placeholder="รายละเอียด (อังกฤษ)" data-height="200" name="detail_en"></textarea>
                         </div><!-- /.form-group -->
                         <!-- .form-group -->
                         <div class="form-group">

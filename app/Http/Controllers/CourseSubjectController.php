@@ -123,7 +123,7 @@ class CourseSubjectController extends Controller
         $exam1->exam_th = 'แบบทดสอบก่อนเรียน';
         $exam1->exam_en = 'Pretest';
         $exam1->exam_type = 1;
-        $exam1->exam_status  = 1;
+        $exam1->exam_status  = 0;
         $exam1->exam_score  = 0;
         $exam1->exam_options  = null;
         $exam1->exam_select  = 1;
@@ -151,7 +151,7 @@ class CourseSubjectController extends Controller
         $exam2->exam_th = 'แบบทดสอบหลังเรียน';
         $exam2->exam_en = 'Posttest';
         $exam2->exam_type = 2;
-        $exam2->exam_status  = 1;
+        $exam2->exam_status  = 0;
         $exam2->exam_score  = 0;
         $exam2->exam_options  = null;
         $exam2->exam_select  = 1;
@@ -184,7 +184,7 @@ class CourseSubjectController extends Controller
         $sur->survey_date = now();
         $sur->department_id = $subs->department_id;;
 
-        $sur->survey_status = 1;
+        $sur->survey_status = 0;
         $sur->survey_type = 1;
         $sur->recommended = null;
         $sur->class_id = null;
@@ -199,7 +199,7 @@ class CourseSubjectController extends Controller
         $sur1->detail_en = null;
         $sur1->survey_date = now();
         $sur1->department_id = $subs->department_id;;
-        $sur1->survey_status = 1;
+        $sur1->survey_status = 0;
         $sur1->survey_type = 2;
         $sur1->recommended = null;
         $sur1->class_id = null;
@@ -212,7 +212,7 @@ class CourseSubjectController extends Controller
 
         DB::rollBack();
 
-        return response()->view('errors.500', [], 500);
+        return response()->view('error.error-500', [], 500);
     }
         return redirect()->route('suppage', ['department_id' => $department_id])->with('message', 'CourseSub บันทึกข้อมูลสำเร็จ');
     }

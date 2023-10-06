@@ -8,9 +8,6 @@ CKEDITOR.editorConfig = function( config ) {
 	config.enterMode = CKEDITOR.ENTER_BR;
 	config.shiftEnterMode = CKEDITOR.ENTER_P;
 	config.uiColor = '#F09BA4';
-	config.filebrowserBrowseUrl = '//e-learning.ago.go.th/admin/vendor/ckeditor4/plugins/ajaxfilemanager/ajaxfilemanager.php';
-	config.filebrowserImageBrowseUrl = '//e-learning.ago.go.th/admin/vendor/ckeditor4/plugins/ajaxfilemanager/ajaxfilemanager.php';
-	config.filebrowserFlashBrowseUrl = '//e-learning.ago.go.th/admin/vendor/ckeditor4/plugins/ajaxfilemanager/ajaxfilemanager.php';
 	config.removePlugins = 'about,flash,font';
 
 	

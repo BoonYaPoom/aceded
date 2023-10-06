@@ -68,11 +68,10 @@
                         </div><!-- /.form-group -->
                         <div class="form-group">
                             <div class="col-lg-10">
-                                <img src="{{ asset($cour->cover) }}"
-                                    alt="{{ $cour->cover }}" style="width:50%">
+                                <img src="{{ asset($cour->cover) }}" alt="{{ $cour->cover }}" style="width:50%">
                             </div>
                         </div><!-- /.form-group -->
-            
+
                         <div class="form-group">
                             <label for="subject">วิชาในหลักสูตร</label> <select id="subject" name="subject[]"
                                 class="form-control" data-toggle="select2" data-placeholder="วิชาในหลักสูตร"
@@ -82,9 +81,17 @@
                                     @php
                                         $courArray2 = json_decode($cour->subject, true);
                                     @endphp
+                                   
+                                    @if (is_array($courArray2))
                                     <option value="{{ $subjects->subject_id }}"
                                         {{ in_array($subjects->subject_id, $courArray2) ? 'selected' : '' }}>
                                         {{ $subjects->subject_th }}</option>
+                                    @else
+                                        <!-- กรณี $courArray ไม่ใช่อาร์เรย์ -->
+                                        <option value="{{ $subjects->subject_id }}">
+                                            {{ $subjects->subject_th }}
+                                        </option>
+                                    @endif
                                 @endforeach
                             </select>
                         </div><!-- /.form-group -->
@@ -110,7 +117,7 @@
                                         id="hours" name="hours" class="form-control  " data-toggle="select2"
                                         data-placeholder="จำนวนวัน" data-allow-clear="false">
                                         <option value="0">เลือกจำนวนชั่วโมงเรียน</option>
-                                        @for ($i = 1; $i <= 500; $i++)
+                                        @for ($i = 1; $i <= 24; $i++)
                                             <option value="{{ $i }}"
                                                 {{ $i == $cour->hours ? 'selected' : '' }}> {{ $i }} </option>
                                         @endfor
@@ -446,10 +453,17 @@
                                                 @php
                                                     $courArray = json_decode($cour->person_type, true);
                                                 @endphp
-                                                <option value="{{ $pypes->person_type }}"
-                                                    {{ in_array($pypes->person_type, $courArray) ? 'selected' : '' }}>
-                                                    {{ $pypes->person }}
-                                                </option>
+                                                @if (is_array($courArray))
+                                                    <option value="{{ $pypes->person_type }}"
+                                                        {{ in_array($pypes->person_type, $courArray) ? 'selected' : '' }}>
+                                                        {{ $pypes->person }}
+                                                    </option>
+                                                @else
+                                                    <!-- กรณี $courArray ไม่ใช่อาร์เรย์ -->
+                                                    <option value="{{ $pypes->person_type }}">
+                                                        {{ $pypes->person }}
+                                                    </option>
+                                                @endif
                                             @endforeach
 
                                         </select>
@@ -613,7 +627,7 @@
                                 <div class="col-md-12 ">
                                     <div class="form-group">
                                         <label class="control-label" for="paymentdetail">ข้อมูลการชำระเงิน</label>
-                                        <textarea class="ckeditor" data-placeholder="ข้อมูลการชำระเงิน" data-height="200" id="paymentdetail"
+                                        <textarea class="editor" data-placeholder="ข้อมูลการชำระเงิน" data-height="200" id="paymentdetail"
                                             name="paymentdetail"> {{ $cour->paymentdetail }}</textarea>
                                     </div>
                                 </div><!-- /grid column -->
@@ -743,8 +757,7 @@
                                     <div class="card card-figure">
                                         <!-- .card-figure -->
                                         <figure class="figure">
-                                            <img class="img-fluser_id"
-                                            src="{{ asset('upload/cer/certificate_1.png') }}"
+                                            <img class="img-fluser_id" src="{{ asset('upload/cer/certificate_1.png') }}"
                                                 alt="ใบประกาศนียบัตร  1 " style="cursor:zoom-in"
                                                 onclick="$('#previewimage').prop('src',$(this).prop('src'));$('#modal01').css('display','block');">
                                             <!-- .figure-caption -->

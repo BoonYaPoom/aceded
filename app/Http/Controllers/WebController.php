@@ -136,7 +136,7 @@ class WebController extends Controller
 
         DB::rollBack();
 
-        return response()->view('errors.500', [], 500);
+        return response()->view('error.error-500', [], 500);
     }
         return redirect()->route('catpage', ['category_id' => $category_id])->with('message', 'Data update successfully');
     }

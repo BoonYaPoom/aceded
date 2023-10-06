@@ -57,7 +57,7 @@
                         <!-- .form-group -->
                         <div class="form-group">
                             <label for="question">คำถาม <span class="badge badge-warning">Required</span></label>
-                            <textarea class="ckeditor" data-placeholder="คำถาม" data-height="150" name="question" id="question">{{ $surques->question }}</textarea>
+                            <textarea class="editor" data-placeholder="คำถาม" data-height="150" name="question" id="question">{{ $surques->question }}</textarea>
                         </div><!-- /.form-group -->
 
                         <div id="data1"

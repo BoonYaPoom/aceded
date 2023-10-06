@@ -42,13 +42,13 @@
                         <!-- .form-group -->
                         <div class="form-group d-none">
                             <label for="description">คำอธิบายบทเรียน</label>
-                            <textarea class="ckeditor" data-placeholder="คำอธิบายบทเรียน" data-height="200" name="description"></textarea>
+                            <textarea class="editor" data-placeholder="คำอธิบายบทเรียน" data-height="200" name="description"></textarea>
                         </div>
                         <!-- /.form-group -->
                         <!-- .form-group -->
                         <div class="form-group">
                             <label for="resultlesson">สิ่งที่ได้รับจากบทเรียน</label>
-                            <textarea class="ckeditor" data-placeholder="สิ่งที่ได้รับจากบทเรียน" data-height="200" name="resultlesson">{{$lessons->resultlesson}}</textarea>
+                            <textarea class="editor" data-placeholder="สิ่งที่ได้รับจากบทเรียน" data-height="200" name="resultlesson">{{$lessons->resultlesson}}</textarea>
                         </div>
                         <!-- /.form-group -->
                         <!-- .form-group -->

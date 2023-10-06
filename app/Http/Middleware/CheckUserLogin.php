@@ -42,7 +42,7 @@ class CheckUserLogin
 
             }
         } catch (\Exception $e) {
-            return response()->view('errors.500', [], 500);
+            return response()->view('error.error-500', [], 500);
         }
             
         return $next($request);

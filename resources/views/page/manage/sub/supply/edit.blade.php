@@ -182,9 +182,12 @@
                             </thead>
                             <!-- tbody -->
                             <tbody class="showbook">
+                                @php
+                                $BB = 1 ;
+                            @endphp
                                 @foreach ($books as $book)
                                     <tr>
-                                        <td class="align-middle" style="width: 10%">{{ $book->book_id }}</td>
+                                        <td class="align-middle" style="width: 10%">{{ $BB++ }}</td>
                                         <td class="align-middle" style="width: 40%">{{ $book->book_name }}</td>
                                         <td class="align-middle" style="width: 40%">{{ $book->book_author }}</td>
                                         <td class="align-middle" style="width: 10%">

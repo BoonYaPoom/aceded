@@ -1,5 +1,5 @@
-<div id="clientPermissionModal-{{ $item->user_id }}" data-user_id="{{ $item->user_id }}" class="modal fade" aria-modal="true"
-    tabindex="-1" user_role="dialog">
+<div id="clientPermissionModal-{{ $item->user_id }}" data-user_id="{{ $item->user_id }}" class="modal fade"
+    aria-modal="true" tabindex="-1" user_role="dialog">
     <div class="modal-dialog" user_role="document">
         <div class="modal-content">
             <form action="{{ route('updateRoleUser', ['user_id' => $item->user_id]) }}" method="post"

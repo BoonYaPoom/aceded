@@ -25,7 +25,7 @@
             <div class="card card-fluid">
                 <!-- .card-header -->
                 <div class="card-header bg-muted">
-                    <a href="{{ route('departmentLearnpage') }}"
+                    <a href="{{ route('learn', ['department_id' => $depart->department_id]) }}"
                         style="text-decoration: underline;">หมวดหมู่</a>
                 </div><!-- /.card-header -->
                 <!-- .nav-scroller -->

@@ -107,7 +107,8 @@
     <script src="{{ asset('/javascript/vendor/select2/js/select2-demo.js') }}"></script>
     <script src="{{ asset('/javascript/vendor/summernote/summernote-bs4.min.js') }}"></script>
     <script src="{{ asset('/javascript/vendor/masonry-layout/masonry.pkgd.min.js') }}"></script>
-    <script src="{{ asset('/javascript/ckeditor/ckeditor.js') }}"></script>
+
+
     <script src="{{ asset('/javascript/vendor/nouislider/nouislider.min.js') }}"></script>
     <script type="text/javascript"
         src="{{ asset('/javascript/vendor/bootstrap-colorpicker/js/bootstrap-colorpicker.min.js') }}"></script>
@@ -165,6 +166,8 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js"
         integrity="sha512-AA1Bzp5Q0K1KanKKmvN/4d3IRKVlv9PYgwFPvm32nPO6QS8yH1HO7LbgB1pgiOxPtfeg5zEn2ba64MUcqJx6CA=="
         crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdn.ckeditor.com/ckeditor5/39.0.2/super-build/ckeditor.js"></script>
+
 </head>
 
 <body>
@@ -179,5 +182,27 @@
 
     @include('layouts.department.layout.footer')
 </body>
+<style>
+    .ck.ck-toolbar {
+        background-color: {{ $depart->color }};
+        box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+        border-radius: 10px;
+        border: 3px solid {{ $depart->color }};
+
+
+    }
+    .ck-editor__editable {
+        width: 100%;
+        height: 300px;
+        padding: 12px 20px;
+        box-sizing: border-box;
+        border: 3px solid #ccc;
+        border-radius: 5px;
+        font-size: 18px;
+        resize: none;
+    }
+</style>
+
+<script src="{{ asset('/javascript/textedit.js') }}"></script>
 
 </html>

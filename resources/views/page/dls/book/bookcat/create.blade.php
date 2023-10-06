@@ -64,12 +64,12 @@
                         <!-- .form-group -->
                         <div class="form-group  d-none">
                             <label for="detail">ข้อมูลทั่วไป</label>
-                            <textarea class="ckeditor" data-placeholder="ข้อมูลทั่วไป" data-height="200" name="detail"></textarea>
+                            <textarea class="editor" data-placeholder="ข้อมูลทั่วไป" data-height="200" name="detail"></textarea>
                         </div><!-- /.form-group -->
                         <!-- .form-group -->
                         <div class="form-group">
                             <label for="contents">เนื้อหาโดยย่อ</label>
-                            <textarea class="ckeditor" data-placeholder="เนื้อหาโดยย่อ" data-height="200" name="contents"></textarea>
+                            <textarea class="editor" data-placeholder="เนื้อหาโดยย่อ" data-height="200" name="contents"></textarea>
                         </div><!-- /.form-group -->
 
                         <!-- .form-group -->

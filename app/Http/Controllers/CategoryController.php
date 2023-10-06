@@ -65,7 +65,7 @@ class CategoryController extends Controller
 
         DB::rollBack();
 
-        return response()->view('errors.500', [], 500);
+        return response()->view('error.error-500', [], 500);
     }
         return redirect()->route('categoryac', ['subject_id' => $subject_id])->with('message', 'Category บันทึกข้อมูลสำเร็จ');
     }

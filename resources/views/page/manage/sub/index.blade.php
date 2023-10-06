@@ -23,7 +23,7 @@
             <div class="card card-fluid">
 
                 <div class="card-header bg-muted">หน่วยงาน /
-                    <a href="{{ route('departmentLearnpage') }}">หมวดหมู่</a> / จัดการวิชา
+                    <a href="{{ route('learn', ['department_id' => $depart->department_id]) }}">หมวดหมู่</a> / จัดการวิชา
                 </div>
 
                 <div class="card-body">
@@ -104,14 +104,16 @@
                                 });
                         
                             </script>
+                            
                             <tbody>
-                                @foreach ($subs as $index => $item)
-                                    @php
+                                @php
                                         
-                                        $subnum = $index + 1;
-                                    @endphp
+                                $subnum =  1;
+                            @endphp
+                                @foreach ($subs->sortBy('subject_id')  as $index => $item)
+                                
                                     <tr>
-                                        <td><a href="#">{{ $subnum }}</a></td>
+                                        <td><a href="#">{{ $subnum++ }}</a></td>
                                         <td><a
                                                 href="{{ route('lessonpage', [$item->subject_id]) }}">{{ $item->subject_code }}</a>
                                         </td>

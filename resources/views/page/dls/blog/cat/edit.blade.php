@@ -31,7 +31,7 @@
 
                         <div class="form-group ">
                             <label for="detail">รายละเอียด (ไทย)</label>
-                            <textarea class="ckeditor" data-placeholder="รายละเอียด" data-height="200" name="detail">{{ $blogs->detail }}</textarea>
+                            <textarea class="editor" data-placeholder="รายละเอียด" data-height="200" name="detail">{{ $blogs->detail }}</textarea>
                         </div><!-- /.form-group -->
                         @error('detail')
                             <span class="badge badge-warning">{{ $message }}</span>

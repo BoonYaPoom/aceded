@@ -26,14 +26,14 @@
         <!-- .form-group -->
         <div class="form-group">
             <label for="description_th">คำอธิบายวิชา (ไทย)</label>
-            <textarea class="ckeditor" data-placeholder="คำอธิบายวิชา" data-height="200" name="description_th">
+            <textarea class="editor" data-placeholder="คำอธิบายวิชา" data-height="200" name="description_th">
                   {{$subs->description_th}}
 
             </textarea>
         </div><!-- /.form-group -->
         <div class="form-group">
             <label for="description_en">คำอธิบายวิชา (อังกฤษ)</label>
-            <textarea class="ckeditor" data-placeholder="คำอธิบายวิชา" data-height="200" name="description_en">
+            <textarea class="editor" data-placeholder="คำอธิบายวิชา" data-height="200" name="description_en">
               {{$subs->description_en}}
 
             </textarea>
@@ -41,14 +41,14 @@
         <!-- .form-group -->
         <div class="form-group">
             <label for="objectives_th">วัตถุประสงค์การเรียนรู้ (ไทย)</label>
-            <textarea class="ckeditor" data-placeholder="วัตถุประสงค์การเรียนรู้" data-height="200" name="objectives_th">
+            <textarea class="editor" data-placeholder="วัตถุประสงค์การเรียนรู้" data-height="200" name="objectives_th">
 
               {{$subs->objectives_th}}
             </textarea>
         </div><!-- /.form-group -->
         <div class="form-group">
             <label for="objectives_en">วัตถุประสงค์การเรียนรู้ (อังกฤษ)</label>
-            <textarea class="ckeditor" data-placeholder="วัตถุประสงค์การเรียนรู้" data-height="200" name="objectives_en">
+            <textarea class="editor" data-placeholder="วัตถุประสงค์การเรียนรู้" data-height="200" name="objectives_en">
               {{$subs->objectives_en}}
 
             </textarea>
@@ -56,14 +56,14 @@
         <!-- .form-group -->
         <div class="form-group">
             <label for="evaluation_th">การประเมินผล (ไทย)</label>
-            <textarea class="ckeditor" data-placeholder="การประเมินผล" data-height="200" name="evaluation_th">
+            <textarea class="editor" data-placeholder="การประเมินผล" data-height="200" name="evaluation_th">
               {{$subs->evaluation_th}}
 
             </textarea>
         </div><!-- /.form-group -->
         <div class="form-group">
             <label for="evaluation_en">การประเมินผล (อังกฤษ)</label>
-            <textarea class="ckeditor" data-placeholder="การประเมินผล" data-height="200" name="evaluation_en">
+            <textarea class="editor" data-placeholder="การประเมินผล" data-height="200" name="evaluation_en">
 
               {{$subs->evaluation_en}}
             </textarea>
@@ -71,14 +71,14 @@
         <!-- .form-group -->
         <div class="form-group">
             <label for="schedule_th">ตารางเรียน (ไทย)</label>
-            <textarea class="ckeditor" data-placeholder="ตารางเรียน" data-height="200" name="schedule_th">
+            <textarea class="editor" data-placeholder="ตารางเรียน" data-height="200" name="schedule_th">
               {{$subs->schedule_th}}
 
             </textarea>
         </div><!-- /.form-group -->
         <div class="form-group">
             <label for="schedule_en">ตารางเรียน (อังกฤษ)</label>
-            <textarea class="ckeditor" data-placeholder="ตารางเรียน" data-height="200" name="schedule_en">
+            <textarea class="editor" data-placeholder="ตารางเรียน" data-height="200" name="schedule_en">
               {{$subs->schedule_en}}
 
             </textarea>

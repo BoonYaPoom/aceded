@@ -87,7 +87,7 @@
           echo 'Connection failed: ' . $e->getMessage();
       }
   @endphp  -->
-@php
+ <!-- @php
 try {
     $ldap_host = env('LDAP_HOST');
     $ldap_port = env('LDAP_PORT');
@@ -116,7 +116,7 @@ try {
 } catch (\Exception $e) {
     echo 'Connection failed: ' . $e->getMessage();
 }
-@endphp
+@endphp-->
 
 
   <div class="wrapper fadeInDown">
@@ -125,6 +125,9 @@ try {
           <h2 class="active">
               <a class="navbar-brand" href="{{ route('homelogin') }}">Sign In</a>
           </h2>
+            <!--     <h2 class="">
+            <a class="navbar-brand" href="{{ route('homeloginLdap') }}">Ldap Sign In</a>
+        </h2>-->
           <!--   <h2 class="inactive underlineHover">
               <a class="navbar-brand" href="{{ route('homeRegis') }}">Sign Up </a>
           </h2>-->

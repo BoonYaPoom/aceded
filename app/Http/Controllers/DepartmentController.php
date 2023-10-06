@@ -65,6 +65,7 @@ class DepartmentController extends Controller
     public function store(Request $request)
     {
         try {
+            
             $depart = new Department;
             $depart->name_th = $request->name_th;
             $depart->name_en = $request->name_en;
@@ -148,7 +149,7 @@ class DepartmentController extends Controller
 
             DB::rollBack();
 
-            return response()->view('errors.500', [], 500);
+            return response()->view('error.error-500', [], 500);
         }
         $from = request('from');
         if ($from === 'lms') {
@@ -167,9 +168,10 @@ class DepartmentController extends Controller
     }
     public function departmentedit($from, $department_id)
     {
+            #$depart = Department::where('name_short_en', $name_short_en)->firstOrFail();
         $depart  = Department::findOrFail($department_id);
         $departmentLink = '';
-
+    
         if ($from === 'lms') {
             $departmentLink = route('departmentLearnpage');
         } elseif ($from === 'dls') {

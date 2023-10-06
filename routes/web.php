@@ -13,12 +13,14 @@ use App\Http\Controllers\CourseClassController;
 use App\Http\Controllers\CourseController;
 use App\Http\Controllers\CourseGroupController;
 use App\Http\Controllers\CourseLessonController;
+use App\Http\Controllers\CourseSubController;
 use App\Http\Controllers\CourseSubjectController;
 use App\Http\Controllers\CourseSupplymentaryController;
 use App\Http\Controllers\CourseTeacherController;
 
 use App\Http\Controllers\CustomAuthController;
 use App\Http\Controllers\DepartmentController;
+use App\Http\Controllers\DepartUsersController;
 use App\Http\Controllers\EditManageUserController;
 use App\Http\Controllers\EditProfileController;
 use App\Http\Controllers\ExamController;
@@ -59,12 +61,6 @@ use LdapRecord\Laravel\Facades\Ldap;
 
 
 
-
-
-
-Route::get('/ldap', [LdapController::class, 'uploadForm']);
-Route::post('/uploadSql', [LdapController::class, 'uploadSql'])->name('uploadSql');
-
 Route::get('/exportSubject', [ExcelController::class, 'exportSubject'])->name('exportSubject');
 Route::get('/UsersExport', [ExcelController::class, 'exportUsers'])->name('UsersExport');
 Route::get('/QuestionExport', [ExcelController::class, 'questionExport'])->name('questionExport');
@@ -78,12 +74,13 @@ Route::group(['middleware' => ['web', 'App\Http\Middleware\ClearOptimizeCacheMid
         Route::get('/aced', [DepartmentController::class, 'aced'])->name('aced');
         Route::get('/login', [CustomAuthController::class, 'login'])->name('homelogin');
         Route::get('/regis', [CustomAuthController::class, 'regis'])->name('homeregis');
-
+        Route::get('/ldap', [CustomAuthController::class, 'loginLdap'])->name('homeloginLdap');
         // เส้นทางอื่นๆที่ต้องใช้ middleware เช่นเดียวกัน
     });
 
     Route::post('/register-user', [CustomAuthController::class, 'registerUser'])->name('register-user');
     Route::post('/login-user', [CustomAuthController::class, 'loginUser'])->name('login-user');
+    Route::post('/login-ldap', [CustomAuthController::class, 'loginLdapUser'])->name('login-ldap');
     Route::get('/home', [CustomAuthController::class, 'homeregis'])->name('homeRegis');
 });
 
@@ -287,7 +284,12 @@ Route::group(['middleware' => 'IsLoggedIn'], function () {
                 Route::get('/{group_id}/courseform', [CourseController::class, 'create'])->name('createcor');
                 Route::post('/{group_id}/courseform_add', [CourseController::class, 'store'])->name('storecor');
                 Route::get('/courseform_edit/{course_id}', [CourseController::class, 'edit'])->name('editcor');
+               
                 Route::get('/structure/{course_id}', [CourseController::class, 'structure'])->name('structure_page');
+                Route::get('/subject_course/{course_id}', [CourseSubController::class, 'courseSub'])->name('courseSub_page');
+                Route::get('/subject_class/{subject_id}', [CourseSubController::class, 'subjecClass'])->name('subjecClass_page');
+             
+                
                 Route::put('/courseform_update/{course_id}', [CourseController::class, 'update'])->name('courseform_update');
                 Route::put('/courseform_update_structure/{course_id}', [CourseController::class, 'update_structure'])->name('update_structure');
                 Route::get('/courseform_destroy/{course_id}', [CourseController::class, 'destroy'])->name('courseform_destroy');
@@ -307,14 +309,20 @@ Route::group(['middleware' => 'IsLoggedIn'], function () {
 
 
                 Route::get('{class_id}/payment', [CourseClassController::class, 'payment'])->name('payment_page');
-
+                
+                Route::get('{course_id}/gpa/{m}', [CourseClassController::class, 'gpapage'])->name('gpa_page');
+             
                 Route::get('{course_id}/report/{m}', [CourseClassController::class, 'report'])->name('report_page');
                 Route::get('{course_id}/congratuation/{m}', [CourseClassController::class, 'congratuation'])->name('congratuation_page');
                 Route::get('teacherinfo', [CourseClassController::class, 'teacherinfo'])->name('teacherinfo');
                 Route::post('/store_teacherinfo', [CourseClassController::class, 'Teacherinfoupdate'])->name('Teacherinfoupdate');
             });
 
-
+            Route::prefix('lms')->group(function () {
+                Route::get('{department_id}/gpa', [ScoreController::class, 'gpapage'])->name('gpapage');
+                Route::get('{department_id}/subjectscore', [ScoreController::class, 'subscore'])->name('subscore');
+                Route::get('{subject_id}/listsub', [ScoreController::class, 'listsubject'])->name('listsubjects');
+            });
             Route::prefix('lms')->group(function () {
                 Route::get('{department_id}/subject', [CourseSubjectController::class, 'suppage'])->name('suppage');
                 Route::get('{department_id}/subjectform', [CourseSubjectController::class, 'create'])->name('subcreate');
@@ -449,6 +457,17 @@ Route::group(['middleware' => 'IsLoggedIn'], function () {
             });
 
             Route::get('/ums/{user_role?}', [EditManageUserController::class, 'UserManage'])->name('UserManage')->where('user_role', '[0-9]+');
+
+            Route::get('{department_id}/departums/{user_role?}', [DepartUsersController::class, 'DPUserManage'])->name('DPUserManage')->where('user_role', '[0-9]+');
+
+            Route::prefix('departums')->group(function () {
+
+                Route::get('/add_dpumsform/{department_id}', [DepartUsersController::class, 'createUser'])->name('DPcreateUser');
+                Route::post('/store_dpumsform', [DepartUsersController::class, 'storeUser'])->name('DPstoreUser');
+             
+                Route::get('/edit/{user_id}', [DepartUsersController::class, 'DPeditUser'])->name('DPeditUser');
+                Route::put('/DPupdateUser/{user_id}', [DepartUsersController::class, 'DPupdateUser'])->name('DPupdateUser');
+            });
 
             Route::prefix('ums')->group(function () {
 

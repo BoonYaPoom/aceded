@@ -107,7 +107,9 @@
                                         </td>
                                     </tr>
                                     @endif
+                                   
                                 @endforeach
+                                
                             </tbody><!-- /tbody -->
                         </table><!-- /.table -->
                     </div><!-- /.table-responsive -->

@@ -160,7 +160,7 @@ class ActivityController extends Controller
 
         DB::rollBack();
         
-        return response()->view('errors.500', [], 500);
+        return response()->view('error.error-500', [], 500);
     }
         return redirect()->route('activiList', ['category_id' => $category_id])->with('message', 'Success Acti');
     }

@@ -99,6 +99,9 @@
 
 
                                         <td class="align-middle">
+                                            <a href="{{ route('courseSub_page', ['course_id' => $item]) }}"
+                                                data-toggle="tooltip" title="รายวิชา"><i
+                                                    class="	fas fa-address-card fa-lg text-primary "></i></a>
                                             <a href="{{ route('class_page', ['course_id' => $item]) }}"
                                                 data-toggle="tooltip" title="ผู้เรียน"><i
                                                     class="fas fa-users fa-lg text-info "></i></a>

@@ -67,32 +67,32 @@ class CourseLessonController extends Controller
                 ->withInput()
                 ->with('error', 'ข้อมูลไม่ถูกต้อง');
         }
-try{
-        $lessons = new CourseLesson;
-        $lessons->lesson_number = $request->lesson_number;
-        $lessons->lesson_th = $request->lesson_th;
-        $lessons->lesson_en = $request->lesson_en;
-        $lessons->description = '';
-        $lessons->resultlesson = $request->resultlesson;
-        $lessons->content_type = $request->content_type;
-        $lessons->lesson_status = $request->input('lesson_status', 0);
-        $lessons->exercise = $request->input('exercise', 0);
-        $lessons->subject_id = (int)$subject_id;
-        $lessons->lesson_id_ref = 0;
+        try {
+            $lessons = new CourseLesson;
+            $lessons->lesson_number = $request->lesson_number;
+            $lessons->lesson_th = $request->lesson_th;
+            $lessons->lesson_en = $request->lesson_en;
+            $lessons->description = '';
+            $lessons->resultlesson = $request->resultlesson;
+            $lessons->content_type = $request->content_type;
+            $lessons->lesson_status = $request->input('lesson_status', 0);
+            $lessons->exercise = $request->input('exercise', 0);
+            $lessons->subject_id = (int)$subject_id;
+            $lessons->lesson_id_ref = 0;
 
-        $lessons->content_path = '';
-        $lessons->ordering = null;
-        $lessons->permission = null;
+            $lessons->content_path = '';
+            $lessons->ordering = null;
+            $lessons->permission = null;
 
 
-        $lessons->save();
-        DB::commit();
-    } catch (\Exception $e) {
+            $lessons->save();
+            DB::commit();
+        } catch (\Exception $e) {
 
-        DB::rollBack();
+            DB::rollBack();
 
-        return response()->view('errors.500', [], 500);
-    }
+            return response()->view('error.error-500', [], 500);
+        }
         return redirect()->route('lessonpage', ['subject_id' => $subject_id])->with('message', 'Course_lesson บันทึกข้อมูลสำเร็จ');
     }
 
@@ -145,12 +145,12 @@ try{
             $uploadedFile = $request->file('content_path');
 
             $image_name = time() . '.' . $uploadedFile->getClientOriginalExtension();
-            if ($content_type == 10) {
+            if ($content_type == 9) {
                 // ตรวจสอบว่าไฟล์ที่อัปโหลดเป็นไฟล์ zip
 
                 if ($uploadedFile->getClientOriginalExtension() == 'zip') {
-                    $directory = 'upload/Subject/Lesson/alld/Scorm/';
-             
+                    $directory = 'upload/Subject/Lesson/alld/Html/';
+
                     $folderName = 'lesson_' .  $lesson_id;
 
                     // ตรวจสอบว่าโฟลเดอร์ปลายทางมีอยู่หรือไม่ หากไม่มีให้สร้าง
@@ -160,7 +160,7 @@ try{
                     }
                     // ย้ายไฟล์ zip ไปยังโฟลเดอร์ปลายทาง
 
-           
+
 
                     $uploadedFile->move($destinationFolder, $uploadedFile->getClientOriginalName());
                     $zipFilePath = $destinationFolder . '/' . $uploadedFile->getClientOriginalName();
@@ -171,21 +171,189 @@ try{
                     if ($zip->open($zipFilePath) === TRUE) {
                         // ตรวจสอบว่าไฟล์ ZIP ถูกเปิดเรียบร้อย
                         // กำหนดโฟลเดอร์ปลายทางสำหรับการแตกไฟล์
-                        $extractPath = $destinationFolder ;
-                    
+                        $extractPath = $destinationFolder;
+
                         // สร้างโฟลเดอร์ปลายทางหากยังไม่มี
                         if (!file_exists($extractPath)) {
                             mkdir($extractPath, 0755, true);
                         }
-                    
+
                         // แตกไฟล์ ZIP ไปยังโฟลเดอร์ปลายทาง
                         $zip->extractTo($extractPath);
-                    
+
                         // ปิดไฟล์ ZIP
                         $zip->close();
                     }
 
-                    $lessons->content_path = 'upload/Subject/Lesson/alld/Scorm/' . $folderName;
+                    $lessons->content_path = 'upload/Subject/Lesson/alld/Html/' . $folderName;
+                }
+            } elseif ($content_type == 10) {
+                // ตรวจสอบว่าไฟล์ที่อัปโหลดเป็นไฟล์ zip
+
+                if ($uploadedFile->getClientOriginalExtension() == 'zip') {
+                    $directory = 'upload/Subject/Lesson/alld/AICC/';
+
+                    $folderName = 'lesson_' .  $lesson_id;
+
+                    // ตรวจสอบว่าโฟลเดอร์ปลายทางมีอยู่หรือไม่ หากไม่มีให้สร้าง
+                    $destinationFolder = public_path($directory . $folderName);
+                    if (!file_exists($destinationFolder)) {
+                        mkdir($destinationFolder, 0755, true);
+                    }
+                    // ย้ายไฟล์ zip ไปยังโฟลเดอร์ปลายทาง
+
+
+
+                    $uploadedFile->move($destinationFolder, $uploadedFile->getClientOriginalName());
+                    $zipFilePath = $destinationFolder . '/' . $uploadedFile->getClientOriginalName();
+                    // ตรวจสอบว่าไฟล์ zip ถูกเปิดเรียบร้อย
+                    $zip = new ZipArchive;
+
+                    // เปิดไฟล์ ZIP
+                    if ($zip->open($zipFilePath) === TRUE) {
+                        // ตรวจสอบว่าไฟล์ ZIP ถูกเปิดเรียบร้อย
+                        // กำหนดโฟลเดอร์ปลายทางสำหรับการแตกไฟล์
+                        $extractPath = $destinationFolder;
+
+                        // สร้างโฟลเดอร์ปลายทางหากยังไม่มี
+                        if (!file_exists($extractPath)) {
+                            mkdir($extractPath, 0755, true);
+                        }
+
+                        // แตกไฟล์ ZIP ไปยังโฟลเดอร์ปลายทาง
+                        $zip->extractTo($extractPath);
+
+                        // ปิดไฟล์ ZIP
+                        $zip->close();
+                    }
+
+                    $lessons->content_path = 'upload/Subject/Lesson/alld/AICC/' . $folderName;
+                }
+            } elseif ($content_type == 11) {
+                // ตรวจสอบว่าไฟล์ที่อัปโหลดเป็นไฟล์ zip
+
+                if ($uploadedFile->getClientOriginalExtension() == 'zip') {
+                    $directory = 'upload/Subject/Lesson/alld/Scorm1.2/';
+
+                    $folderName = 'lesson_' .  $lesson_id;
+
+                    // ตรวจสอบว่าโฟลเดอร์ปลายทางมีอยู่หรือไม่ หากไม่มีให้สร้าง
+                    $destinationFolder = public_path($directory . $folderName);
+                    if (!file_exists($destinationFolder)) {
+                        mkdir($destinationFolder, 0755, true);
+                    }
+                    // ย้ายไฟล์ zip ไปยังโฟลเดอร์ปลายทาง
+
+
+
+                    $uploadedFile->move($destinationFolder, $uploadedFile->getClientOriginalName());
+                    $zipFilePath = $destinationFolder . '/' . $uploadedFile->getClientOriginalName();
+                    // ตรวจสอบว่าไฟล์ zip ถูกเปิดเรียบร้อย
+                    $zip = new ZipArchive;
+
+                    // เปิดไฟล์ ZIP
+                    if ($zip->open($zipFilePath) === TRUE) {
+                        // ตรวจสอบว่าไฟล์ ZIP ถูกเปิดเรียบร้อย
+                        // กำหนดโฟลเดอร์ปลายทางสำหรับการแตกไฟล์
+                        $extractPath = $destinationFolder;
+
+                        // สร้างโฟลเดอร์ปลายทางหากยังไม่มี
+                        if (!file_exists($extractPath)) {
+                            mkdir($extractPath, 0755, true);
+                        }
+
+                        // แตกไฟล์ ZIP ไปยังโฟลเดอร์ปลายทาง
+                        $zip->extractTo($extractPath);
+
+                        // ปิดไฟล์ ZIP
+                        $zip->close();
+                    }
+
+                    $lessons->content_path = 'upload/Subject/Lesson/alld/Scorm1.2/' . $folderName;
+                }
+            } elseif ($content_type == 12) {
+                // ตรวจสอบว่าไฟล์ที่อัปโหลดเป็นไฟล์ zip
+
+                if ($uploadedFile->getClientOriginalExtension() == 'zip') {
+                    $directory = 'upload/Subject/Lesson/alld/Scorm2004/';
+
+                    $folderName = 'lesson_' .  $lesson_id;
+
+                    // ตรวจสอบว่าโฟลเดอร์ปลายทางมีอยู่หรือไม่ หากไม่มีให้สร้าง
+                    $destinationFolder = public_path($directory . $folderName);
+                    if (!file_exists($destinationFolder)) {
+                        mkdir($destinationFolder, 0755, true);
+                    }
+                    // ย้ายไฟล์ zip ไปยังโฟลเดอร์ปลายทาง
+
+
+
+                    $uploadedFile->move($destinationFolder, $uploadedFile->getClientOriginalName());
+                    $zipFilePath = $destinationFolder . '/' . $uploadedFile->getClientOriginalName();
+                    // ตรวจสอบว่าไฟล์ zip ถูกเปิดเรียบร้อย
+                    $zip = new ZipArchive;
+
+                    // เปิดไฟล์ ZIP
+                    if ($zip->open($zipFilePath) === TRUE) {
+                        // ตรวจสอบว่าไฟล์ ZIP ถูกเปิดเรียบร้อย
+                        // กำหนดโฟลเดอร์ปลายทางสำหรับการแตกไฟล์
+                        $extractPath = $destinationFolder;
+
+                        // สร้างโฟลเดอร์ปลายทางหากยังไม่มี
+                        if (!file_exists($extractPath)) {
+                            mkdir($extractPath, 0755, true);
+                        }
+
+                        // แตกไฟล์ ZIP ไปยังโฟลเดอร์ปลายทาง
+                        $zip->extractTo($extractPath);
+
+                        // ปิดไฟล์ ZIP
+                        $zip->close();
+                    }
+
+                    $lessons->content_path = 'upload/Subject/Lesson/alld/Scorm2004/' . $folderName;
+                }
+            } elseif ($content_type == 13) {
+                // ตรวจสอบว่าไฟล์ที่อัปโหลดเป็นไฟล์ zip
+
+                if ($uploadedFile->getClientOriginalExtension() == 'zip') {
+                    $directory = 'upload/Subject/Lesson/alld/xAPI/';
+
+                    $folderName = 'lesson_' .  $lesson_id;
+
+                    // ตรวจสอบว่าโฟลเดอร์ปลายทางมีอยู่หรือไม่ หากไม่มีให้สร้าง
+                    $destinationFolder = public_path($directory . $folderName);
+                    if (!file_exists($destinationFolder)) {
+                        mkdir($destinationFolder, 0755, true);
+                    }
+                    // ย้ายไฟล์ zip ไปยังโฟลเดอร์ปลายทาง
+
+
+
+                    $uploadedFile->move($destinationFolder, $uploadedFile->getClientOriginalName());
+                    $zipFilePath = $destinationFolder . '/' . $uploadedFile->getClientOriginalName();
+                    // ตรวจสอบว่าไฟล์ zip ถูกเปิดเรียบร้อย
+                    $zip = new ZipArchive;
+
+                    // เปิดไฟล์ ZIP
+                    if ($zip->open($zipFilePath) === TRUE) {
+                        // ตรวจสอบว่าไฟล์ ZIP ถูกเปิดเรียบร้อย
+                        // กำหนดโฟลเดอร์ปลายทางสำหรับการแตกไฟล์
+                        $extractPath = $destinationFolder;
+
+                        // สร้างโฟลเดอร์ปลายทางหากยังไม่มี
+                        if (!file_exists($extractPath)) {
+                            mkdir($extractPath, 0755, true);
+                        }
+
+                        // แตกไฟล์ ZIP ไปยังโฟลเดอร์ปลายทาง
+                        $zip->extractTo($extractPath);
+
+                        // ปิดไฟล์ ZIP
+                        $zip->close();
+                    }
+
+                    $lessons->content_path = 'upload/Subject/Lesson/alld/xAPI/' . $folderName;
                 }
             } else {
 
@@ -255,7 +423,7 @@ try{
             $maxOrdering = $existingSubLessons->max('ordering');
             $lessons->ordering = $maxOrdering + 1;
         }
-        
+
         $lessons->permission = null;
         $lessons->save();
 

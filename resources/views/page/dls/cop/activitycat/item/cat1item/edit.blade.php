@@ -29,7 +29,7 @@
                     <!-- .form-group -->
                     <div class="form-group ">
                         <label for="detail">รายละเอียด </label>
-                        <textarea class="ckeditor" data-placeholder="รายละเอียด" data-height="200" name="detail">{{$act->detail}}</textarea>
+                        <textarea class="editor" data-placeholder="รายละเอียด" data-height="200" name="detail">{{$act->detail}}</textarea>
                     </div><!-- /.form-group -->
                     <div class="form-row">
                         <div class="col-md-6 mb-3">

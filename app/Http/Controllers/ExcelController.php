@@ -19,6 +19,16 @@ use Illuminate\Support\Facades\Hash;
 
 class ExcelController extends Controller
 {
+    public function exportClass()
+{
+    // You can customize the response here, but for this example, you can just return an empty response.
+    return response()->stream(function () {
+    }, 200, [
+        'Content-Type' => 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+        'Content-Disposition' => 'attachment; filename="exported_data.xlsx"',
+    ]);
+}
+
     public function exportUsers()
     {
         return Excel::download(new UsersExport, 'Administrator Management Users.xlsx');
@@ -145,7 +155,7 @@ class ExcelController extends Controller
                             $user_position = '';
                             $workplace = '';
                             $telephone = '';
-                            $citizen_id = '';
+                         
                             $socialnetwork = '';
                             $experience = null;
                             $recommened = null;
@@ -181,6 +191,7 @@ class ExcelController extends Controller
                                 'lastname' => $row[4],
                                 'mobile' => $row[5],
                                 'email' => $row[6],
+                                'citizen_id' =>   $row[7],
                                 'prefix' =>  $prefix,
                                 'gender' => $gender,
                                 'user_role' => $user_role,
@@ -195,7 +206,7 @@ class ExcelController extends Controller
                                 'user_position' =>  $user_position,
                                 'workplace' =>  $workplace,
                                 'telephone' =>  $telephone,
-                                'citizen_id' =>  $citizen_id,
+                          
                                 'socialnetwork' =>  $socialnetwork,
                                 'experience' =>  $experience,
                                 'recommened' => $recommened,

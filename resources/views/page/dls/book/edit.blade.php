@@ -63,14 +63,14 @@
                         <!-- .form-group -->
                         <div class="form-group d-none">
                             <label for="detail_th">รายละเอียด (ไทย)</label>
-                            <textarea class="ckeditor" data-placeholder="รายละเอียด (ไทย)" data-height="200" name="detail_th"></textarea>
+                            <textarea class="editor" data-placeholder="รายละเอียด (ไทย)" data-height="200" name="detail_th"></textarea>
                         </div>
                         <!-- /.form-group -->
 
                         <!-- .form-group -->
                         <div class="form-group d-none">
                             <label for="detail_en">รายละเอียด (อังกฤษ)</label>
-                            <textarea class="ckeditor" data-placeholder="รายละเอียด (อังกฤษ)" data-height="200" name="detail_en"></textarea>
+                            <textarea class="editor" data-placeholder="รายละเอียด (อังกฤษ)" data-height="200" name="detail_en"></textarea>
                         </div>
                         <!-- /.form-group -->
 

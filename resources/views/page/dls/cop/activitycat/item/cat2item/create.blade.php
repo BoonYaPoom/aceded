@@ -34,7 +34,7 @@
                         <!-- .form-group -->
                         <div class="form-group ">
                             <label for="detail">รายละเอียด </label>
-                            <textarea class="ckeditor" data-placeholder="รายละเอียด" data-height="200" name="detail"></textarea>
+                            <textarea class="editor" data-placeholder="รายละเอียด" data-height="200" name="detail"></textarea>
                         </div><!-- /.form-group -->
                         <div class="form-group">
                             <label for="activity_status">สถานะ </label> <label

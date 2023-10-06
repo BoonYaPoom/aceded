@@ -58,10 +58,7 @@
                             class="fas fa-users"></i>
                         กลุ่มผู้ใช้งาน</a>
 
-                      <a class="ml-1 btn btn-info btn-md " style="color:#fff"
-                                href="{{ route('RoleTypes') }}"><i class="fas fa-users"></i>
-                                    ประเภทผู้ใช้งาน</a> 
-
+            
 
 
 
@@ -118,7 +115,7 @@
                                         <input type="file" class="form-control" id="uploaduser" name="fileexcel"
                                             accept=".xlsx" required>
                                         <small class="form-text text-muted"><a
-                                                href="https://view.officeapps.live.com/op/view.aspx?src=https%3A%2F%2Felearning.tcct.or.th%2Fadmin%2Fupload-files%2Fexample%2Fuploaduser.xlsx&wdOrigin=BROWSELINK"
+                                                href="https://1drv.ms/x/s!Aneojfnh1p7QgepezApvu9n8MZCmBg?e=8RLia9"
                                                 target="_blank"> ไฟล์ตัวอย่าง
                                                 (.xlsx)</a>
                                         </small>

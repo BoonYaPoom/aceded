@@ -95,7 +95,7 @@
                         @endphp
                          @if ($logCount > 0)
                             <tr>
-                                <td align="center">{{ $loop->iteration }}</td>
+                                <td align="center">{{ $i++ }}</td>
                                 <td>{{$uLog->username}}</td>
                                 <td>{{ $uLog->firstname }} {{ $uLog->lastname }}</td>
                                 <td class="text-right">{{ $logCount}} &nbsp;</td>

@@ -9,12 +9,12 @@ use App\Models\Department;
 use Barryvdh\DomPDF\PDF as DomPDFPDF;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
-use Intervention\Image\ImageManagerStatic as Image;
 use Imagick;
 use rudrarajiv\flipbooklaravel\Flipbook;
 use Spatie\PdfToImage\Pdf;
+use Illuminate\Support\Facades\File;
+use Intervention\Image\ImageManagerStatic as Image;
 
 
 class BookController extends Controller
@@ -68,7 +68,7 @@ class BookController extends Controller
 
             DB::rollBack();
 
-            return response()->view('errors.500', [], 500);
+            return response()->view('error.error-500', [], 500);
         }
 
         if ($request->hasFile('cover')) {
@@ -88,7 +88,12 @@ class BookController extends Controller
             $books->cover = $image_name;
             $books->save();
         }
+      
+
         set_time_limit(0);
+        ini_set('max_execution_time', 300);
+        ini_set('pcre.backtrack_limit', 5000000);
+
         // บันทึกไฟล์ PDF และแปลงเป็นรูปภาพ
         if ($request->book_type == 0) {
             if ($request->hasFile('bookfile')) {
@@ -149,9 +154,7 @@ class BookController extends Controller
                     File::makeDirectory($newFolder, $mode = 0777, true, true);
                     $newFolder1 = $outputPath . '/' . $folderName . '/thumb';
                     File::makeDirectory($newFolder1, $mode = 0777, true, true);
-
-
-
+      
                     $pdf = new Pdf($file_path);
 
                     $pages = array();
@@ -173,7 +176,7 @@ class BookController extends Controller
 
                         // ปรับขนาดรูปภาพ
                         $imgs->resize(300, 425);
-
+              
 
                         // เซฟรูปภาพที่ปรับขนาดลงในไฟล์เดิม
                         $img->save($newFolder . '/' . $imageFilename);
@@ -182,6 +185,7 @@ class BookController extends Controller
                             'l' =>  'page/large/' . $imageFilename,
                             't' => 'page/thumb/' . $imageFilename1
                         );
+              
                         $pageLCount = count($pages);
                         $htmlPath = public_path('upload/Book/' . $books->book_id . '/index.html');
 
@@ -190,9 +194,10 @@ class BookController extends Controller
                     }
 
 
-
+                    
                     $books->bookfile =  'upload/Book/' . $books->book_id . '/' . 'index.html';
                     $books->save();
+                  
                 }
             } elseif ($request->book_type == 1) {
                 if ($request->hasFile('bookfile')) {
@@ -211,6 +216,7 @@ class BookController extends Controller
             }
             return redirect()->route('bookcatpage', ['category_id' => $category_id])->with('message', 'book สร้างเรียบร้อยแล้ว');
         }
+        
         return redirect()->back()->with('error', 'ID นี้มีอยู่แล้ว กรุณาเลือก ID อื่น');
     }
 
@@ -264,9 +270,12 @@ class BookController extends Controller
             $books->save();
         }
 
-
-
-
+     
+        set_time_limit(0);
+        ini_set('max_execution_time', 300);
+        ini_set('pcre.backtrack_limit', 5000000);
+        ini_set('fastcgi_read_timeout', 400);
+        
         // บันทึกไฟล์ PDF และแปลงเป็นรูปภาพ
         if ($request->book_type == 0) {
             if ($request->hasFile('bookfile')) {
@@ -282,10 +291,6 @@ class BookController extends Controller
 
                 // ระบุโฟลเดอร์ที่ต้องการบันทึกข้อมูลใหม่
                 $destinationDirectory = public_path('upload/Book/' .  $book_id);
-
-
-
-
 
                 // สร้างโพลเดอร์ปลายทางหากยังไม่มี
                 if (!File::exists($destinationDirectory)) {
@@ -328,8 +333,7 @@ class BookController extends Controller
                     $newFolder1 = $outputPath . '/' . $folderName . '/thumb';
                     File::makeDirectory($newFolder1, $mode = 0777, true, true);
 
-
-
+               
                     $pdf = new Pdf($file_path);
 
                     $pages = array();
@@ -372,6 +376,7 @@ class BookController extends Controller
                     }
 
                     $books->bookfile =  'upload/Book/' . $book_id . '/' . 'index.html';
+                    $books->save();
                 }
             }
         } elseif ($request->book_type == 1) {
@@ -389,6 +394,7 @@ class BookController extends Controller
                     // ลบไฟล์เดิม
 
                     $books->bookfile = 'upload/Book/' .  $book_id . '/' . $image_bookfile;
+                    $books->save();
                 }
             }
         }

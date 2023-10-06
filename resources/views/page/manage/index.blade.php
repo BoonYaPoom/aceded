@@ -8,7 +8,7 @@
             <!-- .card -->
             <div class="card card-fluid">
                 <!-- .card-header -->
-                <div class="card-header bg-muted"><a href="{{ route('departmentLearnpage') }}">หน่วยงาน</a> / จัดการเรียนรู้
+                <div class="card-header bg-muted"><a href="{{ route('learn', ['department_id' => $depart->department_id]) }}">หน่วยงาน</a> / จัดการเรียนรู้
                 </div>
                 <!-- /.card-header -->
                 <!-- .card-body -->
@@ -46,7 +46,13 @@
                                     </td>
                                     </td>
                                 </tr><!-- /tr -->
-
+                          <!--      <tr>
+                                    <td>3</td>
+                                    <td><i class="fas fa-folder-plus fa-lg text-primary"></i> <a
+                                            href="{{ route('gpapage', ['department_id' => $depart->department_id]) }}">จัดการคะแนน</a>
+                                    </td>
+                                    </td>
+                                </tr>-->
 
                             </tbody><!-- /tbody -->
                         </table><!-- /.table -->

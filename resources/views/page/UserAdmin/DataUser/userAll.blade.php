@@ -61,6 +61,9 @@
                 <button class="btn sendtemppwd " data-toggle="modal"
                     data-target="#clientWarningModal-{{ $item->user_id }}" title="ส่งรหัสผ่าน"><i
                         class="fas fa-key text-info"></i></button>
+                        <a data-toggle="modal" data-target="#clientPermissionModal-{{ $item->user_id }}" title="กำหนดสิทธิ์">
+                            <i class="fas fa-trash-alt fa-lg text-warning "></i>
+                        </a>
             @endif
         @endif
     </td>

@@ -38,7 +38,7 @@
                         
                     @endphp
 
-                    @foreach ($lessons as $index => $item)
+                    @foreach ($lessons->sortBy('lesson_id') as $index => $item)
                         @php
                             $lesson_id = $item->lesson_id;
                             $level++;

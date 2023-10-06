@@ -185,8 +185,90 @@
                                                 data-dismiss="modal">ยกเลิก</button>
                                         </div>
                                     </div>
-                                @elseif ($contentType->content_type === 10)
-                                    <h1>zip</h1><a
+                                @elseif ($contentType->content_type === 9)
+                                    <h1>{{ $contentType->content_th }} zip</h1><a
+                                        href="{{ asset($item->content_path) }}"
+                                        class="btn btn-primary" download>ดาวน์โหลดไฟล์</a>
+                                    <div class="showcontent show-zip "><object
+                                            src="{{ asset($item->content_path . '/index.html') }}"
+                                            alt="{{ $item->content_path . '/index.html'}}" id="sourcezip"
+                                            width="100%" height="200px" data="">
+                                        </object>
+
+                                        <p>{{ $item->content_path }}</p>
+
+                                    </div>
+
+                                    <div class="card-body">
+                                        <label class="mr-2">เลือกไฟล์</label>
+                                        <div class="custom-file">
+                                            <input type="file" name="content_path"
+                                                id="content_path" class="custom-file-input"
+                                                accept=".zip">
+                                            <label class="custom-file-label"
+                                                for="content_path">Choose
+                                                files</label>
+                                        </div>
+                                        <div id="progress"
+                                            class="progress progress-xs rounded-0 fade">
+                                            <div class="progress-bar progress-bar-striped progress-bar-animated bg-success"
+                                                user_role="progressbar" aria-valuemin="0"
+                                                aria-valuemax="100"></div>
+                                        </div>
+                                        <div id="uploadList"
+                                            class="list-group list-group-flush list-group-divider">
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="submit" class="btn btn-success"><i
+                                                    class="fas fa-upload fa-lg"></i>
+                                                อัพโหลด</button>
+                                            <button type="button" class="btn btn-light"
+                                                data-dismiss="modal">ยกเลิก</button>
+                                        </div>
+                                    </div>
+                                    @elseif ($contentType->content_type === 10)
+                                    <h1>{{ $contentType->content_th }}  zip </h1><a
+                                        href="{{ asset($item->content_path) }}"
+                                        class="btn btn-primary" download>ดาวน์โหลดไฟล์</a>
+                                    <div class="showcontent show-zip "><object
+                                            src="{{ asset($item->content_path . '/index.html') }}"
+                                            alt="{{ $item->content_path . '/index.html'}}" id="sourcezip"
+                                            width="100%" height="200px" data="">
+                                        </object>
+
+                                        <p>{{ $item->content_path }}</p>
+
+                                    </div>
+
+                                    <div class="card-body">
+                                        <label class="mr-2">เลือกไฟล์</label>
+                                        <div class="custom-file">
+                                            <input type="file" name="content_path"
+                                                id="content_path" class="custom-file-input"
+                                                accept=".zip">
+                                            <label class="custom-file-label"
+                                                for="content_path">Choose
+                                                files</label>
+                                        </div>
+                                        <div id="progress"
+                                            class="progress progress-xs rounded-0 fade">
+                                            <div class="progress-bar progress-bar-striped progress-bar-animated bg-success"
+                                                user_role="progressbar" aria-valuemin="0"
+                                                aria-valuemax="100"></div>
+                                        </div>
+                                        <div id="uploadList"
+                                            class="list-group list-group-flush list-group-divider">
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="submit" class="btn btn-success"><i
+                                                    class="fas fa-upload fa-lg"></i>
+                                                อัพโหลด</button>
+                                            <button type="button" class="btn btn-light"
+                                                data-dismiss="modal">ยกเลิก</button>
+                                        </div>
+                                    </div>
+                                    @elseif ($contentType->content_type === 11)
+                                    <h1>{{ $contentType->content_th }}  zip </h1><a
                                         href="{{ asset($item->content_path) }}"
                                         class="btn btn-primary" download>ดาวน์โหลดไฟล์</a>
                                     <div class="showcontent show-zip "><object
@@ -227,6 +309,88 @@
                                         </div>
                                     </div>
                                 @endif
+                                @elseif ($contentType->content_type === 12)
+                                <h1>{{ $contentType->content_th }}  zip </h1><a
+                                    href="{{ asset($item->content_path) }}"
+                                    class="btn btn-primary" download>ดาวน์โหลดไฟล์</a>
+                                <div class="showcontent show-zip "><object
+                                        src="{{ asset($item->content_path . '/index.html') }}"
+                                        alt="{{ $item->content_path . '/index.html'}}" id="sourcezip"
+                                        width="100%" height="200px" data="">
+                                    </object>
+
+                                    <p>{{ $item->content_path }}</p>
+
+                                </div>
+
+                                <div class="card-body">
+                                    <label class="mr-2">เลือกไฟล์</label>
+                                    <div class="custom-file">
+                                        <input type="file" name="content_path"
+                                            id="content_path" class="custom-file-input"
+                                            accept=".zip">
+                                        <label class="custom-file-label"
+                                            for="content_path">Choose
+                                            files</label>
+                                    </div>
+                                    <div id="progress"
+                                        class="progress progress-xs rounded-0 fade">
+                                        <div class="progress-bar progress-bar-striped progress-bar-animated bg-success"
+                                            user_role="progressbar" aria-valuemin="0"
+                                            aria-valuemax="100"></div>
+                                    </div>
+                                    <div id="uploadList"
+                                        class="list-group list-group-flush list-group-divider">
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="submit" class="btn btn-success"><i
+                                                class="fas fa-upload fa-lg"></i>
+                                            อัพโหลด</button>
+                                        <button type="button" class="btn btn-light"
+                                            data-dismiss="modal">ยกเลิก</button>
+                                    </div>
+                                </div>
+                                @elseif ($contentType->content_type === 13)
+                                <h1>{{ $contentType->content_th }}  zip </h1><a
+                                    href="{{ asset($item->content_path) }}"
+                                    class="btn btn-primary" download>ดาวน์โหลดไฟล์</a>
+                                <div class="showcontent show-zip "><object
+                                        src="{{ asset($item->content_path . '/index.html') }}"
+                                        alt="{{ $item->content_path . '/index.html'}}" id="sourcezip"
+                                        width="100%" height="200px" data="">
+                                    </object>
+
+                                    <p>{{ $item->content_path }}</p>
+
+                                </div>
+
+                                <div class="card-body">
+                                    <label class="mr-2">เลือกไฟล์</label>
+                                    <div class="custom-file">
+                                        <input type="file" name="content_path"
+                                            id="content_path" class="custom-file-input"
+                                            accept=".zip">
+                                        <label class="custom-file-label"
+                                            for="content_path">Choose
+                                            files</label>
+                                    </div>
+                                    <div id="progress"
+                                        class="progress progress-xs rounded-0 fade">
+                                        <div class="progress-bar progress-bar-striped progress-bar-animated bg-success"
+                                            user_role="progressbar" aria-valuemin="0"
+                                            aria-valuemax="100"></div>
+                                    </div>
+                                    <div id="uploadList"
+                                        class="list-group list-group-flush list-group-divider">
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="submit" class="btn btn-success"><i
+                                                class="fas fa-upload fa-lg"></i>
+                                            อัพโหลด</button>
+                                        <button type="button" class="btn btn-light"
+                                            data-dismiss="modal">ยกเลิก</button>
+                                    </div>
+                                </div>
                             @endif
                         </div>
 

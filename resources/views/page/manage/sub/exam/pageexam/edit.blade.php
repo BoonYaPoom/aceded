@@ -110,7 +110,7 @@
                         <!-- .form-group -->
                         <div class="form-group">
                             <label for="question">คำถาม <span class="badge badge-warning">Required</span></label>
-                            <textarea class="ckeditor" data-placeholder="คำถาม" data-height="150" name="question" id="question">
+                            <textarea class="editor" data-placeholder="คำถาม" data-height="150" name="question" id="question">
                                 {{ $ques->question }}
                         </textarea>
                         </div><!-- /.form-group -->
@@ -144,7 +144,7 @@
                                         <label class="custom-control-label"
                                             for="check{{ $i }}">คำตอบถูกต้อง</label>
                                     </div>
-                                    <textarea class="ckeditor" data-placeholder="ตัวเลือกที่ {{ $i }}" data-height="120"
+                                    <textarea class="editor" data-placeholder="ตัวเลือกที่ {{ $i }}" data-height="120"
                                         name="choice{{ $i }}" id="choice{{ $i }}">{{ $ques->{'choice' . $i} }}</textarea>
                                 </div><!-- /.form-group -->
                             @endfor
@@ -526,7 +526,7 @@
 
                         <div class="form-group">
                             <label for="explain">คำอธิบาย </label>
-                            <textarea class="ckeditor" data-placeholder="คำอธิบาย" data-height="150" name="explain" id="explain">
+                            <textarea class="editor" data-placeholder="คำอธิบาย" data-height="150" name="explain" id="explain">
                                 {{$ques->explain}}
                             </textarea>
                         </div><!-- /.form-group -->

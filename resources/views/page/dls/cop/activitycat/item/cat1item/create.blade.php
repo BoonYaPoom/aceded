@@ -30,7 +30,7 @@
                         <!-- .form-group -->
                         <div class="form-group ">
                             <label for="detail">รายละเอียด </label>
-                            <textarea class="ckeditor" required="" data-placeholder="รายละเอียด" data-height="200" name="detail"></textarea>
+                            <textarea class="editor" required="" data-placeholder="รายละเอียด" data-height="200" name="detail"></textarea>
                         </div><!-- /.form-group -->
                         <div class="form-row">
                             <div class="col-md-6 mb-3">

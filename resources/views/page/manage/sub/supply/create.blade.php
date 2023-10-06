@@ -178,14 +178,17 @@
                             </thead>
                             <!-- tbody -->
                             <tbody class="showbook">
+                                @php
+                                $BB = 1 ;
+                            @endphp
                                 @foreach ($books as $book)
                                     <tr>
-                                        <td class="align-middle" style="width: 10%">{{ $book->book_id }}</td>
+                                        <td class="align-middle" style="width: 10%">{{ $BB++ }}</td>
                                         <td class="align-middle" style="width: 40%">{{ $book->book_name }}</td>
                                         <td class="align-middle" style="width: 40%">{{ $book->book_author }}</td>
                                         <td class="align-middle" style="width: 10%">
                                             <a href="javascript:"
-                                                onclick="selectbook('{{ $book->book_name }}', '{{ $book->book_author }}', '{{ $book->cover }}', '{{ route('book.table', $book->book_id) }}', '{{ $book->book_id }}')">
+                                                onclick="selectbook('{{ $book->book_name }}', '{{ $book->book_author }}', '{{ $book->bookfile  }}', '{{ route('book.table', $book->book_id) }}', '{{ $book->book_id }}')">
 
                                                 <i class="fas fa-book fa-lg text-success" id="book1"></i>
                                             </a>
@@ -205,19 +208,19 @@
 
 
     <script>
-        function selectbook(book_name, book_author, cover, book_id) {
+        function selectbook(book_name, book_author, bookfile, book_id) {
             // Handle the selected book here
             console.log('Selected Book:');
             console.log('book_name:', book_name);
             console.log('book_author:', book_author);
-            console.log('cover:', cover);
+            console.log('bookfile:', bookfile);
             console.log('book_id :', book_id);
 
             // Set the field values
             $('#title_th').val(book_name);
             $('#title_en').val(book_name);
             $('#author').val(book_author);
-            $('#cover').val(cover);
+            $('#cover').val(bookfile);
             $('#book_id').val(book_id);
             $('#clientDigitalLibrryModal').modal('hide');
 

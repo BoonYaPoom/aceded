@@ -97,7 +97,7 @@
                                         id="hours" name="hours" class="form-control  " data-toggle="select2"
                                         data-placeholder="จำนวนวัน" data-allow-clear="false">
                                         <option value="0">เลือกจำนวนชั่วโมงเรียน</option>
-                                        @for ($i = 1; $i <= 500; $i++)
+                                        @for ($i = 1; $i <= 24; $i++)
                                             <option value="{{ $i }}"> {{ $i }} </option>
                                         @endfor
                                     </select>
@@ -264,6 +264,45 @@
 
                             </div><!-- /grid column -->
                         </div><!-- /grid row -->
+                        <fieldset>
+                            <legend>กำหนด GPA</legend> <!-- .form-group -->
+                            <div class="row ">
+                                <!-- grid column -->
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="control-label" for="minScoreA">Grade A</label> <input type="number"
+                                            class="form-control" name="minScoreA" id="minScoreA"
+                                            placeholder="Grade A" value="" />
+                                    </div>
+                                </div><!-- /grid column -->
+                                <!-- grid column -->
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="control-label" for="minScoreB">Grade B</label> <input type="number"
+                                            class="form-control" name="minScoreB" id="minScoreB"
+                                            placeholder="Grade B" value="" />
+                                    </div>
+                                </div><!-- /grid column -->
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="control-label" for="minScoreC">Grade C</label> <input type="number"
+                                            class="form-control" name="minScoreC" id="minScoreC"
+                                            placeholder="Grade C" value="" />
+                                    </div>
+                                </div><!-- /grid column -->
+                                <!-- grid column -->
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="control-label" for="minScoreD">Grade D</label> <input type="number"
+                                            class="form-control" name="minScoreD" id="minScoreD"
+                                            placeholder="Grade D" value="" />
+                                    </div>
+                                </div><!-- /grid column -->
+                            </div><!-- /grid row -->
+
+                        </fieldset><!-- /.fieldset -->
+
+
                         <!-- .form-group -->
                         <div class="form-group d-none">
                             <label for="shownumber">แสดงลำดับ </label> <label
@@ -579,7 +618,7 @@
                                 <div class="col-md-12 ">
                                     <div class="form-group">
                                         <label class="control-label" for="paymentdetail">ข้อมูลการชำระเงิน</label>
-                                        <textarea class="ckeditor" data-placeholder="ข้อมูลการชำระเงิน" data-height="200" id="paymentdetail"
+                                        <textarea class="editor" data-placeholder="ข้อมูลการชำระเงิน" data-height="200" id="paymentdetail"
                                             name="paymentdetail"></textarea>
                                     </div>
                                 </div><!-- /grid column -->

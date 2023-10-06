@@ -24,7 +24,7 @@
         <div class="page-section">
             <div class="card card-fluid">
                 <div class="card-header bg-muted">หน่วยงาน /<a
-                        href="{{ route('departmentLearnpage') }}">หมวดหมู่</a>/  จัดการหลักสูตร</div>
+                        href="{{ route('learn', ['department_id' => $depart->department_id]) }}">หมวดหมู่</a>/  จัดการหลักสูตร</div>
                 <div class="card-body">
                     <div class="table-responsive">
                         <table id="datatable2" class="table w3-hoverable">
