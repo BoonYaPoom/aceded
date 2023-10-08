@@ -9,6 +9,7 @@ use App\Http\Controllers\BookCategoryController;
 use App\Http\Controllers\BookController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\CategoryTopicController;
+use App\Http\Controllers\CourseClassAddController;
 use App\Http\Controllers\CourseClassController;
 use App\Http\Controllers\CourseController;
 use App\Http\Controllers\CourseGroupController;
@@ -98,7 +99,7 @@ Route::group(['middleware' => 'IsLoggedIn'], function () {
         Route::get('/', [NavController::class, 'home'])->name('adminhome');
         Route::get('/department', [NavController::class, 'homedepartment'])->name('adminhomedepartment');
         Route::prefix('admin')->group(function () {
-
+            
             Route::get('/wms', [DepartmentController::class, 'departmentwmspage'])->name('departmentwmspage');
             Route::get('/lms', [DepartmentController::class, 'departmentLearnpage'])->name('departmentLearnpage');
             Route::get('/bss', [DepartmentController::class, 'bookif'])->name('bookif');
@@ -111,7 +112,7 @@ Route::group(['middleware' => 'IsLoggedIn'], function () {
             Route::put('{from}/departmentform_update/{department_id}', [DepartmentController::class, 'update'])->name('departmentupdate');
             Route::get('/changeStatusDepart', [DepartmentController::class, 'changeStatus'])->name('changeStatusDepart');
 
-
+            Route::get('{department_id}/homepage', [DepartmentController::class, 'homede'])->name('homede');
             Route::prefix('wms')->group(function () {
 
                 Route::get('{department_id}/home', [NavController::class, 'manage'])->name('manage');
@@ -306,7 +307,10 @@ Route::group(['middleware' => 'IsLoggedIn'], function () {
 
                 Route::get('{course_id}/registeradd', [CourseClassController::class, 'registeradd'])->name('registeradd_page');
                 Route::get('{course_id}/register/{m}', [CourseClassController::class, 'register'])->name('register_page');
-
+                Route::get('{course_id}/addusersCour/{m}', [CourseClassAddController::class, 'addusersCour'])->name('addusersCour');
+                Route::post('{course_id}/saveSelectedUsers/{m}', [CourseClassAddController::class, 'saveSelectedUsers'])->name('saveSelectedUsers');
+                Route::post('{course_id}/storeLearn/{m}', [CourseClassController::class, 'storeLearn'])->name('storeLearn');
+                Route::match(['get', 'post'],'{course_id}/search-users/{m}', [CourseClassController::class, 'searchUsers'])->name('searchUsers');
 
                 Route::get('{class_id}/payment', [CourseClassController::class, 'payment'])->name('payment_page');
                 
@@ -316,6 +320,8 @@ Route::group(['middleware' => 'IsLoggedIn'], function () {
                 Route::get('{course_id}/congratuation/{m}', [CourseClassController::class, 'congratuation'])->name('congratuation_page');
                 Route::get('teacherinfo', [CourseClassController::class, 'teacherinfo'])->name('teacherinfo');
                 Route::post('/store_teacherinfo', [CourseClassController::class, 'Teacherinfoupdate'])->name('Teacherinfoupdate');
+         
+             
             });
 
             Route::prefix('lms')->group(function () {

@@ -24,7 +24,7 @@
                                     </option>
                                     <option value="5" {{ request('user_role') == '5' ? 'selected' : '' }}>ผู้เยี่ยมชม
                                     </option>
-                                    <option value="1" {{ request('user_role') == '1' ? 'selected' : '' }}>ผู้ดูแลระบบ
+                                    <option value="1" {{ request('user_role') == '6' ? 'selected' : '' }}>ผู้ดูแล
                                     </option>
                                 </select>
                             </div>

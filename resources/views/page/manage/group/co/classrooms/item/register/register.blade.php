@@ -71,13 +71,28 @@
                                         $monthsa = \ltrim(\Carbon\Carbon::parse($dataLearn)->format('m'), '0');
                                         $newDateTime = \Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $learns->registerdate)->format('d/m/Y H:i:s');
                                         $users = \App\Models\Users::find($learns->user_id);
+                                   
                                     @endphp
                                     @if ($monthsa == $m)
                                         <tr>
                                             <td><a href="#">{{ $n++ }}</a></td>
 
-                                            <td>{{ $users->username }}</td>
-                                            <td>{{ $users->firstname }} {{ $users->lastname }}</td>
+                                            <td>   @if (optional($users)->username)
+                                                {{ $users->username }}
+                                            @else
+                                                Username not found
+                                            @endif</td>
+                                            <td>   @if (optional($users)->firstname )
+                                                {{ $users->firstname }} 
+                                            @else
+                                          
+                                            @endif
+                                            @if (optional($users)->lastname)
+                                            {{ $users->lastname }}
+                                                  @else
+                                                   
+                                                  @endif</td>
+                                            
 
                                             <td>{{ $newDateTime }}</td>
                                             <td class="align-middle"> <label
@@ -225,12 +240,13 @@
                         </table><!-- /.table -->
                     </div><!-- /.table-responsive -->
                     <br>
-                    <form method="post" action="">
+                <!--    <form method="post" action="{{ route('searchUsers', ['course_id' => $cour, 'm' => $m]) }}">    
+                        @csrf       
                         <div class="row h4">เพิ่มผู้เรียน </div>
                         <div class="row mb-2">
                             <div class="col-10">
-                                <!-- .col -->
-                                <!-- .input-group -->
+                                .col 
+                                 .input-group 
                                 <div class="input-group has-clearable">
                                     <button type="button" class="close" aria-label="Close"><span aria-hidden="true"><i
                                                 class="fa fa-times-circle"></i></span></button>
@@ -238,50 +254,76 @@
                                         <span class="input-group-text"><span class="oi oi-magnifying-glass"></span></span>
                                     </div>
                                     <input type="text" class="form-control"
-                                        placeholder="ค้นหารหัส ,ค้นหาหลายคนพิมพ์เว้นวรรค 1ครั้ง (space bar) เช่น 111111 222222 333333, ค้นหาแบบช่วงพิมพ์ - ระหว่างข้อมูล เช่น 100000-100010"
-                                        name="stusearch" id="stusearch" required="" value="">
-                                </div><!-- /.input-group -->
-                            </div><!-- /.col -->
+                                        placeholder="ค้นหารหัส"
+                                        name="stusearch" id="search_query" required="" value="">
+                                </div>
+                            </div>
                             <div class="col-auto d-none d-sm-flex"><button type="submit" class="btn btn-success">ค้นหา
                                     <span class="fa fa-search"></span></button></div>
                         </div>
                     </form>
-                    <form action="https://aced.dlex.ai/childhood/admin/lms/savedata/registerinsert/4" method="post"
-                        accept-charset="utf-8">
+                    <form method="post" action="">    
+                   
                         <input type="hidden" name="__csrf_token_name" value="720927c2b99c7c37abebdf761a388b00" />
                         <div class="table-responsive">
-                            <!-- .table -->
+                           
                             <table id="datatable2" class="table w3-hoverable">
-                                <!-- thead -->
+                             
                                 <thead>
                                     <tr class="bg-infohead">
-                                        <th class="align-middle" style="width:10%"> ลำดับ </th>
+                                     
+                                        <th width="10%">ลำดับ 
+                                    </th>
                                         <th class="align-middle" style="width:30%"> รหัสผู้ใช้ </th>
                                         <th class="align-middle" style="width:30%"> ชื่อ-สกุล </th>
 
                                     </tr>
-                                </thead><!-- /thead -->
-                                <!-- tbody -->
+                                </thead>
+                            
                                 <tbody>
-
-                                </tbody><!-- /tbody -->
-                            </table><!-- /.table -->
-                        </div><!-- /.table-responsive -->
+                                    @foreach ($usersser as $usersers)
+                                    
+                                    @if ($usersers->user_role == 3)
+                                        <tr>
+                                    
+                                           
+                                            <td class="align-middle">{{ $usersers->user_role }}</td>
+                                            <td class="align-middle">{{ $usersers->username }}</td>
+                                            <td class="align-middle">                   
+                                                <form action="{{ route('storeLearn', ['course_id' => $cour, 'm' => $m]) }}" method="POST">
+                                                    @csrf
+                                                    <input type="hidden" name="user_data" value="{{ $usersers->user_id }}">
+                                                    <button class="btn btn-lg btn-primary-theme ml-auto" type="submit">
+                                                        <i class="fa fa-user-plus"></i> เพิ่มผู้เรียน
+                                                    </button>
+                                                </form>               
+                                             </td>
+                                        </tr>
+                                    @endif
+                                @endforeach
+             
+                                </tbody>
+                            </table>
+                        </div>
                         <div class="row">
                             <button class="btn btn-lg btn-primary-theme ml-auto" type="submit"><i
                                     class="fa fa-user-plus"></i> เพิ่มผู้เรียน</button>
                         </div>
                     </form>
-                </div><!-- /.card-body -->
+                
+                </div>  -->
             </div><!-- /.card -->
         </div><!-- /.page-section -->
         <!-- .page-title-bar -->
-        <header class="page-title-bar">
+         <!-- .page-title-bar -->
+         <header class="page-title-bar">
             <!-- floating action -->
 
-            <button type="button" onclick="window.location=''" class="btn btn-success btn-floated btn-add "
+            <button type="button" onclick="window.location='{{ route('addusersCour', ['course_id' => $cour, 'm' => $m]) }}'" class="btn btn-success btn-floated btn-add "
                 id="registeradd" data-toggle="tooltip" title="เพิ่ม"><span class="fas fa-plus"></span></button>
             <!-- /floating action -->
         </header><!-- /.page-title-bar -->
     </div><!-- /.page-inner -->
 @endsection
+
+          

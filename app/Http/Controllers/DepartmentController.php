@@ -183,6 +183,13 @@ class DepartmentController extends Controller
         }
         return view('layouts.department.edit', compact('depart', 'from', 'departmentLink'));
     }
+    public function homede($department_id)
+    {
+          
+        $depart  = Department::findOrFail($department_id);
+      
+        return view('layouts.department.item.data.home', compact('depart',));
+    }
     public function update(Request $request, $from, $department_id)
     {
 

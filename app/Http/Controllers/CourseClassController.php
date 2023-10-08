@@ -30,8 +30,8 @@ class CourseClassController extends Controller
         $group_id = $cour->group_id;
         $courses = CourseGroup::findOrFail($group_id);
         $department_id = $courses->department_id;
-        $depart= Department::find($department_id); 
-        return view('page.manage.group.co.classrooms.index', compact('cour', 'class', 'month', 'learners','depart'));
+        $depart = Department::find($department_id);
+        return view('page.manage.group.co.classrooms.index', compact('cour', 'class', 'month', 'learners', 'depart'));
     }
 
 
@@ -45,8 +45,8 @@ class CourseClassController extends Controller
         $group_id = $cour->group_id;
         $courses = CourseGroup::findOrFail($group_id);
         $department_id = $courses->department_id;
-        $depart= Department::find($department_id); 
-        return view('page.manage.group.co.classrooms.create', compact('cour', 'class', 'learn','depart'));
+        $depart = Department::find($department_id);
+        return view('page.manage.group.co.classrooms.create', compact('cour', 'class', 'learn', 'depart'));
     }
     public function edit($class_id)
     {
@@ -58,40 +58,40 @@ class CourseClassController extends Controller
         $group_id = $cour->group_id;
         $courses = CourseGroup::findOrFail($group_id);
         $department_id = $courses->department_id;
-        $depart= Department::find($department_id); 
-        return view('page.manage.group.co.classrooms.edit', compact('class', 'learn', 'cour','depart'));
+        $depart = Department::find($department_id);
+        return view('page.manage.group.co.classrooms.edit', compact('class', 'learn', 'cour', 'depart'));
     }
 
     public function store(Request $request, $course_id)
     {
-            try{
-        $class = new CourseClass;
-        $class->class_name = $request->class_name;
-        $class->course_id = (int)$course_id;
-   
-        $class->class_status  = $request->input('class_status', 0);
-        $class->startdate = $request->startdate;
-        $class->enddate = $request->enddate;
-        $class->announcementdate = $request->announcementdate;
-        $class->amount = $request->amount;
-        $class->ageofcert = $request->ageofcert;
-        $class->registration = null;
-        $class->registration_file = null;
-        $class->part3 = null;
-        $class->location = null;
-        $class->orderby = null;
-        $class->selectby = null;
-        $class->startcourse = null;
-        $class->endcourse = null;
-        $class->save();
+        try {
+            $class = new CourseClass;
+            $class->class_name = $request->class_name;
+            $class->course_id = (int)$course_id;
 
-        DB::commit();
-    } catch (\Exception $e) {
+            $class->class_status  = $request->input('class_status', 0);
+            $class->startdate = $request->startdate;
+            $class->enddate = $request->enddate;
+            $class->announcementdate = $request->announcementdate;
+            $class->amount = $request->amount;
+            $class->ageofcert = $request->ageofcert;
+            $class->registration = null;
+            $class->registration_file = null;
+            $class->part3 = null;
+            $class->location = null;
+            $class->orderby = null;
+            $class->selectby = null;
+            $class->startcourse = null;
+            $class->endcourse = null;
+            $class->save();
 
-        DB::rollBack();
+            DB::commit();
+        } catch (\Exception $e) {
 
-        return response()->view('error.error-500', [], 500);
-    }
+            DB::rollBack();
+
+            return response()->view('error.error-500', [], 500);
+        }
         return redirect()->route('class_page', ['course_id' => $course_id])->with('message', 'CourseClass บันทึกข้อมูลสำเร็จ');
     }
 
@@ -128,15 +128,15 @@ class CourseClassController extends Controller
             $image_name = 'avatar' .  $user_id . '.' . $request->avatar->getClientOriginalExtension();
             $image = Image::make($request->avatar)->resize(400, 400);
             $uploadDirectory = public_path('upload/Profile/' . $image_name);
-            
+
             if (!file_exists(dirname($uploadDirectory))) {
                 mkdir(dirname($uploadDirectory), 0755, true);
             }
-        
+
             $image->save($uploadDirectory);
-            $usermanages->avatar = 'upload/Profile/' . 'avatar' .  $user_id .'.' . $request->avatar->getClientOriginalExtension();
+            $usermanages->avatar = 'upload/Profile/' . 'avatar' .  $user_id . '.' . $request->avatar->getClientOriginalExtension();
         }
-        
+
 
         // ... อัปเดตฟิลด์อื่น ๆ ตามต้องการ
         $usermanages->user_position = $request->user_position;
@@ -181,29 +181,12 @@ class CourseClassController extends Controller
         $group_id = $cour->group_id;
         $courses = CourseGroup::findOrFail($group_id);
         $department_id = $courses->department_id;
-        $depart= Department::find($department_id); 
-        return view('page.manage.group.co.classroom.item.registeradd', compact('cour','depart'));
-    }
-    public function register($course_id,$m)
-    {
-        $jsonContent = file_get_contents('javascript/json/_data.json');
-        $mms = json_decode($jsonContent, true);
-        $monthdata = $mms['month'];
-        $month = $monthdata['th'];
-        $cour = Course::findOrFail($course_id);
-        $class = $cour->classCouse()->where('course_id', $course_id)->get();
-        $group_id = $cour->group_id;
-        $courses = CourseGroup::findOrFail($group_id);
-        
-        $department_id = $courses->department_id;
-        $depart= Department::find($department_id); 
-        $learners =  $cour->learnCouse()->where('course_id', $course_id)->get();
-
-        return view('page.manage.group.co.classrooms.item.register.register', compact('courses','cour', 'learners', 'm','depart'));
+        $depart = Department::find($department_id);
+        return view('page.manage.group.co.classroom.item.registeradd', compact('cour', 'depart'));
     }
 
 
-    public function report($course_id,$m)
+    public function report($course_id, $m)
     {
         $jsonContent = file_get_contents('javascript/json/_data.json');
         $mms = json_decode($jsonContent, true);
@@ -215,10 +198,10 @@ class CourseClassController extends Controller
         $group_id = $cour->group_id;
         $courses = CourseGroup::findOrFail($group_id);
         $department_id = $courses->department_id;
-        $depart= Department::find($department_id); 
-        return view('page.manage.group.co.classrooms.item.report.report', compact('cour', 'learners', 'm','courses','depart'));
+        $depart = Department::find($department_id);
+        return view('page.manage.group.co.classrooms.item.report.report', compact('cour', 'learners', 'm', 'courses', 'depart'));
     }
-    public function gpapage($course_id,$m)
+    public function gpapage($course_id, $m)
     {
         $jsonContent = file_get_contents('javascript/json/_data.json');
         $mms = json_decode($jsonContent, true);
@@ -230,13 +213,13 @@ class CourseClassController extends Controller
         $group_id = $cour->group_id;
         $courses = CourseGroup::findOrFail($group_id);
         $department_id = $courses->department_id;
-        $depart= Department::find($department_id); 
+        $depart = Department::find($department_id);
 
-     
-      
-        return view('page.manage.group.co.classrooms.item.report.gpapage', compact('cour', 'learners', 'm','courses','depart'));
+
+
+        return view('page.manage.group.co.classrooms.item.report.gpapage', compact('cour', 'learners', 'm', 'courses', 'depart'));
     }
-    public function congratuation($course_id,$m)
+    public function congratuation($course_id, $m)
     {
         $jsonContent = file_get_contents('javascript/json/_data.json');
         $mms = json_decode($jsonContent, true);
@@ -249,8 +232,8 @@ class CourseClassController extends Controller
         $group_id = $cour->group_id;
         $courses = CourseGroup::findOrFail($group_id);
         $department_id = $courses->department_id;
-        $depart= Department::find($department_id); 
-        return view('page.manage.group.co.classrooms.item.congratuation.congratuation', compact('cour','courses', 'learners', 'm','courses','depart'));
+        $depart = Department::find($department_id);
+        return view('page.manage.group.co.classrooms.item.congratuation.congratuation', compact('cour', 'courses', 'learners', 'm', 'courses', 'depart'));
     }
 
     public function payment($class_id)
@@ -267,8 +250,8 @@ class CourseClassController extends Controller
         $group_id = $cour->group_id;
         $courses = CourseGroup::findOrFail($group_id);
         $department_id = $courses->department_id;
-        $depart= Department::find($department_id); 
-        return view('page.manage.group.co.classrooms.item.payment.payment', compact('class', 'learn', 'cour','depart'));
+        $depart = Department::find($department_id);
+        return view('page.manage.group.co.classrooms.item.payment.payment', compact('class', 'learn', 'cour', 'depart'));
     }
     public function payment2($class_id)
     {
@@ -284,20 +267,95 @@ class CourseClassController extends Controller
         $group_id = $cour->group_id;
         $courses = CourseGroup::findOrFail($group_id);
         $department_id = $courses->department_id;
-        $depart= Department::find($department_id); 
-        return view('page.manage.group.co.classrooms.item.payment.payment', compact('class', 'learn', 'cour','depart'));
+        $depart = Department::find($department_id);
+
+        return view('page.manage.group.co.classrooms.item.payment.payment', compact('class', 'learn', 'cour', 'depart'));
     }
 
-    public function register2($m)
+    public function register($course_id, $m)
     {
         $jsonContent = file_get_contents('javascript/json/_data.json');
         $mms = json_decode($jsonContent, true);
         $monthdata = $mms['month'];
         $month = $monthdata['th'];
+        $cour = Course::findOrFail($course_id);
+        $class = $cour->classCouse()->where('course_id', $course_id)->get();
+        $group_id = $cour->group_id;
+        $courses = CourseGroup::findOrFail($group_id);
 
-        $learn = CourseLearner::all();
+        $department_id = $courses->department_id;
+        $depart = Department::find($department_id);
+        $learners =  $cour->learnCouse()->where('course_id', $course_id)->get();
+        $usersser = [];
+        return view('page.manage.group.co.classrooms.item.register.register', compact('courses', 'cour', 'learners', 'm', 'depart', 'usersser'));
+    }
 
 
-        return view('page.manage.group.co.classrooms.item.register.register', compact('class', 'learn', 'cour'));
+    public function searchUsers(Request $request, $course_id, $m)
+    {
+        $jsonContent = file_get_contents('javascript/json/_data.json');
+        $mms = json_decode($jsonContent, true);
+        $monthdata = $mms['month'];
+        $month = $monthdata['th'];
+        $cour = Course::findOrFail($course_id);
+        $class = $cour->classCouse()->where('course_id', $course_id)->get();
+        $group_id = $cour->group_id;
+        $courses = CourseGroup::findOrFail($group_id);
+
+        $department_id = $courses->department_id;
+        $depart = Department::find($department_id);
+        $learners =  $cour->learnCouse()->where('course_id', $course_id)->get();
+        $searchQuery = $request->input('search_query');
+
+        $usersser = $depart->UserDe()
+            ->whereNotExists(function ($query) use ($searchQuery) {
+                $query->select(DB::raw(1))
+                    ->from('course_learner')
+                    ->whereRaw('course_learner.user_id = users.user_id')
+                    ->where('user_id', 'LIKE', "%$searchQuery%");
+            })
+            ->where('user_id', 'LIKE', "%$searchQuery%")
+            ->get();
+
+
+        return view('page.manage.group.co.classrooms.item.register.register', compact('searchQuery', 'courses', 'cour', 'learners', 'm', 'depart', 'usersser'))
+            ->with('refreshPage', true);
+    }
+
+    public function storeLearn(Request $request, $course_id, $m)
+    {
+
+
+        $selectedUserIds = $request->user_data;
+
+        $courseLearner = new CourseLearner();
+
+        $courseLearner->class_id = 0;
+        $courseLearner->user_id = $selectedUserIds;
+        $courseLearner->registerdate = now();
+        $courseLearner->learner_status = 1;
+        $courseLearner->course_id = $course_id;
+        $courseLearner->congratulation = 0;
+        $courseLearner->congratulationdate = null;
+        $courseLearner->survetdate = null;
+        $courseLearner->subject = [];
+        $courseLearner->realcongratulationdate  =  null;
+        $courseLearner->request_certificate  =  null;
+        $courseLearner->approve_certificate  =  null;
+        $courseLearner->printed_certificate  =  null;
+        $courseLearner->patment_amount  =  null;
+        $courseLearner->patment_price  =  null;
+        $courseLearner->patment_status  =  null;
+        $courseLearner->patment_date  =  null;
+        $courseLearner->patment_file  =  null;
+        $courseLearner->patment_comment  =  null;
+        $courseLearner->patment_type  =  null;
+        $courseLearner->book_year  =  null;
+        $courseLearner->book_no  =  null;
+        $courseLearner->number_no  =  null;
+
+        $courseLearner->save();
+
+        return redirect()->back()->with('error', 'โปรดเลือกข้อมูลที่ต้องการบันทึก');
     }
 }

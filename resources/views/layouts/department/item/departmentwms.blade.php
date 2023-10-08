@@ -55,10 +55,10 @@
                               
                                 @if($data->department_id == $depart->department_id && $data->user_role == 3 || $data->user_role == 1)
                                     <tr>
-                                        <td><a href="{{ route('manage', ['department_id' => $depart->department_id]) }}">
+                                        <td><a href="{{ route('homede', ['department_id' => $depart->department_id]) }}">
                                                 {{ $depart->name_short_en }}</a>
                                         </td>
-                                        <td><a href="{{ route('manage', ['department_id' => $depart->department_id]) }}">
+                                        <td><a href="{{ route('homede', ['department_id' => $depart->department_id]) }}">
                                                 {{ $depart->name_th }}</a>
                                         </td>
                                         <td class="align-middle">

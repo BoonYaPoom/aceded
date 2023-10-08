@@ -76,7 +76,7 @@
 
   </head>
 
-  <!--     @php
+     @php
       use Illuminate\Support\Facades\DB;
       
       try {
@@ -86,7 +86,7 @@
       } catch (\Exception $e) {
           echo 'Connection failed: ' . $e->getMessage();
       }
-  @endphp  -->
+  @endphp  
  <!-- @php
 try {
     $ldap_host = env('LDAP_HOST');

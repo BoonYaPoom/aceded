@@ -290,6 +290,7 @@
 
                             </div><!-- /grid column -->
                         </div><!-- /grid row -->
+                
                         <!-- .form-group -->
                         <div class="form-group d-none">
                             <label for="shownumber">แสดงลำดับ </label> <label
@@ -757,7 +758,7 @@
                                     <div class="card card-figure">
                                         <!-- .card-figure -->
                                         <figure class="figure">
-                                            <img class="img-fluser_id" src="{{ asset('upload/cer/certificate_1.png') }}"
+                                            <img class="img-fluser_id" src="{{ asset('uploads/cer02_0.png') }}"
                                                 alt="ใบประกาศนียบัตร  1 " style="cursor:zoom-in"
                                                 onclick="$('#previewimage').prop('src',$(this).prop('src'));$('#modal01').css('display','block');">
                                             <!-- .figure-caption -->
@@ -778,7 +779,7 @@
                             <div id="modal01" class="w3-modal" onclick="this.style.display='none'">
                                 <span class="w3-button w3-hover-red w3-xlarge w3-display-topright">×</span>
                                 <div class="w3-modal-content w3-animate-zoom">
-                                    <img src="{{ asset('upload/cer/certificate_1.png') }}" style="width:100%"
+                                    <img src="{{ asset('uploads/cer02_0.png') }}" style="width:100%"
                                         id="previewimage">
                                 </div>
                             </div>
@@ -807,9 +808,7 @@
                             <!-- grid column -->
                             <!-- /grid row -->
                             <div class="form-group">
-                                <label for="cert_custom">เพิ่มรูปแบบใบประกาศนียบัตร </label> <input type="file"
-                                    class="form-control" id="cert_custom" name="cert_custom"
-                                    placeholder="ใบประกาศนียบัตร	" accept="image/*">
+                                <label for="cert_custom">เลือกรูปแบบใบประกาศนียบัตร </label>
                             </div><!-- /.form-group -->
                         </fieldset><!-- /.fieldset -->
                         <fieldset>

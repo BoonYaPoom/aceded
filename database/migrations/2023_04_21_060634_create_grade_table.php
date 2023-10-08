@@ -17,8 +17,8 @@ return new class extends Migration
             $table->increments('grade_id')->start(10000)->nocache();
             $table->integer('course_id');
             $table->string('grade', 1)->collation('utf8_general_ci');
-            $table->integer('minscore');
-            $table->integer('maxscore');
+            $table->integer('minscore')->nullable();
+            $table->integer('maxscore')->nullable();
             $table->longText('description')->nullable()->collation('utf8_general_ci');
         });
     }

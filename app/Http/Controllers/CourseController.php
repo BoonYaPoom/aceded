@@ -11,6 +11,7 @@ use App\Models\Grade;
 use App\Models\PersonType;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 
@@ -53,7 +54,7 @@ class CourseController extends Controller
                 ->withInput()
                 ->with('error', 'ข้อมูลไม่ถูกต้อง');
         }
-        try {
+    
             $code = Course::generateCourseCode($group_id);
             $group = CourseGroup::find($group_id);
             $department_id = $group->department_id;
@@ -121,7 +122,7 @@ class CourseController extends Controller
             $cour->result_learn_th = null;
             $cour->result_learn_en = null;
             $cour->course_approve = 0;
-            $cour->cetificate_status = $request->input('cetificate_status', 0);
+            $cour->cetificate_status = 1;
             $cour->cetificate_request = 0;
             $cour->paymentstatus = $request->input('paymentstatus', 0);
             $cour->paymentmethod = '';
@@ -174,16 +175,20 @@ class CourseController extends Controller
                 $cour->save();
             }
 
-            if ($request->hasFile('cert_custom')) {
-                $image_cert_custom = 'cert_custom' . $cour->course_id . '.' . $request->cert_custom->getClientOriginalExtension();
-                $uploadDirectory = public_path('upload/Course/cert_custom/');
-                if (!file_exists($uploadDirectory)) {
-                    mkdir($uploadDirectory, 0755, true);
-                }
-                if (file_exists($uploadDirectory)) {
-
-                    file_put_contents(public_path('upload/Course/cert_custom/' . $image_cert_custom), file_get_contents($request->cert_custom));
-                    $cour->cert_custom = 'upload/Course/cert_custom/' .  'cert_custom' . $cour->course_id . '.' . $request->cert_custom->getClientOriginalExtension();
+            if ( $cour->cetificate_status == 1) {
+                if (File::exists(public_path('uploads/cer03_0.png'))) {
+                    // ตรวจสอบว่าไดเรกทอรีปลายทางสำหรับการบันทึกใหม่มีอยู่หรือไม่
+                    $uploadDirectory = public_path('upload/Course/cert_custom/');
+                    if (!File::exists($uploadDirectory)) {
+                        File::makeDirectory($uploadDirectory, 0755, true);
+                    }
+                
+                    // กําหนดชื่อไฟล์ใหม่และคัดลอกไฟล์รูปภาพ
+                    $newImageName = 'cert_custom' . $cour->course_id . '.png'; // ตั้งชื่อใหม่ตามต้องการ
+                    File::copy(public_path('uploads/cer03_0.png'), $uploadDirectory . $newImageName);
+                
+                    // บันทึกชื่อไฟล์ใหม่ในฐานข้อมูล
+                    $cour->cert_custom = 'upload/Course/cert_custom/' . $newImageName;
                     $cour->save();
                 }
             } else {
@@ -193,47 +198,47 @@ class CourseController extends Controller
             }
 
             if ($request->minScoreA) {
-                $grade = new Grade();
-                $grade->minscore = $cour->minScoreA;
-                $grade->course_id = $cour->course_id;
-                $grade->grade = 'A';
-                $grade->maxscore = null;
-                $grade->description = null;
-                $grade->save();
+                $gradeA = new Grade();
+                $gradeA->minscore = $request->minScoreA;
+                $gradeA->course_id = $cour->course_id;
+                $gradeA->grade = 'A';
+                $gradeA->maxscore = null;
+                $gradeA->description = null;
+                $gradeA->save();
             } else {
                 
             }
             if ($request->minScoreB) {
-                $grade = new Grade();
-                $grade->minscore = $request->minScoreB;
-                $grade->course_id = $cour->course_id;
-                $grade->grade = 'B';
-                $grade->maxscore = null;
-                $grade->description = null;
-                $grade->save();
+                $gradeB = new Grade();
+                $gradeB->minscore = $request->minScoreB;
+                $gradeB->course_id = $cour->course_id;
+                $gradeB->grade = 'B';
+                $gradeB->maxscore = null;
+                $gradeB->description = null;
+                $gradeB->save();
             } else {
 
             }
 
             if ($request->minScoreC) {
-                $grade = new Grade();
-                $grade->minscore = $request->minScoreC;
-                $grade->course_id = $cour->course_id;
-                $grade->grade = 'C';
-                $grade->maxscore = null;
-                $grade->description = null;
-                $grade->save();
+                $gradeC = new Grade();
+                $gradeC->minscore = $request->minScoreC;
+                $gradeC->course_id = $cour->course_id;
+                $gradeC->grade = 'C';
+                $gradeC->maxscore = null;
+                $gradeC->description = null;
+                $gradeC->save();
             } else {
 
             }
             if ($request->minScoreD) {
-                $grade = new Grade();
-                $grade->minscore = $request->minScoreD;
-                $grade->course_id = $cour->course_id;
-                $grade->grade = 'D';
-                $grade->maxscore = null;
-                $grade->description = null;
-                $grade->save();
+                $gradeD = new Grade();
+                $gradeD->minscore = $request->minScoreD;
+                $gradeD->course_id = $cour->course_id;
+                $gradeD->grade = 'D';
+                $gradeD->maxscore = null;
+                $gradeD->description = null;
+                $gradeD->save();
             } else {
 
             }
@@ -241,19 +246,14 @@ class CourseController extends Controller
 
 
 
-            DB::commit();
-        } catch (\Exception $e) {
-
-            DB::rollBack();
-
-            return response()->view('error.error-500', [], 500);
-        }
         return redirect()->route('courpag', ['group_id' => $cour->group_id])->with('message', 'CourseGroup บันทึกข้อมูลสำเร็จ');
     }
     public function edit($course_id)
     {
-        $cour = Course::findOrFail($course_id);
 
+        $cour = Course::findOrFail($course_id);
+                    
+        
         $pertype = PersonType::all();
         $group_id = $cour->group_id;
         $courses = CourseGroup::findOrFail($group_id);
@@ -292,7 +292,7 @@ class CourseController extends Controller
         $cour->days = $request->days;
         $cour->signature_name = $request->signature_name;
         $cour->signature_position = $request->signature_position;
-        $cour->cetificate_status = $request->input('cetificate_status', 0);
+        $cour->cetificate_status = 1;
         $cour->cetificate_request = 0;
         $cour->paymentstatus = $request->input('paymentstatus', 0);
         $cour->price = $request->price;
@@ -331,17 +331,23 @@ class CourseController extends Controller
                 $cour->save();
             }
         }
-        if ($request->hasFile('cert_custom')) {
-            $image_cert_custom = 'cert_custom' . $cour->course_id . '.' . $request->cert_custom->getClientOriginalExtension();
-            $uploadDirectory = public_path('upload/Course/cert_custom/');
-            if (!file_exists($uploadDirectory)) {
-                mkdir($uploadDirectory, 0755, true);
-            }
-            if (file_exists($uploadDirectory)) {
-
-                file_put_contents(public_path('upload/Course/cert_custom/' . $image_cert_custom), file_get_contents($request->cert_custom));
-                $cour->cert_custom = 'upload/Course/cert_custom/' .  'cert_custom' . $cour->course_id . '.' . $request->cert_custom->getClientOriginalExtension();
-                $cour->save();
+      
+            if ( $cour->cetificate_status == 1) {
+                if (File::exists(public_path('uploads/cer03_0.png'))) {
+                    // ตรวจสอบว่าไดเรกทอรีปลายทางสำหรับการบันทึกใหม่มีอยู่หรือไม่
+                    $uploadDirectory = public_path('upload/Course/cert_custom/');
+                    if (!File::exists($uploadDirectory)) {
+                        File::makeDirectory($uploadDirectory, 0755, true);
+                    }
+                
+                    // กําหนดชื่อไฟล์ใหม่และคัดลอกไฟล์รูปภาพ
+                    $newImageName = 'cert_custom' . $cour->course_id . '.png'; // ตั้งชื่อใหม่ตามต้องการ
+                    File::copy(public_path('uploads/cer02_0.png'), $uploadDirectory . $newImageName);
+                
+                    // บันทึกชื่อไฟล์ใหม่ในฐานข้อมูล
+                    $cour->cert_custom = 'upload/Course/cert_custom/' . $newImageName;
+                    $cour->save();
+                
             }
         }
 
