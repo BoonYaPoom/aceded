@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Department;
 use App\Models\Districts;
 use App\Models\Subdistricts;
+use App\Models\UserRole;
 use App\Models\Users;
 
 use Illuminate\Http\Request;
@@ -116,8 +117,8 @@ class EditManageUserController extends Controller
 
     public function createUser()
     {
-
-        return view('page.UserAdmin.add.add_umsform');
+        $role = UserRole::all();
+        return view('page.UserAdmin.add.add_umsform',compact('role'));
     }
 
 
@@ -135,7 +136,14 @@ class EditManageUserController extends Controller
         }
     }
 
-
+    public function autoschool(Request $request)
+    {
+       
+        $query = $request->get('query');
+        $filterResult = Users::where('username', 'LIKE', '%'. $query. '%')->get();
+        return response()->json($filterResult);
+       
+    }
 
     // ใน Controller
     public function showByuser_role(Request $request, $user_role)

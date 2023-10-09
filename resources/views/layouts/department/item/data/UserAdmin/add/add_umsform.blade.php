@@ -1,7 +1,8 @@
 @extends('layouts.adminhome')
 @section('content')
     <!-- .page-inner -->
-    <form action="{{ route('DPstoreUser', ['department_id' => $depart->department_id]) }}" method="post" enctype="multipart/form-data">
+    <form action="{{ route('DPstoreUser', ['department_id' => $depart->department_id]) }}" method="post"
+        enctype="multipart/form-data">
         @csrf
 
         <!-- .page-inner -->
@@ -29,22 +30,26 @@
 
                                 </div>
                             </div>
-                       
-               
+
+
                             <div class="form-row " id="user_role">
                                 <label for="user_role" class="col-md-2">เลือกประเภทผู้ใช้งาน </label>
                                 <div class="col-md-9 mb-3">
                                     <select id="user_role" name="user_role" class="form-control form-control-sm"
                                         data-toggle="select2" data-allow-clear="false">
+
                                         <option value="0"selected disabled>เลือกประเภทผู้ใช้งาน</option>
-                                        <option value="4">ผู้เรียน</option>
-                                        <option value="3">ผู้สอน</option>
-                                        <option value="1">ผู้ดูแลระบบ</option>
-                                        <option value="5">ผู้เยี่ยมชม</option>
+                                        @foreach ($role as $roles)
+                                        @if ($roles->role_status == 1)
+                                        @if ($roles->user_role_id > 1)
+                                            <option value="{{ $roles->user_role_id }}">{{ $roles->role_name }}</option>
+                                        @endif
+                                        @endif
+                                    @endforeach
                                     </select>
                                 </div>
                             </div>
-                          
+
                             <!-- form row -->
                             <div class="form-row">
                                 <label for="username" class="col-md-2">Username <span
@@ -166,8 +171,8 @@
                                     </select>
                                 </div>
                             </div>
-                        
-                           
+
+
                             <!-- form row -->
                             <div class="form-row d-none " id="set_district_id">
                                 <label for="district_id" class="col-md-2">เขต/อำเภอ </label>
@@ -200,7 +205,7 @@
                                     <input type="text" class="form-control " id="pos_name" name="pos_name"
                                         value="" placeholder="ตำแหน่ง">
                                     <!-- <select id="pos_namexx" name="pos_namexx" class="form-control form-control-sm" data-toggle="select2" data-allow-clear="false">
-                                                            </select> -->
+                                                                </select> -->
                                 </div>
                             </div>
                             <!--/form row -->

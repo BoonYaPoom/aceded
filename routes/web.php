@@ -497,7 +497,7 @@ Route::group(['middleware' => 'IsLoggedIn'], function () {
                 Route::put('/update-role/{user_id}', [EditManageUserController::class, 'updateRoleUser'])->name('updateRoleUser');
                 Route::put('/update-password/{user_id}', [EditManageUserController::class, 'updatepassword'])->name('updatePassword');
 
-
+                Route::get('/autocomplete-search', [EditManageUserController::class, 'autocompleteSearch'])->name('autocompleteSearch');
 
                 Route::get('changeStatusUser', [EditManageUserController::class, 'changeStatus'])->name('changeStatusUser');
                 Route::get('fetchUsersByDepartment', [EditManageUserController::class, 'fetchUsersByDepartment'])->name('fetchUsersByDepartment');

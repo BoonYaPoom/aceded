@@ -52,14 +52,36 @@
                                     <select id="user_role" name="user_role" class="form-control form-control-sm"
                                         data-toggle="select2" data-allow-clear="false">
                                         <option value="0"selected disabled>เลือกประเภทผู้ใช้งาน</option>
-                                        <option value="4">ผู้เรียน</option>
-                                        <option value="3">ผู้สอน</option>
-                                        <option value="1">ผู้ดูแลระบบ</option>
-                                        <option value="5">ผู้เยี่ยมชม</option>
+                                        @foreach ($role as $roles)
+                                        @if ($roles->role_status == 1)
+                                        @if ($roles->user_role_id > 1)
+                                            <option value="{{ $roles->user_role_id }}">{{ $roles->role_name }}</option>
+                                        @endif
+                                        @endif
+                                    @endforeach
                                     </select>
                                 </div>
                             </div>
-                          
+                            <div class="container mt-5">
+                                <div classs="form-group">
+                                    <input type="text" id="search" name="search" placeholder="Search" class="form-control" />
+                                </div>
+                            </div>
+                            <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.js"></script>
+                            <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-3-typeahead/4.0.1/bootstrap3-typeahead.min.js">
+                            </script>
+                            <script type="text/javascript">
+                                var route = "{{ route('autocompleteSearch') }}";
+                                $('#search').typeahead({
+                                    source: function (query, process) {
+                                        return $.get(route, {
+                                            query: query
+                                        }, function (data) {
+                                            return process(data);
+                                        });
+                                    }
+                                });
+                            </script>
                             <!-- form row -->
                             <div class="form-row">
                                 <label for="username" class="col-md-2">Username <span
