@@ -16,7 +16,7 @@
             toastr.success("{{ Session::get('message') }}");
         </script>
     @endif
-    <form action="{{ route('add_questionform',['subject_id' => $subject_id]) }}" method="post" enctype="multipart/form-data">
+    <form action="{{ route('add_questionform', ['subject_id' => $subject_id]) }}" method="post" enctype="multipart/form-data">
         @csrf
         <div class="page-inner">
             <!-- .form -->
@@ -38,19 +38,19 @@
                             <label class="control-label" for="question_type">ประเภทข้อสอบ</label> <select id="question_type"
                                 name="question_type" class="form-control" data-toggle="select2"
                                 data-placeholder="ประเภทข้อสอบ" data-allow-clear="false">
-                                <option value="0" selected  disabled>เลือก</option>
+                                <option value="0" selected disabled>เลือก</option>
                                 @foreach ($typequs as $type)
-                                    <option value="{{ $type->question_type }}"> {{ $type->question_type_th }} </option>
+                                    @if ($type->question_type == 1)
+                                        <option value="{{ $type->question_type }}"> {{ $type->question_type_th }} </option>
+                                    @endif
                                 @endforeach
                             </select>
                             @error('question_type')
-                            <span class="badge badge-warning">{{$message}}</span>
-                            
+                                <span class="badge badge-warning">{{ $message }}</span>
                             @enderror
-                       
-                                   
+
+
                             <script>
-                               
                                 $(document).ready(function() {
                                     $('#question_type').change(function() {
                                         var selectedValue = $(this).val();
@@ -85,7 +85,7 @@
                             <label class="control-label" for="lesson_id">หมวดข้อสอบ</label> <select id="lesson_id"
                                 name="lesson_id" class="form-control" data-toggle="select2" data-placeholder="หมวดข้อสอบ"
                                 data-allow-clear="false">
-                                <option value="0" selected  >ข้อสอบ </option>
+                                <option value="0" selected>ข้อสอบ </option>
 
                                 @foreach ($lossen as $lession)
                                     <option value="{{ $lession->lesson_id }}">{{ $lession->lesson_th }} </option>
@@ -93,8 +93,7 @@
                             </select>
                         </div><!-- /.form-group -->
                         @error('lesson_id')
-                        <span class="badge badge-warning">{{$message}}</span>
-                        
+                            <span class="badge badge-warning">{{ $message }}</span>
                         @enderror
                         <!-- .form-group -->
                         <div class="form-group">
@@ -118,8 +117,7 @@
                         </div><!-- /.form-group -->
                         <!-- .form-group -->
                         @error('question')
-                        <span class="badge badge-warning">{{$message}}</span>
-                        
+                            <span class="badge badge-warning">{{ $message }}</span>
                         @enderror
 
 

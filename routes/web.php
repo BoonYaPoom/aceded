@@ -21,6 +21,7 @@ use App\Http\Controllers\CourseTeacherController;
 
 use App\Http\Controllers\CustomAuthController;
 use App\Http\Controllers\DepartmentController;
+use App\Http\Controllers\DepartReportController;
 use App\Http\Controllers\DepartUsersController;
 use App\Http\Controllers\EditManageUserController;
 use App\Http\Controllers\EditProfileController;
@@ -95,7 +96,13 @@ Route::group(['middleware' => 'IsLoggedIn'], function () {
         Route::put('/update-profile', [EditProfileController::class, 'update'])->name('update-profile');
 
         // ...
-
+        Route::middleware(['checkUserRole'])->group(function () {
+            Route::get('{from}/departmentform', [DepartmentController::class, 'departmentcreate'])->name('departmentcreate');
+            Route::post('/departmentform_add', [DepartmentController::class, 'store'])->name('departmentstore');
+            Route::get('{from}/departmentform_edit/{department_id}', [DepartmentController::class, 'departmentedit'])->name('departmentedit');
+            Route::put('{from}/departmentform_update/{department_id}', [DepartmentController::class, 'update'])->name('departmentupdate');
+            Route::get('/changeStatusDepart', [DepartmentController::class, 'changeStatus'])->name('changeStatusDepart');
+        });
         Route::get('/', [NavController::class, 'home'])->name('adminhome');
         Route::get('/department', [NavController::class, 'homedepartment'])->name('adminhomedepartment');
         Route::prefix('admin')->group(function () {
@@ -106,11 +113,7 @@ Route::group(['middleware' => 'IsLoggedIn'], function () {
 
             Route::get('/dls', [DepartmentController::class, 'departmentdlspage'])->name('departmentdlspage');
 
-            Route::get('{from}/departmentform', [DepartmentController::class, 'departmentcreate'])->name('departmentcreate');
-            Route::post('/departmentform_add', [DepartmentController::class, 'store'])->name('departmentstore');
-            Route::get('{from}/departmentform_edit/{department_id}', [DepartmentController::class, 'departmentedit'])->name('departmentedit');
-            Route::put('{from}/departmentform_update/{department_id}', [DepartmentController::class, 'update'])->name('departmentupdate');
-            Route::get('/changeStatusDepart', [DepartmentController::class, 'changeStatus'])->name('changeStatusDepart');
+          
 
             Route::get('{department_id}/homepage', [DepartmentController::class, 'homede'])->name('homede');
             Route::prefix('wms')->group(function () {
@@ -304,12 +307,15 @@ Route::group(['middleware' => 'IsLoggedIn'], function () {
                 Route::get('class_edit/{class_id}', [CourseClassController::class, 'edit'])->name('class_edit');
                 Route::put('/update_classroomform/{class_id}', [CourseClassController::class, 'update'])->name('class_update');
 
+                
+                Route::get('/changeStatusLearner', [CourseClassAddController::class, 'changeStatusLearner'])->name('changeStatusLearners');
 
                 Route::get('{course_id}/registeradd', [CourseClassController::class, 'registeradd'])->name('registeradd_page');
                 Route::get('{course_id}/register/{m}', [CourseClassController::class, 'register'])->name('register_page');
                 Route::get('{course_id}/addusersCour/{m}', [CourseClassAddController::class, 'addusersCour'])->name('addusersCour');
                 Route::post('{course_id}/saveSelectedUsers/{m}', [CourseClassAddController::class, 'saveSelectedUsers'])->name('saveSelectedUsers');
-                Route::post('{course_id}/storeLearn/{m}', [CourseClassController::class, 'storeLearn'])->name('storeLearn');
+                Route::get('/destroySelectedUsers/{learner_id}', [CourseClassAddController::class, 'destroy'])->name('destroySelectedUsers');
+  
                 Route::match(['get', 'post'],'{course_id}/search-users/{m}', [CourseClassController::class, 'searchUsers'])->name('searchUsers');
 
                 Route::get('{class_id}/payment', [CourseClassController::class, 'payment'])->name('payment_page');
@@ -514,7 +520,8 @@ Route::group(['middleware' => 'IsLoggedIn'], function () {
                 Route::get('/add_umsgroupform', [PersonController::class, 'create'])->name('createperson');
                 Route::post('/store_umsgroupform', [PersonController::class, 'store'])->name('storeperson');
             });
-
+            
+           
             Route::prefix('report')->group(function () {
                 Route::get('/home', [ReportAllController::class, 'Reportview'])->name('Reportview');
                 Route::get('/home/D0100', [ReportAllController::class, 'ReportA'])->name('D0100');
@@ -534,6 +541,13 @@ Route::group(['middleware' => 'IsLoggedIn'], function () {
                 Route::get('/home/T0115', [ReportAllController::class, 'LogFileUserAuth'])->name('LogFileUserAuth');
 
                 Route::post('/get-user-data', [ReportAllController::class, 'getUserData'])->name('get-Uata');
+
+
+                Route::get('{department_id}/homeDepart', [DepartReportController::class, 'DepartReportview'])->name('DepartReportview');
+                Route::prefix('homeDepart')->group(function () {
+
+                Route::get('{department_id}/DepartD0100', [DepartReportController::class, 'DepartReportA'])->name('DepartD0100');
+            });
             });
         });
     });

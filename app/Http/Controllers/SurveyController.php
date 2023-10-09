@@ -133,7 +133,7 @@ class SurveyController extends Controller
       $sur->survey_date = now();
 
       $sur->survey_status = $request->input('survey_status', 0);
-      $sur->survey_type = 1;
+      $sur->survey_type = 0;
       $sur->recommended = $request->input('recommended', 0);
       $sur->class_id = null;
       $sur->cover = null;

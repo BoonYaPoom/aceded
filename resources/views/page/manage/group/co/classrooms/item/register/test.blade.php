@@ -167,41 +167,6 @@
                                                 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.min.js"></script>
 
 
-                                                <script>
-                                                    $(".changeclass").click(function() {
-                                                        $('#clientChangeModal').modal('toggle');
-                                                        var idleaner = $(this).prop('id');
-                                                        $('#confirm').on("click", function() {
-                                                            var Data = new FormData($("#Formchangeclass")[0]);
-                                                            Data.append('id', idleaner);
-                                                            $.ajax({
-                                                                url: '',
-                                                                contentType: false,
-                                                                processData: false,
-                                                                type: "POST",
-                                                                data: Data,
-                                                                dataType: "json",
-                                                                cache: false,
-                                                                success: function(result) {
-                                                                    if (result['status'] != null) {
-                                                                        setTimeout(function() {
-                                                                            $("#clientChangeModal").removeClass('d-none');
-                                                                            window.location.href =
-                                                                                "" +
-                                                                                result['classold'];
-                                                                        }, 200);
-                                                                    } else {
-                                                                        setTimeout(function() {
-                                                                            window.location.href =
-                                                                                "" +
-                                                                                result['subjectid'];
-                                                                        }, 200);
-                                                                    }
-                                                                }
-                                                            });
-                                                        });
-                                                    });
-                                                </script>
                                                 <a href="" class="d-none"><i class="fas fa-user fa-lg text-info"
                                                         data-toggle="tooltip" title="ข้อมูลผู้เรียน"></i></a>
                                                 <a href="#clientDeleteModal" rel="aced_admin " class="switcher-delete"

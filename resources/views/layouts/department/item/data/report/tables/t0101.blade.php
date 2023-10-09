@@ -24,35 +24,35 @@
         <form method="post" id="formreport">
             <div class="form-row">
                 <!-- form column -->
-                <!--   <div class="col-md-1"><span class="mt-1 ">ปี</span></div>
-                                <div class="col-md-3">
-                                    <div class=""><select id="selectyear" name="selectyear" class="form-control" data-toggle="select2"
-                                            data-placeholder="ปี" data-allow-clear="false" onchange="$('#formreport').submit();">
-                                            <option value="2022"> </option>
-                                            <option value="2023" selected> </option>
-                                        </select></div>
-                                </div>-->
-                <!--    <div class="col-md-4 ">
-                                    <div><select id="selectcourse" name="selectcourse" class="form-control" data-toggle="select2"
-                                            data-placeholder="หลักสูตร" data-allow-clear="false" onchange="$('#formreport').submit();">
-                                            <option value="" selected> เลือกหลักสูตร </option>
-                                            <option value="" selected> </option>
-                                            <option value="รายวิชาเพิ่มเติม การป้องกันการทุจริต ระดับปฐมวัย"> รายวิชาเพิ่มเติม
-                                                การป้องกันการทุจริต ระดับปฐมวัย </option>
-                                        </select></div>
-                                </div>-->
-                <!--  <div class="col-md-4 ">
-                                    <div><select id="selectuser_id" name="selectuser_id" class="form-control" data-toggle="select2"
-                                            data-placeholder="ผู้ใช้งานทั้งหมด" data-allow-clear="false"
-                                            onchange="$('#formreport').submit();">
-                                            <option value=""> ผู้ใช้งานทั้งหมด </option>
-                                            <option value="ธนภัทร วงษ์กล่อม"> ธนภัทร วงษ์กล่อม </option>
-                                            <option value="aced_admin "> aced_admin </option>
-                                            <option value="ธนภัทร วงษ์กล่อม"> ธนภัทร วงษ์กล่อม </option>
-                                            <option value="ธนภัทร วงษ์กล่อม"> ธนภัทร วงษ์กล่อม </option>
-                                            <option value="TCCT1 user"> TCCT1 user </option>
-                                        </select></div>
-                                </div>-->
+             <!--   <div class="col-md-1"><span class="mt-1 ">ปี</span></div>
+                <div class="col-md-3">
+                    <div class=""><select id="selectyear" name="selectyear" class="form-control" data-toggle="select2"
+                            data-placeholder="ปี" data-allow-clear="false" onchange="$('#formreport').submit();">
+                            <option value="2022"> </option>
+                            <option value="2023" selected> </option>
+                        </select></div>
+                </div>-->
+            <!--    <div class="col-md-4 ">
+                    <div><select id="selectcourse" name="selectcourse" class="form-control" data-toggle="select2"
+                            data-placeholder="หลักสูตร" data-allow-clear="false" onchange="$('#formreport').submit();">
+                            <option value="" selected> เลือกหลักสูตร </option>
+                            <option value="" selected> </option>
+                            <option value="รายวิชาเพิ่มเติม การป้องกันการทุจริต ระดับปฐมวัย"> รายวิชาเพิ่มเติม
+                                การป้องกันการทุจริต ระดับปฐมวัย </option>
+                        </select></div>
+                </div>-->
+              <!--  <div class="col-md-4 ">
+                    <div><select id="selectuser_id" name="selectuser_id" class="form-control" data-toggle="select2"
+                            data-placeholder="ผู้ใช้งานทั้งหมด" data-allow-clear="false"
+                            onchange="$('#formreport').submit();">
+                            <option value=""> ผู้ใช้งานทั้งหมด </option>
+                            <option value="ธนภัทร วงษ์กล่อม"> ธนภัทร วงษ์กล่อม </option>
+                            <option value="aced_admin "> aced_admin </option>
+                            <option value="ธนภัทร วงษ์กล่อม"> ธนภัทร วงษ์กล่อม </option>
+                            <option value="ธนภัทร วงษ์กล่อม"> ธนภัทร วงษ์กล่อม </option>
+                            <option value="TCCT1 user"> TCCT1 user </option>
+                        </select></div>
+                </div>-->
                 <div class="col-md-3 ">
                     <div class="d-none"><select id="selectmonth" name="selectmonth" class="form-control "
                             data-toggle="select2" data-placeholder="เดือน" data-allow-clear="false"
@@ -111,13 +111,15 @@
                                 $users = null;
                             @endphp
                             @foreach ($learners as $l => $learns)
-                                @php
+                            @if($users !== null) 
+                                @php                       
                                     $dataLearn = $learns->registerdate;
                                     $congrateLearn = $learns->congratulationdate;
                                     $congrate = $learns->congratulation;
                                     $monthsa = \ltrim(\Carbon\Carbon::parse($dataLearn)->format('m'), '0');
                                     $newDateTime = \Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $learns->registerdate)->format('d/m/Y H:i:s');
                                     $users = \App\Models\Users::find($learns->user_id);
+                                    
                                     
                                     $courses = \App\Models\Course::find($learns->course_id);
                                     
@@ -130,60 +132,35 @@
                                     $carbonDate = \Carbon\Carbon::parse($congrateLearn);
                                     $thaiDate = $carbonDate->locale('th')->isoFormat('D MMMM');
                                     $buddhistYear = $carbonDate->addYears(543)->year;
-                                    $thaiYear = $buddhistYear > 0 ? $buddhistYear : '';
+                                    $thaiYear = $buddhistYear > 0 ?  $buddhistYear : '';
                                     $thaiDateWithYear = $thaiDate . ' ' . $thaiYear;
                                     
                                     $carbonDa = \Carbon\Carbon::parse($dataLearn);
                                     $thaiDa = $carbonDa->locale('th')->isoFormat('D MMMM');
                                     $buddhistYe = $carbonDa->addYears(543)->year;
-                                    $thai = $buddhistYe > 0 ? $buddhistYe : '';
+                                    $thai = $buddhistYe > 0 ?  $buddhistYe : '';
                                     $thaiDat = $thaiDa . ' ' . $thai;
                                     
                                 @endphp
 
-                                @if (isset($users) && $users)
-                                    <tr>
-                                        <td align="center">{{ $n++ }}</td>
 
-                                        <td>
-                                            @if (optional($users)->username)
-                                                {{ $users->username }}
-                                            @else
-                                                
-                                            @endif
-                                        </td>
-                                        <td>
-                                            @if (optional($users)->firstname)
-                                                {{ $users->firstname }}
-                                            @else
-                                                
-                                            @endif
-                                            @if (optional($users)->lastname)
-                                                {{ $users->lastname }}
-                                            @else
-                                                
-                                            @endif
-                                        </td>
-
-                                        <td>
-                                            @if (optional($courses)->course_th)
-                                                {{ $courses->course_th }}
-                                            @else
-                                            @endif
-                                        </td>
-                                        <td align="center">
-                                            @if ($thaiDat)
-                                                {{ $thaiDat }}
-                                            @else
-                                            @endif
-                                        </td>
-                                        <td align="center">
-                                            @if ($congrate == 1)
-                                                {{ $thaiDateWithYear }}
-                                            @elseif($congrate == 0)
-                                            @endif
-                                        </td>
-                                    </tr>
+                                <tr>
+                                    <td align="center">{{ $n++ }}</td>
+                                    @if(isset($users) && $users)
+                                    <td>{{ $users->username }}</td>
+                                    <td>{{ $users->firstname }} {{ $users->lastname }}</td>
+                                    @endif
+                                    <td>{{ $course_th }}</td>
+                                    <td align="center">{{ $thaiDat }}</td>
+                                    <td align="center">
+                                        @if ($congrate == 1)
+                                            {{ $thaiDateWithYear }}
+                                        @elseif($congrate == 0)
+                                            -
+                                        @endif
+                                    </td>
+                                </tr>
+                                @else 
                                 @endif
                             @endforeach
                             </tbody><!-- /tbody -->

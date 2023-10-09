@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\CourseLearner;
+use App\Models\Department;
 use App\Models\Log;
 use App\Models\PersonType;
 use App\Models\Users;
@@ -17,6 +18,7 @@ class ReportAllController extends Controller
 
         return view('page.report.index');
     }
+   
     public function ReportA()
     {
 
@@ -35,6 +37,7 @@ class ReportAllController extends Controller
         $learners =  CourseLearner::all();
         return view('page.report.reporta', compact('userper', 'count1', 'count3', 'count4','user_role1','user_role3','user_role4', 'month', 'perType', 'learners'));
     }
+  
     public function ReportB()
     {
 
@@ -200,4 +203,6 @@ class ReportAllController extends Controller
 
         return view('page.report.tables.t0115', compact('userper', 'month', 'oneYearsAgo', 'currentYear','logs'));
     }
+
+    
 }

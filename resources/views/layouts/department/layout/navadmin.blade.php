@@ -28,13 +28,18 @@
                                 class="menu-icon fas fa-chalkboard-teacher  "></span>
                             จัดการเรียนรู้</a>
                             @endif
-                        <a class="nav-link  font-weight-bold {{ Str::startsWith(request()->url(), route('UserManage'))
+                            @if($data->department_id == $depart->department_id && $data->user_role == 6 || $data->user_role == 1 || $data->user_role == 3)
+                        <!--    <a class="nav-link  font-weight-bold {{ Str::startsWith(request()->url(), route('DepartReportview', ['department_id' => $depart->department_id])) || request()->is('homeDepart', 'homeDepart/*')
+                                ? ' active text-info'
+                                : '' }}"
+                                href="{{ route('DepartD0100', ['department_id' => $depart->department_id]) }}"><span class="menu-icon fas fa-chart-bar  "></span> รายงาน</a>
+                            -->       <a class="nav-link  font-weight-bold {{ Str::startsWith(request()->url(), route('UserManage'))
                             ? ' active text-info'
                             : '' }}"
                             href="{{ route('DPUserManage', ['department_id' => $depart->department_id]) }}"><span
                                 class="menu-icon fas fa-users-cog  "></span>
                             จัดการผู้ใช้</a>
-
+                            @endif
 
                         <!-- End Account Sidebar Toggle Button -->
                         </li>

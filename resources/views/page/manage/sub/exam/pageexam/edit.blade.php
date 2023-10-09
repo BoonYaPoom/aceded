@@ -41,8 +41,11 @@
                                 data-placeholder="ประเภทข้อสอบ" data-allow-clear="false">
                                 <option value="0" selected  disabled>เลือก</option>
                                 @foreach ($typequs as $type)
+                                @if ($type->question_type == 1)
+
                                     <option value="{{ $type->question_type }}" {{ $type->question_type == $ques->question_type ? 'selected' : '' }} > {{ $type->question_type_th }} </option>
-                                @endforeach
+                                    @endif
+                                    @endforeach
                             </select>
                             @error('question_type')
                             <span class="badge badge-warning">{{$message}}</span>

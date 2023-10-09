@@ -55,8 +55,8 @@
                         </td>
                         <td>
                          
-                                 <!--      <a href="{{ route('register_page', [ 'm' => $m,'course_id' => $cour]) }}"><i class="fas fa-user-plus fa-lg text-dark"
-                                    data-toggle="tooltip" title="รายชื่อลงทะเบียน"></i></a>-->
+                      <a href="{{ route('register_page', [ 'm' => $m,'course_id' => $cour]) }}"><i class="fas fa-user-plus fa-lg text-dark"
+                                    data-toggle="tooltip" title="รายชื่อลงทะเบียน"></i></a>
                                         <a href="{{ route('gpa_page', [ 'm' => $m,'course_id' => $cour]) }}"><i class="fas fa-file-alt fa-lg text-dark"
                                     data-toggle="tooltip" title="รายชื่อลงทะเบียน"></i></a>
                  

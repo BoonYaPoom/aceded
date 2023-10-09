@@ -61,10 +61,37 @@
                                 <td class="align-middle">
                                     <a href="" class="d-none"><i class="fas fa-user-tie fa-lg text-success"
                                             data-toggle="tooltip" title="ข้อมูล"></i></a>
-                                    <a href="{{ route('delete_teacher', [$item->teacher_id]) }}"
+                                    <a href=""
                                         rel="สำนักงานคณะกรรมการป้องกันและปราบปรามการทุจริตแห่งชาติ "
-                                        onclick="deleteRecord(event)" class="switcher-delete" data-toggle="tooltip"
+                                       data-teacher-id="{{ $item->teacher_id }}" class="switcher-delete" data-toggle="tooltip"
                                         title="ลบ"><i class="fas fa-trash-alt fa-lg text-warning "></i></a>
+                                        <script>
+                                            $(document).ready(function() {
+                                                $('.switcher-delete').on('click', function(event) {
+                                                    event.preventDefault();
+        
+                                                    var teacherId = $(this).data('teacher-id');
+        
+                                                    $.ajax({
+                                                        url: "{{ route('TeacherStatus') }}",
+                                                        method: "GET",
+                                                        data: {
+                                                            teacher_id: teacherId,
+                                                            teacher_status: 0
+                                                        },
+                                                        success: function(response) {
+                                                            console.log(response); // ล็อกข้อมูลเพื่อตรวจสอบในคอนโซล
+        
+                                                            location.reload(); // รีเฟรชหน้าเว็บ
+                                                        },
+                                                        error: function(xhr, status, error) {
+                                                            // เกิดข้อผิดพลาดในการส่งคำขอ
+                                                            console.log(error);
+                                                        }
+                                                    });
+                                                });
+                                            });
+                                        </script>
                                 </td>
 
                             </tr><!-- /tr -->

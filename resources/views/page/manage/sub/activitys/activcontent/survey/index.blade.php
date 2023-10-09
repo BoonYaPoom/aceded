@@ -38,59 +38,76 @@
                 </thead><!-- /thead -->
                 <!-- tbody -->
                 <tbody>
-                    @php($i=1)
-                    @foreach ($suracts as  $item)
+                    @php($i = 1)
+                    @foreach ($suracts as $item)
                         <!-- tr -->
-                       
+
                         <tr>
                             <td><a href="#">{{ $i++ }}</a></td>
                             <td>{{ $item->survey_th }}</td>
                             <td>{{ $item->survey_en }}</td>
-                          
-                            <td class="align-middle"> <label
-                                class="switcher-control switcher-control-success switcher-control-lg">
-                                <input type="checkbox" class="switcher-input switcher-edit"
-                                    {{ $item->survey_status == 1 ? 'checked' : '' }}
-                                    data-survey-id="{{ $item->survey_id  }}">
-                                <span class="switcher-indicator"></span>
-                                <span class="switcher-label-on">ON</span>
-                                <span class="switcher-label-off text-red">OFF</span>
-                            </label></td>
 
-                        <script>
-                            $(document).ready(function() {
-                                $(document).on('change', '.switcher-input.switcher-edit', function() {
-                                    var survey_status = $(this).prop('checked') ? 1 : 0;
-                                    var survey_id = $(this).data('survey-id');
-                                    console.log('survey_status:', survey_status);
-                                    console.log('survey_id:', survey_id);
-                                    $.ajax({
-                                        type: "GET",
-                                        dataType: "json",
-                                        url: '{{ route('changeStatuSurvey') }}',
-                                        data: {
-                                            'survey_status': survey_status,
-                                            'survey_id': survey_id
-                                        },
-                                        success: function(data) {
-                                            console.log(data.message); // แสดงข้อความที่ส่งกลับ
-                                        },
-                                        error: function(xhr, status, error) {
-                                            console.log('ข้อผิดพลาด');
-                                        }
+                            <td class="align-middle"> <label
+                                    class="switcher-control switcher-control-success switcher-control-lg">
+                                    <input type="checkbox" class="switcher-input switcher-edit"
+                                        {{ $item->survey_status == 1 ? 'checked' : '' }}
+                                        data-survey-id="{{ $item->survey_id }}">
+                                    <span class="switcher-indicator"></span>
+                                    <span class="switcher-label-on">ON</span>
+                                    <span class="switcher-label-off text-red">OFF</span>
+                                </label></td>
+
+                            <script>
+                                $(document).ready(function() {
+                                    $(document).on('change', '.switcher-input.switcher-edit', function() {
+                                        var survey_status = $(this).prop('checked') ? 1 : 0;
+                                        var survey_id = $(this).data('survey-id');
+                                        console.log('survey_status:', survey_status);
+                                        console.log('survey_id:', survey_id);
+                                        $.ajax({
+                                            type: "GET",
+                                            dataType: "json",
+                                            url: '{{ route('changeStatuSurvey') }}',
+                                            data: {
+                                                'survey_status': survey_status,
+                                                'survey_id': survey_id
+                                            },
+                                            success: function(data) {
+                                                console.log(data.message); // แสดงข้อความที่ส่งกลับ
+                                            },
+                                            error: function(xhr, status, error) {
+                                                console.log('ข้อผิดพลาด');
+                                            }
+                                        });
                                     });
                                 });
-                            });
-                        </script>
+                            </script>
                             <td class="align-middle">
-                                <a href="{{ route('surveyquestion', [$item->survey_id]) }}"><i
-                                        class="fas fa-plus-circle fa-lg text-info" data-toggle="tooltip"
-                                        title="เพิ่มคำถาม"></i></a>
-                                <a href="{{ route('reportpageSubject', [$item->survey_id]) }}"><i
-                                        class="fas fa-chart-bar fa-lg text-danger" data-toggle="tooltip"
-                                        title="รายงาน"></i></a>
-                                <a href="{{ route('surveyform', [$item->survey_id]) }}"><i
-                                        class="far fa-edit fa-lg text-success" data-toggle="tooltip" title="แก้ไข"></i></a>
+                                @if ($item->survey_type == 1 || $item->survey_type == 2)
+                                    <a href="{{ route('surveyquestion', [$item->survey_id]) }}"><i
+                                            class="fas fa-plus-circle fa-lg text-info" data-toggle="tooltip"
+                                            title="เพิ่มคำถาม"></i></a>
+                                    <a href="{{ route('reportpageSubject', [$item->survey_id]) }}"><i
+                                            class="fas fa-chart-bar fa-lg text-danger" data-toggle="tooltip"
+                                            title="รายงาน"></i></a>
+                                    <a href="{{ route('surveyform', [$item->survey_id]) }}"><i
+                                            class="far fa-edit fa-lg text-success" data-toggle="tooltip"
+                                            title="แก้ไข"></i></a>
+                                @elseif ($item->survey_type == 0)
+                                    <a href="{{ route('surveyquestion', [$item->survey_id]) }}"><i
+                                            class="fas fa-plus-circle fa-lg text-info" data-toggle="tooltip"
+                                            title="เพิ่มคำถาม"></i></a>
+                                    <a href="{{ route('reportpageSubject', [$item->survey_id]) }}"><i
+                                            class="fas fa-chart-bar fa-lg text-danger" data-toggle="tooltip"
+                                            title="รายงาน"></i></a>
+                                    <a href="{{ route('surveyform', [$item->survey_id]) }}"><i
+                                            class="far fa-edit fa-lg text-success" data-toggle="tooltip"
+                                            title="แก้ไข"></i></a>
+                                    <a href="{{ route('dessur', [$item->survey_id]) }}" onclick="deleteRecord(event)"
+                                        rel="แบบประเมินความพึงพอใจที่มีต่อบทเรียนออนไลน์ รายวิชาเพิ่มเติม การป้องกันการทุจริต ระดับปฐมวัย"
+                                        class="switcher-delete" data-toggle="tooltip" title="ลบ">
+                                        <i class="fas fa-trash-alt fa-lg text-warning "></i></a>
+                                @endif
                             </td>
                         </tr><!-- /tr -->
                     @endforeach

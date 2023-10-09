@@ -20,25 +20,8 @@
                     <div class="form-group">
                         <div class="form-label-group">
                             <div class="section-block text-center text-sm">
-                                <div class="visual-picker visual-picker-sm has-peek px-3">
-                                    <br>
-                                    <input type="radio" id="user_role1" name="user_role" value="1"
-                                        {{ $item->user_role == 1 ? 'checked' : '' }}>
-                                    <label class="visual-picker-figure" for="user_role1">
-                                        <span class="visual-picker-content">
-                                            <span class="tile tile-sm user_role1 user_roleactive bg-muted">
-                                                <i class="fas fa-user-cog fa-lg"></i>
-                                            </span>
-                                        </span>
-                                    </label>
-                                    <span class="visual-picker-peek">ผู้ดูแลระบบ</span>
-                                </div>
-                                <!-- <div class="visual-picker visual-picker-sm has-peek px-3 d-none">
-<input type="radio" id="user_role2" name="user_role" value="2" {{ $item->user_role == 2 ? 'checked' : '' }}>
-<label class="visual-picker-figure" for="user_role2">
-<span class="visual-picker-content"><span class="tile tile-sm user_role2 user_roleactive bg-muted"><i class="fas fa-user-edit fa-lg"></i></span></span>  </label>
-<span class="visual-picker-peek">ผู้จัดการหลักสูตร</span>
-</div>  -->
+                              
+           
                                 <div class="visual-picker visual-picker-sm has-peek px-3">
                                     <input type="radio" id="user_role3" name="user_role" value="3"
                                         {{ $item->user_role == 3 ? 'checked' : '' }}>

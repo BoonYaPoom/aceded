@@ -21,14 +21,16 @@
                     if (!in_array($lrean->user_id, $uniqueUserIds)) {
                         array_push($uniqueUserIds, $lrean->user_id);
                         if ($lrean->congratulation == 1) {
-                            $count = \App\Models\Users::where('user_id', $lrean->user_id)
+                            $count = $userper
+                                ->where('user_id', $lrean->user_id)
                                 ->where('user_type', $personType)
                                 ->count();
             
                             $totalCount += $count;
                         }
                         if ($lrean->registerdate) {
-                            $countregis = \App\Models\Users::where('user_id', $lrean->user_id)
+                            $countregis = $userper
+                                ->where('user_id', $lrean->user_id)
                                 ->where('user_type', $personType)
                                 ->count();
             
@@ -52,18 +54,19 @@
             $n = 0;
             
             $result = []; // สร้างตัวแปรเก็บผลลัพธ์
-            
+            $userIds = [];
             foreach ($learners as $l => $lea) {
+                $userId = $userper->where('user_id', $lrean->user_id)->first();
                 if ($lea->congratulation == 1) {
-
                     $dataCon = $lea->congratulationdate;
                     $monthCon = \ltrim(\Carbon\Carbon::parse($dataCon)->format('m'), '0');
                     $result[$monthCon]['congratulation'] = isset($result[$monthCon]['congratulation']) ? $result[$monthCon]['congratulation'] + 1 : 1;
-             
+                  
                 } elseif ($lea->congratulation == 0) {
                     $dataRegi = $lea->registerdate;
                     $monthRegi = \ltrim(\Carbon\Carbon::parse($dataRegi)->format('m'), '0');
                     $result[$monthRegi]['register'] = isset($result[$monthRegi]['register']) ? $result[$monthRegi]['register'] + 1 : 1;
+              
                 }
             }
             $chartDataCon = [];

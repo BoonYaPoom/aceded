@@ -24,8 +24,7 @@
                                     </option>
                                     <option value="5" {{ request('user_role') == '5' ? 'selected' : '' }}>ผู้เยี่ยมชม
                                     </option>
-                                    <option value="1" {{ request('user_role') == '6' ? 'selected' : '' }}>ผู้ดูแล
-                                    </option>
+                            
                                 </select>
                             </div>
                             <button type="button" class="btn btn-primary-theme btn-md" onclick="filterResults()">
