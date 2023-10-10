@@ -731,7 +731,6 @@
                         <!-- .fieldset -->
                         <fieldset>
                             <legend>รูปแบบใบประกาศนียบัตร</legend> <!-- .form-group -->
-                            <!-- grid row -->
                             <div class="row">
                                 <!-- grid column -->
                                 <div class="col-xl-4 col-lg-4 col-sm-6">
@@ -739,17 +738,60 @@
                                     <div class="card card-figure">
                                         <!-- .card-figure -->
                                         <figure class="figure">
-                                            <img class="img-fluser_id" src="{{ asset('upload/cer/certificate_1.png') }}"
-                                                alt="ใบประกาศนียบัตร  1 " style="cursor:zoom-in"
+                                            <img class="img-fluser_id" src="{{ asset('uploads/cer02_0.png') }}"
+                                                alt="ใบประกาศนียบัตร 1 " style="cursor:zoom-in"
                                                 onclick="$('#previewimage').prop('src',$(this).prop('src'));$('#modal01').css('display','block');">
                                             <!-- .figure-caption -->
                                             <figcaption class="figure-caption">
-                                                <h6 class="figure-title"> ใบประกาศนียบัตร 1 </h6>
+                                                <h6 class="figure-title">ใบประกาศนียบัตร 1</h6>
                                                 <p class="text-muted mb-0 ">
-                                                <div class="custom-control custom-radio text-center"><input type="radio"
-                                                        class="custom-control-input" name="templete_certificate"
-                                                        id="certificate1" value="1"> <label
-                                                        class="custom-control-label" for="certificate1"></label></div>
+                                                    <div class="custom-control custom-radio text-center"><input type="radio"
+                                                            class="custom-control-input" name="templete_certificate"
+                                                            id="certificate1" value="1"> <label
+                                                            class="custom-control-label" for="certificate1"></label></div>
+                                                </p>
+                                            </figcaption><!-- /.figure-caption -->
+                                        </figure><!-- /.card-figure -->
+                                    </div><!-- /.card -->
+                                </div><!-- /grid column -->
+                                <!-- grid column -->
+                                <div class="col-xl-4 col-lg-4 col-sm-6">
+                                    <!-- .card -->
+                                    <div class="card card-figure">
+                                        <!-- .card-figure -->
+                                        <figure class="figure">
+                                            <img class="img-fluser_id" src="{{ asset('uploads/CER_11_0_0.jpg') }}"
+                                                alt="ใบประกาศนียบัตร 2 " style="cursor:zoom-in"
+                                                onclick="$('#previewimage').prop('src',$(this).prop('src'));$('#modal01').css('display','block');">
+                                            <!-- .figure-caption -->
+                                            <figcaption class="figure-caption">
+                                                <h6 class="figure-title">ใบประกาศนียบัตร 2</h6>
+                                                <p class="text-muted mb-0 ">
+                                                    <div class="custom-control custom-radio text-center"><input type="radio"
+                                                            class="custom-control-input" name="templete_certificate"
+                                                            id="certificate2" value="2"> <label
+                                                            class="custom-control-label" for="certificate2"></label></div>
+                                                </p>
+                                            </figcaption><!-- /.figure-caption -->
+                                        </figure><!-- /.card-figure -->
+                                    </div><!-- /.card -->
+                                </div><!-- /grid column -->
+                                <div class="col-xl-4 col-lg-4 col-sm-6">
+                                    <!-- .card -->
+                                    <div class="card card-figure">
+                                        <!-- .card-figure -->
+                                        <figure class="figure">
+                                            <img class="img-fluser_id" src="{{ asset('uploads/CER_3_0_0.jpg') }}"
+                                                alt="ใบประกาศนียบัตร 3 " style="cursor:zoom-in"
+                                                onclick="$('#previewimage').prop('src',$(this).prop('src'));$('#modal01').css('display','block');">
+                                            <!-- .figure-caption -->
+                                            <figcaption class="figure-caption">
+                                                <h6 class="figure-title">ใบประกาศนียบัตร 2</h6>
+                                                <p class="text-muted mb-0 ">
+                                                    <div class="custom-control custom-radio text-center"><input type="radio"
+                                                            class="custom-control-input" name="templete_certificate"
+                                                            id="certificate3" value="3"> <label
+                                                            class="custom-control-label" for="certificate3"></label></div>
                                                 </p>
                                             </figcaption><!-- /.figure-caption -->
                                         </figure><!-- /.card-figure -->
