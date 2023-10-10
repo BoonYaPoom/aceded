@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('school', function (Blueprint $table) {
             $table->charset = 'utf8';
             $table->collation = 'utf8_general_ci';
-            $table->increments('school_id')->start(10)->nocache();
+            $table->increments('school_id')->start(1000)->nocache();
             $table->string('school_name',1600)->collation('utf8_general_ci');
             $table->integer('provinces_id');
             $table->integer('subdistrict_id')->nullable();

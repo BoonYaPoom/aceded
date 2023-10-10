@@ -36,6 +36,8 @@ use App\Http\Controllers\NavController;
 use App\Http\Controllers\PersonController;
 use App\Http\Controllers\ReportAllController;
 use App\Http\Controllers\RolemanageController;
+use App\Http\Controllers\SchoolController;
+use App\Http\Controllers\SchoolDepartController;
 use App\Http\Controllers\ScoreController;
 use App\Http\Controllers\SurResponseController;
 use App\Http\Controllers\SurveyController;
@@ -479,6 +481,20 @@ Route::group(['middleware' => 'IsLoggedIn'], function () {
              
                 Route::get('/edit/{user_id}', [DepartUsersController::class, 'DPeditUser'])->name('DPeditUser');
                 Route::put('/DPupdateUser/{user_id}', [DepartUsersController::class, 'DPupdateUser'])->name('DPupdateUser');
+         
+                Route::get('{department_id}/umsschooldepart', [SchoolDepartController::class, 'schoolManage'])->name('schoolManageDepart');
+                Route::get('{department_id}/add_umsschooldepartform', [SchoolDepartController::class, 'create'])->name('createschoolDepart');
+                Route::post('{department_id}/store_umsschooldepartform', [SchoolDepartController::class, 'store'])->name('storeschoolDepart');
+                Route::get('/schooldepart_delete/{school_id}', [SchoolDepartController::class, 'delete'])->name('deleteschoolDepart');
+                Route::get('{school_id}/edit_umsschooldepartform', [SchoolDepartController::class, 'edit'])->name('editschoolDepart');
+                Route::put('{school_id}/update_umsschooldepartform', [SchoolDepartController::class, 'update'])->name('updateschoolDepart');
+
+
+                Route::get('/umsschooluser/{school_id}', [SchoolController::class, 'adduser'])->name('umsschooluser');
+                Route::post('{school_id}/saveSelectedSchool_umsschoolform', [SchoolController::class, 'saveSelectedSchool'])->name('saveSelectedSchool');
+            
+         
+         
             });
 
             Route::prefix('ums')->group(function () {
@@ -497,7 +513,7 @@ Route::group(['middleware' => 'IsLoggedIn'], function () {
                 Route::put('/update-role/{user_id}', [EditManageUserController::class, 'updateRoleUser'])->name('updateRoleUser');
                 Route::put('/update-password/{user_id}', [EditManageUserController::class, 'updatepassword'])->name('updatePassword');
 
-                Route::get('/autocomplete-search', [EditManageUserController::class, 'autocompleteSearch'])->name('autocompleteSearch');
+                Route::get('/autocomplete-search', [EditManageUserController::class, 'autoschool'])->name('autocompleteSearch');
 
                 Route::get('changeStatusUser', [EditManageUserController::class, 'changeStatus'])->name('changeStatusUser');
                 Route::get('fetchUsersByDepartment', [EditManageUserController::class, 'fetchUsersByDepartment'])->name('fetchUsersByDepartment');
@@ -512,13 +528,26 @@ Route::group(['middleware' => 'IsLoggedIn'], function () {
                 Route::post('/search', [PersonController::class, 'search'])->name('search');
                 Route::post('UsersImport', [ExcelController::class, 'UsersImport'])->name('UsersImport');
 
-
+                
                 Route::get('/person_delete/{person_type}', [PersonController::class, 'personDelete'])->name('personDelete');
                 Route::get('/umsgroupform/{person_type}', [PersonController::class, 'editname'])->name('editperson');
                 Route::put('/update_umsgroupform/{person_type}', [PersonController::class, 'update'])->name('updateperson');
 
                 Route::get('/add_umsgroupform', [PersonController::class, 'create'])->name('createperson');
                 Route::post('/store_umsgroupform', [PersonController::class, 'store'])->name('storeperson');
+                
+
+                Route::get('/umsschool', [SchoolController::class, 'schoolManage'])->name('schoolManage');
+                Route::get('/add_umsschoolform', [SchoolController::class, 'create'])->name('createschool');
+                Route::post('/store_umsschoolform', [SchoolController::class, 'store'])->name('storeschool');
+                Route::get('/school_delete/{school_id}', [SchoolController::class, 'delete'])->name('deleteschool');
+                Route::get('{school_id}/edit_umsschoolform', [SchoolController::class, 'edit'])->name('editschool');
+                Route::put('{school_id}/update_umsschoolform', [SchoolController::class, 'update'])->name('updateschool');
+
+
+                Route::get('/umsschooluser/{school_id}', [SchoolController::class, 'adduser'])->name('umsschooluser');
+                Route::post('{school_id}/saveSelectedSchool_umsschoolform', [SchoolController::class, 'saveSelectedSchool'])->name('saveSelectedSchool');
+            
             });
             
            

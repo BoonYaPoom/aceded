@@ -4,10 +4,12 @@ namespace App\Http\Controllers;
 
 use App\Models\Department;
 use App\Models\Districts;
+use App\Models\School;
 use App\Models\Subdistricts;
 use App\Models\UserRole;
 use App\Models\Users;
 
+use App\Models\UserSchool;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Session;
@@ -81,9 +83,47 @@ class EditManageUserController extends Controller
         $usermanages->mobile = $request->mobile;
 
         $usermanages->pos_name = $request->pos_name;
+        if ($request->school) {
+            // ค้นหาโรงเรียนโดยใช้ชื่อโรงเรียนจาก $request
+            $existingSchool = School::where('school_name', $request->school)
+                ->where('provinces_id', $request->province_id)
+                ->where('subdistrict_id', null)
+                ->where('district_id', null)
+                ->first();
+
+            // ถ้าไม่พบโรงเรียนในระบบใหม่
+            if (!$existingSchool) {
+                $scho = new School;
+                $scho->school_name = $request->school;
+                $scho->provinces_id = $request->province_id;
+                $scho->subdistrict_id = null;
+                $scho->district_id = null;
+                $scho->save();
+            } else {
+                // ถ้าพบโรงเรียนในระบบแล้วให้ใช้ id ของโรงเรียนที่มีอยู่
+                $scho = $existingSchool;
+            }
+        }
 
         // บันทึกการเปลี่ยนแปลง
         $usermanages->save();
+        // ค้นหารายการ UserSchool ที่มี user_id และ school_id ที่ตรงกับข้อมูลที่คุณต้องการผูก
+        $existingUserSchool = UserSchool::where('user_id', $usermanages->user_id)
+            ->where('school_id', $scho->school_id)
+            ->first();
+
+        if (!$existingUserSchool) {
+            // ถ้าไม่พบ UserSchool ในระบบใหม่
+            $userschool = new UserSchool;
+            $userschool->school_id = $scho->school_id;
+            $userschool->user_id = $usermanages->user_id;
+            $userschool->save();
+        } else {
+            $existingUserSchool->update([
+                'school_id' => $scho->school_id,
+                'user_id' => $usermanages->user_id,
+            ]);
+        }
 
         // ส่งข้อความสำเร็จไปยังหน้าแก้ไขโปรไฟล์
         return redirect()->route('UserManage')->with('message', 'แก้ไขโปรไฟล์สำเร็จ');
@@ -118,7 +158,7 @@ class EditManageUserController extends Controller
     public function createUser()
     {
         $role = UserRole::all();
-        return view('page.UserAdmin.add.add_umsform',compact('role'));
+        return view('page.UserAdmin.add.add_umsform', compact('role'));
     }
 
 
@@ -138,11 +178,12 @@ class EditManageUserController extends Controller
 
     public function autoschool(Request $request)
     {
-       
-        $query = $request->get('query');
-        $filterResult = Users::where('username', 'LIKE', '%'. $query. '%')->get();
-        return response()->json($filterResult);
-       
+
+        $data = School::select("school_name as value", "school_id")
+            ->where('school_name', 'LIKE', '%' . $request->get('search') . '%')
+            ->get();
+
+        return response()->json($data);
     }
 
     // ใน Controller
@@ -220,10 +261,38 @@ class EditManageUserController extends Controller
 
         $usermanages->user_type = $request->input('user_type', 0);
         $usermanages->province_id = $request->province_id;
+        if ($request->school) {
+            // ค้นหาโรงเรียนโดยใช้ชื่อโรงเรียนจาก $request
+            $existingSchool = School::where('school_name', $request->school)
+                ->where('provinces_id', $request->province_id)
+                ->where('subdistrict_id', null)
+                ->where('district_id', null)
+                ->first();
+
+            // ถ้าไม่พบโรงเรียนในระบบใหม่
+            if (!$existingSchool) {
+                $scho = new School;
+                $scho->school_name = $request->school;
+                $scho->provinces_id = $request->province_id;
+                $scho->subdistrict_id = null;
+                $scho->district_id = null;
+                $scho->save();
+            } else {
+                // ถ้าพบโรงเรียนในระบบแล้วให้ใช้ id ของโรงเรียนที่มีอยู่
+                $scho = $existingSchool;
+            }
+        }
+
         $usermanages->district_id = null;
         $usermanages->subdistrict_id = null;
 
         $usermanages->save();
+
+
+        $userschool = new UserSchool;
+        $userschool->school_id = $scho->school_id;
+        $userschool->user_id = $usermanages->user_id;
+        $userschool->save();
 
         return redirect()->route('UserManage')->with('message', 'แก้ไขโปรไฟล์สำเร็จ');
     }

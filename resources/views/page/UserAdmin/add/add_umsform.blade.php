@@ -4,6 +4,9 @@
     <form action="{{ route('storeUser') }}" method="post" enctype="multipart/form-data">
         @csrf
 
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.css" />
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
         <!-- .page-inner -->
         <div class="page-inner">
             <div class="page-section">
@@ -29,7 +32,7 @@
 
                                 </div>
                             </div>
-                       
+
                             <!-- /form row -->
                             <div class="form-row " id="department_id">
                                 <label for="department_id" class="col-md-2">เลือกหน่วยงาน </label>
@@ -38,11 +41,11 @@
                                         data-toggle="select2" data-allow-clear="false">
                                         <option value="0"selected disabled>เลือกหน่วยงาน</option>
                                         @php
-                                        $Department = \App\Models\Department::all();
-                                    @endphp
-                                    @foreach ($Department as $part)
-                                        <option value="{{ $part->department_id }}"> {{ $part->name_th }} </option>
-                                    @endforeach
+                                            $Department = \App\Models\Department::all();
+                                        @endphp
+                                        @foreach ($Department as $part)
+                                            <option value="{{ $part->department_id }}"> {{ $part->name_th }} </option>
+                                        @endforeach
                                     </select>
                                 </div>
                             </div>
@@ -53,35 +56,21 @@
                                         data-toggle="select2" data-allow-clear="false">
                                         <option value="0"selected disabled>เลือกประเภทผู้ใช้งาน</option>
                                         @foreach ($role as $roles)
-                                        @if ($roles->role_status == 1)
-                                        @if ($roles->user_role_id > 1)
-                                            <option value="{{ $roles->user_role_id }}">{{ $roles->role_name }}</option>
-                                        @endif
-                                        @endif
-                                    @endforeach
+                                            @if ($roles->role_status == 1)
+                                                @if ($roles->user_role_id > 1)
+                                                    <option value="{{ $roles->user_role_id }}">{{ $roles->role_name }}
+                                                    </option>
+                                                @endif
+                                            @endif
+                                        @endforeach
                                     </select>
                                 </div>
                             </div>
                             <div class="container mt-5">
-                                <div classs="form-group">
-                                    <input type="text" id="search" name="search" placeholder="Search" class="form-control" />
-                                </div>
+
                             </div>
-                            <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.js"></script>
-                            <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-3-typeahead/4.0.1/bootstrap3-typeahead.min.js">
-                            </script>
-                            <script type="text/javascript">
-                                var route = "{{ route('autocompleteSearch') }}";
-                                $('#search').typeahead({
-                                    source: function (query, process) {
-                                        return $.get(route, {
-                                            query: query
-                                        }, function (data) {
-                                            return process(data);
-                                        });
-                                    }
-                                });
-                            </script>
+                        
+                           
                             <!-- form row -->
                             <div class="form-row">
                                 <label for="username" class="col-md-2">Username <span
@@ -122,13 +111,13 @@
                                 <label for="input04" class="col-md-2">เพศ</label>
                                 <div class="col-md-9 mb-3">
                                     <div class="custom-control custom-control-inline custom-radio">
-                                        <input type="radio" class="custom-control-input " name="gender" id="male"
-                                            value="1">
+                                        <input type="radio" class="custom-control-input " name="gender"
+                                            id="male" value="1">
                                         <label class="custom-control-label" for="male">ชาย</label>
                                     </div>
                                     <div class="custom-control custom-control-inline custom-radio">
-                                        <input type="radio" class="custom-control-input " name="gender" id="female"
-                                            value="2">
+                                        <input type="radio" class="custom-control-input " name="gender"
+                                            id="female" value="2">
                                         <label class="custom-control-label" for="female">หญิง</label>
                                     </div>
                                 </div>
@@ -203,8 +192,8 @@
                                     </select>
                                 </div>
                             </div>
-                        
-                           
+
+
                             <!-- form row -->
                             <div class="form-row d-none " id="set_district_id">
                                 <label for="district_id" class="col-md-2">เขต/อำเภอ </label>
@@ -229,7 +218,39 @@
                                 </div>
                             </div>
                             <!-- /form row -->
+                            <div class="form-row">
+                                <label for="school" class="col-md-2">โรงเรียน / มหาลัย <span
+                                        class="badge badge-warning">Required</span></label>
+                                <div class="col-md-9 mb-3">
+                                    <input type="text" class="form-control inputuname " id="search" name="school"
+                                        placeholder="school" value="" 
+                                        required=""><small class="form-text text-muted">โรงเรียน / มหาลัย </small>
+                                </div>
+                            </div>
+                            <script type="text/javascript">
+                                var path = "{{ route('autocompleteSearch') }}";
 
+                                $("#search").autocomplete({
+                                    source: function(request, response) {
+                                        $.ajax({
+                                            url: path,
+                                            type: 'GET',
+                                            dataType: "json",
+                                            data: {
+                                                search: request.term
+                                            },
+                                            success: function(data) {
+                                                response(data);
+                                            }
+                                        });
+                                    },
+                                    select: function(event, ui) {
+                                        $('#search').val(ui.item.label);
+                                        console.log(ui.item);
+                                        return false;
+                                    }
+                                });
+                            </script>
                             <!-- form row -->
                             <div class="form-row " id="set_pos_name">
                                 <label for="pos_name" class="col-md-2">ตำแหน่ง</label>
@@ -237,7 +258,7 @@
                                     <input type="text" class="form-control " id="pos_name" name="pos_name"
                                         value="" placeholder="ตำแหน่ง">
                                     <!-- <select id="pos_namexx" name="pos_namexx" class="form-control form-control-sm" data-toggle="select2" data-allow-clear="false">
-                                                            </select> -->
+                                                                </select> -->
                                 </div>
                             </div>
                             <!--/form row -->

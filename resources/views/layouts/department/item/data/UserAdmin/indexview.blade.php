@@ -51,7 +51,10 @@
                     <button type="button" class="ml-1 btn btn-success btn-md"
                         onclick="$('#clientUploadModal').modal('toggle');"><i class="fas fa-user-plus"></i>
                         นำเข้าผู้ใช้งาน</button>
-
+                        
+                        <a class="ml-1 btn btn-info btn-md " style="color:#fff" href="{{ route('schoolManageDepart',['department_id' => $depart->department_id]) }}"><i
+                            class="fas fa-users"></i>
+                        จัดการสถานศึกษา</a>
 
 
                     <div class="col-md-6 mb-3">
