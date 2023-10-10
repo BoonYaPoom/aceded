@@ -18,13 +18,15 @@
                                 <select id="user_role" name="user_role" class="form-control form-control-sm"
                                     data-toggle="select2" data-allow-clear="false">
                                     <option value="">ทั้งหมด</option>
-                                    <option value="4" {{ request('user_role') == '4' ? 'selected' : '' }}>ผู้เรียน
-                                    </option>
-                                    <option value="3" {{ request('user_role') == '3' ? 'selected' : '' }}>ผู้สอน
-                                    </option>
-                                    <option value="5" {{ request('user_role') == '5' ? 'selected' : '' }}>ผู้เยี่ยมชม
-                                    </option>
-                            
+                              
+                                    @php
+                                    $roles = \App\Models\UserRole::all();
+                                @endphp
+                                @foreach ($roles->sortBy('user_role_id') as $ro)
+                                          <option value="{{ $ro->user_role_id }}" {{ request('user_role') == $ro->user_role_id ? 'selected' : '' }}>
+                                {{ $ro->role_name }}
+                            </option>
+                                    @endforeach
                                 </select>
                             </div>
                             <button type="button" class="btn btn-primary-theme btn-md" onclick="filterResults()">

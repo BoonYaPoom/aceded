@@ -38,6 +38,7 @@ return new class extends Migration
             $table->smallInteger('book_year')->nullable();
             $table->string('book_no', 20)->nullable()->collation('utf8_general_ci');
             $table->string('number_no', 20)->nullable()->collation('utf8_general_ci');
+           
         });
     }
 

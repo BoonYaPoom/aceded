@@ -14,7 +14,7 @@
                 <div class="card-body">
                    
               
-                    </div>
+                   
                     <!-- .table-responsive -->
                     <div class="table-responsive">
                         <!-- .table -->
@@ -26,7 +26,7 @@
                                         aria-controls="datatable">
                                 </label>
                                 <label>จังหวัด
-                                    <select id="drop2" name="drop2" class="form-control form-control-sm" data-allow-clear="false">
+                                    <select id="drop2" name="drop2" class="form-control" data-allow-clear="false">
                                         <option value="0"selected>ทั้งหมด</option>
                                         @php
                                             $Provinces = \App\Models\Provinces::all();
@@ -52,13 +52,20 @@
                             <!-- /thead -->
                             <!-- tbody -->
                             <tbody>
-                                @php($i = 1 )
-                                <!-- tr -->
+                                @php
+                                    $i = 1 ;
+                             
+                                @endphp
                                 @foreach ($school as $scho)
+                                @php
+                                           $proviUser = \App\Models\Provinces::where('id', $scho->provinces_id)
+                                            ->pluck('name_in_thai')
+                                            ->first();
+                                @endphp
                                     <tr>
                                         <td>{{ $i ++ }}</td>
                                         <td>{{ $scho->school_name }}</td>
-                                        <td>{{ $scho->provinces_id }}</td>
+                                        <td>{{ $proviUser }}</td>
                                         <td class="text-center"><a href="{{ route('umsschooluser', ['school_id' => $scho->school_id]) }}"><i class="fas fa-users"></i> (
                                                 {{ $userschool->where('school_id', $scho->school_id)->count() }}
                                                 )
@@ -100,7 +107,15 @@
                                             }
 
                                         });
-
+                                        $('#drop2').on('change', function() {
+                                            var selecteddrop2Id = $(this).val();
+                                            if (selecteddrop2Id == 0) {
+                                                table.columns(3).search('').draw();
+                                            } else {
+                                                // กรองข้อมูลใน DataTables ด้วยหน่วยงานที่เลือก
+                                                table.columns(3).search(selecteddrop2Id).draw();
+                                            }
+                                        });
                                         $('#myInput').on('keyup', function() {
                                             table.search(this.value).draw();
                                         });

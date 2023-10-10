@@ -24,10 +24,10 @@ class UsersExport implements
      */
     public function collection()
     {
-        $users = Users::select('uid', 'username', DB::raw("firstname || ' - ' || lastname as full_name"), 'mobile', 'email', 'userstatus')
+        $users = Users::select('user_id', 'username', DB::raw("firstname || ' - ' || lastname as full_name"), 'mobile', 'email', 'userstatus')
             ->get()
             ->map(function ($item, $index) {
-                $item->uid = $index + 1;
+                $item->user_id = $index + 1;
                 $item->userstatus = $item->userstatus == 1 ? 'on' : 'off';
                 return $item;
             });

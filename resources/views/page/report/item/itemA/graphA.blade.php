@@ -56,10 +56,12 @@
             foreach ($learners as $l => $lea) {
                 if ($lea->congratulation == 1) {
 
+             
+                 
                     $dataCon = $lea->congratulationdate;
+            
                     $monthCon = \ltrim(\Carbon\Carbon::parse($dataCon)->format('m'), '0');
                     $result[$monthCon]['congratulation'] = isset($result[$monthCon]['congratulation']) ? $result[$monthCon]['congratulation'] + 1 : 1;
-             
                 } elseif ($lea->congratulation == 0) {
                     $dataRegi = $lea->registerdate;
                     $monthRegi = \ltrim(\Carbon\Carbon::parse($dataRegi)->format('m'), '0');

@@ -55,19 +55,24 @@
             
             $result = []; // สร้างตัวแปรเก็บผลลัพธ์
             $userIds = [];
+            $uniqueUs = [];
             foreach ($learners as $l => $lea) {
-                $userId = $userper->where('user_id', $lrean->user_id)->first();
+                $userId = $userper->where('user_id', $lea->user_id)->first();
+                if (!in_array($userId, $uniqueUs)) {
+                        array_push($uniqueUs, $userId);
                 if ($lea->congratulation == 1) {
                     $dataCon = $lea->congratulationdate;
                     $monthCon = \ltrim(\Carbon\Carbon::parse($dataCon)->format('m'), '0');
-                    $result[$monthCon]['congratulation'] = isset($result[$monthCon]['congratulation']) ? $result[$monthCon]['congratulation'] + 1 : 1;
+                    $result[$monthCon]['congratulation'] = isset($result[$monthCon]['congratulation']) ? $result[$monthCon]['congratulation'] + 1 : 0;
                   
                 } elseif ($lea->congratulation == 0) {
                     $dataRegi = $lea->registerdate;
                     $monthRegi = \ltrim(\Carbon\Carbon::parse($dataRegi)->format('m'), '0');
-                    $result[$monthRegi]['register'] = isset($result[$monthRegi]['register']) ? $result[$monthRegi]['register'] + 1 : 1;
+                    $result[$monthRegi]['register'] = isset($result[$monthRegi]['register']) ? $result[$monthRegi]['register'] + 1 : 0;
               
                 }
+            }
+
             }
             $chartDataCon = [];
             foreach ($dateAll as $m => $months) {

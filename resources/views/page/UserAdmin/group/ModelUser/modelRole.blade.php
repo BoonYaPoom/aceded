@@ -20,46 +20,25 @@
                     <div class="form-group">
                         <div class="form-label-group">
                             <div class="section-block text-center text-sm">
-                              
-           
-                                <div class="visual-picker visual-picker-sm has-peek px-3">
-                                    <input type="radio" id="user_role3" name="user_role" value="3"
-                                        {{ $item->user_role == 3 ? 'checked' : '' }}>
-                                    <label class="visual-picker-figure" for="user_role3">
-                                        <span class="visual-picker-content">
-                                            <span class="tile tile-sm user_role3 user_roleactive bg-muted">
-                                                <i class="fas fa-user-tie fa-lg"></i>
-                                            </span>
-                                        </span>
-                                    </label>
-                                    <span class="visual-picker-peek">ผู้สอน</span>
-                                </div>
 
-                                <div class="visual-picker visual-picker-sm has-peek px-3">
-                                    <input type="radio" id="user_role4" name="user_role" value="4"
-                                        {{ $item->user_role == 4 ? 'checked' : '' }}>
-                                    <label class="visual-picker-figure" for="user_role4">
-                                        <span class="visual-picker-content">
-                                            <span class="tile tile-sm user_role4 user_roleactive bg-muted">
-                                                <i class="fas fa-user-graduate fa-lg"></i>
+                                @foreach ($roles->sortBy('user_role_id') as $ro)
+                                @if ($ro->user_role_id > 1)
+                                    
+                          
+                                    <div class="visual-picker visual-picker-sm has-peek px-3">
+                                        <input type="radio" id="user_role{{$ro->user_role_id}}" name="user_role" value="{{$ro->user_role_id}}"
+                                            {{ $item->user_role == $ro->user_role_id ? 'checked' : '' }}>
+                                        <label class="visual-picker-figure" for="user_role{{$ro->user_role_id}}">
+                                            <span class="visual-picker-content">
+                                                <span class="tile tile-sm user_role{{$ro->user_role_id}} user_roleactive bg-muted">
+                                                    <i class="{{$ro->role_cover_path}} fa-lg"></i>
+                                                </span>
                                             </span>
-                                        </span>
-                                    </label>
-                                    <span class="visual-picker-peek">ผู้เรียน</span>
-                                </div>
-
-                                <div class="visual-picker visual-picker-sm has-peek px-3">
-                                    <input type="radio" id="user_role5" name="user_role" value="5"
-                                        {{ $item->user_role == 5 ? 'checked' : '' }}>
-                                    <label class="visual-picker-figure" for="user_role5">
-                                        <span class="visual-picker-content">
-                                            <span class="tile tile-sm user_role5 user_roleactive bg-muted">
-                                                <i class="fas fa-user fa-lg"></i>
-                                            </span>
-                                        </span>
-                                    </label>
-                                    <span class="visual-picker-peek">ผู้เยี่ยมชม</span>
-                                </div>
+                                        </label>
+                                        <span class="visual-picker-peek">{{$ro->role_name}}</span>
+                                    </div>
+                                    @endif
+                                @endforeach
                             </div>
                         </div>
                     </div>

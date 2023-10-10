@@ -1,5 +1,8 @@
 
 
+@if($data->user_role == 7)
+@if ($data->province_id == $item->province_id)
+
 <tr>
     <td></td>
     <td>{{ $item->username }}</td>
@@ -64,10 +67,28 @@
                         class="fas fa-key text-info"></i></button>
                    
             @endif
+            @else
+            @if ($user_roleadmin)
+            <a data-toggle="modal" data-target="" title="กำหนดสิทธิ์">
+                <i class="fas fa-user-shield text-bg-muted "></i>
+            </a>
+        @else
+            <a href="{{ route('logusers', ['user_id' => $item->user_id]) }}" data-toggle="tooltip"
+                title="ดูประวัติการใช้งาน"><i class="fas fa-history text-info"></i></a>
+
+            <a data-toggle="modal" data-target="#clientPermissionModal-{{ $item->user_id }}" title="กำหนดสิทธิ์">
+                <i class="fas fa-user-shield text-danger"></i>
+            </a>
+            <button class="btn sendtemppwd " data-toggle="modal"
+                data-target="#clientWarningModal-{{ $item->user_id }}" title="ส่งรหัสผ่าน"><i
+                    class="fas fa-key text-info"></i></button>
+               
+        @endif
         @endif
     </td>
 </tr><!-- /tr -->
-
+@endif
+    @endif
 <script>
     // เมื่อตัวเลือกถูกเลือก
     document.querySelectorAll('input[name="user_role"]').forEach(function(radio) {

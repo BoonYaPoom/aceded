@@ -10,20 +10,23 @@
                 <div class="card-header bg-muted"> ผู้ใช้งาน</div>
                 <!-- .card-body -->
                 <div class="card-body">
-                    <form id="filterForm" action="{{ route('DPUserManage',['department_id' => $depart->department_id]) }}" method="GET">
+                    <form id="filterForm" action="{{ route('DPUserManage', ['department_id' => $depart->department_id]) }}"
+                        method="GET">
                         <div class="form-row">
                             <label for="user_role" class="col-md-3 text-right mt-1">เลือกประเภทผู้ใช้งาน</label>
                             <div class="col-md-6 mb-3">
                                 <select id="user_role" name="user_role" class="form-control form-control-sm"
                                     data-toggle="select2" data-allow-clear="false">
                                     <option value="">ทั้งหมด</option>
-                                    <option value="4" {{ request('user_role') == '4' ? 'selected' : '' }}>ผู้เรียน
-                                    </option>
-                                    <option value="3" {{ request('user_role') == '3' ? 'selected' : '' }}>ผู้สอน
-                                    </option>
-                                    <option value="5" {{ request('user_role') == '5' ? 'selected' : '' }}>ผู้เยี่ยมชม
-                                    </option>
-                              
+                                    @php
+                                        $roles = \App\Models\UserRole::all();
+                                    @endphp
+                                    @foreach ($roles->sortBy('user_role_id') as $ro)
+                                        <option value="{{ $ro->user_role_id }}"
+                                            {{ request('user_role') == $ro->user_role_id ? 'selected' : '' }}>
+                                            {{ $ro->role_name }}
+                                        </option>
+                                    @endforeach
                                 </select>
                             </div>
                             <button type="button" class="btn btn-primary-theme btn-md" onclick="filterResults()">
@@ -34,7 +37,7 @@
                     <script>
                         function filterResults() {
                             var user_roleValue = document.getElementById('user_role').value;
-                            var baseUrl = '{{ route('DPUserManage',['department_id' => $depart->department_id]) }}';
+                            var baseUrl = '{{ route('DPUserManage', ['department_id' => $depart->department_id]) }}';
 
                             if (user_roleValue) {
                                 window.location.href = baseUrl + '/' + user_roleValue;
@@ -44,15 +47,12 @@
                         }
                     </script>
 
-
-
-
-
                     <button type="button" class="ml-1 btn btn-success btn-md"
                         onclick="$('#clientUploadModal').modal('toggle');"><i class="fas fa-user-plus"></i>
                         นำเข้าผู้ใช้งาน</button>
-                        
-                        <a class="ml-1 btn btn-info btn-md " style="color:#fff" href="{{ route('schoolManageDepart',['department_id' => $depart->department_id]) }}"><i
+
+                    <a class="ml-1 btn btn-info btn-md " style="color:#fff"
+                        href="{{ route('schoolManageDepart', ['department_id' => $depart->department_id]) }}"><i
                             class="fas fa-users"></i>
                         จัดการสถานศึกษา</a>
 
@@ -64,12 +64,12 @@
                             <option value="0"selected>ทั้งหมด</option>
 
                             @php
-                            $person_ty = \App\Models\PersonType::all();
-                        @endphp
-                        @foreach ($person_ty->sortBy('person_type') as $pers)
-                            <option value="{{ $pers->person }}"> {{ $pers->person }} </option>
-                        @endforeach
-                    </select>
+                                $person_ty = \App\Models\PersonType::all();
+                            @endphp
+                            @foreach ($person_ty->sortBy('person_type') as $pers)
+                                <option value="{{ $pers->person }}"> {{ $pers->person }} </option>
+                            @endforeach
+                        </select>
                         </select>
                     </div>
 
@@ -277,13 +277,15 @@
                             <tbody>
                                 <!-- tr -->
                                 @php
-                                $r =  0;
+                                    $r = 0;
                                 @endphp
-                                @foreach ($usermanages->sortBy('user_id') as  $item)
-                                @php
-                                $r++;
-                                @endphp
+                                @foreach ($usermanages->sortBy('user_id') as $item )
+                                   
                                     @php
+                                        $r++;
+                                    @endphp
+                                    @php
+                             
                                         $user_roleadmin = $item->user_role == 1;
                                     @endphp
                                     @php
@@ -299,7 +301,12 @@
                                             ->pluck('name_in_thai')
                                             ->first();
                                     @endphp
-                                    @include('layouts.department.item.data.UserAdmin.DataUser.userAll')
+                             
+                                        @include('layouts.department.item.data.UserAdmin.DataUser.userprovis')
+                                        
+                                        @if ($data->user_role == 1)
+                                        @include('layouts.department.item.data.UserAdmin.DataUser.userAll')
+                                        @endif
                                     @include('layouts.department.item.data.UserAdmin.group.ModelUser.modelRole')
                                     @include('layouts.department.item.data.UserAdmin.group.ModelUser.modelPass')
                                 @endforeach
@@ -317,8 +324,8 @@
         <header class="page-title-bar">
             <!-- floating action -->
             <button type="button" class="btn btn-success btn-floated btn-addums"
-                onclick="window.location='{{ route('DPcreateUser', ['department_id' => $depart->department_id]) }}'" id="add_umsform" data-toggle="tooltip"
-                title="เพิ่ม"><span class="fas fa-plus"></span></button>
+                onclick="window.location='{{ route('DPcreateUser', ['department_id' => $depart->department_id]) }}'"
+                id="add_umsform" data-toggle="tooltip" title="เพิ่ม"><span class="fas fa-plus"></span></button>
             <!-- /floating action -->
         </header><!-- /.page-title-bar -->
     </div><!-- /.page-inner -->
