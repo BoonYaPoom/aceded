@@ -6,13 +6,13 @@
             <div class="form-row">
                 <!-- form column -->
                 <!--    <div class="col-md-1"><span class="mt-1 ">ปี</span></div>
-                            <div class="col-md-3">
-                             <div class=""><select id="selectyear" name="selectyear" class="form-control" data-toggle="select2"
-                                        data-placeholder="ปี" data-allow-clear="false" onchange="$('#formreport').submit();">
-                                        <option value="2022"> 2565 </option>
-                                        <option value="2023" selected> 2566 </option>
-                                    </select></div>
-                            </div>-->
+                                                                        <div class="col-md-3">
+                                                                         <div class=""><select id="selectyear" name="selectyear" class="form-control" data-toggle="select2"
+                                                                                    data-placeholder="ปี" data-allow-clear="false" onchange="$('#formreport').submit();">
+                                                                                    <option value="2022"> 2565 </option>
+                                                                                    <option value="2023" selected> 2566 </option>
+                                                                                </select></div>
+                                                                        </div>-->
                 <div class="col-md-3 ">
                     <div class="d-none"><select id="selectmonth" name="selectmonth" class="form-control "
                             data-toggle="select2" data-placeholder="เดือน" data-allow-clear="false"
@@ -116,65 +116,40 @@
             </div><!-- /grid column -->
         </div><!-- .page-title-bar -->
 
-
-
         @php
-            $chartData = [];
-            
-            $uniqueUserIds = [];
-            $subjectArray = [];
-            $subject_th = [];
-            $results = [];
-            $regis = [];
-            $subjectName = \App\Models\CourseSubject::all();
-            $n = 0;
-            
-            $result = []; // สร้างตัวแปรเก็บผลลัพธ์
-            $totallearn = [];
-            foreach ($learners as $l => $learn) {
-                $totallearn = \App\Models\Users::where('user_id', $learn->user_id)
-                    ->where('user_role', 4)
-                    ->count();
-            }
-            foreach ($subjectName as $s => $subject) {
-                foreach ($learners as $l => $lrean) {
-                    $dataLearn = $lrean->registerdate;
-                    $subjectLearn = $lrean->subject;
-                    $subjectDataArray = json_decode($subjectLearn, true);
-            
-                    $countSub = [];
-                    if (!is_null($subjectDataArray)) {
-                        $subjectId = [];
-                        $values = [];
-            
-                        foreach ($subjectDataArray as $subjectId => $value) {
-                            $results[$subjectId]['logplatform'] = isset($results[$subjectId]['logplatform']) ? $results[$subjectId]['logplatform'] + 1 : 1;
+
+            $chartDataRe = [];
+
+            $nameclass = '';
+            foreach ($cour as $c => $cocl) {
+                if ($cocl->course_status == 1) {
+                    $nameclass = $cocl->course_th;
+                    $uniqueUserIds = [];
+                    $totalCountRE = 0;
+                    foreach ($learners as $l => $lrean) {
+                        if (!in_array($lrean->user_id, $uniqueUserIds)) {
+                            array_push($uniqueUserIds, $lrean->user_id);
+                            if ($cocl->course_id == $lrean->course_id) {
+                                if ($lrean->registerdate) {
+                                    $countregis = \App\Models\Users::where('user_id', $lrean->user_id)->count();
+                                    $totalCountRE += $countregis;
+                                }
+                            }
                         }
-                    } else {
-                        // กรณี $subjectDataArray เป็น null ทำการจัดการข้อผิดพลาดอย่างเหมาะสมที่นี่
                     }
-                    $monthsa = \ltrim(\Carbon\Carbon::parse($dataLearn)->format('m'), '0');
-                    $year = \Carbon\Carbon::parse($dataLearn)->year + 543;
-                    $newDateTime = \Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $lrean->registerdate)->format('d/m/Y H:i:s');
-            
-                    $subject_th = $subject->subject_th;
-                    $regis = empty($results[$s]['logplatform']) ? null : $results[$s]['logplatform'];
+                    if ($totalCountRE !== 0) {
+                        $chartDataRe[] = [
+                            'choice' => $nameclass,
+                            'count' => $totalCountRE,
+                        ];
+                    }
                 }
-            
-                $chartData[] = [
-                    'choice' => $subject_th,
-                    'count' => $totallearn,
-                ];
             }
-            
+
         @endphp
-
-
         <script>
-            var chartData = {!! json_encode($chartData) !!};
-
-            console.log(chartData);
-
+            var chartDataRe = {!! json_encode($chartDataRe) !!};
+            console.log(chartDataRe);
             Highcharts.chart("graphlearner", {
                 chart: {
                     type: 'column'
@@ -213,15 +188,16 @@
                     pointFormat: '<span>{point.name}</span> : <b>{point.y}</b> คน<br/>'
                 },
                 series: [{
-                    name: 'จำนวนผู้เรียน',
+                    name: 'จำนวนผู้เรียนทั้งหมด',
                     colorByPoint: true,
-                    data: chartData.map(item => ({
+                    data: chartDataRe.map(item => ({
                         name: item.choice,
                         y: item.count
                     }))
                 }]
             });
         </script>
+
         <script>
             Highcharts.chart("coursemulti", {
                 chart: {
@@ -342,128 +318,8 @@
                     name: 'จำนวน Rating',
                     colorByPoint: true,
                     data: [{
-                        name: 'TCCT Basic Knowledge',
-                        y: 2,
-                        color: ''
-                    }, {
-                        name: 'test',
-                        y: 2,
-                        color: ''
-                    }, {
-                        name: 'test payment',
-                        y: 1,
-                        color: ''
-                    }, {
-                        name: 'กฎหมายวิธีปฏิบัติราชการทางปกครอง',
-                        y: 1,
-                        color: ''
-                    }, {
-                        name: 'กฎหมายว่าด้วยการแข่งขันทางการค้า  :  การตกลงร่วมกันผูกขาด  ลด  และจำกัดการแข่งขัน',
-                        y: 1,
-                        color: ''
-                    }, {
-                        name: 'กฎหมายว่าด้วยการแข่งขันทางการค้า  :  การปฏิบัติทางการค้าที่ไม่เป็นธรรม',
-                        y: 1,
-                        color: ''
-                    }, {
-                        name: 'กฎหมายว่าด้วยการแข่งขันทางการค้า  :  การรวมธุรกิจ',
-                        y: 1,
-                        color: ''
-                    }, {
-                        name: 'กฎหมายว่าด้วยการแข่งขันทางการค้า  :  การใช้อำนาจเหนือตลาดอย่างไม่เป็นธรรม',
-                        y: 2,
-                        color: ''
-                    }, {
-                        name: 'การจัดทำบันทึกข้อตกลงหรือสัญญา  การบริหารสัญญา  การตรวจรับ  และการควบคุมงาน',
-                        y: 1,
-                        color: ''
-                    }, {
-                        name: 'การจัดทำร่างขอบเขตของงาน  รายละเอียดคุณลักษณะเฉพาะของพัสดุ  และการกำหนดราคากลาง',
-                        y: 1,
-                        color: ''
-                    }, {
-                        name: 'การจัดเตรียมวาระการประชุม  การทำบันทึกเสนอที่ประชุม  และการทำรายงานการประชุม',
-                        y: 1,
-                        color: ''
-                    }, {
-                        name: 'การทำงานเป็นทีม',
-                        y: 13,
-                        color: ''
-                    }, {
-                        name: 'การพูดในที่สาธารณะและการนำเสนองานต่อที่ประชุมอย่างมืออาชีพ',
-                        y: 1,
-                        color: ''
-                    }, {
-                        name: 'การเก็บรวบรวมพยานหลักฐานและการจัดทำสำนวนคดี',
-                        y: 1,
-                        color: ''
-                    }, {
-                        name: 'การเขียนหนังสือโต้ตอบทางราชการเป็นภาษาอังกฤษ',
-                        y: 1,
-                        color: ''
-                    }, {
-                        name: 'ความรู้เบื้องต้นเกี่ยวกับกฎหมายการแข่งขันทางการค้า',
-                        y: 2,
-                        color: ''
-                    }, {
-                        name: 'คำศัพท์เศรษฐศาสตร์องค์การอุตสาหกรรมและกฎหมายการแข่งขันทางการค้า',
-                        y: 1,
-                        color: ''
-                    }, {
-                        name: 'วินัยและจริยธรรมของพนักงาน',
-                        y: 1,
-                        color: ''
-                    }, {
-                        name: 'ศิลปะในการเขียนและการแก้ร่างหนังสือติดต่อราชการ',
-                        y: 2,
-                        color: ''
-                    }, {
-                        name: 'สวัสดิการและสิทธิประโยชน์สำหรับพนักงาน',
-                        y: 2,
-                        color: ''
-                    }, {
-                        name: 'หลักการกำหนดขอบเขตตลาดและส่วนแบ่งตลาด',
-                        y: 3,
-                        color: ''
-                    }, {
-                        name: 'หลักสูตร กฎหมายการแข่งขันทางการค้าพื้นฐาน',
-                        y: 149,
-                        color: ''
-                    }, {
-                        name: 'หลักสูตร กฎหมายเบื้องต้น',
-                        y: 2,
-                        color: ''
-                    }, {
-                        name: 'หลักสูตร การรวบรวมพยานหลักฐาน',
-                        y: 2,
-                        color: ''
-                    }, {
-                        name: 'หลักสูตร พนักงานใหม่',
-                        y: 3,
-                        color: ''
-                    }, {
-                        name: 'หลักสูตร เจาะลึกกฎหมายการแข่งขันทางการค้า',
-                        y: 2,
-                        color: ''
-                    }, {
-                        name: 'หลักสูตร เพิ่มพูนความรู้และพัฒนาทักษะในการทำงานขั้นกลาง',
-                        y: 1,
-                        color: ''
-                    }, {
-                        name: 'หลักสูตร เพิ่มพูนความรู้และพัฒนาทักษะในการทำงานขั้นพื้นฐาน',
-                        y: 2,
-                        color: ''
-                    }, {
-                        name: 'หลักสูตร เพิ่มพูนความรู้และพัฒนาทักษะในการทำงานขั้นสูง',
-                        y: 2,
-                        color: ''
-                    }, {
-                        name: 'หลักสูตร เศรษฐศาสตร์เบื้องต้นสำหรับการแข่งขันทางการค้า',
-                        y: 5,
-                        color: ''
-                    }, {
-                        name: 'หลักเศรษฐศาสตร์พื้นฐานของกฎหมายการแข่งขันทางการค้า',
-                        y: 4,
+                        name: '"รายวิชาเพิ่มเติม การป้องกันการทุจริต" ระดับปฐมวัย',
+                        y: 14,
                         color: ''
                     }]
                 }]
@@ -532,10 +388,10 @@
             $search = \App\Models\Search::all();
             $processedKeywords = [];
             $chartSearch = [];
-            
+
             foreach ($search as $sea) {
                 $keywordCounts = collect($sea->keyword)->countBy();
-            
+
                 foreach ($keywordCounts as $keyword => $count) {
                     if (!in_array($keyword, $processedKeywords)) {
                         $processedKeywords[] = $keyword;
@@ -622,26 +478,21 @@
                 $platform = $Log->logplatform;
                 $dataLog = $Log->logdate;
                 $monthsa = \ltrim(\Carbon\Carbon::parse($dataLog)->format('m'), '0');
-                $result[$monthsa]['logplatform'] = isset($result[$monthsa]['logplatform']) ? $result[$monthsa]['logplatform'] + 1 : 1;
-            
-         
-            
+                $result[$monthsa]['logplatform'] = isset($result[$monthsa]['logplatform']) ? $result[$monthsa]['logplatform'] + 1 : 0;
+
                 if (!in_array($Log->logplatform, $processedplatforms)) {
                     $processedplatforms[] = $Log->logplatform;
                     $register = [];
                     foreach ($dateAll as $m => $month) {
                         $register[] = empty($result[$m]['logplatform']) ? null : $result[$m]['logplatform'];
                         $chartLog[] = [
-                        'name' => $processedplatforms, 
-                        'data' => $register, 
-                    ];
+                            'name' => $processedplatforms,
+                            'data' => $register,
+                        ];
                     }
-                 
                 }
-               
-                 
             }
-            
+
         @endphp
 
         <script>
@@ -671,12 +522,12 @@
                 },
                 legend: {
                     enabled: false,
-                    
+
                 },
                 plotOptions: {
                     lang: {
                         thousandsSep: ',',
-                        
+
                     },
                     series: {
                         borderWidth: 0,

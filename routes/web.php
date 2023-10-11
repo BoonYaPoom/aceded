@@ -579,6 +579,8 @@ Route::group(['middleware' => 'IsLoggedIn'], function () {
                 Route::prefix('homeDepart')->group(function () {
 
                 Route::get('{department_id}/DepartD0100', [DepartReportController::class, 'DepartReportA'])->name('DepartD0100');
+                Route::get('{department_id}/home/dashboard', [ReportAllController::class, 'ReportB'])->name('Departdashboard');
+                Route::get('{department_id}/home/table', [ReportAllController::class, 'ReportC'])->name('Departtable');
             });
             });
         });

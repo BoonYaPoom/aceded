@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Course;
 use App\Models\CourseLearner;
 use App\Models\Department;
 use App\Models\Log;
@@ -53,9 +54,10 @@ class ReportAllController extends Controller
         $monthdata = $mms['month'];
         $month = $monthdata['th'];
         $perType = PersonType::all();
+        $cour = Course::all();
         $learners =  CourseLearner::all();
         $month = $monthdata['th'];
-        return view('page.report.reportb', compact('userper', 'count1', 'count3', 'count4', 'month', 'perType', 'learners', 'logs'));
+        return view('page.report.reportb', compact('cour','userper', 'count1', 'count3', 'count4', 'month', 'perType', 'learners', 'logs'));
     }
 
     public function ReportC()
@@ -75,6 +77,7 @@ class ReportAllController extends Controller
         $monthdata = $mms['month'];
         $month = $monthdata['th'];
         $perType = PersonType::all();
+   
         $learners =  CourseLearner::all();
         return view('page.report.tables.t0101', compact( 'month', 'learners', 'perType', 'userper'));
     }

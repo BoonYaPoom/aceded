@@ -79,16 +79,16 @@
                             </div>
                             <div
                                 class="list-group-item justify-content-between align-items-center 
-                            {{ Str::startsWith(request()->url(), route('dashboard')) || request()->is('dashboard', 'dashboard/*')
+                            {{ Str::startsWith(request()->url(), route('Departdashboard', ['department_id' => $depart->department_id])) || request()->is('dashboard', 'dashboard/*')
                                 ? ' bg-muted'
                                 : '' }}">
-                                <span><i class="fas fa-chart-bar text-teal mr-2"></i> <a href="{{ route('dashboard') }}"
+                                <span><i class="fas fa-chart-bar text-teal mr-2"></i> <a href="{{ route('dashboard', ['department_id' => $depart->department_id]) }}"
                                         class="small">รายงานเสรุปเชิงกราฟฟิค (Dashboard)</a></span>
                             </div>
                             <div
                                 class="list-group-item justify-content-between align-items-center 
-                            {{ Str::startsWith(request()->url(), route('table')) || request()->is('table', 'table/*') ? ' bg-muted' : '' }}">
-                                <span><i class="fas fa-chart-bar text-teal mr-2"></i> <a href="{{ route('table') }}"
+                            {{ Str::startsWith(request()->url(), route('Departtable', ['department_id' => $depart->department_id])) || request()->is('table', 'table/*') ? ' bg-muted' : '' }}">
+                                <span><i class="fas fa-chart-bar text-teal mr-2"></i> <a href="{{ route('table', ['department_id' => $depart->department_id]) }}"
                                         class="small">รายงานเชิงตาราง</a></span>
                             </div>
                         </div>
