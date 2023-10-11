@@ -59,4 +59,8 @@ class Department extends Model
     {
         return $this->hasMany(Users::class,'department_id');
     }
+    public function SchouserDe() {
+        
+        return $this->hasMany(UserSchool::class,'department_id');
+      }
 }

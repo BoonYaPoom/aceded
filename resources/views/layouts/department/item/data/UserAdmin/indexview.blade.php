@@ -47,9 +47,12 @@
                         }
                     </script>
 
+
                     <button type="button" class="ml-1 btn btn-success btn-md"
                         onclick="$('#clientUploadModal').modal('toggle');"><i class="fas fa-user-plus"></i>
                         นำเข้าผู้ใช้งาน</button>
+
+
 
                     <a class="ml-1 btn btn-info btn-md " style="color:#fff"
                         href="{{ route('schoolManageDepart', ['department_id' => $depart->department_id]) }}"><i
@@ -57,21 +60,7 @@
                         จัดการสถานศึกษา</a>
 
 
-                    <div class="col-md-6 mb-3">
-                        <label for="department_id" class="col-md-3 text-left mt-1">กลุ่มผู้ใช้งาน</label>
-                        <select id="department_id" name="department_id" class="form-control form-control-sm"
-                            data-allow-clear="false">
-                            <option value="0"selected>ทั้งหมด</option>
 
-                            @php
-                                $person_ty = \App\Models\PersonType::all();
-                            @endphp
-                            @foreach ($person_ty->sortBy('person_type') as $pers)
-                                <option value="{{ $pers->person }}"> {{ $pers->person }} </option>
-                            @endforeach
-                        </select>
-                        </select>
-                    </div>
 
                     <div class="col-md-6 mb-3">
                         <label for="drop2" class="col-md-3 text-right mt-1">จังหวัด</label>
@@ -185,17 +174,28 @@
                         });
                     </script>
 
-
+                    @php
+                        $provicValue = $data->province_id;
+                    @endphp
                     <div class="table-responsive">
                         <!-- .table -->
                         <table id="datatable" class="table w3-hoverable">
                             <div class="d-flex justify-content-between align-items-center">
                                 <div class="dt-buttons btn-group">
-                                    <button class="btn btn-secondary buttons-excel buttons-html5" tabindex="0"
-                                        aria-controls="datatable" type="button"
-                                        onclick="window.location='{{ route('UsersExport') }}'">
-                                        <span>Excel</span>
-                                    </button>
+                                    @if ($data->user_role == 1)
+                                        <button class="btn btn-secondary buttons-excel buttons-html5" tabindex="0"
+                                            aria-controls="datatable" type="button"
+                                            onclick="window.location='{{ route('UsersExport', ['department_id' => $depart]) }}'">
+                                            <span>Excel</span>
+                                        </button>
+                                    @else
+                                        <button class="btn btn-secondary buttons-excel buttons-html5" tabindex="0"
+                                            aria-controls="datatable" type="button"
+                                            onclick="window.location='{{ route('exportUsersPro', ['department_id' => $depart, 'provicValue' => $provicValue]) }}'">
+                                            <span>Excel</span>
+                                        </button>
+                                    @endif
+
                                 </div>
 
                                 <div class="dataTables_filter ">
@@ -261,13 +261,11 @@
                             <thead>
                                 <tr class="bg-infohead">
                                     <th width="10%">ลำดับ</th>
-                                    <th width="12%">รหัสผู้ใช้</th>
+                                    <th width="15%">รหัสผู้ใช้</th>
                                     <th>ชื่อ-นามสกุล</th>
-
-                                    <th width="15%">เบอร์โทรศัพท์</th>
+                                    <th width="10%">เบอร์โทรศัพท์</th>
                                     <th width="20%">email</th>
                                     <th width="10%"> จังหวัด</th>
-                                    <th width="15%">หน่วยงาน</th>
                                     <th width="10%">สถานะ</th>
                                     <th width="12%" class="text-center">กระทำ</th>
                                 </tr>
@@ -279,13 +277,12 @@
                                 @php
                                     $r = 0;
                                 @endphp
-                                @foreach ($usermanages->sortBy('user_id') as $item )
-                                   
+                                @foreach ($usermanages->sortBy('user_id') as $item)
                                     @php
                                         $r++;
                                     @endphp
                                     @php
-                             
+
                                         $user_roleadmin = $item->user_role == 1;
                                     @endphp
                                     @php
@@ -301,12 +298,9 @@
                                             ->pluck('name_in_thai')
                                             ->first();
                                     @endphp
-                             
-                                        @include('layouts.department.item.data.UserAdmin.DataUser.userprovis')
-                                        
-                                        @if ($data->user_role == 1)
-                                        @include('layouts.department.item.data.UserAdmin.DataUser.userAll')
-                                        @endif
+
+                                    @include('layouts.department.item.data.UserAdmin.DataUser.userAll')
+
                                     @include('layouts.department.item.data.UserAdmin.group.ModelUser.modelRole')
                                     @include('layouts.department.item.data.UserAdmin.group.ModelUser.modelPass')
                                 @endforeach

@@ -31,7 +31,9 @@ class Users extends Model
         return $this->belongsTo(Department::class,'department_id');
       }
 
-
+      public function usersCho() {
+        return $this->hasMany(UserSchool::class,'user_id');
+      }
 
 
 }

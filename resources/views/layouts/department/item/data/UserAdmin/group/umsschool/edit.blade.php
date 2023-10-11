@@ -1,8 +1,9 @@
-@extends('layouts.adminhome')
-@section('content')
-    <form action="{{ route('updateschool', ['school_id' => $school->school_id]) }}" method="post" enctype="multipart/form-data">
+@extends('layouts.department.layout.departmenthome')
+@section('contentdepartment')
+    <form action="{{ route('updateschoolDepart', ['department_id' => $depart, 'school_id' => $school->school_id]) }}"
+        method="post" enctype="multipart/form-data">
         @csrf
-
+        @method('PUT')
         <!-- .page-inner -->
         <div class="page-inner">
             <!-- .form -->
@@ -12,8 +13,10 @@
                 <div class="card card-fluid">
 
                     <!-- .card-header -->
-                    <div class="card-header bg-muted"><a href="{{ route('DPUserManage',['department_id' => $depart->department_id]) }}">ผู้ใช้งาน</a>/ <a
-                            href="{{ route('schoolManageDepart',['department_id' => $depart->department_id]) }}">แก้ไขสถานศึกษา</a> </div><!-- /.card-header -->
+                    <div class="card-header bg-muted"><a
+                            href="{{ route('DPUserManage', ['department_id' => $depart->department_id]) }}">ผู้ใช้งาน</a>/ <a
+                            href="{{ route('schoolManageDepart', ['department_id' => $depart->department_id]) }}">แก้ไขสถานศึกษา</a>
+                    </div><!-- /.card-header -->
                     <!-- .card-body -->
                     <div class="card-body">
                         <!-- .form-group -->

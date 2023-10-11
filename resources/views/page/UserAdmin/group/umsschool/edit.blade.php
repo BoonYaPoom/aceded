@@ -2,7 +2,7 @@
 @section('content')
     <form action="{{ route('updateschool', ['school_id' => $school->school_id]) }}" method="post" enctype="multipart/form-data">
         @csrf
-
+        @method('PUT')
         <!-- .page-inner -->
         <div class="page-inner">
             <!-- .form -->

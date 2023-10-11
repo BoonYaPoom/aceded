@@ -17,7 +17,7 @@ return new class extends Migration
             $table->increments('user_school_id')->start(10000)->nocache();
             $table->integer('school_id');
             $table->integer('user_id');
-       
+            $table->integer('department_id')->nullable();
         });
     }
 

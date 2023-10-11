@@ -46,8 +46,8 @@
                                 <tr class="bg-infohead">
                                     <th class="align-middle" style="width:5%"> ลำดับ </th>
                                     <th class="align-middle" style="width:65%"> ชื่อ-สกุล </th>
-                                    <th class="align-middle" style="width:15%"> ขอใบประกาศนียบัตร </th>
-                                    <th class="align-middle" style="width:15%"> กระทำ</th>
+                                 <!--    <th class="align-middle" style="width:15%"> ขอใบประกาศนียบัตร </th>
+                                    <th class="align-middle" style="width:15%"> กระทำ</th>-->
                                 </tr>
                             </thead><!-- /thead -->
                             <!-- tbody -->
@@ -74,14 +74,14 @@
                                                 <tr>
                                                     <td><a href="#">{{ $n++ }}</a></td>
                                                     <td>{{ $users->firstname }} {{ $users->lastname }}</td>
-                                                    <td></td>
-                                                    <td class="align-middle"><a href="#ModalMedia"
+                                                 <!--     <td></td>
+                                                  <td class="align-middle"><a href="#ModalMedia"
                                                             data-modal-target="#ModalMedia"
                                                             data-toggle="tooltip" data-placement="top" title=""
                                                             data-original-title="พิมพ์ใบประกาศนียบัตร"><img
                                                                 class="u-sidebar--account__toggle-img mr-3"
                                                                 src="{{ asset('fonts/icon_page_learn-07.png') }}"></a>
-                                                    </td>
+                                                    </td>-->
                                                 </tr><!-- /tr --><!-- tr -->
                                             @endif
                                         @endif

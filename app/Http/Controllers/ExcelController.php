@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Exports\QuestionExport;
 use App\Exports\SubjectExport;
+use App\Exports\UserDepartExport;
+use App\Exports\UserprovicExport;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Maatwebsite\Excel\Facades\Excel;
@@ -20,18 +22,26 @@ use Illuminate\Support\Facades\Hash;
 class ExcelController extends Controller
 {
     public function exportClass()
-{
-    // You can customize the response here, but for this example, you can just return an empty response.
-    return response()->stream(function () {
-    }, 200, [
-        'Content-Type' => 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
-        'Content-Disposition' => 'attachment; filename="exported_data.xlsx"',
-    ]);
-}
-
-    public function exportUsers()
     {
-        return Excel::download(new UsersExport, 'Administrator Management Users.xlsx');
+        // You can customize the response here, but for this example, you can just return an empty response.
+        return response()->stream(function () {
+        }, 200, [
+            'Content-Type' => 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+            'Content-Disposition' => 'attachment; filename="exported_data.xlsx"',
+        ]);
+    }
+
+    public function exportUsersall()
+    {
+        return Excel::download(new UsersExport(), 'Administrator Management Users.xlsx');
+    }
+    public function exportUsers($department_id)
+    {
+        return Excel::download(new UserDepartExport($department_id), 'Administrator Management Users Department.xlsx');
+    }
+    public function exportUsersPro($department_id, $provicValue)
+    {
+        return Excel::download(new UserprovicExport($department_id, $provicValue), 'Administrator Management Users Province.xlsx');
     }
     public function exportSubject()
     {
@@ -42,7 +52,7 @@ class ExcelController extends Controller
         return Excel::download(new QuestionExport, 'Question System.xlsx');
     }
 
-    public function importall(Request $request) 
+    public function importall(Request $request)
     {
 
 
@@ -105,10 +115,8 @@ class ExcelController extends Controller
                                 'subject_id' => $subject_id,
                                 'question_level' => $question_level,
                             ]);
-                            
-                            $newQuestion->save();
 
-                     
+                            $newQuestion->save();
                         }
                     }
 
@@ -155,7 +163,7 @@ class ExcelController extends Controller
                             $user_position = '';
                             $workplace = '';
                             $telephone = '';
-                         
+
                             $socialnetwork = '';
                             $experience = null;
                             $recommened = null;
@@ -174,7 +182,7 @@ class ExcelController extends Controller
                             $pos_name = '';
                             $sector_id = 0;
                             $office_id = 0;
-                
+
                             $user_type = null;
                             $province_id = 0;
                             $district_id = 0;
@@ -206,7 +214,7 @@ class ExcelController extends Controller
                                 'user_position' =>  $user_position,
                                 'workplace' =>  $workplace,
                                 'telephone' =>  $telephone,
-                          
+
                                 'socialnetwork' =>  $socialnetwork,
                                 'experience' =>  $experience,
                                 'recommened' => $recommened,
@@ -233,7 +241,7 @@ class ExcelController extends Controller
                                 'employeecode' =>  $employeecode,
                                 'organization' =>  $organization,
                             ]);
-                    
+
 
                             $newUsers->save();
                         }

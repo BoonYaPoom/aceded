@@ -8,25 +8,32 @@ use App\Models\Users;
 use App\Models\UserSchool;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Session;
 
 class SchoolDepartController extends Controller
 {
     public function schoolManage($department_id)
     {
-        $depart = Department::findOrFail($department_id);
-        $users  = $depart->UserDe()->where('department_id', $department_id);
-        $userschool = UserSchool::all();
-        $school = School::all();
-        return view('layouts.department.item.data.UserAdmin.group.umsschool.index', compact('depart','users', 'school', 'userschool'));
+        if (Session::has('loginId')) {
+            // ดึงข้อมูลผู้ใช้จากฐานข้อมูล
+            $data = Users::where('user_id', Session::get('loginId'))->first();
+            $provinceId = $data->province_id;
+            $school = School::where('provinces_id', $provinceId)->get();
+            $depart = Department::findOrFail($department_id);
+            $users  = $depart->UserDe()->where('department_id', $department_id);
+            $userschool  = $depart->SchouserDe()->where('department_id', $department_id);
+   
+        }
+        return view('layouts.department.item.data.UserAdmin.group.umsschool.index', compact('depart', 'users', 'school', 'userschool'));
     }
     public function create($department_id)
     {
         $depart = Department::findOrFail($department_id);
- 
-        return view('layouts.department.item.data.UserAdmin.group.umsschool.create',compact('depart'));
+
+        return view('layouts.department.item.data.UserAdmin.group.umsschool.create', compact('depart'));
     }
 
-    public function store(Request $request,$department_id)
+    public function store(Request $request, $department_id)
     {
         $depart = Department::findOrFail($department_id);
         $school = new School;
@@ -35,15 +42,16 @@ class SchoolDepartController extends Controller
         $school->subdistrict_id = null;
         $school->district_id = null;
         $school->save();
-        return redirect()->route('schoolManageDepart',['department_id'=>$depart->department_id])->with('message', 'personTypes บันทึกข้อมูลสำเร็จ');
+        return redirect()->route('schoolManageDepart', ['department_id' => $depart->department_id])->with('message', 'personTypes บันทึกข้อมูลสำเร็จ');
     }
-    public function edit($school_id)
+    public function edit($department_id, $school_id)
     {
         $school = School::findOrFail($school_id);
-        return view('layouts.department.item.data.UserAdmin.group.umsschool.edit', ['school' => $school]);
+        $depart = Department::findOrFail($department_id);
+        return view('layouts.department.item.data.UserAdmin.group.umsschool.edit', ['school' => $school, 'depart' => $depart]);
     }
 
-    public function update(Request $request, $school_id)
+    public function update(Request $request, $department_id, $school_id)
     {
         $school = School::findOrFail($school_id);
         $school->school_name = $request->school_name;
@@ -51,7 +59,8 @@ class SchoolDepartController extends Controller
         $school->subdistrict_id = null;
         $school->district_id = null;
         $school->save();
-        return redirect()->route('schoolManageDepart')->with('message', 'personTypes บันทึกข้อมูลสำเร็จ');
+        $depart = Department::findOrFail($department_id);
+        return redirect()->route('schoolManageDepart', ['department_id' => $depart->department_id])->with('message', 'personTypes บันทึกข้อมูลสำเร็จ');
     }
     public function delete($school_id)
     {
@@ -61,17 +70,22 @@ class SchoolDepartController extends Controller
 
         return redirect()->back()->with('message', 'PersonType ลบข้อมูลสำเร็จ');
     }
-    public function adduser($school_id)
+    public function adduser($department_id, $school_id)
     {
         $school = School::findOrFail($school_id);
         $userschool = $school->userScho()->where('school_id', $school_id)->get();
-        $users = Users::all();
+
+        $depart = Department::findOrFail($department_id);
 
 
-        return view('layouts.department.item.data.UserAdmin.group.umsschool.item.adduserschool', ['school' => $school, 'userschool' => $userschool, 'users' => $users]);
+        $users = $depart->UserDe()->where('department_id', $department_id)->get();
+
+
+
+        return view('layouts.department.item.data.UserAdmin.group.umsschool.item.adduserschool', ['depart' => $depart, 'school' => $school, 'userschool' => $userschool, 'users' => $users]);
     }
 
-    public function saveSelectedSchool(Request $request, $school_id)
+    public function saveSelectedSchool(Request $request, $department_id, $school_id)
 
     {
 
@@ -80,7 +94,7 @@ class SchoolDepartController extends Controller
             DB::table('user_school')->insert([
                 'school_id' => $school_id,
                 'user_id' => $userId,
-
+                'department_id' => $department_id,
             ]);
         }
 

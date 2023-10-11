@@ -6,6 +6,7 @@ use App\Models\Department;
 use App\Models\Users;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Session;
 use Intervention\Image\Facades\Image;
 
 class DepartUsersController extends Controller
@@ -14,12 +15,24 @@ class DepartUsersController extends Controller
     public function DPUserManage(Request $request, $department_id, $user_role = null)
     {
         $depart = Department::findOrFail($department_id);
-        $usermanages  = $depart->UserDe()->where('department_id', $department_id);
+        if (Session::has('loginId')) {
+            // ดึงข้อมูลผู้ใช้จากฐานข้อมูล
+            $data = Users::where('user_id', Session::get('loginId'))->first();
+            $provicValue = $data->province_id;
 
-        if ($user_role !== null) {
-            $usermanages->where('user_role', $user_role);
+            // ดึงผู้ใช้ที่มีค่า provic เท่ากันกับ $provicValue
+            if ($data->user_role == 1) {
+                // ถ้า data->role เป็น 1 แสดงผู้ใช้ทั้งหมด
+                $usermanages = $depart->UserDe()->where('department_id', $department_id)->get();
+            } else {
+                // ถ้า data->role เป็น 0 แสดงผู้ใช้ที่มีค่า province_id เท่ากับ $provicValue
+                $usermanages = $depart->UserDe()->where('department_id', $department_id)
+                    ->where('province_id', $provicValue)
+                    ->get();
+            }
+        } else {
+            $usermanages = collect(); // ถ้า Session::get('loginId') ไม่มีค่า, กำหนด $usermanages เป็นคอลเลกชันว่าง
         }
-        $usermanages = $usermanages->get();
 
         return view('layouts.department.item.data.UserAdmin.indexview', compact('usermanages', 'depart'));
     }

@@ -1,7 +1,7 @@
 
 
 <tr>
-    <td></td>
+    <td>{{$r++}}</td>
     <td>{{ $item->username }}</td>
     <td>{{ $item->firstname }} {{ $item->lastname }}</td>
 
@@ -10,7 +10,8 @@
 
     <td>{{ $item->email }}</td>
     <td>{{ $proviUser }}</td>
-    <td>{{ $person }}</td>
+
+    @if ($data->user_role == 1)
     <td class="align-middle"> <label class="switcher-control switcher-control-success switcher-control-lg">
             <input type="checkbox" class="switcher-input switcher-edit" {{ $item->userstatus == 1 ? 'checked' : '' }}
                 data-user_id="{{ $item->user_id }}">
@@ -18,6 +19,9 @@
             <span class="switcher-label-on">ON</span>
             <span class="switcher-label-off text-red">OFF</span>
         </label></td>
+           @else
+           <td>ใช้งาน</td>
+        @endif
 
     <script>
         $(document).ready(function() {

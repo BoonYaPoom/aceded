@@ -1,13 +1,13 @@
-@extends('layouts.adminhome')
-@section('content')
+@extends('layouts.department.layout.departmenthome')
+@section('contentdepartment')
     <div class="page-inner">
         <!-- .page-section -->
         <div class="page-section">
             <!-- .card -->
             <div class="card card-fluid">
                 <!-- .card-header -->
-                <div class="card-header bg-muted"><a href="{{ route('UserManage') }}">ผู้ใช้งาน</a>/ <a
-                        href="{{ route('schoolManage') }}">จัดการสถานศึกษา</a>/ {{ $school->school_name }}</div>
+                <div class="card-header bg-muted"><a href="{{ route('DPUserManage', ['department_id' => $depart->department_id]) }}">ผู้ใช้งาน</a>/ <a
+                        href="{{ route('schoolManageDepart', ['department_id' => $depart->department_id])}}">จัดการสถานศึกษา</a>/ {{ $school->school_name }}</div>
                 <!-- .card-body -->
                 <div class="card-body">
                     <div class="form-actions ">
@@ -44,7 +44,7 @@
                             <!-- /thead -->
                             <!-- tbody -->
                             <tbody>
-                                @include('page.UserAdmin.group.umsschool.item.viewuser')
+                                @include('layouts.department.item.data.UserAdmin.group.umsschool.item.viewuser')
                             </tbody><!-- /tbody -->
 
 
@@ -55,20 +55,19 @@
                     </div><!-- /.table-responsive -->
                     <hr>
                     <!-- .table-responsive -->
-                    <form method="POST" action="{{route('saveSelectedSchool',['school_id'=> $school->school_id])}}">
+                    <form method="POST"
+                        action="{{ route('saveSelectedSchoolDepart', ['department_id' => $depart, 'school_id' => $school->school_id]) }}">
                         @csrf
 
                         <div class="table-responsive">
                             <div class="input-group mb-3">
                                 <form action="" method="post" action="/admin/ums/umsgroupuser/1">
                                     <input type="text" class="form-control" name="search" id="searchNa"
-                                        aria-describedby="search"
-                                        placeholder="ค้นหาโดยการพิมพ์ ชื่อ สกุล "
-                                        value="">
-                    
+                                        aria-describedby="search" placeholder="ค้นหาโดยการพิมพ์ ชื่อ สกุล " value="">
+
                                 </form>
                             </div>
-                            @include('page.UserAdmin.group.umsschool.item.adduser')
+                            @include('layouts.department.item.data.UserAdmin.group.umsschool.item.adduser')
 
                         </div><!-- /.table-responsive -->
                     </form>

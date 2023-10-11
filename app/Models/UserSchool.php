@@ -16,4 +16,10 @@ class UserSchool extends Model
     public function schouser() {
         return $this->belongsTo(School::class,'school_id');
       }
+      public function usersChool() {
+        return $this->belongsTo(Users::class,'user_id');
+      }
+      public function DeSchouser() {
+        return $this->hasMany(Department::class,'department_id');
+      }
 }

@@ -296,4 +296,13 @@ class EditManageUserController extends Controller
 
         return redirect()->route('UserManage')->with('message', 'แก้ไขโปรไฟล์สำเร็จ');
     }
+
+    public function delete($user_id)
+    {
+        $usermanages = Users::findOrFail($user_id);
+        $usermanages->delete();
+
+
+        return redirect()->back()->with('message', 'usermanages ลบข้อมูลสำเร็จ');
+    }
 }

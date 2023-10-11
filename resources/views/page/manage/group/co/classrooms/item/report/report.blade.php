@@ -46,75 +46,11 @@
                 </div><!-- /.nav-scroller -->
                 <!-- .card-body -->
                 <div class="card-body">
-                    <div class="dt-buttons btn-group"><button id="exportButton"
+                  <!--  <div class="dt-buttons btn-group"><button id="exportButton"
                             class="btn btn-secondary buttons-excel buttons-html5" tabindex="0" aria-controls="datatable"
-                            type="button"><span>Excel</span></button> </div>
+                            type="button"><span>Excel</span></button> </div>-->
                     <!-- .table-responsive -->
-                    <script>
-                 document.getElementById('exportButton').addEventListener('click', function() {
-    // Get selected column names
-    const selectedColumns = Array.from(document.querySelectorAll('.export-checkbox:checked')).map(checkbox => checkbox.getAttribute('data-column'));
-
-    // Create a new table with selected columns
-    const table = document.createElement('table');
-    const thead = document.createElement('thead');
-    const tbody = document.createElement('tbody');
-
-    // Clone the existing table headers
-    const originalHeaders = document.querySelectorAll('thead th[data-column]');
-    originalHeaders.forEach(header => {
-        const columnKey = header.getAttribute('data-column');
-        if (selectedColumns.includes(columnKey)) {
-            const newHeader = document.createElement('th');
-            newHeader.textContent = header.textContent;
-            newHeader.setAttribute('style', header.getAttribute('style'));
-            thead.appendChild(newHeader);
-        }
-    });
-
-    // Clone the data rows with selected columns
-    const dataRows = document.querySelectorAll('tbody tr');
-    dataRows.forEach(row => {
-        const newRow = document.createElement('tr');
-        const cells = Array.from(row.querySelectorAll('td[data-column]'));
-        cells.forEach(cell => {
-            const columnKey = cell.getAttribute('data-column');
-            if (selectedColumns.includes(columnKey)) {
-                const newCell = document.createElement('td');
-                newCell.textContent = cell.textContent;
-                newCell.setAttribute('style', cell.getAttribute('style'));
-                newRow.appendChild(newCell);
-            }
-        });
-        tbody.appendChild(newRow);
-    });
-
-    table.appendChild(thead);
-    table.appendChild(tbody);
-
-    // Create a worksheet
-    const tableData = [];
-    const headerRow = Array.from(table.querySelectorAll('thead th')).map(th => th.textContent.trim());
-    tableData.push(headerRow);
-
-    const rows = Array.from(table.querySelectorAll('tbody tr'));
-    rows.forEach(row => {
-        const rowData = Array.from(row.querySelectorAll('td')).map(td => td.textContent.trim());
-        tableData.push(rowData);
-    });
-
-    const ws = XLSX.utils.aoa_to_sheet(tableData);
-
-    // Create a workbook
-    const wb = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(wb, ws, 'Sheet1');
-
-    // Save the workbook as an Excel file
-    XLSX.writeFile(wb, 'exported_data.xlsx');
-});
-
-                    </script>
-                 
+                    
                     <div class="table-responsive">
                         <!-- .table -->
                         <table id="datatable" class="table w3-hoverable" border=0>

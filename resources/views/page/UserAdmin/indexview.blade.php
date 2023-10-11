@@ -197,7 +197,7 @@
                                 <div class="dt-buttons btn-group">
                                     <button class="btn btn-secondary buttons-excel buttons-html5" tabindex="0"
                                         aria-controls="datatable" type="button"
-                                        onclick="window.location='{{ route('UsersExport') }}'">
+                                        onclick="window.location='{{ route('exportUsersall') }}'">
                                         <span>Excel</span>
                                     </button>
                                 </div>

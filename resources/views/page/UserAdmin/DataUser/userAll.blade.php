@@ -51,6 +51,10 @@
                 <a data-toggle="modal" data-target="" title="กำหนดสิทธิ์">
                     <i class="fas fa-user-shield text-bg-muted "></i>
                 </a>
+                <a href="{{ route('deleteUser', ['user_id' => $item->user_id]) }}"
+                    rel=""
+                    onclick="deleteRecord(event)" class="switcher-delete" data-toggle="tooltip"
+                    title="ลบข้อมูล"><i class="fas fa-trash-alt fa-lg text-warning "></i></a>
             @else
                 <a href="{{ route('logusers', ['user_id' => $item->user_id]) }}" data-toggle="tooltip"
                     title="ดูประวัติการใช้งาน"><i class="fas fa-history text-info"></i></a>

@@ -53,7 +53,7 @@
                                 @endif
                                 @foreach ($department->sortBy('department_id') as $depart)
                               
-                                @if($data->department_id == $depart->department_id && $data->user_role == 3 || $data->user_role == 1)
+                                @if($data->department_id == $depart->department_id && $data->user_role == 6 || $data->department_id == $depart->department_id && $data->user_role == 7 || $data->user_role == 1)
                                     <tr>
                                         <td><a href="{{ route('homede', ['department_id' => $depart->department_id]) }}">
                                                 {{ $depart->name_short_en }}</a>

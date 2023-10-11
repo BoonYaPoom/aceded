@@ -34,6 +34,7 @@ use App\Http\Controllers\LinkController;
 use App\Http\Controllers\ManualController;
 use App\Http\Controllers\NavController;
 use App\Http\Controllers\PersonController;
+use App\Http\Controllers\ProviDepartUserController;
 use App\Http\Controllers\ReportAllController;
 use App\Http\Controllers\RolemanageController;
 use App\Http\Controllers\SchoolController;
@@ -62,11 +63,12 @@ use LdapRecord\Laravel\Facades\Ldap;
 
 
 // Clear application cache:
-
-
+Route::get('/exportUsersall', [ExcelController::class, 'exportUsersall'])->name('exportUsersall');
+Route::get('/UsersExportDepart/{department_id}', [ExcelController::class, 'exportUsers'])->name('UsersExport');
+Route::get('/exportUsersPro/{department_id}/{provicValue}', [ExcelController::class, 'exportUsersPro'])->name('exportUsersPro');
 
 Route::get('/exportSubject', [ExcelController::class, 'exportSubject'])->name('exportSubject');
-Route::get('/UsersExport', [ExcelController::class, 'exportUsers'])->name('UsersExport');
+
 Route::get('/QuestionExport', [ExcelController::class, 'questionExport'])->name('questionExport');
 Route::post('/importall', [ExcelController::class, 'importall'])->name('importall');
 
@@ -486,19 +488,19 @@ Route::group(['middleware' => 'IsLoggedIn'], function () {
                 Route::get('{department_id}/add_umsschooldepartform', [SchoolDepartController::class, 'create'])->name('createschoolDepart');
                 Route::post('{department_id}/store_umsschooldepartform', [SchoolDepartController::class, 'store'])->name('storeschoolDepart');
                 Route::get('/schooldepart_delete/{school_id}', [SchoolDepartController::class, 'delete'])->name('deleteschoolDepart');
-                Route::get('{school_id}/edit_umsschooldepartform', [SchoolDepartController::class, 'edit'])->name('editschoolDepart');
-                Route::put('{school_id}/update_umsschooldepartform', [SchoolDepartController::class, 'update'])->name('updateschoolDepart');
+                Route::get('{department_id}/{school_id}/edit_umsschooldepartform', [SchoolDepartController::class, 'edit'])->name('editschoolDepart');
+                Route::put('{department_id}/{school_id}/update_umsschooldepartform', [SchoolDepartController::class, 'update'])->name('updateschoolDepart');
 
 
-                Route::get('/umsschooluser/{school_id}', [SchoolController::class, 'adduser'])->name('umsschooluser');
-                Route::post('{school_id}/saveSelectedSchool_umsschoolform', [SchoolController::class, 'saveSelectedSchool'])->name('saveSelectedSchool');
+                Route::get('{department_id}/umsschooluserdepart/{school_id}', [SchoolDepartController::class, 'adduser'])->name('umsschooluserDepart');
+                Route::post('{department_id}/{school_id}/saveSelectedSchooldepart_umsschoolform', [SchoolDepartController::class, 'saveSelectedSchool'])->name('saveSelectedSchoolDepart');
             
-         
+                
          
             });
 
             Route::prefix('ums')->group(function () {
-
+                Route::get('/deleteUser/{user_id}', [EditManageUserController::class, 'delete'])->name('deleteUser');
 
                 Route::get('/add_umsform', [EditManageUserController::class, 'createUser'])->name('createUser');
                 Route::post('/store_umsform', [EditManageUserController::class, 'storeUser'])->name('storeUser');
@@ -550,7 +552,8 @@ Route::group(['middleware' => 'IsLoggedIn'], function () {
             
             });
             
-           
+        
+
             Route::prefix('report')->group(function () {
                 Route::get('/home', [ReportAllController::class, 'Reportview'])->name('Reportview');
                 Route::get('/home/D0100', [ReportAllController::class, 'ReportA'])->name('D0100');
