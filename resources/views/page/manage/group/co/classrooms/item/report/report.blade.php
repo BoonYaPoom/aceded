@@ -34,7 +34,7 @@
                 <div class="card-header bg-muted"><a href="{{ route('learn', ['department_id' => $depart->department_id]) }}"
                         style="text-decoration: underline;">หมวดหมู่</a> / <a
                         href="{{ route('learn', ['department_id' => $courses->first()->department_id]) }}"
-                        style="text-decoration: underline;">จัดการวิชา</a> / <i></i></div><!-- /.card-header -->
+                        style="text-decoration: underline;">จัดการวิชา</a> / <i>{{$cour->course_th}}</i></div><!-- /.card-header -->
                 <!-- .nav-scroller -->
                 <div class="nav-scroller border-bottom">
                     <!-- .nav -->

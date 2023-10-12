@@ -223,6 +223,19 @@ class CourseController extends Controller
                 $cour->cert_custom = 'upload/Course/cert_custom/' . $newImageName;
                 $cour->save();
             }
+        } elseif ($request->hasFile('cert_custom')) {
+            $image_cert_custom = 'cert_custom' . $cour->course_id . '.' . $request->cert_custom->getClientOriginalExtension();
+            $uploadDirectory = public_path('upload/Course/cert_custom/');
+            if (!file_exists($uploadDirectory)) {
+                mkdir($uploadDirectory, 0755, true);
+            }
+            if (file_exists($uploadDirectory)) {
+
+                file_put_contents(public_path('upload/Course/cert_custom/' . $image_cert_custom), file_get_contents($request->cert_custom));
+                $cour->cert_custom = 'upload/Course/cert_custom/' .   'cert_custom' . $cour->course_id . '.' . $request->cert_custom->getClientOriginalExtension();
+                $cour->templete_certificate == 0;
+                $cour->save();
+            }
         } else {
             $image_cert_custom = '';
             $cour->cert_custom = $image_cert_custom;
@@ -406,6 +419,19 @@ class CourseController extends Controller
 
                 // บันทึกชื่อไฟล์ใหม่ในฐานข้อมูล
                 $cour->cert_custom = 'upload/Course/cert_custom/' . $newImageName;
+                $cour->save();
+            }
+        } elseif ($request->hasFile('cert_custom')) {
+            $image_cert_custom = 'cert_custom' . $cour->course_id . '.' . $request->cert_custom->getClientOriginalExtension();
+            $uploadDirectory = public_path('upload/Course/cert_custom/');
+            if (!file_exists($uploadDirectory)) {
+                mkdir($uploadDirectory, 0755, true);
+            }
+            if (file_exists($uploadDirectory)) {
+
+                file_put_contents(public_path('upload/Course/cert_custom/' . $image_cert_custom), file_get_contents($request->cert_custom));
+                $cour->cert_custom = 'upload/Course/cert_custom/' .   'cert_custom' . $cour->course_id . '.' . $request->cert_custom->getClientOriginalExtension();
+                $cour->templete_certificate == 0;
                 $cour->save();
             }
         }

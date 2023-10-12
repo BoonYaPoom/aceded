@@ -19,9 +19,9 @@
             <thead>
                 <tr class="bg-infohead">
                     <th class="align-middle" style="width:10%"> ลำดับ </th>
-                    <th class="align-middle" style="width:70%"> เดือน </th>
+                    <th class="align-middle" style="width:65%"> เดือน </th>
                     <th class="align-middle" style="width:10%"> จำนวนผู้เรียน </th>
-                    <th class="align-middle" style="width:10%"> กระทำ </th>
+                    <th class="align-middle" style="width:15%"> กระทำ </th>
                 </tr>
             </thead><!-- /thead -->
             <!-- tbody -->

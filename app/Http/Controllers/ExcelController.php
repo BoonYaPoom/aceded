@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Exports\QuestionExport;
+use App\Exports\ReportExport;
 use App\Exports\SubjectExport;
 use App\Exports\UserDepartExport;
 use App\Exports\UserprovicExport;
@@ -30,7 +31,11 @@ class ExcelController extends Controller
             'Content-Disposition' => 'attachment; filename="exported_data.xlsx"',
         ]);
     }
-
+    
+    public function ReportExp()
+    {
+        return Excel::download(new ReportExport(), 'Administrator Management Users.xlsx');
+    }
     public function exportUsersall()
     {
         return Excel::download(new UsersExport(), 'Administrator Management Users.xlsx');

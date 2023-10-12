@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\BookCategory;
 use App\Models\Course;
+use App\Models\CourseFavorites;
 use App\Models\CourseLearner;
 use App\Models\Department;
 use App\Models\Log;
@@ -36,6 +38,8 @@ class ReportAllController extends Controller
         $month = $monthdata['th'];
         $perType = PersonType::all();
         $learners =  CourseLearner::all();
+
+    
         return view('page.report.reporta', compact('userper', 'count1', 'count3', 'count4','user_role1','user_role3','user_role4', 'month', 'perType', 'learners'));
     }
   
@@ -55,9 +59,12 @@ class ReportAllController extends Controller
         $month = $monthdata['th'];
         $perType = PersonType::all();
         $cour = Course::all();
+        $favorit =  CourseFavorites::all();
         $learners =  CourseLearner::all();
+   
         $month = $monthdata['th'];
-        return view('page.report.reportb', compact('cour','userper', 'count1', 'count3', 'count4', 'month', 'perType', 'learners', 'logs'));
+        $bookcat = BookCategory::all();
+        return view('page.report.reportb', compact('favorit','bookcat','cour','userper', 'count1', 'count3', 'count4', 'month', 'perType', 'learners', 'logs'));
     }
 
     public function ReportC()

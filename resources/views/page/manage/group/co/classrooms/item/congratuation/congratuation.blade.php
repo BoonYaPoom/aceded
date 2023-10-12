@@ -48,6 +48,7 @@
                                     <th class="align-middle" style="width:65%"> ชื่อ-สกุล </th>
                                  <!--    <th class="align-middle" style="width:15%"> ขอใบประกาศนียบัตร </th>
                                     <th class="align-middle" style="width:15%"> กระทำ</th>-->
+                                    <th class="align-middle" style="width:15%"> จบ</th>
                                 </tr>
                             </thead><!-- /thead -->
                             <!-- tbody -->
@@ -74,8 +75,8 @@
                                                 <tr>
                                                     <td><a href="#">{{ $n++ }}</a></td>
                                                     <td>{{ $users->firstname }} {{ $users->lastname }}</td>
-                                                 <!--     <td></td>
-                                                  <td class="align-middle"><a href="#ModalMedia"
+                                                    <td>จบการศึกษา</td>
+                                                 <!--   <td class="align-middle"><a href="#ModalMedia"
                                                             data-modal-target="#ModalMedia"
                                                             data-toggle="tooltip" data-placement="top" title=""
                                                             data-original-title="พิมพ์ใบประกาศนียบัตร"><img

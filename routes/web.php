@@ -33,6 +33,7 @@ use App\Http\Controllers\LdapController;
 use App\Http\Controllers\LinkController;
 use App\Http\Controllers\ManualController;
 use App\Http\Controllers\NavController;
+use App\Http\Controllers\PDFcreateController;
 use App\Http\Controllers\PersonController;
 use App\Http\Controllers\ProviDepartUserController;
 use App\Http\Controllers\ReportAllController;
@@ -63,6 +64,9 @@ use LdapRecord\Laravel\Facades\Ldap;
 
 
 // Clear application cache:
+Route::get('/generatePdfT0101', [PDFcreateController::class, 'generatePdfT0101'])->name('generatePdfT0101');
+Route::get('/generatePdf', [PDFcreateController::class, 'generatePdf'])->name('generatePdf');
+Route::get('/ReportExp', [ExcelController::class, 'ReportExp'])->name('ReportExp');
 Route::get('/exportUsersall', [ExcelController::class, 'exportUsersall'])->name('exportUsersall');
 Route::get('/UsersExportDepart/{department_id}', [ExcelController::class, 'exportUsers'])->name('UsersExport');
 Route::get('/exportUsersPro/{department_id}/{provicValue}', [ExcelController::class, 'exportUsersPro'])->name('exportUsersPro');

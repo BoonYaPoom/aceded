@@ -21,6 +21,7 @@
     </style>
     <div class="page-inner">
 
+     
         <form method="post" id="formreport">
             <div class="form-row">
                 <!-- form column -->
@@ -73,13 +74,13 @@
             <!-- .card-header -->
             <div class="card-header bg-muted">
                 <div class="d-flex align-items-center">
-                    <span class="mr-auto">รายงานข้อมูลรายชื่อผู้เรียนทั้งหมด และแยกตามหลักสูตร</span> <a
-                        href="https://aced.dlex.ai/childhood/admin/export/pdf.html"
+                  <!--   <span class="mr-auto">รายงานข้อมูลรายชื่อผู้เรียนทั้งหมด และแยกตามหลักสูตร</span> <a
+                        href="{{route('generatePdfT0101')}}"
                         class="btn btn-icon btn-outline-danger"><i class="fa fa-file-pdf"></i></a>&nbsp;<a
                         href="https://aced.dlex.ai/childhood/admin/export/excel.html"
                         class="btn btn-icon btn-outline-primary"><i class="fa fa-file-excel "></i></a>&nbsp;<a
                         href="javascript:window.print();" class="btn btn-icon btn-outline-success"><i
-                            class="fa fa-print "></i></a>
+                            class="fa fa-print "></i></a>-->
                 </div>
             </div><!-- /.card-header -->
             <!-- .card-body -->
@@ -111,7 +112,9 @@
                                 $users = null;
                             @endphp
                             @foreach ($learners as $l => $learns)
+                            
                                 @php
+                                
                                     $dataLearn = $learns->registerdate;
                                     $congrateLearn = $learns->congratulationdate;
                                     $congrate = $learns->congratulation;

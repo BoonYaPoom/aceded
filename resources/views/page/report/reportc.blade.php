@@ -43,9 +43,9 @@
             <div class="card-header bg-muted">
                 <div class="d-flex align-items-center">
                     <span class="mr-auto">รายงานเชิงตาราง ปี 2566</span> <a
-                        href="https://aced.dlex.ai/childhood/admin/export/pdf.html"
+                        href="{{route('generatePdf')}}"
                         class="btn btn-icon btn-outline-danger"><i class="fa fa-file-pdf"></i></a>&nbsp;<a
-                        href="https://aced.dlex.ai/childhood/admin/export/excel.html"
+                        href="{{route('ReportExp')}}"
                         class="btn btn-icon btn-outline-primary"><i class="fa fa-file-excel "></i></a>&nbsp;<a
                         href="javascript:window.print();" class="btn btn-icon btn-outline-success"><i
                             class="fa fa-print "></i></a>

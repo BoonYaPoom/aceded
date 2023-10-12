@@ -6,13 +6,13 @@
             <div class="form-row">
                 <!-- form column -->
                 <!--    <div class="col-md-1"><span class="mt-1 ">ปี</span></div>
-                                                                        <div class="col-md-3">
-                                                                         <div class=""><select id="selectyear" name="selectyear" class="form-control" data-toggle="select2"
-                                                                                    data-placeholder="ปี" data-allow-clear="false" onchange="$('#formreport').submit();">
-                                                                                    <option value="2022"> 2565 </option>
-                                                                                    <option value="2023" selected> 2566 </option>
-                                                                                </select></div>
-                                                                        </div>-->
+                                                                                                                                                                                            <div class="col-md-3">
+                                                                                                                                                                                             <div class=""><select id="selectyear" name="selectyear" class="form-control" data-toggle="select2"
+                                                                                                                                                                                                        data-placeholder="ปี" data-allow-clear="false" onchange="$('#formreport').submit();">
+                                                                                                                                                                                                        <option value="2022"> 2565 </option>
+                                                                                                                                                                                                        <option value="2023" selected> 2566 </option>
+                                                                                                                                                                                                    </select></div>
+                                                                                                                                                                                            </div>-->
                 <div class="col-md-3 ">
                     <div class="d-none"><select id="selectmonth" name="selectmonth" class="form-control "
                             data-toggle="select2" data-placeholder="เดือน" data-allow-clear="false"
@@ -198,6 +198,8 @@
             });
         </script>
 
+
+
         <script>
             Highcharts.chart("coursemulti", {
                 chart: {
@@ -236,47 +238,43 @@
                     headerFormat: '<span style="font-size:12px">{series.name}</span><br>',
                     pointFormat: '<span>{point.name}</span> : <b>{point.y}</b> รายการ<br/>'
                 },
+
                 series: [{
-                    name: 'จำนวนสื่อ Multimedia',
-                    colorByPoint: true,
-                    data: [{
-                        name: 'การเขียนหนังสือโต้ตอบทางราชการเป็นภาษาอังกฤษ',
-                        y: 15,
-                        color: ''
-                    }, {
-                        name: 'ศิลปะในการเขียนและการแก้ร่างหนังสือติดต่อราชการ',
-                        y: 6,
-                        color: ''
-                    }, {
-                        name: 'การจัดเตรียมวาระการประชุม  การทำบันทึกเสนอที่ประชุม  และการทำรายงานการประชุม',
-                        y: 4,
-                        color: ''
-                    }, {
-                        name: 'คำศัพท์เศรษฐศาสตร์องค์การอุตสาหกรรมและกฎหมายการแข่งขันทางการค้า',
-                        y: 3,
-                        color: ''
-                    }, {
-                        name: 'การทำงานเป็นทีม',
-                        y: 2,
-                        color: ''
-                    }, {
-                        name: 'หลักเศรษฐศาสตร์พื้นฐานของกฎหมายการแข่งขันทางการค้า',
-                        y: 2,
-                        color: ''
-                    }, {
-                        name: 'ความรู้เบื้องต้นเกี่ยวกับกฎหมายการแข่งขันทางการค้า',
-                        y: 1,
-                        color: ''
-                    }, {
-                        name: 'การพูดในที่สาธารณะและการนำเสนองานต่อที่ประชุมอย่างมืออาชีพ',
-                        y: 1,
-                        color: ''
-                    }]
+
                 }]
             });
         </script>
 
+        @php
+            $chartDataFav = [];
+            foreach ($favorit as $f => $fav) {
+                if ($fav->status == 1) {
+                    $numberLen = 0; // รีเซ็ตค่า $numberLen ใหม่ในแต่ละรอบของลูป
+                    $countr = $cour->where('course_id', $fav->course_id)->all();
+                    foreach ($countr as $ca => $courda) {
+                        $coTh = $courda->course_th;
+                        $leaCo = $learners->where('course_id', $courda->course_id)->all();
+                        foreach ($leaCo as $leaC => $leaCos) {
+                            if ($leaCos->learner_status == 1) {
+                                $numberLen++;
+                            }
+                        }
+                    }
+                    if ($numberLen !== 0) {
+                        $chartDataFav[] = [
+                            'choice' => $coTh,
+                            'count' => $numberLen,
+                        ];
+                    }
+                }
+            }
+
+        @endphp
+
+
         <script>
+            var chartDataFav = {!! json_encode($chartDataFav) !!};
+            console.log(chartDataFav);
             Highcharts.chart("courserating", {
                 chart: {
                     type: 'column'
@@ -314,21 +312,64 @@
                     headerFormat: '<span style="font-size:12px">{series.name}</span><br>',
                     pointFormat: '<span>{point.name}</span> : <b>{point.y}</b> คน<br/>'
                 },
+
                 series: [{
                     name: 'จำนวน Rating',
                     colorByPoint: true,
-                    data: [{
-                        name: '"รายวิชาเพิ่มเติม การป้องกันการทุจริต" ระดับปฐมวัย',
-                        y: 14,
-                        color: ''
-                    }]
+                    data: chartDataFav.map(item => ({
+                        name: item.choice,
+                        y: item.count
+                    }))
                 }]
             });
         </script>
 
+        @php
+            $chartDataBook0 = [];
+            $chartDataBook1 = [];
+            $bookTh = [];
+            foreach ($bookcat as $bc => $bookcats) {
+                if ($bookcats->category_status == 1) {
+                    $bookType0Count = 0;
+                    $bookType1Count = 0;
 
+                    $book = $bookcats
+                        ->books()
+                        ->where('category_id', $bookcats->category_id)
+                        ->where('book_status', 1) // เพิ่มเงื่อนไขนี้
+                        ->get();
+                    foreach ($book as $sb => $books) {
+                        if ($books->book_type == 0) {
+                            $bookType0Count++;
+                        } elseif ($books->book_type == 1) {
+                            $bookType1Count++;
+                        }
+                    }
+                    if ($bookType0Count !== 0) {
+                        $chartDataBook0[] = [
+                            'choice' => 'ebook',
+                            'count' => $bookType0Count,
+                        ];
+                    }
+
+                    if ($bookType1Count !== 0) {
+                        $chartDataBook1[] = [
+                            'choice' => 'เอกสาร',
+                            'count' => $bookType1Count,
+                        ];
+                    }
+                }
+            }
+
+        @endphp
 
         <script>
+            var chartDataBook0 = {!! json_encode($chartDataBook0) !!};
+            var chartDataBook1 = {!! json_encode($chartDataBook1) !!};
+            var bookTh = {!! json_encode($bookTh) !!};
+            console.log(chartDataBook0);
+            console.log(chartDataBook1);
+
             Highcharts.chart("coursedoc", {
                 chart: {
                     type: 'column'
@@ -340,12 +381,12 @@
                     text: 'จำนวนเอกสาร, ebook /หลักสูตร'
                 },
                 xAxis: {
-                    categories: ['การทำงานเป็นทีม', 'ศิลปะในการเขียนและการแก้ร่างหนังสือติดต่อราชการ',
-                        'การจัดเตรียมวาระการประชุม  การทำบันทึกเสนอที่ประชุม  และการทำรายงานการประชุม',
-                        'การเขียนหนังสือโต้ตอบทางราชการเป็นภาษาอังกฤษ',
-                        'ความรู้เบื้องต้นเกี่ยวกับกฎหมายการแข่งขันทางการค้า',
-                        'คำศัพท์เศรษฐศาสตร์องค์การอุตสาหกรรมและกฎหมายการแข่งขันทางการค้า',
-                        'หลักเศรษฐศาสตร์พื้นฐานของกฎหมายการแข่งขันทางการค้า'
+                    categories: [
+                        @foreach ($bookcat as $bc => $bookcats)
+                            @if ($bookcats->category_status == 1)
+                                '{{ $bookcats->category_th }}',
+                            @endif
+                        @endforeach
                     ],
                     crosshair: true
                 },
@@ -375,11 +416,13 @@
                 },
                 series: [{
                     name: 'ebook',
-                    data: [1, 2]
+                    data: chartDataBook0.map(item => item.count)
                 }, {
                     name: 'เอกสาร',
-                    data: [2, 13, 1, 3, 2, 2]
+                    data: chartDataBook1.map(item => item.count)
                 }]
+
+
             });
         </script>
 

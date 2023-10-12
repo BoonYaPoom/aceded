@@ -154,7 +154,7 @@
                                                 id="sourcesounce" class="sourcecontent">
 
                                         </audio>
-                                        <p>{{ $item->content_path }}</p>
+                           
 
                                     </div>
 
@@ -186,17 +186,14 @@
                                         </div>
                                     </div>
                                 @elseif ($contentType->content_type === 9)
-                                    <h1>{{ $contentType->content_th }} zip</h1><a
-                                        href="{{ asset($item->content_path) }}"
-                                        class="btn btn-primary" download>ดาวน์โหลดไฟล์</a>
+                                    <h1>{{ $contentType->content_th }} zip</h1>
                                     <div class="showcontent show-zip "><object
                                             src="{{ asset($item->content_path . '/index.html') }}"
                                             alt="{{ $item->content_path . '/index.html'}}" id="sourcezip"
                                             width="100%" height="200px" data="">
                                         </object>
 
-                                        <p>{{ $item->content_path }}</p>
-
+                                
                                     </div>
 
                                     <div class="card-body">
@@ -227,16 +224,14 @@
                                         </div>
                                     </div>
                                     @elseif ($contentType->content_type === 10)
-                                    <h1>{{ $contentType->content_th }}  zip </h1><a
-                                        href="{{ asset($item->content_path) }}"
-                                        class="btn btn-primary" download>ดาวน์โหลดไฟล์</a>
+                                    <h1>{{ $contentType->content_th }}  zip </h1>
                                     <div class="showcontent show-zip "><object
                                             src="{{ asset($item->content_path . '/index.html') }}"
                                             alt="{{ $item->content_path . '/index.html'}}" id="sourcezip"
                                             width="100%" height="200px" data="">
                                         </object>
 
-                                        <p>{{ $item->content_path }}</p>
+                    
 
                                     </div>
 
@@ -268,16 +263,14 @@
                                         </div>
                                     </div>
                                     @elseif ($contentType->content_type === 11)
-                                    <h1>{{ $contentType->content_th }}  zip </h1><a
-                                        href="{{ asset($item->content_path) }}"
-                                        class="btn btn-primary" download>ดาวน์โหลดไฟล์</a>
+                                    <h1>{{ $contentType->content_th }}  zip </h1>
                                     <div class="showcontent show-zip "><object
                                             src="{{ asset($item->content_path . '/index.html') }}"
                                             alt="{{ $item->content_path . '/index.html'}}" id="sourcezip"
                                             width="100%" height="200px" data="">
                                         </object>
 
-                                        <p>{{ $item->content_path }}</p>
+                                  
 
                                     </div>
 
@@ -310,16 +303,14 @@
                                     </div>
                                 @endif
                                 @elseif ($contentType->content_type === 12)
-                                <h1>{{ $contentType->content_th }}  zip </h1><a
-                                    href="{{ asset($item->content_path) }}"
-                                    class="btn btn-primary" download>ดาวน์โหลดไฟล์</a>
+                                <h1>{{ $contentType->content_th }}  zip </h1>
                                 <div class="showcontent show-zip "><object
                                         src="{{ asset($item->content_path . '/index.html') }}"
                                         alt="{{ $item->content_path . '/index.html'}}" id="sourcezip"
                                         width="100%" height="200px" data="">
                                     </object>
 
-                                    <p>{{ $item->content_path }}</p>
+                            
 
                                 </div>
 
@@ -351,16 +342,14 @@
                                     </div>
                                 </div>
                                 @elseif ($contentType->content_type === 13)
-                                <h1>{{ $contentType->content_th }}  zip </h1><a
-                                    href="{{ asset($item->content_path) }}"
-                                    class="btn btn-primary" download>ดาวน์โหลดไฟล์</a>
+                                <h1>{{ $contentType->content_th }}  zip </h1>
                                 <div class="showcontent show-zip "><object
                                         src="{{ asset($item->content_path . '/index.html') }}"
                                         alt="{{ $item->content_path . '/index.html'}}" id="sourcezip"
                                         width="100%" height="200px" data="">
                                     </object>
 
-                                    <p>{{ $item->content_path }}</p>
+                       
 
                                 </div>
 

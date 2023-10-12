@@ -845,6 +845,11 @@
                                                     id="certificate6" value="6"> <label class="custom-control-label"
                                                     for="certificate6"></label></div>
                                             </p>
+                                            <div class="form-group">
+                                                <label for="cert_custom">เพิ่มรูปแบบใบประกาศนียบัตร </label> <input type="file"
+                                                    class="form-control" id="cert_custom" name="cert_custom"
+                                                    placeholder="ใบประกาศนียบัตร	" accept="image/*">
+                                            </div><!-- /.form-group -->
                                         </figcaption><!-- /.figure-caption -->
                                     </figure><!-- /.card-figure -->
                                 </div><!-- /.card -->
