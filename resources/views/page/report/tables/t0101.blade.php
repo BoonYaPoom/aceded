@@ -74,7 +74,7 @@
             <!-- .card-header -->
             <div class="card-header bg-muted">
                 <div class="d-flex align-items-center">
-                  <!--   <span class="mr-auto">รายงานข้อมูลรายชื่อผู้เรียนทั้งหมด และแยกตามหลักสูตร</span> <a
+                span class="mr-auto">รายงานข้อมูลรายชื่อผู้เรียนทั้งหมด และแยกตามหลักสูตร</span>   <!--   <<a
                         href="{{route('generatePdfT0101')}}"
                         class="btn btn-icon btn-outline-danger"><i class="fa fa-file-pdf"></i></a>&nbsp;<a
                         href="https://aced.dlex.ai/childhood/admin/export/excel.html"

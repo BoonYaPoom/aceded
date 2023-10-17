@@ -16,7 +16,8 @@
             toastr.success("{{ Session::get('message') }}");
         </script>
     @endif
- 
+    <link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.js"></script>
     <form action="{{ route('update_structure', ['course_id' => $cour->course_id]) }}" method="post"
         enctype="multipart/form-data">
         @csrf
@@ -48,11 +49,11 @@
                         <!-- .form-group -->
                         <div class="form-group">
                             <label for="description">คำอธิบายหลักสูตร (ไทย)</label>
-                            <textarea class="editor" data-placeholder="คำอธิบายหลักสูตร" data-height="200" name="description_th">
+                            <textarea id="description_th" class="editor" data-placeholder="คำอธิบายหลักสูตร" data-height="200" name="description_th">
                                 {{ $cour->description_th }}</textarea>
                         </div><!-- /.form-group -->
                         <div class="form-group">
-                            <label for="description">คำอธิบายหลักสูตร (อังกฤษ)</label>
+                            <label  id="description_en" for="description">คำอธิบายหลักสูตร (อังกฤษ)</label>
                             <textarea class="editor" data-placeholder="คำอธิบายหลักสูตร" data-height="200" name="description_en">
                                 {{ $cour->description_en }}</textarea>
                         </div><!-- /.form-group -->
@@ -100,7 +101,7 @@
             </div><!-- /.page-section -->
         </div><!-- /.page-inner -->
 
-  
+            
 
 
     </form>

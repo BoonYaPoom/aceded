@@ -62,17 +62,24 @@
                         array_push($uniqueUs, $userId);
                 if ($lea->congratulation == 1) {
                     $dataCon = $lea->congratulationdate;
-                    $monthCon = \ltrim(\Carbon\Carbon::parse($dataCon)->format('m'), '0');
-                    $result[$monthCon]['congratulation'] = isset($result[$monthCon]['congratulation']) ? $result[$monthCon]['congratulation'] + 1 : 0;
-                  
+                    $yearCon = \ltrim(\Carbon\Carbon::parse($dataCon)->format('y'));
+                    if ($yearCon == 23) {
+                        $monthCon = \ltrim(\Carbon\Carbon::parse($dataCon)->format('m'), '0');
+                        $result[$monthCon]['congratulation'] = isset($result[$monthCon]['congratulation']) ? $result[$monthCon]['congratulation'] + 1 : 0;
+                        # code...
+                    }     
                 } elseif ($lea->congratulation == 0) {
                     $dataRegi = $lea->registerdate;
+                    $yearR = \ltrim(\Carbon\Carbon::parse($dataRegi)->format('y'));
+                    if ($yearR == 23) {
+        
                     $monthRegi = \ltrim(\Carbon\Carbon::parse($dataRegi)->format('m'), '0');
                     $result[$monthRegi]['register'] = isset($result[$monthRegi]['register']) ? $result[$monthRegi]['register'] + 1 : 0;
-              
+                    # code...
+                }
                 }
             }
-
+         
             }
             $chartDataCon = [];
             foreach ($dateAll as $m => $months) {

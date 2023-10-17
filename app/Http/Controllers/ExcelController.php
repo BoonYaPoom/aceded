@@ -34,7 +34,7 @@ class ExcelController extends Controller
     
     public function ReportExp()
     {
-        return Excel::download(new ReportExport(), 'Administrator Management Users.xlsx');
+        return Excel::download(new ReportExport(), 'Administrator Management Report.xlsx');
     }
     public function exportUsersall()
     {

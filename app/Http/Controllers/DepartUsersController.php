@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Department;
+use App\Models\UserRole;
 use App\Models\Users;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -97,7 +98,9 @@ class DepartUsersController extends Controller
     public function createUser($department_id)
     {
         $depart = Department::findOrFail($department_id);
-        return view('layouts.department.item.data.UserAdmin.add.add_umsform',compact('depart'));
+        
+            $role = UserRole::all();
+        return view('layouts.department.item.data.UserAdmin.add.add_umsform',compact('depart','role'));
     }
 
 

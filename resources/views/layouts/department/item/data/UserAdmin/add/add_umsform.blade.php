@@ -40,12 +40,13 @@
 
                                         <option value="0"selected disabled>เลือกประเภทผู้ใช้งาน</option>
                                         @foreach ($role as $roles)
-                                        @if ($roles->role_status == 1)
-                                        @if ($roles->user_role_id > 1)
-                                            <option value="{{ $roles->user_role_id }}">{{ $roles->role_name }}</option>
-                                        @endif
-                                        @endif
-                                    @endforeach
+                                            @if ($roles->role_status == 1)
+                                                @if ($roles->user_role_id > 1)
+                                                    <option value="{{ $roles->user_role_id }}">{{ $roles->role_name }}
+                                                    </option>
+                                                @endif
+                                            @endif
+                                        @endforeach
                                     </select>
                                 </div>
                             </div>
@@ -185,6 +186,40 @@
                             </div>
                             <!-- /form row -->
 
+                            <!-- /form row -->
+                            <div class="form-row">
+                                <label for="school" class="col-md-2">โรงเรียน / มหาลัย <span
+                                        class="badge badge-warning">Required</span></label>
+                                <div class="col-md-9 mb-3">
+                                    <input type="text" class="form-control inputuname " id="search" name="school"
+                                        placeholder="school" value="" required=""><small
+                                        class="form-text text-muted">โรงเรียน / มหาลัย </small>
+                                </div>
+                            </div>
+                            <script type="text/javascript">
+                                var path = "{{ route('DPautocompleteSearch') }}";
+
+                                $("#search").autocomplete({
+                                    source: function(request, response) {
+                                        $.ajax({
+                                            url: path,
+                                            type: 'GET',
+                                            dataType: "json",
+                                            data: {
+                                                search: request.term
+                                            },
+                                            success: function(data) {
+                                                response(data);
+                                            }
+                                        });
+                                    },
+                                    select: function(event, ui) {
+                                        $('#search').val(ui.item.label);
+                                        console.log(ui.item);
+                                        return false;
+                                    }
+                                });
+                            </script>
                             <!-- form row -->
                             <div class="form-row d-none " id="set_subdistrict_id">
                                 <label for="subdistrict_id" class="col-md-2">แขวง/ตำบล </label>
@@ -205,7 +240,7 @@
                                     <input type="text" class="form-control " id="pos_name" name="pos_name"
                                         value="" placeholder="ตำแหน่ง">
                                     <!-- <select id="pos_namexx" name="pos_namexx" class="form-control form-control-sm" data-toggle="select2" data-allow-clear="false">
-                                                                </select> -->
+                                                                    </select> -->
                                 </div>
                             </div>
                             <!--/form row -->

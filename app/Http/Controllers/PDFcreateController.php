@@ -6,7 +6,7 @@ use App\Models\CourseLearner;
 use App\Models\PersonType;
 use App\Models\Users;
 use Barryvdh\DomPDF\Facade\Pdf;
-
+use Illuminate\Support\Facades\Http;
 use Mpdf\HTMLParserMode;
 use Mpdf\Mpdf;
 use Mpdf\Output\Destination;
@@ -155,5 +155,27 @@ class PDFcreateController extends Controller
         return $pdf->Output('report.pdf', Destination::FILE);
 
 
+    }
+    public function upload(Request $request)
+    {
+        $imageUrl = $request->input('image_url');
+        
+        // ดาวน์โหลดรูปภาพจาก URL ที่ผู้ใช้ระบุ
+        $response = Http::get($imageUrl);
+
+        if ($response->ok()) {
+            // บันทึกรูปภาพลงในโฟลเดอร์ public/images
+            $imageName = time() . '.jpg'; // สามารถเปลี่ยนนามสกุลไฟล์ตามประเภทของรูปภาพที่ดาวน์โหลด
+            $imagePath = public_path('images/' . $imageName);
+            file_put_contents($imagePath, $response->body());
+
+            // สร้าง URL ของรูปภาพ
+            $imageUrl = asset('images/' . $imageName);
+
+            // ส่ง URL ของรูปภาพกลับให้ CKEditor 5
+            return response()->json(['url' => $imageUrl]);
+        }
+
+        return response()->json(['error' => 'ไม่สามารถดาวน์โหลดรูปภาพ'], 400);
     }
 }

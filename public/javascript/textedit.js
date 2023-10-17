@@ -1,8 +1,10 @@
+
 document.querySelectorAll(".editor").forEach((element) => {
     CKEDITOR.basePath = 'ckeditor5/';
     
     CKEDITOR.ClassicEditor.create(element, {
-        
+
+  
         toolbar: {
             items: [
                 "exportPDF",
@@ -41,7 +43,9 @@ document.querySelectorAll(".editor").forEach((element) => {
                 "alignment",
                 "|",
                 "link",
-                "insertImage",
+                "insertImage",  // เพิ่มปุ่ม "เพิ่มรูปภาพ"
+               
+   
                 "blockQuote",
                 "insertTable",
                 "mediaEmbed",
@@ -54,7 +58,9 @@ document.querySelectorAll(".editor").forEach((element) => {
             
                 "|",
                 "sourceEditing",
+                
             ],
+            
             shouldNotGroupWhenFull: true,
         },
         language: 'th',
@@ -200,10 +206,24 @@ document.querySelectorAll(".editor").forEach((element) => {
             "FormatPainter",
             "TableOfContents",
             "PasteFromOfficeEnhanced",
+      
         ],
+        image: {
+            // ปรับแต่งการแสดงรูปภาพให้เป็น HTML แทน URL
+            toolbar: ['imageTextAlternative', 'imageStyle:full', 'imageStyle:side'],
+            styles: ['full', 'side'],
+            insertData: (data, response) => {
+                if (data.type === 'image') {
+                    response({
+                        img: `<img src="${data.data}" alt="${data.attributes.alt}" />`,
+                    });
+                }
+            },
+        },
     })
         .then((editor) => {
             console.log("Rich text editor ถูกสร้างขึ้นแล้ว");
+          
         })
         .catch((error) => {
             console.error("เกิดข้อผิดพลาดในการสร้าง rich text editor:", error);

@@ -41,13 +41,13 @@
 
 
             
-                                 <!--       <header class="page-title-bar">
+                      <header class="page-title-bar">
                     <input type="hidden" name="__id" id="__id" value="" />
                     <button type="button" class="btn btn-success btn-floated btn-add" id="add_classroomform"
                         data-toggle="tooltip" title="เพิ่ม"><span class="fas fa-plus"
                             onclick="window.location='{{ route('class_create', ['course_id' => $cour]) }}'"></span></button>
 
-                </header>  -->
+                </header> 
             </div>
         </div>
     </div>

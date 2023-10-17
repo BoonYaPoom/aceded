@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\BookCategory;
 use App\Models\Course;
+use App\Models\CourseFavorites;
 use App\Models\CourseLearner;
 use App\Models\Department;
 use App\Models\Log;
@@ -47,21 +49,23 @@ class DepartReportController extends Controller
     
         $logs = Log::all();
         $depart = Department::findOrFail($department_id);
-
+        $bookcat  = $depart->BookCatDe()->where('department_id', $department_id)->get();
         $userper = $depart->UserDe()->where('department_id', $department_id)->get();
-     
-        $count1 = $userper->where('user_role', 1)->count();
-        $count3 = $userper->where('user_role', 3)->count();
-        $count4 = $userper->where('user_role', 4)->count();
+        $count1 = Users::where('user_role', 1)->count();
+        $count3 = Users::where('user_role', 3)->count();
+        $count4 = Users::where('user_role', 4)->count();
         $jsonContent = file_get_contents('javascript/json/_data.json');
         $mms = json_decode($jsonContent, true);
         $monthdata = $mms['month'];
         $month = $monthdata['th'];
         $perType = PersonType::all();
         $cour = Course::all();
+        $favorit =  CourseFavorites::all();
         $learners =  CourseLearner::all();
+      
         $month = $monthdata['th'];
-        return view('layouts.department.item.data.report.reportb', compact('depart','cour','userper', 'count1', 'count3', 'count4', 'month', 'perType', 'learners', 'logs'));
+      
+        return view('layouts.department.item.data.report.reportb', compact('depart','favorit','bookcat','cour','userper', 'count1', 'count3', 'count4', 'month', 'perType', 'learners', 'logs'));
     }
 
     public function ReportC($department_id)

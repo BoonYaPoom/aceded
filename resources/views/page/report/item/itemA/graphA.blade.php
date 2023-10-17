@@ -3,35 +3,35 @@
             $chartDataRe = [];
             $chartDataAll = [];
             $dateAll = ['ม.ค.', 'ก.พ.', 'มี.ค.', 'เม.ย.', 'พ.ค.', 'มิ.ย.', 'ก.ค.', 'ส.ค.', 'ก.ย.', 'ต.ค.', 'พ.ย.', 'ธ.ค.'];
-            
+
             foreach ($perType as $per) {
                 $uniqueUserIds = [];
                 $personType = $per->person_type;
                 $totalCount = 0;
                 $totalCountRE = 0;
                 $totalCountAll = 0;
-            
+
                 foreach ($learners as $l => $lrean) {
                     $dataLearn = $lrean->registerdate;
                     $monthsa = \ltrim(\Carbon\Carbon::parse($dataLearn)->format('m'), '0');
-            
+
                     $year = \Carbon\Carbon::parse($dataLearn)->year + 543;
                     $newDateTime = \Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $lrean->registerdate)->format('d/m/Y H:i:s');
-            
+
                     if (!in_array($lrean->user_id, $uniqueUserIds)) {
                         array_push($uniqueUserIds, $lrean->user_id);
                         if ($lrean->congratulation == 1) {
                             $count = \App\Models\Users::where('user_id', $lrean->user_id)
                                 ->where('user_type', $personType)
                                 ->count();
-            
+
                             $totalCount += $count;
                         }
                         if ($lrean->registerdate) {
                             $countregis = \App\Models\Users::where('user_id', $lrean->user_id)
                                 ->where('user_type', $personType)
                                 ->count();
-            
+
                             $totalCountRE += $countregis;
                         }
                     }
@@ -50,29 +50,34 @@
                 ];
             }
             $n = 0;
-            
+
             $result = []; // สร้างตัวแปรเก็บผลลัพธ์
-            
+
             foreach ($learners as $l => $lea) {
                 if ($lea->congratulation == 1) {
-
-             
-                 
                     $dataCon = $lea->congratulationdate;
-            
-                    $monthCon = \ltrim(\Carbon\Carbon::parse($dataCon)->format('m'), '0');
-                    $result[$monthCon]['congratulation'] = isset($result[$monthCon]['congratulation']) ? $result[$monthCon]['congratulation'] + 1 : 1;
+                    $yearCon = \ltrim(\Carbon\Carbon::parse($dataCon)->format('y'));
+                    if ($yearCon == 23) {
+                        $monthCon = \ltrim(\Carbon\Carbon::parse($dataCon)->format('m'), '0');
+                        $result[$monthCon]['congratulation'] = isset($result[$monthCon]['congratulation']) ? $result[$monthCon]['congratulation'] + 1 : 0;
+                        # code...
+                    }
                 } elseif ($lea->congratulation == 0) {
                     $dataRegi = $lea->registerdate;
+                    $yearR = \ltrim(\Carbon\Carbon::parse($dataRegi)->format('y'));
+                    if ($yearR == 23) {
+        
                     $monthRegi = \ltrim(\Carbon\Carbon::parse($dataRegi)->format('m'), '0');
-                    $result[$monthRegi]['register'] = isset($result[$monthRegi]['register']) ? $result[$monthRegi]['register'] + 1 : 1;
+                    $result[$monthRegi]['register'] = isset($result[$monthRegi]['register']) ? $result[$monthRegi]['register'] + 1 : 0;
+                    # code...
+                }
                 }
             }
             $chartDataCon = [];
             foreach ($dateAll as $m => $months) {
                 $congratulation = empty($result[$m]['congratulation']) ? 0 : $result[$m]['congratulation'];
                 $register = empty($result[$m]['register']) ? 0 : $result[$m]['register'];
-            
+
                 $prefix = md5('moc' . date('Ymd'));
                 $idm = $monthRegi = $m;
                 $idms = $monthCon = $m;

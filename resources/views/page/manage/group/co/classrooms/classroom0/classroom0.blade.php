@@ -18,10 +18,10 @@
             <!-- thead -->
             <thead>
                 <tr class="bg-infohead">
-                    <th class="align-middle" style="width:10%"> ลำดับ </th>
-                    <th class="align-middle" style="width:65%"> เดือน </th>
-                    <th class="align-middle" style="width:10%"> จำนวนผู้เรียน </th>
-                    <th class="align-middle" style="width:15%"> กระทำ </th>
+                    <th class="align-middle" style="width:15%"> ลำดับ </th>
+                    <th class="align-middle" style="width:35%"> เดือน </th>
+                    <th class="align-middle" style="width:30%;text-align: center;"> จำนวนผู้เรียน </th>
+                    <th class="align-middle" style="width:15%;text-align: center;"> กระทำ </th>
                 </tr>
             </thead><!-- /thead -->
             <!-- tbody -->
@@ -50,10 +50,11 @@
                     <tr id="{{ $prefix }}'__course_class__class_status__class_id__''__'{{ $m }}'__row">
                         <td><a>{{ $m }}</a></td>
                         <td><a>{{ $months }}</a></td>
-                        <td>
-                            <a> {{ $register }}</a>
+                        <td style="text-align: center;">
+                            <a>{{ $register }}</a>
                         </td>
-                        <td>
+                        
+                        <td style="text-align: center;">
                          
                       <a href="{{ route('register_page', [ 'm' => $m,'course_id' => $cour]) }}"><i class="fas fa-user-plus fa-lg text-dark"
                                     data-toggle="tooltip" title="รายชื่อลงทะเบียน"></i></a>

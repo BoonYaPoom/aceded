@@ -42,7 +42,7 @@
     <link rel="stylesheet" href="{{ asset('/stylesheets/theme/stylesheets/custom.css') }}">
     <link rel="stylesheet" href="{{ asset('/javascript/datatables.net/css/scroller.dataTables.min.css') }}">
     <link rel="stylesheet" href="{{ asset('/javascript/datatables.net/css/buttons.dataTables.min.css') }}">
-    <link href="{{ asset('/javascript/vendor/summernote/summernote-bs4.css') }}" rel="stylesheet">
+
     <link rel="stylesheet" href="{{ asset('/javascript/vendor/nouislider/nouislider.min.css') }}">
     <link href="{{ asset('/javascript/vendor/bootstrap-touchspin/jquery.bootstrap-touchspin.min.css') }}"
         rel="stylesheet">
@@ -105,7 +105,7 @@
     <script src="{{ asset('/javascript/vendor/select2/js/select2.min.js') }}"></script>
     <script src="{{ asset('/javascript/vendor/nouislider/wNumb.js') }}"></script>
     <script src="{{ asset('/javascript/vendor/select2/js/select2-demo.js') }}"></script>
-    <script src="{{ asset('/javascript/vendor/summernote/summernote-bs4.min.js') }}"></script>
+
     <script src="{{ asset('/javascript/vendor/masonry-layout/masonry.pkgd.min.js') }}"></script>
 
 

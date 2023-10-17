@@ -520,18 +520,23 @@
             foreach ($Logs as $l => $Log) {
                 $platform = $Log->logplatform;
                 $dataLog = $Log->logdate;
-                $monthsa = \ltrim(\Carbon\Carbon::parse($dataLog)->format('m'), '0');
-                $result[$monthsa]['logplatform'] = isset($result[$monthsa]['logplatform']) ? $result[$monthsa]['logplatform'] + 1 : 0;
+                $yearsa = \ltrim(\Carbon\Carbon::parse($dataLog)->format('y'));
 
-                if (!in_array($Log->logplatform, $processedplatforms)) {
-                    $processedplatforms[] = $Log->logplatform;
-                    $register = [];
-                    foreach ($dateAll as $m => $month) {
-                        $register[] = empty($result[$m]['logplatform']) ? null : $result[$m]['logplatform'];
-                        $chartLog[] = [
-                            'name' => $processedplatforms,
-                            'data' => $register,
-                        ];
+                // เพิ่มเงื่อนไขเช็คปีเป็น 2023
+                if ($yearsa == 23) {
+                    $monthsa = \ltrim(\Carbon\Carbon::parse($dataLog)->format('m'), '0');
+                    $result[$monthsa]['logplatform'] = isset($result[$monthsa]['logplatform']) ? $result[$monthsa]['logplatform'] + 1 : 0;
+
+                    if (!in_array($Log->logplatform, $processedplatforms)) {
+                        $processedplatforms[] = $Log->logplatform;
+                        $register = [];
+                        foreach ($dateAll as $m => $month) {
+                            $register[] = empty($result[$m]['logplatform']) ? null : $result[$m]['logplatform'];
+                            $chartLog[] = [
+                                'name' => $processedplatforms,
+                                'data' => $register,
+                            ];
+                        }
                     }
                 }
             }

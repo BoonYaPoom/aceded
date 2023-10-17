@@ -147,8 +147,12 @@
                                         <label class="custom-control-label"
                                             for="check{{ $i }}">คำตอบถูกต้อง</label>
                                     </div>
+                                    
                                     <textarea class="editor" data-placeholder="ตัวเลือกที่ {{ $i }}" data-height="120"
-                                        name="choice{{ $i }}" id="choice{{ $i }}">{{ $ques->{'choice' . $i} }}</textarea>
+                                    name="choice{{ $i }}" id="choice{{ $i }}">
+                                    <figure><figcaption></figcaption></figure>
+                                </textarea>
+                                
                                 </div><!-- /.form-group -->
                             @endfor
                             <script>

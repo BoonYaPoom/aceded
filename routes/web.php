@@ -62,7 +62,7 @@ use LdapRecord\Laravel\Facades\Ldap;
 |
 */
 
-
+Route::get('/upload-image', [PDFcreateController::class, 'upload_image'])->name('upload_image');
 // Clear application cache:
 Route::get('/generatePdfT0101', [PDFcreateController::class, 'generatePdfT0101'])->name('generatePdfT0101');
 Route::get('/generatePdf', [PDFcreateController::class, 'generatePdf'])->name('generatePdf');
@@ -499,7 +499,8 @@ Route::group(['middleware' => 'IsLoggedIn'], function () {
                 Route::get('{department_id}/umsschooluserdepart/{school_id}', [SchoolDepartController::class, 'adduser'])->name('umsschooluserDepart');
                 Route::post('{department_id}/{school_id}/saveSelectedSchooldepart_umsschoolform', [SchoolDepartController::class, 'saveSelectedSchool'])->name('saveSelectedSchoolDepart');
             
-                
+                Route::get('/autocomplete-search', [DepartUsersController::class, 'autoschool'])->name('DPautocompleteSearch');
+
          
             });
 
@@ -583,8 +584,8 @@ Route::group(['middleware' => 'IsLoggedIn'], function () {
                 Route::prefix('homeDepart')->group(function () {
 
                 Route::get('{department_id}/DepartD0100', [DepartReportController::class, 'DepartReportA'])->name('DepartD0100');
-                Route::get('{department_id}/home/dashboard', [ReportAllController::class, 'ReportB'])->name('Departdashboard');
-                Route::get('{department_id}/home/table', [ReportAllController::class, 'ReportC'])->name('Departtable');
+                Route::get('{department_id}/home/dashboard', [DepartReportController::class, 'ReportB'])->name('Departdashboard');
+                Route::get('{department_id}/home/table', [DepartReportController::class, 'ReportC'])->name('Departtable');
             });
             });
         });

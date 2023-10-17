@@ -52,7 +52,7 @@
             <!-- .card-header -->
            <div class="card-header bg-muted">
                 <div class="d-flex align-items-center">
-                 <!--    <span class="mr-auto">ข้อมูล Log File ในรูปแบบรายงานทางสถิติ</span> <a
+                  <span class="mr-auto">ข้อมูล Log File ในรูปแบบรายงานทางสถิติ</span>   <!-- <a
                         href="https://aced.dlex.ai/childhood/admin/export/pdf.html"
                         class="btn btn-icon btn-outline-danger"><i class="fa fa-file-pdf"></i></a>&nbsp;<a
                         href="https://aced.dlex.ai/childhood/admin/export/excel.html"

@@ -42,7 +42,7 @@ class ExamController extends Controller
       $exams = new Exam;
       $exams->exam_th = $request->exam_th;
       $exams->exam_en = $request->exam_en;
-      $exams->exam_type = 2;
+      $exams->exam_type = 3;
       $exams->exam_status  = $request->exam_status;
       $exams->exam_score  = $request->exam_score;
       $exams->exam_options  = null;
@@ -270,6 +270,8 @@ class ExamController extends Controller
     // ต่อข้อมูลตัวเลือกใหม่ไปยัง choice4
     $ques->choice4 .= !empty($queskos) ?  implode(',', $queskos) : '';
 
+    $checkanswer = request('checkanswer');
+    $ques->answer = json_encode($checkanswer);
     $ques->choice5 = $request->choice5;
     $ques->choice6 = $request->choice6;
     $ques->choice7 = $request->choice7;
@@ -277,7 +279,7 @@ class ExamController extends Controller
     $ques->score = $request->score;
     $ques->numchoice = $request->numchoice;
     $ques->explain = $request->explain;
-    $ques->answer = null;
+ 
     $ques->ordering = null;
     $ques->lesson_id = $request->lesson_id;
     $ques->subject_id = $subject_id;
@@ -368,7 +370,9 @@ class ExamController extends Controller
     $ques->score = $request->score;
     $ques->numchoice = $request->numchoice;
     $ques->explain = $request->explain;
-    $ques->answer = null;
+    $checkanswer = request('checkanswer');
+    $ques->answer = json_encode($checkanswer);
+
     $ques->ordering = null;
     $ques->lesson_id = $request->lesson_id;
     $ques->explainquestion = '';

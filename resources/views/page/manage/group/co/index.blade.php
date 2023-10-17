@@ -92,12 +92,6 @@
                                                     });
                                                 </script>
 
-
-
-
-
-
-
                                         <td class="align-middle">
                                            <!-- <a href="{{ route('courseSub_page', ['course_id' => $item]) }}"
                                                 data-toggle="tooltip" title="รายวิชา"><i

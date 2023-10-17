@@ -9,6 +9,7 @@ use App\Models\CourseSubject;
 use App\Models\Department;
 use App\Models\Grade;
 use App\Models\PersonType;
+use DOMDocument;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
@@ -453,16 +454,99 @@ class CourseController extends Controller
 
     public function update_structure(Request $request, $course_id)
     {
+
         set_time_limit(0);
+        $description_th = $request->description_th;
+        $description_en = $request->description_en;
+        $objectives_th = $request->objectives_th;
+        $objectives_en = $request->objectives_en;
+        $qualification_th = $request->qualification_th;
+        $qualification_en = $request->qualification_en;
+        $evaluation_th = $request->evaluation_th;
+        $evaluation_en = $request->evaluation_en;
+        libxml_use_internal_errors(true);
+
+
+        $des_th = new DOMDocument();
+        $des_th->loadHTML($description_th, LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
+        $images_des_th = $des_th->getElementsByTagName('img');
+
+        $des_en = new DOMDocument();
+        $des_en->loadHTML($description_en, LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
+        $images_des_en = $des_en->getElementsByTagName('img');
+
+        $ob_th = new DOMDocument();
+        $ob_th->loadHTML($objectives_th, LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
+        $images_ob_th = $ob_th->getElementsByTagName('img');
+        
+        $ob_en = new DOMDocument();
+        $ob_en->loadHTML($objectives_en, LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
+        $images_ob_en = $ob_en->getElementsByTagName('img');
+        
+        $qua_th = new DOMDocument();
+        $qua_th->loadHTML($qualification_th, LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
+        $images_qua_th = $qua_th->getElementsByTagName('img');
+        
+        $qua_en = new DOMDocument();
+        $qua_en->loadHTML($qualification_en, LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
+        $images_qua_en = $qua_en->getElementsByTagName('img');
+        
+        $eva_th = new DOMDocument();
+        $eva_th->loadHTML($evaluation_th, LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
+        $images_eva_th = $eva_th->getElementsByTagName('img');
+        
+        $eva_en = new DOMDocument();
+        $eva_en->loadHTML($evaluation_en, LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
+        $images_eva_en = $eva_en->getElementsByTagName('img');
+
+
+        if (!file_exists(public_path('/uplade'))) {
+            mkdir(public_path('/uplade'), 0755, true);
+        }
+
+        foreach ($images_des_th as $key => $img) {
+            if (strpos($img->getAttribute('src'), 'data:image/') === 0) {
+                $data = base64_decode(explode(',', explode(';', $img->getAttribute('src'))[1])[1]);
+                $image_name = '/uplade/' . time() . $key . '.png'; // ใส่ .png เพื่อให้เป็นนามสกุลไฟล์ถูกต้อง
+                file_put_contents(public_path() . $image_name, $data);
+                $img->removeAttribute('src');
+                $newImageUrl = asset($image_name);
+                $img->setAttribute('src', $newImageUrl);
+            }
+        }
+
+        // แปลงรูปภาพสำหรับเนื้อหาภาษาอังกฤษ
+        foreach ($images_des_en as $key => $img) {
+            if (strpos($img->getAttribute('src'), 'data:image/') === 0) {
+                $data = base64_decode(explode(',', explode(';', $img->getAttribute('src'))[1])[1]);
+                $image_name = '/uplade/' . time() . $key . '.png'; // ใส่ .png เพื่อให้เป็นนามสกุลไฟล์ถูกต้อง
+                file_put_contents(public_path() . $image_name, $data);
+                $img->removeAttribute('src');
+                $newImageUrl = asset($image_name);
+                $img->setAttribute('src', $newImageUrl);
+            }
+        }
+
+
         $cour = Course::findOrFail($course_id);
-        $cour->description_th = $request->description_th;
-        $cour->description_en = $request->description_en;
-        $cour->objectives_th = $request->objectives_th;
-        $cour->objectives_en = $request->objectives_en;
-        $cour->qualification_th = $request->qualification_th;
-        $cour->qualification_en = $request->qualification_en;
-        $cour->evaluation_th = $request->evaluation_th;
-        $cour->evaluation_en = $request->evaluation_en;
+        $description_th = $des_th->saveHTML();
+        $description_en = $des_en->saveHTML();
+        $objectives_th = $ob_th->saveHTML();
+        $objectives_en = $ob_en->saveHTML();
+        $qualification_th = $qua_th->saveHTML();
+        $qualification_en = $qua_en->saveHTML();
+        $evaluation_th = $eva_th->saveHTML();
+        $evaluation_en = $eva_en->saveHTML();
+
+
+        $cour->description_th = $description_th;
+        $cour->description_en = $description_en;
+        $cour->objectives_th = $objectives_th;
+        $cour->objectives_en = $objectives_en;
+        $cour->qualification_th = $qualification_th;
+        $cour->qualification_en = $qualification_en;
+        $cour->evaluation_th = $evaluation_th;
+        $cour->evaluation_en = $evaluation_en;
 
         $cour->save();
 

@@ -82,7 +82,7 @@
                             {{ Str::startsWith(request()->url(), route('Departdashboard', ['department_id' => $depart->department_id])) || request()->is('dashboard', 'dashboard/*')
                                 ? ' bg-muted'
                                 : '' }}">
-                                <span><i class="fas fa-chart-bar text-teal mr-2"></i> <a href="{{ route('dashboard', ['department_id' => $depart->department_id]) }}"
+                                <span><i class="fas fa-chart-bar text-teal mr-2"></i> <a href="{{ route('Departdashboard', ['department_id' => $depart->department_id]) }}"
                                         class="small">รายงานเสรุปเชิงกราฟฟิค (Dashboard)</a></span>
                             </div>
                             <div
