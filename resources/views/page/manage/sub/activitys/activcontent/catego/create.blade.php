@@ -25,7 +25,7 @@
             <!-- .card -->
             <div class="card card-fluid">
                 <!-- .card-header -->
-                <div class="card-header bg-muted"><a href="{{ route('activitypage', [$subs->subject_id]) }}"
+                <div class="card-header bg-muted"><a href="{{ route('activitypage', [$depart,$subs->subject_id]) }}"
                         style="text-decoration: underline;">หมวดหมู่</a> / <i> กระดานข่าว</i></div><!-- /.card-header -->
 
                 <!-- .card-body -->

@@ -7,6 +7,7 @@ use App\Models\Blog;
 use App\Models\BlogCategory;
 use App\Models\Department;
 use App\Models\Log;
+use DOMDocument;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
@@ -52,7 +53,36 @@ class BlogController extends Controller
         $blogs = new Blog;
         $blogs->title = $request->title;
         $blogs->title_en = $request->title;
-        $blogs->detail = $request->detail;
+
+                     
+      libxml_use_internal_errors(true);
+      if (!file_exists(public_path('/upload/Blog/ck/'))) {
+         mkdir(public_path('/upload/Blog/ck/'), 0755, true);
+      }
+      if ($request->has('detail')) {
+         $detail = $request->detail;
+         if (!empty($detail)) {
+            $de_th = new DOMDocument();
+            $de_th->encoding = 'UTF-8'; // กำหนด encoding เป็น UTF-8
+            $de_th->loadHTML(mb_convert_encoding($detail, 'HTML-ENTITIES', 'UTF-8'), LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
+
+            $images_des_th = $de_th->getElementsByTagName('img');
+
+            foreach ($images_des_th as $key => $img) {
+               if (strpos($img->getAttribute('src'), 'data:image/') === 0) {
+                  $data = base64_decode(explode(',', explode(';', $img->getAttribute('src'))[1])[1]);
+                  $image_name = '/upload/Blog/ck/' . time() . $key . '.png'; // ใส่ .png เพื่อให้เป็นนามสกุลไฟล์ถูกต้อง
+                  file_put_contents(public_path() . $image_name, $data);
+                  $img->removeAttribute('src');
+                  $newImageUrl = asset($image_name);
+                  $img->setAttribute('src', $newImageUrl);
+               }
+            }
+            $detail = $de_th->saveHTML();
+         }
+
+         $blogs->detail = $detail;
+      }
         $blogs->detail_en =  $request->detail;
         $blogs->blog_date = now();
         $blogs->blog_status = $request->input('blog_status', 0);
@@ -150,7 +180,34 @@ class BlogController extends Controller
         $blogs = Blog::findOrFail($blog_id);
 
         $blogs->title = $request->title;
-        $blogs->detail = $request->detail;
+        libxml_use_internal_errors(true);
+        if (!file_exists(public_path('/upload/Blog/ck/'))) {
+           mkdir(public_path('/upload/Blog/ck/'), 0755, true);
+        }
+        if ($request->has('detail')) {
+           $detail = $request->detail;
+           if (!empty($detail)) {
+              $de_th = new DOMDocument();
+              $de_th->encoding = 'UTF-8'; // กำหนด encoding เป็น UTF-8
+              $de_th->loadHTML(mb_convert_encoding($detail, 'HTML-ENTITIES', 'UTF-8'), LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
+  
+              $images_des_th = $de_th->getElementsByTagName('img');
+  
+              foreach ($images_des_th as $key => $img) {
+                 if (strpos($img->getAttribute('src'), 'data:image/') === 0) {
+                    $data = base64_decode(explode(',', explode(';', $img->getAttribute('src'))[1])[1]);
+                    $image_name = '/upload/Blog/ck/' . time() . $key . '.png'; // ใส่ .png เพื่อให้เป็นนามสกุลไฟล์ถูกต้อง
+                    file_put_contents(public_path() . $image_name, $data);
+                    $img->removeAttribute('src');
+                    $newImageUrl = asset($image_name);
+                    $img->setAttribute('src', $newImageUrl);
+                 }
+              }
+              $detail = $de_th->saveHTML();
+           }
+  
+           $blogs->detail = $detail;
+        }
         $blogs->blog_date = now();
         $blogs->blog_status = $request->input('blog_status', 0);
         $blogs->author = 'TCCT';

@@ -7,6 +7,7 @@ use App\Models\Book;
 use App\Models\BookCategory;
 use App\Models\Department;
 use Barryvdh\DomPDF\PDF as DomPDFPDF;
+use DOMDocument;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
@@ -53,7 +54,36 @@ class BookController extends Controller
             $books->book_name = $request->book_name;
             $books->book_author = $request->book_author;
             $books->detail = '';
-            $books->contents = $request->contents;
+
+            
+      libxml_use_internal_errors(true);
+      if (!file_exists(public_path('/upload/Book/ck/'))) {
+         mkdir(public_path('/upload/Book/ck/'), 0755, true);
+      }
+      if ($request->has('contents')) {
+         $contents = $request->contents;
+         if (!empty($contents)) {
+            $de_th = new DOMDocument();
+            $de_th->encoding = 'UTF-8'; // กำหนด encoding เป็น UTF-8
+            $de_th->loadHTML(mb_convert_encoding($contents, 'HTML-ENTITIES', 'UTF-8'), LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
+
+            $images_des_th = $de_th->getElementsByTagName('img');
+
+            foreach ($images_des_th as $key => $img) {
+               if (strpos($img->getAttribute('src'), 'data:image/') === 0) {
+                  $data = base64_decode(explode(',', explode(';', $img->getAttribute('src'))[1])[1]);
+                  $image_name = '/upload/Book/ck/' . time() . $key . '.png'; // ใส่ .png เพื่อให้เป็นนามสกุลไฟล์ถูกต้อง
+                  file_put_contents(public_path() . $image_name, $data);
+                  $img->removeAttribute('src');
+                  $newImageUrl = asset($image_name);
+                  $img->setAttribute('src', $newImageUrl);
+               }
+            }
+            $contents = $de_th->saveHTML();
+         }
+
+         $books->contents = $contents;
+      }
             $books->book_date = now();
             $books->book_status = $request->input('book_status', 0);
             $books->book_option = '';
@@ -238,7 +268,35 @@ class BookController extends Controller
         $books->book_name = $request->book_name;
         $books->book_author = $request->book_author;
 
-        $books->contents = $request->contents;
+                
+      libxml_use_internal_errors(true);
+      if (!file_exists(public_path('/upload/Book/ck/'))) {
+         mkdir(public_path('/upload/Book/ck/'), 0755, true);
+      }
+      if ($request->has('contents')) {
+         $contents = $request->contents;
+         if (!empty($contents)) {
+            $de_th = new DOMDocument();
+            $de_th->encoding = 'UTF-8'; // กำหนด encoding เป็น UTF-8
+            $de_th->loadHTML(mb_convert_encoding($contents, 'HTML-ENTITIES', 'UTF-8'), LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
+
+            $images_des_th = $de_th->getElementsByTagName('img');
+
+            foreach ($images_des_th as $key => $img) {
+               if (strpos($img->getAttribute('src'), 'data:image/') === 0) {
+                  $data = base64_decode(explode(',', explode(';', $img->getAttribute('src'))[1])[1]);
+                  $image_name = '/upload/Book/ck/' . time() . $key . '.png'; // ใส่ .png เพื่อให้เป็นนามสกุลไฟล์ถูกต้อง
+                  file_put_contents(public_path() . $image_name, $data);
+                  $img->removeAttribute('src');
+                  $newImageUrl = asset($image_name);
+                  $img->setAttribute('src', $newImageUrl);
+               }
+            }
+            $contents = $de_th->saveHTML();
+         }
+
+         $books->contents = $contents;
+      }
         $books->book_update = now();
         $books->book_status = $request->input('book_status', 0);
 

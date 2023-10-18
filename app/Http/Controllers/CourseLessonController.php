@@ -10,6 +10,7 @@ use ZipArchive;
 
 use App\Models\CourseSubject;
 use App\Models\Department;
+use DOMDocument;
 use Faker\Provider\File;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -73,7 +74,38 @@ class CourseLessonController extends Controller
             $lessons->lesson_th = $request->lesson_th;
             $lessons->lesson_en = $request->lesson_en;
             $lessons->description = '';
-            $lessons->resultlesson = $request->resultlesson;
+
+            set_time_limit(0);
+            libxml_use_internal_errors(true);
+            if (!file_exists(public_path('/uplade/lesson'))) {
+                mkdir(public_path('/uplade/lesson'), 0755, true);
+            }
+    
+        
+            if ($request->has('resultlesson')) {
+                $resultlesson = $request->resultlesson;
+                if (!empty($resultlesson)) {
+                    $des_th = new DOMDocument();
+                    $des_th->encoding = 'UTF-8'; // กำหนด encoding เป็น UTF-8
+                    $des_th->loadHTML(mb_convert_encoding($resultlesson, 'HTML-ENTITIES', 'UTF-8'), LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
+             
+                    $images_des_th = $des_th->getElementsByTagName('img');
+    
+                    foreach ($images_des_th as $key => $img) {
+                        if (strpos($img->getAttribute('src'), 'data:image/') === 0) {
+                            $data = base64_decode(explode(',', explode(';', $img->getAttribute('src'))[1])[1]);
+                            $image_name = '/uplade/lesson/' . time() . $key . '.png'; // ใส่ .png เพื่อให้เป็นนามสกุลไฟล์ถูกต้อง
+                            file_put_contents(public_path() . $image_name, $data);
+                            $img->removeAttribute('src');
+                            $newImageUrl = asset($image_name);
+                            $img->setAttribute('src', $newImageUrl);
+                        }
+                    }
+                    $resultlesson = $des_th->saveHTML();
+                }
+    
+                $lessons->resultlesson = $resultlesson;
+            }
             $lessons->content_type = $request->content_type;
             $lessons->lesson_status = $request->input('lesson_status', 0);
             $lessons->exercise = $request->input('exercise', 0);
@@ -114,7 +146,37 @@ class CourseLessonController extends Controller
         $lessons->lesson_number = $request->lesson_number;
         $lessons->lesson_th = $request->lesson_th;
         $lessons->lesson_en = $request->lesson_en;
-        $lessons->resultlesson = $request->resultlesson;
+        set_time_limit(0);
+            libxml_use_internal_errors(true);
+            if (!file_exists(public_path('/uplade/lesson'))) {
+                mkdir(public_path('/uplade/lesson'), 0755, true);
+            }
+    
+        
+            if ($request->has('resultlesson')) {
+                $resultlesson = $request->resultlesson;
+                if (!empty($resultlesson)) {
+                    $des_th = new DOMDocument();
+                    $des_th->encoding = 'UTF-8'; // กำหนด encoding เป็น UTF-8
+                    $des_th->loadHTML(mb_convert_encoding($resultlesson, 'HTML-ENTITIES', 'UTF-8'), LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
+             
+                    $images_des_th = $des_th->getElementsByTagName('img');
+    
+                    foreach ($images_des_th as $key => $img) {
+                        if (strpos($img->getAttribute('src'), 'data:image/') === 0) {
+                            $data = base64_decode(explode(',', explode(';', $img->getAttribute('src'))[1])[1]);
+                            $image_name = '/uplade/lesson/' . time() . $key . '.png'; // ใส่ .png เพื่อให้เป็นนามสกุลไฟล์ถูกต้อง
+                            file_put_contents(public_path() . $image_name, $data);
+                            $img->removeAttribute('src');
+                            $newImageUrl = asset($image_name);
+                            $img->setAttribute('src', $newImageUrl);
+                        }
+                    }
+                    $resultlesson = $des_th->saveHTML();
+                }
+    
+                $lessons->resultlesson = $resultlesson;
+            }
         $lessons->content_type = $request->content_type;
         $lessons->lesson_status = $request->input('lesson_status', 0);
         $lessons->exercise = $request->input('exercise', 0);
@@ -404,7 +466,37 @@ class CourseLessonController extends Controller
         $lessons->lesson_th = $request->lesson_th;
         $lessons->lesson_en = $request->lesson_en;
         $lessons->description = '';
-        $lessons->resultlesson = $request->resultlesson;
+        set_time_limit(0);
+        libxml_use_internal_errors(true);
+        if (!file_exists(public_path('/uplade/lesson'))) {
+            mkdir(public_path('/uplade/lesson'), 0755, true);
+        }
+
+    
+        if ($request->has('resultlesson')) {
+            $resultlesson = $request->resultlesson;
+            if (!empty($resultlesson)) {
+                $des_th = new DOMDocument();
+                $des_th->encoding = 'UTF-8'; // กำหนด encoding เป็น UTF-8
+                $des_th->loadHTML(mb_convert_encoding($resultlesson, 'HTML-ENTITIES', 'UTF-8'), LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
+         
+                $images_des_th = $des_th->getElementsByTagName('img');
+
+                foreach ($images_des_th as $key => $img) {
+                    if (strpos($img->getAttribute('src'), 'data:image/') === 0) {
+                        $data = base64_decode(explode(',', explode(';', $img->getAttribute('src'))[1])[1]);
+                        $image_name = '/uplade/lesson/' . time() . $key . '.png'; // ใส่ .png เพื่อให้เป็นนามสกุลไฟล์ถูกต้อง
+                        file_put_contents(public_path() . $image_name, $data);
+                        $img->removeAttribute('src');
+                        $newImageUrl = asset($image_name);
+                        $img->setAttribute('src', $newImageUrl);
+                    }
+                }
+                $resultlesson = $des_th->saveHTML();
+            }
+
+            $lessons->resultlesson = $resultlesson;
+        }
         $lessons->content_type = $request->content_type;
         $lessons->lesson_status = 2;
         $lessons->exercise = $request->input('exercise', 0);
@@ -437,7 +529,37 @@ class CourseLessonController extends Controller
         $lessons->lesson_th = $request->lesson_th;
         $lessons->lesson_en = $request->lesson_en;
         $lessons->description = '';
-        $lessons->resultlesson = $request->resultlesson;
+        set_time_limit(0);
+        libxml_use_internal_errors(true);
+        if (!file_exists(public_path('/uplade/lesson'))) {
+            mkdir(public_path('/uplade/lesson'), 0755, true);
+        }
+
+    
+        if ($request->has('resultlesson')) {
+            $resultlesson = $request->resultlesson;
+            if (!empty($resultlesson)) {
+                $des_th = new DOMDocument();
+                $des_th->encoding = 'UTF-8'; // กำหนด encoding เป็น UTF-8
+                $des_th->loadHTML(mb_convert_encoding($resultlesson, 'HTML-ENTITIES', 'UTF-8'), LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
+         
+                $images_des_th = $des_th->getElementsByTagName('img');
+
+                foreach ($images_des_th as $key => $img) {
+                    if (strpos($img->getAttribute('src'), 'data:image/') === 0) {
+                        $data = base64_decode(explode(',', explode(';', $img->getAttribute('src'))[1])[1]);
+                        $image_name = '/uplade/lesson/' . time() . $key . '.png'; // ใส่ .png เพื่อให้เป็นนามสกุลไฟล์ถูกต้อง
+                        file_put_contents(public_path() . $image_name, $data);
+                        $img->removeAttribute('src');
+                        $newImageUrl = asset($image_name);
+                        $img->setAttribute('src', $newImageUrl);
+                    }
+                }
+                $resultlesson = $des_th->saveHTML();
+            }
+
+            $lessons->resultlesson = $resultlesson;
+        }
         $lessons->content_type = $request->content_type;
         $lessons->lesson_status = 2;
         $lessons->exercise = $request->input('exercise', 0);

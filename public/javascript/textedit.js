@@ -3,8 +3,8 @@ document.querySelectorAll(".editor").forEach((element) => {
     CKEDITOR.basePath = 'ckeditor5/';
     
     CKEDITOR.ClassicEditor.create(element, {
-
-  
+        language: 'th',
+        outputType: 'unicode',
         toolbar: {
             items: [
                 "exportPDF",
@@ -44,8 +44,6 @@ document.querySelectorAll(".editor").forEach((element) => {
                 "|",
                 "link",
                 "insertImage",  // เพิ่มปุ่ม "เพิ่มรูปภาพ"
-               
-   
                 "blockQuote",
                 "insertTable",
                 "mediaEmbed",
@@ -63,7 +61,7 @@ document.querySelectorAll(".editor").forEach((element) => {
             
             shouldNotGroupWhenFull: true,
         },
-        language: 'th',
+
         
         enterMode: CKEDITOR.ENTER_BR,  // กำหนดให้ใช้ <br> สำหรับการแยกบรรทัด
         shiftEnterMode: CKEDITOR.ENTER_P,  // กำหนดให้ใช้ <p> สำหรับการแยกบรรทัดด้วย Shift+Enter
@@ -208,18 +206,7 @@ document.querySelectorAll(".editor").forEach((element) => {
             "PasteFromOfficeEnhanced",
       
         ],
-        image: {
-            // ปรับแต่งการแสดงรูปภาพให้เป็น HTML แทน URL
-            toolbar: ['imageTextAlternative', 'imageStyle:full', 'imageStyle:side'],
-            styles: ['full', 'side'],
-            insertData: (data, response) => {
-                if (data.type === 'image') {
-                    response({
-                        img: `<img src="${data.data}" alt="${data.attributes.alt}" />`,
-                    });
-                }
-            },
-        },
+       
     })
         .then((editor) => {
             console.log("Rich text editor ถูกสร้างขึ้นแล้ว");

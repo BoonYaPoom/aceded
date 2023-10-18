@@ -18,7 +18,7 @@ return new class extends Migration
             $table->integer('activity_id');
             $table->integer('user_id')->nullable();
             $table->longText('message')->nullable()->collation('utf8_general_ci');
-            $table->dateTime('date');
+            $table->dateTime('activity_date');
             $table->string('status',1)->collation('utf8_general_ci');
             $table->string('activity_type',1)->nullable()->collation('utf8_general_ci');
             $table->integer('from_id')->nullable();

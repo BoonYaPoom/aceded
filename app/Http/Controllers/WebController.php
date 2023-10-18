@@ -6,6 +6,7 @@ use App\Models\Department;
 use App\Models\Log;
 use App\Models\Web;
 use App\Models\WebCategory;
+use DOMDocument;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
@@ -51,14 +52,11 @@ class WebController extends Controller
         try {
             $lastSort = Web::where('category_id', $category_id)->max('sort');
             $newSort = $lastSort + 1;
+          
             $webs = new Web;
-
-
 
             $webs->web_th = $request->web_th;
             $webs->web_en = $request->web_en;
-            $webs->detail_th = $request->detail_th;
-            $webs->detail_en = $request->detail_en;
             $webs->web_date = now();
             $webs->web_status = $request->input('web_status', 0);
             $webs->web_type = 0;
@@ -66,6 +64,57 @@ class WebController extends Controller
             $webs->sort = $newSort;;
             $webs->web_option = null;
             $webs->category_id = (int)$category_id;
+
+            libxml_use_internal_errors(true);
+            if (!file_exists(public_path('/upload/Web/ck/'))) {
+                mkdir(public_path('/upload/Web/ck/'), 0755, true);
+            }
+            if ($request->has('detail_th')) {
+                $detail_th = $request->detail_th;
+                if (!empty($detail_th)) {
+                    $de_th = new DOMDocument();
+                    $de_th->loadHTML($detail_th, LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
+                    $images_des_th = $de_th->getElementsByTagName('img');
+    
+                    foreach ($images_des_th as $key => $img) {
+                        if (strpos($img->getAttribute('src'), 'data:image/') === 0) {
+                            $data = base64_decode(explode(',', explode(';', $img->getAttribute('src'))[1])[1]);
+                            $image_name = '/upload/Web/ck/' . time() . $key . '.png'; // ใส่ .png เพื่อให้เป็นนามสกุลไฟล์ถูกต้อง
+                            file_put_contents(public_path() . $image_name, $data);
+                            $img->removeAttribute('src');
+                            $newImageUrl = asset($image_name);
+                            $img->setAttribute('src', $newImageUrl);
+                        }
+                    }
+                    $detail_th = $de_th->saveHTML();
+                }
+    
+                $webs->detail_th = $detail_th;
+            }
+
+            if ($request->has('detail_en')) {
+                $detail_en = $request->detail_en;
+                if (!empty($detail_en)) {
+                    $de_en = new DOMDocument();
+                    $de_en->loadHTML($detail_en, LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
+                    $images_de_en = $de_en->getElementsByTagName('img');
+    
+                    foreach ($images_de_en as $key => $img) {
+                        if (strpos($img->getAttribute('src'), 'data:image/') === 0) {
+                            $data = base64_decode(explode(',', explode(';', $img->getAttribute('src'))[1])[1]);
+                            $image_name = '/upload/Web/ck/' . time() . $key . '.png'; // ใส่ .png เพื่อให้เป็นนามสกุลไฟล์ถูกต้อง
+                            file_put_contents(public_path() . $image_name, $data);
+                            $img->removeAttribute('src');
+                            $newImageUrl = asset($image_name);
+                            $img->setAttribute('src', $newImageUrl);
+                        }
+                    }
+                    $detail_en = $de_en->saveHTML();
+                }
+    
+                $webs->detail_en = $detail_en;
+            }
+            
             $webs->save();
             if ($request->hasFile('cover')) {
                 $file_name = 'cover' .  $webs->web_id  . '.' . $request->cover->getClientOriginalExtension();
@@ -172,12 +221,64 @@ class WebController extends Controller
 
         $webs->web_th = $request->web_th;
         $webs->web_en = $request->web_en;
-        $webs->detail_th = $request->detail_th;
-        $webs->detail_en = $request->detail_en;
+   
         $webs->web_update = now();
         $webs->web_status = $request->input('web_status', 0);
         $webs->recommended = $request->input('recommended', 0);
 
+        libxml_use_internal_errors(true);
+        if (!file_exists(public_path('/upload/Web/ck/'))) {
+            mkdir(public_path('/upload/Web/ck/'), 0755, true);
+        }
+        if ($request->has('detail_th')) {
+            $detail_th = $request->detail_th;
+            if (!empty($detail_th)) {
+                $de_th = new DOMDocument();
+                $de_th->encoding = 'UTF-8'; // กำหนด encoding เป็น UTF-8
+                $de_th->loadHTML(mb_convert_encoding($detail_th, 'HTML-ENTITIES', 'UTF-8'), LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
+         
+                $images_des_th = $de_th->getElementsByTagName('img');
+
+                foreach ($images_des_th as $key => $img) {
+                    if (strpos($img->getAttribute('src'), 'data:image/') === 0) {
+                        $data = base64_decode(explode(',', explode(';', $img->getAttribute('src'))[1])[1]);
+                        $image_name = '/upload/Web/ck/' . time() . $key . '.png'; // ใส่ .png เพื่อให้เป็นนามสกุลไฟล์ถูกต้อง
+                        file_put_contents(public_path() . $image_name, $data);
+                        $img->removeAttribute('src');
+                        $newImageUrl = asset($image_name);
+                        $img->setAttribute('src', $newImageUrl);
+                    }
+                }
+                $detail_th = $de_th->saveHTML();
+            }
+
+            $webs->detail_th = $detail_th;
+        }
+
+        if ($request->has('detail_en')) {
+            $detail_en = $request->detail_en;
+            if (!empty($detail_en)) {
+                $de_en = new DOMDocument();
+                $de_en->encoding = 'UTF-8'; // กำหนด encoding เป็น UTF-8
+                $de_en->loadHTML(mb_convert_encoding($detail_en, 'HTML-ENTITIES', 'UTF-8'), LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
+                $images_de_en = $de_en->getElementsByTagName('img');
+
+                foreach ($images_de_en as $key => $img) {
+                    if (strpos($img->getAttribute('src'), 'data:image/') === 0) {
+                        $data = base64_decode(explode(',', explode(';', $img->getAttribute('src'))[1])[1]);
+                        $image_name = '/upload/Web/ck/' . time() . $key . '.png'; // ใส่ .png เพื่อให้เป็นนามสกุลไฟล์ถูกต้อง
+                        file_put_contents(public_path() . $image_name, $data);
+                        $img->removeAttribute('src');
+                        $newImageUrl = asset($image_name);
+                        $img->setAttribute('src', $newImageUrl);
+                    }
+                }
+                $detail_en = $de_en->saveHTML();
+            }
+
+            $webs->detail_en = $detail_en;
+        }
+        
         $webs->save();
 
 

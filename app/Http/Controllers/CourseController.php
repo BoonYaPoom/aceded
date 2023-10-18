@@ -19,7 +19,7 @@ use Illuminate\Support\Facades\Validator;
 class CourseController extends Controller
 {
 
-    public function courpag($department_id,$group_id)
+    public function courpag($department_id, $group_id)
     {
         $courses = CourseGroup::findOrFail($group_id);
         $cour = $courses->group()->where('group_id', $group_id)->get();
@@ -28,7 +28,7 @@ class CourseController extends Controller
         return view('page.manage.group.co.index', compact('courses', 'cour', 'depart'));
     }
 
-    public function create($department_id,$group_id)
+    public function create($department_id, $group_id)
     {
         $courses = CourseGroup::findOrFail($group_id);
 
@@ -40,7 +40,7 @@ class CourseController extends Controller
         return view('page.manage.group.co.create', compact('courses', 'subs', 'pertype', 'depart'));
     }
 
-    public function store(Request $request,$department_id, $group_id)
+    public function store(Request $request, $department_id, $group_id)
     {
 
 
@@ -288,9 +288,9 @@ class CourseController extends Controller
 
 
 
-        return redirect()->route('courpag', [$department_id,'group_id' => $cour->group_id])->with('message', 'CourseGroup บันทึกข้อมูลสำเร็จ');
+        return redirect()->route('courpag', [$department_id, 'group_id' => $cour->group_id])->with('message', 'CourseGroup บันทึกข้อมูลสำเร็จ');
     }
-    public function edit($department_id,$course_id)
+    public function edit($department_id, $course_id)
     {
 
         $cour = Course::findOrFail($course_id);
@@ -304,7 +304,7 @@ class CourseController extends Controller
         $subs = $depart->SubjectDe()->where('department_id', $department_id)->get();
         return view('page.manage.group.co.edit', compact('cour', 'subs', 'pertype', 'courses', 'depart'));
     }
-    public function update(Request $request, $department_id,$course_id)
+    public function update(Request $request, $department_id, $course_id)
     {
         $cour = Course::findOrFail($course_id);
 
@@ -439,9 +439,9 @@ class CourseController extends Controller
 
 
 
-        return redirect()->route('courpag', [$department_id,'group_id' => $cour->group_id])->with('message', 'CourseGroup บันทึกข้อมูลสำเร็จ');
+        return redirect()->route('courpag', [$department_id, 'group_id' => $cour->group_id])->with('message', 'CourseGroup บันทึกข้อมูลสำเร็จ');
     }
-    public function structure($department_id,$course_id)
+    public function structure($department_id, $course_id)
     {
         $cour = Course::findOrFail($course_id);
         $group_id = $cour->group_id;
@@ -452,28 +452,213 @@ class CourseController extends Controller
         return view('page.manage.group.co.structure.index', compact('cour', 'courses', 'depart'));
     }
 
-    public function update_structure(Request $request,$department_id, $course_id)
+    public function update_structure(Request $request, $department_id, $course_id)
     {
 
-
-    
+        set_time_limit(0);
+        libxml_use_internal_errors(true);
+        if (!file_exists(public_path('/uplade'))) {
+            mkdir(public_path('/uplade'), 0755, true);
+        }
 
         $cour = Course::findOrFail($course_id);
-      
+        if ($request->has('description_th')) {
+            $description_th = $request->description_th;
+            if (!empty($description_th)) {
+                $des_th = new DOMDocument();
+                $des_th->encoding = 'UTF-8'; // กำหนด encoding เป็น UTF-8
+                $des_th->loadHTML(mb_convert_encoding($description_th, 'HTML-ENTITIES', 'UTF-8'), LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
+         
+                $images_des_th = $des_th->getElementsByTagName('img');
 
+                foreach ($images_des_th as $key => $img) {
+                    if (strpos($img->getAttribute('src'), 'data:image/') === 0) {
+                        $data = base64_decode(explode(',', explode(';', $img->getAttribute('src'))[1])[1]);
+                        $image_name = '/uplade/' . time() . $key . '.png'; // ใส่ .png เพื่อให้เป็นนามสกุลไฟล์ถูกต้อง
+                        file_put_contents(public_path() . $image_name, $data);
+                        $img->removeAttribute('src');
+                        $newImageUrl = asset($image_name);
+                        $img->setAttribute('src', $newImageUrl);
+                    }
+                }
+                $description_th = $des_th->saveHTML();
+            }
 
-        $cour->description_th = $request->description_th;
-        $cour->description_en = $request->description_en;
-        $cour->objectives_th = $request->objectives_th;
-        $cour->objectives_en = $request->objectives_en;
-        $cour->qualification_th = $request->qualification_th;
-        $cour->qualification_en = $request->qualification_en;
-        $cour->evaluation_th = $request->evaluation_th;
-        $cour->evaluation_en = $request->evaluation_en;
+            $cour->description_th = $description_th;
+        }
+        if ($request->has('description_en')) {
+            $description_en = $request->description_en;
+            if (!empty($description_en)) {
+                $des_en = new DOMDocument();
+                $des_en->encoding = 'UTF-8'; // กำหนด encoding เป็น UTF-8
+                $des_en->loadHTML(mb_convert_encoding($description_en, 'HTML-ENTITIES', 'UTF-8'), LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
+         
+                $images_des_en = $des_en->getElementsByTagName('img');
+
+                // แปลงรูปภาพสำหรับเนื้อหาภาษาอังกฤษ
+                foreach ($images_des_en as $key => $img) {
+                    if (strpos($img->getAttribute('src'), 'data:image/') === 0) {
+                        $data = base64_decode(explode(',', explode(';', $img->getAttribute('src'))[1])[1]);
+                        $image_name = '/uplade/' . time() . $key . '.png'; // ใส่ .png เพื่อให้เป็นนามสกุลไฟล์ถูกต้อง
+                        file_put_contents(public_path() . $image_name, $data);
+                        $img->removeAttribute('src');
+                        $newImageUrl = asset($image_name);
+                        $img->setAttribute('src', $newImageUrl);
+                    }
+                }
+                $description_en = $des_en->saveHTML();
+            }
+
+            $cour->description_en = $description_en;
+        }
+        if ($request->has('objectives_th')) {
+            $objectives_th = $request->objectives_th;
+            if (!empty($objectives_th)) {
+            $ob_th = new DOMDocument();
+            $ob_th->encoding = 'UTF-8'; // กำหนด encoding เป็น UTF-8
+            $ob_th->loadHTML(mb_convert_encoding($objectives_th, 'HTML-ENTITIES', 'UTF-8'), LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
+     
+            $images_ob_th = $ob_th->getElementsByTagName('img');
+
+            foreach ($images_ob_th as $key => $img) {
+                if (strpos($img->getAttribute('src'), 'data:image/') === 0) {
+                    $data = base64_decode(explode(',', explode(';', $img->getAttribute('src'))[1])[1]);
+                    $image_name = '/uplade/' . time() . $key . '.png'; // ใส่ .png เพื่อให้เป็นนามสกุลไฟล์ถูกต้อง
+                    file_put_contents(public_path() . $image_name, $data);
+                    $img->removeAttribute('src');
+                    $newImageUrl = asset($image_name);
+                    $img->setAttribute('src', $newImageUrl);
+                }
+            }
+            $objectives_th = $ob_th->saveHTML();
+        }
+
+            $cour->objectives_th = $objectives_th;
+        }
+        if ($request->has('objectives_en')) {
+            $objectives_en = $request->objectives_en;
+            if (!empty($objectives_en)) {
+            $ob_en = new DOMDocument();
+            $ob_en->encoding = 'UTF-8'; // กำหนด encoding เป็น UTF-8
+            $ob_en->loadHTML(mb_convert_encoding($objectives_en, 'HTML-ENTITIES', 'UTF-8'), LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
+     
+            $images_ob_en = $ob_en->getElementsByTagName('img');
+            foreach ($images_ob_en as $key => $img) {
+                if (strpos($img->getAttribute('src'), 'data:image/') === 0) {
+                    $data = base64_decode(explode(',', explode(';', $img->getAttribute('src'))[1])[1]);
+                    $image_name = '/uplade/' . time() . $key . '.png'; // ใส่ .png เพื่อให้เป็นนามสกุลไฟล์ถูกต้อง
+                    file_put_contents(public_path() . $image_name, $data);
+                    $img->removeAttribute('src');
+                    $newImageUrl = asset($image_name);
+                    $img->setAttribute('src', $newImageUrl);
+                }
+            }
+            $objectives_en = $ob_en->saveHTML();
+        }
+       
+            $cour->objectives_en = $objectives_en;
+        }
+        if ($request->has('qualification_th')) {
+            $qualification_th = $request->qualification_th;
+            if (!empty($qualification_th)) {
+            $qua_th = new DOMDocument();
+            $qua_th->encoding = 'UTF-8'; // กำหนด encoding เป็น UTF-8
+            $qua_th->loadHTML(mb_convert_encoding($qualification_th, 'HTML-ENTITIES', 'UTF-8'), LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
+     
+            $images_qua_th = $qua_th->getElementsByTagName('img');
+
+            foreach ($images_qua_th as $key => $img) {
+                if (strpos($img->getAttribute('src'), 'data:image/') === 0) {
+                    $data = base64_decode(explode(',', explode(';', $img->getAttribute('src'))[1])[1]);
+                    $image_name = '/uplade/' . time() . $key . '.png'; // ใส่ .png เพื่อให้เป็นนามสกุลไฟล์ถูกต้อง
+                    file_put_contents(public_path() . $image_name, $data);
+                    $img->removeAttribute('src');
+                    $newImageUrl = asset($image_name);
+                    $img->setAttribute('src', $newImageUrl);
+                }
+            }
+            $qualification_th = $qua_th->saveHTML();
+        }
+     
+            $cour->qualification_th = $qualification_th;
+        }
+        if ($request->has('qualification_en')) {
+            $qualification_en = $request->qualification_en;
+            if (!empty($qualification_en)) {
+            $qua_en = new DOMDocument();
+            $qua_en->encoding = 'UTF-8'; // กำหนด encoding เป็น UTF-8
+            $qua_en->loadHTML(mb_convert_encoding($qualification_en, 'HTML-ENTITIES', 'UTF-8'), LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
+     
+            $images_qua_en = $qua_en->getElementsByTagName('img');
+
+            foreach ($images_qua_en as $key => $img) {
+                if (strpos($img->getAttribute('src'), 'data:image/') === 0) {
+                    $data = base64_decode(explode(',', explode(';', $img->getAttribute('src'))[1])[1]);
+                    $image_name = '/uplade/' . time() . $key . '.png'; // ใส่ .png เพื่อให้เป็นนามสกุลไฟล์ถูกต้อง
+                    file_put_contents(public_path() . $image_name, $data);
+                    $img->removeAttribute('src');
+                    $newImageUrl = asset($image_name);
+                    $img->setAttribute('src', $newImageUrl);
+                }
+            }
+            $qualification_en = $qua_en->saveHTML();
+        }
+
+            $cour->qualification_en = $qualification_en;
+        }
+        if ($request->has('evaluation_th')) {
+            $evaluation_th = $request->evaluation_th;
+            if (!empty($evaluation_th)) {
+            $eva_th = new DOMDocument();
+            $eva_th->encoding = 'UTF-8'; // กำหนด encoding เป็น UTF-8
+            $eva_th->loadHTML(mb_convert_encoding($evaluation_th, 'HTML-ENTITIES', 'UTF-8'), LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
+     
+            $images_eva_th = $eva_th->getElementsByTagName('img');
+
+            foreach ($images_eva_th as $key => $img) {
+                if (strpos($img->getAttribute('src'), 'data:image/') === 0) {
+                    $data = base64_decode(explode(',', explode(';', $img->getAttribute('src'))[1])[1]);
+                    $image_name = '/uplade/' . time() . $key . '.png'; // ใส่ .png เพื่อให้เป็นนามสกุลไฟล์ถูกต้อง
+                    file_put_contents(public_path() . $image_name, $data);
+                    $img->removeAttribute('src');
+                    $newImageUrl = asset($image_name);
+                    $img->setAttribute('src', $newImageUrl);
+                }
+            }
+            $evaluation_th = $eva_th->saveHTML();
+        }
+
+            $cour->evaluation_th = $evaluation_th;
+        }
+        if ($request->has('evaluation_en')) {
+            $evaluation_en = $request->evaluation_en;
+            if (!empty($evaluation_en)) {
+            $eva_en = new DOMDocument();
+            $eva_en->encoding = 'UTF-8'; // กำหนด encoding เป็น UTF-8
+            $eva_en->loadHTML(mb_convert_encoding($evaluation_en, 'HTML-ENTITIES', 'UTF-8'), LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
+     
+            $images_eva_en = $eva_en->getElementsByTagName('img');
+
+            foreach ($images_eva_en as $key => $img) {
+                if (strpos($img->getAttribute('src'), 'data:image/') === 0) {
+                    $data = base64_decode(explode(',', explode(';', $img->getAttribute('src'))[1])[1]);
+                    $image_name = '/uplade/' . time() . $key . '.png'; // ใส่ .png เพื่อให้เป็นนามสกุลไฟล์ถูกต้อง
+                    file_put_contents(public_path() . $image_name, $data);
+                    $img->removeAttribute('src');
+                    $newImageUrl = asset($image_name);
+                    $img->setAttribute('src', $newImageUrl);
+                }
+            }
+            $evaluation_en = $eva_en->saveHTML();
+        }
+
+            $cour->evaluation_en = $evaluation_en;
+        }
+
 
         $cour->save();
 
-        return redirect()->route('courpag', [$department_id,'group_id' => $cour->group_id])->with('message', 'CourseGroup บันทึกข้อมูลสำเร็จ');
+        return redirect()->route('courpag', [$department_id, 'group_id' => $cour->group_id])->with('message', 'CourseGroup บันทึกข้อมูลสำเร็จ');
     }
 
     public function destroy($course_id)

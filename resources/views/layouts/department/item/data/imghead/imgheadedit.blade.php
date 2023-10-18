@@ -123,6 +123,7 @@
                                 id="highlight_path" accept="image/*" name="highlight_path" placeholder="ภาพประชาสัมพันธ์	"
                                 accept="banner/*">
                         </div><!-- /.form-group -->
+                        
                         @error('highlight_path')
                             <span class="badge badge-warning">{{ $message }}</span>
                         @enderror

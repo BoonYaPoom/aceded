@@ -27,7 +27,8 @@
             <div class="card card-fluid">
                 <!-- .card-header -->
                 <div class="card-header bg-muted"><a href="{{ route('manage', ['department_id' => $depart->department_id]) }}"
-                        style="text-decoration: underline;">จัดการเว็บ</a> / <a href="{{ route('hightDep', ['department_id' => $depart->department_id]) }}"
+                        style="text-decoration: underline;">จัดการเว็บ</a> / <a
+                        href="{{ route('hightDep', ['department_id' => $depart->department_id]) }}"
                         style="text-decoration: underline;"> ภาพประชาสัมพันธ์ </a> /<i> แก้ไขข้อมูล</i></div>
                 <!-- /.card-header -->
                 <!-- .card-body -->
@@ -41,7 +42,7 @@
                                 <div class="col-lg-10">
                                     <img src="{{ asset($highlight->highlight_path) }}"
                                         alt="{{ $highlight->highlight_path }}" style="width:100%">
-                                
+
                                 </div>
 
                                 <div class="col-lg-1">
@@ -88,71 +89,75 @@
                                 </div>
 
                             </div>
-                            <form action="{{ route('updateLinkDep', ['highlight_id' => $highlight->highlight_id]) }}" method="post"
-                                enctype="multipart/form-data">
+                            <form action="{{ route('updateLinkDep', ['highlight_id' => $highlight->highlight_id]) }}"
+                                method="post" enctype="multipart/form-data">
                                 @csrf
                                 @method('PUT')
-                            <div class="form-group">
-                                <label for="faq">ลิงค์เชื่อมโยง </label>
-                                <input type="text" class="form-control" id="highlight_link" name="highlight_link"
-                                    placeholder="ลิงค์เชื่อมโยง" value="{{ $highlight->highlight_link }}">
-                            </div><!-- /.form-group -->
-                            <div class="form-actions">
-                                <button class="btn btn-lg btn-primary ml-auto" type="submit"><i class="far fa-save"></i>
-                                    บันทึก</button>
-                            </div><!-- /.form-actions -->
-                        </form>
+                                <div class="form-group">
+                                    <label for="faq">ลิงค์เชื่อมโยง </label>
+                                    <input type="text" class="form-control" id="highlight_link" name="highlight_link"
+                                        placeholder="ลิงค์เชื่อมโยง" value="{{ $highlight->highlight_link }}">
+                                </div><!-- /.form-group -->
+                                <div class="form-actions">
+                                    <button class="btn btn-lg btn-primary ml-auto" type="submit"><i
+                                            class="far fa-save"></i>
+                                        บันทึก</button>
+                                </div><!-- /.form-actions -->
+                            </form>
                             <br>
                             <div style="border-bottom: 1px solid #e7d8d5;">
 
                             </div>
                         </div><!-- .form-group -->
                     @endforeach
-             
-<script>
-    document.addEventListener('keydown', function(event) {
-        if (event.key === 'Enter') {
-            event.preventDefault();
-            document.getElementById('update-form').submit();
-        }
-    });
-</script>
 
-        </div><!-- /.page-section -->
-    </div><!-- /.page-inner -->
-     <!-- .page-inner -->
-     <div class="page-inner">
-        <!-- .form -->
-        <div class="card card-fluid">
-            
-            <div class="card-body">
-            <form action="{{ route('storeDep', ['department_id' => $depart]) }}" method="post"
-                enctype="multipart/form-data">
-                @csrf
-                <div class="form-group">
-                    <label for="highlight_path">ภาพประชาสัมพันธ์ </label> <input type="file" class="form-control"
-                        id="highlight_path" accept="image/*" name="highlight_path" placeholder="ภาพประชาสัมพันธ์	"
-                        accept="banner/*">
-                </div><!-- /.form-group -->
-                @error('highlight_path')
-                    <span class="badge badge-warning">{{ $message }}</span>
-                @enderror
+                    <script>
+                        document.addEventListener('keydown', function(event) {
+                            if (event.key === 'Enter') {
+                                event.preventDefault();
+                                document.getElementById('update-form').submit();
+                            }
+                        });
+                    </script>
 
-                <!-- .form-group -->
-                <div class="form-group">
-                    <label for="faq">ลิงค์เชื่อมโยง </label> <input type="text" class="form-control"
-                        id="highlight_link" name="highlight_link" placeholder="ลิงค์เชื่อมโยง">
-                </div><!-- /.form-group --><!-- .form-group -->
-        </div><!-- /.card-body -->
+                </div><!-- /.page-section -->
+            </div><!-- /.page-inner -->
+            <!-- .page-inner -->
+            <div class="page-inner">
+                <!-- .form -->
+                <div class="card card-fluid">
 
-    </div><!-- /.card -->
-    <!-- .form-actions -->
-    <div class="form-actions">
-        <button class="btn btn-lg btn-primary ml-auto" type="submit"><i class="far fa-save"></i>
-            บันทึก</button>
-    </div><!-- /.form-actions -->
-    </form>
-</div><!-- .form-group -->
-    
-    </div><!-- /.page-inner -->
-@endsection
+                    <div class="card-body">
+                        <form action="{{ route('storeDep', ['department_id' => $depart]) }}" method="post"
+                            enctype="multipart/form-data">
+                            @csrf
+                            <div class="form-group">
+                                <label for="highlight_path">ภาพประชาสัมพันธ์ <small
+                                        class="form-text text-muted">ขนาด 1900*486</small> </label> <input type="file"
+                                    class="form-control" id="highlight_path" accept="image/*" name="highlight_path"
+                                    placeholder="ภาพประชาสัมพันธ์	" accept="banner/*">
+                            </div><!-- /.form-group -->
+
+
+                            @error('highlight_path')
+                                <span class="badge badge-warning">{{ $message }}</span>
+                            @enderror
+
+                            <!-- .form-group -->
+                            <div class="form-group">
+                                <label for="faq">ลิงค์เชื่อมโยง </label> <input type="text" class="form-control"
+                                    id="highlight_link" name="highlight_link" placeholder="ลิงค์เชื่อมโยง">
+                            </div><!-- /.form-group --><!-- .form-group -->
+                    </div><!-- /.card-body -->
+
+                </div><!-- /.card -->
+                <!-- .form-actions -->
+                <div class="form-actions">
+                    <button class="btn btn-lg btn-primary ml-auto" type="submit"><i class="far fa-save"></i>
+                        บันทึก</button>
+                </div><!-- /.form-actions -->
+                </form>
+            </div><!-- .form-group -->
+
+        </div><!-- /.page-inner -->
+    @endsection

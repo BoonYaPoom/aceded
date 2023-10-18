@@ -60,34 +60,34 @@
                         <!-- .form-group -->
                         <div class="form-group">
                             <label for="objectives">วัตถุประสงค์การเรียนรู้ (ไทย)</label>
-                            <textarea class="editor" data-placeholder="วัตถุประสงค์การเรียนรู้" data-height="200" name="objectives_th">
+                            <textarea id="objectives_th"  class="editor" data-placeholder="วัตถุประสงค์การเรียนรู้" data-height="200" name="objectives_th">
                                     {{ $cour->objectives_th }}</textarea>
                         </div><!-- /.form-group -->
                         <div class="form-group">
                             <label for="objectives">วัตถุประสงค์การเรียนรู้ (อังกฤษ)</label>
-                            <textarea class="editor" data-placeholder="วัตถุประสงค์การเรียนรู้" data-height="200" name="objectives_en">   
+                            <textarea id="objectives_en"  class="editor" data-placeholder="วัตถุประสงค์การเรียนรู้" data-height="200" name="objectives_en">   
                                  {{ $cour->objectives_en }}</textarea>
                         </div><!-- /.form-group -->
                         <!-- .form-group -->
                         <div class="form-group">
                             <label for="qualification">คุณสมบัติผู้เข้าอบรม (ไทย)</label>
-                            <textarea class="editor" data-placeholder="คุณสมบัติผู้เข้าอบรม" data-height="200" name="qualification_th">
+                            <textarea id="qualification_th" class="editor" data-placeholder="คุณสมบัติผู้เข้าอบรม" data-height="200" name="qualification_th">
                                     {{ $cour->qualification_th }}</textarea>
                         </div><!-- /.form-group -->
                         <div class="form-group">
                             <label for="qualification">คุณสมบัติผู้เข้าอบรม (อังกฤษ)</label>
-                            <textarea class="editor" data-placeholder="คุณสมบัติผู้เข้าอบรม" data-height="200" name="qualification_en"> 
+                            <textarea id="qualification_en" class="editor" data-placeholder="คุณสมบัติผู้เข้าอบรม" data-height="200" name="qualification_en"> 
                                    {{ $cour->qualification_en }}</textarea>
                         </div><!-- /.form-group -->
                         <!-- .form-group -->
                         <div class="form-group">
                             <label for="evaluation">การประเมินผล (ไทย)</label>
-                            <textarea class="editor" data-placeholder="การประเมินผล" data-height="200" name="evaluation_th">   
+                            <textarea id="evaluation_th" class="editor" data-placeholder="การประเมินผล" data-height="200" name="evaluation_th">   
                                  {{ $cour->evaluation_th }}</textarea>
                         </div><!-- /.form-group -->
                         <div class="form-group">
                             <label for="evaluation">การประเมินผล (อังกฤษ)</label>
-                            <textarea class="editor" data-placeholder="การประเมินผล" data-height="200" name="evaluation_en">  
+                            <textarea id="evaluation_en" class="editor" data-placeholder="การประเมินผล" data-height="200" name="evaluation_en">  
                                   {{ $cour->evaluation_en }}</textarea>
                         </div><!-- /.form-group -->
                     </div><!-- /.card-body -->

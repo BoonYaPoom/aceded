@@ -8,6 +8,7 @@ use App\Models\CourseTeacher;
 use App\Models\Department;
 use App\Models\Exam;
 use App\Models\Survey;
+use DOMDocument;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
@@ -307,15 +308,206 @@ class CourseSubjectController extends Controller
 
         $subs = CourseSubject::findOrFail($subject_id);
 
-        $subs->description_th = $request->description_th;
-        $subs->description_en = $request->description_en;
-        $subs->objectives_th = $request->objectives_th;
-        $subs->objectives_en = $request->objectives_en;
+        set_time_limit(0);
+        libxml_use_internal_errors(true);
+        if (!file_exists(public_path('/uplade'))) {
+            mkdir(public_path('/uplade'), 0755, true);
+        }
 
-        $subs->evaluation_th = $request->evaluation_th;
-        $subs->evaluation_en = $request->evaluation_en;
-        $subs->schedule_th = $request->schedule_th;
-        $subs->schedule_en = $request->schedule_en;
+    
+        if ($request->has('description_th')) {
+            $description_th = $request->description_th;
+            if (!empty($description_th)) {
+                $des_th = new DOMDocument();
+                $des_th->encoding = 'UTF-8'; // กำหนด encoding เป็น UTF-8
+                $des_th->loadHTML(mb_convert_encoding($description_th, 'HTML-ENTITIES', 'UTF-8'), LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
+         
+                $images_des_th = $des_th->getElementsByTagName('img');
+
+                foreach ($images_des_th as $key => $img) {
+                    if (strpos($img->getAttribute('src'), 'data:image/') === 0) {
+                        $data = base64_decode(explode(',', explode(';', $img->getAttribute('src'))[1])[1]);
+                        $image_name = '/uplade/' . time() . $key . '.png'; // ใส่ .png เพื่อให้เป็นนามสกุลไฟล์ถูกต้อง
+                        file_put_contents(public_path() . $image_name, $data);
+                        $img->removeAttribute('src');
+                        $newImageUrl = asset($image_name);
+                        $img->setAttribute('src', $newImageUrl);
+                    }
+                }
+                $description_th = $des_th->saveHTML();
+            }
+
+            $subs->description_th = $description_th;
+        }
+        if ($request->has('description_en')) {
+            $description_en = $request->description_en;
+            if (!empty($description_en)) {
+                $des_en = new DOMDocument();
+                $des_en->encoding = 'UTF-8'; // กำหนด encoding เป็น UTF-8
+                $des_en->loadHTML(mb_convert_encoding($description_en, 'HTML-ENTITIES', 'UTF-8'), LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
+         
+                $images_des_en = $des_en->getElementsByTagName('img');
+
+                // แปลงรูปภาพสำหรับเนื้อหาภาษาอังกฤษ
+                foreach ($images_des_en as $key => $img) {
+                    if (strpos($img->getAttribute('src'), 'data:image/') === 0) {
+                        $data = base64_decode(explode(',', explode(';', $img->getAttribute('src'))[1])[1]);
+                        $image_name = '/uplade/' . time() . $key . '.png'; // ใส่ .png เพื่อให้เป็นนามสกุลไฟล์ถูกต้อง
+                        file_put_contents(public_path() . $image_name, $data);
+                        $img->removeAttribute('src');
+                        $newImageUrl = asset($image_name);
+                        $img->setAttribute('src', $newImageUrl);
+                    }
+                }
+                $description_en = $des_en->saveHTML();
+            }
+
+            $subs->description_en = $description_en;
+        }
+        if ($request->has('objectives_th')) {
+            $objectives_th = $request->objectives_th;
+            if (!empty($objectives_th)) {
+            $ob_th = new DOMDocument();
+            $ob_th->encoding = 'UTF-8'; // กำหนด encoding เป็น UTF-8
+            $ob_th->loadHTML(mb_convert_encoding($objectives_th, 'HTML-ENTITIES', 'UTF-8'), LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
+     
+            $images_ob_th = $ob_th->getElementsByTagName('img');
+
+            foreach ($images_ob_th as $key => $img) {
+                if (strpos($img->getAttribute('src'), 'data:image/') === 0) {
+                    $data = base64_decode(explode(',', explode(';', $img->getAttribute('src'))[1])[1]);
+                    $image_name = '/uplade/' . time() . $key . '.png'; // ใส่ .png เพื่อให้เป็นนามสกุลไฟล์ถูกต้อง
+                    file_put_contents(public_path() . $image_name, $data);
+                    $img->removeAttribute('src');
+                    $newImageUrl = asset($image_name);
+                    $img->setAttribute('src', $newImageUrl);
+                }
+            }
+            $objectives_th = $ob_th->saveHTML();
+        }
+
+            $subs->objectives_th = $objectives_th;
+        }
+        if ($request->has('objectives_en')) {
+            $objectives_en = $request->objectives_en;
+            if (!empty($objectives_en)) {
+            $ob_en = new DOMDocument();
+            $ob_en->encoding = 'UTF-8'; // กำหนด encoding เป็น UTF-8
+            $ob_en->loadHTML(mb_convert_encoding($objectives_en, 'HTML-ENTITIES', 'UTF-8'), LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
+     
+            $images_ob_en = $ob_en->getElementsByTagName('img');
+            foreach ($images_ob_en as $key => $img) {
+                if (strpos($img->getAttribute('src'), 'data:image/') === 0) {
+                    $data = base64_decode(explode(',', explode(';', $img->getAttribute('src'))[1])[1]);
+                    $image_name = '/uplade/' . time() . $key . '.png'; // ใส่ .png เพื่อให้เป็นนามสกุลไฟล์ถูกต้อง
+                    file_put_contents(public_path() . $image_name, $data);
+                    $img->removeAttribute('src');
+                    $newImageUrl = asset($image_name);
+                    $img->setAttribute('src', $newImageUrl);
+                }
+            }
+            $objectives_en = $ob_en->saveHTML();
+        }
+       
+            $subs->objectives_en = $objectives_en;
+        }
+        if ($request->has('schedule_th')) {
+            $schedule_th = $request->schedule_th;
+            if (!empty($schedule_th)) {
+            $qua_th = new DOMDocument();
+            $qua_th->encoding = 'UTF-8'; // กำหนด encoding เป็น UTF-8
+            $qua_th->loadHTML(mb_convert_encoding($schedule_th, 'HTML-ENTITIES', 'UTF-8'), LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
+     
+            $images_qua_th = $qua_th->getElementsByTagName('img');
+
+            foreach ($images_qua_th as $key => $img) {
+                if (strpos($img->getAttribute('src'), 'data:image/') === 0) {
+                    $data = base64_decode(explode(',', explode(';', $img->getAttribute('src'))[1])[1]);
+                    $image_name = '/uplade/' . time() . $key . '.png'; // ใส่ .png เพื่อให้เป็นนามสกุลไฟล์ถูกต้อง
+                    file_put_contents(public_path() . $image_name, $data);
+                    $img->removeAttribute('src');
+                    $newImageUrl = asset($image_name);
+                    $img->setAttribute('src', $newImageUrl);
+                }
+            }
+            $schedule_th = $qua_th->saveHTML();
+        }
+     
+            $subs->schedule_th = $schedule_th;
+        }
+        if ($request->has('schedule_en')) {
+            $schedule_en = $request->schedule_en;
+            if (!empty($schedule_en)) {
+            $qua_en = new DOMDocument();
+            $qua_en->encoding = 'UTF-8'; // กำหนด encoding เป็น UTF-8
+            $qua_en->loadHTML(mb_convert_encoding($schedule_en, 'HTML-ENTITIES', 'UTF-8'), LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
+     
+            $images_qua_en = $qua_en->getElementsByTagName('img');
+
+            foreach ($images_qua_en as $key => $img) {
+                if (strpos($img->getAttribute('src'), 'data:image/') === 0) {
+                    $data = base64_decode(explode(',', explode(';', $img->getAttribute('src'))[1])[1]);
+                    $image_name = '/uplade/' . time() . $key . '.png'; // ใส่ .png เพื่อให้เป็นนามสกุลไฟล์ถูกต้อง
+                    file_put_contents(public_path() . $image_name, $data);
+                    $img->removeAttribute('src');
+                    $newImageUrl = asset($image_name);
+                    $img->setAttribute('src', $newImageUrl);
+                }
+            }
+            $schedule_en = $qua_en->saveHTML();
+        }
+
+            $subs->schedule_en = $schedule_en;
+        }
+        if ($request->has('evaluation_th')) {
+            $evaluation_th = $request->evaluation_th;
+            if (!empty($evaluation_th)) {
+            $eva_th = new DOMDocument();
+            $eva_th->encoding = 'UTF-8'; // กำหนด encoding เป็น UTF-8
+            $eva_th->loadHTML(mb_convert_encoding($evaluation_th, 'HTML-ENTITIES', 'UTF-8'), LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
+     
+            $images_eva_th = $eva_th->getElementsByTagName('img');
+
+            foreach ($images_eva_th as $key => $img) {
+                if (strpos($img->getAttribute('src'), 'data:image/') === 0) {
+                    $data = base64_decode(explode(',', explode(';', $img->getAttribute('src'))[1])[1]);
+                    $image_name = '/uplade/' . time() . $key . '.png'; // ใส่ .png เพื่อให้เป็นนามสกุลไฟล์ถูกต้อง
+                    file_put_contents(public_path() . $image_name, $data);
+                    $img->removeAttribute('src');
+                    $newImageUrl = asset($image_name);
+                    $img->setAttribute('src', $newImageUrl);
+                }
+            }
+            $evaluation_th = $eva_th->saveHTML();
+        }
+
+            $subs->evaluation_th = $evaluation_th;
+        }
+        if ($request->has('evaluation_en')) {
+            $evaluation_en = $request->evaluation_en;
+            if (!empty($evaluation_en)) {
+            $eva_en = new DOMDocument();
+            $eva_en->encoding = 'UTF-8'; // กำหนด encoding เป็น UTF-8
+            $eva_en->loadHTML(mb_convert_encoding($evaluation_en, 'HTML-ENTITIES', 'UTF-8'), LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
+     
+            $images_eva_en = $eva_en->getElementsByTagName('img');
+
+            foreach ($images_eva_en as $key => $img) {
+                if (strpos($img->getAttribute('src'), 'data:image/') === 0) {
+                    $data = base64_decode(explode(',', explode(';', $img->getAttribute('src'))[1])[1]);
+                    $image_name = '/uplade/' . time() . $key . '.png'; // ใส่ .png เพื่อให้เป็นนามสกุลไฟล์ถูกต้อง
+                    file_put_contents(public_path() . $image_name, $data);
+                    $img->removeAttribute('src');
+                    $newImageUrl = asset($image_name);
+                    $img->setAttribute('src', $newImageUrl);
+                }
+            }
+            $evaluation_en = $eva_en->saveHTML();
+        }
+
+            $subs->evaluation_en = $evaluation_en;
+        }
+     
         $subs->create_date = now();
         $subs->setting = null;
         $subs->permission = '';
