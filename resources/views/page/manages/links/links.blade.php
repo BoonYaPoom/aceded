@@ -114,7 +114,7 @@
 
 
                                         <td class="align-middle">
-                                            <a href="{{ Route('editlink', ['links_id' => $item->links_id]) }}">
+                                            <a href="{{ Route('editlink', ['department_id' => $depart,'links_id' => $item->links_id]) }}">
                                                 <i class="far fa-edit fa-lg text-success" data-toggle="tooltip"
                                                     title="แก้ไข"></i></a>
                                             <a href="{{ Route('destorylink', ['links_id' => $item->links_id]) }}"

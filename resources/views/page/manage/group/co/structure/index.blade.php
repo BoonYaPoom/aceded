@@ -18,7 +18,7 @@
     @endif
     <link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.js"></script>
-    <form action="{{ route('update_structure', ['course_id' => $cour->course_id]) }}" method="post"
+    <form action="{{ route('update_structure', [$depart,'course_id' => $cour->course_id]) }}" method="post"
         enctype="multipart/form-data">
         @csrf
         @method('PUT')
@@ -35,7 +35,7 @@
                             style="text-decoration: underline;">จัดการหลักสูตร</a> / <a
                             href="{{ route('courgroup', ['department_id' => $courses->first()->department_id]) }}"
                             style="text-decoration: underline;">หมวดหมู่</a> / <a
-                            href="{{ route('courpag', ['group_id' => $cour->group_id]) }}"
+                            href="{{ route('courpag', [$depart,'group_id' => $cour->group_id]) }}"
                             style="text-decoration: underline;">
 
                             {{ $courses->group_th }}

@@ -16,7 +16,7 @@
             toastr.success("{{ Session::get('message') }}");
         </script>
     @endif
-    <form action="{{ route('categoryform_update', ['category_id' => $catac]) }}" method="post" enctype="multipart/form-data">
+    <form action="{{ route('categoryform_update', [$depart,'category_id' => $catac]) }}" method="post" enctype="multipart/form-data">
         @csrf
         @method('PUT')
         <div class="page-inner">

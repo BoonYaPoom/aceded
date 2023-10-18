@@ -57,10 +57,10 @@
 
                                             <td class="align-middle text-danger" width="25%">
                                        
-                                                <a href="{{ route('activiList', [$item->category_id]) }}"><i
+                                                <a href="{{ route('activiList', [$depart,$item->category_id]) }}"><i
                                                         class="fas fa-comment-dots fa-lg text-info" data-toggle="tooltip"
                                                         title="ข้อมูล"></i></a>
-                                             <!--   <a href="{{ route('activiFrom', [$item->category_id]) }}"><i
+                                             <!--   <a href="{{ route('activiFrom', [$depart,$item->category_id]) }}"><i
                                                         class="far fa-edit fa-lg text-success" data-toggle="tooltip"
                                                         title="แก้ไข"></i></a>-->
                                             </td>

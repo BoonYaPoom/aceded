@@ -1,7 +1,7 @@
 @extends('layouts.department.layout.departmenthome')
 @section('contentdepartment')
     <!-- .page-inner -->
-    <form action="{{ route('act2Update',['activity_id' => $act->activity_id] ) }}" method="post" enctype="multipart/form-data">
+    <form action="{{ route('act2Update',[$depart,'activity_id' => $act->activity_id] ) }}" method="post" enctype="multipart/form-data">
         @csrf
         @method('PUT')
     <div class="page-inner">
@@ -13,7 +13,7 @@
                 <!-- .card-header -->
                 <div class="card-header bg-muted"><a href="{{ route('cop', ['department_id' => $actCat->department_id]) }}"
                     style="text-decoration: underline;">กิจกกรรม</a> / <a href="{{ route('activi', ['department_id' => $actCat->department_id]) }}"
-                    style="text-decoration: underline;">ชุมนุมนักปฏิบัติ </a> / <a href="{{ route('activiList' ,[$act->category_id]) }}"
+                    style="text-decoration: underline;">ชุมนุมนักปฏิบัติ </a> / <a href="{{ route($depart,'activiList' ,[$act->category_id]) }}"
                     style="text-decoration: underline;">{{ $act->title }}</a>
   
                   </div>

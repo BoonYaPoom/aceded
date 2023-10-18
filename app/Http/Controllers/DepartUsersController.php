@@ -39,15 +39,15 @@ class DepartUsersController extends Controller
     }
 
 
-    public function DPeditUser($user_id)
+    public function DPeditUser($department_id , $user_id)
     {
         $usermanages = Users::findOrFail($user_id);
-        $department_id =   $usermanages->department_id;
+ 
         $depart = Department::findOrFail($department_id);
         return view('layouts.department.item.data.UserAdmin.edit', ['usermanages' => $usermanages, 'depart' => $depart]);
     }
 
-    public function DPupdateUser(Request $request, $user_id)
+    public function DPupdateUser(Request $request,$department_id, $user_id)
     {
 
         $usermanages = Users::findOrFail($user_id);

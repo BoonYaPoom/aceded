@@ -15,9 +15,9 @@
             <!-- .card -->
             <div class="card card-fluid">
                 <!-- .card-header -->
-                <div class="card-header bg-muted"><a href="{{ route('surveyact', [$sur->subject_id]) }}"
+                <div class="card-header bg-muted"><a href="{{ route('surveyact', [$depart,$sur->subject_id]) }}"
                         style="text-decoration: underline;"> จัดการวิชา </a> / <a
-                        href="{{ route('reportpageSubject', [$sur->survey_id]) }}"
+                        href="{{ route('reportpageSubject', [$depart,$sur->survey_id]) }}"
                         style="text-decoration: underline;">แบบสำรวจ</a>
                     / <i>{{ $sur->survey_th }} </i></div><!-- /.card-header -->
                 <!-- /.card-header -->
@@ -415,7 +415,7 @@
             <!-- floating action -->
             <input type="hidden" name="__id" />
             <button type="button" class="btn btn-success btn-floated btn-addwms"
-                onclick="window.location='{{ route('questionpagecreate', ['survey_id' => $sur]) }}'" data-toggle="tooltip"
+                onclick="window.location='{{ route('questionpagecreate', [$depart,'survey_id' => $sur]) }}'" data-toggle="tooltip"
                 title="เพิ่ม"><span class="fas fa-plus"></span></button>
             <!-- /floating action -->
         </header><!-- /.page-title-bar -->

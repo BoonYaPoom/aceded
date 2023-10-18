@@ -26,9 +26,9 @@
                 <!-- .card-header -->
 
 
-                <div class="card-header bg-muted"><a href="{{ route('lessonpage', [$subs->subject_id]) }}"
+                <div class="card-header bg-muted"><a href="{{ route('lessonpage', [$depart,$subs->subject_id]) }}"
                         style="text-decoration: underline;">หมวดหมู่</a> / <a
-                        href="{{ route('categoryac', [$subs->subject_id]) }}" style="text-decoration: underline;">
+                        href="{{ route('categoryac', [$depart,$subs->subject_id]) }}" style="text-decoration: underline;">
                         กระดานสนทนา</a>
                     / <i> {{ $Category->category_th }}</i></div><!-- /.card-header -->
 

@@ -9,14 +9,15 @@
             <div class="card card-fluid">
                 <!-- .card-header -->
                 <div class="card-header bg-muted"><a href="{{ route('manage', ['department_id' => $sur->department_id]) }}"
-                        style="text-decoration: underline;">จัดการเว็บ</a> / <a href="{{ route('surveypage', ['department_id' => $sur->department_id]) }}"
+                        style="text-decoration: underline;">จัดการเว็บ</a> / <a
+                        href="{{ route('surveypage', ['department_id' => $sur->department_id]) }}"
                         style="text-decoration: underline;">แบบสำรวจ</a> / <a
-                        href="{{ route('questionpage', [$surques->survey_id]) }}" style="text-decoration: underline;">
+                        href="{{ route('questionpage', [$depart, $surques->survey_id]) }}" style="text-decoration: underline;">
                         {{ strip_tags($surques->question) }}</a> /
                     <i> แก้ไขแบบสำรวจ</i>
                 </div><!-- /.card-header -->
-                <form action="{{ route('updateque', ['question_id' => $surques]) }}" method="post"
-                    enctype="multipart/form-data">
+                <form action="{{ route('updateque', ['department_id' => $depart, 'question_id' => $surques]) }}"
+                    method="post" enctype="multipart/form-data">
                     @method('PUT')
                     @csrf
                     <!-- .card-body -->
@@ -39,7 +40,7 @@
                         @include('page.manages.survey.surveyquestion.itemedit.data1')
                         <!-- data == 2 -->
                         @include('page.manages.survey.surveyquestion.itemedit.data2')
-                        
+
                         <script>
                             $(document).ready(function() {
                                 $('#question_type').change(function() {

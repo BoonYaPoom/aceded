@@ -10,7 +10,7 @@ use Illuminate\Http\Request;
 
 class CourseTeacherController extends Controller
 {
-    public function teacherspage($subject_id) {
+    public function teacherspage($department_id,$subject_id) {
         $subs  = CourseSubject::findOrFail($subject_id);
         $teachers = $subs->teachersup()->where('subject_id', $subject_id)->get(); 
 

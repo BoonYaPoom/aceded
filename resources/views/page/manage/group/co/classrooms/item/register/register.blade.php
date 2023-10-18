@@ -35,7 +35,7 @@
                     <!-- .nav -->
                     <div class="nav nav-tabs bg-muted h3">
                         <a class="nav-link active text-info"
-                            href="{{ route('class_page', ['course_id' => $cour->course_id]) }}"><i class="fas fa-users"></i>
+                            href="{{ route('class_page', [$depart,'course_id' => $cour->course_id]) }}"><i class="fas fa-users"></i>
                             ผู้เรียน รายวิชาเพิ่มเติม การป้องกันการทุจริต ระดับปฐมวัย </a>
                     </div><!-- /.nav -->
                 </div><!-- /.nav-scroller -->
@@ -276,7 +276,7 @@
                             });
                         });
                     </script>
-                    <!--    <form method="post" action="{{ route('searchUsers', ['course_id' => $cour, 'm' => $m]) }}">
+                    <!--    <form method="post" action="{{ route('searchUsers', [$depart,'course_id' => $cour, 'm' => $m]) }}">
                             @csrf
                             <div class="row h4">เพิ่มผู้เรียน </div>
                             <div class="row mb-2">
@@ -325,7 +325,7 @@
                                                 <td class="align-middle">{{ $usersers->user_role }}</td>
                                                 <td class="align-middle">{{ $usersers->username }}</td>
                                                 <td class="align-middle">
-                                                    <form action="{{ route('storeLearn', ['course_id' => $cour, 'm' => $m]) }}" method="POST">
+                                                    <form action="{{ route('storeLearn', [$depart,'course_id' => $cour, 'm' => $m]) }}" method="POST">
                                                         @csrf
                                                         <input type="hidden" name="user_data" value="{{ $usersers->user_id }}">
                                                         <button class="btn btn-lg btn-primary-theme ml-auto" type="submit">
@@ -355,7 +355,7 @@
                 <!-- floating action -->
 
                 <button type="button"
-                    onclick="window.location='{{ route('addusersCour', ['course_id' => $cour, 'm' => $m]) }}'"
+                    onclick="window.location='{{ route('addusersCour', [$depart,'course_id' => $cour, 'm' => $m]) }}'"
                     class="btn btn-success btn-floated btn-add " id="registeradd" data-toggle="tooltip"
                     title="เพิ่ม"><span class="fas fa-plus"></span></button>
                 <!-- /floating action -->

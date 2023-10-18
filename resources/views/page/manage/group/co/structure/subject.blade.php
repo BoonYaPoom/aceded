@@ -82,7 +82,7 @@
 
                                         <td class="align-middle">
                                            
-                                            <a href="{{ route('subjecClass_page', ['subject_id' => $subs]) }}"
+                                            <a href="{{ route('subjecClass_page', [$depart,'subject_id' => $subs]) }}"
                                                 data-toggle="tooltip" title="ผู้เรียน"><i
                                                     class="fas fa-users fa-lg text-info "></i></a>
                                             <a href=""

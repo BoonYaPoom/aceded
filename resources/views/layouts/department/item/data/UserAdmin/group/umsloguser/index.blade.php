@@ -1,5 +1,5 @@
-@extends('layouts.adminhome')
-@section('content')
+@extends('layouts.department.layout.departmenthome')
+@section('contentdepartment')
     <!-- .page-inner -->
     <div class="page-inner">
         <!-- .page-section -->
@@ -8,7 +8,7 @@
             <div class="card card-fluid">
                 <!-- .card-header -->
                 <div class="card-header bg-muted"> <a href="{{ route('UserManage') }}">ประวัติการใช้งาน
-                        {{ $users->firstname }} ({{ $users->firstname }})</a></div>
+                        {{ $users->firstname }} ({{ $users->lastname }})</a></div>
                 <!-- .card-body -->
                 <div class="card-body">
 
@@ -33,13 +33,11 @@
                             <!-- tbody -->
                             <tbody>
 
-     @php
-     $indexlog =  1;
- @endphp
+                                @php
+                                    $indexlog = 1;
+                                @endphp
 
                                 @foreach ($logss as $index => $loguser)
-                                  
-
                                     <tr>
                                         <td>{{ $indexlog++ }}</td>
                                         <td>{{ $loguser->Logid->description }}</td>
@@ -58,31 +56,30 @@
                     <script>
                         $(document).ready(function() {
                             var table = $('#datatable').DataTable({
-                               
-                               lengthChange: false,
-                               responsive: true,
-                               info: false,
-                               pageLength: 30,
-                               language: {
-                                info: "ลำดับที่ _START_ ถึง _END_ จากทั้งหมด _TOTAL_ รายการ",
-                                   infoEmpty: "ไม่พบรายการ",
-                                   infoFiltered: "(ค้นหาจากทั้งหมด _MAX_ รายการ)",
-                                   paginate: {
-                                       first: "หน้าแรก",
-                                       last: "หน้าสุดท้าย",
-                                       previous: "ก่อนหน้า",
-                                
-                                       next: "ถัดไป" // ปิดการแสดงหน้าของ DataTables
-                                   }
-                               }
 
-                           });
+                                lengthChange: false,
+                                responsive: true,
+                                info: false,
+                                pageLength: 30,
+                                language: {
+                                    info: "ลำดับที่ _START_ ถึง _END_ จากทั้งหมด _TOTAL_ รายการ",
+                                    infoEmpty: "ไม่พบรายการ",
+                                    infoFiltered: "(ค้นหาจากทั้งหมด _MAX_ รายการ)",
+                                    paginate: {
+                                        first: "หน้าแรก",
+                                        last: "หน้าสุดท้าย",
+                                        previous: "ก่อนหน้า",
+
+                                        next: "ถัดไป" // ปิดการแสดงหน้าของ DataTables
+                                    }
+                                }
+
+                            });
 
                             $('#myInput').on('keyup', function() {
                                 table.search(this.value).draw();
                             });
                         });
-
                     </script>
                 </div><!-- /.card-body -->
             </div><!-- /.card -->

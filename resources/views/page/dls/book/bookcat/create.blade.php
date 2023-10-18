@@ -10,12 +10,12 @@
                 <!-- .card-header -->
                 <div class="card-header bg-muted">
                     <a href="{{ route('bookpage', ['department_id' => $bookcat->department_id]) }}" style="text-decoration: underline;">คลังข้อมูลและความรู้</a> / <a
-                        href="{{ route('bookcatpage', ['category_id' => $bookcat->category_id]) }}"
+                        href="{{ route('bookcatpage', [$depart,'category_id' => $bookcat->category_id]) }}"
                         style="text-decoration: underline;">
                         {{ $bookcat->category_th }}</a> / <i> เพิ่มคลังข้อมูลและความรู้</i>
                 </div><!-- /.card-header -->
                 <!-- .card-body -->
-                <form action="{{ route('bookcatstore', ['category_id' => $bookcat]) }}" method="post"
+                <form action="{{ route('bookcatstore', [$depart,'category_id' => $bookcat]) }}" method="post"
                     enctype="multipart/form-data">
                     @csrf
                     <div class="card-body">

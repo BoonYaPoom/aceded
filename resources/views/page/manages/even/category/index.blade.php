@@ -17,22 +17,22 @@
         </script>
     @endif
     @if (Session::has('warning'))
-    <script>
-        toastr.options = {
-            "progressBar": true,
-            "positionClass": 'toast-top-full-width',
-            "extendedTimeOut ": 0,
-            "timeOut": 3000,
-            "fadeOut": 250,
-            "fadeIn": 250,
-            "positionClass": 'toast-top-right',
+        <script>
+            toastr.options = {
+                "progressBar": true,
+                "positionClass": 'toast-top-full-width',
+                "extendedTimeOut ": 0,
+                "timeOut": 3000,
+                "fadeOut": 250,
+                "fadeIn": 250,
+                "positionClass": 'toast-top-right',
 
 
-        }
+            }
 
-        toastr.warning("{{ Session::get('warning') }}");
-    </script>
-@endif
+            toastr.warning("{{ Session::get('warning') }}");
+        </script>
+    @endif
     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
 
@@ -44,8 +44,10 @@
             <!-- .card -->
             <div class="card card-fluid">
                 <!-- .card-header -->
-                <div class="card-header bg-muted"><a href="{{ route('manage', ['department_id' => $category->department_id]) }}"
-                        style="text-decoration: underline;">จัดการเว็บ</a> / <a href="{{ route('Webpage', ['department_id' => $category->department_id]) }}"
+                <div class="card-header bg-muted"><a
+                        href="{{ route('manage', ['department_id' => $category->department_id]) }}"
+                        style="text-decoration: underline;">จัดการเว็บ</a> / <a
+                        href="{{ route('Webpage', ['department_id' => $category->department_id]) }}"
                         style="text-decoration: underline;">ข่าว/กิจกรรม</a> / <i> {{ $category->category_th }}</i></div>
                 <!-- /.card-header -->
                 <!-- .card-body -->
@@ -81,13 +83,14 @@
 
                                             <select name="sort" id="sort" class="form-control" data-toggle="select2"
                                                 data-placeholder="เรียงลำดับ" data-allow-clear="false"
-                                               data-web-id="{{ $item->web_id }}">
-                                               <option value="{{ $item->sort }}" selected disabled>{{ $item->sort }}</option>
+                                                data-web-id="{{ $item->web_id }}">
+                                                <option value="{{ $item->sort }}" selected disabled>{{ $item->sort }}
+                                                </option>
                                                 @for ($i = 1; $i <= count($webs); $i++)
                                                     <option value="{{ $i }}">{{ $i }}</option>
                                                 @endfor
                                             </select>
-                                          
+
 
 
                                         </td>
@@ -131,7 +134,8 @@
                                         </script>
 
                                         <td class="align-middle">
-                                            <a href="{{ route('editcat', ['web_id' => $item]) }}">
+                                            <a
+                                                href="{{ route('editcat', ['department_id' => $depart, 'web_id' => $item]) }}">
                                                 <i class="far fa-edit fa-lg text-success" data-toggle="tooltip"
                                                     title="แก้ไข"></i></a>
                                             <a href="{{ route('destroycat', ['web_id' => $item]) }}"
@@ -155,8 +159,8 @@
             <!-- floating action -->
             <input type="hidden" name="__id" id="__id" value="4" />
             <button type="button" class="btn btn-success btn-floated btn-addwms"
-                onclick="window.location='{{ route('createcat', ['category_id' => $category]) }}'" data-toggle="tooltip"
-                title="เพิ่ม"><span class="fas fa-plus"></span></button>
+                onclick="window.location='{{ route('createcat', ['department_id' => $depart, 'category_id' => $category]) }}'"
+                data-toggle="tooltip" title="เพิ่ม"><span class="fas fa-plus"></span></button>
             <!-- /floating action -->
         </header><!-- /.page-title-bar -->
     </div><!-- /.page-inner -->

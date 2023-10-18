@@ -80,48 +80,46 @@
                             <script>
                                 $(document).ready(function() {
                                     var table = $('#datatable').DataTable({
-                                       
-                                       lengthChange: false,
-                                       responsive: true,
-                                       info: false,
-                                       language: {
-                                  
-                                           infoEmpty: "ไม่พบรายการ",
-                                           infoFiltered: "(ค้นหาจากทั้งหมด _MAX_ รายการ)",
-                                           paginate: {
-                                               first: "หน้าแรก",
-                                               last: "หน้าสุดท้าย",
-                                               previous: "ก่อนหน้า",
-                                               next: "ถัดไป" // ปิดการแสดงหน้าของ DataTables
-                                           }
-                                       }
-                        
-                                   });
-                        
+
+                                        lengthChange: false,
+                                        responsive: true,
+                                        info: false,
+                                        language: {
+
+                                            infoEmpty: "ไม่พบรายการ",
+                                            infoFiltered: "(ค้นหาจากทั้งหมด _MAX_ รายการ)",
+                                            paginate: {
+                                                first: "หน้าแรก",
+                                                last: "หน้าสุดท้าย",
+                                                previous: "ก่อนหน้า",
+                                                next: "ถัดไป" // ปิดการแสดงหน้าของ DataTables
+                                            }
+                                        }
+
+                                    });
+
                                     $('#myInput').on('keyup', function() {
                                         table.search(this.value).draw();
                                     });
                                 });
-                        
                             </script>
-                            
+
                             <tbody>
                                 @php
-                                        
-                                $subnum =  1;
-                            @endphp
-                                @foreach ($subs->sortBy('subject_id')  as $index => $item)
-                                
+
+                                    $subnum = 1;
+                                @endphp
+                                @foreach ($subs->sortBy('subject_id') as $index => $item)
                                     <tr>
                                         <td><a href="#">{{ $subnum++ }}</a></td>
                                         <td><a
-                                                href="{{ route('lessonpage', [$item->subject_id]) }}">{{ $item->subject_code }}</a>
+                                                href="{{ route('lessonpage', [$depart, $item->subject_id]) }}">{{ $item->subject_code }}</a>
                                         </td>
                                         <td><a
-                                                href="{{ route('lessonpage', [$item->subject_id]) }}">{{ $item->subject_th }}</a>
+                                                href="{{ route('lessonpage', [$depart, $item->subject_id]) }}">{{ $item->subject_th }}</a>
                                         </td>
                                         <td><a
-                                                href="{{ route('lessonpage', [$item->subject_id]) }}">{{ $item->subject_en }}</a>
+                                                href="{{ route('lessonpage', [$depart, $item->subject_id]) }}">{{ $item->subject_en }}</a>
                                         </td>
 
                                         <td class="align-middle"> <label
@@ -160,7 +158,7 @@
                                             });
                                         </script>
                                         <td class="align-middle">
-                                            <a href="{{ route('editsub', [$item->subject_id]) }}"><i
+                                            <a href="{{ route('editsub', [$depart, $item->subject_id]) }}"><i
                                                     class="far fa-edit fa-lg text-success" data-toggle="tooltip"
                                                     title="แก้ไข"></i></a>
                                             <a href="{{ route('destorysub', [$item->subject_id]) }}"

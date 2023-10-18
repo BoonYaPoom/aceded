@@ -112,7 +112,7 @@
                                                 <i class="fa fa-eye fa-lg text-success" data-toggle="tooltip"
                                                     title="ข้อมูล"></i>
                                             </a>
-                                            <a class="" href="{{ route('editblog', ['blog_id' => $item]) }}">
+                                            <a class="" href="{{ route('editblog', [$depart,'blog_id' => $item]) }}">
                                                 <i class="fa fa-edit fa-lg text-success" data-toggle="tooltip"
                                                     title="แก้ไข"></i></a>
                                             <a href="{{ route('destoryblog', ['blog_id' => $item]) }}"
@@ -161,7 +161,7 @@
         <header class="page-title-bar">
             <!-- floating action -->
             <button type="button" class="btn btn-success btn-floated btn-addcop"
-                onclick="window.location='{{ route('createblog', ['category_id' => $blogcat]) }}'" data-toggle="tooltip"
+                onclick="window.location='{{ route('createblog', [$depart,'category_id' => $blogcat]) }}'" data-toggle="tooltip"
                 title="เพิ่ม"><span class="fas fa-plus"></span></button>
             <!-- /floating action -->
     </div><!-- /.page-inner -->

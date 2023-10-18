@@ -9,12 +9,14 @@ use Illuminate\Http\Request;
 
 class ScoreController extends Controller
 {
-  public function examlogpage($exam_id)
+  public function examlogpage($department_id,$exam_id)
   {
+    $depart  = Department::findOrFail($department_id);
     $exams  = Exam::findOrFail($exam_id);
     $subject_id = $exams->subject_id;
+    $subs = CourseSubject::findOrFail($subject_id);
     $score = $exams->scorelog()->where('exam_id', $exam_id)->get();
-    return view('page.manage.sub.exam.logexam', compact('exams', 'score'));
+    return view('page.manage.sub.exam.logexam', compact('exams', 'score','depart','subs'));
   }
 
 
@@ -31,7 +33,7 @@ class ScoreController extends Controller
 
     return view('page.manage.gpa.item.subjects.subscore', compact('subs', 'depart'));
   }
-  public function listsubject($subject_id)
+  public function listsubject($department_id,$subject_id)
   {
 
     $subs  = CourseSubject::findOrFail($subject_id);

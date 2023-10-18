@@ -8,14 +8,15 @@
             <!-- .card -->
             <div class="card card-fluid">
                 <!-- .card-header -->
-                <div class="card-header bg-muted"><a href="{{ route('surveyact', [$sur->subject_id]) }}"
+                <div class="card-header bg-muted"><a href="{{ route('surveyact', [$depart, $sur->subject_id]) }}"
                         style="text-decoration: underline;"> จัดการวิชา </a> / <a
-                        href="{{ route('surveyquestion', [$sur->survey_id]) }}"
+                        href="{{ route('surveyquestion', [$depart, $sur->survey_id]) }}"
                         style="text-decoration: underline;">แบบสำรวจ</a> / <a
-                        href="{{ route('surveyquestion', [$sur->survey_id]) }}" style="text-decoration: underline;">{{$sur->survey_th}}</a> /
+                        href="{{ route('surveyquestion', [$depart, $sur->survey_id]) }}"
+                        style="text-decoration: underline;">{{ $sur->survey_th }}</a> /
                     <i> เพิ่มแบบสำรวจ</i>
                 </div><!-- /.card-header -->
-                <form action="{{ route('savereport', ['survey_id' => $sur->survey_id]) }}" method="post"
+                <form action="{{ route('savereport', [$depart, 'survey_id' => $sur->survey_id]) }}" method="post"
                     enctype="multipart/form-data">
                     @csrf
                     <!-- .card-body -->
@@ -24,7 +25,7 @@
                             <label class="control-label" for="question_type">ประเภทแบบสำรวจ</label>
                             <select id="question_type" name="question_type" class="form-control" data-toggle="select2"
                                 data-placeholder="ประเภทแบบสำรวจ" data-allow-clear="false">
-                                <option value="0" selected  disabled>เลือก</option>
+                                <option value="0" selected disabled>เลือก</option>
                                 <option value="1">ตัวเลือก</option>
                                 <option value="2">หลายมิติ</option>
                                 <option value="3">เขียนอธิบาย</option>
@@ -54,8 +55,8 @@
                             <textarea class="editor" data-placeholder="คำถาม" data-height="150" name="question" id="question"></textarea>
                         </div><!-- /.form-group -->
                         @error('question')
-                        <span class="badge badge-warning">{{ $message }}</span>
-                    @enderror
+                            <span class="badge badge-warning">{{ $message }}</span>
+                        @enderror
                         <div id="data1" style="display:none;">
                             <!-- แสดงข้อมูลที่ 1 -->
                             <div class="form-group qtype1 ">
@@ -273,14 +274,14 @@
                         </div><!-- /.form-group -->
                     </div><!-- /.card-body -->
                     <!-- .form-actions -->
-                  
+
 
             </div><!-- /.card -->
             <div class="form-actions ">
                 <button class="btn btn-lg btn-primary ml-auto" type="submit"><i class="far fa-save"></i>
                     บันทึก</button>
             </div><!-- /.form-actions -->
-        </form>
+            </form>
         </div><!-- /.page-section -->
     </div><!-- /.page-inner -->
 @endsection

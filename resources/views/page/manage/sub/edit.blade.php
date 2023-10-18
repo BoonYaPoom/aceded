@@ -30,7 +30,7 @@
                     / <i>{{ $subs->subject_th }}</i>
                 </div>
 
-                <form action="{{ route('subupdate', ['subject_id' => $subs->subject_id]) }}" method="post"
+                <form action="{{ route('subupdate', [$depart,'subject_id' => $subs->subject_id]) }}" method="post"
                     enctype="multipart/form-data">
                     @csrf
                     @method('PUT')

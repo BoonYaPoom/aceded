@@ -26,7 +26,7 @@
             <!-- .card -->
             <div class="card card-fluid">
                 <!-- .card-header -->
-                <div class="card-header bg-muted"><a href="{{ route('exampage', [$subs->subject_id]) }}"
+                <div class="card-header bg-muted"><a href="{{ route('exampage', [$depart,$subs->subject_id]) }}"
                         style="text-decoration: underline;">หมวดหมู่</a> / <a href=""
                         style="text-decoration: underline;">จัดการวิชา</a>
                     / <i>คลังข้อสอบ </i></div><!-- /.card-header -->
@@ -63,7 +63,7 @@
                                     <div class="dt-buttons btn-group"><button
                                             class="btn btn-secondary buttons-excel buttons-html5" tabindex="0"
                                             aria-controls="datatable" type="button"
-                                            onclick="window.location='{{ route('questionExport', ['subject_id' => $subs]) }}'"><span>Excel</span></button>
+                                            onclick="window.location='{{ route('questionExport', [$depart,'subject_id' => $subs]) }}'"><span>Excel</span></button>
                                     </div>
 
                                     <div id="datatable_filter" class="dataTables_filter">
@@ -147,10 +147,10 @@
                                                 });
                                             </script>
                                             <td class="align-middle">
-                                                <a href="{{ route('edit_question', ['question_id' => $item]) }}"><i
+                                                <a href="{{ route('edit_question', [$depart,'question_id' => $item]) }}"><i
                                                         class="far fa-edit fa-lg text-success" data-toggle="tooltip"
                                                         title="แก้ไข"></i></a>
-                                                <a href="{{ route('delete_question', ['question_id' => $item]) }}"
+                                                <a href="{{ route('delete_question', [$depart,'question_id' => $item]) }}"
                                                     rel="รัฐที่มีอาณาบริเวณพื้นที่มากหรือใหญ่ที่สุดในโลกขณะนี้ ได้แก่"
                                                     onclick="deleteRecord(event)" class="switcher-delete"
                                                     data-toggle="tooltip" title="ลบ"><i
@@ -207,7 +207,7 @@
             <!-- floating action -->
             <input type="hidden" name="__id" />
             <button type="button" class="btn btn-success btn-floated btn-add"
-                onclick="window.location='{{ route('questionform', ['subject_id' => $subs]) }}'" data-toggle="tooltip"
+                onclick="window.location='{{ route('questionform', [$depart,'subject_id' => $subs]) }}'" data-toggle="tooltip"
                 title="เพิ่ม"><span class="fas fa-plus"></span></button>
 
             <!-- /floating action -->

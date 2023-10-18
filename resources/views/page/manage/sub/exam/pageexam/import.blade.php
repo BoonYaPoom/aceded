@@ -26,7 +26,7 @@
             <!-- .card -->
             <div class="card card-fluid">
                 <!-- .card-header -->
-                <div class="card-header bg-muted"><a href="{{ route('exampage', [$subs->subject_id]) }}"
+                <div class="card-header bg-muted"><a href="{{ route('exampage', [$depart,$subs->subject_id]) }}"
                         style="text-decoration: underline;">หมวดหมู่</a> / <a href=""
                         style="text-decoration: underline;">จัดการวิชา</a> / <i>คลังข้อสอบ</i></div><!-- /.card-header -->
                 <!-- .card-body -->
@@ -67,7 +67,7 @@
                             var formData = new FormData(this);
 
                             $.ajax({
-                                url: '{{ route('Questionimport', ['subject_id' => $subs]) }}',
+                                url: '{{ route('Questionimport', [$depart,'subject_id' => $subs]) }}',
                                 type: 'POST',
                                 data: formData,
                                 dataType: 'json',

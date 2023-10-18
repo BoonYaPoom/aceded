@@ -16,7 +16,7 @@
             toastr.success("{{ Session::get('message') }}");
         </script>
     @endif
-    <form action="{{ route('storecor', ['group_id' => $courses]) }}" method="post" enctype="multipart/form-data">
+    <form action="{{ route('storecor', [$depart,'group_id' => $courses]) }}" method="post" enctype="multipart/form-data">
         @csrf
         <!-- .page-inner -->
         <div class="page-inner">
@@ -31,7 +31,7 @@
                             style="text-decoration: underline;">จัดการหลักสูตร</a> / <a
                             href="{{ route('courgroup', ['department_id' => $courses->department_id]) }}"
                             style="text-decoration: underline;">หมวดหมู่</a> / <a
-                            href="{{ route('courpag', ['group_id' => $courses->group_id]) }}"
+                            href="{{ route('courpag', [$depart,'group_id' => $courses->group_id]) }}"
                             style="text-decoration: underline;">{{ $courses->group_th }}</a> <i></i>
                     </div><!-- /.card-header -->
                     <!-- .card-body -->

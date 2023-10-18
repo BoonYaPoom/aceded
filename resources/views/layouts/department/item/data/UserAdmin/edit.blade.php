@@ -1,7 +1,7 @@
 @extends('layouts.department.layout.departmenthome')
 @section('contentdepartment')
     <!-- .page-inner -->
-    <form action="{{ route('DPupdateUser', ['department_id' => $depart->department_id]) }}" method="post" enctype="multipart/form-data">
+    <form action="{{ route('DPupdateUser', ['department_id' => $depart->department_id, 'user_id' => $usermanages->user_id]) }}" method="post" enctype="multipart/form-data">
         @csrf 
         @method('PUT')
     <div class="page-inner">

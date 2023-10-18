@@ -18,7 +18,7 @@ use Intervention\Image\Facades\Image;
 
 class CourseClassController extends Controller
 {
-    public function classpage($course_id)
+    public function classpage($department_id,$course_id)
     {
         $cour = Course::findOrFail($course_id);
         $learners =  $cour->learnCouse()->where('course_id', $course_id)->get();
@@ -36,7 +36,7 @@ class CourseClassController extends Controller
 
 
 
-    public function create($course_id)
+    public function create($department_id,$course_id)
     {
 
         $cour = Course::findOrFail($course_id);
@@ -48,7 +48,7 @@ class CourseClassController extends Controller
         $depart = Department::find($department_id);
         return view('page.manage.group.co.classrooms.create', compact('cour', 'class', 'learn', 'depart'));
     }
-    public function edit($class_id)
+    public function edit($department_id,$class_id)
     {
 
         $class = CourseClass::FindOrFail($class_id);
@@ -62,7 +62,7 @@ class CourseClassController extends Controller
         return view('page.manage.group.co.classrooms.edit', compact('class', 'learn', 'cour', 'depart'));
     }
 
-    public function store(Request $request, $course_id)
+    public function store(Request $request, $department_id,$course_id)
     {
         try {
             $class = new CourseClass;
@@ -92,10 +92,10 @@ class CourseClassController extends Controller
 
             return response()->view('error.error-500', [], 500);
         }
-        return redirect()->route('class_page', ['course_id' => $course_id])->with('message', 'CourseClass บันทึกข้อมูลสำเร็จ');
+        return redirect()->route('class_page', [$department_id,'course_id' => $course_id])->with('message', 'CourseClass บันทึกข้อมูลสำเร็จ');
     }
 
-    public function update(Request $request, $class_id)
+    public function update(Request $request,$department_id, $class_id)
     {
         $class = CourseClass::FindOrFail($class_id);
         $class->class_name = $request->class_name;
@@ -110,7 +110,7 @@ class CourseClassController extends Controller
         $class->save();
 
 
-        return redirect()->route('class_page', ['course_id' => $class->course_id])->with('message', 'CourseClass บันทึกข้อมูลสำเร็จ');
+        return redirect()->route('class_page', [$department_id,'course_id' => $class->course_id])->with('message', 'CourseClass บันทึกข้อมูลสำเร็จ');
     }
 
 
@@ -120,7 +120,7 @@ class CourseClassController extends Controller
         return view('page.manage.group.co.classroom.item.congratuation.teacherinfo');
     }
 
-    public function Teacherinfoupdate(Request $request, $user_id)
+    public function Teacherinfoupdate(Request $request,$department_id, $user_id)
     {
 
         $usermanages = Users::findOrFail($user_id);
@@ -175,7 +175,7 @@ class CourseClassController extends Controller
         return redirect()->route('UserManage')->with('message', 'แก้ไขโปรไฟล์สำเร็จ');
     }
 
-    public function registeradd($course_id)
+    public function registeradd($department_id,$course_id)
     {
         $cour = Course::findOrFail($course_id);
         $group_id = $cour->group_id;
@@ -186,7 +186,7 @@ class CourseClassController extends Controller
     }
 
 
-    public function report($course_id, $m)
+    public function report($department_id,$course_id, $m)
     {
         $jsonContent = file_get_contents('javascript/json/_data.json');
         $mms = json_decode($jsonContent, true);
@@ -201,7 +201,7 @@ class CourseClassController extends Controller
         $depart = Department::find($department_id);
         return view('page.manage.group.co.classrooms.item.report.report', compact('cour', 'learners', 'm', 'courses', 'depart'));
     }
-    public function gpapage($course_id, $m)
+    public function gpapage($department_id,$course_id, $m)
     {
         $jsonContent = file_get_contents('javascript/json/_data.json');
         $mms = json_decode($jsonContent, true);
@@ -219,7 +219,7 @@ class CourseClassController extends Controller
 
         return view('page.manage.group.co.classrooms.item.report.gpapage', compact('cour', 'learners', 'm', 'courses', 'depart'));
     }
-    public function congratuation($course_id, $m)
+    public function congratuation($department_id,$course_id, $m)
     {
         $jsonContent = file_get_contents('javascript/json/_data.json');
         $mms = json_decode($jsonContent, true);
@@ -236,7 +236,7 @@ class CourseClassController extends Controller
         return view('page.manage.group.co.classrooms.item.congratuation.congratuation', compact('cour', 'courses', 'learners', 'm', 'courses', 'depart'));
     }
 
-    public function payment($class_id)
+    public function payment($department_id,$class_id)
     {
 
         $jsonContent = file_get_contents('javascript/json/_data.json');
@@ -253,7 +253,7 @@ class CourseClassController extends Controller
         $depart = Department::find($department_id);
         return view('page.manage.group.co.classrooms.item.payment.payment', compact('class', 'learn', 'cour', 'depart'));
     }
-    public function payment2($class_id)
+    public function payment2($department_id,$class_id)
     {
 
         $jsonContent = file_get_contents('javascript/json/_data.json');
@@ -272,7 +272,7 @@ class CourseClassController extends Controller
         return view('page.manage.group.co.classrooms.item.payment.payment', compact('class', 'learn', 'cour', 'depart'));
     }
 
-    public function register($course_id, $m)
+    public function register($department_id,$course_id, $m)
     {
         $jsonContent = file_get_contents('javascript/json/_data.json');
         $mms = json_decode($jsonContent, true);
@@ -291,7 +291,7 @@ class CourseClassController extends Controller
     }
 
 
-    public function searchUsers(Request $request, $course_id, $m)
+    public function searchUsers(Request $request, $department_id,$course_id, $m)
     {
         $jsonContent = file_get_contents('javascript/json/_data.json');
         $mms = json_decode($jsonContent, true);
@@ -322,7 +322,7 @@ class CourseClassController extends Controller
             ->with('refreshPage', true);
     }
 
-    public function storeLearn(Request $request, $course_id, $m)
+    public function storeLearn(Request $request,$department_id, $course_id, $m)
     {
 
 

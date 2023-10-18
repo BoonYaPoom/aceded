@@ -5,7 +5,7 @@
     <div class="modal-dialog modal-xl" user_role="document">
         <div class="modal-content">
             <form id="uploadfile" method="POST"
-                action="{{ route('uploadfile', ['lesson_id' => $item->lesson_id]) }}"
+                action="{{ route('uploadfile', [$depart,'lesson_id' => $item->lesson_id]) }}"
                 enctype="multipart/form-data">
                 @csrf
                 @method('PUT')

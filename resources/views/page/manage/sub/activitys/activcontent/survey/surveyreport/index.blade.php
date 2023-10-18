@@ -26,9 +26,9 @@
             <!-- .card -->
             <div class="card card-fluid">
                 <!-- .card-header -->
-                <div class="card-header bg-muted"><a href="{{ route('surveyact', [$sur->subject_id]) }}"
+                <div class="card-header bg-muted"><a href="{{ route('surveyact', [$depart,$sur->subject_id]) }}"
                         style="text-decoration: underline;"> จัดการวิชา </a> / <a
-                        href="{{ route('surveyquestion', [$sur->survey_id]) }}" style="text-decoration: underline;">แบบสำรวจ</a>
+                        href="{{ route('surveyquestion', [$depart,$sur->survey_id]) }}" style="text-decoration: underline;">แบบสำรวจ</a>
                     / <i>{{ $sur->survey_th }} </i></div><!-- /.card-header -->
                 <!-- .nav-scroller -->
 
@@ -113,7 +113,7 @@
                                             });
                                         </script>
                                         <td class="align-middle">
-                                            <a href="{{ route('editreport', ['question_id' => $item]) }}"><i
+                                            <a href="{{ route('editreport', [$depart,'question_id' => $item]) }}"><i
                                                     class="far fa-edit fa-lg text-success" data-toggle="tooltip"
                                                     title="แก้ไข"></i></a>
                                             <a href="{{ route('destoryReport', ['question_id' => $item]) }}"
@@ -134,7 +134,7 @@
         <header class="page-title-bar">
             <!-- floating action -->
             <input type="hidden" name="__id" />
-            <button type="button" onclick="window.location='{{ route('createreport', ['survey_id' => $sur]) }}'"
+            <button type="button" onclick="window.location='{{ route('createreport', [$depart,'survey_id' => $sur]) }}'"
                 class="btn btn-success btn-floated btn-addwms" data-toggle="tooltip" title="เพิ่ม"><span
                     class="fas fa-plus"></span></button>
             <!-- /floating action -->

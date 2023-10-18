@@ -17,7 +17,7 @@
         </script>
     @endif
 
-    <form action="{{route('class_update',['class_id' => $class->class_id])}}" autocomplete="off" id="formclassroom"
+    <form action="{{route('class_update',[$depart,'class_id' => $class->class_id])}}" autocomplete="off" id="formclassroom"
         method="post" accept-charset="utf-8">
         @csrf
         @method('PUT')
@@ -26,14 +26,14 @@
                 <div class="card card-fluid">
                     <div class="card-header bg-muted">
                         <a href="" style="text-decoration: underline;">หมวดหมู่</a> / <a
-                            href="{{ route('courpag', ['group_id' => $cour->group_id]) }}"
+                            href="{{ route('courpag', [$depart,'group_id' => $cour->group_id]) }}"
                             style="text-decoration: underline;">จัดการวิชา</a> / <i></i>
                     </div>
                     <!-- .nav-scroller -->
                     <div class="nav-scroller border-bottom">
                         <!-- .nav -->
                         <div class="nav nav-tabs bg-muted h3">
-                            <a class="nav-link active text-info" href="{{ route('class_page', ['course_id' => $cour]) }}"><i
+                            <a class="nav-link active text-info" href="{{ route('class_page', [$depart,'course_id' => $cour]) }}"><i
                                     class="fas fa-users"></i> ผู้เรียน รายวิชาเพิ่มเติม การป้องกันการทุจริต ระดับปฐมวัย </a>
                         </div><!-- /.nav -->
                     </div><!-- /.nav-scroller -->

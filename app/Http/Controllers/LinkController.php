@@ -42,108 +42,108 @@ class LinkController extends Controller
                 ->withInput()
                 ->with('error', 'ข้อมูลไม่ถูกต้อง');
         }
-        try{
-        $links = new Links;
+        try {
+            $links = new Links;
 
- 
-        $links->links_title = $request->links_title;
-        $links->links_title = $request->links_title;
-        $links->links = $request->links;
-        $links->links_date  = now();
-        $links->department_id  = (int)$department_id;
-        $links->links_status = $request->input('links_status', 0);
-        $links->sort  = Links::max('sort') + 1;
-        $links->save();
-        
-        if ($request->hasFile('cover')) {
-            $filename = 'cover' . $links->link_id . '.' . $request->cover->getClientOriginalExtension();
-            $uploadDirectory = public_path('upload/Links/');
-            if (!file_exists($uploadDirectory)) {
-                mkdir($uploadDirectory, 0755, true);
-            }
-            if (file_exists($uploadDirectory)) {
 
-                file_put_contents(public_path('upload/Links/' . $filename), file_get_contents($request->cover));
-                $links->cover = 'upload/Links/' .   'cover' . $links->link_id . '.' . $request->cover->getClientOriginalExtension();
+            $links->links_title = $request->links_title;
+            $links->links_title = $request->links_title;
+            $links->links = $request->links;
+            $links->links_date  = now();
+            $links->department_id  = (int)$department_id;
+            $links->links_status = $request->input('links_status', 0);
+            $links->sort  = Links::max('sort') + 1;
+            $links->save();
+
+            if ($request->hasFile('cover')) {
+                $filename = 'cover' . $links->link_id . '.' . $request->cover->getClientOriginalExtension();
+                $uploadDirectory = public_path('upload/Links/');
+                if (!file_exists($uploadDirectory)) {
+                    mkdir($uploadDirectory, 0755, true);
+                }
+                if (file_exists($uploadDirectory)) {
+
+                    file_put_contents(public_path('upload/Links/' . $filename), file_get_contents($request->cover));
+                    $links->cover = 'upload/Links/' .   'cover' . $links->link_id . '.' . $request->cover->getClientOriginalExtension();
+                    $links->save();
+                }
+            } else {
+                $filename = '';
+                $links->cover = $filename;
                 $links->save();
             }
-        } else {
-            $filename = '';
-            $links->cover = $filename;
-            $links->save();
-        }
 
 
 
-        if (Session::has('loginId')) {
-            $loginId = Session::get('loginId');
+            if (Session::has('loginId')) {
+                $loginId = Session::get('loginId');
 
-            $userAgent = $request->header('User-Agent');
-        }
-        $conditions = [
-            'Windows' => 'Windows',
-            'Mac' => 'Macintosh|Mac OS',
-            'Linux' => 'Linux',
-            'Android' => 'Android',
-            'iOS' => 'iPhone|iPad|iPod',
-        ];
-
-        $os = '';
-
-        // Loop through the conditions and check the user agent for the operating system
-        foreach ($conditions as $osName => $pattern) {
-            if (preg_match("/$pattern/i", $userAgent)) {
-                $os = $osName;
-                break; // Exit the loop once a match is found
+                $userAgent = $request->header('User-Agent');
             }
+            $conditions = [
+                'Windows' => 'Windows',
+                'Mac' => 'Macintosh|Mac OS',
+                'Linux' => 'Linux',
+                'Android' => 'Android',
+                'iOS' => 'iPhone|iPad|iPod',
+            ];
+
+            $os = '';
+
+            // Loop through the conditions and check the user agent for the operating system
+            foreach ($conditions as $osName => $pattern) {
+                if (preg_match("/$pattern/i", $userAgent)) {
+                    $os = $osName;
+                    break; // Exit the loop once a match is found
+                }
+            }
+            if (preg_match('/(Chrome|Firefox|Safari|Opera|Edge|IE|Edg)[\/\s](\d+\.\d+)/i', $userAgent, $matches)) {
+                $browser = $matches[1];
+            }
+
+
+            if ($loginId) {
+                $loginLog = Log::where('user_id', $loginId)->where('logaction', 2)->first();
+
+
+                $loginLog = new Log;
+                $loginLog->logid = 3;
+                $loginLog->logaction = 2;
+                $loginLog->logdetail = '';
+                $loginLog->idref  = 1;
+                $loginLog->subject_id  = 1;
+                $loginLog->duration = 1;
+                $loginLog->status  = 0;
+                $loginLog->user_id = $loginId;
+                $loginLog->logagents = $browser;
+                $loginLog->logip = $request->ip();
+
+                $loginLog->logdate = now()->format('Y-m-d H:i:s');
+                $loginLog->logplatform = $os;
+            }
+
+
+
+
+            $loginLog->save();
+            DB::commit();
+        } catch (\Exception $e) {
+
+            DB::rollBack();
+
+            return response()->view('error.error-500', [], 500);
         }
-        if (preg_match('/(Chrome|Firefox|Safari|Opera|Edge|IE|Edg)[\/\s](\d+\.\d+)/i', $userAgent, $matches)) {
-            $browser = $matches[1];
-        }
-
-
-        if ($loginId) {
-            $loginLog = Log::where('user_id', $loginId)->where('logaction', 2)->first();
-
-
-            $loginLog = new Log;
-            $loginLog->logid = 3;
-            $loginLog->logaction = 2;
-            $loginLog->logdetail = '';
-            $loginLog->idref  = 1;
-            $loginLog->subject_id  = 1;
-            $loginLog->duration = 1;
-            $loginLog->status  = 0;
-            $loginLog->user_id = $loginId;
-            $loginLog->logagents = $browser;
-            $loginLog->logip = $request->ip();
-
-            $loginLog->logdate = now()->format('Y-m-d H:i:s');
-            $loginLog->logplatform = $os;
-        }
-
-
-
-
-        $loginLog->save();
-        DB::commit();
-    } catch (\Exception $e) {
-
-        DB::rollBack();
-
-        return response()->view('error.error-500', [], 500);
-    }
         return redirect()->route('linkpage', ['department_id' => $department_id])->with('message', 'links บันทึกข้อมูลสำเร็จ');
     }
-    public function edit($links_id)
+    public function edit($department_id, $links_id)
     {
         $links = Links::findOrFail($links_id);
-        $department_id   = $links->department_id;
+
         $depart = Department::findOrFail($department_id);
         return view('page.manages.links.edit', ['links' => $links, 'depart' => $depart]);
     }
 
-    public function update(Request $request, $links_id)
+    public function update(Request $request, $department_id, $links_id)
     {
         $request->validate([
             'links_title' => 'required',
@@ -151,7 +151,7 @@ class LinkController extends Controller
 
         ]);
         $links = Links::findOrFail($links_id);
-            
+
         if ($request->hasFile('cover')) {
             $filename = 'cover' . $links_id . '.' . $request->cover->getClientOriginalExtension();
             $uploadDirectory = public_path('upload/Links/');

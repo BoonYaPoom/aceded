@@ -1,6 +1,6 @@
 @extends('layouts.department.layout.departmenthome')
 @section('contentdepartment')
-    <form action="{{ route('act2store', ['category_id' => $actCat]) }}" method="post" enctype="multipart/form-data">
+    <form action="{{ route('act2store', [$depart,'category_id' => $actCat]) }}" method="post" enctype="multipart/form-data">
         @csrf
         <!-- .page-inner -->
         <div class="page-inner">
@@ -14,7 +14,7 @@
                             style="text-decoration: underline;">กิจกกรรม</a> / <a href="{{ route('activi', ['department_id' => $actCat]) }}"
                             style="text-decoration: underline;">ชุมนุมนักปฏิบัติ </a> / <i>
 
-                            <a href="{{ route('activiList', [$actCat->category_id]) }}"
+                            <a href="{{ route('activiList', [$depart,$actCat->category_id]) }}"
                                 style="text-decoration: underline;">{{ $actCat->category_th }}</a>
                         </i></div>
                     <!-- .card-body -->

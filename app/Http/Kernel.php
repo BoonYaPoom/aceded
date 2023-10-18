@@ -58,6 +58,7 @@ class Kernel extends HttpKernel
      */
 
      protected $middlewareAliases = [
+        'checkDepartmentLogo' => \App\Http\Middleware\CheckDepartmentLogo::class,
         'checkUserRole' => \App\Http\Middleware\CheckUserRole::class,
         'mydepart' => \App\Http\Middleware\CheckDepartmentAccess::class,
         'CheckUserLogin' => \App\Http\Middleware\CheckUserLogin::class,

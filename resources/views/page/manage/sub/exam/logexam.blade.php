@@ -1,5 +1,5 @@
-    @extends('layouts.adminhome')
-    @section('content')
+@extends('page.manage.sub.navsubject')
+@section('subject-data')
         @if (Session::has('message'))
             <script>
                 toastr.options = {
@@ -19,17 +19,8 @@
 
 
 
-        <div class="page-inner">
 
-            <!-- .page-section -->
-            <div class="page-section">
-                <!-- .card -->
-                <div class="card card-fluid">
-                    <!-- .card-header -->
-                    <div class="card-header bg-muted"><a href="{{ route('lessonpage', [$exams->subject_id]) }}"
-                            style="text-decoration: underline;">หมวดหมู่</a> / <a
-                            href="{{ route('exampage', [$exams->subject_id]) }}"
-                            style="text-decoration: underline;">จัดการวิชา</a> / <i>{{ $exams->exam_th }}</i></div>
+      
                     <!-- .card-body -->
                     <div class="card-body">
 
@@ -126,5 +117,5 @@
                     title="บันทึกคะแนน"><span class="fas fa-save"></span></button>
                 <!-- /floating action -->
             </header><!-- /.page-title-bar -->
-        </div><!-- /.page-inner -->
+      
     @endsection

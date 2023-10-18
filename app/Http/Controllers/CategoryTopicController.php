@@ -10,7 +10,7 @@ use Illuminate\Http\Request;
 
 class CategoryTopicController extends Controller
 {
-    public function topicpage($category_id)
+    public function topicpage($department_id,$category_id)
     {
         $Category  = Category::findOrFail($category_id);
         $topic = $Category->topics()->where('category_id', $category_id)->get();

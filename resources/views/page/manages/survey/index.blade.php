@@ -82,13 +82,16 @@
                                             </script>
 
                                             <td class="align-middle">
-                                                <a href="{{ route('questionpage', [$item->survey_id]) }}"><i
+                                                <a
+                                                    href="{{ route('questionpage', ['department_id' => $depart, $item->survey_id]) }}"><i
                                                         class="fas fa-plus-circle fa-lg text-info" data-toggle="tooltip"
                                                         title="เพิ่มคำถาม"></i></a>
-                                                <a href="{{ route('wmspage', [$item->survey_id]) }}"><i
+                                                <a
+                                                    href="{{ route('wmspage', ['department_id' => $depart, $item->survey_id]) }}"><i
                                                         class="fas fa-chart-bar fa-lg text-danger" data-toggle="tooltip"
                                                         title="รายงานผล"></i></a>
-                                                <a href="{{ route('editsur', [$item->survey_id]) }}"><i
+                                                <a
+                                                    href="{{ route('editsur', ['department_id' => $depart, $item->survey_id]) }}"><i
                                                         class="far fa-edit fa-lg text-success" data-toggle="tooltip"
                                                         title="แก้ไข"></i></a>
                                                 <a href="{{ route('dessur', [$item->survey_id]) }}"
@@ -136,8 +139,8 @@
         <header class="page-title-bar">
             <!-- floating action -->
             <button type="button" class="btn btn-success btn-floated btn-addwms"
-                onclick="window.location='{{ route('createsurvey', ['department_id' => $depart]) }}'" data-toggle="tooltip" title="เพิ่ม"><span
-                    class="fas fa-plus"></span></button>
+                onclick="window.location='{{ route('createsurvey', ['department_id' => $depart]) }}'" data-toggle="tooltip"
+                title="เพิ่ม"><span class="fas fa-plus"></span></button>
             <!-- /floating action -->
         </header><!-- /.page-title-bar -->
     </div><!-- /.page-inner -->

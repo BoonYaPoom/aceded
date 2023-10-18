@@ -9,13 +9,15 @@
             <div class="card card-fluid">
                 <!-- .card-header -->
                 <div class="card-header bg-muted"><a href="{{ route('manage', ['department_id' => $sur->department_id]) }}"
-                        style="text-decoration: underline;">จัดการเว็บ</a> / <a href="{{ route('surveypage', ['department_id' => $sur->department_id]) }}"
+                        style="text-decoration: underline;">จัดการเว็บ</a> / <a
+                        href="{{ route('surveypage', ['department_id' => $sur->department_id]) }}"
                         style="text-decoration: underline;">แบบสำรวจ</a> <a
-                        href="{{ route('questionpage', [$sur->survey_id]) }}" style="text-decoration: underline;">/
+                        href="{{ route('questionpage', [$depart, $sur->survey_id]) }}" style="text-decoration: underline;">/
                         เพิ่มแบบสำรวจ
                     </a> </i>
                 </div><!-- /.card-header -->
-                <form action="{{ route('storequ', ['survey_id' => $sur]) }}" method="post" enctype="multipart/form-data">
+                <form action="{{ route('storequ', ['department_id' => $depart, 'survey_id' => $sur]) }}" method="post"
+                    enctype="multipart/form-data">
                     @csrf
                     <!-- .card-body -->
                     <div class="card-body">
@@ -54,7 +56,7 @@
                         @error('question')
                             <span class="badge badge-warning">{{ $message }}</span>
                         @enderror
-                       
+
 
                         <!-- data == 1 -->
                         @include('page.manages.survey.surveyquestion.itemcreate.data1')
@@ -64,22 +66,21 @@
                         <!-- .form-group -->
                         <div class="form-group">
                             <label for="question_status">สถานะ </label> <label
-                                class="switcher-control switcher-control-success switcher-control-lg"><input
-                                    type="checkbox" class="switcher-input" name="question_status" id="question_status"
-                                    value="1"> <span class="switcher-indicator"></span> <span
-                                    class="switcher-label-on">ON</span> <span
+                                class="switcher-control switcher-control-success switcher-control-lg"><input type="checkbox"
+                                    class="switcher-input" name="question_status" id="question_status" value="1"> <span
+                                    class="switcher-indicator"></span> <span class="switcher-label-on">ON</span> <span
                                     class="switcher-label-off text-red">OFF</span></label>
                         </div><!-- /.form-group -->
                     </div><!-- /.card-body -->
                     <!-- .form-actions -->
-                  
+
 
             </div><!-- /.card -->
             <div class="form-actions ">
                 <button class="btn btn-lg btn-primary ml-auto" type="submit"><i class="far fa-save"></i>
                     บันทึก</button>
             </div><!-- /.form-actions -->
-        </form>
+            </form>
         </div><!-- /.page-section -->
     </div><!-- /.page-inner -->
 @endsection

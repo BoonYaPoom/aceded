@@ -122,7 +122,7 @@
     <header class="page-title-bar">
         <!-- floating action -->
         <input type="hidden" name="__id" />
-        <button type="button" onclick="window.location='{{ route('add_lessonform', ['subject_id' => $subs]) }}'"
+        <button type="button" onclick="window.location='{{ route('add_lessonform', [$depart,'subject_id' => $subs]) }}'"
             class="btn btn-success btn-floated btn-add" data-toggle="tooltip" title="เพิ่ม"><span
                 class="fas fa-plus"></span></button>
         <!-- /floating action -->

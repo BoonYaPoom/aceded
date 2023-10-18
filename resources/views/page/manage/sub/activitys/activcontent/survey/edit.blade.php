@@ -19,7 +19,7 @@
 
 
     <!-- .page-inner -->
-    <form action="{{ route('Updatesuy', ['survey_id' => $suruy]) }}" method="post" enctype="multipart/form-data">
+    <form action="{{ route('Updatesuy', [$depart,'survey_id' => $suruy]) }}" method="post" enctype="multipart/form-data">
         @csrf
         @method('PUT')
 
@@ -30,11 +30,11 @@
                 <!-- .card -->
                 <div class="card card-fluid">
                     <!-- .card-header -->
-                    <div class="card-header bg-muted"><a href="{{ route('activitypage', [$subs->subject_id]) }}"
+                    <div class="card-header bg-muted"><a href="{{ route('activitypage', [$depart,$subs->subject_id]) }}"
                         style="text-decoration: underline;">หมวดหมู่</a> / <a
-                        href="{{ route('surveyact', [$subs->subject_id]) }}"
+                        href="{{ route('surveyact', [$depart,$subs->subject_id]) }}"
                         style="text-decoration: underline;">จัดการวิชา</a> / <a
-                        href="{{ route('surveyact', [$subs->subject_id]) }}" style="text-decoration: underline;">
+                        href="{{ route('surveyact', [$depart,$subs->subject_id]) }}" style="text-decoration: underline;">
                         แบบสำรวจ</a></div><!-- /.card-header -->
 
                     <!-- .card-body -->

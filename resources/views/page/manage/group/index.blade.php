@@ -46,8 +46,8 @@
                                 @endphp
                                 <tr>
                                     <td><a href="#">{{$indexnum }}</a></td>
-                                    <td><a href="{{ route('courpag', ['group_id' => $item->group_id]) }}">{{$item->group_th}}</a></td>
-                                    <td><a href="{{ route('courpag', ['group_id' => $item->group_id]) }}">{{$item->group_en}}</a></td>
+                                    <td><a href="{{ route('courpag', [$depart,'group_id' => $item->group_id]) }}">{{$item->group_th}}</a></td>
+                                    <td><a href="{{ route('courpag', [$depart,'group_id' => $item->group_id]) }}">{{$item->group_en}}</a></td>
 
                                     <td class="align-middle"> <label
                                         class="switcher-control switcher-control-success switcher-control-lg">
@@ -87,7 +87,7 @@
 
 
                                     <td class="align-middle">
-                                        <a href="{{ route('editcour', ['group_id' => $item->group_id]) }}">
+                                        <a href="{{ route('editcour', [$depart,'group_id' => $item->group_id]) }}">
                                             <i class="far fa-edit fa-lg text-success" data-toggle="tooltip"
                                                 title="แก้ไข"></i></a>
                                         <a href="{{ route('deletecour', ['group_id' => $item->group_id]) }}"

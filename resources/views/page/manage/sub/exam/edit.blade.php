@@ -17,7 +17,7 @@
         </script>
     @endif
 
-    <form action="{{ route('update_examform', ['exam_id' => $exams]) }}" method="post" enctype="multipart/form-data">
+    <form action="{{ route('update_examform', [$depart,'exam_id' => $exams]) }}" method="post" enctype="multipart/form-data">
         @csrf
         @method('PUT')
         <div class="page-inner">
@@ -27,9 +27,9 @@
                 <!-- .card -->
                 <div class="card card-fluid">
                     <!-- .card-header -->
-                    <div class="card-header bg-muted"><a href="{{ route('lessonpage', [$exams->subject_id]) }}"
+                    <div class="card-header bg-muted"><a href="{{ route('lessonpage', [$depart,$exams->subject_id]) }}"
                             style="text-decoration: underline;">หมวดหมู่</a> / <a
-                            href="{{ route('exampage', [$exams->subject_id]) }}"
+                            href="{{ route('exampage', [$depart,$exams->subject_id]) }}"
                             style="text-decoration: underline;">จัดการวิชา</a> / <i>{{ $exams->exam_th }}</i></div>
                     <!-- /.card-header -->
 

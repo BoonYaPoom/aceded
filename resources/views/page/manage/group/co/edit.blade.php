@@ -16,7 +16,7 @@
             toastr.success("{{ Session::get('message') }}");
         </script>
     @endif
-    <form action="{{ route('courseform_update', ['course_id' => $cour->course_id]) }}" method="post"
+    <form action="{{ route('courseform_update', [$depart,'course_id' => $cour->course_id]) }}" method="post"
         enctype="multipart/form-data">
         @csrf
         @method('PUT')
@@ -33,7 +33,7 @@
                             style="text-decoration: underline;">จัดการหลักสูตร</a> / <a
                             href="{{ route('courgroup', ['department_id' => $courses->first()->department_id]) }}"
                             style="text-decoration: underline;">
-                            หมวดหมู่</a> / <a href="{{ route('courpag', ['group_id' => $cour->group_id]) }}"
+                            หมวดหมู่</a> / <a href="{{ route('courpag', [$depart,'group_id' => $cour->group_id]) }}"
                             style="text-decoration: underline;">
 
                             {{ $courses->group_th }}

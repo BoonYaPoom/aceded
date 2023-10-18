@@ -14,7 +14,7 @@
                         style="text-decoration: underline;">{{ $blogcat->category_th }}</a> / <i> แก้ไขหมวดหมู่</i></div>
                 <!-- /.card-header -->
 
-                <form action="{{ route('updateblogcat', ['category_id' => $blogcat->category_id]) }}" method="post"
+                <form action="{{ route('updateblogcat', [$depart,'category_id' => $blogcat->category_id]) }}" method="post"
                     enctype="multipart/form-data">
                     @method('PUT')
                     @csrf

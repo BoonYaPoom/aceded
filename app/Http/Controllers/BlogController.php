@@ -14,7 +14,7 @@ use Illuminate\Support\Facades\Validator;
 
 class BlogController extends Controller
 {
-    public function index($category_id)
+    public function index($department_id,$category_id)
     {
         $blogcat = BlogCategory::findOrFail($category_id);
         $blogs = $blogcat->blogs()->where('category_id', $category_id)->get();
@@ -23,7 +23,7 @@ class BlogController extends Controller
         return view('page.dls.blog.cat.index', compact('blogcat', 'blogs', 'depart'));
     }
 
-    public function create($category_id)
+    public function create($department_id,$category_id)
     {
         $blogcat = BlogCategory::findOrFail($category_id);
         $department_id   = $blogcat->department_id;
@@ -31,7 +31,7 @@ class BlogController extends Controller
         return view('page.dls.blog.cat.create', compact('blogcat', 'depart'));
     }
 
-    public function store(Request $request, $category_id)
+    public function store(Request $request,$department_id, $category_id)
     {
 
 
@@ -127,9 +127,9 @@ class BlogController extends Controller
         $loginLog->save();
 
 
-        return redirect()->route('blog', ['category_id' => $category_id])->with('message', 'blog สร้างเรียบร้อยแล้ว');
+        return redirect()->route('blog', [$department_id,'category_id' => $category_id])->with('message', 'blog สร้างเรียบร้อยแล้ว');
     }
-    public function edit($blog_id)
+    public function edit($department_id,$blog_id)
     {
         $blogs = Blog::findOrFail($blog_id);
         $category_id = $blogs->category_id;
@@ -139,7 +139,7 @@ class BlogController extends Controller
         return view('page.dls.blog.cat.edit', ['blogs' => $blogs, 'blogcat' => $blogcat, 'depart' => $depart]);
     }
 
-    public function update(Request $request, $blog_id)
+    public function update(Request $request,$department_id, $blog_id)
     {
 
         $request->validate([
@@ -215,7 +215,7 @@ class BlogController extends Controller
 
         $loginLog->save();
 
-        return redirect()->route('blog', ['category_id' => $blogs->category_id])->with('message', 'blog เปลี่ยนแปลงเรียบร้อยแล้ว');
+        return redirect()->route('blog', [$department_id,'category_id' => $blogs->category_id])->with('message', 'blog เปลี่ยนแปลงเรียบร้อยแล้ว');
     }
 
     public function destory($blog_id)

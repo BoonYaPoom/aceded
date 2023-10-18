@@ -13,7 +13,7 @@ use Illuminate\Support\Facades\Validator;
 
 class ActivityController extends Controller
 {
-    public function activiList($category_id)
+    public function activiList($department_id,$category_id)
     {
         $actCat = ActivityCategory::findOrFail($category_id);
         $act = $actCat->activa()->where('category_id', $category_id)->get();
@@ -21,14 +21,14 @@ class ActivityController extends Controller
         $depart = Department::findOrFail($department_id);
         return view('page.dls.cop.activitycat.activitylist', compact('actCat', 'act','depart'));
     }
-    public function activiListForm1($category_id)
+    public function activiListForm1($department_id,$category_id)
     {
         $actCat = ActivityCategory::findOrFail($category_id);
         $department_id   = $actCat->department_id;
         $depart = Department::findOrFail($department_id);
         return view('page.dls.cop.activitycat.item.cat1item.create', compact('actCat','depart'));
     }
-    public function act1store(Request $request, $category_id)
+    public function act1store(Request $request,$department_id, $category_id)
     {
 
         $request->validate([
@@ -65,7 +65,7 @@ class ActivityController extends Controller
 
 
 
-    public function formacttivityEdit1($activity_id)
+    public function formacttivityEdit1($department_id,$activity_id)
     {
         $act = Activity::findOrFail($activity_id);
         $category_id = $act->category_id;
@@ -74,7 +74,7 @@ class ActivityController extends Controller
         $depart = Department::findOrFail($department_id);
         return view('page.dls.cop.activitycat.item.cat1item.edit', compact('act','actCat','depart'));
     }
-    public function act1update(Request $request, $activity_id)
+    public function act1update(Request $request,$department_id, $activity_id)
     {
 
 
@@ -95,13 +95,13 @@ class ActivityController extends Controller
         $act->save();
 
 
-        return redirect()->route('activiList', ['category_id' => $act->category_id])->with('message', 'Success Acti');
+        return redirect()->route('activiList', [$department_id,'category_id' => $act->category_id])->with('message', 'Success Acti');
     }
 
 
 
 
-    public function activiListForm2($category_id)
+    public function activiListForm2($department_id,$category_id)
     {
         $actCat = ActivityCategory::findOrFail($category_id);
         $department_id   = $actCat->department_id;
@@ -109,7 +109,7 @@ class ActivityController extends Controller
         return view('page.dls.cop.activitycat.item.cat2item.create', compact('actCat','depart'));
     }
 
-    public function act2store(Request $request, $category_id)
+    public function act2store(Request $request,$department_id, $category_id)
     {
         $validator = Validator::make($request->all(), [
             'title' => 'required',
@@ -162,10 +162,10 @@ class ActivityController extends Controller
         
         return response()->view('error.error-500', [], 500);
     }
-        return redirect()->route('activiList', ['category_id' => $category_id])->with('message', 'Success Acti');
+        return redirect()->route('activiList', [$department_id,'category_id' => $category_id])->with('message', 'Success Acti');
     }
 
-    public function formacttivityEdit2($activity_id)
+    public function formacttivityEdit2($department_id,$activity_id)
     {
         $act = Activity::findOrFail($activity_id);
         $category_id = $act->category_id;
@@ -175,7 +175,7 @@ class ActivityController extends Controller
         return view('page.dls.cop.activitycat.item.cat2item.edit', compact('act','actCat','depart'));
     }
 
-    public function act2update(Request $request, $activity_id)
+    public function act2update(Request $request,$department_id, $activity_id)
     {
 
 
@@ -199,7 +199,7 @@ class ActivityController extends Controller
         $act->save();
 
 
-        return redirect()->route('activiList', ['category_id' => $act->category_id])->with('message', 'Success Acti');
+        return redirect()->route('activiList', [$department_id,'category_id' => $act->category_id])->with('message', 'Success Acti');
     }
 
     public function changeStatus(Request $request)

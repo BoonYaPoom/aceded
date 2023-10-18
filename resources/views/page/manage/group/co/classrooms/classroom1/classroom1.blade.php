@@ -66,11 +66,11 @@
                                 <span class="switcher-label-off text-red">OFF</span></label>
                         </td>
                         <td>
-                            <a href="{{ route('payment_page', ['class_id' => $item->class_id]) }}"><i
+                            <a href="{{ route('payment_page', [$depart,'class_id' => $item->class_id]) }}"><i
                                     class="fas fa-money-bill fa-lg text-primary" data-toggle="tooltip"
                                     title="รายชื่อรอชำระเงิน"></i></a>
                                
-                            <a href="{{ route('register_page', ['class_id' => $item->class_id]) }}"><i
+                            <a href="{{ route('register_page', [$depart,'class_id' => $item->class_id]) }}"><i
                                     class="fas fa-user-plus fa-lg text-dark" data-toggle="tooltip"
                                     title="รายชื่อลงทะเบียน"></i></a>
                                

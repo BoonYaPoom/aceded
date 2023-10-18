@@ -16,7 +16,7 @@ use Illuminate\Support\Facades\Validator;
 class ExamController extends Controller
 {
   //exam หน้าสร้างชุดข้อสอบ
-  public function exampage($subject_id)
+  public function exampage($department_id,$subject_id)
   {
     $subs  = CourseSubject::findOrFail($subject_id);
     $exams = $subs->eam()->where('subject_id', $subject_id)->get();
@@ -25,7 +25,7 @@ class ExamController extends Controller
     $depart = Department::findOrFail($department_id);
     return view('page.manage.sub.exam.index', compact('subs', 'exams', 'depart'));
   }
-  public function createexam($subject_id)
+  public function createexam($department_id,$subject_id)
   {
     $subs  = CourseSubject::findOrFail($subject_id);
     $ques = $subs->QuestiSub()->where('subject_id', $subject_id)->get();
@@ -36,7 +36,7 @@ class ExamController extends Controller
     $depart = Department::findOrFail($department_id);
     return view('page.manage.sub.exam.create', compact('subs', 'ques', 'typequs', 'lossen', 'depart'));
   }
-  public function storeexam(Request $request, $subject_id)
+  public function storeexam(Request $request,$department_id, $subject_id)
   {
     try {
       $exams = new Exam;
@@ -93,9 +93,9 @@ class ExamController extends Controller
       return response()->view('error.error-500', [], 500);
     }
 
-    return redirect()->route('exampage', ['subject_id' => $subject_id])->with('message', 'Exam add successfully');
+    return redirect()->route('exampage', [$department_id,'subject_id' => $subject_id])->with('message', 'Exam add successfully');
   }
-  public function edit_examform($exam_id)
+  public function edit_examform($department_id,$exam_id)
   {
     $exams  = Exam::findOrFail($exam_id);
     $subject_id = $exams->subject_id;
@@ -108,7 +108,7 @@ class ExamController extends Controller
     $depart = Department::findOrFail($department_id);
     return view('page.manage.sub.exam.edit', compact('exams', 'ques', 'typequs', 'lossen', 'depart'));
   }
-  public function update_examform(Request $request, $exam_id)
+  public function update_examform(Request $request,$department_id, $exam_id)
   {
     $exams  = Exam::findOrFail($exam_id);
     $exams->exam_th = $request->exam_th;
@@ -162,7 +162,7 @@ class ExamController extends Controller
     return redirect()->back()->with('message', 'Course_lesson delete successfully');
   }
   //question หน้าสร้างข้อสอบ
-  public function pagequess($subject_id)
+  public function pagequess($department_id,$subject_id)
   {
     $subs  = CourseSubject::findOrFail($subject_id);
     $ques = $subs->QuestiSub()->where('subject_id', $subject_id)->get();
@@ -173,7 +173,7 @@ class ExamController extends Controller
     $depart = Department::findOrFail($department_id);
     return view('page.manage.sub.exam.pageexam.questionadd', compact('subs', 'ques', 'typequs', 'lossen', 'depart'));
   }
-  public function questionadd($subject_id)
+  public function questionadd($department_id,$subject_id)
   {
     $subs  = CourseSubject::findOrFail($subject_id);
     $ques = $subs->QuestiSub()->where('subject_id', $subject_id)->get();
@@ -182,7 +182,7 @@ class ExamController extends Controller
     $depart = Department::findOrFail($department_id);
     return view('page.manage.sub.exam.pageexam.import', compact('subs', 'ques', 'depart'));
   }
-  public function create($subject_id)
+  public function create($department_id,$subject_id)
   {
     $typequs = QuestionType::all();
 
@@ -195,7 +195,7 @@ class ExamController extends Controller
   }
 
 
-  public function store(Request $request, $subject_id)
+  public function store(Request $request,$department_id, $subject_id)
   {
 
     $validator = Validator::make($request->all(), [
@@ -287,9 +287,9 @@ class ExamController extends Controller
     $ques->save();
 
 
-    return redirect()->route('pagequess', ['subject_id' => $subject_id])->with('message', 'surveyreport บันทึกข้อมูลสำเร็จ');
+    return redirect()->route('pagequess', [$department_id,'subject_id' => $subject_id])->with('message', 'surveyreport บันทึกข้อมูลสำเร็จ');
   }
-  public function edit($question_id)
+  public function edit($department_id,$question_id)
   {
     $ques  = Question::findOrFail($question_id);
     $typequs = QuestionType::all();
@@ -302,7 +302,7 @@ class ExamController extends Controller
     return view('page.manage.sub.exam.pageexam.edit', compact('typequs', 'lossen', 'ques', 'depart'));
   }
 
-  public function update(Request $request, $question_id)
+  public function update(Request $request,$department_id, $question_id)
   {
 
     $ques = Question::findOrFail($question_id);
@@ -379,7 +379,7 @@ class ExamController extends Controller
     $ques->save();
 
 
-    return redirect()->route('pagequess', ['subject_id' => $ques->subject_id])->with('message', 'surveyreport บันทึกข้อมูลสำเร็จ');
+    return redirect()->route('pagequess', [$department_id,'subject_id' => $ques->subject_id])->with('message', 'surveyreport บันทึกข้อมูลสำเร็จ');
   }
 
   public function destroy($question_id)

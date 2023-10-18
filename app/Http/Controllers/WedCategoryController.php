@@ -251,14 +251,14 @@ class WedCategoryController extends Controller
     }
         return redirect()->route('acteven', ['department_id' => $department_id])->with('message', 'Data saved successfully');
     }
-    public function edit($category_id)
+    public function edit($department_id,$category_id)
     {
         $wed = WebCategory::findOrFail($category_id);
         $department_id   = $wed->department_id;
         $depart = Department::findOrFail($department_id);
         return view('page.manages.even.page.even.edit', ['wed' => $wed, 'depart' => $depart]);
     }
-    public function editact($category_id)
+    public function editact($department_id,$category_id)
     {
         $wed = WebCategory::findOrFail($category_id);
         $department_id   = $wed->department_id;
@@ -266,7 +266,7 @@ class WedCategoryController extends Controller
         return view('page.manages.even.page.act.editact', ['wed' => $wed, 'depart' => $depart]);
     }
 
-    public function update(Request $request, $category_id)
+    public function update(Request $request,$department_id, $category_id)
     {
 
         $wed = WebCategory::findOrFail($category_id);
@@ -344,7 +344,7 @@ class WedCategoryController extends Controller
 
         return redirect()->route('evenpage', ['department_id' => $wed->department_id])->with('warning', 'Data update successfully');
     }
-    public function updateact(Request $request, $category_id)
+    public function updateact(Request $request,$department_id, $category_id)
     {
 
         $wed = WebCategory::findOrFail($category_id);

@@ -1,7 +1,5 @@
-
-
 <tr>
-    <td>{{$r++}}</td>
+    <td>{{ $r++ }}</td>
     <td>{{ $item->username }}</td>
     <td>{{ $item->firstname }} {{ $item->lastname }}</td>
 
@@ -12,16 +10,16 @@
     <td>{{ $proviUser }}</td>
 
     @if ($data->user_role == 1)
-    <td class="align-middle"> <label class="switcher-control switcher-control-success switcher-control-lg">
-            <input type="checkbox" class="switcher-input switcher-edit" {{ $item->userstatus == 1 ? 'checked' : '' }}
-                data-user_id="{{ $item->user_id }}">
-            <span class="switcher-indicator"></span>
-            <span class="switcher-label-on">ON</span>
-            <span class="switcher-label-off text-red">OFF</span>
-        </label></td>
-           @else
-           <td>ใช้งาน</td>
-        @endif
+        <td class="align-middle"> <label class="switcher-control switcher-control-success switcher-control-lg">
+                <input type="checkbox" class="switcher-input switcher-edit" {{ $item->userstatus == 1 ? 'checked' : '' }}
+                    data-user_id="{{ $item->user_id }}">
+                <span class="switcher-indicator"></span>
+                <span class="switcher-label-on">ON</span>
+                <span class="switcher-label-off text-red">OFF</span>
+            </label></td>
+    @else
+        <td>ใช้งาน</td>
+    @endif
 
     <script>
         $(document).ready(function() {
@@ -49,16 +47,16 @@
     </script>
 
     <td>
-        <a href="{{ route('DPeditUser', ['user_id' => $item->user_id]) }}" data-toggle="tooltip" title="แก้ไข"><i
-                class="far fa-edit text-success mr-1"></i></a>
+        <a href="{{ route('DPeditUser', ['department_id' => $depart->department_id, 'user_id' => $item->user_id]) }}"
+            data-toggle="tooltip" title="แก้ไข"><i class="far fa-edit text-success mr-1"></i></a>
         @if ($data->user_role == 1)
             @if ($user_roleadmin)
                 <a data-toggle="modal" data-target="" title="กำหนดสิทธิ์">
                     <i class="fas fa-user-shield text-bg-muted "></i>
                 </a>
             @else
-                <a href="{{ route('logusers', ['user_id' => $item->user_id]) }}" data-toggle="tooltip"
-                    title="ดูประวัติการใช้งาน"><i class="fas fa-history text-info"></i></a>
+                <a href="{{ route('logusersDP', ['department_id' => $depart->department_id, 'user_id' => $item->user_id]) }}"
+                    data-toggle="tooltip" title="ดูประวัติการใช้งาน"><i class="fas fa-history text-info"></i></a>
 
                 <a data-toggle="modal" data-target="#clientPermissionModal-{{ $item->user_id }}" title="กำหนดสิทธิ์">
                     <i class="fas fa-user-shield text-danger"></i>
@@ -66,7 +64,6 @@
                 <button class="btn sendtemppwd " data-toggle="modal"
                     data-target="#clientWarningModal-{{ $item->user_id }}" title="ส่งรหัสผ่าน"><i
                         class="fas fa-key text-info"></i></button>
-                   
             @endif
         @endif
     </td>

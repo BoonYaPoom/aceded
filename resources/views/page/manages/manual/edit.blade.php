@@ -13,7 +13,7 @@
                         style="text-decoration: underline;">แก้ไขคู่มือใช้งาน</a> / <i> {{ $manuals->manual }}</i></div>
                 <!-- /.card-header -->
                 <!-- .card-body -->
-                <form action="{{ route('updatemanual', ['manual_id' => $manuals->manual_id]) }}" method="post"
+                <form action="{{ route('updatemanual', [$depart,'manual_id' => $manuals->manual_id]) }}" method="post"
                     enctype="multipart/form-data">
                     @csrf
                     @method('PUT')

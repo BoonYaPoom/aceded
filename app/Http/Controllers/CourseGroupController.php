@@ -42,14 +42,14 @@ try{
 
    }
    
-   public function edit($group_id){
+   public function edit($department_id,$group_id){
     $courses = CourseGroup::findOrFail($group_id);
     $department_id = $courses->department_id;
     $depart  = Department::findOrFail($department_id);
     return view('page.manage.group.edit', compact('courses','depart'));
    }
 
-   public function update(Request $request, $group_id){
+   public function update(Request $request,$department_id, $group_id){
 
     $validator = Validator::make($request->all(), [
         'group_th' => 'required'
@@ -69,7 +69,7 @@ try{
     $courses->group_status  = $request->input('group_status ', 0);
     $courses->save();
 
-    return redirect()->route('courgroup',)->with('message','CourseGroup บันทึกข้อมูลสำเร็จ');
+    return redirect()->route('courgroup',[$department_id])->with('message','CourseGroup บันทึกข้อมูลสำเร็จ');
 
    }
    

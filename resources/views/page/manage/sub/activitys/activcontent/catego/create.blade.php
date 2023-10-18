@@ -16,7 +16,7 @@
             toastr.success("{{ Session::get('message') }}");
         </script>
     @endif
-    <form action="{{ route('categoryform_add', ['subject_id' => $subs]) }}" method="post" enctype="multipart/form-data">
+    <form action="{{ route('categoryform_add', [$depart,'subject_id' => $subs]) }}" method="post" enctype="multipart/form-data">
         @csrf
     <div class="page-inner">
         <!-- .form -->

@@ -66,7 +66,7 @@ class ExcelController extends Controller
 
         return back()->with('success', 'Imported successfully');
     }
-    public function Questionimport(Request $request, $subject_id)
+    public function Questionimport(Request $request,$department_id, $subject_id)
     {
         $questionsImport = new QuestionsImportClass($subject_id);
 

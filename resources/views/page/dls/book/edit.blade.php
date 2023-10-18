@@ -14,7 +14,7 @@
                 </div>
 
 
-                <form action="{{ route('bookupdate', ['category_id' => $book->category_id]) }}" method="post"
+                <form action="{{ route('bookupdate', [$depart,'category_id' => $book->category_id]) }}" method="post"
                     enctype="multipart/form-data">
                     @method('PUT')
                     @csrf

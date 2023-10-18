@@ -79,10 +79,10 @@
                                         </script>
 
                                         <td class="align-middle">
-                                            <a href="{{ route('bookcatpage', ['category_id' => $item->category_id]) }}"><i
+                                            <a href="{{ route('bookcatpage', [$depart,'category_id' => $item->category_id]) }}"><i
                                                     class="fas fa-book fa-lg text-info" data-toggle="tooltip"
                                                     title="ข้อมูล"></i></a>
-                                            <a href="{{ route('editbook', [$item->category_id]) }}"><i
+                                            <a href="{{ route('editbook', [$depart,$item->category_id]) }}"><i
                                                     class="far fa-edit fa-lg text-success" data-toggle="tooltip"
                                                     title="แก้ไข"></i></a>
                                             <a href="{{ route('bookdestory', [$item->category_id]) }}"

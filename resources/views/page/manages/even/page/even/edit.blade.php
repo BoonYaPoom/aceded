@@ -14,7 +14,7 @@
 
                 <!-- .card-body -->
                 <div class="card-body">
-                    <form method="POST" action="{{ route('updateeven', ['category_id' => $wed->category_id]) }}"
+                    <form method="POST" action="{{ route('updateeven', ['department_id' => $depart,'category_id' => $wed->category_id]) }}"
                         enctype="multipart/form-data">
                         @csrf
                         @method('PUT')

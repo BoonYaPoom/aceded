@@ -90,11 +90,11 @@
                                         </script>
 
                                         <td class="align-middle">
-                                            <a href="{{ route('blog', ['category_id' => $item->category_id]) }}">
+                                            <a href="{{ route('blog', [$depart,'category_id' => $item->category_id]) }}">
                                                 <i class="fas fa-share-alt-square fa-lg text-info" data-toggle="tooltip"
                                                     title="ข้อมูล"></i>
                                             </a>
-                                            <a href="{{ route('editblogcat', [$item->category_id]) }}">
+                                            <a href="{{ route('editblogcat', [$depart,$item->category_id]) }}">
                                                 <i class="fas fa-edit fa-lg text-success" data-toggle="tooltip"
                                                     title="แก้ไข"></i></a>
                                             <a href="{{ route('destoryblogcat', [$item->category_id]) }}"

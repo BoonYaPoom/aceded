@@ -38,7 +38,7 @@
                     <tr>
                         <td><a href="">1</a></td>
                         <td><a>แบบสำรวจ</a></td>
-                        <td><a href="{{ route('surveyact', [$subs->subject_id]) }}"><i
+                        <td><a href="{{ route('surveyact', [$depart,$subs->subject_id]) }}"><i
                                     class="fas fa-edit fa-lg text-success" data-toggle="tooltip" title="แก้ไข"></i></a>
                         </td>
                     </tr><!-- /tr -->
@@ -46,7 +46,7 @@
                     <tr>
                         <td><a href="#">2</a></td>
                         <td><a>กระดานสนทนา</a></td>
-                        <td><a href="{{ route('categoryac', [$subs->subject_id]) }}"><i
+                        <td><a href="{{ route('categoryac', [$depart,$subs->subject_id]) }}"><i
                                     class="fas fa-edit fa-lg text-success" data-toggle="tooltip" title="แก้ไข"></i></a>
                         </td>
                     </tr><!-- /tr -->

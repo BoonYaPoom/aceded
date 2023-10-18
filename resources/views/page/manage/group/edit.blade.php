@@ -1,6 +1,6 @@
 @extends('layouts.department.layout.departmenthome')
 @section('contentdepartment')
-    <form action="{{ route('updatecour', ['group_id' => $courses->group_id]) }}" method="post" enctype="multipart/form-data">
+    <form action="{{ route('updatecour', [$depart,'group_id' => $courses->group_id]) }}" method="post" enctype="multipart/form-data">
         @csrf
         @method('PUT')
         <div class="page-inner">

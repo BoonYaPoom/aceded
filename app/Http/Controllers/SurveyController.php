@@ -59,15 +59,15 @@ class SurveyController extends Controller
       }
    }
 
-   public function edit($survey_id)
+   public function edit($department_id,$survey_id)
    {
       $sur = Survey::findOrFail($survey_id);
-      $department_id   = $sur->department_id;
+
       $depart = Department::findOrFail($department_id);
       return view('page.manages.survey.edit', ['sur' => $sur, 'depart' => $depart]);
    }
 
-   public function update(Request $request, $survey_id)
+   public function update(Request $request,$department_id, $survey_id)
    {
       $request->validate([
          'survey_th' => 'required',
@@ -98,27 +98,26 @@ class SurveyController extends Controller
 
 
 
-   public function surveyact($subject_id)
+   public function surveyact($department_id,$subject_id)
    {
       $subs  = CourseSubject::findOrFail($subject_id);
       $suracts = $subs->suyvs()->where('subject_id', $subject_id)->get();
 
-      $department_id =   $subs->department_id;
       $depart = Department::findOrFail($department_id);
 
       return view('page.manage.sub.activitys.activcontent.survey.index', compact('subs', 'suracts', 'depart'));
    }
 
-   public function suycreate($subject_id)
+   public function suycreate($department_id,$subject_id)
    {
       $subs  = CourseSubject::findOrFail($subject_id);
 
-      $department_id =   $subs->department_id;
+
       $depart = Department::findOrFail($department_id);
       return view('page.manage.sub.activitys.activcontent.survey.create', compact('subs', 'depart'));
    }
 
-   public function storesuySupject(Request $request, $subject_id)
+   public function storesuySupject(Request $request, $department_id,$subject_id)
    {
 
       $request->validate([
@@ -142,21 +141,21 @@ class SurveyController extends Controller
 
 
 
-      return redirect()->route('surveyact', ['subject_id' => $subject_id])->with('message', 'Survey บันทึกข้อมูลสำเร็จ');
+      return redirect()->route('surveyact', ['department_id' => $sur->department_id,'subject_id' => $subject_id])->with('message', 'Survey บันทึกข้อมูลสำเร็จ');
    }
 
-   public function suyedit($survey_id)
+   public function suyedit($department_id,$survey_id)
    {
       $suruy  = Survey::findOrFail($survey_id);
       $subject_id = $suruy->subject_id;
       $subs  = CourseSubject::findOrFail($subject_id);
       $suracts = $subs->suyvs()->where('subject_id', $subject_id)->get();
 
-      $department_id =   $subs->department_id;
+
       $depart = Department::findOrFail($department_id);
       return view('page.manage.sub.activitys.activcontent.survey.edit', compact('suruy', 'subs', 'depart'));
    }
-   public function Updatesuy(Request $request, $survey_id)
+   public function Updatesuy(Request $request,$department_id, $survey_id)
    {
       $suruy  = Survey::findOrFail($survey_id);
       $suruy->survey_th = $request->survey_th;
@@ -172,7 +171,7 @@ class SurveyController extends Controller
       $suruy->save();
 
 
-      return redirect()->route('surveyact', ['subject_id' => $suruy->subject_id])->with('message', 'Survey บันทึกข้อมูลสำเร็จ');
+      return redirect()->route('surveyact', ['department_id' => $suruy->department_id,'subject_id' => $suruy->subject_id])->with('message', 'Survey บันทึกข้อมูลสำเร็จ');
    }
    public function destorysub($survey_id)
    {

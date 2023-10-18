@@ -80,12 +80,12 @@
         <!-- .page-title-bar -->
         @if ($actCat->category_id == 1  || $actCat->category_id == 3)
             <button type="button"
-                onclick="window.location='{{ route('activiListForm1', ['category_id' => $actCat->category_id]) }}'"
+                onclick="window.location='{{ route('activiListForm1', [$depart,'category_id' => $actCat->category_id]) }}'"
                 class="btn btn-success btn-floated btn-addcop" id="add_activityform" data-toggle="tooltip"
                 title="เพิ่ม"><span class="fas fa-plus"></span></button>
         @elseif($actCat->category_id == 2  || $actCat->category_id == 4)
             <button type="button"
-                onclick="window.location='{{ route('activiListForm2', ['category_id' => $actCat->category_id]) }}'"
+                onclick="window.location='{{ route('activiListForm2', [$depart,'category_id' => $actCat->category_id]) }}'"
                 class="btn btn-success btn-floated btn-addcop" id="add_activityform" data-toggle="tooltip"
                 title="เพิ่ม"><span class="fas fa-plus"></span></button>
         @endif

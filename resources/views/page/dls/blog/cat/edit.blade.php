@@ -10,10 +10,10 @@
                 <!-- .card-header -->
                 <div class="card-header bg-muted"><a href="{{ route('dls',['department_id'=> $blogcat->department_id]) }}"
                         style="text-decoration: underline;">จัดการข้อมูลและความรู้</a> / <a
-                        href="{{ route('blog', ['category_id' => $blogs->category_id]) }}"
+                        href="{{ route('blog', [$depart,'category_id' => $blogs->category_id]) }}"
                         style="text-decoration: underline;">{{ $blogs->title }}</a> / <i> เพิ่มชื่อ</i></div>
                 <!-- /.card-header -->
-                <form action="{{ route('updateblog', ['blog_id' => $blogs]) }}" method="post" enctype="multipart/form-data">
+                <form action="{{ route('updateblog', [$depart,'blog_id' => $blogs]) }}" method="post" enctype="multipart/form-data">
                     @method('PUT')
                     @csrf
                     <!-- .card-body -->

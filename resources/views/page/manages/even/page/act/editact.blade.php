@@ -8,7 +8,7 @@
             <!-- .card -->
             <div class="card card-fluid">
                 <!-- .card-header -->
-                <div class="card-header bg-muted"><a href="{{ route('manage', ['department_id' => $depart]) }}"
+                <div class="card-header bg-muted"><a href="{{ route('manage', ['department_id' => $depart,'department_id' => $depart]) }}"
                         style="text-decoration: underline;">จัดการเว็บ</a> / <i> แก้หมวดข่าว/กิจกรรม{{ $wed->category_th }}</i></div>
                 <!-- /.card-header -->
 

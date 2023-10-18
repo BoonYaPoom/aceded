@@ -1,6 +1,6 @@
 @extends('layouts.department.layout.departmenthome')
 @section('contentdepartment')
-    <form action="{{ route('update_supplyLessform', ['supplymentary_id' => $supplys]) }}" method="post"
+    <form action="{{ route('update_supplyLessform', [$depart,'supplymentary_id' => $supplys]) }}" method="post"
         enctype="multipart/form-data">
         @csrf
         @method('PUT')
@@ -11,9 +11,9 @@
                 <!-- .card -->
                 <div class="card card-fluid">
                     <!-- .card-header -->
-                    <div class="card-header bg-muted"><a href="{{ route('lessonpage', [$supplys->subject_id]) }}"
+                    <div class="card-header bg-muted"><a href="{{ route('lessonpage', [$depart,$supplys->subject_id]) }}"
                         style="text-decoration: underline;">หมวดหมู่</a> / <a
-                        href="{{ route('supplypage', [$supplys->subject_id]) }}"
+                        href="{{ route('supplypage', [$depart,$supplys->subject_id]) }}"
                         style="text-decoration: underline;">จัดการวิชา</a> </div><!-- /.card-header -->
                     <!-- .card-body -->
                     <div class="card-body">

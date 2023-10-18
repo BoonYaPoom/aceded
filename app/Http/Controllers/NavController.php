@@ -56,7 +56,7 @@ class NavController extends Controller
         $depart = Department::FindOrFail($department_id);
         return view('layouts.department.layout.departmenthome',compact('depart'));
     }
-    public function activitypage($subject_id)
+    public function activitypage($department_id,$subject_id)
     {
         $subs  = CourseSubject::findOrFail($subject_id);
         $department_id   = $subs->department_id;

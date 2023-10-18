@@ -220,7 +220,7 @@ class CourseSubjectController extends Controller
 
 
 
-    public function edit($subject_id)
+    public function edit($department_id,$subject_id)
     {
         $subs = CourseSubject::findOrFail($subject_id);
         $department_id   = $subs->department_id;
@@ -229,7 +229,7 @@ class CourseSubjectController extends Controller
         return view('page.manage.sub.edit', compact('subs', 'depart', 'users4'));
     }
 
-    public function update(Request $request, $subject_id)
+    public function update(Request $request,$department_id, $subject_id)
     {
         $request->validate([
 
@@ -291,7 +291,7 @@ class CourseSubjectController extends Controller
         return redirect()->back()->with('message', 'CourseSub ลบข้อมูลสำเร็จ');
     }
 
-    public function editdetailsub($subject_id)
+    public function editdetailsub($department_id,$subject_id)
     {
         $subs = CourseSubject::findOrFail($subject_id);
         $department_id   = $subs->department_id;
@@ -300,7 +300,7 @@ class CourseSubjectController extends Controller
     }
 
 
-    public function updatedetail(Request $request, $subject_id)
+    public function updatedetail(Request $request,$department_id, $subject_id)
     {
 
 
@@ -323,7 +323,7 @@ class CourseSubjectController extends Controller
         $subs->save();
 
 
-        return redirect()->route('editdetailsub', ['subject_id' => $subs->subject_id])->with('message', 'Detail บันทึกข้อมูลสำเร็จ');
+        return redirect()->route('editdetailsub', [$department_id,'subject_id' => $subs->subject_id])->with('message', 'Detail บันทึกข้อมูลสำเร็จ');
     }
 
     public function changeStatus(Request $request)

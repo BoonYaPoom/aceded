@@ -79,7 +79,7 @@
             <!-- floating action -->
             <input type="hidden" name="__id" />
             <button type="button" class="btn btn-success btn-floated btn-addwms"
-                onclick="window.location='{{ route('questionpagecreate', ['survey_id' => $sur]) }}'" data-toggle="tooltip"
+                onclick="window.location='{{ route('questionpagecreate', ['department_id' => $depart,'survey_id' => $sur]) }}'" data-toggle="tooltip"
                 title="เพิ่ม"><span class="fas fa-plus"></span></button>
             <!-- /floating action -->
         </header><!-- /.page-title-bar -->

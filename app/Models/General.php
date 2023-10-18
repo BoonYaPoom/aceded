@@ -12,4 +12,8 @@ class General extends Model
     protected $guarded =[];
     protected $primaryKey = 'id';
     public $timestamps = false;
+    public function DeGen()
+    {
+        return $this->belongsTo(Department::class, 'department_id');
+    }
 }

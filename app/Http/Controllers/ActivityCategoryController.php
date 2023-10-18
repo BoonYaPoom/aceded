@@ -17,13 +17,13 @@ class ActivityCategoryController extends Controller
     }
 
 
-    public function activiFrom($category_id){
+    public function activiFrom($department_id,$category_id){
         $actCat = ActivityCategory::findOrFail($category_id);
         $department_id   = $actCat->department_id;
         $depart = Department::findOrFail($department_id);
         return view('page.dls.cop.activitycat.activityfrom',compact('actCat','depart'));
     }
-    public function storeAct($category_id){
+    public function storeAct($department_id,$category_id){
         $actCat = ActivityCategory::findOrFail($category_id);
         $department_id   = $actCat->department_id;
         $depart = Department::findOrFail($department_id);

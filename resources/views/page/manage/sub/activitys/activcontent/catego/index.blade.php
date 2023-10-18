@@ -76,13 +76,12 @@
                         </script>
 
                         <td class="align-middle">
-                            <a href="{{ route('topic', [$c->category_id]) }}">
+                            <a href="{{ route('topic', [$depart,$c->category_id]) }}">
                                 <i class="fas fa-comment-dots fa-lg text-info" data-toggle="tooltip" title="ข้อมูล"></i></a>
-                            <a href="{{ route('categoryform_edit', [$c->category_id]) }}">
+                            <a href="{{ route('categoryform_edit', [$depart, $c->category_id]) }}">
                                 <i class="far fa-edit fa-lg text-success" data-toggle="tooltip" title="แก้ไข"></i></a>
                             <a href="{{ route('categoryform_destroy', [$c->category_id]) }}" rel=" กระดานข่าว"
-                                onclick="deleteRecord(event)"  class="switcher-delete" 
-                                data-toggle="tooltip" title="ลบ">
+                                onclick="deleteRecord(event)" class="switcher-delete" data-toggle="tooltip" title="ลบ">
                                 <i class="fas fa-trash-alt fa-lg text-warning "></i></a>
                         </td>
                     </tr><!-- /tr -->
@@ -97,7 +96,7 @@
         <!-- floating action -->
         <input type="hidden" name="__id" />
         <button type="button" class="btn btn-success btn-floated btn-add" id="add_categoryform" data-toggle="tooltip"
-            onclick="window.location='{{ route('categoryform', ['subject_id' => $subs]) }}'" title="เพิ่ม"><span
+            onclick="window.location='{{ route('categoryform', [$depart, 'subject_id' => $subs]) }}'" title="เพิ่ม"><span
                 class="fas fa-plus"></span></button>
         <!-- /floating action -->
     </header><!-- /.page-title-bar -->

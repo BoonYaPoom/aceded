@@ -8,14 +8,14 @@
             <!-- .card -->
             <div class="card card-fluid">
                 <!-- .card-header -->
-                <div class="card-header bg-muted"><a href="{{ route('surveyact', [$sur->subject_id]) }}" style="text-decoration: underline;"> จัดการวิชา </a> / <a
-                        href="{{ route('surveyquestion', [$surques->survey_id]) }}"
+                <div class="card-header bg-muted"><a href="{{ route('surveyact', [$depart,$sur->subject_id]) }}" style="text-decoration: underline;"> จัดการวิชา </a> / <a
+                        href="{{ route('surveyquestion', [$depart,$surques->survey_id]) }}"
                         style="text-decoration: underline;">แบบสำรวจ</a> / <a
-                        href="{{ route('surveyquestion', [$surques->survey_id]) }}"
+                        href="{{ route('surveyquestion', [$depart,$surques->survey_id]) }}"
                         style="text-decoration: underline;"></a> 
                     <i> {!! $surques->question !!}</i>
                 </div><!-- /.card-header -->
-                <form action="{{ route('updatereport', ['question_id' => $surques->question_id]) }}" method="post"
+                <form action="{{ route('updatereport', [$depart,'question_id' => $surques->question_id]) }}" method="post"
                     enctype="multipart/form-data">
                     @csrf
                     @method('PUT')

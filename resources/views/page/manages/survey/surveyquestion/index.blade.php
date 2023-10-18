@@ -80,7 +80,7 @@
 
 
                                         <td class="align-middle">
-                                            <a href="{{ route('editque', [$item->question_id]) }}"><i
+                                            <a href="{{ route('editque', ['department_id' => $depart,$item->question_id]) }}"><i
                                                     class="far fa-edit fa-lg text-success" data-toggle="tooltip"
                                                     title="แก้ไข"></i></a>
                                             <a href="{{ route('destoryReport', ['question_id' => $item]) }}" onclick="deleteRecord(event)" class="switcher-delete"
@@ -124,7 +124,7 @@
         <header class="page-title-bar">
             <!-- floating action -->
             <button type="button" class="btn btn-success btn-floated btn-addwms"
-                onclick="window.location='{{ route('questionpagecreate', ['survey_id' => $sur]) }}'" data-toggle="tooltip"
+                onclick="window.location='{{ route('questionpagecreate', ['department_id' => $depart,'survey_id' => $sur]) }}'" data-toggle="tooltip"
                 title="เพิ่ม"><span class="fas fa-plus"></span></button>
             <!-- /floating action -->
         </header><!-- /.page-title-bar -->

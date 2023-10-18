@@ -19,7 +19,7 @@ use Illuminate\Support\Facades\Validator;
 
 class CourseLessonController extends Controller
 {
-    public function navless($subject_id)
+    public function navless($department_id,$subject_id)
     {
         $subs  = CourseSubject::findOrFail($subject_id);
         $lessons = $subs->subjs()->where('subject_id', $subject_id)->get();
@@ -27,7 +27,7 @@ class CourseLessonController extends Controller
         $depart = Department::findOrFail($department_id);
         return view('page.manage.sub.navsubject', compact('subs', 'lessons', 'depart'));
     }
-    public function lessonpage($subject_id)
+    public function lessonpage($department_id,$subject_id)
     {
         $subs  = CourseSubject::findOrFail($subject_id);
         $lessons = $subs->subjs()->where('subject_id', $subject_id)->get();
@@ -41,7 +41,7 @@ class CourseLessonController extends Controller
         ]);
     }
 
-    public function create($subject_id)
+    public function create($department_id,$subject_id)
     {
         $subs  = CourseSubject::findOrFail($subject_id);
         $content_types = ContentType::where('status', 1)->get(['content_type', 'content_th']);
@@ -52,7 +52,7 @@ class CourseLessonController extends Controller
         return view('page.manage.sub.lesson.create', compact('subs', 'content_types', 'depart'));
     }
 
-    public function store(Request $request, $subject_id)
+    public function store(Request $request,$department_id, $subject_id)
     {
 
         $validator = Validator::make($request->all(), [
@@ -93,10 +93,10 @@ class CourseLessonController extends Controller
 
             return response()->view('error.error-500', [], 500);
         }
-        return redirect()->route('lessonpage', ['subject_id' => $subject_id])->with('message', 'Course_lesson บันทึกข้อมูลสำเร็จ');
+        return redirect()->route('lessonpage', [$department_id,'subject_id' => $subject_id])->with('message', 'Course_lesson บันทึกข้อมูลสำเร็จ');
     }
 
-    public function edit($lesson_id)
+    public function edit($department_id,$lesson_id)
     {
 
         $lessons = CourseLesson::findOrFail($lesson_id);
@@ -107,7 +107,7 @@ class CourseLessonController extends Controller
         $depart = Department::findOrFail($department_id);
         return view('page.manage.sub.lesson.edit', compact('lessons', 'content_types', 'sub', 'depart'));
     }
-    public function update(Request $request, $lesson_id)
+    public function update(Request $request,$department_id, $lesson_id)
     {
 
         $lessons = CourseLesson::findOrFail($lesson_id);
@@ -122,22 +122,22 @@ class CourseLessonController extends Controller
 
         $lessons->save();
 
-        return redirect()->route('lessonpage', ['subject_id' => $lessons->subject_id])->with('message', 'Course_lesson บันทึกข้อมูลสำเร็จ');
+        return redirect()->route('lessonpage', [$department_id,'subject_id' => $lessons->subject_id])->with('message', 'Course_lesson บันทึกข้อมูลสำเร็จ');
     }
 
-    public function destroy($lesson_id)
+    public function destroy($department_id,$lesson_id)
     {
         $lessons = CourseLesson::findOrFail($lesson_id);
 
         $lessons->delete();
-        return redirect()->route('lessonpage', ['subject_id' => $lessons->subject_id])->with('message', 'Course_lesson ลบข้อมูลสำเร็จ');
+        return redirect()->route('lessonpage', [$department_id,'subject_id' => $lessons->subject_id])->with('message', 'Course_lesson ลบข้อมูลสำเร็จ');
     }
 
 
 
 
 
-    public function uploadfile(Request $request, $lesson_id)
+    public function uploadfile(Request $request,$department_id, $lesson_id)
     {
         $lessons = CourseLesson::findOrFail($lesson_id);
         $content_type = $lessons->content_type;
@@ -368,11 +368,11 @@ class CourseLessonController extends Controller
 
 
         // ถ้าไม่มีเงื่อนไขหรือไม่ตรงกับเงื่อนไขใดเลย จะเด้งกลับไปที่หน้า lessonpage
-        return redirect()->route('lessonpage', ['subject_id' => $lessons->subject_id])->with('message', 'Course_lesson บันทึกข้อมูลสำเร็จ');
+        return redirect()->route('lessonpage', [$department_id,'subject_id' => $lessons->subject_id])->with('message', 'Course_lesson บันทึกข้อมูลสำเร็จ');
     }
 
 
-    public function smallcreate($subject_id, $lesson_id)
+    public function smallcreate($department_id,$subject_id, $lesson_id)
     {
         $subs  = CourseSubject::findOrFail($subject_id);
         $lessonsSub = $subs->subjs()->where('subject_id', $subject_id)->get();
@@ -384,7 +384,7 @@ class CourseLessonController extends Controller
         $depart = Department::findOrFail($department_id);
         return view('page.manage.sub.lesson.small.createsmall', compact('lessons', 'content_types', 'lessonsSub', 'subs', 'depart'));
     }
-    public function smallsmallcreate($subject_id, $lesson_id)
+    public function smallsmallcreate($department_id,$subject_id, $lesson_id)
     {
         $subs  = CourseSubject::findOrFail($subject_id);
         $lessonsSub = $subs->subjs()->where('subject_id', $subject_id)->get();
@@ -397,7 +397,7 @@ class CourseLessonController extends Controller
         return view('page.manage.sub.lesson.small.createsmallsmall', compact('lessons', 'content_types', 'lessonsSub', 'subs', 'depart'));
     }
 
-    public function smailstore(Request $request, $subject_id, $lesson_id)
+    public function smailstore(Request $request,$department_id, $subject_id, $lesson_id)
     {
         $lessons = new CourseLesson;
         $lessons->lesson_number = $request->lesson_number;
@@ -427,9 +427,9 @@ class CourseLessonController extends Controller
         $lessons->permission = null;
         $lessons->save();
 
-        return redirect()->route('lessonpage', ['subject_id' => $lessons->subject_id])->with('message', 'Course_lesson บันทึกข้อมูลสำเร็จ');
+        return redirect()->route('lessonpage', [$department_id,'subject_id' => $lessons->subject_id])->with('message', 'Course_lesson บันทึกข้อมูลสำเร็จ');
     }
-    public function smailsmailstore(Request $request, $subject_id, $lesson_id)
+    public function smailsmailstore(Request $request, $department_id,$subject_id, $lesson_id)
     {
         $lesson = CourseLesson::findOrFail($lesson_id);
         $lessons = new CourseLesson;
@@ -449,7 +449,7 @@ class CourseLessonController extends Controller
         $lessons->permission = null;
         $lessons->save();
 
-        return redirect()->route('lessonpage', ['subject_id' => $lessons->subject_id])->with('message', 'Course_lesson บันทึกข้อมูลสำเร็จ');
+        return redirect()->route('lessonpage', [$department_id,'subject_id' => $lessons->subject_id])->with('message', 'Course_lesson บันทึกข้อมูลสำเร็จ');
     }
 
 

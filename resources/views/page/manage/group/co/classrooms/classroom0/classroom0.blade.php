@@ -56,16 +56,16 @@
                         
                         <td style="text-align: center;">
                          
-                      <a href="{{ route('register_page', [ 'm' => $m,'course_id' => $cour]) }}"><i class="fas fa-user-plus fa-lg text-dark"
+                      <a href="{{ route('register_page', [ $depart,'m' => $m,'course_id' => $cour]) }}"><i class="fas fa-user-plus fa-lg text-dark"
                                     data-toggle="tooltip" title="รายชื่อลงทะเบียน"></i></a>
-                                        <a href="{{ route('gpa_page', [ 'm' => $m,'course_id' => $cour]) }}"><i class="fas fa-file-alt fa-lg text-dark"
+                                        <a href="{{ route('gpa_page', [$depart, 'm' => $m,'course_id' => $cour]) }}"><i class="fas fa-file-alt fa-lg text-dark"
                                     data-toggle="tooltip" title="GPA"></i></a>
                  
-                            <a href="{{ route('report_page', [ 'm' => $m,'course_id' => $cour]) }}"><i class="fas fa-chart-bar fa-lg text-danger"
+                            <a href="{{ route('report_page', [ $depart,'m' => $m,'course_id' => $cour]) }}"><i class="fas fa-chart-bar fa-lg text-danger"
                                     data-toggle="tooltip" title="รายงาน"></i></a>
                            
                            
-                             <a href="{{ route('congratuation_page', [ 'm' => $m,'course_id' => $cour]) }}"><i
+                             <a href="{{ route('congratuation_page', [ $depart,'m' => $m,'course_id' => $cour]) }}"><i
                                     class="fas fa-user-graduate fa-lg text-info" data-toggle="tooltip"
                                     title="ผู้สำเร็จหลักสูตร"></i></a>
 

@@ -24,9 +24,9 @@
             <!-- .card -->
             <div class="card card-fluid">
                 <!-- .card-header -->
-                <div class="card-header bg-muted"><a href="http://tcct.localhost:8080/admin/wms.html"
+                <div class="card-header bg-muted"><a href=""
                         style="text-decoration: underline;">จัดการเว็บ</a> / <a
-                        href="http://tcct.localhost:8080/admin/wms/general.html" style="text-decoration: underline;">
+                        href="" style="text-decoration: underline;">
                         สื่อเสริม</a> /<i> แก้ไขข้อมูล</i></div><!-- /.card-header -->
                 <!-- .card-body -->
 
@@ -107,7 +107,7 @@
 
 
                                     <td class="align-middle">
-                                        <a href="{{ route('edit_supplyLessform', ['supplymentary_id' => $item]) }}"><i
+                                        <a href="{{ route('edit_supplyLessform', [$depart,'supplymentary_id' => $item]) }}"><i
                                                 class="far fa-edit fa-lg text-success" data-toggle="tooltip"
                                                 title="แก้ไข"></i></a>
                                         <a href="{{ route('destroy_supplyform', ['supplymentary_id' => $item]) }}"
@@ -128,7 +128,7 @@
                     <input type="hidden" name="__id" />
                     <button type="button" class="btn btn-success btn-floated btn-add" data-toggle="tooltip"
                         title="เพิ่ม"><span
-                            onclick="window.location='{{ route('add_supplyLessform', ['subject_id' => $subs, 'lesson_id' => $lesson]) }}'"
+                            onclick="window.location='{{ route('add_supplyLessform', [$depart,'subject_id' => $subs, 'lesson_id' => $lesson]) }}'"
                             class="fas fa-plus"></span></button>
                     <!-- /floating action -->
                 </header><!-- /.page-title-bar -->

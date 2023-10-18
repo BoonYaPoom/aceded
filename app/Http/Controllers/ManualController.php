@@ -135,14 +135,14 @@ class ManualController extends Controller
 
         return redirect()->route('manualpage', ['department_id' => $department_id])->with('message', 'manuals บันทึกข้อมูลสำเร็จ');
     }
-    public function edit($manual_id)
+    public function edit($department_id,$manual_id)
     {
         $manuals = Manual::findOrFail($manual_id);
         $department_id   = $manuals->department_id;
         $depart = Department::findOrFail($department_id);
         return view('page.manages.manual.edit', compact('manuals', 'depart'));
     }
-    public function update(Request $request, $manual_id)
+    public function update(Request $request,$department_id, $manual_id)
     {
 
         $manuals = Manual::findOrFail($manual_id);

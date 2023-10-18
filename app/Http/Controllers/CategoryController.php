@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\Validator;
 
 class CategoryController extends Controller
 {
-    public function categoryac($subject_id)
+    public function categoryac($department_id,$subject_id)
     {
         $subs  = CourseSubject::findOrFail($subject_id);
         $catac = $subs->Catt()->where('subject_id', $subject_id)->get();
@@ -20,7 +20,7 @@ class CategoryController extends Controller
         return view('page.manage.sub.activitys.activcontent.catego.index', compact('subs', 'catac','depart'));
     }
 
-    public function create($subject_id)
+    public function create($department_id,$subject_id)
     {
         $subs  = CourseSubject::findOrFail($subject_id);
         $catac = $subs->Catt()->where('subject_id', $subject_id)->get();
@@ -29,7 +29,7 @@ class CategoryController extends Controller
         return view('page.manage.sub.activitys.activcontent.catego.create', compact('subs', 'catac','depart'));
     }
 
-    public function store(Request $request, $subject_id)
+    public function store(Request $request,$department_id, $subject_id)
     {
 
         $validator = Validator::make($request->all(), [
@@ -67,9 +67,9 @@ class CategoryController extends Controller
 
         return response()->view('error.error-500', [], 500);
     }
-        return redirect()->route('categoryac', ['subject_id' => $subject_id])->with('message', 'Category บันทึกข้อมูลสำเร็จ');
+        return redirect()->route('categoryac', [$department_id,'subject_id' => $subject_id])->with('message', 'Category บันทึกข้อมูลสำเร็จ');
     }
-    public function edit($category_id)
+    public function edit($department_id,$category_id)
     {
         $catac  = Category::findOrFail($category_id);
         $subject_id =  $catac->subject_id;
@@ -78,7 +78,7 @@ class CategoryController extends Controller
         $depart = Department::findOrFail($department_id);
         return view('page.manage.sub.activitys.activcontent.catego.edit', compact('catac','depart','subs'));
     }
-    public function update(Request $request, $category_id)
+    public function update(Request $request,$department_id, $category_id)
     {
 
         $catac  = Category::findOrFail($category_id);
@@ -96,7 +96,7 @@ class CategoryController extends Controller
         $catac->save();
 
 
-        return redirect()->route('categoryac', ['subject_id' => $catac->subject_id])->with('message', 'Category บันทึกข้อมูลสำเร็จ');
+        return redirect()->route('categoryac', [$department_id,'subject_id' => $catac->subject_id])->with('message', 'Category บันทึกข้อมูลสำเร็จ');
     }
     public function destroy($category_id)
     {

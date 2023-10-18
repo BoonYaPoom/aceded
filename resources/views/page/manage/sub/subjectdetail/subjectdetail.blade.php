@@ -18,7 +18,7 @@
     @endif
 
 
-    <form action="{{ route('updatedetailsub', ['subject_id' => $subs->subject_id]) }}" method="post"
+    <form action="{{ route('updatedetailsub', [$depart,'subject_id' => $subs->subject_id]) }}" method="post"
       enctype="multipart/form-data">
       @csrf
       @method('PUT')

@@ -16,7 +16,7 @@
             toastr.success("{{ Session::get('message') }}");
         </script>
     @endif
-    <form action="{{route('update_question',['question_id' => $ques])}}" method="post" enctype="multipart/form-data">
+    <form action="{{route('update_question',[$depart,'question_id' => $ques])}}" method="post" enctype="multipart/form-data">
         @csrf
         @method('PUT')
         <div class="page-inner">
@@ -26,9 +26,9 @@
                 <!-- .card -->
                 <div class="card card-fluid">
                     <!-- .card-header -->
-                    <div class="card-header bg-muted"><a href="{{ route('exampage', [$ques->subject_id]) }}"
+                    <div class="card-header bg-muted"><a href="{{ route('exampage', [$depart,$ques->subject_id]) }}"
                             style="text-decoration: underline;">หมวดหมู่</a> / <a
-                            href="{{ route('pagequess', [$ques->subject_id]) }}"
+                            href="{{ route('pagequess', [$depart,$ques->subject_id]) }}"
                             style="text-decoration: underline;">จัดการวิชา</a> / <i>{!! $ques->question !!}</i> / <i></i></div>
                     <!-- /.card-header -->
                     <!-- .nav-scroller -->

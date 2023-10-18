@@ -123,7 +123,7 @@ class BookCategoryController extends Controller
 
 
 
-    public function edit($category_id)
+    public function edit($department_id,$category_id)
     {
         $book = BookCategory::findOrFail($category_id);
         $department_id   = $book->department_id;
@@ -131,7 +131,7 @@ class BookCategoryController extends Controller
         return view('page.dls.book.edit', compact('book', 'depart'));
     }
 
-    public function update(Request $request, $category_id)
+    public function update(Request $request,$department_id, $category_id)
     {
         $request->validate([
             'category_th' => 'required',

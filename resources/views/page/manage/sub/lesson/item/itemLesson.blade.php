@@ -81,13 +81,13 @@
 
 
     <td class="align-middle">
-        <a href="{{ route('smallcreate', ['subject_id' => $subs, 'lesson_id' => $item]) }}
+        <a href="{{ route('smallcreate', [$depart,'subject_id' => $subs, 'lesson_id' => $item]) }}
         "
             data-toggle="tooltip" title="เพิ่มย่อย"><i class="fas fa-plus-circle fa-lg text-danger mr-1"></i></a>
-        <a href="{{ route('edit_lessonform', ['lesson_id' => $item]) }}" data-toggle="tooltip" title="แก้ไข"><i
+        <a href="{{ route('edit_lessonform', [$depart,'lesson_id' => $item]) }}" data-toggle="tooltip" title="แก้ไข"><i
                 class="far fa-edit fa-lg text-success mr-1"></i>
         </a>
-        <a href="{{ route('Supply_lessonform', ['subject_id' => $subs, 'lesson_id' => $item]) }}" data-toggle="tooltip"
+        <a href="{{ route('Supply_lessonform', [$depart,'subject_id' => $subs, 'lesson_id' => $item]) }}" data-toggle="tooltip"
             title="สื่อเสริม"><i class="fas fa-file-video fa-lg text-success mr-1"></i>
         </a>
 

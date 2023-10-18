@@ -93,16 +93,16 @@
                                                 </script>
 
                                         <td class="align-middle">
-                                           <!-- <a href="{{ route('courseSub_page', ['course_id' => $item]) }}"
+                                           <!-- <a href="{{ route('courseSub_page', [$depart,'course_id' => $item]) }}"
                                                 data-toggle="tooltip" title="รายวิชา"><i
                                                     class="	fas fa-address-card fa-lg text-primary "></i></a>-->
-                                            <a href="{{ route('class_page', ['course_id' => $item]) }}"
+                                            <a href="{{ route('class_page', [$depart,'course_id' => $item]) }}"
                                                 data-toggle="tooltip" title="ผู้เรียน"><i
                                                     class="fas fa-users fa-lg text-info "></i></a>
-                                            <a href="{{ route('structure_page', ['course_id' => $item]) }}"
+                                            <a href="{{ route('structure_page', [$depart,'course_id' => $item]) }}"
                                                 data-toggle="tooltip" title="รายละเอียดหลักสูตร"><i
                                                     class="fas fa-list-ul fa-lg text-danger "></i></a>
-                                            <a href="{{ route('editcor', ['course_id' => $item]) }}"
+                                            <a href="{{ route('editcor', [$depart,'course_id' => $item]) }}"
                                                 data-toggle="tooltip" title="แก้ไข"><i
                                                     class="far fa-edit fa-lg text-success "></i></a>
                                             <a href="{{ route('courseform_destroy', ['course_id' => $item]) }}"
@@ -150,7 +150,7 @@
             <!-- floating action -->
             <input type="hidden" name="__id" id="__id" value="29" />
             <button type="button" class="btn btn-success btn-floated btn-add"
-                onclick="window.location='{{ route('createcor', ['group_id' => $courses]) }}'" data-toggle="tooltip"
+                onclick="window.location='{{ route('createcor', [$depart,'group_id' => $courses]) }}'" data-toggle="tooltip"
                 title="เพิ่ม"><span class="fas fa-plus"></span></button>
             <!-- /floating action -->
         </header><!-- /.page-title-bar -->

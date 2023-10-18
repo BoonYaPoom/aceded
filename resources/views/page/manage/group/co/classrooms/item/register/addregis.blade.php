@@ -21,7 +21,7 @@
     <!-- .page-inner -->
     <div class="page-inner">
         <!-- .page-section -->
-        <form action="{{ route('saveSelectedUsers', ['course_id' => $cour, 'm' => $m]) }}" method="POST">
+        <form action="{{ route('saveSelectedUsers', [$depart,'course_id' => $cour, 'm' => $m]) }}" method="POST">
             @csrf
             <div class="page-section">
                 <!-- .card -->
@@ -37,7 +37,7 @@
                         <!-- .nav -->
                         <div class="nav nav-tabs bg-muted h3">
                             <a class="nav-link active text-info"
-                                href="{{ route('class_page', ['course_id' => $cour->course_id]) }}"><i
+                                href="{{ route('class_page', [$depart,'course_id' => $cour->course_id]) }}"><i
                                     class="fas fa-users"></i>
                                 ผู้เรียน รายวิชาเพิ่มเติม การป้องกันการทุจริต ระดับปฐมวัย </a>
                         </div><!-- /.nav -->

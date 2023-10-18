@@ -140,14 +140,14 @@ class BlogCategotyController extends Controller
         return redirect()->route('blogpage',['department_id'=>$department_id])->with('message','blog สร้างเรียบร้อยแล้ว');
     }
 
-    public function edit($category_id){
+    public function edit($department_id,$category_id){
         $blogcat = BlogCategory::findOrFail($category_id);
         $department_id   = $blogcat->department_id;
         $depart = Department::findOrFail($department_id);
         return view('page.dls.blog.edit',['blogcat'=>$blogcat ,'depart'=>$depart]);
     }
 
-    public function update(Request $request,$category_id){
+    public function update(Request $request,$department_id,$category_id){
         $request->validate([
             'category_th' => 'required',
         ]);

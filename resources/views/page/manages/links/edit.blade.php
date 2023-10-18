@@ -11,7 +11,7 @@
                   style="text-decoration: underline;">จัดการเว็บ</a> / <a
                   href="{{ route('linkpage', ['department_id' => $links->department_id]) }}"
                         style="text-decoration: underline;">ลิงค์ที่น่าสนใจ</a> / {{ $links->links_title }}</div><!-- /.card-header -->
-                <form action="{{ route('updatelink', ['links_id' => $links->links_id]) }}" method="post"
+                <form action="{{ route('updatelink', ['department_id' => $depart,'links_id' => $links->links_id]) }}" method="post"
                     enctype="multipart/form-data">
                     @csrf
                     @method('PUT')

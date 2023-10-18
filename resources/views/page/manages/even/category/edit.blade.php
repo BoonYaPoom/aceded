@@ -15,11 +15,11 @@
 
                         {{ $category->category_th }}
 
-                    </a> / <a href="{{ route('catpage', ['category_id' => $webs->category_id]) }}"
+                    </a> / <a href="{{ route('catpage', ['department_id' => $depart,'category_id' => $webs->category_id]) }}"
                         style="text-decoration: underline;">
                         กิจกรรม</a> / <i> เพิ่ม/{{ $webs->web_th }}</i></div><!-- /.card-header -->
 
-                <form action="{{ route('updatecat', ['web_id' => $webs]) }}" method="post" enctype="multipart/form-data">
+                <form action="{{ route('updatecat', ['department_id' => $depart,'web_id' => $webs]) }}" method="post" enctype="multipart/form-data">
                     @csrf
                     @method('PUT')
                     <!-- .card-body -->

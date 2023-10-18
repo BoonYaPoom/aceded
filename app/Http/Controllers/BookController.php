@@ -19,7 +19,7 @@ use Intervention\Image\ImageManagerStatic as Image;
 
 class BookController extends Controller
 {
-    public function bookcatpage($category_id)
+    public function bookcatpage($department_id,$category_id)
     {
         $bookcat = BookCategory::findOrFail($category_id);
         $books = $bookcat->books()->where('category_id', $category_id)->get();
@@ -29,7 +29,7 @@ class BookController extends Controller
     }
 
 
-    public function create($category_id)
+    public function create($department_id,$category_id)
     {
         $bookcat = BookCategory::findOrFail($category_id);
         $department_id = $bookcat->department_id;
@@ -37,7 +37,7 @@ class BookController extends Controller
         return view('page.dls.book.bookcat.create', compact('bookcat', 'depart'));
     }
 
-    public function store(Request $request, $category_id)
+    public function store(Request $request,$department_id, $category_id)
     {
         $request->validate([
             'book_name' => 'required',
@@ -214,13 +214,13 @@ class BookController extends Controller
                     }
                 }
             }
-            return redirect()->route('bookcatpage', ['category_id' => $category_id])->with('message', 'book สร้างเรียบร้อยแล้ว');
+            return redirect()->route('bookcatpage', [$department_id,'category_id' => $category_id])->with('message', 'book สร้างเรียบร้อยแล้ว');
         }
         
         return redirect()->back()->with('error', 'ID นี้มีอยู่แล้ว กรุณาเลือก ID อื่น');
     }
 
-    public function edit($book_id)
+    public function edit($department_id,$book_id)
     {
         $books = Book::findOrFail($book_id);
         $category_id = $books->category_id;
@@ -229,7 +229,7 @@ class BookController extends Controller
         $depart = Department::findOrFail($department_id);
         return view('page.dls.book.bookcat.edit', ['books' => $books, 'bookcat' => $bookcat, 'depart' => $depart]);
     }
-    public function update(Request $request, $book_id)
+    public function update(Request $request,$department_id, $book_id)
     {
 
         $books = Book::findOrFail($book_id);
@@ -402,14 +402,14 @@ class BookController extends Controller
         $books->save();
 
 
-        return redirect()->route('bookcatpage', ['category_id' => $books->category_id])->with('message', 'book  เปลี่ยนแปลงเรียบร้อยแล้ว');
+        return redirect()->route('bookcatpage', [$department_id,'category_id' => $books->category_id])->with('message', 'book  เปลี่ยนแปลงเรียบร้อยแล้ว');
     }
     public function destroy($book_id)
     {
         $books = Book::findOrFail($book_id);
 
         $books->delete();
-        return redirect()->route('bookcatpage', ['category_id' => $books->category_id])->with('message', 'book  ลบข้อมูลเรียบร้อยแล้ว');
+        return redirect()->back()->with('message', 'book  ลบข้อมูลเรียบร้อยแล้ว');
     }
 
     public function table(Request $request)

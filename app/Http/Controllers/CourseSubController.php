@@ -10,7 +10,7 @@ use Illuminate\Http\Request;
 
 class CourseSubController extends Controller
 {
-    public function courseSub($course_id)
+    public function courseSub($department_id,$course_id)
     {
         $cour = Course::findOrFail($course_id);
         $group_id = $cour->group_id;
@@ -20,7 +20,7 @@ class CourseSubController extends Controller
 
         return view('page.manage.group.co.structure.subject', compact('cour', 'courses','depart'));
     }
-    public function subjecClass($subject_id)
+    public function subjecClass($department_id,$subject_id)
     {
         $subs = CourseSubject::findOrFail($subject_id);
         $department_id   = $subs->department_id;

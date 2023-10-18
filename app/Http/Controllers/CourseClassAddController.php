@@ -12,7 +12,7 @@ use PDO;
 
 class CourseClassAddController extends Controller
 {
-    public function addusersCour(Request $request, $course_id, $m)
+    public function addusersCour(Request $request,$department_id, $course_id, $m)
     {
         $jsonContent = file_get_contents('javascript/json/_data.json');
         $mms = json_decode($jsonContent, true);
@@ -36,7 +36,7 @@ class CourseClassAddController extends Controller
         return view('page.manage.group.co.classrooms.item.register.addregis', compact('filteredUsers', 'courses', 'cour', 'learners', 'm', 'depart'));
     }
 
-    public function saveSelectedUsers(Request $request, $course_id, $m)
+    public function saveSelectedUsers(Request $request, $department_id,$course_id, $m)
 
     {
 
@@ -69,7 +69,7 @@ class CourseClassAddController extends Controller
             ]);
         }
 
-        return redirect()->route('register_page', ['m' => $m, 'course_id' => $course_id])->with('success', 'การบันทึก');
+        return redirect()->route('register_page', [$department_id,'m' => $m, 'course_id' => $course_id])->with('success', 'การบันทึก');
     }
     public function destroy($learner_id)
     {

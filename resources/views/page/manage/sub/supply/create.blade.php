@@ -1,6 +1,6 @@
 @extends('layouts.department.layout.departmenthome')
 @section('contentdepartment')
-    <form action="{{ route('store_supplyform', ['subject_id' => $subs]) }}" method="post" enctype="multipart/form-data">
+    <form action="{{ route('store_supplyform', [$depart,'subject_id' => $subs]) }}" method="post" enctype="multipart/form-data">
         @csrf
         <div class="page-inner">
             <!-- .form -->
@@ -9,9 +9,9 @@
                 <!-- .card -->
                 <div class="card card-fluid">
                     <!-- .card-header -->
-                    <div class="card-header bg-muted"><a href="{{ route('lessonpage', [$subs->subject_id]) }}"
+                    <div class="card-header bg-muted"><a href="{{ route('lessonpage', [$depart,$subs->subject_id]) }}"
                             style="text-decoration: underline;">หมวดหมู่</a> / <a
-                            href="{{ route('supplypage', [$subs->subject_id]) }}"
+                            href="{{ route('supplypage', [$depart,$subs->subject_id]) }}"
                             style="text-decoration: underline;">จัดการวิชา</a> </div><!-- /.card-header -->
 
                     <!-- .card-body -->

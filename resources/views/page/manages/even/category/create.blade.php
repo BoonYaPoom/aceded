@@ -10,12 +10,12 @@
                 <div class="card-header bg-muted"><a href="{{ route('manage', ['department_id' => $category->department_id]) }}"
                     style="text-decoration: underline;">จัดการเว็บ</a> / <a href="{{ route('Webpage', ['department_id' => $category->department_id]) }}"
                     style="text-decoration: underline;">ข่าว/{{ $category->category_th }}</a> / <a
-                    href="{{ route('catpage', ['category_id' => $category->category_id]) }}"
+                    href="{{ route('catpage', ['department_id' => $depart,'category_id' => $category->category_id]) }}"
                     style="text-decoration: underline;">
                     กิจกรรม</a> / <i> เพิ่ม</i></div><!-- /.card-header -->
 
 
-                <form action="{{ route('catstore', ['category_id' => $category]) }}" method="post"
+                <form action="{{ route('catstore', ['department_id' => $depart,'category_id' => $category]) }}" method="post"
                     enctype="multipart/form-data">
                     @csrf
                     <!-- .card-body -->

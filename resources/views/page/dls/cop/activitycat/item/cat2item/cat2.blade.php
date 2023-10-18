@@ -14,7 +14,7 @@
         <a class="d-none" href="" target=_blank><i
                 class="fa fa-eye fa-lg text-success" data-toggle="tooltip"
                 title="ข้อมูล"></i></a>
-        <a class="" href="{{ route('activiListform2_edit', ['activity_id' => $a]) }}">
+        <a class="" href="{{ route('activiListform2_edit', [$depart,'activity_id' => $a]) }}">
             <i class="fa fa-edit fa-lg text-success" data-toggle="tooltip"
                 title="แก้ไข"></i></a>
 

@@ -91,7 +91,7 @@
                                         </script>
 
                                         <td class="align-middle">
-                                            <a href="{{ route('editcatbook', ['book_id' => $item]) }}"
+                                            <a href="{{ route('editcatbook', [$depart,'book_id' => $item]) }}"
                                                 title="แก้ไข"><i class="far fa-edit fa-lg text-success"></i></a>
                                             <a href="{{ route('destroycatbook', ['book_id' => $item]) }}"
                                                 onclick="deleteRecord(event)" rel="" class="switcher-delete"
@@ -138,7 +138,7 @@
             <!-- floating action -->
             <input type="hidden" name="__id" id="__id" value="5" />
             <button type="button" class="btn btn-success btn-floated btn-adddls"
-                onclick="window.location='{{ route('catcreatebook', ['category_id' => $bookcat]) }}'" data-toggle="tooltip"
+                onclick="window.location='{{ route('catcreatebook', [$depart,'category_id' => $bookcat]) }}'" data-toggle="tooltip"
                 title="เพิ่ม"><span class="fas fa-plus"></span></button>
             <!-- /floating action -->
         </header><!-- /.page-title-bar -->

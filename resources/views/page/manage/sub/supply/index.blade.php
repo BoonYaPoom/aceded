@@ -93,7 +93,7 @@
     
 
                         <td class="align-middle">
-                            <a href="{{ route('edit_supplyform', ['supplymentary_id' => $item]) }}"><i class="far fa-edit fa-lg text-success" data-toggle="tooltip"
+                            <a href="{{ route('edit_supplyform', [$depart,'supplymentary_id' => $item]) }}"><i class="far fa-edit fa-lg text-success" data-toggle="tooltip"
                                     title="แก้ไข"></i></a>
                             <a href="{{ route('destroy_supplyform', ['supplymentary_id' => $item]) }}"
                                 onclick="deleteRecord(event)"
@@ -113,7 +113,7 @@
         <!-- floating action -->
         <input type="hidden" name="__id" />
         <button type="button" class="btn btn-success btn-floated btn-add" data-toggle="tooltip" title="เพิ่ม"><span
-                onclick="window.location='{{ route('add_supplyform', ['subject_id' => $subs]) }}'"
+                onclick="window.location='{{ route('add_supplyform', [$depart,'subject_id' => $subs]) }}'"
                 class="fas fa-plus"></span></button>
         <!-- /floating action -->
     </header><!-- /.page-title-bar -->

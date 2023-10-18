@@ -97,7 +97,7 @@
                                             </script>
 
                                             <td class="align-middle">
-                                                <a href="{{ route('editmanual', ['manual_id' => $item->manual_id]) }}"><i
+                                                <a href="{{ route('editmanual', [$depart,'manual_id' => $item->manual_id]) }}"><i
                                                         class="fas fa-edit fa-lg text-success" data-toggle="tooltip"
                                                         title="แก้ไข"></i></a>
                                                 <a href="{{ route('destorymanual', ['manual_id' => $item->manual_id]) }}"

@@ -27,7 +27,10 @@ class CheckUserLogin
                 $loginId = Session::get('loginId');
                 $data = Users::where('user_id', '=', $loginId)->first();
                 $logo = General::where('id', 1)->first();
+   
                 FacadesView::share('logo', $logo);
+            
+           
                 FacadesView::share('data', $data);
                 $ip = $request->ip();
                 $loginTime = now()->format('Y-m-d H:i:s');

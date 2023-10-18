@@ -63,4 +63,8 @@ class Department extends Model
         
         return $this->hasMany(UserSchool::class,'department_id');
       }
+      public function GenDe() {
+        
+        return $this->hasMany(General::class,'department_id');
+      }
 }

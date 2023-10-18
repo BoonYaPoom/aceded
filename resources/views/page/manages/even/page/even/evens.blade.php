@@ -113,10 +113,10 @@
                                             });
                                         </script>
                                         <td class="align-middle">
-                                            <a href="{{ route('catpage', ['category_id' => $item->category_id]) }}">
+                                            <a href="{{ route('catpage', ['department_id' => $depart,'category_id' => $item->category_id]) }}">
                                                 <i class="fas far fa-list-alt fa-lg text-info" data-toggle="tooltip"
                                                     title="ข้อมูล"></i></a>
-                                            <a href="{{ route('evenedit', ['category_id' => $item->category_id]) }}"><i
+                                            <a href="{{ route('evenedit', ['department_id' => $depart,'category_id' => $item->category_id]) }}"><i
                                                     class="fas fa-edit fa-lg text-success" data-toggle="tooltip"
                                                     title="แก้ไข"></i></a>
                                             <!-- Delete Confirmation Link -->
