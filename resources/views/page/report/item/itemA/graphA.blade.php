@@ -17,22 +17,23 @@
 
                     $year = \Carbon\Carbon::parse($dataLearn)->year + 543;
                     $newDateTime = \Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $lrean->registerdate)->format('d/m/Y H:i:s');
+                    if ($year == 2566) {
+                        if (!in_array($lrean->user_id, $uniqueUserIds)) {
+                            array_push($uniqueUserIds, $lrean->user_id);
+                            if ($lrean->congratulation == 1) {
+                                $count = \App\Models\Users::where('user_id', $lrean->user_id)
+                                    ->where('user_type', $personType)
+                                    ->count();
 
-                    if (!in_array($lrean->user_id, $uniqueUserIds)) {
-                        array_push($uniqueUserIds, $lrean->user_id);
-                        if ($lrean->congratulation == 1) {
-                            $count = \App\Models\Users::where('user_id', $lrean->user_id)
-                                ->where('user_type', $personType)
-                                ->count();
+                                $totalCount += $count;
+                            }
+                            if ($lrean->registerdate) {
+                                $countregis = \App\Models\Users::where('user_id', $lrean->user_id)
+                                    ->where('user_type', $personType)
+                                    ->count();
 
-                            $totalCount += $count;
-                        }
-                        if ($lrean->registerdate) {
-                            $countregis = \App\Models\Users::where('user_id', $lrean->user_id)
-                                ->where('user_type', $personType)
-                                ->count();
-
-                            $totalCountRE += $countregis;
+                                $totalCountRE += $countregis;
+                            }
                         }
                     }
                 }
@@ -56,22 +57,22 @@
             foreach ($learners as $l => $lea) {
                 if ($lea->congratulation == 1) {
                     $dataCon = $lea->congratulationdate;
-                    $yearCon = \ltrim(\Carbon\Carbon::parse($dataCon)->format('y'));
-                    if ($yearCon == 23) {
-                        $monthCon = \ltrim(\Carbon\Carbon::parse($dataCon)->format('m'), '0');
-                        $result[$monthCon]['congratulation'] = isset($result[$monthCon]['congratulation']) ? $result[$monthCon]['congratulation'] + 1 : 0;
-                        # code...
-                    }
+
+                    $yearCon = \Carbon\Carbon::parse($dataCon)->year + 543;
+                    if ($yearCon == 2566) {
+                    $monthCon = \ltrim(\Carbon\Carbon::parse($dataCon)->format('m'), '0');
+                    $result[$monthCon]['congratulation'] = isset($result[$monthCon]['congratulation']) ? $result[$monthCon]['congratulation'] + 1 : 0;
+            
+                }
                 } elseif ($lea->congratulation == 0) {
                     $dataRegi = $lea->registerdate;
-                    $yearR = \ltrim(\Carbon\Carbon::parse($dataRegi)->format('y'));
-                    if ($yearR == 23) {
-        
+                    $yearR = \Carbon\Carbon::parse($dataRegi)->year + 543;
+                    if ($yearR == 2566) {
                     $monthRegi = \ltrim(\Carbon\Carbon::parse($dataRegi)->format('m'), '0');
                     $result[$monthRegi]['register'] = isset($result[$monthRegi]['register']) ? $result[$monthRegi]['register'] + 1 : 0;
                     # code...
                 }
-                }
+            }
             }
             $chartDataCon = [];
             foreach ($dateAll as $m => $months) {
@@ -86,6 +87,7 @@
                     'register_count' => $register,
                 ];
             }
+
         @endphp
 
 
