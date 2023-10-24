@@ -75,7 +75,16 @@
       <link rel="stylesheet" href="{{ asset('/stylesheets/logincss/logincss.css') }}">
 
   </head>
-
+@php
+    
+try {
+    $connonName = 'mysql';
+    DB::connection()->getPdo($connonName);
+    echo "เชื่อมต่อฐานข้อมูล MySQL สำเร็จ!";
+} catch (\Exception $e) {
+    die("ไม่สามารถเชื่อมต่อฐานข้อมูล MySQL: " . $e->getMessage());
+}
+@endphp
     <!--  @php
       use Illuminate\Support\Facades\DB;
       

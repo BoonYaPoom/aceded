@@ -88,6 +88,14 @@
                             <span class="badge badge-warning">{{ $message }}</span>
                         @enderror
 
+                        <div class="form-group">
+                            <label for="detail">logo </label>
+                            <input type="file" class="form-control" name="detail" placeholder="logo"
+                                accept="image/*">
+                        </div><!-- /.form-group -->
+                        @error('detail')
+                        <span class="badge badge-warning">{{ $message }}</span>
+                    @enderror
                         <!-- .form-actions -->
                         <div class="form-group">
                             <label for="department_status">สถานะ </label> <label

@@ -56,7 +56,7 @@
     </tbody><!-- /tbody -->
     <tr>
 
-        <td colspan="4" class="text-center"><button class="btn btn-primary" type="submit" id="Userselectdata"><i
+        <td colspan="5" class="text-center"><button class="btn btn-primary" type="submit" id="Userselectdata"><i
                     class="fas fa-user-plus"></i>
                 เพิ่มเข้ากลุ่มผู้ใช้งาน</button></td>
     </tr>

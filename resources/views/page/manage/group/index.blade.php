@@ -90,7 +90,7 @@
                                         <a href="{{ route('editcour', [$depart,'group_id' => $item->group_id]) }}">
                                             <i class="far fa-edit fa-lg text-success" data-toggle="tooltip"
                                                 title="แก้ไข"></i></a>
-                                        <a href="{{ route('deletecour', ['group_id' => $item->group_id]) }}"
+                                        <a href="{{ route('deletecour', [$depart,'group_id' => $item->group_id]) }}"
                                             onclick="deleteRecord(event)"
                                            
                                             rel="รายวิชาเพิ่มเติม การป้องกันการทุจริต ระดับปฐมวัย" class="switcher-delete"

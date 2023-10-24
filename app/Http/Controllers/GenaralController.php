@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-
+use App\Models\Department;
 use App\Models\General;
 use App\Models\Log;
 use Illuminate\Http\Request;
@@ -37,9 +37,8 @@ class GenaralController extends Controller
                 $genaral->detail = 'upload/LOGO/' . 'logo' . '.' . $request->detail->getClientOriginalExtension();
             }
             // อัปเดตข้อมูลในตาราง 'General'
- 
+
             $genaral->title = 'logo';
-            
         }
 
         $genaral->save();
@@ -98,5 +97,41 @@ class GenaralController extends Controller
         $loginLog->save();
 
         return redirect()->route('logo')->with('message', 'logo บันทึกข้อมูลสำเร็จ');
+    }
+
+    public function logoDP($department_id)
+    {
+        $depart = Department::findOrFail($department_id);
+
+        $genaral  = $depart->GenDe()->where('department_id', $department_id)->get();
+        return view('page.manages.logo.logo', compact('genaral', 'depart'));
+    }
+    public function updateDP(Request $request, $department_id, $id)
+    {
+        $request->validate([
+            'detail' => 'required'
+
+        ]);
+        $genaral = General::findOrFail($id);
+
+        if ($request->hasFile('detail')) {
+
+            $filename = 'logo' . '.' . $request->detail->getClientOriginalExtension();
+            $uploadDirectory = public_path('upload/LOGO/');
+            if (!file_exists($uploadDirectory)) {
+                mkdir($uploadDirectory, 0755, true);
+            }
+            if (file_exists($uploadDirectory)) {
+
+                file_put_contents(public_path('upload/LOGO/' . $filename), file_get_contents($request->detail));
+                $genaral->detail = 'upload/LOGO/' . 'logo' . '.' . $request->detail->getClientOriginalExtension();
+            }
+            // อัปเดตข้อมูลในตาราง 'General'
+
+            $genaral->title = 'logo';
+        }
+
+        $genaral->save();
+        return redirect()->back()->with('message', 'logo บันทึกข้อมูลสำเร็จ');
     }
 }

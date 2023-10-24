@@ -24,16 +24,27 @@ class DepartUsersController extends Controller
             // ดึงผู้ใช้ที่มีค่า provic เท่ากันกับ $provicValue
             if ($data->user_role == 1) {
                 // ถ้า data->role เป็น 1 แสดงผู้ใช้ทั้งหมด
-                $usermanages = $depart->UserDe()->where('department_id', $department_id)->get();
+                $usermanages = $depart->UserDe()->where('department_id', $department_id);
+                if ($user_role !== null) {
+                    $usermanages->where('user_role', $user_role);
+                }
+        
+                $usermanages = $usermanages->get();
             } else {
                 // ถ้า data->role เป็น 0 แสดงผู้ใช้ที่มีค่า province_id เท่ากับ $provicValue
                 $usermanages = $depart->UserDe()->where('department_id', $department_id)
                     ->where('province_id', $provicValue)
-                    ->get();
+                 ;
+                 if ($user_role !== null) {
+                    $usermanages->where('user_role', $user_role);
+                }
+        
+                $usermanages = $usermanages->get();
             }
         } else {
             $usermanages = collect(); // ถ้า Session::get('loginId') ไม่มีค่า, กำหนด $usermanages เป็นคอลเลกชันว่าง
         }
+        
 
         return view('layouts.department.item.data.UserAdmin.indexview', compact('usermanages', 'depart'));
     }

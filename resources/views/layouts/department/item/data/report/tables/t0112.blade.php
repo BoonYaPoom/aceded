@@ -1,5 +1,5 @@
-@extends('page.report.index')
-@section('reports')
+@extends('layouts.department.item.data.report.index')
+@section('Departreportspage')
     <!-- .page-inner -->
     <style>
         @media print {

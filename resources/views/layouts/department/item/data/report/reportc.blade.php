@@ -1,6 +1,5 @@
 @extends('layouts.department.item.data.report.index')
-@section('Departreports')
-
+@section('Departreportspage')
     <div class="page-inner">
 
         <form method="post" id="formreport">
@@ -44,9 +43,9 @@
             <div class="card-header bg-muted">
                 <div class="d-flex align-items-center">
                     <span class="mr-auto">รายงานเชิงตาราง ปี 2566</span> <a
-                        href="https://aced.dlex.ai/childhood/admin/export/pdf.html"
+                        href="{{route('generatePdf')}}"
                         class="btn btn-icon btn-outline-danger"><i class="fa fa-file-pdf"></i></a>&nbsp;<a
-                        href="https://aced.dlex.ai/childhood/admin/export/excel.html"
+                        href="{{route('ReportExp')}}"
                         class="btn btn-icon btn-outline-primary"><i class="fa fa-file-excel "></i></a>&nbsp;<a
                         href="javascript:window.print();" class="btn btn-icon btn-outline-success"><i
                             class="fa fa-print "></i></a>
@@ -69,14 +68,14 @@
                             <tr>
                                 <td align="center">1</td>
                                 <td>รายงานข้อมูลรายชื่อผู้เรียนทั้งหมด และแยกตามหลักสูตร</td>
-                                <td align="center"><a href="{{route('ReportUserAuth')}}"><i
+                                <td align="center"><a href="{{route('DepartReportUserAuth', ['department_id' => $depart->department_id])}}"><i
                                             class="fas fa-chart-bar text-teal mr-2"></i></a></td>
 
                             </tr>
                             <tr>
                                 <td align="center">2</td>
                                 <td>รายชื่อผู้ฝึกอบรมที่เข้าฝึกอบรมมากที่สุด</td>
-                                <td align="center"><a href="{{route('trainUserAuth')}}"><i
+                                <td align="center"><a href="{{route('DeparttrainUserAuth', ['department_id' => $depart->department_id])}}"><i
                                             class="fas fa-chart-bar text-teal mr-2"></i></a></td>
 
                             </tr>
@@ -84,35 +83,35 @@
                             <tr>
                                 <td align="center">3</td>
                                 <td>รายงานการดาวน์โหลดเอกสาร e-book Multimedia ของผู้เรียน</td>
-                                <td align="center"><a href="{{route('bookUserAuth')}}"><i
+                                <td align="center"><a href="{{route('DepartbookUserAuth', ['department_id' => $depart->department_id])}}"><i
                                             class="fas fa-chart-bar text-teal mr-2"></i></a></td>
 
                             </tr>
                             <tr>
                                 <td align="center">4</td>
                                 <td>รายงานการ Login ของผู้เรียน</td>
-                                <td align="center"><a href="{{route('LoginUserAuth')}}"><i
+                                <td align="center"><a href="{{route('DepartLoginUserAuth', ['department_id' => $depart->department_id])}}"><i
                                             class="fas fa-chart-bar text-teal mr-2"></i></a></td>
 
                             </tr>
                            <!-- <tr>
                                 <td align="center">5</td>
                                 <td>การสำรองและการกู้คืนข้อมูล</td>
-                                <td align="center"><a href="{{route('BackUserAuth')}}"><i
+                                <td align="center"><a href="{{route('DepartBackUserAuth', ['department_id' => $depart->department_id])}}"><i
                                             class="fas fa-chart-bar text-teal mr-2"></i></a></td>
 
                             </tr>
                             <tr>
                                 <td align="center">6</td>
                                 <td>สรุปรายรับในการฝึกอบรมรายเดือน</td>
-                                <td align="center"><a href="{{route('reportMUserAuth')}}"><i
+                                <td align="center"><a href="{{route('DepartreportMUserAuth', ['department_id' => $depart->department_id])}}"><i
                                             class="fas fa-chart-bar text-teal mr-2"></i></a></td>
 
                             </tr>
                             <tr>
                                 <td align="center">7</td>
                                 <td>สรุปรายรับในการฝึกอบรมรายไตรมาส</td>
-                                <td align="center"><a href="{{route('reportYeaAuth')}}"><i
+                                <td align="center"><a href="{{route('DepartreportYeaAuth', ['department_id' => $depart->department_id])}}"><i
                                             class="fas fa-chart-bar text-teal mr-2"></i></a></td>
 
                             </tr>
@@ -120,7 +119,7 @@
                                 <td align="center">8</td>
                                 <td>สรุปรายรับในการฝึกอบรมรายปี</td>
                                 <td align="center"><a
-                                        href="{{route('reportQuarterlyAuth')}}"><i
+                                        href="{{route('DepartreportQuarterlyAuth', ['department_id' => $depart->department_id])}}"><i
                                             class="fas fa-chart-bar text-teal mr-2"></i></a></td>
 
                             </tr>
@@ -128,7 +127,7 @@
                                 <td align="center">9</td>
                                 <td>สำรองข้อมูล (Backup System) แบบ Full Backup</td>
                                 <td align="center"><a
-                                        href="{{route('BackupFullUserAuth')}}"><i
+                                        href="{{route('DepartBackupFullUserAuth', ['department_id' => $depart->department_id])}}"><i
                                             class="fas fa-chart-bar text-teal mr-2"></i></a></td>
 
                             </tr>-->
@@ -136,7 +135,7 @@
                                 <td align="center">5</td>
                                 <td>ข้อมูล Log File ในรูปแบบรายงานทางสถิติ</td>
                                 <td align="center"><a
-                                        href="{{route('LogFileUserAuth')}}"><i
+                                        href="{{route('DepartLogFileUserAuth', ['department_id' => $depart->department_id])}}"><i
                                             class="fas fa-chart-bar text-teal mr-2"></i></a></td>
 
                             </tr>

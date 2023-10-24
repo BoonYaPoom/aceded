@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\ActivityCategory;
 use App\Models\Department;
+use App\Models\General;
 use App\Models\Users;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -65,7 +66,7 @@ class DepartmentController extends Controller
     public function store(Request $request)
     {
         try {
-            
+
             $depart = new Department;
             $depart->name_th = $request->name_th;
             $depart->name_en = $request->name_en;
@@ -144,6 +145,28 @@ class DepartmentController extends Controller
             $actcat->cover = '';
 
             $actcat->save();
+
+
+            $genaral = new General;
+            if ($request->hasFile('detail')) {
+
+                $filename = 'logo' . $depart->department_id . '.' . $request->detail->getClientOriginalExtension();
+                $uploadDirectory = public_path('upload/LOGO/');
+                if (!file_exists($uploadDirectory)) {
+                    mkdir($uploadDirectory, 0755, true);
+                }
+                if (file_exists($uploadDirectory)) {
+
+                    file_put_contents(public_path('upload/LOGO/' . $filename), file_get_contents($request->detail));
+                    $genaral->detail = 'upload/LOGO/' . 'logo' . $depart->department_id . '.' . $request->detail->getClientOriginalExtension();
+                }
+                // อัปเดตข้อมูลในตาราง 'General'
+
+                $genaral->title = 'logo';
+                $genaral->status = 1;
+                $genaral->department_id =  $depart->department_id;
+            }
+            $genaral->save();
             DB::commit();
         } catch (\Exception $e) {
 
@@ -168,10 +191,10 @@ class DepartmentController extends Controller
     }
     public function departmentedit($from, $department_id)
     {
-            #$depart = Department::where('name_short_en', $name_short_en)->firstOrFail();
+        #$depart = Department::where('name_short_en', $name_short_en)->firstOrFail();
         $depart  = Department::findOrFail($department_id);
         $departmentLink = '';
-    
+
         if ($from === 'lms') {
             $departmentLink = route('departmentLearnpage');
         } elseif ($from === 'dls') {
@@ -185,10 +208,10 @@ class DepartmentController extends Controller
     }
     public function homede($department_id)
     {
-          
+
         $depart  = Department::findOrFail($department_id);
-      
-        return view('layouts.department.item.data.home', compact('depart',));
+
+        return view('layouts.department.item.data.home', compact('depart'));
     }
     public function update(Request $request, $from, $department_id)
     {

@@ -16,7 +16,11 @@
         <td>{{ $usersscho->username }} </td>
         <td> {{ $usersscho->firstname }} {{ $usersscho->lastname }}</td>
         <td>
+            @if ($departcho)
             {{ $departcho->name_th }}
+        @else
+            
+        @endif
         </td>
         <td>
             {{ $school->school_name }}
