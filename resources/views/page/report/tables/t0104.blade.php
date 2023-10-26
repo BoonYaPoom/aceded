@@ -1,24 +1,6 @@
 @extends('page.report.index')
 @section('reports')
-    <!-- .page-inner -->
-    <style>
-        @media print {
-            body * {
-                visibility: hidden;
-            }
 
-            #section-to-print,
-            #section-to-print * {
-                visibility: visible;
-            }
-
-            #section-to-print {
-                position: absolute;
-                left: 0;
-                top: 0;
-            }
-        }
-    </style>
 
     @php
         // Fetch logs with logid = 1 and group them by user_id

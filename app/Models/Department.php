@@ -67,4 +67,8 @@ class Department extends Model
         
         return $this->hasMany(General::class,'department_id');
       }
+      public function SchoDe()
+      {
+          return $this->hasMany(School::class, 'department_id');
+      }
 }

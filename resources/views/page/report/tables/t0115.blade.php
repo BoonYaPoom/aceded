@@ -1,24 +1,7 @@
 @extends('page.report.index')
 @section('reports')
     <!-- .page-inner -->
-    <style>
-        @media print {
-            body * {
-                visibility: hidden;
-            }
 
-            #section-to-print,
-            #section-to-print * {
-                visibility: visible;
-            }
-
-            #section-to-print {
-                position: absolute;
-                left: 0;
-                top: 0;
-            }
-        }
-    </style>
     <div class="page-inner">
 
         <form method="post" id="formreport">
@@ -91,8 +74,7 @@
                             @endphp
 
 
-                            @endphp
-                            @foreach ($month as $im => $m)
+                                  @foreach ($month as $im => $m)
                        
                                 @php
                                     $register = empty($result[$im]['register']) ? 0 : $result[$im]['register'];

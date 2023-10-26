@@ -17,4 +17,7 @@ class School extends Model
     {
         return $this->hasMany(UserSchool::class, 'school_id');
     }
+    public function DeScho() {
+        return $this->belongsTo(School::class,'dewpartment_id');
+      }
 }

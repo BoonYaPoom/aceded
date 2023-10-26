@@ -16,7 +16,7 @@
             toastr.success("{{ Session::get('message') }}");
         </script>
     @endif
-    <form action="{{ route('courseform_update', [$depart,'course_id' => $cour->course_id]) }}" method="post"
+    <form action="{{ route('courseform_update', [$depart, 'course_id' => $cour->course_id]) }}" method="post"
         enctype="multipart/form-data">
         @csrf
         @method('PUT')
@@ -33,7 +33,7 @@
                             style="text-decoration: underline;">จัดการหลักสูตร</a> / <a
                             href="{{ route('courgroup', ['department_id' => $courses->first()->department_id]) }}"
                             style="text-decoration: underline;">
-                            หมวดหมู่</a> / <a href="{{ route('courpag', [$depart,'group_id' => $cour->group_id]) }}"
+                            หมวดหมู่</a> / <a href="{{ route('courpag', [$depart, 'group_id' => $cour->group_id]) }}"
                             style="text-decoration: underline;">
 
                             {{ $courses->group_th }}
@@ -81,11 +81,11 @@
                                     @php
                                         $courArray2 = json_decode($cour->subject, true);
                                     @endphp
-                                   
+
                                     @if (is_array($courArray2))
-                                    <option value="{{ $subjects->subject_id }}"
-                                        {{ in_array($subjects->subject_id, $courArray2) ? 'selected' : '' }}>
-                                        {{ $subjects->subject_th }}</option>
+                                        <option value="{{ $subjects->subject_id }}"
+                                            {{ in_array($subjects->subject_id, $courArray2) ? 'selected' : '' }}>
+                                            {{ $subjects->subject_th }}</option>
                                     @else
                                         <!-- กรณี $courArray ไม่ใช่อาร์เรย์ -->
                                         <option value="{{ $subjects->subject_id }}">
@@ -290,7 +290,7 @@
 
                             </div><!-- /grid column -->
                         </div><!-- /grid row -->
-                
+
                         <!-- .form-group -->
                         <div class="form-group d-none">
                             <label for="shownumber">แสดงลำดับ </label> <label
@@ -573,76 +573,101 @@
                         </fieldset><!-- /.fieldset -->
 
                         <!-- .fieldset -->
+                        <!-- .fieldset -->
                         <fieldset>
                             <legend>ข้อมูลการชำระเงิน</legend> <!-- .form-group -->
                             <div class="row">
                                 <!-- grid column -->
-                                <div class="col-md-6">
+                                <div class="col-md-4">
                                     <!-- .form-group -->
                                     <div class="form-group">
                                         <label class="control-label" for="paymentstatus">ชำระค่าลงทะเบียน</label>
                                         <select id="paymentstatus" name="paymentstatus" class="form-control"
                                             data-toggle="select2" data-placeholder="ชำระค่าลงทะเบียน"
-                                            data-allow-clear="false"
+                                            data-allow-clear="false"   
                                             onchange="if(this.value==1) $('.showpayment').removeClass('d-none'); else $('.showpayment').addClass('d-none');">
                                             <option value="0" {{ $cour->paymentstatus == 0 ? 'selected' : '' }}>
-                                                ไม่มีค่าลงทะเบียน </option>
+                                                ไม่มีค่าลงทะเบียน
+                                            </option>
                                             <option value="1" {{ $cour->paymentstatus == 1 ? 'selected' : '' }}>
-                                                มีค่าลงทะเบียน </option>
-
-
-                                        </select>
+                                                มีค่าลงทะเบียน
+                                            </option>
+                                        </select>             
                                     </div><!-- /.form-group -->
                                 </div><!-- /grid column -->
                                 <!-- grid column -->
-                                <div class="col-md-6">
-                                    <div class="form-group showpayment d-none ">
+                          
+                                <div class="col-md-4">
+                                    <div class="form-group showpayment {{ $cour->paymentstatus == 1 ? '' : 'd-none' }}">
                                         <label for="person_type">ราคาหลักสูตร (บาท) </label>
                                         <input type="text" class="form-control number" name="price" id="price"
                                             placeholder="ราคาหลักสูตร (บาท)" value="{{ $cour->price }}" />
                                     </div>
                                 </div><!-- /grid column -->
+
+                                <div class="col-md-4">
+                                    <div class="form-group showpayment {{ $cour->paymentstatus == 1 ? '' : 'd-none' }}">
+                                        <label for="person_type">กำหนดชำระเงินภายในวันที่ </label>
+                                        <input type="text" class="form-control" name="paymentdate" id="paymentdate"
+                                            data-toggle="flatpickr" data-enable-time="true" data-date-format="Y-m-d H:i"
+                                            placeholder="กำหนดชำระเงินภายในวันที่" value="{{ $cour->paymentdate }}" />
+                                    </div>
+                                </div>
                             </div><!-- /grid row -->
-                            <div class="row d-none   d-none">
+                            <div class="row  showpayment {{ $cour->paymentstatus == 1 ? '' : 'd-none' }}">
                                 <div class="col-md-6">
-                                    <!-- .form-group -->
+
                                     <div class="form-group">
-                                        <label class="control-label" for="paymentmethod">ค่าลงทะเบียน</label>
-                                        <!-- .list-group-item -->
+                                        <label class="control-label" for="paymentmethod">วิธีการชำระค่าลงทะเบียน</label>
+
                                         <div class="custom-control  custom-checkbox">
                                             <label
                                                 class="switcher-control switcher-control-success switcher-control-lg"><input
-                                                    type="checkbox" name="paymentmethod" value="1"
-                                                    class="switcher-input"> <span
-                                                    class="switcher-indicator"></span></label>
-                                            <!-- /.switcher-control -->
-                                            <span> ชำระเงิน Payin slip</span> <!-- .switcher-control -->
-                                        </div><!-- /.list-group-item -->
-                                        <!-- .list-group-item -->
+                                                    type="checkbox" name="payinslip" id="payinslip" value="1"
+                                                    class="switcher-input" {{ $cour->payinslip == 1 ? 'selected' : '' }}>
+                                                <span class="switcher-indicator"></span></label>
+                                            <span> Payin slip</span>
+                                        </div>
+                                        <div class="custom-control  custom-checkbox">
+                                            <label
+                                                class="switcher-control switcher-control-success switcher-control-lg"><input
+                                                    type="checkbox" name="creditcard" id="creditcard" value="1"
+                                                    class="switcher-input" {{ $cour->creditcard == 1 ? 'selected' : '' }}>
+                                                <span class="switcher-indicator"></span></label>
+                                            <span> Credit card</span>
+                                        </div>
+                                        <div class="custom-control  custom-checkbox">
+                                            <label
+                                                class="switcher-control switcher-control-success switcher-control-lg"><input
+                                                    type="checkbox" name="promptpay" id="promptpay" value="1"
+                                                    class="switcher-input" {{ $cour->promptpay == 1 ? 'selected' : '' }}>
+                                                <span class="switcher-indicator"></span></label>
+                                            <span> Prompt Pay</span>
+                                        </div>
 
-                                        <!-- .list-group-header -->
-                                    </div><!-- /.form-group -->
-                                </div><!-- /grid column -->
+
+                                    </div>
+                                </div>
                             </div>
-                            <div class="row showpayment d-none">
+                            <div class="row showpayment {{ $cour->paymentstatus == 1 ? '' : 'd-none' }}">
                                 <div class="col-md-12 ">
                                     <div class="form-group">
                                         <label class="control-label" for="paymentdetail">ข้อมูลการชำระเงิน</label>
                                         <textarea class="editor" data-placeholder="ข้อมูลการชำระเงิน" data-height="200" id="paymentdetail"
-                                            name="paymentdetail"> {{ $cour->paymentdetail }}</textarea>
+                                            name="paymentdetail">
+                                            {{ $cour->paymentdetail }}
+                                        </textarea>
                                     </div>
                                 </div><!-- /grid column -->
 
                             </div><!-- /grid row -->
                         </fieldset><!-- /.fieldset -->
-                        <fieldset class=" showpayment d-none">
-
-                            <legend>ส่วนลด</legend> <!-- .form-group -->
-
+                        <fieldset class=" showpayment {{ $cour->paymentstatus == 1 ? '' : 'd-none' }}">
+                            <legend>ส่วนลด</legend>
                             <div class="row ">
                                 <div class="col-md-6">
                                     <div class="form-group">
-                                        <label class="control-label" for="">ส่วนลด</label> <select id="discount"
+                                        <label class="control-label" for>ส่วนลด</label> <select id="discount"
                                             name="discount" class="form-control" data-toggle="select2"
                                             data-placeholder="ส่วนลด" data-allow-clear="false"
                                             onchange="if(this.value==1) $('.showdiscount').removeClass('d-none'); else $('.showdiscount').addClass('d-none');">
@@ -650,15 +675,14 @@
                                                 ไม่มีส่วนลด </option>
                                             <option value="1" {{ $cour->discount == 1 ? 'selected' : '' }}>มีส่วนลด
                                             </option>
-
                                         </select>
                                     </div>
-                                </div><!-- /grid column -->
-                                <div class="col-md-6 showdiscount d-none">
+                                </div>
+                                <div class="col-md-6 showdiscount {{ $cour->discount == 1 ? '' : 'd-none' }}">
                                     <div class="form-group">
-                                        <label class="control-label" for="">ประเภทการลด</label> <select
-                                            id="discount_type" name="discount_type" class="form-control"
-                                            data-toggle="select2" data-placeholder="ส่วนลด" data-allow-clear="false">
+                                        <label class="control-label" for>ประเภทการลด</label> <select id="discount_type"
+                                            name="discount_type" class="form-control" data-toggle="select2"
+                                            data-placeholder="ส่วนลด" data-allow-clear="false">
                                             <option value="percent"
                                                 {{ $cour->discount_type == 'percent' ? 'selected' : '' }}>เปอร์เซ็นต์
                                             </option>
@@ -666,86 +690,121 @@
                                                 {{ $cour->discount_type == 'price' ? 'selected' : '' }}>ราคาบาท </option>
                                         </select>
                                     </div>
-                                </div><!-- /grid column -->
-                            </div><!-- /grid row -->
+                                </div>
+                            </div>
                             <div class="row">
-                                <div class="col-md-12 showdiscount d-none">
+                                <div class="col-md-6 showdiscount {{ $cour->discount == 1 ? '' : 'd-none' }}">
                                     <div class="form-group">
+                                        <label for="discount_code">ส่วนลด </label>
+                                        <input type="text" class="form-control number" name="discount_code"
+                                            id="discount_code" placeholder="ทั่วไป "
+                                            value="{{ $cour->discount_code }}" />
                                         <table>
-                                            <tr>
-                                                <td>ทั่วไป</td>
-                                                <td><input type="text" class="form-control" name="discount_data[0]"
-                                                        id="discount_data0" placeholder="ทั่วไป " value="" /></td>
-                                            </tr>
                                             <tr class="showrow d-none" id="showrow1">
-                                                <td>ข้าราชการธุรการ</td>
+                                                <td>บุคลากรของสำนักงาน</td>
                                                 <td><input type="text" class="form-control number"
                                                         name="discount_data[1]" id="discount_data1"
-                                                        placeholder="ส่วนลด ข้าราชการธุรการ" value="" /></td>
+                                                        placeholder="ส่วนลด บุคลากรของสำนักงาน" value /></td>
                                             </tr>
                                             <tr class="showrow d-none" id="showrow2">
-                                                <td>พนักงานอัยการ</td>
+                                                <td>บุคคลทั่วไป</td>
                                                 <td><input type="text" class="form-control number"
                                                         name="discount_data[2]" id="discount_data2"
-                                                        placeholder="ส่วนลด พนักงานอัยการ" value="" /></td>
+                                                        placeholder="ส่วนลด บุคคลทั่วไป" value /></td>
                                             </tr>
                                             <tr class="showrow d-none" id="showrow3">
-                                                <td>บุคลากรภายนอก</td>
+                                                <td>ผู้ประกอบธุรกิจ</td>
                                                 <td><input type="text" class="form-control number"
                                                         name="discount_data[3]" id="discount_data3"
-                                                        placeholder="ส่วนลด บุคลากรภายนอก" value="" /></td>
+                                                        placeholder="ส่วนลด ผู้ประกอบธุรกิจ" value /></td>
+                                            </tr>
+                                            <tr class="showrow d-none" id="showrow4">
+                                                <td>ส่วนราชการ / หน่วยงานของรัฐ</td>
+                                                <td><input type="text" class="form-control number"
+                                                        name="discount_data[4]" id="discount_data4"
+                                                        placeholder="ส่วนลด ส่วนราชการ / หน่วยงานของรัฐ" value /></td>
+                                            </tr>
+                                            <tr class="showrow d-none" id="showrow5">
+                                                <td>สถาบันการศึกษา</td>
+                                                <td><input type="text" class="form-control number"
+                                                        name="discount_data[5]" id="discount_data5"
+                                                        placeholder="ส่วนลด สถาบันการศึกษา" value /></td>
+                                            </tr>
+                                            <tr class="showrow d-none" id="showrow6">
+                                                <td>อื่น ๆ</td>
+                                                <td><input type="text" class="form-control number"
+                                                        name="discount_data[6]" id="discount_data6"
+                                                        placeholder="ส่วนลด อื่น ๆ" value /></td>
                                             </tr>
                                         </table>
                                     </div>
-                                </div><!-- /grid column -->
+                                </div>
 
-                            </div><!-- /grid row -->
-
-                        </fieldset><!-- /.fieldset -->
-                        <fieldset class=" showpayment d-none">
-
-                            <legend>วิธีการชำระเงิน Payin slip</legend> <!-- .form-group -->
-
-                            <div class="row">
-                                <div class="col-md-6">
+                                <div class="col-md-6 showdiscount {{ $cour->discount == 1 ? '' : 'd-none' }}">
                                     <div class="form-group">
-                                        <label class="control-label" for="">ธนาคาร</label> <select id="bank"
+                                        <label for="discount_code">รหัสส่วนลด </label>
+                                        <input type="text" class="form-control" name="discount_code"
+                                            id="discount_code" placeholder="รหัสส่วนลด"
+                                            value="{{ $cour->discount_code }}" />
+                                    </div>
+                                </div>
+                            </div>
+
+
+                        </fieldset>
+                        <fieldset class=" showpayment {{ $cour->paymentstatus == 1 ? '' : 'd-none' }}">
+                            <legend>ข้อมูลบัญชีธนาคาร</legend>
+                            <div class="row">
+                                <div class="col-md-6 d-none">
+                                    <div class="form-group">
+                                        <label class="control-label" for>ธนาคาร</label> <select id="bank"
                                             name="bank" class="form-control" data-toggle="select2"
                                             data-placeholder="ธนาคาร" data-allow-clear="false">
-                                            <option value="0" {{ $cour->bank == 0 ? 'selected' : '' }}>เลือกธนาคาร
-                                            </option>
-                                            <option value="ktb" {{ $cour->bank == 'ktb' ? 'selected' : '' }}>
-                                                ธนาคารกรุงไทย </option>
+                                            <option value>เลือกธนาคาร </option>
+                                            <option value="ktb">ธนาคารกรุงไทย </option>
                                         </select>
                                     </div>
-                                </div><!-- /grid column -->
+                                </div>
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label for="person_type">Comp Code </label>
                                         <input type="text" class="form-control number" name="compcode" id="compcode"
                                             placeholder="Comp Code" value="{{ $cour->compcode }}" />
                                     </div>
-                                </div><!-- /grid column -->
-                            </div><!-- /grid row -->
-                            <div class="row">
+                                </div>
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label for="person_type">Tax ID </label>
                                         <input type="text" class="form-control number" name="taxid" id="taxid"
                                             placeholder="Tax ID" value="{{ $cour->taxid }}" />
                                     </div>
-                                </div><!-- /grid column -->
+                                </div>
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label for="person_type">Suffix Code</label>
                                         <input type="text" class="form-control number" name="suffixcode"
-                                            id="suffixcode" placeholder="Suffix Code" value="{{ $cour->suffixcode }}"
-                                            maxlength="3" />
+                                            id="suffixcode" placeholder="Suffix Code" value="{{ $cour->suffixcode }}" />
                                     </div>
-                                </div><!-- /grid column -->
-                            </div><!-- /grid row -->
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="person_type">Prompt Pay / Account Book</label>
+                                        <input type="text" class="form-control number" name="accountbook"
+                                            id="accountbook" placeholder="Account Book"
+                                            value="{{ $cour->accountbook }}" />
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="person_type">Prompt Name / Account Name</label>
+                                        <input type="text" class="form-control" name="accountname" id="accountname"
+                                            placeholder="Account Name" value="{{ $cour->accountname }}" />
+                                    </div>
+                                </div>
+                            </div>
+                        </fieldset>
 
-                        </fieldset><!-- /.fieldset -->
+
 
                         <!-- .fieldset -->
                         <fieldset>
@@ -765,10 +824,11 @@
                                             <figcaption class="figure-caption">
                                                 <h6 class="figure-title">ใบประกาศนียบัตร 1</h6>
                                                 <p class="text-muted mb-0 ">
-                                                    <div class="custom-control custom-radio text-center"><input type="radio"
-                                                            class="custom-control-input" name="templete_certificate"
-                                                            id="certificate1" value="1"> <label
-                                                            class="custom-control-label" for="certificate1"></label></div>
+                                                <div class="custom-control custom-radio text-center"><input type="radio"
+                                                        class="custom-control-input" name="templete_certificate"
+                                                        id="certificate1" value="1"
+                                                        {{ $cour->templete_certificate == 1 ? 'checked' : '' }}> <label
+                                                        class="custom-control-label" for="certificate1"></label></div>
                                                 </p>
                                             </figcaption><!-- /.figure-caption -->
                                         </figure><!-- /.card-figure -->
@@ -787,10 +847,11 @@
                                             <figcaption class="figure-caption">
                                                 <h6 class="figure-title">ใบประกาศนียบัตร 2</h6>
                                                 <p class="text-muted mb-0 ">
-                                                    <div class="custom-control custom-radio text-center"><input type="radio"
-                                                            class="custom-control-input" name="templete_certificate"
-                                                            id="certificate2" value="2"> <label
-                                                            class="custom-control-label" for="certificate2"></label></div>
+                                                <div class="custom-control custom-radio text-center"><input type="radio"
+                                                        class="custom-control-input" name="templete_certificate"
+                                                        id="certificate2" value="2"
+                                                        {{ $cour->templete_certificate == 2 ? 'checked' : '' }}> <label
+                                                        class="custom-control-label" for="certificate2"></label></div>
                                                 </p>
                                             </figcaption><!-- /.figure-caption -->
                                         </figure><!-- /.card-figure -->
@@ -808,10 +869,11 @@
                                             <figcaption class="figure-caption">
                                                 <h6 class="figure-title">ใบประกาศนียบัตร 2</h6>
                                                 <p class="text-muted mb-0 ">
-                                                    <div class="custom-control custom-radio text-center"><input type="radio"
-                                                            class="custom-control-input" name="templete_certificate"
-                                                            id="certificate3" value="3"> <label
-                                                            class="custom-control-label" for="certificate3"></label></div>
+                                                <div class="custom-control custom-radio text-center"><input type="radio"
+                                                        class="custom-control-input" name="templete_certificate"
+                                                        id="certificate3" value="3"
+                                                        {{ $cour->templete_certificate == 3 ? 'checked' : '' }}> <label
+                                                        class="custom-control-label" for="certificate3"></label></div>
                                                 </p>
                                             </figcaption><!-- /.figure-caption -->
                                         </figure><!-- /.card-figure -->
@@ -819,12 +881,11 @@
                                 </div><!-- /grid column -->
                                 <!-- grid column -->
                             </div><!-- /grid row -->
-                            
+
                             <div id="modal01" class="w3-modal" onclick="this.style.display='none'">
                                 <span class="w3-button w3-hover-red w3-xlarge w3-display-topright">×</span>
                                 <div class="w3-modal-content w3-animate-zoom">
-                                    <img src="{{ asset('uploads/cer02_0.png') }}" style="width:100%"
-                                        id="previewimage">
+                                    <img src="{{ asset('uploads/cer02_0.png') }}" style="width:100%" id="previewimage">
                                 </div>
                             </div>
                             <!-- grid column -->
@@ -846,9 +907,9 @@
                                                     for="certificate6"></label></div>
                                             </p>
                                             <div class="form-group">
-                                                <label for="cert_custom">เพิ่มรูปแบบใบประกาศนียบัตร </label> <input type="file"
-                                                    class="form-control" id="cert_custom" name="cert_custom"
-                                                    placeholder="ใบประกาศนียบัตร	" accept="image/*">
+                                                <label for="cert_custom">เพิ่มรูปแบบใบประกาศนียบัตร </label> <input
+                                                    type="file" class="form-control" id="cert_custom"
+                                                    name="cert_custom" placeholder="ใบประกาศนียบัตร	" accept="image/*">
                                             </div><!-- /.form-group -->
                                         </figcaption><!-- /.figure-caption -->
                                     </figure><!-- /.card-figure -->
@@ -897,4 +958,18 @@
             </div><!-- /.page-section -->
         </div><!-- /.page-inner -->
     </form>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            // Get all elements with the "discount-code-input" class
+            const discountCodeInputs = document.querySelectorAll(".number");
+
+            // Loop through all the input fields
+            discountCodeInputs.forEach(function(discountCodeInput) {
+                discountCodeInput.addEventListener("input", function(event) {
+                    this.value = this.value.replace(/\D/g, ""); // Allow only numeric values
+                });
+            });
+        });
+    </script>
 @endsection

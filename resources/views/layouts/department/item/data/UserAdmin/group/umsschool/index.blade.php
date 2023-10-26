@@ -27,7 +27,7 @@
                                     <input type="search" id="myInput" class="form-control" placeholder=""
                                         aria-controls="datatable">
                                 </label>
-                                @if ($data->user_role == 8)
+                                @if ($data->user_role == 1 || $data->user_role == 8)     
                                     <label>จังหวัด
                                         <select id="drop2" name="drop2" class="form-control form-control-sm"
                                             data-allow-clear="false">
@@ -42,6 +42,7 @@
                                         </select>
 
                                     </label>
+                                    
                                 @endif
                             </div>
 
@@ -64,7 +65,7 @@
 
                                 @endphp
                                 <!-- tr -->
-                                @foreach ($school->sortBy('school_id') as $scho)
+                                @foreach ($school as $scho)
                                     @php
 
                                         $proviUser = \App\Models\Provinces::where('id', $scho->provinces_id)
@@ -96,7 +97,7 @@
                                                     data-toggle="tooltip" title="ลบ">
                                                     <i class="fas fa-trash-alt fa-lg text-warning "></i></a>
                                             @else
-                                                <a href="{{ route('editschoolDepart', ['school_id' => $scho->school_id]) }}"
+                                                <a href="{{ route('editschoolDepart', [ $depart,'school_id' => $scho->school_id]) }}"
                                                     data-toggle="tooltip" title="แก้ไข"><i
                                                         class="far fa-edit fa-lg text-success mr-3"></i></a>
                                             @endif
@@ -129,6 +130,15 @@
 
                                         });
 
+                                        $('#drop2').on('change', function() {
+                                            var selecteddrop2Id = $(this).val();
+                                            if (selecteddrop2Id == 0) {
+                                                table.columns(2).search('').draw();
+                                            } else {
+                                                // กรองข้อมูลใน DataTables ด้วยหน่วยงานที่เลือก
+                                                table.columns(2).search(selecteddrop2Id).draw();
+                                            }
+                                        });
                                         $('#myInput').on('keyup', function() {
                                             table.search(this.value).draw();
                                         });

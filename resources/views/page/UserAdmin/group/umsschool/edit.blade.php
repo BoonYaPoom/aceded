@@ -39,7 +39,19 @@
                                 @endforeach
                             </select>
                         </div><!-- /.form-group -->
-
+                        <div class="form-group">
+                            <label for="department_id" class="col-md-1">หน่วยงาน </label>
+                            <span class="badge badge-warning">Required</span></label>
+                            <select id="department_id" name="department_id" class="form-control form-control-sm"
+                                data-toggle="select2" data-allow-clear="false">
+                                <option value="0">โปรดเลือกหน่วยงาน</option>
+                       
+                                @foreach ($depart as $depa)
+                                    <option value="{{ $depa->department_id }}"   {{ $school->department_id == $depa->department_id ? 'selected' : '0' }}>
+                                        {{ $depa->name_th }} </option>
+                                @endforeach
+                            </select>
+                        </div><!-- /.form-group -->
                     </div><!-- /.card-body -->
                 </div><!-- /.card -->
 

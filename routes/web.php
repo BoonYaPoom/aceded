@@ -86,13 +86,13 @@ Route::group(['middleware' => ['web', 'App\Http\Middleware\ClearOptimizeCacheMid
         Route::get('/aced', [DepartmentController::class, 'aced'])->name('aced');
         Route::get('/login', [CustomAuthController::class, 'login'])->name('homelogin');
         Route::get('/regis', [CustomAuthController::class, 'regis'])->name('homeregis');
-        Route::get('/ldap', [CustomAuthController::class, 'loginLdap'])->name('homeloginLdap');
+
         // เส้นทางอื่นๆที่ต้องใช้ middleware เช่นเดียวกัน
     });
 
     Route::post('/register-user', [CustomAuthController::class, 'registerUser'])->name('register-user');
     Route::post('/login-user', [CustomAuthController::class, 'loginUser'])->name('login-user');
-    Route::post('/login-ldap', [CustomAuthController::class, 'loginLdapUser'])->name('login-ldap');
+
     Route::get('/home', [CustomAuthController::class, 'homeregis'])->name('homeRegis');
 });
 
@@ -109,14 +109,12 @@ Route::group(['middleware' => 'IsLoggedIn'], function () {
         Route::middleware(['checkUserRole'])->group(function () {
             Route::get('{from}/departmentform', [DepartmentController::class, 'departmentcreate'])->name('departmentcreate');
             Route::post('/departmentform_add', [DepartmentController::class, 'store'])->name('departmentstore');
-            
-            Route::middleware(['checkDepartmentLogo'])->group(function () {
-            Route::get('{from}/departmentform_edit/{department_id}', [DepartmentController::class, 'departmentedit'])->name('departmentedit');
-            Route::put('{from}/departmentform_update/{department_id}', [DepartmentController::class, 'update'])->name('departmentupdate');
-        
 
+            Route::middleware(['checkDepartmentLogo'])->group(function () {
+                Route::get('{from}/departmentform_edit/{department_id}', [DepartmentController::class, 'departmentedit'])->name('departmentedit');
+                Route::put('{from}/departmentform_update/{department_id}', [DepartmentController::class, 'update'])->name('departmentupdate');
+            });
         });
-    });
         Route::get('/', [NavController::class, 'home'])->name('adminhome');
 
         Route::get('/department', [NavController::class, 'homedepartment'])->name('adminhomedepartment');
@@ -127,7 +125,7 @@ Route::group(['middleware' => 'IsLoggedIn'], function () {
             Route::put('/edit/{id}', [GenaralController::class, 'update'])->name('updategen');
             Route::post('/create', [GenaralController::class, 'create'])->name('creategen');
             Route::get('/highlight', [HighlightController::class, 'hightpage'])->name('hightpage');
- 
+
             Route::get('/wms', [DepartmentController::class, 'departmentwmspage'])->name('departmentwmspage');
             Route::get('/lms', [DepartmentController::class, 'departmentLearnpage'])->name('departmentLearnpage');
             Route::get('/bss', [DepartmentController::class, 'bookif'])->name('bookif');
@@ -138,7 +136,7 @@ Route::group(['middleware' => 'IsLoggedIn'], function () {
                     Route::get('{department_id}/logodepartment', [GenaralController::class, 'logoDP'])->name('logoDP');
                     Route::put('{department_id}/editdepartment/{id}', [GenaralController::class, 'updateDP'])->name('updategenDP');
                     Route::get('{department_id}/home', [NavController::class, 'manage'])->name('manage');
-    
+
                     Route::get('{department_id}/hightDep', [HighlightController::class, 'hightDep'])->name('hightDep');
                     Route::post('{department_id}/storeDep', [HighlightController::class, 'storeDep'])->name('storeDep');
                     Route::put('{highlight_id}/updateLinkDep', [HighlightController::class, 'updateLinkDep'])->name('updateLinkDep');
@@ -153,7 +151,7 @@ Route::group(['middleware' => 'IsLoggedIn'], function () {
 
 
                     Route::put('{department_id}/update_webcategoryform/{category_id}', [WedCategoryController::class, 'update'])->name('updateeven');
-          
+
 
                     Route::get('{department_id}/acteven', [WedCategoryController::class, 'acteven'])->name('acteven');
                     Route::get('{department_id}/add_webactcategoryform', [WedCategoryController::class, 'createact'])->name('createact');
@@ -167,8 +165,8 @@ Route::group(['middleware' => 'IsLoggedIn'], function () {
                     Route::post('{department_id}/{category_id}/store_webform', [WebController::class, 'store'])->name('catstore');
                     Route::get('{department_id}/edit_webform/{web_id}', [WebController::class, 'edit'])->name('editcat');
                     Route::put('{department_id}/update_webform/{web_id}', [WebController::class, 'update'])->name('updatecat');
-                
-            
+
+
 
 
                     Route::get('{department_id}/links', [LinkController::class, 'linkpage'])->name('linkpage');
@@ -176,7 +174,7 @@ Route::group(['middleware' => 'IsLoggedIn'], function () {
                     Route::post('{department_id}/add_linksform', [LinkController::class, 'store'])->name('storelink');
                     Route::get('{department_id}/edit_linksform/{links_id}', [LinkController::class, 'edit'])->name('editlink');
                     Route::put('{department_id}/update_linksform/{links_id}', [LinkController::class, 'update'])->name('updatelink');
-                   
+
 
                     Route::get('{department_id}/survey', [SurveyController::class, 'surveypage'])->name('surveypage');
                     Route::get('{department_id}/surveyform', [SurveyController::class, 'create'])->name('createsurvey');
@@ -190,7 +188,7 @@ Route::group(['middleware' => 'IsLoggedIn'], function () {
                     Route::get('{department_id}/edit_surveyquestionform/{question_id}', [SurveyQuestionController::class, 'edit'])->name('editque');
                     Route::put('{department_id}/update_surveyquestionform/{question_id}', [SurveyQuestionController::class, 'update'])->name('updateque');
                     Route::get('{department_id}/{survey_id}/surveyreports', [SurveyQuestionController::class, 'reportpage'])->name('wmspage');
-       
+
 
                     Route::get('/{survey_id}/responsess', [SurResponseController::class, 'resPonse'])->name('responsess');
 
@@ -201,7 +199,6 @@ Route::group(['middleware' => 'IsLoggedIn'], function () {
                     Route::post('{department_id}/add_manualform', [ManualController::class, 'store'])->name('storemanual');
                     Route::get('{department_id}/edit_manualform/{manual_id}', [ManualController::class, 'edit'])->name('editmanual');
                     Route::put('{department_id}/update_manualform/{manual_id}', [ManualController::class, 'update'])->name('updatemanual');
-
                 });
 
                 Route::prefix('dls')->group(function () {
@@ -212,13 +209,12 @@ Route::group(['middleware' => 'IsLoggedIn'], function () {
                     Route::post('{department_id}/add_bookcategoryform', [BookCategoryController::class, 'store'])->name('storebook');
                     Route::get('{department_id}/edit_bookcategoryform/{category_id}', [BookCategoryController::class, 'edit'])->name('editbook');
                     Route::put('{department_id}/update_bookcategoryform/{category_id}', [BookCategoryController::class, 'update'])->name('bookupdate');
-        
+
                     Route::get('{department_id}/{category_id}/book', [BookController::class, 'bookcatpage'])->name('bookcatpage');
                     Route::get('{department_id}/{category_id}/bookform', [BookController::class, 'create'])->name('catcreatebook');
                     Route::post('{department_id}/{category_id}/add_bookform', [BookController::class, 'store'])->name('bookcatstore');
                     Route::get('{department_id}/edit_bookform/{book_id}', [BookController::class, 'edit'])->name('editcatbook');
                     Route::put('{department_id}/update_bookform/{book_id}', [BookController::class, 'update'])->name('updatecatbook');
-          
                 });
                 Route::prefix('cop')->group(function () {
                     Route::get('{department_id}/blogcategory', [BlogCategotyController::class, 'blogpage'])->name('blogpage');
@@ -226,13 +222,12 @@ Route::group(['middleware' => 'IsLoggedIn'], function () {
                     Route::post('{department_id}/add_blogcategoryform', [BlogCategotyController::class, 'store'])->name('storeblogcat');
                     Route::get('{department_id}/edit_blogcategoryform/{category_id}', [BlogCategotyController::class, 'edit'])->name('editblogcat');
                     Route::put('{department_id}/update_blogcategoryform/{category_id}', [BlogCategotyController::class, 'update'])->name('updateblogcat');
-           
+
                     Route::get('{department_id}/{category_id}/blog', [BlogController::class, 'index'])->name('blog');
                     Route::get('{department_id}/{category_id}/blogform', [BlogController::class, 'create'])->name('createblog');
                     Route::post('{department_id}/{category_id}/add_blogform', [BlogController::class, 'store'])->name('storeblog');
                     Route::get('{department_id}/edit_blogform/{blog_id}', [BlogController::class, 'edit'])->name('editblog');
                     Route::put('{department_id}/update_blogform/{blog_id}', [BlogController::class, 'update'])->name('updateblog');
-           
                 });
 
                 Route::prefix('cop')->group(function () {
@@ -257,9 +252,6 @@ Route::group(['middleware' => 'IsLoggedIn'], function () {
                         Route::get('{department_id}/activiListform_edit2/{activity_id}', [ActivityController::class, 'formacttivityEdit2'])->name('activiListform2_edit');
                         Route::put('{department_id}/act2Update/{activity_id}', [ActivityController::class, 'act2update'])->name('act2Update');
                     });
-
-
-
                 });
 
 
@@ -271,7 +263,7 @@ Route::group(['middleware' => 'IsLoggedIn'], function () {
                     Route::post('{department_id}/add_groupform', [CourseGroupController::class, 'store'])->name('storecour');
                     Route::get('{department_id}/edit_groupform/{group_id}', [CourseGroupController::class, 'edit'])->name('editcour');
                     Route::put('{department_id}/update_groupform/{group_id}', [CourseGroupController::class, 'update'])->name('updatecour');
-              
+
 
 
                     Route::get('{department_id}/{group_id}/course', [CourseController::class, 'courpag'])->name('courpag');
@@ -286,7 +278,7 @@ Route::group(['middleware' => 'IsLoggedIn'], function () {
 
                     Route::put('{department_id}/courseform_update/{course_id}', [CourseController::class, 'update'])->name('courseform_update');
                     Route::put('{department_id}/courseform_update_structure/{course_id}', [CourseController::class, 'update_structure'])->name('update_structure');
-        
+
                     Route::get('{department_id}/{course_id}/classroom', [CourseClassController::class, 'classpage'])->name('class_page');
                     Route::get('{department_id}/{course_id}/add_classroomform', [CourseClassController::class, 'create'])->name('class_create');
                     Route::post('{department_id}/{course_id}/store_classroomform', [CourseClassController::class, 'store'])->name('class_store');
@@ -299,7 +291,7 @@ Route::group(['middleware' => 'IsLoggedIn'], function () {
                     Route::get('{department_id}/{course_id}/register/{m}', [CourseClassController::class, 'register'])->name('register_page');
                     Route::get('{department_id}/{course_id}/addusersCour/{m}', [CourseClassAddController::class, 'addusersCour'])->name('addusersCour');
                     Route::post('{department_id}/{course_id}/saveSelectedUsers/{m}', [CourseClassAddController::class, 'saveSelectedUsers'])->name('saveSelectedUsers');
-             
+
 
                     Route::match(['get', 'post'], '{department_id}/{course_id}/search-users/{m}', [CourseClassController::class, 'searchUsers'])->name('searchUsers');
 
@@ -328,7 +320,6 @@ Route::group(['middleware' => 'IsLoggedIn'], function () {
 
                     Route::put('{department_id}/add_subjectdetail/{subject_id}', [CourseSubjectController::class, 'updatedetail'])->name('updatedetailsub');
                     Route::get('{department_id}/subjectdetail/{subject_id}', [CourseSubjectController::class, 'editdetailsub'])->name('editdetailsub');
-      
                 });
 
                 Route::prefix('lms')->group(function () {
@@ -340,7 +331,7 @@ Route::group(['middleware' => 'IsLoggedIn'], function () {
                     Route::post('{department_id}/{subject_id}/add_lessonform', [CourseLessonController::class, 'store'])->name('storeless');
                     Route::get('{department_id}/edit_lessonform/{lesson_id}', [CourseLessonController::class, 'edit'])->name('edit_lessonform');
                     Route::put('{department_id}/update_lessonform/{lesson_id}', [CourseLessonController::class, 'update'])->name('update_lessonform');
-                  
+
                     Route::get('{department_id}/addsub_lessonsmallform/{subject_id}/{lesson_id}', [CourseLessonController::class, 'smallcreate'])->name('smallcreate');
                     Route::post('{department_id}/add_lessonsmallform/{subject_id}/{lesson_id}', [CourseLessonController::class, 'smailstore'])->name('smailstore');
                     Route::get('{department_id}/addsub_lessonsmailsmailform/{subject_id}/{lesson_id}', [CourseLessonController::class, 'smallsmallcreate'])->name('smallsmallcreate');
@@ -348,7 +339,7 @@ Route::group(['middleware' => 'IsLoggedIn'], function () {
                     Route::post('{department_id}/add_lessonsmailsmailform/{subject_id}/{lesson_id}', [CourseLessonController::class, 'smailsmailstore'])->name('smailsmailstore');
 
 
-           
+
                     Route::put('{department_id}/uploadfile/{lesson_id}', [CourseLessonController::class, 'uploadfile'])->name('uploadfile');
 
                     Route::get('{department_id}/supplymentary/{subject_id}', [CourseSupplymentaryController::class, 'supplypage'])->name('supplypage');
@@ -357,10 +348,10 @@ Route::group(['middleware' => 'IsLoggedIn'], function () {
                     Route::post('{department_id}/{subject_id}/store_supplymentaryform', [CourseSupplymentaryController::class, 'store'])->name('store_supplyform');
 
                     Route::get('{department_id}/{supplymentary_id}/edit_supplymentaryform', [CourseSupplymentaryController::class, 'edit'])->name('edit_supplyform');
-                 
 
-                
-                
+
+
+
                     Route::put('{department_id}/{supplymentary_id}/update_supplymentaryform', [CourseSupplymentaryController::class, 'update'])->name('update_supplyform');
 
 
@@ -370,9 +361,9 @@ Route::group(['middleware' => 'IsLoggedIn'], function () {
                     Route::post('{department_id}/{subject_id}/{lesson_id}/store_supplymentaryLessform', [CourseSupplymentaryController::class, 'storeLess'])->name('store_supplyLessform');
 
                     Route::get('{department_id}/{supplymentary_id}/edit_supplymentaryLessform', [CourseSupplymentaryController::class, 'editLess'])->name('edit_supplyLessform');
-                     Route::put('{department_id}/{supplymentary_id}/update_supplymentaryLessform', [CourseSupplymentaryController::class, 'updateLess'])->name('update_supplyLessform');
-                  
-                    
+                    Route::put('{department_id}/{supplymentary_id}/update_supplymentaryLessform', [CourseSupplymentaryController::class, 'updateLess'])->name('update_supplyLessform');
+
+
 
                     Route::get('{department_id}/{subject_id}/activity', [NavController::class, 'activitypage'])->name('activitypage');
 
@@ -388,9 +379,9 @@ Route::group(['middleware' => 'IsLoggedIn'], function () {
                         Route::get('{department_id}/{survey_id}/surveyquestion', [SurveyQuestionController::class, 'surveyreport'])->name('surveyquestion');
                         Route::get('{department_id}/{survey_id}/surveyquestionform', [SurveyQuestionController::class, 'createreport'])->name('createreport');
                         Route::get('{department_id}/edit_surveyquestionform/{question_id}', [SurveyQuestionController::class, 'editreport'])->name('editreport');
-                 
-                   
-                   
+
+
+
                         Route::put('{department_id}/update_surveyquestionform/{question_id}', [SurveyQuestionController::class, 'updatereport'])->name('updatereport');
                         Route::post('{department_id}/{survey_id}/add_surveyquestionform', [SurveyQuestionController::class, 'savereport'])->name('savereport');
                         Route::get('{department_id}/{survey_id}/surveyreportSub', [SurveyQuestionController::class, 'reportpageSubject'])->name('reportpageSubject');
@@ -402,14 +393,13 @@ Route::group(['middleware' => 'IsLoggedIn'], function () {
                         Route::post('{department_id}/{subject_id}/categoryform_add', [CategoryController::class, 'store'])->name('categoryform_add');
                         Route::get('{department_id}/{category_id}/categoryform_edit', [CategoryController::class, 'edit'])->name('categoryform_edit');
                         Route::put('{department_id}/{category_id}/categoryform_update', [CategoryController::class, 'update'])->name('categoryform_update');
-                   
+
                         Route::get('{department_id}/topic/{category_id}', [CategoryTopicController::class, 'topicpage'])->name('topic');
-                      
                     });
 
 
                     Route::get('{department_id}/{subject_id}/teacher', [CourseTeacherController::class, 'teacherspage'])->name('teacherspage');
-            
+
                     Route::get('{department_id}/{subject_id}/exam', [ExamController::class, 'exampage'])->name('exampage');
                     Route::get('{department_id}/{exam_id}/examreport', [ScoreController::class, 'examlogpage'])->name('examlogpage');
                     Route::prefix('lms')->group(function () {
@@ -421,7 +411,7 @@ Route::group(['middleware' => 'IsLoggedIn'], function () {
                         Route::post('{department_id}/{subject_id}/store_examform', [ExamController::class, 'storeexam'])->name('store_examform');
                         Route::get('{department_id}/edit_examform/{exam_id}', [ExamController::class, 'edit_examform'])->name('edit_examform');
                         Route::put('{department_id}/update_examform/{exam_id}', [ExamController::class, 'update_examform'])->name('update_examform');
-                      
+
 
 
                         Route::get('{department_id}/{subject_id}/pagequess', [ExamController::class, 'pagequess'])->name('pagequess');
@@ -430,10 +420,6 @@ Route::group(['middleware' => 'IsLoggedIn'], function () {
                         Route::get('{department_id}/edit_question/{question_id}', [ExamController::class, 'edit'])->name('edit_question');
                         Route::put('{department_id}/update_question/{question_id}', [ExamController::class, 'update'])->name('update_question');
                         Route::post('{department_id}/{subject_id}/add_questionform', [ExamController::class, 'store'])->name('add_questionform');
-                       
-                      
-                 
-                 
                     });
                     Route::get('/booktable', [BookController::class, 'table'])->name('book.table');
                 });
@@ -470,7 +456,7 @@ Route::group(['middleware' => 'IsLoggedIn'], function () {
                     Route::get('{department_id}/umsschooldepart', [SchoolDepartController::class, 'schoolManage'])->name('schoolManageDepart');
                     Route::get('{department_id}/add_umsschooldepartform', [SchoolDepartController::class, 'create'])->name('createschoolDepart');
                     Route::post('{department_id}/store_umsschooldepartform', [SchoolDepartController::class, 'store'])->name('storeschoolDepart');
-                      Route::get('{department_id}/{school_id}/edit_umsschooldepartform', [SchoolDepartController::class, 'edit'])->name('editschoolDepart');
+                    Route::get('{department_id}/{school_id}/edit_umsschooldepartform', [SchoolDepartController::class, 'edit'])->name('editschoolDepart');
                     Route::put('{department_id}/{school_id}/update_umsschooldepartform', [SchoolDepartController::class, 'update'])->name('updateschoolDepart');
 
                     Route::get('{department_id}/umslogsuser/{user_id}', [UserLogController::class, 'logusersDP'])->name('logusersDP');
@@ -516,10 +502,8 @@ Route::group(['middleware' => 'IsLoggedIn'], function () {
                 Route::put('/update-role/{user_id}', [EditManageUserController::class, 'updateRoleUser'])->name('updateRoleUser');
                 Route::put('/update-password/{user_id}', [EditManageUserController::class, 'updatepassword'])->name('updatePassword');
 
-                Route::get('/autocomplete-search', [EditManageUserController::class, 'autoschool'])->name('autocompleteSearch');
-
                 Route::get('changeStatusUser', [EditManageUserController::class, 'changeStatus'])->name('changeStatusUser');
-            
+
                 Route::get('fetchUsersByDepartment', [EditManageUserController::class, 'fetchUsersByDepartment'])->name('fetchUsersByDepartment');
 
 
@@ -577,68 +561,71 @@ Route::group(['middleware' => 'IsLoggedIn'], function () {
             });
 
 
-            
-         
+
+
             Route::prefix('info')->group(function () {
+                
+                Route::get('/autocomplete-search', [EditManageUserController::class, 'autoschool'])->name('autocompleteSearch');
+
                 Route::get('/changeStatus', [HighlightController::class, 'changeStatus'])->name('changeStatus');
                 Route::post('/storeban', [HighlightController::class, 'store'])->name('storeban');
                 Route::get('/dls', [DepartmentController::class, 'departmentdlspage'])->name('departmentdlspage');
                 Route::get('/destoryban/{highlight_id}', [HighlightController::class, 'destory'])->name('destoryban');
                 Route::get('delete_question/{question_id}', [ExamController::class, 'destroy'])->name('delete_question');
-                Route::get('/queschangeStatus', [ExamController::class, 'queschangeStatus'])->name('queschangeStatus');   
+                Route::get('/queschangeStatus', [ExamController::class, 'queschangeStatus'])->name('queschangeStatus');
                 Route::get('destroy_examform/{exam_id}', [ExamController::class, 'destroyexam'])->name('destroy_examform');
                 Route::get('/changeStatusExam', [ExamController::class, 'changeStatus'])->name('changeStatusExam');
                 Route::get('/{category_id}/categoryform_destroy', [CategoryController::class, 'destroy'])->name('categoryform_destroy');
                 Route::get('/changeStatuCategory', [CategoryController::class, 'changeStatuCategory'])->name('changeStatuCategory');
                 Route::get('{department_id}/{supplymentary_id}/destroy_supplymentaryLessform', [CourseSupplymentaryController::class, 'destroyLess'])->name('destroy_supplyLessform');
                 Route::get('/changeStatusSupplymentary', [CourseSupplymentaryController::class, 'changeStatus'])->name('changeStatusSupplymentary');
-               Route::get('/{supplymentary_id}/destroy_supplymentaryform', [CourseSupplymentaryController::class, 'destroy'])->name('destroy_supplyform');
-               Route::get('/changeStatusLesson', [CourseLessonController::class, 'changeStatus'])->name('changeStatusLesson');
-               Route::get('/destroy_lessonform/{lesson_id}', [CourseLessonController::class, 'destroy'])->name('destroy_lessonform');
-               Route::get('delete_teacher/{teacher_id}', [CourseTeacherController::class, 'destory'])->name('delete_teacher');
-    
-               Route::get('updateTeacherStatus', [CourseTeacherController::class, 'update'])->name('TeacherStatus');
-               Route::get('delete_surveyquestionform/{question_id}', [SurveyQuestionController::class, 'destory'])->name('destoryReport');
-              
-    
-               Route::get('/ActivityChangeStatus', [ActivityCategoryController::class, 'changeStatus'])->name('ActivityChangeStatus');
-               Route::get('/ActChangeStatus', [ActivityController::class, 'changeStatus'])->name('ActChangeStatus');
-               Route::get('/delete_blogform/{blog_id}', [BlogController::class, 'destory'])->name('destoryblog');
-               Route::get('/changeStatusBlog', [BlogController::class, 'changeStatus'])->name('changeStatusBlog');
-               Route::get('/delete_bookcategoryform/{category_id}', [BookCategoryController::class, 'destory'])->name('bookdestory');
-               Route::get('/changeStatuBookCategory', [BookCategoryController::class, 'changeStatus'])->name('changeStatuBookCategory');
-               Route::get('/delete_manualform/{manual_id}', [ManualController::class, 'destory'])->name('destorymanual');
-               Route::get('/changeStatusManual', [ManualController::class, 'changeStatus'])->name('changeStatusManual');
-               Route::get('/changeStatuQuestion', [SurveyQuestionController::class, 'changeStatus'])->name('changeStatuQuestion');
-               Route::get('/delete_surveyform/{survey_id}', [SurveyController::class, 'destory'])->name('dessur');
-               Route::get('/changeStatusSurvey', [SurveyController::class, 'changeStatus'])->name('changeStatuSurvey');
-               Route::get('/delete_linksform/{links_id}', [LinkController::class, 'destory'])->name('destorylink');
-               Route::get('/changeStatusLinks', [LinkController::class, 'changeStatus'])->name('changeStatusLinks');
-               Route::get('/changeSortIink', [LinkController::class, 'changeSortIink'])->name('changeSortIink');
-               Route::get('/destorysub/{subject_id}', [CourseSubjectController::class, 'destory'])->name('destorysub');
-    
-               Route::get('/changeStatusSubject', [CourseSubjectController::class, 'changeStatus'])->name('changeStatusSubject');
-       
-               Route::get('/changeStatusLearner', [CourseClassAddController::class, 'changeStatusLearner'])->name('changeStatusLearners');
-               Route::get('/destroySelectedUsers/{learner_id}', [CourseClassAddController::class, 'destroy'])->name('destroySelectedUsers');
-    
-               Route::get('/courseform_destroy/{course_id}', [CourseController::class, 'destroy'])->name('courseform_destroy');
-               Route::get('/changeStatusCourse', [CourseController::class, 'changeStatus'])->name('changeStatusCourse');
-               Route::get('{department_id}/delete_groupform/{group_id}', [CourseGroupController::class, 'destroy'])->name('deletecour');
-               Route::get('/changeStatusGroup', [CourseGroupController::class, 'changeStatus'])->name('changeStatusGroup');
-               Route::get('/delete_blogcategoryform/{category_id}', [BlogCategotyController::class, 'destroy'])->name('destoryblogcat');
-               Route::get('/changeStatusBlogCategory', [BlogCategotyController::class, 'changeStatus'])->name('changeStatusBlogCategory');
-               Route::get('/delete_bookform/{book_id}', [BookController::class, 'destroy'])->name('destroycatbook');
-               Route::get('/delete_webcategoryform/{category_id}', [WedCategoryController::class, 'destroy'])->name('evendelete');
-               Route::get('/changeStatusWebCat', [WedCategoryController::class, 'changeStatus'])->name('changeStatusWebCat');
-    
-               Route::get('/delete_webform/{web_id}', [WebController::class, 'destroy'])->name('destroycat');
-               Route::get('/changeStatusWeb', [WebController::class, 'changeStatus'])->name('changeStatusWeb');
-               Route::get('/changeSortWeb', [WebController::class, 'changeSortWeb'])->name('changeSortWeb');
-               Route::get('/changeStatuBook', [BookController::class, 'changeStatus'])->name('changeStatuBook');
-    
-    
-                 Route::get('/{topic_id}/topic_destroy', [CategoryTopicController::class, 'destroy'])->name('topic_destroy');
+                Route::get('/{supplymentary_id}/destroy_supplymentaryform', [CourseSupplymentaryController::class, 'destroy'])->name('destroy_supplyform');
+                Route::get('/changeStatusLesson', [CourseLessonController::class, 'changeStatus'])->name('changeStatusLesson');
+                Route::get('/destroy_lessonform/{lesson_id}', [CourseLessonController::class, 'destroy'])->name('destroy_lessonform');
+                Route::get('delete_teacher/{teacher_id}', [CourseTeacherController::class, 'destory'])->name('delete_teacher');
+
+                Route::get('updateTeacherStatus', [CourseTeacherController::class, 'update'])->name('TeacherStatus');
+                Route::get('delete_surveyquestionform/{question_id}', [SurveyQuestionController::class, 'destory'])->name('destoryReport');
+
+
+                Route::get('/ActivityChangeStatus', [ActivityCategoryController::class, 'changeStatus'])->name('ActivityChangeStatus');
+                Route::get('/ActChangeStatus', [ActivityController::class, 'changeStatus'])->name('ActChangeStatus');
+                Route::get('/delete_blogform/{blog_id}', [BlogController::class, 'destory'])->name('destoryblog');
+                Route::get('/changeStatusBlog', [BlogController::class, 'changeStatus'])->name('changeStatusBlog');
+                Route::get('/delete_bookcategoryform/{category_id}', [BookCategoryController::class, 'destory'])->name('bookdestory');
+                Route::get('/changeStatuBookCategory', [BookCategoryController::class, 'changeStatus'])->name('changeStatuBookCategory');
+                Route::get('/delete_manualform/{manual_id}', [ManualController::class, 'destory'])->name('destorymanual');
+                Route::get('/changeStatusManual', [ManualController::class, 'changeStatus'])->name('changeStatusManual');
+                Route::get('/changeStatuQuestion', [SurveyQuestionController::class, 'changeStatus'])->name('changeStatuQuestion');
+                Route::get('/delete_surveyform/{survey_id}', [SurveyController::class, 'destory'])->name('dessur');
+                Route::get('/changeStatusSurvey', [SurveyController::class, 'changeStatus'])->name('changeStatuSurvey');
+                Route::get('/delete_linksform/{links_id}', [LinkController::class, 'destory'])->name('destorylink');
+                Route::get('/changeStatusLinks', [LinkController::class, 'changeStatus'])->name('changeStatusLinks');
+                Route::get('/changeSortIink', [LinkController::class, 'changeSortIink'])->name('changeSortIink');
+                Route::get('/destorysub/{subject_id}', [CourseSubjectController::class, 'destory'])->name('destorysub');
+
+                Route::get('/changeStatusSubject', [CourseSubjectController::class, 'changeStatus'])->name('changeStatusSubject');
+
+                Route::get('/changeStatusLearner', [CourseClassAddController::class, 'changeStatusLearner'])->name('changeStatusLearners');
+                Route::get('/destroySelectedUsers/{learner_id}', [CourseClassAddController::class, 'destroy'])->name('destroySelectedUsers');
+
+                Route::get('/courseform_destroy/{course_id}', [CourseController::class, 'destroy'])->name('courseform_destroy');
+                Route::get('/changeStatusCourse', [CourseController::class, 'changeStatus'])->name('changeStatusCourse');
+                Route::get('{department_id}/delete_groupform/{group_id}', [CourseGroupController::class, 'destroy'])->name('deletecour');
+                Route::get('/changeStatusGroup', [CourseGroupController::class, 'changeStatus'])->name('changeStatusGroup');
+                Route::get('/delete_blogcategoryform/{category_id}', [BlogCategotyController::class, 'destroy'])->name('destoryblogcat');
+                Route::get('/changeStatusBlogCategory', [BlogCategotyController::class, 'changeStatus'])->name('changeStatusBlogCategory');
+                Route::get('/delete_bookform/{book_id}', [BookController::class, 'destroy'])->name('destroycatbook');
+                Route::get('/delete_webcategoryform/{category_id}', [WedCategoryController::class, 'destroy'])->name('evendelete');
+                Route::get('/changeStatusWebCat', [WedCategoryController::class, 'changeStatus'])->name('changeStatusWebCat');
+
+                Route::get('/delete_webform/{web_id}', [WebController::class, 'destroy'])->name('destroycat');
+                Route::get('/changeStatusWeb', [WebController::class, 'changeStatus'])->name('changeStatusWeb');
+                Route::get('/changeSortWeb', [WebController::class, 'changeSortWeb'])->name('changeSortWeb');
+                Route::get('/changeStatuBook', [BookController::class, 'changeStatus'])->name('changeStatuBook');
+
+
+                Route::get('/{topic_id}/topic_destroy', [CategoryTopicController::class, 'destroy'])->name('topic_destroy');
                 Route::get('/changeStatuCategoryTopic', [CategoryTopicController::class, 'changeStatuCategoryTopic'])->name('changeStatuCategoryTopic');
                 Route::get('/schooldepart_delete/{school_id}', [SchoolDepartController::class, 'delete'])->name('deleteschoolDepart');
             });

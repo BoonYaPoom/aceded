@@ -1,5 +1,5 @@
-@extends('layouts.adminhome')
-@section('content')
+@extends('layouts.department.layout.departmenthome')
+@section('contentdepartment')
     <!-- .page-inner -->
     <form action="{{ route('DPstoreUser', ['department_id' => $depart->department_id]) }}" method="post"
         enctype="multipart/form-data">
@@ -40,8 +40,8 @@
 
                                         <option value="0"selected disabled>เลือกประเภทผู้ใช้งาน</option>
                                         @foreach ($role as $roles)
-                                            @if ($roles->role_status == 1)
-                                                @if ($roles->user_role_id > 1)
+                                            @if ($roles->role_status == 1 )
+                                                @if ($roles->user_role_id > 1 && $roles->user_role_id < 7)
                                                     <option value="{{ $roles->user_role_id }}">{{ $roles->role_name }}
                                                     </option>
                                                 @endif
@@ -50,6 +50,8 @@
                                     </select>
                                 </div>
                             </div>
+
+                       
 
                             <!-- form row -->
                             <div class="form-row">
@@ -74,16 +76,77 @@
                                 </div>
                             </div>
                             <!-- /form row -->
+                            <div class="form-row ">
+                                <label for="user_type_card" class="col-md-2">ประเภทบุคลากร </label>
+                                <div class="col-md-9 mb-3">
+                                    <div class="custom-control custom-control-inline custom-radio mr-3">
+                                        <input type="radio" class="custom-control-input user_type_cardselect"
+                                            name="user_type_card" id="user_type_card1" value="1"
+                                            onchange="if(this.value==1) $('.showdiscount').addClass('d-none'); ">
+                                        <label class="custom-control-label" for="user_type_card1">เลขบัตรประชาชน
+                                        </label>
+                                    </div>
+                                    <div class="custom-control custom-control-inline custom-radio mr-3">
+                                        <input type="radio" class="custom-control-input user_type_cardselect"
+                                            name="user_type_card" id="user_type_card2" value="2"
+                                            onchange="if(this.value==2)  $('.showdiscount').addClass('d-none');">
+                                        <label class="custom-control-label" for="user_type_card2">เลข Passport
+                                        </label>
+                                    </div>
+                                    <div class="custom-control custom-control-inline custom-radio mr-3">
+                                        <input type="radio" class="custom-control-input user_type_cardselect"
+                                            name="user_type_card" id="user_type_card3" value="3"
+                                            onchange="if(this.value==3) $('.showdiscount').removeClass('d-none'); else $('.showdiscount').addClass('d-none');">
+                                        <label class="custom-control-label" for="user_type_card3">อื่นๆ
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
 
                             <!-- form row -->
-                            <div class="form-row">
-                                <label for="firstname" class="col-md-2">เลขประจำตัวประชาชน</label>
+                            <div class="form-row ">
+                                <label for="citizen_id" class="col-md-2">เลขประจำตัวประชาชน</label>
+                                <div class="col-xs-1 mb-1  showdiscount  d-none">
+                                    <select id="citizen_id_select" class="form-control" data-toggle="select2"
+                                        data-allow-clear="false">
+                                        <option value="0">อื่นๆ</option>
+                                        <option value="00">00</option>
+                                        <option value="0">0</option>
+                                        <option value="G-">G-</option>
+                                    </select>
+                                </div>
                                 <div class="col-md-9 mb-3">
-                                    <input type="text" class="form-control " id="citizen_id" name="citizen_id"
-                                        minlength="13" maxlength="13" placeholder="เลขประจำตัวประชาชน" value="">
+                                    <div class="col-md-9 mb-3">
+                                        <input type="text" class="form-control" id="citizen_id_input"
+                                            name="citizen_id" placeholder="เลขประจำตัวประชาชน" value="">
+                                    </div>
                                 </div>
                             </div>
                             <!-- /form row -->
+
+                            <script>
+                                document.addEventListener("DOMContentLoaded", function() {
+                                    const select = document.getElementById("citizen_id_select");
+                                    const input = document.getElementById("citizen_id_input");
+
+                                    // Store the initial input field value
+                                    const initialValue = input.value;
+
+                                    // Add an event listener to the select element
+                                    select.addEventListener("change", function() {
+                                        // Get the selected option's value
+                                        const selectedValue = this.value;
+
+                                        // Set the input field's value to the selected option's value
+                                        input.value = selectedValue;
+
+                                        // If the selected option is not "อื่นๆ," append the initial value
+                                        if (selectedValue !== "0") {
+                                            input.value += initialValue;
+                                        }
+                                    });
+                                });
+                            </script>
 
 
                             <!-- form row -->
@@ -91,13 +154,13 @@
                                 <label for="input04" class="col-md-2">เพศ</label>
                                 <div class="col-md-9 mb-3">
                                     <div class="custom-control custom-control-inline custom-radio">
-                                        <input type="radio" class="custom-control-input " name="gender" id="male"
-                                            value="1">
+                                        <input type="radio" class="custom-control-input " name="gender"
+                                            id="male" value="1">
                                         <label class="custom-control-label" for="male">ชาย</label>
                                     </div>
                                     <div class="custom-control custom-control-inline custom-radio">
-                                        <input type="radio" class="custom-control-input " name="gender" id="female"
-                                            value="2">
+                                        <input type="radio" class="custom-control-input " name="gender"
+                                            id="female" value="2">
                                         <label class="custom-control-label" for="female">หญิง</label>
                                     </div>
                                 </div>
@@ -126,6 +189,40 @@
                             </div>
                             <!-- /form row -->
 
+                            <div class="form-row">
+                                <label for="birthday" class="col-md-2">วันเกิด</label>
+                                <div class="col-md-9 mb-3">
+                                    <input type="text" class="form-control" name="birthday" id="birthday"
+                                        value="" />
+                                </div>
+                            </div>
+
+                            <script>
+                                document.addEventListener("DOMContentLoaded", function() {
+                                    flatpickr("#birthday", {
+                                        altInput: true,
+                                        altFormat: "j F, Y",
+                                        dateFormat: "Y-m-d",
+                                        locale: {
+                                            firstDayOfWeek: 1, // Monday
+                                            weekdays: {
+                                                shorthand: ["อา", "จ", "อ", "พ", "พฤ", "ศ", "ส"],
+                                                longhand: ["อาทิตย์", "จันทร์", "อังคาร", "พุธ", "พฤหัสบดี", "ศุกร์", "เสาร์"]
+                                            },
+                                            months: {
+                                                shorthand: ["ม.ค.", "ก.พ.", "มี.ค.", "เม.ย.", "พ.ค.", "มิ.ย.", "ก.ค.", "ส.ค.",
+                                                    "ก.ย.", "ต.ค.", "พ.ย.", "ธ.ค."
+                                                ],
+                                                longhand: [
+                                                    "มกราคม", "กุมภาพันธ์", "มีนาคม", "เมษายน", "พฤษภาคม", "มิถุนายน",
+                                                    "กรกฎาคม", "สิงหาคม", "กันยายน", "ตุลาคม", "พฤศจิกายน", "ธันวาคม"
+                                                ]
+                                            }
+                                        }
+                                    });
+                                });
+                            </script>
+
                             <!-- form row -->
                             <div class="form-row">
                                 <label for="email" class="col-md-2">อีเมล</label>
@@ -140,7 +237,7 @@
                             <div class="form-row">
                                 <label for="mobile" class="col-md-2">เบอร์โทรศัพท์มือถือ</label>
                                 <div class="col-md-9 mb-3">
-                                    <input type="text" class="form-control " id="mobile" name="mobile"
+                                    <input type="text" class="form-control number" id="mobile" name="mobile"
                                         value="" placeholder="เบอร์โทรศัพท์มือถือ">
                                 </div>
                             </div>
@@ -160,7 +257,7 @@
                             <div class="form-row " id="set_province_id">
                                 <label for="province_id" class="col-md-2">จังหวัด </label>
                                 <div class="col-md-9 mb-3">
-                                    <select id="province_id" name="province_id" class="form-control form-control-sm"
+                                    <select id="province_id" name="province_id" class="form-control "
                                         data-toggle="select2" data-allow-clear="false">
                                         <option value="0">โปรดเลือกจังหวัด</option>
                                         @php
@@ -186,6 +283,17 @@
                             </div>
                             <!-- /form row -->
 
+                            <!-- form row -->
+                            <div class="form-row d-none " id="set_subdistrict_id">
+                                <label for="subdistrict_id" class="col-md-2">แขวง/ตำบล </label>
+                                <div class="col-md-9 mb-3">
+                                    <select id="subdistrict_id" name="subdistrict_id"
+                                        class="form-control form-control-sm" data-toggle="select2"
+                                        data-allow-clear="false">
+                                        <option value="0">โปรดเลือกแขวง/ตำบล</option>
+                                    </select>
+                                </div>
+                            </div>
                             <!-- /form row -->
                             <div class="form-row">
                                 <label for="school" class="col-md-2">โรงเรียน / มหาลัย <span
@@ -197,7 +305,7 @@
                                 </div>
                             </div>
                             <script type="text/javascript">
-                                var path = "{{ route('DPautocompleteSearch') }}";
+                                var path = "{{ route('autocompleteSearch') }}";
 
                                 $("#search").autocomplete({
                                     source: function(request, response) {
@@ -214,25 +322,18 @@
                                         });
                                     },
                                     select: function(event, ui) {
-                                        $('#search').val(ui.item.label);
+                                        $('#search').addClass("form-control form-control-sm");
+
+                                        // Log the ui.item to the console
                                         console.log(ui.item);
+
+                                        // Set the input value to the selected item's label
+                                        $('#search').val(ui.item.label);
+
                                         return false;
                                     }
                                 });
                             </script>
-                            <!-- form row -->
-                            <div class="form-row d-none " id="set_subdistrict_id">
-                                <label for="subdistrict_id" class="col-md-2">แขวง/ตำบล </label>
-                                <div class="col-md-9 mb-3">
-                                    <select id="subdistrict_id" name="subdistrict_id"
-                                        class="form-control form-control-sm" data-toggle="select2"
-                                        data-allow-clear="false">
-                                        <option value="0">โปรดเลือกแขวง/ตำบล</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <!-- /form row -->
-
                             <!-- form row -->
                             <div class="form-row " id="set_pos_name">
                                 <label for="pos_name" class="col-md-2">ตำแหน่ง</label>
@@ -240,11 +341,18 @@
                                     <input type="text" class="form-control " id="pos_name" name="pos_name"
                                         value="" placeholder="ตำแหน่ง">
                                     <!-- <select id="pos_namexx" name="pos_namexx" class="form-control form-control-sm" data-toggle="select2" data-allow-clear="false">
-                                                                    </select> -->
+                                                                                                </select> -->
                                 </div>
                             </div>
                             <!--/form row -->
+                            <div class="form-row " id="user_affiliation">
+                                <label for="user_affiliation" class="col-md-2">สังกัด</label>
+                                <div class="col-md-9 mb-3">
+                                    <input type="text" class="form-control " id="user_affiliation"
+                                        name="user_affiliation" value="" placeholder="สังกัด">
 
+                                </div>
+                            </div>
                             <!-- form row -->
                             <div class="form-row d-none " id="set_pos_level">
                                 <label for="mobile" class="col-md-2">ระดับตำแหน่ง</label>
@@ -330,6 +438,17 @@
     </div>
     </div>
     </div>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            // Get all elements with the "discount-code-input" class
+            const discountCodeInputs = document.querySelectorAll(".number");
 
-    </form>
+            // Loop through all the input fields
+            discountCodeInputs.forEach(function(discountCodeInput) {
+                discountCodeInput.addEventListener("input", function(event) {
+                    this.value = this.value.replace(/\D/g, ""); // Allow only numeric values
+                });
+            });
+        });
+    </script>
 @endsection

@@ -1,13 +1,14 @@
 @extends('layouts.adminhome')
 @section('content')
-    <!-- .page-inner -->
-    <form action="{{ route('updateUser', ['user_id' => $usermanages->user_id]) }}" method="post" enctype="multipart/form-data">
+    <form action="{{ route('updateUser', ['user_id' => $usermanages->user_id]) }}" method="post"
+        enctype="multipart/form-data">
         @csrf
         @method('PUT')
+      
         <div class="page-inner">
             <div class="page-section">
                 <div class="card card-fluid">
-                    <div class="card-header bg-muted"></div>
+                    <div class="card-header bg-muted"><a href="{{ route('UserManage') }}">ผู้ใช้งาน</a> / ข้อมูลส่วนตัว</div>
                     <div class="col-lg">
                         <h6 class="card-header"> ข้อมูลส่วนตัว </h6>
                         <div class="card-body">
@@ -99,12 +100,11 @@
                                 <label for="firstname" class="col-md-2">เลขประจำตัวประชาชน</label>
                                 <div class="col-md-9 mb-3">
                                     <input type="text" class="form-control " id="citizen_id" name="citizen_id"
-                                        minlength="13" maxlength="13" value="{{ $usermanages->citizen_id }}"
-                                        placeholder="เลขประจำตัวประชาชน" value="">
+                                        minlength="13" maxlength="13" placeholder="เลขประจำตัวประชาชน"
+                                        value="{{ $usermanages->citizen_id }}" disabled>
                                 </div>
                             </div>
                             <!-- /form row -->
-
 
                             <!-- form row -->
                             <div class="form-row">
@@ -125,7 +125,39 @@
                                 </div>
                             </div>
                             <!-- /form row -->
+                            <div class="form-row">
+                                <label for="birthday" class="col-md-2">วันเกิด</label>
+                                <div class="col-md-9 mb-3">
+                                    <input type="text" class="form-control" name="birthday" id="birthday"
+                                        value="{{ $usermanages->birthday }}" disabled />
+                                </div>
+                            </div>
 
+                            <script>
+                                document.addEventListener("DOMContentLoaded", function() {
+                                    flatpickr("#birthday", {
+                                        altInput: true,
+                                        altFormat: "j F, Y",
+                                        dateFormat: "Y-m-d",
+                                        locale: {
+                                            firstDayOfWeek: 1, // Monday
+                                            weekdays: {
+                                                shorthand: ["อา", "จ", "อ", "พ", "พฤ", "ศ", "ส"],
+                                                longhand: ["อาทิตย์", "จันทร์", "อังคาร", "พุธ", "พฤหัสบดี", "ศุกร์", "เสาร์"]
+                                            },
+                                            months: {
+                                                shorthand: ["ม.ค.", "ก.พ.", "มี.ค.", "เม.ย.", "พ.ค.", "มิ.ย.", "ก.ค.", "ส.ค.",
+                                                    "ก.ย.", "ต.ค.", "พ.ย.", "ธ.ค."
+                                                ],
+                                                longhand: [
+                                                    "มกราคม", "กุมภาพันธ์", "มีนาคม", "เมษายน", "พฤษภาคม", "มิถุนายน",
+                                                    "กรกฎาคม", "สิงหาคม", "กันยายน", "ตุลาคม", "พฤศจิกายน", "ธันวาคม"
+                                                ]
+                                            }
+                                        }
+                                    });
+                                });
+                            </script>
 
                             <!-- form row -->
                             <div class="form-row">
@@ -269,7 +301,7 @@
                                     }
                                 });
                             </script>
-                            <!-- form row -->
+                    
                             <div class="form-row " id="set_pos_name">
                                 <label for="pos_name" class="col-md-2">ตำแหน่ง</label>
                                 <div class="col-md-9 mb-3">
@@ -279,7 +311,15 @@
                                 </div>
                             </div>
                             <!--/form row -->
+                            <div class="form-row " id="user_affiliation">
+                                <label for="user_affiliation" class="col-md-2">สังกัด</label>
+                                <div class="col-md-9 mb-3">
+                                    <input type="text" class="form-control " id="user_affiliation"
+                                        name="user_affiliation" value="{{ $usermanages->user_affiliation }}" placeholder="สังกัด">
 
+                                </div>
+                            </div>
+                      
                             <!-- form row -->
                             <div class="form-row d-none d-none" id="set_pos_level">
                                 <label for="mobile" class="col-md-2">ระดับตำแหน่ง</label>

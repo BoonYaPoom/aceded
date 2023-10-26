@@ -179,7 +179,9 @@ class DepartUsersController extends Controller
         $usermanages->province_id = $request->province_id;
         $usermanages->district_id = null;
         $usermanages->subdistrict_id = null;
-
+        $usermanages->birthday = $request->birthday;
+        $usermanages->user_affiliation = $request->user_affiliation;
+        $usermanages->user_type_card =  $request->input('user_type_card', 0);
         $usermanages->save();
 
         return redirect()->route('DPUserManage', ['department_id' => $department_id])->with('message', 'แก้ไขโปรไฟล์สำเร็จ');

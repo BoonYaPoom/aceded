@@ -75,7 +75,7 @@
       <link rel="stylesheet" href="{{ asset('/stylesheets/logincss/logincss.css') }}">
 
   </head>
-@php
+<!-- @php
     
 try {
     $connonName = 'mysql';
@@ -84,7 +84,7 @@ try {
 } catch (\Exception $e) {
     die("ไม่สามารถเชื่อมต่อฐานข้อมูล MySQL: " . $e->getMessage());
 }
-@endphp
+@endphp -->
     <!--  @php
       use Illuminate\Support\Facades\DB;
       
@@ -134,9 +134,7 @@ try {
           <h2 class="active">
               <a class="navbar-brand" href="{{ route('homelogin') }}">Sign In</a>
           </h2>
-            <!--     <h2 class="">
-            <a class="navbar-brand" href="{{ route('homeloginLdap') }}">Ldap Sign In</a>
-        </h2>-->
+    
           <!--   <h2 class="inactive underlineHover">
               <a class="navbar-brand" href="{{ route('homeRegis') }}">Sign Up </a>
           </h2>-->
@@ -153,7 +151,7 @@ try {
               <input type="text" class="fadeIn second" name="username" id="username" placeholder="รหัสผู้ใช้"
                   aria-label="Email" aria-describedby="username" required
                   data-msg="กรุณากรอกอีเมล์ให้ถูกต้อง ลองอีกครั้ง" data-error-class="u-has-error"
-                  data-success-class="u-has-success">
+                  data-success-class="u-has-success" >
 
               <span class="text-danger">
                   @error('username')
@@ -162,9 +160,11 @@ try {
               </span>
 
               <input type="password" class="fadeIn third" name="password" id="password" placeholder="********"
-                  aria-label="Password" aria-describedby="signinPasswordLabel" required
-                  data-msg="กรุณากรอกรหัสผ่านให้ถูกต้อง ลองอีกครั้ง" data-error-class="u-has-error"
-                  data-success-class="u-has-success">
+              aria-label="Password" aria-describedby="signinPasswordLabel" required
+              data-msg="กรุณากรอกรหัสผ่านให้ถูกต้อง ลองอีกครั้ง" data-error-class="u-has-error"
+              data-success-class="u-has-success"  autocomplete="off">
+          
+          
 
               <span class="text-danger">
                   @error('password')
@@ -173,13 +173,7 @@ try {
               </span>
               <br>
               <div class="row mb-3">
-                  <div class="col-6">
-                      <div class="form-check">
-                          <input class="form-check-input" type="checkbox" id="Check-Password" onclick="myFunction()">
-                          <label class="form-check-label" for="Check-Password">Check Password</label>
-                      </div>
-
-                  </div>
+                 
 
               </div>
 

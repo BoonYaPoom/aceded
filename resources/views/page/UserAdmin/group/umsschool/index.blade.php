@@ -110,10 +110,10 @@
                                         $('#drop2').on('change', function() {
                                             var selecteddrop2Id = $(this).val();
                                             if (selecteddrop2Id == 0) {
-                                                table.columns(3).search('').draw();
+                                                table.columns(2).search('').draw();
                                             } else {
                                                 // กรองข้อมูลใน DataTables ด้วยหน่วยงานที่เลือก
-                                                table.columns(3).search(selecteddrop2Id).draw();
+                                                table.columns(2).search(selecteddrop2Id).draw();
                                             }
                                         });
                                         $('#myInput').on('keyup', function() {

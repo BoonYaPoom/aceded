@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Department;
 use App\Models\School;
 use App\Models\Users;
 use App\Models\UserSchool;
@@ -19,8 +20,8 @@ class SchoolController extends Controller
     }
     public function create()
     {
-
-        return view('page.UserAdmin.group.umsschool.create');
+        $depart = Department::all();
+        return view('page.UserAdmin.group.umsschool.create', compact('depart'));
     }
 
     public function store(Request $request)
@@ -30,13 +31,15 @@ class SchoolController extends Controller
         $school->provinces_id = $request->province_id;
         $school->subdistrict_id = null;
         $school->district_id = null;
+        $school->department_id = $request->department_id;
         $school->save();
         return redirect()->route('schoolManage')->with('message', 'personTypes บันทึกข้อมูลสำเร็จ');
     }
     public function edit($school_id)
     {
         $school = School::findOrFail($school_id);
-        return view('page.UserAdmin.group.umsschool.edit', ['school' => $school]);
+        $depart = Department::all();
+        return view('page.UserAdmin.group.umsschool.edit', ['school' => $school,'depart'=> $depart]);
     }
 
     public function update(Request $request, $school_id)
@@ -44,8 +47,8 @@ class SchoolController extends Controller
         $school = School::findOrFail($school_id);
         $school->school_name = $request->school_name;
         $school->provinces_id = $request->province_id;
-        $school->subdistrict_id = null;
-        $school->district_id = null;
+
+        $school->department_id = $request->department_id;
         $school->save();
         return redirect()->route('schoolManage')->with('message', 'personTypes บันทึกข้อมูลสำเร็จ');
     }

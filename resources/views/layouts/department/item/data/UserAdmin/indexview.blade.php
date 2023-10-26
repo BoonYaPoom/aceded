@@ -74,7 +74,18 @@
                             @endforeach
                         </select>
                     </div>
-
+                    <div class="col-md-6 mb-3">
+                        <label for="drop2" class="col-md-3 text-right mt-1">จังหวัด</label>
+                        <select id="drop2" name="drop2" class="form-control form-control-sm" data-allow-clear="false">
+                            <option value="0"selected>ทั้งหมด</option>
+                            @php
+                                $Provinces = \App\Models\Provinces::all();
+                            @endphp
+                            @foreach ($Provinces as $provin)
+                                <option value="{{ $provin->name_in_thai }}"> {{ $provin->name_in_thai }} </option>
+                            @endforeach
+                        </select>
+                    </div>
 
                 </div>
 

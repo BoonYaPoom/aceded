@@ -29,7 +29,7 @@
                                 จัดการเรียนรู้</a>
                         @endif
 
-                          <a class="nav-link  font-weight-bold {{ Str::startsWith(request()->url(), route('DepartReportview', ['department_id' => $depart->department_id])) ||
+                     <!--     <a class="nav-link  font-weight-bold {{ Str::startsWith(request()->url(), route('DepartReportview', ['department_id' => $depart->department_id])) ||
                         request()->is('homeDepart', 'homeDepart/*')
                             ? ' active text-info'
                             : '' }}"
@@ -42,7 +42,7 @@
                             ? ' active text-info'
                             : '' }}"
                             href="{{ route('ManageExam', ['department_id' => $depart->department_id]) }}"><span
-                                class="menu-icon fas fa-align-justify  "></span> จัดการข้อสอบ</a>
+                                class="menu-icon fas fa-align-justify  "></span> จัดการข้อสอบ</a>-->
 
                         @if (
                             ($data->department_id == $depart->department_id && $data->user_role == 6) ||

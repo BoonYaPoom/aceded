@@ -75,7 +75,8 @@ class EditManageUserController extends Controller
         $usermanages->email = $request->email;
 
         $usermanages->modifieddate = now();
-
+        $usermanages->birthday = $request->birthday;
+        $usermanages->user_affiliation = $request->user_affiliation;
         $usermanages->province_id = $request->province_id;
         $usermanages->department_id = $request->department_id;
 
@@ -258,9 +259,11 @@ class EditManageUserController extends Controller
         $usermanages->pos_name = $request->pos_name;
         $usermanages->sector_id = 0;
         $usermanages->office_id = 0;
-
+        $usermanages->birthday = $request->birthday;
+        $usermanages->user_affiliation = $request->user_affiliation;
         $usermanages->user_type = $request->input('user_type', 0);
         $usermanages->province_id = $request->province_id;
+        $usermanages->user_type_card =  $request->input('user_type_card', 0);
         if ($request->school) {
             // ค้นหาโรงเรียนโดยใช้ชื่อโรงเรียนจาก $request
             $existingSchool = School::where('school_name', $request->school)

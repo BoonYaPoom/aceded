@@ -135,9 +135,43 @@ class CourseController extends Controller
         $cour->compcode = $request->compcode;
         $cour->taxid = $request->taxid;
         $cour->suffixcode = $request->suffixcode;
-        $cour->promptpay = '';
-        $cour->accountbook = '';
-        $cour->paymentdetail = $request->paymentdetail;
+
+        set_time_limit(0);
+        libxml_use_internal_errors(true);
+        if (!file_exists(public_path('/uplade'))) {
+            mkdir(public_path('/uplade'), 0755, true);
+        }
+        if ($request->has('paymentdetail')) {
+            $paymentdetail = $request->paymentdetail;
+            if (!empty($paymentdetail)) {
+                $des_th = new DOMDocument();
+                $des_th->encoding = 'UTF-8'; // กำหนด encoding เป็น UTF-8
+                $des_th->loadHTML(mb_convert_encoding($paymentdetail, 'HTML-ENTITIES', 'UTF-8'), LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
+
+                $images_des_th = $des_th->getElementsByTagName('img');
+
+                foreach ($images_des_th as $key => $img) {
+                    if (strpos($img->getAttribute('src'), 'data:image/') === 0) {
+                        $data = base64_decode(explode(',', explode(';', $img->getAttribute('src'))[1])[1]);
+                        $image_name = '/uplade/' . time() . $key . '.png'; // ใส่ .png เพื่อให้เป็นนามสกุลไฟล์ถูกต้อง
+                        file_put_contents(public_path() . $image_name, $data);
+                        $img->removeAttribute('src');
+                        $newImageUrl = asset($image_name);
+                        $img->setAttribute('src', $newImageUrl);
+                    }
+                }
+                $paymentdetail = $des_th->saveHTML();
+            }
+
+            $cour->paymentdetail = $paymentdetail;
+        }
+        $cour->paymentdate = $request->paymentdate;
+        $cour->payinslip = $request->input('payinslip', 0);
+        $cour->creditcard = $request->input('creditcard', 0);
+        $cour->promptpay = $request->input('promptpay', 0);
+        $cour->discount_code = $request->discount_code;
+        $cour->accountbook =  $request->accountbook;
+        $cour->accountname =  $request->accountname;
         $cour->save();
 
         if ($request->hasFile('cover')) {
@@ -328,7 +362,7 @@ class CourseController extends Controller
         $cour->course_status = $request->input('course_status', 0);
         $cour->learn_format = $request->learn_format;
         $cour->update_date = now();
-        $cour->templete_certificate = $request->templete_certificate;
+        $cour->templete_certificate = $request->input('templete_certificate', 0);
 
         $cour->hours = $request->hours;
         $cour->days = $request->days;
@@ -338,13 +372,51 @@ class CourseController extends Controller
         $cour->cetificate_request = 0;
         $cour->paymentstatus = $request->input('paymentstatus', 0);
         $cour->price = $request->price;
+
         $cour->discount = $request->discount;
         $cour->discount_type = $request->discount_type;
         $cour->bank = $request->bank;
         $cour->compcode = $request->compcode;
         $cour->taxid = $request->taxid;
         $cour->suffixcode = $request->suffixcode;
-        $cour->paymentdetail = $request->paymentdetail;
+
+        set_time_limit(0);
+        libxml_use_internal_errors(true);
+        if (!file_exists(public_path('/uplade'))) {
+            mkdir(public_path('/uplade'), 0755, true);
+        }
+        if ($request->has('paymentdetail')) {
+            $paymentdetail = $request->paymentdetail;
+            if (!empty($paymentdetail)) {
+                $des_th = new DOMDocument();
+                $des_th->encoding = 'UTF-8'; // กำหนด encoding เป็น UTF-8
+                $des_th->loadHTML(mb_convert_encoding($paymentdetail, 'HTML-ENTITIES', 'UTF-8'), LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
+
+                $images_des_th = $des_th->getElementsByTagName('img');
+
+                foreach ($images_des_th as $key => $img) {
+                    if (strpos($img->getAttribute('src'), 'data:image/') === 0) {
+                        $data = base64_decode(explode(',', explode(';', $img->getAttribute('src'))[1])[1]);
+                        $image_name = '/uplade/' . time() . $key . '.png'; // ใส่ .png เพื่อให้เป็นนามสกุลไฟล์ถูกต้อง
+                        file_put_contents(public_path() . $image_name, $data);
+                        $img->removeAttribute('src');
+                        $newImageUrl = asset($image_name);
+                        $img->setAttribute('src', $newImageUrl);
+                    }
+                }
+                $paymentdetail = $des_th->saveHTML();
+            }
+
+            $cour->paymentdetail = $paymentdetail;
+        }
+        $cour->paymentdate = $request->paymentdate;
+        $cour->payinslip = $request->input('payinslip', 0);
+        $cour->creditcard = $request->input('creditcard', 0);
+        $cour->promptpay = $request->input('promptpay', 0);
+        $cour->discount_code = $request->discount_code;
+        $cour->accountbook =  $request->accountbook;
+        $cour->accountname =  $request->accountname;
+
         $cour->save();
 
         if ($request->hasFile('cover')) {
@@ -661,7 +733,7 @@ class CourseController extends Controller
         return redirect()->route('courpag', [$department_id, 'group_id' => $cour->group_id])->with('message', 'CourseGroup บันทึกข้อมูลสำเร็จ');
     }
 
-    public function destroy($department_id,$course_id)
+    public function destroy($department_id, $course_id)
     {
         $cour = Course::findOrFail($course_id);
 

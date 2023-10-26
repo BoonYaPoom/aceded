@@ -80,6 +80,7 @@ return new class extends Migration
             $table->string('discount', 1)->nullable()->collation('utf8_general_ci');
             $table->string('discount_type', 10)->nullable()->collation('utf8_general_ci');
             $table->string('discount_data', 200)->nullable()->collation('utf8_general_ci');
+            $table->string('discount_code', 200)->nullable()->collation('utf8_general_ci');
             $table->string('bank', 50)->nullable()->collation('utf8_general_ci');
             $table->string('compcode', 20)->nullable()->collation('utf8_general_ci');
             $table->string('taxid', 20)->nullable()->collation('utf8_general_ci');

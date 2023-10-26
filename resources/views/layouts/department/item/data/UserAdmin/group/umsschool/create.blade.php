@@ -1,6 +1,6 @@
 @extends('layouts.department.layout.departmenthome')
 @section('contentdepartment')
-    <form action="{{ route('storeschool') }}" method="post" enctype="multipart/form-data">
+    <form action="{{ route('storeschoolDepart', [$depart]) }}" method="post" enctype="multipart/form-data">
         @csrf
 
         <!-- .page-inner -->
@@ -12,16 +12,18 @@
                 <div class="card card-fluid">
 
                     <!-- .card-header -->
-                    <div class="card-header bg-muted"><a href="{{ route('DPUserManage',['department_id' => $depart->department_id]) }}">ผู้ใช้งาน</a>/ <a
-                            href="{{ route('schoolManageDepart',['department_id' => $depart->department_id]) }}">จัดการสถานศึกษา</a> </div><!-- /.card-header -->
+                    <div class="card-header bg-muted"><a
+                            href="{{ route('DPUserManage', ['department_id' => $depart->department_id]) }}">ผู้ใช้งาน</a>/ <a
+                            href="{{ route('schoolManageDepart', ['department_id' => $depart->department_id]) }}">จัดการสถานศึกษา</a>
+                    </div><!-- /.card-header -->
                     <!-- .card-body -->
                     <div class="card-body">
                         <!-- .form-group -->
                         <div class="form-group">
                             <label for="school_name" class="col-md-1">สถานศึกษา </label>
                             <label for="school_name"> <span class="badge badge-warning">Required</span></label>
-                            <input type="text" class="form-control" id="school_name" name="school_name" placeholder="สถานศึกษา"
-                                required="" value="">
+                            <input type="text" class="form-control" id="school_name" name="school_name"
+                                placeholder="สถานศึกษา" required="" value="">
                         </div><!-- /.form-group -->
                         <div class="form-group">
                             <label for="province_id" class="col-md-1">จังหวัด </label>

@@ -19,6 +19,7 @@ return new class extends Migration
             $table->integer('provinces_id');
             $table->integer('subdistrict_id')->nullable();
             $table->integer('district_id')->nullable();
+            $table->integer('department_id')->nullable();
         });
     }
 

@@ -16,12 +16,21 @@ class SchoolDepartController extends Controller
     {
         if (Session::has('loginId')) {
             // ดึงข้อมูลผู้ใช้จากฐานข้อมูล
+            $school = [];
             $data = Users::where('user_id', Session::get('loginId'))->first();
-            $provinceId = $data->province_id;
-            $school = School::where('provinces_id', $provinceId)->get();
             $depart = Department::findOrFail($department_id);
             $users  = $depart->UserDe()->where('department_id', $department_id);
             $userschool  = $depart->SchouserDe()->where('department_id', $department_id);
+            $provinceId = $data->province_id;     
+            if ($data->user_role == 1) {
+                $school = School::where('department_id', $department_id)->get();
+                
+            } elseif ($data->user_role == 6 || $data->user_role == 7) {
+                $school = School::where('provinces_id', $provinceId)
+                ->where('department_id', $department_id)->get();
+              
+            }
+ 
    
         }
         return view('layouts.department.item.data.UserAdmin.group.umsschool.index', compact('depart', 'users', 'school', 'userschool'));
@@ -35,14 +44,15 @@ class SchoolDepartController extends Controller
 
     public function store(Request $request, $department_id)
     {
-        $depart = Department::findOrFail($department_id);
+  
         $school = new School;
         $school->school_name = $request->school_name;
         $school->provinces_id = $request->province_id;
         $school->subdistrict_id = null;
         $school->district_id = null;
+        $school->department_id = $department_id;
         $school->save();
-        return redirect()->route('schoolManageDepart', ['department_id' => $depart->department_id])->with('message', 'personTypes บันทึกข้อมูลสำเร็จ');
+        return redirect()->route('schoolManageDepart', ['department_id' => $department_id])->with('message', 'personTypes บันทึกข้อมูลสำเร็จ');
     }
     public function edit($department_id, $school_id)
     {

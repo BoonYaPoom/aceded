@@ -14,12 +14,7 @@
                         <button class="btn btn-lg btn-icon btn-light ml-auto d-none" type="button" id="btnsearch"><i
                                 class="fas fa-search"></i></button>
                     </div>
-                    <form action="" enctype="multipart/form-data" method="post" accept-charset="utf-8">
-                        <input type="hidden" name="__csrf_token_name" value="ea0b9ce804a7987cdcdf2cd0892f78be" />
-                        <!-- form row -->
-
-                        <!-- /form row -->
-                    </form>
+              
                     <!-- .table-responsive -->
                     <div class="table-responsive">
                         <!-- .table -->

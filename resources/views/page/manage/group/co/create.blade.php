@@ -16,7 +16,7 @@
             toastr.success("{{ Session::get('message') }}");
         </script>
     @endif
-    <form action="{{ route('storecor', [$depart,'group_id' => $courses]) }}" method="post" enctype="multipart/form-data">
+    <form action="{{ route('storecor', [$depart, 'group_id' => $courses]) }}" method="post" enctype="multipart/form-data">
         @csrf
         <!-- .page-inner -->
         <div class="page-inner">
@@ -31,7 +31,7 @@
                             style="text-decoration: underline;">จัดการหลักสูตร</a> / <a
                             href="{{ route('courgroup', ['department_id' => $courses->department_id]) }}"
                             style="text-decoration: underline;">หมวดหมู่</a> / <a
-                            href="{{ route('courpag', [$depart,'group_id' => $courses->group_id]) }}"
+                            href="{{ route('courpag', [$depart, 'group_id' => $courses->group_id]) }}"
                             style="text-decoration: underline;">{{ $courses->group_th }}</a> <i></i>
                     </div><!-- /.card-header -->
                     <!-- .card-body -->
@@ -270,31 +270,31 @@
                                 <!-- grid column -->
                                 <div class="col-md-6">
                                     <div class="form-group">
-                                        <label class="control-label" for="minScoreA">Grade A</label> <input type="number"
-                                            class="form-control" name="minScoreA" id="minScoreA"
+                                        <label class="control-label" for="minScoreA">Grade A</label> <input
+                                            type="number" class="form-control" name="minScoreA" id="minScoreA"
                                             placeholder="Grade A" value="" />
                                     </div>
                                 </div><!-- /grid column -->
                                 <!-- grid column -->
                                 <div class="col-md-6">
                                     <div class="form-group">
-                                        <label class="control-label" for="minScoreB">Grade B</label> <input type="number"
-                                            class="form-control" name="minScoreB" id="minScoreB"
+                                        <label class="control-label" for="minScoreB">Grade B</label> <input
+                                            type="number" class="form-control" name="minScoreB" id="minScoreB"
                                             placeholder="Grade B" value="" />
                                     </div>
                                 </div><!-- /grid column -->
                                 <div class="col-md-6">
                                     <div class="form-group">
-                                        <label class="control-label" for="minScoreC">Grade C</label> <input type="number"
-                                            class="form-control" name="minScoreC" id="minScoreC"
+                                        <label class="control-label" for="minScoreC">Grade C</label> <input
+                                            type="number" class="form-control" name="minScoreC" id="minScoreC"
                                             placeholder="Grade C" value="" />
                                     </div>
                                 </div><!-- /grid column -->
                                 <!-- grid column -->
                                 <div class="col-md-6">
                                     <div class="form-group">
-                                        <label class="control-label" for="minScoreD">Grade D</label> <input type="number"
-                                            class="form-control" name="minScoreD" id="minScoreD"
+                                        <label class="control-label" for="minScoreD">Grade D</label> <input
+                                            type="number" class="form-control" name="minScoreD" id="minScoreD"
                                             placeholder="Grade D" value="" />
                                     </div>
                                 </div><!-- /grid column -->
@@ -571,7 +571,7 @@
                             <legend>ข้อมูลการชำระเงิน</legend> <!-- .form-group -->
                             <div class="row">
                                 <!-- grid column -->
-                                <div class="col-md-6">
+                                <div class="col-md-4">
                                     <!-- .form-group -->
                                     <div class="form-group">
                                         <label class="control-label" for="paymentstatus">ชำระค่าลงทะเบียน</label>
@@ -585,34 +585,57 @@
                                     </div><!-- /.form-group -->
                                 </div><!-- /grid column -->
                                 <!-- grid column -->
-                                <div class="col-md-6">
+                                <div class="col-md-4">
                                     <div class="form-group showpayment d-none ">
                                         <label for="person_type">ราคาหลักสูตร (บาท) </label>
                                         <input type="text" class="form-control number" name="price" id="price"
                                             placeholder="ราคาหลักสูตร (บาท)" value="" />
                                     </div>
                                 </div><!-- /grid column -->
+
+                                <div class="col-md-4">
+                                    <div class="form-group showpayment d-none ">
+                                        <label for="person_type">กำหนดชำระเงินภายในวันที่ </label>
+                                        <input type="text" class="form-control" name="paymentdate" id="paymentdate"
+                                            data-toggle="flatpickr" data-enable-time="true" data-date-format="Y-m-d H:i"
+                                            placeholder="กำหนดชำระเงินภายในวันที่" value="" />
+                                    </div>
+                                </div>
                             </div><!-- /grid row -->
-                            <div class="row d-none   d-none">
+                            <div class="row  showpayment d-none">
                                 <div class="col-md-6">
-                                    <!-- .form-group -->
+
                                     <div class="form-group">
-                                        <label class="control-label" for="paymentmethod">ค่าลงทะเบียน</label>
-                                        <!-- .list-group-item -->
+                                        <label class="control-label" for="paymentmethod">วิธีการชำระค่าลงทะเบียน</label>
+
                                         <div class="custom-control  custom-checkbox">
                                             <label
                                                 class="switcher-control switcher-control-success switcher-control-lg"><input
-                                                    type="checkbox" name="paymentmethod" value="1"
+                                                    type="checkbox" name="payinslip" id="payinslip" value="1"
                                                     class="switcher-input"> <span
                                                     class="switcher-indicator"></span></label>
-                                            <!-- /.switcher-control -->
-                                            <span> ชำระเงิน Payin slip</span> <!-- .switcher-control -->
-                                        </div><!-- /.list-group-item -->
-                                        <!-- .list-group-item -->
+                                            <span> Payin slip</span>
+                                        </div>
+                                        <div class="custom-control  custom-checkbox">
+                                            <label
+                                                class="switcher-control switcher-control-success switcher-control-lg"><input
+                                                    type="checkbox" name="creditcard" id="creditcard" value="1"
+                                                    class="switcher-input"> <span
+                                                    class="switcher-indicator"></span></label>
+                                            <span> Credit card</span>
+                                        </div>
+                                        <div class="custom-control  custom-checkbox">
+                                            <label
+                                                class="switcher-control switcher-control-success switcher-control-lg"><input
+                                                    type="checkbox" name="promptpay" id="promptpay" value="1"
+                                                    class="switcher-input"> <span
+                                                    class="switcher-indicator"></span></label>
+                                            <span> Prompt Pay</span>
+                                        </div>
 
-                                        <!-- .list-group-header -->
-                                    </div><!-- /.form-group -->
-                                </div><!-- /grid column -->
+
+                                    </div>
+                                </div>
                             </div>
                             <div class="row showpayment d-none">
                                 <div class="col-md-12 ">
@@ -626,250 +649,284 @@
                             </div><!-- /grid row -->
                         </fieldset><!-- /.fieldset -->
                         <fieldset class=" showpayment d-none">
-
-                            <legend>ส่วนลด</legend> <!-- .form-group -->
-
+                            <legend>ส่วนลด</legend>
                             <div class="row ">
                                 <div class="col-md-6">
                                     <div class="form-group">
-                                        <label class="control-label" for="">ส่วนลด</label> <select id="discount"
+                                        <label class="control-label" for>ส่วนลด</label> <select id="discount"
                                             name="discount" class="form-control" data-toggle="select2"
                                             data-placeholder="ส่วนลด" data-allow-clear="false"
                                             onchange="if(this.value==1) $('.showdiscount').removeClass('d-none'); else $('.showdiscount').addClass('d-none');">
-                                            <option value="0">ไม่มีส่วนลด </option>
+                                            <option value="0" selected>ไม่มีส่วนลด </option>
                                             <option value="1">มีส่วนลด </option>
                                         </select>
                                     </div>
-                                </div><!-- /grid column -->
+                                </div>
                                 <div class="col-md-6 showdiscount d-none">
                                     <div class="form-group">
-                                        <label class="control-label" for="">ประเภทการลด</label> <select
-                                            id="discount_type" name="discount_type" class="form-control"
-                                            data-toggle="select2" data-placeholder="ส่วนลด" data-allow-clear="false">
-                                            <option value="percent">เปอร์เซ็นต์ </option>
+                                        <label class="control-label" for>ประเภทการลด</label> <select id="discount_type"
+                                            name="discount_type" class="form-control" data-toggle="select2"
+                                            data-placeholder="ส่วนลด" data-allow-clear="false">
+                                            <option value="percent" selected>เปอร์เซ็นต์ </option>
                                             <option value="price">ราคาบาท </option>
                                         </select>
                                     </div>
-                                </div><!-- /grid column -->
-                            </div><!-- /grid row -->
+                                </div>
+                            </div>
                             <div class="row">
-                                <div class="col-md-12 showdiscount d-none">
+                                <div class="col-md-6 showdiscount d-none">
                                     <div class="form-group">
+                                        <label for="discount_code">ส่วนลด </label>
+                                        <input type="text" class="form-control number" name="discount_data[0]"
+                                            id="discount_data0" placeholder="ทั่วไป " value />
                                         <table>
-                                            <tr>
-                                                <td>ทั่วไป</td>
-                                                <td><input type="text" class="form-control" name="discount_data[0]"
-                                                        id="discount_data0" placeholder="ทั่วไป " value="" /></td>
-                                            </tr>
                                             <tr class="showrow d-none" id="showrow1">
-                                                <td>ข้าราชการธุรการ</td>
+                                                <td>บุคลากรของสำนักงาน</td>
                                                 <td><input type="text" class="form-control number"
                                                         name="discount_data[1]" id="discount_data1"
-                                                        placeholder="ส่วนลด ข้าราชการธุรการ" value="" /></td>
+                                                        placeholder="ส่วนลด บุคลากรของสำนักงาน" value /></td>
                                             </tr>
                                             <tr class="showrow d-none" id="showrow2">
-                                                <td>พนักงานอัยการ</td>
+                                                <td>บุคคลทั่วไป</td>
                                                 <td><input type="text" class="form-control number"
                                                         name="discount_data[2]" id="discount_data2"
-                                                        placeholder="ส่วนลด พนักงานอัยการ" value="" /></td>
+                                                        placeholder="ส่วนลด บุคคลทั่วไป" value /></td>
                                             </tr>
                                             <tr class="showrow d-none" id="showrow3">
-                                                <td>บุคลากรภายนอก</td>
+                                                <td>ผู้ประกอบธุรกิจ</td>
                                                 <td><input type="text" class="form-control number"
                                                         name="discount_data[3]" id="discount_data3"
-                                                        placeholder="ส่วนลด บุคลากรภายนอก" value="" /></td>
+                                                        placeholder="ส่วนลด ผู้ประกอบธุรกิจ" value /></td>
+                                            </tr>
+                                            <tr class="showrow d-none" id="showrow4">
+                                                <td>ส่วนราชการ / หน่วยงานของรัฐ</td>
+                                                <td><input type="text" class="form-control number"
+                                                        name="discount_data[4]" id="discount_data4"
+                                                        placeholder="ส่วนลด ส่วนราชการ / หน่วยงานของรัฐ" value /></td>
+                                            </tr>
+                                            <tr class="showrow d-none" id="showrow5">
+                                                <td>สถาบันการศึกษา</td>
+                                                <td><input type="text" class="form-control number"
+                                                        name="discount_data[5]" id="discount_data5"
+                                                        placeholder="ส่วนลด สถาบันการศึกษา" value /></td>
+                                            </tr>
+                                            <tr class="showrow d-none" id="showrow6">
+                                                <td>อื่น ๆ</td>
+                                                <td><input type="text" class="form-control number"
+                                                        name="discount_data[6]" id="discount_data6"
+                                                        placeholder="ส่วนลด อื่น ๆ" value /></td>
                                             </tr>
                                         </table>
                                     </div>
-                                </div><!-- /grid column -->
-
-                            </div><!-- /grid row -->
-
-                        </fieldset><!-- /.fieldset -->
-                        <fieldset class=" showpayment d-none">
-
-                            <legend>วิธีการชำระเงิน Payin slip</legend> <!-- .form-group -->
-
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label class="control-label" for="">ธนาคาร</label> <select id="bank"
-                                            name="bank" class="form-control" data-toggle="select2"
-                                            data-placeholder="ธนาคาร" data-allow-clear="false">
-                                            <option value="">เลือกธนาคาร </option>
-                                            <option value="ktb">ธนาคารกรุงไทย </option>
-                                        </select>
-                                    </div>
-                                </div><!-- /grid column -->
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label for="person_type">Comp Code </label>
-                                        <input type="text" class="form-control number" name="compcode" id="compcode"
-                                            placeholder="Comp Code" value="" />
-                                    </div>
-                                </div><!-- /grid column -->
-                            </div><!-- /grid row -->
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label for="person_type">Tax ID </label>
-                                        <input type="text" class="form-control number" name="taxid" id="taxid"
-                                            placeholder="Tax ID" value="" />
-                                    </div>
-                                </div><!-- /grid column -->
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label for="person_type">Suffix Code</label>
-                                        <input type="text" class="form-control number" name="suffixcode"
-                                            id="suffixcode" placeholder="Suffix Code" value="" maxlength="3" />
-                                    </div>
-                                </div><!-- /grid column -->
-                            </div><!-- /grid row -->
-
-                        </fieldset><!-- /.fieldset -->
-
-                        <!-- .fieldset -->
-                        <fieldset>
-                            <legend>รูปแบบใบประกาศนียบัตร</legend> <!-- .form-group -->
-                            <div class="row">
-                                <!-- grid column -->
-                                <div class="col-xl-4 col-lg-4 col-sm-6">
-                                    <!-- .card -->
-                                    <div class="card card-figure">
-                                        <!-- .card-figure -->
-                                        <figure class="figure">
-                                            <img class="img-fluser_id" src="{{ asset('uploads/cer02_0.png') }}"
-                                                alt="ใบประกาศนียบัตร 1 " style="cursor:zoom-in"
-                                                onclick="$('#previewimage').prop('src',$(this).prop('src'));$('#modal01').css('display','block');">
-                                            <!-- .figure-caption -->
-                                            <figcaption class="figure-caption">
-                                                <h6 class="figure-title">ใบประกาศนียบัตร 1</h6>
-                                                <p class="text-muted mb-0 ">
-                                                    <div class="custom-control custom-radio text-center"><input type="radio"
-                                                            class="custom-control-input" name="templete_certificate"
-                                                            id="certificate1" value="1"> <label
-                                                            class="custom-control-label" for="certificate1"></label></div>
-                                                </p>
-                                            </figcaption><!-- /.figure-caption -->
-                                        </figure><!-- /.card-figure -->
-                                    </div><!-- /.card -->
-                                </div><!-- /grid column -->
-                                <!-- grid column -->
-                                <div class="col-xl-4 col-lg-4 col-sm-6">
-                                    <!-- .card -->
-                                    <div class="card card-figure">
-                                        <!-- .card-figure -->
-                                        <figure class="figure">
-                                            <img class="img-fluser_id" src="{{ asset('uploads/CER_11_0_0.jpg') }}"
-                                                alt="ใบประกาศนียบัตร 2 " style="cursor:zoom-in"
-                                                onclick="$('#previewimage').prop('src',$(this).prop('src'));$('#modal01').css('display','block');">
-                                            <!-- .figure-caption -->
-                                            <figcaption class="figure-caption">
-                                                <h6 class="figure-title">ใบประกาศนียบัตร 2</h6>
-                                                <p class="text-muted mb-0 ">
-                                                    <div class="custom-control custom-radio text-center"><input type="radio"
-                                                            class="custom-control-input" name="templete_certificate"
-                                                            id="certificate2" value="2"> <label
-                                                            class="custom-control-label" for="certificate2"></label></div>
-                                                </p>
-                                            </figcaption><!-- /.figure-caption -->
-                                        </figure><!-- /.card-figure -->
-                                    </div><!-- /.card -->
-                                </div><!-- /grid column -->
-                                <div class="col-xl-4 col-lg-4 col-sm-6">
-                                    <!-- .card -->
-                                    <div class="card card-figure">
-                                        <!-- .card-figure -->
-                                        <figure class="figure">
-                                            <img class="img-fluser_id" src="{{ asset('uploads/CER_3_0_0.jpg') }}"
-                                                alt="ใบประกาศนียบัตร 3 " style="cursor:zoom-in"
-                                                onclick="$('#previewimage').prop('src',$(this).prop('src'));$('#modal01').css('display','block');">
-                                            <!-- .figure-caption -->
-                                            <figcaption class="figure-caption">
-                                                <h6 class="figure-title">ใบประกาศนียบัตร 2</h6>
-                                                <p class="text-muted mb-0 ">
-                                                    <div class="custom-control custom-radio text-center"><input type="radio"
-                                                            class="custom-control-input" name="templete_certificate"
-                                                            id="certificate3" value="3"> <label
-                                                            class="custom-control-label" for="certificate3"></label></div>
-                                                </p>
-                                            </figcaption><!-- /.figure-caption -->
-                                        </figure><!-- /.card-figure -->
-                                    </div><!-- /.card -->
-                                </div><!-- /grid column -->
-                                <!-- grid column -->
-                            </div><!-- /grid row -->
-                            <div id="modal01" class="w3-modal" onclick="this.style.display='none'">
-                                <span class="w3-button w3-hover-red w3-xlarge w3-display-topright">×</span>
-                                <div class="w3-modal-content w3-animate-zoom">
-                                    <img src="{{ asset('upload/cer/certificate_1.png') }}" style="width:100%"
-                                        id="previewimage">
                                 </div>
-                            </div>
-                            <!-- grid column -->
-                            <div class="col-xl-4 col-lg-4 col-sm-6  d-none">
-                                <!-- .card -->
-                                <div class="card card-figure">
-                                    <!-- .card-figure -->
-                                    <figure class="figure"><img class="img-fluser_id"
-                                            src="https://aced.dlex.ai/childhood/admin/" alt="ใบประกาศนียบัตร  6 "
-                                            style="cursor:zoom-in"
-                                            onclick="$('#previewimage').prop('src',$(this).prop('src'));$('#modal01').css('display','block');">
-                                        <!-- .figure-caption -->
-                                        <figcaption class="figure-caption">
-                                            <h6 class="figure-title"> ใบประกาศนียบัตรกำหนดเอง </h6>
-                                            <p class="text-muted mb-0 ">
-                                            <div class="custom-control custom-radio text-center"><input type="radio"
-                                                    class="custom-control-input" name="templete_certificate"
-                                                    id="certificate6" value="6"> <label class="custom-control-label"
-                                                    for="certificate6"></label></div>
-                                            </p>
-                                        </figcaption><!-- /.figure-caption -->
-                                    </figure><!-- /.card-figure -->
+                        
+                                <div class="col-md-6 showdiscount d-none" ">
+                                            <div class="form-group">
+                                            <label for="discount_code">รหัสส่วนลด </label>
+                                            <input type="text" class="form-control" name="discount_code" id="discount_code" placeholder="รหัสส่วนลด" value="0" />
+                                            </div>
+                                            </div>
+                                            </div>
+                                           
+                                                
+                                            </fieldset>
+                                            <fieldset class=" showpayment d-none">
+                                            <legend>ข้อมูลบัญชีธนาคาร</legend>
+                                            <div class="row">
+                                            <div class="col-md-6 d-none">
+                                            <div class="form-group">
+                                            <label class="control-label" for>ธนาคาร</label> <select id="bank" name="bank" class="form-control" data-toggle="select2" data-placeholder="ธนาคาร" data-allow-clear="false"><option value>เลือกธนาคาร </option><option value="ktb">ธนาคารกรุงไทย </option></select>
+                                            </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                            <div class="form-group">
+                                            <label for="person_type">Comp Code </label>
+                                            <input type="text" class="form-control number" name="compcode" id="compcode" placeholder="Comp Code" value="0" />
+                                            </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                            <div class="form-group">
+                                            <label for="person_type">Tax ID </label>
+                                            <input type="text" class="form-control number" name="taxid" id="taxid" placeholder="Tax ID" value="0" />
+                                            </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                            <div class="form-group">
+                                            <label for="person_type">Suffix Code</label>
+                                            <input type="text" class="form-control number" name="suffixcode" id="suffixcode" placeholder="Suffix Code" value="0" />
+                                            </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                            <div class="form-group">
+                                            <label for="person_type">Prompt Pay / Account Book</label>
+                                            <input type="text" class="form-control number" name="accountbook" id="accountbook" placeholder="Account Book" value="0" />
+                                            </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                            <div class="form-group">
+                                            <label for="person_type">Prompt Name / Account Name</label>
+                                            <input type="text" class="form-control" name="accountname" id="accountname" placeholder="Account Name" value="0" />
+                                            </div>
+                                            </div>
+                                            </div>
+                                            </fieldset>
+                                            
+                                      
+                                        <!-- .fieldset -->
+                                        <fieldset>
+                                            <legend>รูปแบบใบประกาศนียบัตร</legend> <!-- .form-group -->
+                                            <div class="row">
+                                                <!-- grid column -->
+                                                <div class="col-xl-4 col-lg-4 col-sm-6">
+                                                    <!-- .card -->
+                                                    <div class="card card-figure">
+                                                        <!-- .card-figure -->
+                                                        <figure class="figure">
+                                                            <img class="img-fluser_id" src="{{ asset('uploads/cer02_0.png') }}"
+                                                                alt="ใบประกาศนียบัตร 1 " style="cursor:zoom-in"
+                                                                onclick="$('#previewimage').prop('src',$(this).prop('src'));$('#modal01').css('display','block');">
+                                                            <!-- .figure-caption -->
+                                                            <figcaption class="figure-caption">
+                                                                <h6 class="figure-title">ใบประกาศนียบัตร 1</h6>
+                                                                <p class="text-muted mb-0 ">
+                                                                <div class="custom-control custom-radio text-center"><input type="radio"
+                                                                        class="custom-control-input" name="templete_certificate"
+                                                                        id="certificate1" value="1"> <label
+                                                                        class="custom-control-label" for="certificate1"></label></div>
+                                                                </p>
+                                                            </figcaption><!-- /.figure-caption -->
+                                                        </figure><!-- /.card-figure -->
+                                                    </div><!-- /.card -->
+                                                </div><!-- /grid column -->
+                                                <!-- grid column -->
+                                                <div class="col-xl-4 col-lg-4 col-sm-6">
+                                                    <!-- .card -->
+                                                    <div class="card card-figure">
+                                                        <!-- .card-figure -->
+                                                        <figure class="figure">
+                                                            <img class="img-fluser_id" src="{{ asset('uploads/CER_11_0_0.jpg') }}"
+                                                                alt="ใบประกาศนียบัตร 2 " style="cursor:zoom-in"
+                                                                onclick="$('#previewimage').prop('src',$(this).prop('src'));$('#modal01').css('display','block');">
+                                                            <!-- .figure-caption -->
+                                                            <figcaption class="figure-caption">
+                                                                <h6 class="figure-title">ใบประกาศนียบัตร 2</h6>
+                                                                <p class="text-muted mb-0 ">
+                                                                <div class="custom-control custom-radio text-center"><input type="radio"
+                                                                        class="custom-control-input" name="templete_certificate"
+                                                                        id="certificate2" value="2"> <label
+                                                                        class="custom-control-label" for="certificate2"></label></div>
+                                                                </p>
+                                                            </figcaption><!-- /.figure-caption -->
+                                                        </figure><!-- /.card-figure -->
+                                                    </div><!-- /.card -->
+                                                </div><!-- /grid column -->
+                                                <div class="col-xl-4 col-lg-4 col-sm-6">
+                                                    <!-- .card -->
+                                                    <div class="card card-figure">
+                                                        <!-- .card-figure -->
+                                                        <figure class="figure">
+                                                            <img class="img-fluser_id" src="{{ asset('uploads/CER_3_0_0.jpg') }}"
+                                                                alt="ใบประกาศนียบัตร 3 " style="cursor:zoom-in"
+                                                                onclick="$('#previewimage').prop('src',$(this).prop('src'));$('#modal01').css('display','block');">
+                                                            <!-- .figure-caption -->
+                                                            <figcaption class="figure-caption">
+                                                                <h6 class="figure-title">ใบประกาศนียบัตร 2</h6>
+                                                                <p class="text-muted mb-0 ">
+                                                                <div class="custom-control custom-radio text-center"><input type="radio"
+                                                                        class="custom-control-input" name="templete_certificate"
+                                                                        id="certificate3" value="3"> <label
+                                                                        class="custom-control-label" for="certificate3"></label></div>
+                                                                </p>
+                                                            </figcaption><!-- /.figure-caption -->
+                                                        </figure><!-- /.card-figure -->
+                                                    </div><!-- /.card -->
+                                                </div><!-- /grid column -->
+                                                <!-- grid column -->
+                                            </div><!-- /grid row -->
+                                            <div id="modal01" class="w3-modal" onclick="this.style.display='none'">
+                                                <span class="w3-button w3-hover-red w3-xlarge w3-display-topright">×</span>
+                                                <div class="w3-modal-content w3-animate-zoom">
+                                                    <img src="{{ asset('upload/cer/certificate_1.png') }}" style="width:100%"
+                                                        id="previewimage">
+                                                </div>
+                                            </div>
+                                            <!-- grid column -->
+                                            <div class="col-xl-4 col-lg-4 col-sm-6  d-none">
+                                                <!-- .card -->
+                                                <div class="card card-figure">
+                                                    <!-- .card-figure -->
+                                                    <figure class="figure"><img class="img-fluser_id"
+                                                            src="https://aced.dlex.ai/childhood/admin/" alt="ใบประกาศนียบัตร  6 "
+                                                            style="cursor:zoom-in"
+                                                            onclick="$('#previewimage').prop('src',$(this).prop('src'));$('#modal01').css('display','block');">
+                                                        <!-- .figure-caption -->
+                                                        <figcaption class="figure-caption">
+                                                            <h6 class="figure-title"> ใบประกาศนียบัตรกำหนดเอง </h6>
+                                                            <p class="text-muted mb-0 ">
+                                                            <div class="custom-control custom-radio text-center"><input type="radio"
+                                                                    class="custom-control-input" name="templete_certificate"
+                                                                    id="certificate6" value="6"> <label class="custom-control-label"
+                                                                    for="certificate6"></label></div>
+                                                            </p>
+                                                        </figcaption><!-- /.figure-caption -->
+                                                    </figure><!-- /.card-figure -->
+                                                </div><!-- /.card -->
+                                            </div><!-- /grid column -->
+                                            <!-- grid column -->
+                                            <!-- /grid row -->
+                                            <div class="form-group">
+                                                <label for="cert_custom">เพิ่มรูปแบบใบประกาศนียบัตร </label> <input type="file"
+                                                    class="form-control" id="cert_custom" name="cert_custom"
+                                                    placeholder="ใบประกาศนียบัตร	" accept="image/*">
+                                            </div><!-- /.form-group -->
+                                        </fieldset><!-- /.fieldset -->
+                                        <fieldset>
+                                            <legend>ข้อมูลใบประกาศนียบัตร</legend> <!-- .form-group -->
+                                            <div class="row ">
+                                                <!-- grid column -->
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label class="control-label" for="days">ชื่อ-นามสกุล</label> <input
+                                                            type="text" class="form-control" name="signature_name"
+                                                            id="signature_name" placeholder="ชื่อ-นามสกุล" value="" />
+                                                    </div>
+                                                </div><!-- /grid column -->
+                                                <!-- grid column -->
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label class="control-label" for="hours">ตำแหน่ง</label> <input type="text"
+                                                            class="form-control" name="signature_position" id="signature_position"
+                                                            placeholder="ตำแหน่ง" value="" />
+                                                    </div>
+                                                </div><!-- /grid column -->
+                                            </div><!-- /grid row -->
+                                            <div class="form-group">
+                                                <label for="signature">ลายเซ็นต์ </label> <input type="file" class="form-control"
+                                                    id="signature" name="signature" placeholder="ลายเซ็นต์" accept="image/*">
+                                            </div><!-- /.form-group -->
+                                        </fieldset><!-- /.fieldset -->
+                                    </div><!-- /.card-body -->
                                 </div><!-- /.card -->
-                            </div><!-- /grid column -->
-                            <!-- grid column -->
-                            <!-- /grid row -->
-                            <div class="form-group">
-                                <label for="cert_custom">เพิ่มรูปแบบใบประกาศนียบัตร </label> <input type="file"
-                                    class="form-control" id="cert_custom" name="cert_custom"
-                                    placeholder="ใบประกาศนียบัตร	" accept="image/*">
-                            </div><!-- /.form-group -->
-                        </fieldset><!-- /.fieldset -->
-                        <fieldset>
-                            <legend>ข้อมูลใบประกาศนียบัตร</legend> <!-- .form-group -->
-                            <div class="row ">
-                                <!-- grid column -->
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label class="control-label" for="days">ชื่อ-นามสกุล</label> <input
-                                            type="text" class="form-control" name="signature_name"
-                                            id="signature_name" placeholder="ชื่อ-นามสกุล" value="" />
-                                    </div>
-                                </div><!-- /grid column -->
-                                <!-- grid column -->
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label class="control-label" for="hours">ตำแหน่ง</label> <input type="text"
-                                            class="form-control" name="signature_position" id="signature_position"
-                                            placeholder="ตำแหน่ง" value="" />
-                                    </div>
-                                </div><!-- /grid column -->
-                            </div><!-- /grid row -->
-                            <div class="form-group">
-                                <label for="signature">ลายเซ็นต์ </label> <input type="file" class="form-control"
-                                    id="signature" name="signature" placeholder="ลายเซ็นต์" accept="image/*">
-                            </div><!-- /.form-group -->
-                        </fieldset><!-- /.fieldset -->
-                    </div><!-- /.card-body -->
-                </div><!-- /.card -->
 
-                <!-- .form-actions -->
-                <div class="form-actions ">
-                    <button class="btn btn-lg btn-primary ml-auto" type="submit"><i class="far fa-save"></i>
-                        บันทึก</button>
-                </div><!-- /.form-actions -->
-            </div><!-- /.page-section -->
-        </div><!-- /.page-inner -->
-    </form>
+                                <!-- .form-actions -->
+                                <div class="form-actions ">
+                                    <button class="btn btn-lg btn-primary ml-auto" type="submit"><i class="far fa-save"></i>
+                                        บันทึก</button>
+                                </div><!-- /.form-actions -->
+                            </div><!-- /.page-section -->
+                        </div><!-- /.page-inner -->
+                    </form>
+                    <script>
+                        document.addEventListener("DOMContentLoaded", function() {
+                            // Get all elements with the "discount-code-input" class
+                            const discountCodeInputs = document.querySelectorAll(".number");
+
+                            // Loop through all the input fields
+                            discountCodeInputs.forEach(function(discountCodeInput) {
+                                discountCodeInput.addEventListener("input", function(event) {
+                                    this.value = this.value.replace(/\D/g, ""); // Allow only numeric values
+                                });
+                            });
+                        });
+                    </script>
 @endsection
