@@ -166,7 +166,7 @@ return [
         
          'rudrarajiv\flipbooklaravel\FlipBookServiceProvider',
          LdapRecord\Laravel\LdapServiceProvider::class,
-
+         Hedii\ArtisanLogCleaner\ArtisanLogCleanerServiceProvider::class,
          Yajra\DataTables\DataTablesServiceProvider::class,
         Barryvdh\DomPDF\ServiceProvider::class,
         Yajra\Oci8\Oci8ServiceProvider::class,
