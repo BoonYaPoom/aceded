@@ -326,12 +326,12 @@
 
         </div><!-- /.page-section -->
         <!-- .page-title-bar -->
-     <!--   <header class="page-title-bar">
+      <header class="page-title-bar">
          
             <button type="button" class="btn btn-success btn-floated btn-addums"
                 onclick="window.location='{{ route('DPcreateUser', ['department_id' => $depart->department_id]) }}'"
                 id="add_umsform" data-toggle="tooltip" title="เพิ่ม"><span class="fas fa-plus"></span></button>
            
-        </header>-->
+        </header>
     </div><!-- /.page-inner -->
 @endsection

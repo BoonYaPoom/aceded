@@ -75,7 +75,7 @@
       <link rel="stylesheet" href="{{ asset('/stylesheets/logincss/logincss.css') }}">
 
   </head>
-<!-- @php
+@php
     
 try {
     $connonName = 'mysql';
@@ -84,7 +84,7 @@ try {
 } catch (\Exception $e) {
     die("ไม่สามารถเชื่อมต่อฐานข้อมูล MySQL: " . $e->getMessage());
 }
-@endphp -->
+@endphp 
     <!--  @php
       use Illuminate\Support\Facades\DB;
       

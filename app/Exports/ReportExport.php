@@ -32,10 +32,17 @@ class ReportExport implements
         // สร้างเป็นคอลเล็กชันและส่งคืนข้อมูลที่คุณต้องการ
         return collect([
             [1, 'รายงานข้อมูลรายชื่อผู้เรียนทั้งหมด และแยกตามหลักสูตร', ''],
-            [2, 'รายชื่อผู้ฝึกอบรมที่เข้าฝึกอบรมมากที่สุด', ''],
+            [2, 'รายงานสถานะผู้เข้าเรียน และจบการศึกษา (รายบุคคล)', ''],
             [3, 'รายงานการดาวน์โหลดเอกสาร e-book Multimedia ของผู้เรียน', ''],
-            [4, 'รายงานการ Login ของผู้เรียน', ''],
-            [5, 'ข้อมูล Log File ในรูปแบบรายงานทางสถิติ', ''],
+            [4, 'รายงานสถิติช่วงอายุของผู้เรียนในแต่ละหลักสูตร (ช่วงที่ 1 อายุไม่เกิน 11 ปี / ช่วงที่ 2 อายุ12 - 17 ปี / ช่วงที่ 3 อายุ 18 - 25 ปี / ช่วงที่ 4 อายุเกิน 25 ปีขึ้นไป)', ''],
+            [5, 'รายงานสถิติการเข้าใช้งานรายเดือน (ผู้ใช้งานใหม่)', ''],
+            [6, 'รายงานสถิติการเข้าใช้งานรายไตรมาส (ผู้ใช้งานใหม่)', ''],
+            [7, 'รายงานสถิติการเข้าใช้งานรายเดือน (ผู้ใช้งานใหม่)', ''],
+            [8, 'รายงานสถิติการเข้าใช้งานรายเดือน (กลุ่มบุคลากรภาครัฐ และรัฐวิสาหกิจ)', ''],
+            [9, 'รายงานสถิติการเข้าใช้งานรายเดือน (กลุ่มการศึกษาขั้นพื้นฐาน)', ''],
+            [10, 'รายงานสถิติการเข้าใช้งานรายเดือน (กลุ่มอุดมศึกษา)', ''],
+            [11, 'รายงานสถิติการเข้าใช้งานรายเดือน (กลุ่มอาชีวศึกษา)', ''],
+            [12, '	รายงานสถิติการเข้าใช้งานรายเดือน (กลุ่มโค้ช และประชาชน)', ''],
         ]);
     }
     public function headings(): array
@@ -43,6 +50,7 @@ class ReportExport implements
         return [
             ['รายงานเชิงตาราง ปี 2566'],
             ['ลำดับ', 'ชื่อรายงาน', 'รายงาน'],
+            
         ];
     }
 
@@ -53,7 +61,7 @@ class ReportExport implements
                 $worksheet = $event->sheet->getDelegate();
 
                 // กำหนดขอบเซลล์
-                $cellRange = 'A1:F1';
+                $cellRange = 'A1:C1';
 
                 $worksheet->mergeCells($cellRange);
 
@@ -77,9 +85,9 @@ class ReportExport implements
                 $worksheet->getStyle($cellRange)->applyFromArray($style);
 
                 // กำหนดขอบกรอบรอบข้อมูล
-                $cellRange = 'A2:F' . $worksheet->getHighestRow();
+                $cellRange = 'A2:C' . $worksheet->getHighestRow();
                 $style = [
-                    'alignment' => ['horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER],
+                    'alignment' => ['horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_LEFT],
                     'borders' => [
                         'outline' => [
                             'borderStyle' => Border::BORDER_THIN,
@@ -92,12 +100,7 @@ class ReportExport implements
                 $worksheet->getStyle($cellRange)->applyFromArray($style);
 
           
-                $cellRange = 'D2:D7'; 
-                $worksheet->mergeCells($cellRange);
-                $cellRange = 'E2:E7'; 
-                $worksheet->mergeCells($cellRange);
-                $cellRange = 'F2:F7';
-                $worksheet->mergeCells($cellRange);
+           
                 
             },
         ];

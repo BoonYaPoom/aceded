@@ -9,6 +9,7 @@ use App\Models\CourseLearner;
 use App\Models\Department;
 use App\Models\Log;
 use App\Models\PersonType;
+use App\Models\Provinces;
 use App\Models\Users;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -214,5 +215,130 @@ class ReportAllController extends Controller
         return view('page.report.tables.t0115', compact('userper', 'month', 'oneYearsAgo', 'currentYear','logs'));
     }
 
-    
+    public function t0116()
+    {
+        $jsonContent = file_get_contents('javascript/json/_data.json');
+        $mms = json_decode($jsonContent, true);
+        $monthdata = $mms['month'];
+        $month = $monthdata['th'];
+        $currentYear = Carbon::now()->addYears(543)->year;
+        $oneYearsAgo = Carbon::now()->subYears(1)->addYears(543)->year; 
+        $pro = Provinces::all();
+        return view('page.report.tables.datatest.t0116', compact('pro','month','oneYearsAgo', 'currentYear'));
+    }
+    public function t0117()
+    {
+        $jsonContent = file_get_contents('javascript/json/_data.json');
+        $mms = json_decode($jsonContent, true);
+        $monthdata = $mms['month'];
+        $month = $monthdata['th'];
+        $currentYear = Carbon::now()->addYears(543)->year;
+        $oneYearsAgo = Carbon::now()->subYears(1)->addYears(543)->year;
+        $pro = Provinces::all();
+        return view('page.report.tables.datatest.t0117', compact('pro','month','oneYearsAgo', 'currentYear'));
+    }
+    public function t0118()
+    {
+        $logs = Log::all();
+        $userper = Users::all();
+        $jsonContent = file_get_contents('javascript/json/_data.json');
+        $mms = json_decode($jsonContent, true);
+        $monthdata = $mms['month'];
+        $month = $monthdata['th'];
+        $currentYear = Carbon::now()->addYears(543)->year;
+        $oneYearsAgo = Carbon::now()->subYears(1)->addYears(543)->year;
+        $pro = Provinces::all();
+        return view('page.report.tables.datatest.t0118', compact('pro','userper', 'month', 'oneYearsAgo', 'currentYear','logs'));
+    }
+    public function t0119()
+    {
+        $logs = Log::all();
+        $userper = Users::all();
+        $jsonContent = file_get_contents('javascript/json/_data.json');
+        $mms = json_decode($jsonContent, true);
+        $monthdata = $mms['month'];
+        $month = $monthdata['th'];
+        $currentYear = Carbon::now()->addYears(543)->year;
+        $oneYearsAgo = Carbon::now()->subYears(1)->addYears(543)->year;
+        $pro = Provinces::all();
+        return view('page.report.tables.datatest.t0119', compact('pro','userper', 'month', 'oneYearsAgo', 'currentYear','logs'));
+    }
+    public function t0120()
+    {
+        $logs = Log::all();
+        $userper = Users::all();
+        $jsonContent = file_get_contents('javascript/json/_data.json');
+        $mms = json_decode($jsonContent, true);
+        $monthdata = $mms['month'];
+        $month = $monthdata['th'];
+        $currentYear = Carbon::now()->addYears(543)->year;
+        $oneYearsAgo = Carbon::now()->subYears(1)->addYears(543)->year;
+        $pro = Provinces::all();
+        return view('page.report.tables.datatest.t0120', compact('pro','userper', 'month', 'oneYearsAgo', 'currentYear','logs'));
+    }
+    public function t0121()
+    {
+        $logs = Log::all();
+        $userper = Users::all();
+        $jsonContent = file_get_contents('javascript/json/_data.json');
+        $mms = json_decode($jsonContent, true);
+        $monthdata = $mms['month'];
+        $month = $monthdata['th'];
+        $currentYear = Carbon::now()->addYears(543)->year;
+        $oneYearsAgo = Carbon::now()->subYears(1)->addYears(543)->year;
+        $pro = Provinces::all();
+        return view('page.report.tables.datatest.t0121', compact('pro','userper', 'month', 'oneYearsAgo', 'currentYear','logs'));
+    }
+    public function t0122()
+    {
+        $logs = Log::all();
+        $userper = Users::all();
+        $jsonContent = file_get_contents('javascript/json/_data.json');
+        $mms = json_decode($jsonContent, true);
+        $monthdata = $mms['month'];
+        $month = $monthdata['th'];
+        $currentYear = Carbon::now()->addYears(543)->year;
+        $oneYearsAgo = Carbon::now()->subYears(1)->addYears(543)->year;
+        $pro = Provinces::all();
+        return view('page.report.tables.datatest.t0122', compact('pro','userper', 'month', 'oneYearsAgo', 'currentYear','logs'));
+    }
+    public function t0123()
+    {
+        $logs = Log::all();
+        $userper = Users::all();
+        $jsonContent = file_get_contents('javascript/json/_data.json');
+        $mms = json_decode($jsonContent, true);
+        $monthdata = $mms['month'];
+        $month = $monthdata['th'];
+        $currentYear = Carbon::now()->addYears(543)->year;
+        $oneYearsAgo = Carbon::now()->subYears(1)->addYears(543)->year;
+        $pro = Provinces::all();
+        return view('page.report.tables.datatest.t0123', compact('pro','userper', 'month', 'oneYearsAgo', 'currentYear','logs'));
+    }
+    public function t0124()
+    {
+        $logs = Log::all();
+        $userper = Users::all();
+        $jsonContent = file_get_contents('javascript/json/_data.json');
+        $mms = json_decode($jsonContent, true);
+        $monthdata = $mms['month'];
+        $month = $monthdata['th'];
+        $currentYear = Carbon::now()->addYears(543)->year;
+        $oneYearsAgo = Carbon::now()->subYears(1)->addYears(543)->year;
+        $pro = Provinces::all();
+        return view('page.report.tables.datatest.t0124', compact('pro','userper', 'month', 'oneYearsAgo', 'currentYear','logs'));
+    }
+    public function t0125()
+    {
+        $logs = Log::all();
+        $userper = Users::all();
+        $jsonContent = file_get_contents('javascript/json/_data.json');
+        $mms = json_decode($jsonContent, true);
+        $monthdata = $mms['month'];
+        $month = $monthdata['th'];
+        $currentYear = Carbon::now()->addYears(543)->year;
+        $oneYearsAgo = Carbon::now()->subYears(1)->addYears(543)->year;
+        $pro = Provinces::all();
+        return view('page.report.tables.datatest.t0125', compact('pro','userper', 'month', 'oneYearsAgo', 'currentYear','logs'));
+    }
 }

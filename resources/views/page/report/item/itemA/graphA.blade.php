@@ -2,54 +2,47 @@
             $chartData = [];
             $chartDataRe = [];
             $chartDataAll = [];
+            $chartDataCons = [];
+
             $dateAll = ['ม.ค.', 'ก.พ.', 'มี.ค.', 'เม.ย.', 'พ.ค.', 'มิ.ย.', 'ก.ค.', 'ส.ค.', 'ก.ย.', 'ต.ค.', 'พ.ย.', 'ธ.ค.'];
 
-            foreach ($perType as $per) {
-                $uniqueUserIds = [];
-                $personType = $per->person_type;
-                $totalCount = 0;
-                $totalCountRE = 0;
-                $totalCountAll = 0;
+            $uniqueUserIds = [];
 
-                foreach ($learners as $l => $lrean) {
-                    $dataLearn = $lrean->registerdate;
-                    $monthsa = \ltrim(\Carbon\Carbon::parse($dataLearn)->format('m'), '0');
+            $totalCount = 0;
+            $totalCountRE = 0;
+            $totalCountAll = 0;
 
-                    $year = \Carbon\Carbon::parse($dataLearn)->year + 543;
-                    $newDateTime = \Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $lrean->registerdate)->format('d/m/Y H:i:s');
-                    if ($year == 2566) {
-                        if (!in_array($lrean->user_id, $uniqueUserIds)) {
-                            array_push($uniqueUserIds, $lrean->user_id);
-                            if ($lrean->congratulation == 1) {
-                                $count = \App\Models\Users::where('user_id', $lrean->user_id)
-                                    ->where('user_type', $personType)
-                                    ->count();
+            foreach ($learners as $l => $lrean) {
+                $dataLearn = $lrean->registerdate;
+                $monthsa = \ltrim(\Carbon\Carbon::parse($dataLearn)->format('m'), '0');
 
-                                $totalCount += $count;
-                            }
-                            if ($lrean->registerdate) {
-                                $countregis = \App\Models\Users::where('user_id', $lrean->user_id)
-                                    ->where('user_type', $personType)
-                                    ->count();
+                $year = \Carbon\Carbon::parse($dataLearn)->year + 543;
+                $newDateTime = \Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $lrean->registerdate)->format('d/m/Y H:i:s');
+                if ($year == 2566) {
+                    if (!in_array($lrean->user_id, $uniqueUserIds)) {
+                        array_push($uniqueUserIds, $lrean->user_id);
+                        if ($lrean->congratulation == 1) {
+                            $count = \App\Models\Users::where('user_id', $lrean->user_id)->count();
 
-                                $totalCountRE += $countregis;
-                            }
+                            $totalCount += $count;
+                        }
+                        if ($lrean->registerdate) {
+                            $countregis = \App\Models\Users::where('user_id', $lrean->user_id)->count();
+
+                            $totalCountRE += $countregis;
                         }
                     }
                 }
-                $chartData[] = [
-                    'choice' => $per->person,
+              
+            }
+            $chartDataRe[] = [
+                    'choice' => 'ผู้สมัครเรียน',
                     'count' => $totalCount,
                 ];
-                $chartDataRe[] = [
-                    'choice' => $per->person,
+                $chartDataCons[] = [
+                    'choice' => 'เรียบจบแล้ว',
                     'count' => $totalCountRE,
                 ];
-                $chartDataCon[] = [
-                    'choice' => $per->person,
-                    'count' => $totalCountRE,
-                ];
-            }
             $n = 0;
 
             $result = []; // สร้างตัวแปรเก็บผลลัพธ์
@@ -60,19 +53,18 @@
 
                     $yearCon = \Carbon\Carbon::parse($dataCon)->year + 543;
                     if ($yearCon == 2566) {
-                    $monthCon = \ltrim(\Carbon\Carbon::parse($dataCon)->format('m'), '0');
-                    $result[$monthCon]['congratulation'] = isset($result[$monthCon]['congratulation']) ? $result[$monthCon]['congratulation'] + 1 : 0;
-            
-                }
+                        $monthCon = \ltrim(\Carbon\Carbon::parse($dataCon)->format('m'), '0');
+                        $result[$monthCon]['congratulation'] = isset($result[$monthCon]['congratulation']) ? $result[$monthCon]['congratulation'] + 1 : 0;
+                    }
                 } elseif ($lea->congratulation == 0) {
                     $dataRegi = $lea->registerdate;
                     $yearR = \Carbon\Carbon::parse($dataRegi)->year + 543;
                     if ($yearR == 2566) {
-                    $monthRegi = \ltrim(\Carbon\Carbon::parse($dataRegi)->format('m'), '0');
-                    $result[$monthRegi]['register'] = isset($result[$monthRegi]['register']) ? $result[$monthRegi]['register'] + 1 : 0;
-                    # code...
+                        $monthRegi = \ltrim(\Carbon\Carbon::parse($dataRegi)->format('m'), '0');
+                        $result[$monthRegi]['register'] = isset($result[$monthRegi]['register']) ? $result[$monthRegi]['register'] + 1 : 0;
+                        # code...
+                    }
                 }
-            }
             }
             $chartDataCon = [];
             foreach ($dateAll as $m => $months) {
@@ -93,13 +85,12 @@
 
 
         <script>
-            var chartData = {!! json_encode($chartData) !!};
             var chartDataRe = {!! json_encode($chartDataRe) !!};
             var dateAll = {!! json_encode($dateAll) !!};
             var chartDataCon = {!! json_encode($chartDataCon) !!};
-
+            var chartDataCons = {!! json_encode($chartDataCons) !!};
             console.log(chartDataCon);
-            console.log(chartData);
+
             console.log(chartDataRe);
 
 
@@ -136,10 +127,15 @@
                     }
                 },
                 series: [{
-                    name: 'จำนวน',
-                    colorByPoint: true,
-                    data: chartData.map(item => ({
-                        name: item.choice,
+                    name: 'ผู้สมัครเรียน',
+                    data: chartDataRe.map(item => ({
+                        name: item.name, // Use the name property from your data
+                        y: item.count
+                    }))
+                }, {
+                    name: 'ผู้สำเร็จการเรียน',
+                    data: chartDataCons.map(item => ({
+                        name: item.name, // Use the name property from your data
                         y: item.count
                     }))
                 }]

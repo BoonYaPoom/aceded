@@ -5,14 +5,14 @@
         <form method="post" id="formreport">
             <div class="form-row">
                 <!-- form column -->
-             <!--   <div class="col-md-1"><span class="mt-1 ">ปี</span></div>
-                <div class="col-md-3">
-                    <div class=""><select id="selectyear" name="selectyear" class="form-control" data-toggle="select2"
-                            data-placeholder="ปี" data-allow-clear="false" onchange="$('#formreport').submit();">
-                            <option value="2022"> 2565 </option>
-                            <option value="2023" selected> 2566 </option>
-                        </select></div>
-                </div>  -->
+                <!--   <div class="col-md-1"><span class="mt-1 ">ปี</span></div>
+                        <div class="col-md-3">
+                            <div class=""><select id="selectyear" name="selectyear" class="form-control" data-toggle="select2"
+                                    data-placeholder="ปี" data-allow-clear="false" onchange="$('#formreport').submit();">
+                                    <option value="2022"> 2565 </option>
+                                    <option value="2023" selected> 2566 </option>
+                                </select></div>
+                        </div>  -->
                 <div class="col-md-3 ">
                     <div class="d-none"><select id="selectmonth" name="selectmonth" class="form-control "
                             data-toggle="select2" data-placeholder="เดือน" data-allow-clear="false"
@@ -42,13 +42,11 @@
             <!-- .card-header -->
             <div class="card-header bg-muted">
                 <div class="d-flex align-items-center">
-                    <span class="mr-auto">รายงานเชิงตาราง ปี 2566</span> <a
-                        href="{{route('generatePdf')}}"
+                    <span class="mr-auto">รายงานเชิงตาราง ปี 2566</span> <a href="{{ route('generatePdf') }}"
                         class="btn btn-icon btn-outline-danger"><i class="fa fa-file-pdf"></i></a>&nbsp;<a
-                        href="{{route('ReportExp')}}"
-                        class="btn btn-icon btn-outline-primary"><i class="fa fa-file-excel "></i></a>&nbsp;<a
-                        href="javascript:window.print();" class="btn btn-icon btn-outline-success"><i
-                            class="fa fa-print "></i></a>
+                        href="{{ route('ReportExp') }}" class="btn btn-icon btn-outline-primary"><i
+                            class="fa fa-file-excel "></i></a>&nbsp;<a href="javascript:window.print();"
+                        class="btn btn-icon btn-outline-success"><i class="fa fa-print "></i></a>
                 </div>
             </div><!-- /.card-header -->
             <!-- .card-body -->
@@ -68,74 +66,160 @@
                             <tr>
                                 <td align="center">1</td>
                                 <td>รายงานข้อมูลรายชื่อผู้เรียนทั้งหมด และแยกตามหลักสูตร</td>
-                                <td align="center"><a href="{{route('ReportUserAuth')}}"><i
+                                <td align="center"><a href="{{ route('ReportUserAuth') }}"><i
                                             class="fas fa-chart-bar text-teal mr-2"></i></a></td>
 
                             </tr>
-                            <tr>
+                            {{-- <tr>
                                 <td align="center">2</td>
                                 <td>รายชื่อผู้ฝึกอบรมที่เข้าฝึกอบรมมากที่สุด</td>
-                                <td align="center"><a href="{{route('trainUserAuth')}}"><i
+                                <td align="center"><a href="{{ route('trainUserAuth') }}"><i
                                             class="fas fa-chart-bar text-teal mr-2"></i></a></td>
 
-                            </tr>
+                            </tr> --}}
 
+                            <tr>
+                                <td align="center">2</td>
+                                <td>รายงานสถานะผู้เข้าเรียน และจบการศึกษา (รายบุคคล)
+                                </td>
+                                <td align="center"><a href="{{ route('t0117') }}"><i
+                                            class="fas fa-chart-bar text-teal mr-2"></i></a></td>
+                            </tr>
                             <tr>
                                 <td align="center">3</td>
                                 <td>รายงานการดาวน์โหลดเอกสาร e-book Multimedia ของผู้เรียน</td>
-                                <td align="center"><a href="{{route('bookUserAuth')}}"><i
+                                <td align="center"><a href="{{ route('bookUserAuth') }}"><i
                                             class="fas fa-chart-bar text-teal mr-2"></i></a></td>
 
                             </tr>
-                            <tr>
+                            {{-- <tr>
                                 <td align="center">4</td>
                                 <td>รายงานการ Login ของผู้เรียน</td>
-                                <td align="center"><a href="{{route('LoginUserAuth')}}"><i
+                                <td align="center"><a href="{{ route('LoginUserAuth') }}"><i
                                             class="fas fa-chart-bar text-teal mr-2"></i></a></td>
 
-                            </tr>
-                           <!-- <tr>
+                            </tr> --}}
+
+                            <!-- <tr>
+                                        <td align="center">5</td>
+                                        <td>การสำรองและการกู้คืนข้อมูล</td>
+                                        <td align="center"><a href="{{ route('BackUserAuth') }}"><i
+                                                    class="fas fa-chart-bar text-teal mr-2"></i></a></td>
+
+                                    </tr>
+                                    <tr>
+                                        <td align="center">6</td>
+                                        <td>สรุปรายรับในการฝึกอบรมรายเดือน</td>
+                                        <td align="center"><a href="{{ route('reportMUserAuth') }}"><i
+                                                    class="fas fa-chart-bar text-teal mr-2"></i></a></td>
+
+                                    </tr>
+                                    <tr>
+                                        <td align="center">7</td>
+                                        <td>สรุปรายรับในการฝึกอบรมรายไตรมาส</td>
+                                        <td align="center"><a href="{{ route('reportYeaAuth') }}"><i
+                                                    class="fas fa-chart-bar text-teal mr-2"></i></a></td>
+
+                                    </tr>
+                                    <tr>
+                                        <td align="center">8</td>
+                                        <td>สรุปรายรับในการฝึกอบรมรายปี</td>
+                                        <td align="center"><a
+                                                href="{{ route('reportQuarterlyAuth') }}"><i
+                                                    class="fas fa-chart-bar text-teal mr-2"></i></a></td>
+
+                                    </tr>
+                                    <tr>
+                                        <td align="center">9</td>
+                                        <td>สำรองข้อมูล (Backup System) แบบ Full Backup</td>
+                                        <td align="center"><a
+                                                href="{{ route('BackupFullUserAuth') }}"><i
+                                                    class="fas fa-chart-bar text-teal mr-2"></i></a></td>
+
+                                    </tr>-->
+                            {{-- <tr>
                                 <td align="center">5</td>
-                                <td>การสำรองและการกู้คืนข้อมูล</td>
-                                <td align="center"><a href="{{route('BackUserAuth')}}"><i
+                                <td>ข้อมูล Log File ในรูปแบบรายงานทางสถิติ</td>
+                                <td align="center"><a href="{{ route('LogFileUserAuth') }}"><i
                                             class="fas fa-chart-bar text-teal mr-2"></i></a></td>
-
+                            </tr> --}}
+                           
+                            <tr>
+                                <td align="center">4</td>
+                                <td>รายงานสถิติช่วงอายุของผู้เรียนในแต่ละหลักสูตร (ช่วงที่ 1 อายุไม่เกิน 11 ปี / ช่วงที่ 2
+                                    อายุ12 - 17 ปี / ช่วงที่ 3 อายุ 18 - 25 ปี / ช่วงที่ 4 อายุเกิน 25 ปีขึ้นไป)
+                                </td>
+                                <td align="center"><a href="{{ route('t0117') }}"><i
+                                            class="fas fa-chart-bar text-teal mr-2"></i></a></td>
+                            </tr>
+                            <tr>
+                                <td align="center">5</td>
+                                <td>รายงานสถิติการเข้าใช้งานรายเดือน
+                                    (ผู้ใช้งานใหม่)
+                                </td>
+                                <td align="center"><a href="{{ route('t0118') }}"><i
+                                            class="fas fa-chart-bar text-teal mr-2"></i></a></td>
                             </tr>
                             <tr>
                                 <td align="center">6</td>
-                                <td>สรุปรายรับในการฝึกอบรมรายเดือน</td>
-                                <td align="center"><a href="{{route('reportMUserAuth')}}"><i
+                                <td>รายงานสถิติการเข้าใช้งานรายไตรมาส
+                                    (ผู้ใช้งานใหม่)
+                                </td>
+                                <td align="center"><a href="{{ route('t0119') }}"><i
                                             class="fas fa-chart-bar text-teal mr-2"></i></a></td>
-
                             </tr>
                             <tr>
                                 <td align="center">7</td>
-                                <td>สรุปรายรับในการฝึกอบรมรายไตรมาส</td>
-                                <td align="center"><a href="{{route('reportYeaAuth')}}"><i
+                                <td> รายงานสถิติการเข้าใช้งานรายปี
+                                    (ผู้ใช้งานใหม่)
+                                </td>
+                                <td align="center"><a href="{{ route('t0120') }}"><i
                                             class="fas fa-chart-bar text-teal mr-2"></i></a></td>
-
                             </tr>
                             <tr>
                                 <td align="center">8</td>
-                                <td>สรุปรายรับในการฝึกอบรมรายปี</td>
-                                <td align="center"><a
-                                        href="{{route('reportQuarterlyAuth')}}"><i
+                                <td> รายงานสถิติการเข้าใช้งานรายเดือน
+                                    (กลุ่มบุคลากรภาครัฐ และรัฐวิสาหกิจ)
+                                </td>
+                                <td align="center"><a href="{{ route('t0121') }}"><i
+                                            class="fas fa-chart-bar text-teal mr-2"></i></a></td>
+                            </tr>
+                            <tr>
+                                <td align="center">9</td>
+                                <td> รายงานสถิติการเข้าใช้งานรายเดือน
+                                    (กลุ่มการศึกษาขั้นพื้นฐาน)
+                                </td>
+                                <td align="center"><a href="{{ route('t0122') }}"><i
                                             class="fas fa-chart-bar text-teal mr-2"></i></a></td>
 
                             </tr>
                             <tr>
-                                <td align="center">9</td>
-                                <td>สำรองข้อมูล (Backup System) แบบ Full Backup</td>
-                                <td align="center"><a
-                                        href="{{route('BackupFullUserAuth')}}"><i
+                                <td align="center">10</td>
+                                <td> รายงานสถิติการเข้าใช้งานรายเดือน
+                                    (กลุ่มอุดมศึกษา)
+                                    
+                                </td>
+                                <td align="center"><a href="{{ route('t0123') }}"><i
                                             class="fas fa-chart-bar text-teal mr-2"></i></a></td>
 
-                            </tr>-->
+                            </tr>
                             <tr>
-                                <td align="center">5</td>
-                                <td>ข้อมูล Log File ในรูปแบบรายงานทางสถิติ</td>
-                                <td align="center"><a
-                                        href="{{route('LogFileUserAuth')}}"><i
+                                <td align="center">11</td>
+                                <td>รายงานสถิติการเข้าใช้งานรายเดือน
+                                    (กลุ่มอาชีวศึกษา)
+                                    
+                                    
+                                </td>
+                                <td align="center"><a href="{{ route('t0124') }}"><i
+                                            class="fas fa-chart-bar text-teal mr-2"></i></a></td>
+
+                            </tr>
+                            <tr>
+                                <td align="center">12</td>
+                                <td>รายงานสถิติการเข้าใช้งานรายเดือน
+                                    (กลุ่มโค้ช และประชาชน)
+                                </td>
+                                <td align="center"><a href="{{ route('t0125') }}"><i
                                             class="fas fa-chart-bar text-teal mr-2"></i></a></td>
 
                             </tr>

@@ -556,7 +556,16 @@ Route::group(['middleware' => 'IsLoggedIn'], function () {
                 Route::get('/home/T0113', [ReportAllController::class, 'reportQuarterlyAuth'])->name('reportQuarterlyAuth');
                 Route::get('/home/T0114', [ReportAllController::class, 'BackupFullUserAuth'])->name('BackupFullUserAuth');
                 Route::get('/home/T0115', [ReportAllController::class, 'LogFileUserAuth'])->name('LogFileUserAuth');
-
+                Route::get('/home/T0116', [ReportAllController::class, 't0116'])->name('t0116');
+                Route::get('/home/T0117', [ReportAllController::class, 't0117'])->name('t0117');
+                Route::get('/home/T0118', [ReportAllController::class, 't0118'])->name('t0118');
+                Route::get('/home/T0119', [ReportAllController::class, 't0119'])->name('t0119');
+                Route::get('/home/T0120', [ReportAllController::class, 't0120'])->name('t0120');
+                Route::get('/home/T0121', [ReportAllController::class, 't0121'])->name('t0121');
+                Route::get('/home/T0122', [ReportAllController::class, 't0122'])->name('t0122');
+                Route::get('/home/T0123', [ReportAllController::class, 't0123'])->name('t0123');
+                Route::get('/home/T0124', [ReportAllController::class, 't0124'])->name('t0124');
+                Route::get('/home/T0125', [ReportAllController::class, 't0125'])->name('t0125');
                 Route::post('/get-user-data', [ReportAllController::class, 'getUserData'])->name('get-Uata');
             });
 

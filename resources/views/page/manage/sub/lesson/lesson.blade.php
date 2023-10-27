@@ -117,7 +117,32 @@
 
         }
     </script>
+          <script>
+            $(document).ready(function() {
+                var table = $('#datatable').DataTable({
 
+                    lengthChange: false,
+                    responsive: true,
+                    info: false,
+                    language: {
+
+                        infoEmpty: "ไม่พบรายการ",
+                        infoFiltered: "(ค้นหาจากทั้งหมด _MAX_ รายการ)",
+                        paginate: {
+                            first: "หน้าแรก",
+                            last: "หน้าสุดท้าย",
+                            previous: "ก่อนหน้า",
+                            next: "ถัดไป" // ปิดการแสดงหน้าของ DataTables
+                        }
+                    }
+
+                });
+
+                $('#myInput').on('keyup', function() {
+                    table.search(this.value).draw();
+                });
+            });
+        </script>
     <!-- .page-title-bar -->
     <header class="page-title-bar">
         <!-- floating action -->
@@ -127,4 +152,5 @@
                 class="fas fa-plus"></span></button>
         <!-- /floating action -->
     </header><!-- /.page-title-bar -->
+
 @endsection
