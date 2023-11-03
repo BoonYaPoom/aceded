@@ -89,7 +89,7 @@
                                 @php
                                     $rowNumber = 0;
                                 @endphp
-                                @foreach ($ques as $item)
+                                @foreach ($ques->sortBy('question_id') as $item)
                                     @php
                                         $rowNumber++;
                                     @endphp

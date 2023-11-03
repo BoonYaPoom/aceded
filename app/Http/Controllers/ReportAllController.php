@@ -11,6 +11,7 @@ use App\Models\Log;
 use App\Models\PersonType;
 use App\Models\Provinces;
 use App\Models\Users;
+use App\Models\UserSchool;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 
@@ -22,17 +23,17 @@ class ReportAllController extends Controller
 
         return view('page.report.index');
     }
-   
+
     public function ReportA()
     {
 
         $userper = Users::all();
-        $count1 = Users::where('user_role',1)->count();
+        $count1 = Users::where('user_role', 1)->count();
         $count3 = Users::where('user_role', 3)->count();
         $count4 = Users::where('user_role', 4)->count();
         $user_role1 = Users::where('user_role', 1)->first();
-        $user_role3 = Users::where('user_role',3)->first();
-        $user_role4 = Users::where('user_role',4)->first();
+        $user_role3 = Users::where('user_role', 3)->first();
+        $user_role4 = Users::where('user_role', 4)->first();
         $jsonContent = file_get_contents('javascript/json/_data.json');
         $mms = json_decode($jsonContent, true);
         $monthdata = $mms['month'];
@@ -40,16 +41,16 @@ class ReportAllController extends Controller
         $perType = PersonType::all();
         $learners =  CourseLearner::all();
 
-    
-        return view('page.report.reporta', compact('userper', 'count1', 'count3', 'count4','user_role1','user_role3','user_role4', 'month', 'perType', 'learners'));
+
+        return view('page.report.reporta', compact('userper', 'count1', 'count3', 'count4', 'user_role1', 'user_role3', 'user_role4', 'month', 'perType', 'learners'));
     }
-  
+
     public function ReportB()
     {
 
-    
+
         $logs = Log::all();
-  
+
         $userper = Users::all();
         $count1 = Users::where('user_role', 1)->count();
         $count3 = Users::where('user_role', 3)->count();
@@ -62,10 +63,10 @@ class ReportAllController extends Controller
         $cour = Course::all();
         $favorit =  CourseFavorites::all();
         $learners =  CourseLearner::all();
-   
+
         $month = $monthdata['th'];
         $bookcat = BookCategory::all();
-        return view('page.report.reportb', compact('favorit','bookcat','cour','userper', 'count1', 'count3', 'count4', 'month', 'perType', 'learners', 'logs'));
+        return view('page.report.reportb', compact('favorit', 'bookcat', 'cour', 'userper', 'count1', 'count3', 'count4', 'month', 'perType', 'learners', 'logs'));
     }
 
     public function ReportC()
@@ -85,9 +86,9 @@ class ReportAllController extends Controller
         $monthdata = $mms['month'];
         $month = $monthdata['th'];
         $perType = PersonType::all();
-   
+
         $learners =  CourseLearner::all();
-        return view('page.report.tables.t0101', compact( 'month', 'learners', 'perType', 'userper'));
+        return view('page.report.tables.t0101', compact('month', 'learners', 'perType', 'userper'));
     }
     public function trainUserAuth()
     {
@@ -203,7 +204,7 @@ class ReportAllController extends Controller
     }
     public function LogFileUserAuth()
     {
-            $logs = Log::all();
+        $logs = Log::all();
         $userper = Users::all();
         $jsonContent = file_get_contents('javascript/json/_data.json');
         $mms = json_decode($jsonContent, true);
@@ -212,7 +213,7 @@ class ReportAllController extends Controller
         $currentYear = Carbon::now()->addYears(543)->year;
         $oneYearsAgo = Carbon::now()->subYears(1)->addYears(543)->year;
 
-        return view('page.report.tables.t0115', compact('userper', 'month', 'oneYearsAgo', 'currentYear','logs'));
+        return view('page.report.tables.t0115', compact('userper', 'month', 'oneYearsAgo', 'currentYear', 'logs'));
     }
 
     public function t0116()
@@ -222,9 +223,44 @@ class ReportAllController extends Controller
         $monthdata = $mms['month'];
         $month = $monthdata['th'];
         $currentYear = Carbon::now()->addYears(543)->year;
-        $oneYearsAgo = Carbon::now()->subYears(1)->addYears(543)->year; 
+        $oneYearsAgo = Carbon::now()->subYears(1)->addYears(543)->year;
         $pro = Provinces::all();
-        return view('page.report.tables.datatest.t0116', compact('pro','month','oneYearsAgo', 'currentYear'));
+        $learners = CourseLearner::all();
+        $users = null;
+        $UserSchool = null;
+        $schoolName = null;
+        $course_th = null;
+        $courses = null;
+
+        foreach ($learners as $l => $learns) {
+            if ($learns->learner_status == 1) {
+
+
+                $courses = Course::find($learns->course_id);
+
+                if ($courses) {
+
+                    $course_th = $courses->course_th;
+                } else {
+                }
+                $users = Users::find($learns->user_id);
+                if ($users) {
+                    $UserSchool = UserSchool::with('schouser')
+                        ->where('user_id', $users->user_id)
+                        ->first();
+
+                    if ($UserSchool) {
+                        $schoolName = optional($UserSchool->schouser)->school_name;
+                    } else {
+                        $schoolName = [];
+                    }
+                } else {
+                    $schoolName = [];
+                }
+            }
+ 
+        }
+        return view('page.report.tables.datatest.t0116', compact('learners', 'course_th', 'users', 'schoolName', 'pro', 'month', 'oneYearsAgo', 'currentYear'));
     }
     public function t0117()
     {
@@ -235,7 +271,7 @@ class ReportAllController extends Controller
         $currentYear = Carbon::now()->addYears(543)->year;
         $oneYearsAgo = Carbon::now()->subYears(1)->addYears(543)->year;
         $pro = Provinces::all();
-        return view('page.report.tables.datatest.t0117', compact('pro','month','oneYearsAgo', 'currentYear'));
+        return view('page.report.tables.datatest.t0117', compact('pro', 'month', 'oneYearsAgo', 'currentYear'));
     }
     public function t0118()
     {
@@ -248,7 +284,7 @@ class ReportAllController extends Controller
         $currentYear = Carbon::now()->addYears(543)->year;
         $oneYearsAgo = Carbon::now()->subYears(1)->addYears(543)->year;
         $pro = Provinces::all();
-        return view('page.report.tables.datatest.t0118', compact('pro','userper', 'month', 'oneYearsAgo', 'currentYear','logs'));
+        return view('page.report.tables.datatest.t0118', compact('pro', 'userper', 'month', 'oneYearsAgo', 'currentYear', 'logs'));
     }
     public function t0119()
     {
@@ -261,7 +297,7 @@ class ReportAllController extends Controller
         $currentYear = Carbon::now()->addYears(543)->year;
         $oneYearsAgo = Carbon::now()->subYears(1)->addYears(543)->year;
         $pro = Provinces::all();
-        return view('page.report.tables.datatest.t0119', compact('pro','userper', 'month', 'oneYearsAgo', 'currentYear','logs'));
+        return view('page.report.tables.datatest.t0119', compact('pro', 'userper', 'month', 'oneYearsAgo', 'currentYear', 'logs'));
     }
     public function t0120()
     {
@@ -274,7 +310,7 @@ class ReportAllController extends Controller
         $currentYear = Carbon::now()->addYears(543)->year;
         $oneYearsAgo = Carbon::now()->subYears(1)->addYears(543)->year;
         $pro = Provinces::all();
-        return view('page.report.tables.datatest.t0120', compact('pro','userper', 'month', 'oneYearsAgo', 'currentYear','logs'));
+        return view('page.report.tables.datatest.t0120', compact('pro', 'userper', 'month', 'oneYearsAgo', 'currentYear', 'logs'));
     }
     public function t0121()
     {
@@ -287,7 +323,7 @@ class ReportAllController extends Controller
         $currentYear = Carbon::now()->addYears(543)->year;
         $oneYearsAgo = Carbon::now()->subYears(1)->addYears(543)->year;
         $pro = Provinces::all();
-        return view('page.report.tables.datatest.t0121', compact('pro','userper', 'month', 'oneYearsAgo', 'currentYear','logs'));
+        return view('page.report.tables.datatest.t0121', compact('pro', 'userper', 'month', 'oneYearsAgo', 'currentYear', 'logs'));
     }
     public function t0122()
     {
@@ -300,7 +336,7 @@ class ReportAllController extends Controller
         $currentYear = Carbon::now()->addYears(543)->year;
         $oneYearsAgo = Carbon::now()->subYears(1)->addYears(543)->year;
         $pro = Provinces::all();
-        return view('page.report.tables.datatest.t0122', compact('pro','userper', 'month', 'oneYearsAgo', 'currentYear','logs'));
+        return view('page.report.tables.datatest.t0122', compact('pro', 'userper', 'month', 'oneYearsAgo', 'currentYear', 'logs'));
     }
     public function t0123()
     {
@@ -313,7 +349,7 @@ class ReportAllController extends Controller
         $currentYear = Carbon::now()->addYears(543)->year;
         $oneYearsAgo = Carbon::now()->subYears(1)->addYears(543)->year;
         $pro = Provinces::all();
-        return view('page.report.tables.datatest.t0123', compact('pro','userper', 'month', 'oneYearsAgo', 'currentYear','logs'));
+        return view('page.report.tables.datatest.t0123', compact('pro', 'userper', 'month', 'oneYearsAgo', 'currentYear', 'logs'));
     }
     public function t0124()
     {
@@ -326,7 +362,7 @@ class ReportAllController extends Controller
         $currentYear = Carbon::now()->addYears(543)->year;
         $oneYearsAgo = Carbon::now()->subYears(1)->addYears(543)->year;
         $pro = Provinces::all();
-        return view('page.report.tables.datatest.t0124', compact('pro','userper', 'month', 'oneYearsAgo', 'currentYear','logs'));
+        return view('page.report.tables.datatest.t0124', compact('pro', 'userper', 'month', 'oneYearsAgo', 'currentYear', 'logs'));
     }
     public function t0125()
     {
@@ -339,6 +375,6 @@ class ReportAllController extends Controller
         $currentYear = Carbon::now()->addYears(543)->year;
         $oneYearsAgo = Carbon::now()->subYears(1)->addYears(543)->year;
         $pro = Provinces::all();
-        return view('page.report.tables.datatest.t0125', compact('pro','userper', 'month', 'oneYearsAgo', 'currentYear','logs'));
+        return view('page.report.tables.datatest.t0125', compact('pro', 'userper', 'month', 'oneYearsAgo', 'currentYear', 'logs'));
     }
 }

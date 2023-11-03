@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Districts;
 use App\Models\Log;
 use App\Models\Provinces;
+use App\Models\School;
 use App\Models\Subdistricts;
 use App\Models\Users;
 use Illuminate\Support\Facades\Session;
@@ -37,8 +38,9 @@ class CustomAuthController extends Controller
 
     public function homeregis()
     {
-
-        return view('Authpage.Regis.home');
+        $school = School::all();
+        $provinces = Provinces::all();
+        return view('Authpage.Regis.home', compact('provinces','school'));
     }
     public function registerUser(Request $request)
     {
@@ -47,7 +49,7 @@ class CustomAuthController extends Controller
             'username' => 'required|unique:users',
             'firstname' => 'required',
             'password' => 'required|min:3|max:20',
-            'citizen_id' => 'required|min:13|max:13',
+            'citizen_id' => 'required|unique:users',
             'email' => 'required|email|unique:users',
             'gender' => 'required',
             'workplace' => 'required',

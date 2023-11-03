@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Course;
-
+use Illuminate\Support\Str;
 use App\Models\CourseGroup;
 use App\Models\CourseSubject;
 use App\Models\Department;
@@ -320,6 +320,17 @@ class CourseController extends Controller
         }
 
 
+        // เช็คว่า COURSE_SUBJECT_ID มีอยู่หรือไม่
+        foreach ($subjData as $subjectId) {
+            // ถ้าไม่มีให้สร้างรายการใหม่
+            DB::table('course_subjectlist')->insert([
+                'course_id' => $cour->course_id,
+                'subject_id' => $subjectId,
+                'subject_status' => 1,
+            ]);
+        }
+
+
 
 
         return redirect()->route('courpag', [$department_id, 'group_id' => $cour->group_id])->with('message', 'CourseGroup บันทึกข้อมูลสำเร็จ');
@@ -507,6 +518,19 @@ class CourseController extends Controller
                 $cour->templete_certificate == 0;
                 $cour->save();
             }
+        }
+
+
+        DB::table('course_subjectlist')
+            ->where('course_id', $course_id)
+            ->delete();
+
+        foreach ($subjData as $subjectId) {
+            DB::table('course_subjectlist')->insert([
+                'course_id' => $course_id,
+                'subject_id' => $subjectId,
+                'subject_status' => 1,
+            ]);
         }
 
 

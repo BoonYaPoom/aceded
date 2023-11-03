@@ -58,7 +58,7 @@ class CourseLessonController extends Controller
 
         $validator = Validator::make($request->all(), [
 
-            'lesson_number' => 'required',
+
             'lesson_th' => 'required'
         ]);
 

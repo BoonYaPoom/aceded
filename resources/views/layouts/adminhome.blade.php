@@ -13,7 +13,7 @@
     <meta name="description" content="">
     <meta property="og:description" content="">
     <link rel="canonical" href="">
-    <link rel="icon" type="image/png" href="{{ asset($logo->detail) }}">
+    <link rel="icon" type="image/png" href="{{ asset('LOGO/logo.png') }}">
 
     <meta property="og:url" content="">
     <meta property="og:site_name" content="">

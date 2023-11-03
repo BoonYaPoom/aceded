@@ -80,7 +80,7 @@ class SurveyController extends Controller
       $saveSuccess = $sur->save();
 
       if ($saveSuccess) {
-         return redirect()->route('surveypage', ['department_id' => $sur->department_id])->with('success', 'Survey บันทึกข้อมูลสำเร็จ');
+         return redirect()->route('surveypage', ['department_id' => $sur->department_id])->with('message', 'Survey บันทึกข้อมูลสำเร็จ');
       } else {
          // กรณีที่บันทึกไม่สำเร็จ
          return redirect()->back()->with('error', 'ไม่สามารถบันทึก Survey ได้');
@@ -140,14 +140,14 @@ class SurveyController extends Controller
       $sur->cover = null;
       $sur->save();
 
-      return redirect()->route('surveypage', ['department_id' => $sur->department_id])->with('success', 'Survey บันทึกข้อมูลสำเร็จ');
+      return redirect()->route('surveypage', ['department_id' => $sur->department_id])->with('message', 'Survey บันทึกข้อมูลสำเร็จ');
    }
    public function destory($survey_id)
    {
       $sur = Survey::findOrFail($survey_id);
       $sur->surs()->delete();
       $sur->delete();
-      return redirect()->back()->with('success', 'Survey ลบข้อมูลสำเร็จ');
+      return redirect()->back()->with('message', 'Survey ลบข้อมูลสำเร็จ');
    }
 
 
@@ -334,7 +334,7 @@ class SurveyController extends Controller
       $suruy = Survey::findOrFail($survey_id);
       $suruy->surs()->delete();
       $suruy->delete();
-      return redirect()->back()->with('success', 'Survey ลบข้อมูลสำเร็จ');
+      return redirect()->back()->with('message', 'Survey ลบข้อมูลสำเร็จ');
    }
 
 

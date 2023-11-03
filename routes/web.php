@@ -448,7 +448,7 @@ Route::group(['middleware' => 'IsLoggedIn'], function () {
                 Route::prefix('departums')->group(function () {
 
                     Route::get('/add_dpumsform/{department_id}', [DepartUsersController::class, 'createUser'])->name('DPcreateUser');
-                    Route::post('/store_dpumsform', [DepartUsersController::class, 'storeUser'])->name('DPstoreUser');
+                    Route::post('/store_dpumsform/{department_id}', [DepartUsersController::class, 'storeUser'])->name('DPstoreUser');
 
                     Route::get('{department_id}/edit/{user_id}', [DepartUsersController::class, 'DPeditUser'])->name('DPeditUser');
                     Route::put('{department_id}/DPupdateUser/{user_id}', [DepartUsersController::class, 'DPupdateUser'])->name('DPupdateUser');
@@ -462,9 +462,11 @@ Route::group(['middleware' => 'IsLoggedIn'], function () {
                     Route::get('{department_id}/umslogsuser/{user_id}', [UserLogController::class, 'logusersDP'])->name('logusersDP');
                     Route::get('{department_id}/umsschooluserdepart/{school_id}', [SchoolDepartController::class, 'adduser'])->name('umsschooluserDepart');
                     Route::post('{department_id}/{school_id}/saveSelectedSchooldepart_umsschoolform', [SchoolDepartController::class, 'saveSelectedSchool'])->name('saveSelectedSchoolDepart');
-
-                    Route::get('/autocomplete-search', [DepartUsersController::class, 'autoschool'])->name('DPautocompleteSearch');
-                });
+                    
+                    Route::get('{department_id}/DPSchoolcreateUser_umsschoolform/{school_id}', [DepartUsersController::class, 'DPSchoolcreateUser'])->name('DPSchoolcreateUser');
+                    Route::post('{department_id}/{school_id}/DPSchoolstoreUser_umsschoolform', [DepartUsersController::class, 'DPSchoolstoreUser'])->name('DPSchoolstoreUser');
+                  
+                 });
                 Route::get('{department_id}/homeDepart', [DepartReportController::class, 'DepartReportview'])->name('DepartReportview');
                 Route::prefix('homeDepart')->group(function () {
 
@@ -514,7 +516,7 @@ Route::group(['middleware' => 'IsLoggedIn'], function () {
                 Route::put('/update_umsgroupuser/{person_type}', [PersonController::class, 'updateusertype'])->name('updateusertype');
 
                 Route::post('/search', [PersonController::class, 'search'])->name('search');
-                Route::post('UsersImport', [ExcelController::class, 'UsersImport'])->name('UsersImport');
+
 
 
                 Route::get('/person_delete/{person_type}', [PersonController::class, 'personDelete'])->name('personDelete');
@@ -544,7 +546,8 @@ Route::group(['middleware' => 'IsLoggedIn'], function () {
                 Route::get('/home/D0100', [ReportAllController::class, 'ReportA'])->name('D0100');
                 Route::get('/home/dashboard', [ReportAllController::class, 'ReportB'])->name('dashboard');
                 Route::get('/home/table', [ReportAllController::class, 'ReportC'])->name('table');
-
+                Route::get('/autocomplete-search', [DepartUsersController::class, 'autoschool'])->name('DPautocompleteSearch');
+               
 
                 Route::get('/home/T0101', [ReportAllController::class, 'ReportUserAuth'])->name('ReportUserAuth');
                 Route::get('/home/T0108', [ReportAllController::class, 'trainUserAuth'])->name('trainUserAuth');
@@ -571,11 +574,15 @@ Route::group(['middleware' => 'IsLoggedIn'], function () {
 
 
 
-
+            
             Route::prefix('info')->group(function () {
-                
+                Route::post('UsersDepartAllImport/{department_id}', [ExcelController::class, 'UsersDepartAllImport'])->name('UsersDepartAllImport');
+                Route::post('UsersDepartImport/{department_id}', [ExcelController::class, 'UsersDepartImport'])->name('UsersDepartImport');
                 Route::get('/autocomplete-search', [EditManageUserController::class, 'autoschool'])->name('autocompleteSearch');
+                Route::post('UsersImport', [ExcelController::class, 'UsersImport'])->name('UsersImport');
+                Route::get('exportLeact', [ExcelController::class, 'exportLeact'])->name('exportLeact');
 
+                Route::post('UsersDepartSchoolImport/{department_id}/{school_id}', [ExcelController::class, 'UsersDepartSchoolImport'])->name('UsersDepartSchoolImport');
                 Route::get('/changeStatus', [HighlightController::class, 'changeStatus'])->name('changeStatus');
                 Route::post('/storeban', [HighlightController::class, 'store'])->name('storeban');
                 Route::get('/dls', [DepartmentController::class, 'departmentdlspage'])->name('departmentdlspage');
@@ -590,7 +597,7 @@ Route::group(['middleware' => 'IsLoggedIn'], function () {
                 Route::get('/changeStatusSupplymentary', [CourseSupplymentaryController::class, 'changeStatus'])->name('changeStatusSupplymentary');
                 Route::get('/{supplymentary_id}/destroy_supplymentaryform', [CourseSupplymentaryController::class, 'destroy'])->name('destroy_supplyform');
                 Route::get('/changeStatusLesson', [CourseLessonController::class, 'changeStatus'])->name('changeStatusLesson');
-                Route::get('/destroy_lessonform/{lesson_id}', [CourseLessonController::class, 'destroy'])->name('destroy_lessonform');
+                Route::get('{department_id}/destroy_lessonform/{lesson_id}', [CourseLessonController::class, 'destroy'])->name('destroy_lessonform');
                 Route::get('delete_teacher/{teacher_id}', [CourseTeacherController::class, 'destory'])->name('delete_teacher');
 
                 Route::get('updateTeacherStatus', [CourseTeacherController::class, 'update'])->name('TeacherStatus');

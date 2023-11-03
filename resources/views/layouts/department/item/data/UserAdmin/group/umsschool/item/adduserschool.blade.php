@@ -1,13 +1,31 @@
 @extends('layouts.department.layout.departmenthome')
 @section('contentdepartment')
+@if (Session::has('message'))
+<script>
+    toastr.options = {
+        "progressBar": true,
+        "positionClass": 'toast-top-full-width',
+        "extendedTimeOut ": 0,
+        "timeOut": 3000,
+        "fadeOut": 250,
+        "fadeIn": 250,
+        "positionClass": 'toast-top-right',
+
+
+    }
+    toastr.success("{{ Session::get('message') }}");
+</script>
+@endif
     <div class="page-inner">
         <!-- .page-section -->
         <div class="page-section">
             <!-- .card -->
             <div class="card card-fluid">
                 <!-- .card-header -->
-                <div class="card-header bg-muted"><a href="{{ route('DPUserManage', ['department_id' => $depart->department_id]) }}">ผู้ใช้งาน</a>/ <a
-                        href="{{ route('schoolManageDepart', ['department_id' => $depart->department_id])}}">จัดการสถานศึกษา</a>/ {{ $school->school_name }}</div>
+                <div class="card-header bg-muted"><a
+                        href="{{ route('DPUserManage', ['department_id' => $depart->department_id]) }}">ผู้ใช้งาน</a>/ <a
+                        href="{{ route('schoolManageDepart', ['department_id' => $depart->department_id]) }}">จัดการสถานศึกษา</a>/
+                    {{ $school->school_name }}</div>
                 <!-- .card-body -->
                 <div class="card-body">
                     <div class="form-actions ">
@@ -25,12 +43,22 @@
                         <!-- .table -->
 
                         <table id="datatable" class="table w3-hoverable">
-                            <div class="dataTables_filter text-right">
-                                <label>ค้นหา
-                                    <input type="search" id="myInput" class="form-control" placeholder=""
-                                        aria-controls="datatable">
-                                </label>
+
+                            <div class="dataTables_filter">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div>
+                                        <button type="button" class="btn btn-success btn-md" onclick="$('#clientUploadModal').modal('toggle');">
+                                            <i class="fas fa-user-plus"></i> นำเข้าผู้ใช้งาน
+                                        </button>
+                                    </div>
+                                    <div>
+                                        <label>ค้นหา
+                                            <input type="search" id="myInput" class="form-control" placeholder="" aria-controls="datatable">
+                                        </label>
+                                    </div>
+                                </div>
                             </div>
+                            
                             <!-- thead -->
                             <thead>
                                 <tr class="bg-infohead">
@@ -76,70 +104,172 @@
             </div><!-- /.card -->
         </div><!-- /.page-section -->
         <!-- .page-title-bar -->
+        <header class="page-title-bar">
 
+            <button type="button" class="btn btn-success btn-floated btn-addums"
+                onclick="window.location='{{ route('DPSchoolcreateUser', ['department_id' => $depart, 'school_id' => $school->school_id]) }}'"
+                id="add_umsform" data-toggle="tooltip" title="เพิ่ม"><span class="fas fa-plus"></span></button>
+
+        </header>
     </div><!-- /.page-inner -->
-    <script>
-        $(function() {
-            $("#checkall").click(function() {
-                $('.custom-control-input').prop('checked', $(this).prop('checked'));
+
+    <div class="modal fade " id="clientUploadModal" tabindex="-1" user_role="dialog"
+        aria-labelledby="clientUploadModalLabel" aria-modal="true">
+        <!-- .modal-dialog -->
+        <form id="uploadForm" enctype="multipart/form-data">
+            @csrf
+            <div class="modal-dialog" user_role="document">
+                <!-- .modal-content -->
+                <div class="modal-content">
+                    <!-- .modal-header -->
+                    <div class="modal-header bg-success">
+                        <h6 id="clientUploadModalLabel" class="modal-title text-white">
+                            <span class="sr-only">Upload</span> <span><i class="fas fa-user-plus text-white"></i>
+                                นำเข้าผู้ใช้งาน</span>
+                        </h6>
+                    </div><!-- /.modal-header -->
+                    <!-- .modal-body -->
+                    <div class="modal-body">
+                        <!-- .form-group -->
+                        <div class="container">
+                            <input type="file" class="form-control" id="uploaduser" name="fileexcel" accept=".xlsx"
+                                required>
+                            <small class="form-text text-muted"><a
+                                    href="https://1drv.ms/x/s!Aneojfnh1p7QgepezApvu9n8MZCmBg?e=8RLia9" target="_blank">
+                                    ไฟล์ตัวอย่าง
+                                    (.xlsx)</a>
+                            </small>
+                        </div>
+                    </div><!-- /.modal-body -->
+                    <!-- .modal-footer -->
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-success" id="btnsetuser_role"><i class="fas fa-user-plus"></i>
+                            นำเข้าผู้ใช้งาน</button>
+                        <button type="button" class="btn btn-light" data-dismiss="modal">ยกเลิก</button>
+                    </div><!-- /.modal-footer -->
+                </div><!-- /.modal-content -->
+            </div><!-- /.modal-dialog -->
+        </form>
+
+    </div>
+    <div>
+        <script>
+            $(document).ready(function() {
+                $('#uploadForm').on('submit', function(e) {
+                    e.preventDefault();
+
+                    var formData = new FormData(this);
+
+                    $.ajax({
+                        url: '{{ route('UsersDepartSchoolImport', ['department_id' => $depart , 'school_id' => $school->school_id]) }}',
+                        type: 'POST',
+                        data: formData,
+                        dataType: 'json',
+                        cache: false,
+                        contentType: false,
+                        processData: false,
+                        success: function(response) {
+                            console.log(response);
+                            if (response.message) {
+                                Swal.fire({
+                                    title: 'User Successful',
+                                    text: 'ข้อมูล User ถูกบันทึกเรียบร้อย',
+                                    icon: 'success',
+                                    confirmButtonText: 'OK'
+                                }).then(function(result) {
+                                    if (result.isConfirmed) {
+                                        // รีเซ็ตแบบฟอร์มเมื่อกด OK
+                                        $('#uploadForm')[0].reset();
+                                        $('#clientUploadModal').modal(
+                                            'hide');
+                                        location.reload();
+                                    }
+
+                                });
+                            } else {
+                                Swal.fire({
+                                    title: 'Error!',
+                                    text: 'Import failed: ' + response.error,
+                                    icon: 'error',
+                                    confirmButtonText: 'OK'
+                                });
+                            }
+                        },
+                        error: function(xhr, status, error) {
+                            console.log(xhr.responseJSON.error);
+                            Swal.fire({
+                                title: 'Error!',
+                                text: 'Import failed: ' + xhr.responseJSON.error,
+                                icon: 'error',
+                                confirmButtonText: 'OK'
+                            });
+                        }
+                    });
+                });
             });
+        </script>
+        <script>
+            $(function() {
+                $("#checkall").click(function() {
+                    $('.custom-control-input').prop('checked', $(this).prop('checked'));
+                });
 
-        });
-    </script>
-    <script>
-        $(document).ready(function() {
-            var table = $('#datatable').DataTable({
+            });
+        </script>
+        <script>
+            $(document).ready(function() {
+                var table = $('#datatable').DataTable({
 
-                lengthChange: false,
-                responsive: true,
-                info: false,
-                language: {
+                    lengthChange: false,
+                    responsive: true,
+                    info: false,
+                    language: {
 
-                    infoEmpty: "ไม่พบรายการ",
-                    infoFiltered: "(ค้นหาจากทั้งหมด _MAX_ รายการ)",
-                    paginate: {
-                        first: "หน้าแรก",
-                        last: "หน้าสุดท้าย",
-                        previous: "ก่อนหน้า",
-                        next: "ถัดไป" // ปิดการแสดงหน้าของ DataTables
+                        infoEmpty: "ไม่พบรายการ",
+                        infoFiltered: "(ค้นหาจากทั้งหมด _MAX_ รายการ)",
+                        paginate: {
+                            first: "หน้าแรก",
+                            last: "หน้าสุดท้าย",
+                            previous: "ก่อนหน้า",
+                            next: "ถัดไป" // ปิดการแสดงหน้าของ DataTables
+                        }
                     }
-                }
+
+                });
+
+                $('#myInput').on('keyup', function() {
+                    table.search(this.value).draw();
+                });
+
 
             });
+        </script>
+        <script>
+            $(document).ready(function() {
+                var table2 = $('#datatable2').DataTable({
 
-            $('#myInput').on('keyup', function() {
-                table.search(this.value).draw();
-            });
+                    lengthChange: false,
+                    responsive: true,
+                    info: false,
+                    language: {
 
-
-        });
-    </script>
-    <script>
-        $(document).ready(function() {
-            var table2 = $('#datatable2').DataTable({
-
-                lengthChange: false,
-                responsive: true,
-                info: false,
-                language: {
-
-                    infoEmpty: "ไม่พบรายการ",
-                    infoFiltered: "(ค้นหาจากทั้งหมด _MAX_ รายการ)",
-                    paginate: {
-                        first: "หน้าแรก",
-                        last: "หน้าสุดท้าย",
-                        previous: "ก่อนหน้า",
-                        next: "ถัดไป" // ปิดการแสดงหน้าของ DataTables
+                        infoEmpty: "ไม่พบรายการ",
+                        infoFiltered: "(ค้นหาจากทั้งหมด _MAX_ รายการ)",
+                        paginate: {
+                            first: "หน้าแรก",
+                            last: "หน้าสุดท้าย",
+                            previous: "ก่อนหน้า",
+                            next: "ถัดไป" // ปิดการแสดงหน้าของ DataTables
+                        }
                     }
-                }
+
+                });
+
+                $('#searchNa').on('keyup', function() {
+                    table2.columns(2).search(this.value).draw();
+                });
+
 
             });
-
-            $('#searchNa').on('keyup', function() {
-                table2.columns(2).search(this.value).draw();
-            });
-
-
-        });
-    </script>
-@endsection
+        </script>
+    @endsection

@@ -40,7 +40,7 @@
                             </thead>
                             <tbody>
 
-                                @foreach($courses as $index => $item)
+                                @foreach($courses->sortBy('group_id') as $index => $item)
                                 @php
                                     $indexnum = $index +1 ;
                                 @endphp

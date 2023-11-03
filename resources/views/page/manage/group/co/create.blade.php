@@ -70,7 +70,7 @@
                                 class="form-control" data-toggle="select2" data-placeholder="วิชาในหลักสูตร"
                                 data-allow-clear="false" multiple>
                                 <option value="0">เลือกวิชา </option>
-                                @foreach ($subs as $subjects)
+                                @foreach ($subs->sortBy('subject_id') as $subjects)
                                     <option value="{{ $subjects->subject_id }}">{{ $subjects->subject_th }}</option>
                                 @endforeach
                             </select>

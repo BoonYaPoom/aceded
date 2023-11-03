@@ -39,7 +39,7 @@
                 <!-- tbody -->
                 <tbody>
                     @php($i = 1)
-                    @foreach ($suracts as $item)
+                    @foreach ($suracts->sortBy('survey_id')  as $item)
                         <!-- tr -->
 
                         <tr>

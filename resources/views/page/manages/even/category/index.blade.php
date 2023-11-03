@@ -71,7 +71,7 @@
                             <!-- tbody -->
                             <tbody>
                                 <!-- tr -->
-                                @foreach ($webs as $index => $item)
+                                @foreach ($webs->sortBy('web_id')  as $index => $item)
                                     @php
                                         $rowNumber = $index + 1;
                                     @endphp

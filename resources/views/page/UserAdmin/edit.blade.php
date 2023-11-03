@@ -4,7 +4,7 @@
         enctype="multipart/form-data">
         @csrf
         @method('PUT')
-      
+
         <div class="page-inner">
             <div class="page-section">
                 <div class="card card-fluid">
@@ -58,18 +58,14 @@
                             <div class="form-row " id="department_id">
                                 <label for="department_id" class="col-md-2">เลือกหน่วยงาน </label>
                                 <div class="col-md-9 mb-3">
-                                    <select id="department_id" name="department_id" class="form-control form-control-sm"
-                                        data-toggle="select2" data-allow-clear="false">
-                                        <option value="0"selected disabled>เลือกหน่วยงาน</option>
-                                        @php
-                                            $Department = \App\Models\Department::all();
-                                        @endphp
-                                        @foreach ($Department as $part)
-                                            <option value="{{ $part->department_id }}"> {{ $part->name_th }} </option>
-                                        @endforeach
-                                    </select>
+                                    <button type="button" class="ml-1 btn btn-success btn-md" style="background-color: #F04A23;"
+                                    onclick="$('#clientUploadModal').modal('toggle');">
+                                    <i class="fas fa-user-plus"></i> เลือกหน่วยงาน</button>
+                                 
                                 </div>
                             </div>
+                            @include('page.UserAdmin.modeleditDpart')
+
                             <!-- form row -->
                             <div class="form-row">
                                 <label for="username" class="col-md-2">Username <span
@@ -301,7 +297,7 @@
                                     }
                                 });
                             </script>
-                    
+
                             <div class="form-row " id="set_pos_name">
                                 <label for="pos_name" class="col-md-2">ตำแหน่ง</label>
                                 <div class="col-md-9 mb-3">
@@ -315,11 +311,12 @@
                                 <label for="user_affiliation" class="col-md-2">สังกัด</label>
                                 <div class="col-md-9 mb-3">
                                     <input type="text" class="form-control " id="user_affiliation"
-                                        name="user_affiliation" value="{{ $usermanages->user_affiliation }}" placeholder="สังกัด">
+                                        name="user_affiliation" value="{{ $usermanages->user_affiliation }}"
+                                        placeholder="สังกัด">
 
                                 </div>
                             </div>
-                      
+
                             <!-- form row -->
                             <div class="form-row d-none d-none" id="set_pos_level">
                                 <label for="mobile" class="col-md-2">ระดับตำแหน่ง</label>

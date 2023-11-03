@@ -69,7 +69,7 @@ class CourseClassAddController extends Controller
             ]);
         }
 
-        return redirect()->route('register_page', [$department_id,'m' => $m, 'course_id' => $course_id])->with('success', 'การบันทึก');
+        return redirect()->route('register_page', [$department_id,'m' => $m, 'course_id' => $course_id])->with('message', 'การบันทึก');
     }
     public function destroy($learner_id)
     {

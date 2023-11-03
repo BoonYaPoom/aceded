@@ -29,13 +29,13 @@
                                 จัดการเรียนรู้</a>
                         @endif
 
-                          <a class="nav-link  font-weight-bold {{ Str::startsWith(request()->url(), route('DepartReportview', ['department_id' => $depart->department_id])) ||
+                        <a class="nav-link  font-weight-bold {{ Str::startsWith(request()->url(), route('DepartReportview', ['department_id' => $depart->department_id])) ||
                         request()->is('homeDepart', 'homeDepart/*')
                             ? ' active text-info'
                             : '' }}"
-                                href="{{ route('DepartD0100', ['department_id' => $depart->department_id]) }}">
-                                <span class="menu-icon fas fa-chart-bar  "></span> รายงาน</a>
-                    
+                            href="{{ route('DepartD0100', ['department_id' => $depart->department_id]) }}">
+                            <span class="menu-icon fas fa-chart-bar  "></span> รายงาน</a>
+
 
                         <a class="nav-link  font-weight-bold {{ Str::startsWith(request()->url(), route('ManageExam', ['department_id' => $depart->department_id])) ||
                         request()->is('mne', 'mne/*')
@@ -45,11 +45,11 @@
                                 class="menu-icon fas fa-align-justify  "></span> จัดการข้อสอบ</a>
 
                         @if (
-                            ($data->department_id == $depart->department_id && $data->user_role == 6) ||
+                                $data->user_role == 6 ||
                                 $data->user_role == 1 ||
-                                ($data->department_id == $depart->department_id && $data->user_role == 3) ||
-                                ($data->department_id == $depart->department_id && $data->user_role == 7) ||
-                                ($data->department_id == $depart->department_id && $data->user_role == 8))
+                                $data->user_role == 3 ||
+                                $data->user_role == 7 ||
+                                $data->user_role == 8)
                             <a class="nav-link  font-weight-bold {{ Str::startsWith(request()->url(), route('UserManage')) ? ' active text-info' : '' }}"
                                 href="{{ route('DPUserManage', ['department_id' => $depart->department_id]) }}"><span
                                     class="menu-icon fas fa-users-cog  "></span>

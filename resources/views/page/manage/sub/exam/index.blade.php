@@ -49,7 +49,7 @@
                         </td>
                     </tr>
                     <!-- tr -->
-                    @foreach ($exams as $index => $examtem)
+                    @foreach ($exams->sortBy('exam_id')  as $index => $examtem)
                         @php
                             $examsNum = $index + 2;
                         @endphp

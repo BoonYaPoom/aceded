@@ -50,7 +50,7 @@
                                     $m = 1;
                                 @endphp
                             
-                                    @foreach ($manuals as $item)
+                                    @foreach ($manuals->sortBy('manual_id') as $item)
                                         <tr>
                                             <td>{{ $m++ }}</td>
                                             <td>{{ $item->manual }}</td>

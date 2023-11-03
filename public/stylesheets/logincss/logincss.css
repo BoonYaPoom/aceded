@@ -177,6 +177,94 @@ input[type="password"]:placeholder {
 }
 
 /* ANIMATIONS */
+select.fadeIn {
+    background-color: #f6f6f6;
+    border: none;
+    color: #0d0d0d;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 5px;
+    width: 85%;
+    border: 2px solid #f6f6f6;
+    -webkit-transition: all 0.5s ease-in-out;
+    -moz-transition: all 0.5s ease-in-out;
+    -ms-transition: all 0.5s ease-in-out;
+    -o-transition: all 0.5s ease-in-out;
+    transition: all 0.5s ease-in-out;
+    -webkit-border-radius: 5px 5px 5px 5px;
+    border-radius: 5px 5px 5px 5px;
+}
+
+select.fadeIn:focus {
+    background-color: #fff;
+    border-bottom: 2px solid #5fbae9;
+}
+
+select.fadeIn::placeholder {
+    color: #cccccc;
+}
+select.fadeIn option {
+    background-color: #f6f6f6;
+    color: #0d0d0d;
+    padding: 15px 32px;
+    text-align: center;
+    font-size: 16px;
+    
+    border: 2px solid #f6f6f6;
+    -webkit-transition: all 0.5s ease-in-out;
+    -moz-transition: all 0.5s ease-in-out;
+    -ms-transition: all 0.5s ease-in-out;
+    -o-transition: all 0.5s ease-in-out;
+    transition: all 0.5s ease-in-out;
+}
+
+select.fadeIn option:focus {
+    background-color: #fff;
+    border: 2px solid #5fbae9;
+
+}
+
+select.fadeIn option::placeholder {
+    color: #cccccc;
+}
+select.fadeIn option:first-child {
+    text-align: center;
+}
+.inputfile {
+    width: 0.1px;
+    height: 0.1px;
+    opacity: 0;
+    overflow: hidden;
+    position: absolute;
+    z-index: -1;
+}
+.inputfile + label {
+    font-size: 0.5em; /* ลดขนาดตัวอักษรในปุ่ม */
+    font-weight: 300; /* ปรับขนาดของตัวหนาของตัวอักษร */
+    color: white;
+    background-color: #cccccc;
+    display: inline-block;
+    border-radius: 5px;
+    padding: 5px 10px; /* ปรับขนาดและระยะห่างขอบของปุ่ม */
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+
+.inputfile:focus + label,
+.inputfile + label:hover {
+    background-color: #5fbae9;
+    cursor: pointer; /* "hand" cursor */
+}
+
+.inputfile:focus + label {
+    outline: 1px dotted #000;
+    outline: -webkit-focus-ring-color auto 5px;
+}
+
+
 
 /* Simple CSS3 Fade-in-down Animation */
 .fadeInDown {

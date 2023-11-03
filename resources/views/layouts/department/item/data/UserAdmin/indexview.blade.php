@@ -1,5 +1,21 @@
 @extends('layouts.department.layout.departmenthome')
 @section('contentdepartment')
+@if (Session::has('message'))
+<script>
+    toastr.options = {
+        "progressBar": true,
+        "positionClass": 'toast-top-full-width',
+        "extendedTimeOut ": 0,
+        "timeOut": 3000,
+        "fadeOut": 250,
+        "fadeIn": 250,
+        "positionClass": 'toast-top-right',
+
+
+    }
+    toastr.success("{{ Session::get('message') }}");
+</script>
+@endif
     <div class="page-inner">
         <!-- .page-section -->
 
@@ -59,6 +75,107 @@
                             class="fas fa-users"></i>
                         จัดการสถานศึกษา</a>
 
+                        <div>
+                            <button type="button" class="btn btn-success btn-md" onclick="$('#clientuploadFormUserModal').modal('toggle');">
+                                <i class="fas fa-user-plus"></i> นำเข้าผู้ใช้งานทั้งหมด
+                            </button>
+                        </div>
+                        <div class="modal fade " id="clientuploadFormUserModal" tabindex="-1" user_role="dialog"
+                            aria-labelledby="clientuploadFormUserModalLabel" aria-modal="true">
+                            <!-- .modal-dialog -->
+                            <form id="uploadFormUser" enctype="multipart/form-data">
+                                @csrf
+                                <div class="modal-dialog" user_role="document">
+                                    <!-- .modal-content -->
+                                    <div class="modal-content">
+                                        <!-- .modal-header -->
+                                        <div class="modal-header bg-success">
+                                            <h6 id="clientUploadModalLabel" class="modal-title text-white">
+                                                <span class="sr-only">Upload</span> <span><i class="fas fa-user-plus text-white"></i>
+                                                    นำเข้าผู้ใช้งาน</span>
+                                            </h6>
+                                        </div><!-- /.modal-header -->
+                                        <!-- .modal-body -->
+                                        <div class="modal-body">
+                                            <!-- .form-group -->
+                                            <div class="container">
+                                                <input type="file" class="form-control" id="uploaduser" name="fileexcel" accept=".xlsx"
+                                                    required>
+                                                <small class="form-text text-muted"><a
+                                                        href="https://1drv.ms/x/s!Aneojfnh1p7QgepezApvu9n8MZCmBg?e=8RLia9" target="_blank">
+                                                        ไฟล์ตัวอย่าง
+                                                        (.xlsx)</a>
+                                                </small>
+                                            </div>
+                                        </div><!-- /.modal-body -->
+                                        <!-- .modal-footer -->
+                                        <div class="modal-footer">
+                                            <button type="submit" class="btn btn-success" id="btnsetuser_role"><i class="fas fa-user-plus"></i>
+                                                นำเข้าผู้ใช้งานทั้งหมด</button>
+                                            <button type="button" class="btn btn-light" data-dismiss="modal">ยกเลิก</button>
+                                        </div><!-- /.modal-footer -->
+                                    </div><!-- /.modal-content -->
+                                </div><!-- /.modal-dialog -->
+                            </form>
+                    
+                        </div>
+                        <div>
+                            <script>
+                                $(document).ready(function() {
+                                    $('#uploadFormUser').on('submit', function(e) {
+                                        e.preventDefault();
+                    
+                                        var formData = new FormData(this);
+                    
+                                        $.ajax({
+                                            url: '{{ route('UsersDepartAllImport', ['department_id' => $depart ]) }}',
+                                            type: 'POST',
+                                            data: formData,
+                                            dataType: 'json',
+                                            cache: false,
+                                            contentType: false,
+                                            processData: false,
+                                            success: function(response) {
+                                                console.log(response);
+                                     
+                                                if (response.message) {
+                                                    Swal.fire({
+                                                        title: 'User Successful',
+                                                        text: 'ข้อมูล User ถูกบันทึกเรียบร้อย',
+                                                        icon: 'success',
+                                                        confirmButtonText: 'OK'
+                                                    }).then(function(result) {
+                                                        if (result.isConfirmed) {
+                                                            // รีเซ็ตแบบฟอร์มเมื่อกด OK
+                                                            $('#uploadFormUser')[0].reset();
+                                                            $('#clientuploadFormUserModal').modal(
+                                                                'hide');
+                                                            location.reload();
+                                                        }
+                    
+                                                    });
+                                                } else {
+                                                    Swal.fire({
+                                                        title: 'Error!',
+                                                        text: 'Import failed: ' + response.error,
+                                                        icon: 'error',
+                                                        confirmButtonText: 'OK'
+                                                    });
+                                                }
+                                            },
+                                            error: function(xhr, status, error) {
+                                                console.log(xhr.responseJSON.error);
+                                                Swal.fire({
+                                                    title: 'Error!',
+                                                    text: 'Import failed: ' + xhr.responseJSON.error,
+                                                    icon: 'error',
+                                                    confirmButtonText: 'OK'
+                                                });
+                                            }
+                                        });
+                                    });
+                                });
+                            </script>
 
 
 
@@ -137,7 +254,7 @@
                                 var formData = new FormData(this);
 
                                 $.ajax({
-                                    url: '{{ route('UsersImport') }}',
+                                    url: '{{ route('UsersDepartImport', ['department_id' => $depart]) }}',
                                     type: 'POST',
                                     data: formData,
                                     dataType: 'json',

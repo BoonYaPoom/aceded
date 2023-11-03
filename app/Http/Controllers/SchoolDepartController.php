@@ -108,6 +108,6 @@ class SchoolDepartController extends Controller
             ]);
         }
 
-        return redirect()->back()->with('success', 'การบันทึก');
+        return redirect()->back()->with('message', 'การบันทึก');
     }
 }

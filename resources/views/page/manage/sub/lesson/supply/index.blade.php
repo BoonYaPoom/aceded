@@ -53,7 +53,7 @@
                             @endphp
 
                             <tbody>
-                                @foreach ($supplys as $item)
+                                @foreach ($supplys->sortBy('supplymentary_id') as $item)
                                     @php
                                         $s++;
                                     @endphp

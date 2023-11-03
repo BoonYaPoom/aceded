@@ -77,7 +77,7 @@
                                 class="form-control" data-toggle="select2" data-placeholder="วิชาในหลักสูตร"
                                 data-allow-clear="false" multiple>
                                 <option value="0">เลือกวิชา </option>
-                                @foreach ($subs as $subjects)
+                                @foreach ($subs->sortBy('subject_id') as $subjects)
                                     @php
                                         $courArray2 = json_decode($cour->subject, true);
                                     @endphp

@@ -1,42 +1,42 @@
 @extends('page.report.index')
 @section('reports')
     <!-- .page-inner -->
- 
+
     <div class="page-inner">
 
-     
+
         <form method="post" id="formreport">
             <div class="form-row">
                 <!-- form column -->
                 <!--   <div class="col-md-1"><span class="mt-1 ">ปี</span></div>
-                                <div class="col-md-3">
-                                    <div class=""><select id="selectyear" name="selectyear" class="form-control" data-toggle="select2"
-                                            data-placeholder="ปี" data-allow-clear="false" onchange="$('#formreport').submit();">
-                                            <option value="2022"> </option>
-                                            <option value="2023" selected> </option>
-                                        </select></div>
-                                </div>-->
+                                                    <div class="col-md-3">
+                                                        <div class=""><select id="selectyear" name="selectyear" class="form-control" data-toggle="select2"
+                                                                data-placeholder="ปี" data-allow-clear="false" onchange="$('#formreport').submit();">
+                                                                <option value="2022"> </option>
+                                                                <option value="2023" selected> </option>
+                                                            </select></div>
+                                                    </div>-->
                 <!--    <div class="col-md-4 ">
-                                    <div><select id="selectcourse" name="selectcourse" class="form-control" data-toggle="select2"
-                                            data-placeholder="หลักสูตร" data-allow-clear="false" onchange="$('#formreport').submit();">
-                                            <option value="" selected> เลือกหลักสูตร </option>
-                                            <option value="" selected> </option>
-                                            <option value="รายวิชาเพิ่มเติม การป้องกันการทุจริต ระดับปฐมวัย"> รายวิชาเพิ่มเติม
-                                                การป้องกันการทุจริต ระดับปฐมวัย </option>
-                                        </select></div>
-                                </div>-->
+                                                        <div><select id="selectcourse" name="selectcourse" class="form-control" data-toggle="select2"
+                                                                data-placeholder="หลักสูตร" data-allow-clear="false" onchange="$('#formreport').submit();">
+                                                                <option value="" selected> เลือกหลักสูตร </option>
+                                                                <option value="" selected> </option>
+                                                                <option value="รายวิชาเพิ่มเติม การป้องกันการทุจริต ระดับปฐมวัย"> รายวิชาเพิ่มเติม
+                                                                    การป้องกันการทุจริต ระดับปฐมวัย </option>
+                                                            </select></div>
+                                                    </div>-->
                 <!--  <div class="col-md-4 ">
-                                    <div><select id="selectuser_id" name="selectuser_id" class="form-control" data-toggle="select2"
-                                            data-placeholder="ผู้ใช้งานทั้งหมด" data-allow-clear="false"
-                                            onchange="$('#formreport').submit();">
-                                            <option value=""> ผู้ใช้งานทั้งหมด </option>
-                                            <option value="ธนภัทร วงษ์กล่อม"> ธนภัทร วงษ์กล่อม </option>
-                                            <option value="aced_admin "> aced_admin </option>
-                                            <option value="ธนภัทร วงษ์กล่อม"> ธนภัทร วงษ์กล่อม </option>
-                                            <option value="ธนภัทร วงษ์กล่อม"> ธนภัทร วงษ์กล่อม </option>
-                                            <option value="TCCT1 user"> TCCT1 user </option>
-                                        </select></div>
-                                </div>-->
+                                                        <div><select id="selectuser_id" name="selectuser_id" class="form-control" data-toggle="select2"
+                                                                data-placeholder="ผู้ใช้งานทั้งหมด" data-allow-clear="false"
+                                                                onchange="$('#formreport').submit();">
+                                                                <option value=""> ผู้ใช้งานทั้งหมด </option>
+                                                                <option value="ธนภัทร วงษ์กล่อม"> ธนภัทร วงษ์กล่อม </option>
+                                                                <option value="aced_admin "> aced_admin </option>
+                                                                <option value="ธนภัทร วงษ์กล่อม"> ธนภัทร วงษ์กล่อม </option>
+                                                                <option value="ธนภัทร วงษ์กล่อม"> ธนภัทร วงษ์กล่อม </option>
+                                                                <option value="TCCT1 user"> TCCT1 user </option>
+                                                            </select></div>
+                                                    </div>-->
                 <div class="col-md-3 ">
                     <div class="d-none"><select id="selectmonth" name="selectmonth" class="form-control "
                             data-toggle="select2" data-placeholder="เดือน" data-allow-clear="false"
@@ -57,13 +57,13 @@
             <!-- .card-header -->
             <div class="card-header bg-muted">
                 <div class="d-flex align-items-center">
-                <span class="mr-auto">รายงานข้อมูลรายชื่อผู้เรียนทั้งหมด และแยกตามหลักสูตร</span>   <!--   <<a
-                        href="{{route('generatePdfT0101')}}"
-                        class="btn btn-icon btn-outline-danger"><i class="fa fa-file-pdf"></i></a>&nbsp;<a
-                        href="https://aced.dlex.ai/childhood/admin/export/excel.html"
-                        class="btn btn-icon btn-outline-primary"><i class="fa fa-file-excel "></i></a>-->&nbsp;<a
-                        onclick="window.print()" class="btn btn-icon btn-outline-success"><i
-                            class="fa fa-print "></i></a>
+                    <span class="mr-auto">รายงานข้อมูลรายชื่อผู้เรียนทั้งหมด และแยกตามหลักสูตร</span>
+                    <!--   <a
+                                            href="{{ route('generatePdfT0101') }}"
+                                            class="btn btn-icon btn-outline-danger"><i class="fa fa-file-pdf"></i></a>-->&nbsp;<a
+                                            href="{{route('exportLeact')}}"
+                                            class="btn btn-icon btn-outline-primary"><i class="fa fa-file-excel "></i></a>&nbsp;<a
+                        onclick="window.print()" class="btn btn-icon btn-outline-success"><i class="fa fa-print "></i></a>
                 </div>
             </div><!-- /.card-header -->
             <!-- .card-body -->
@@ -78,9 +78,9 @@
                             </tr>
                             <tr class="text-center">
                                 <th align="center" width="5%">ลำดับ</th>
-                                <th align="center" width="20%">ชื่อผู้ใช้งาน</th>
-                                <th align="center" width="30%">ชื่อ - สกุล</th>
-
+                                <th align="center" width="10%">ชื่อผู้ใช้งาน</th>
+                                <th align="center" width="20%">ชื่อ - สกุล</th>
+                                <th align="center" width="20%">สังกัด</th>
                                 <th align="center">หลักสูตร</th>
                                 <th align="center" width="10%">วันที่ลงทะเบียนเรียน</th>
                                 <th align="center" width="10%">วันที่จบหลักสูตร</th>
@@ -93,20 +93,35 @@
                                 $result = []; // สร้างตัวแปรเก็บผลลัพธ์
                                 $uniqueUserIds = [];
                                 $users = null;
+                                $UserSchool = null;
+                                $schoolName = null;
                             @endphp
                             @foreach ($learners as $l => $learns)
-                            
                                 @php
-                                
+
                                     $dataLearn = $learns->registerdate;
                                     $congrateLearn = $learns->congratulationdate;
                                     $congrate = $learns->congratulation;
                                     $monthsa = \ltrim(\Carbon\Carbon::parse($dataLearn)->format('m'), '0');
                                     $newDateTime = \Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $learns->registerdate)->format('d/m/Y H:i:s');
                                     $users = \App\Models\Users::find($learns->user_id);
-                                    
+                               
+                                    if ($users) {
+                                        $UserSchool = \App\Models\UserSchool::with('schouser')
+                                            ->where('user_id', $users->user_id)
+                                            ->first();
+
+                                        if ($UserSchool) {
+                                            $schoolName = optional($UserSchool->schouser)->school_name;
+                                        } else {
+                                            $schoolName = []; 
+                                        }
+                                    } else {
+                                        $schoolName = [];
+                                    }
+
                                     $courses = \App\Models\Course::find($learns->course_id);
-                                    
+
                                     if ($courses) {
                                         // Access properties of the $courses object here
                                         $course_th = $courses->course_th;
@@ -118,55 +133,63 @@
                                     $buddhistYear = $carbonDate->addYears(543)->year;
                                     $thaiYear = $buddhistYear > 0 ? $buddhistYear : '';
                                     $thaiDateWithYear = $thaiDate . ' ' . $thaiYear;
-                                    
+
                                     $carbonDa = \Carbon\Carbon::parse($dataLearn);
                                     $thaiDa = $carbonDa->locale('th')->isoFormat('D MMMM');
                                     $buddhistYe = $carbonDa->addYears(543)->year;
                                     $thai = $buddhistYe > 0 ? $buddhistYe : '';
                                     $thaiDat = $thaiDa . ' ' . $thai;
-                                    
+
                                 @endphp
 
                                 @if (isset($users) && $users)
                                     <tr>
                                         <td align="center">{{ $n++ }}</td>
 
-                                        <td>
+                                        <td align="center">
                                             @if (optional($users)->username)
                                                 {{ $users->username }}
                                             @else
-                                                
                                             @endif
                                         </td>
-                                        <td>
+                                        <td align="center">
                                             @if (optional($users)->firstname)
                                                 {{ $users->firstname }}
                                             @else
-                                                
                                             @endif
                                             @if (optional($users)->lastname)
                                                 {{ $users->lastname }}
                                             @else
-                                                
+                                            @endif
+                                        </td>
+                                        <td align="center">
+
+                                            @if ($schoolName)
+                                                {{ $schoolName }}
+                                            @else
+                                               -
                                             @endif
                                         </td>
 
-                                        <td>
+                                        <td align="center">
                                             @if (optional($courses)->course_th)
                                                 {{ $courses->course_th }}
                                             @else
+                                            -
                                             @endif
                                         </td>
                                         <td align="center">
                                             @if ($thaiDat)
                                                 {{ $thaiDat }}
                                             @else
+                                            -
                                             @endif
                                         </td>
                                         <td align="center">
                                             @if ($congrate == 1)
                                                 {{ $thaiDateWithYear }}
                                             @elseif($congrate == 0)
+                                            -
                                             @endif
                                         </td>
                                     </tr>

@@ -42,7 +42,7 @@
                         
                         $n = 0;
                     @endphp
-                    @foreach ($teachers as $item)
+                    @foreach ($teachers->sortBy('teacher_id') as $item)
                         
                         @if ($item->teacher_status == 1)
                         @php

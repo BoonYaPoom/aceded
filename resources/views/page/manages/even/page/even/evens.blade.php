@@ -71,7 +71,7 @@
                                 $w = 1;
                                 
                                 @endphp
-                                @foreach ($wed as $item)
+                                @foreach ($wed->sortBy('category_id')  as $item)
                                 @if($item->category_type == 1 )
                                     <tr>
                                         <td>{{ $w++ }}</td>

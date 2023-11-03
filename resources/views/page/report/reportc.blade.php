@@ -82,7 +82,7 @@
                                 <td align="center">2</td>
                                 <td>รายงานสถานะผู้เข้าเรียน และจบการศึกษา (รายบุคคล)
                                 </td>
-                                <td align="center"><a href="{{ route('t0117') }}"><i
+                                <td align="center"><a href="{{ route('t0116') }}"><i
                                             class="fas fa-chart-bar text-teal mr-2"></i></a></td>
                             </tr>
                             <tr>

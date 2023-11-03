@@ -34,7 +34,7 @@
                         <th class="align-middle" style="width:5%"> กระทำ</th>
                     </tr>
                 </thead><!-- /thead -->
-                @foreach ($catac as $c)
+                @foreach ($catac->sortBy('category_id') as $c)
                     <tr>
                         <td><a href="#">1</a></td>
                         <td>{{ $c->category_th }}</td>

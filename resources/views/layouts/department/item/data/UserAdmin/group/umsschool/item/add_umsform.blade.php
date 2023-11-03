@@ -1,73 +1,18 @@
-@extends('layouts.adminhome')
-@section('content')
+@extends('layouts.department.layout.departmenthome')
+@section('contentdepartment')
     <!-- .page-inner -->
-    <form action="{{ route('storeUser') }}" method="post" enctype="multipart/form-data">
+    <form action="{{ route('DPSchoolstoreUser', ['department_id' => $depart, 'school_id' => $school->school_id]) }}" method="post"
+        enctype="multipart/form-data">
         @csrf
-
 
         <!-- .page-inner -->
         <div class="page-inner">
             <div class="page-section">
                 <div class="card card-fluid">
-                    <div class="card-header bg-muted"><a href="{{ route('UserManage') }}">ผู้ใช้งาน</a> / ข้อมูลส่วนตัว</div>
+                    <div class="card-header bg-muted"><a href="{{ route('schoolManageDepart', ['department_id' => $depart->department_id])}}">จัดการสถานศึกษา</a> / สร้างนักเรียน {{$school->school_name}}</div>
                     <div class="col-lg">
-                        <h6 class="card-header"> ข้อมูลส่วนตัว </h6>
+                        <h3 class="card-header">  {{$school->school_name}} </h3>
                         <div class="card-body">
-                            <!-- form row -->
-                            <div class="form-row ">
-                                <label for="usertype" class="col-md-2">ประเภทบุคลากร </label>
-                                <div class="col-md-9 mb-3">
-                                    <div class="custom-control custom-control-inline custom-radio mr-3">
-                                        <input type="radio" class="custom-control-input usertypeselect" name="user_type"
-                                            id="usertype1" value="1">
-                                        <label class="custom-control-label" for="usertype1">บุคลากรของสำนักงาน</label>
-                                    </div>
-                                    <div class="custom-control custom-control-inline custom-radio mr-3">
-                                        <input type="radio" class="custom-control-input usertypeselect" name="user_type"
-                                            id="usertype2" value="2">
-                                        <label class="custom-control-label" for="usertype2">บุคคลทั่วไป</label>
-                                    </div>
-
-                                </div>
-                                @error('user_type')
-                                    <span class="badge badge-warning">{{ $message }}</span>
-                                @enderror
-                            </div>
-                            <div class="form-row " id="department_id">
-                                <label for="department_id" class="col-md-2">เลือกหน่วยงาน </label>
-                                <div class="col-md-9 mb-3">
-                                    <button type="button" class="ml-1 btn btn-success btn-md"
-                                        style="background-color: #F04A23;"
-                                        onclick="$('#clientUploadModal').modal('toggle');">
-                                        <i class="fas fa-user-plus"></i> เลือกหน่วยงาน</button>
-
-                                </div>
-                            </div>
-                            @include('page.UserAdmin.modeleditDpart')
-                            <div class="form-row " id="user_role">
-                                <label for="user_role" class="col-md-2">เลือกประเภทผู้ใช้งาน </label>
-                                <div class="col-md-9 mb-3">
-                                    <select id="user_role" name="user_role" class="form-control form-control-md"
-                                        data-toggle="select2" data-allow-clear="false">
-                                        <option value="0"selected disabled>เลือกประเภทผู้ใช้งาน</option>
-                                        @foreach ($role as $roles)
-                                            @if ($roles->role_status == 1)
-                                                @if ($roles->user_role_id > 1)
-                                                    <option value="{{ $roles->user_role_id }}">{{ $roles->role_name }}
-                                                    </option>
-                                                @endif
-                                            @endif
-                                        @endforeach
-                                    </select>
-                                </div>
-                            </div>
-                            @error('user_role')
-                                <span class="badge badge-warning">{{ $message }}</span>
-                            @enderror
-                            <div class="container mt-5">
-
-                            </div>
-
 
                             <!-- form row -->
                             <div class="form-row">
@@ -81,9 +26,7 @@
                                 </div>
                             </div>
                             <!-- /form row -->
-                            @error('username')
-                                <span class="badge badge-warning">{{ $message }}</span>
-                            @enderror
+
                             <!-- form row -->
                             <div class="form-row">
                                 <label for="password" class="col-md-2"> รหัสผ่าน</label>
@@ -93,9 +36,6 @@
                                     <small class="form-text text-muted">ตัวอักษรอังกฤษและตัวเลขความยาว 8-20 ตัวอักษร</small>
                                 </div>
                             </div>
-                            @error('password')
-                                <span class="badge badge-warning">{{ $message }}</span>
-                            @enderror
                             <!-- /form row -->
                             <div class="form-row ">
                                 <label for="user_type_card" class="col-md-2">ประเภทบุคลากร </label>
@@ -123,9 +63,7 @@
                                     </div>
                                 </div>
                             </div>
-                            @error('user_type_card')
-                                <span class="badge badge-warning">{{ $message }}</span>
-                            @enderror
+
                             <!-- form row -->
                             <div class="form-row ">
                                 <label for="citizen_id" class="col-md-2">เลขประจำตัวประชาชน</label>
@@ -146,9 +84,7 @@
                                 </div>
                             </div>
                             <!-- /form row -->
-                            @error('citizen_id')
-                                <span class="badge badge-warning">{{ $message }}</span>
-                            @enderror
+
                             <script>
                                 document.addEventListener("DOMContentLoaded", function() {
                                     const select = document.getElementById("citizen_id_select");
@@ -192,9 +128,7 @@
                             </div>
                             <!-- /form row -->
 
-                            @error('gender')
-                                <span class="badge badge-warning">{{ $message }}</span>
-                            @enderror
+
                             <!-- form row -->
                             <div class="form-row">
                                 <label for="firstname" class="col-md-2">ชื่อ <span
@@ -205,9 +139,7 @@
                                 </div>
                             </div>
                             <!-- /form row -->
-                            @error('firstname')
-                                <span class="badge badge-warning">{{ $message }}</span>
-                            @enderror
+
                             <!-- form row -->
                             <div class="form-row">
                                 <label for="lastname" class="col-md-2">นามสกุล</label>
@@ -225,9 +157,7 @@
                                         value="" />
                                 </div>
                             </div>
-                            @error('birthday')
-                                <span class="badge badge-warning">{{ $message }}</span>
-                            @enderror
+
                             <script>
                                 document.addEventListener("DOMContentLoaded", function() {
                                     flatpickr("#birthday", {
@@ -263,9 +193,7 @@
                                 </div>
                             </div>
                             <!-- /form row -->
-                            @error('email')
-                                <span class="badge badge-warning">{{ $message }}</span>
-                            @enderror
+
                             <!-- form row -->
                             <div class="form-row">
                                 <label for="mobile" class="col-md-2">เบอร์โทรศัพท์มือถือ</label>
@@ -275,9 +203,7 @@
                                 </div>
                             </div>
                             <!-- /form row -->
-                            @error('mobile')
-                                <span class="badge badge-warning">{{ $message }}</span>
-                            @enderror
+
                             <!-- form row -->
                             <div class="form-row d-none " id="set_workplace">
                                 <label for="workplace" class="col-md-2">ที่อยู่</label>
@@ -288,24 +214,7 @@
                             </div>
                             <!-- /form row -->
 
-                            <!-- form row -->
-                            <div class="form-row " id="set_province_id">
-                                <label for="province_id" class="col-md-2">จังหวัด </label>
-                                <div class="col-md-9 mb-3">
-                                    <select id="province_id" name="province_id" class="form-control "
-                                        data-toggle="select2" data-allow-clear="false">
-                                        <option value="0">โปรดเลือกจังหวัด</option>
-                                        @php
-                                            $Provinces = \App\Models\Provinces::all();
-                                        @endphp
-                                        @foreach ($Provinces as $provin)
-                                            <option value="{{ $provin->id }}"> {{ $provin->name_in_thai }} </option>
-                                        @endforeach
-                                    </select>
-                                </div>
-                            </div>
-
-
+                        
                             <!-- form row -->
                             <div class="form-row d-none " id="set_district_id">
                                 <label for="district_id" class="col-md-2">เขต/อำเภอ </label>
@@ -328,72 +237,9 @@
                                         <option value="0">โปรดเลือกแขวง/ตำบล</option>
                                     </select>
                                 </div>
-                            </div>
-                            <!-- /form row -->
-                            <div class="form-row">
-                                <label for="school" class="col-md-2">โรงเรียน / มหาลัย <span
-                                        class="badge badge-warning">Required</span></label>
-                                <div class="col-md-9 mb-3">
-                                    <input type="text" class="form-control inputuname " id="search" name="school"
-                                        placeholder="school" value="" required=""><small
-                                        class="form-text text-muted">โรงเรียน / มหาลัย </small>
-                                </div>
-                            </div>
-                            @error('school')
-                                <span class="badge badge-warning">{{ $message }}</span>
-                            @enderror
-                            <script type="text/javascript">
-                                var path = "{{ route('autocompleteSearch') }}";
-
-                                $("#search").autocomplete({
-                                    source: function(request, response) {
-                                        $.ajax({
-                                            url: path,
-                                            type: 'GET',
-                                            dataType: "json",
-                                            data: {
-                                                search: request.term
-                                            },
-                                            success: function(data) {
-                                                response(data);
-                                            }
-                                        });
-                                    },
-                                    select: function(event, ui) {
-                                        $('#search').addClass("form-control form-control-sm");
-
-                                        // Log the ui.item to the console
-                                        console.log(ui.item);
-
-                                        // Set the input value to the selected item's label
-                                        $('#search').val(ui.item.label);
-
-                                        return false;
-                                    }
-                                });
-                            </script>
-                            <!-- form row -->
-                            <div class="form-row " id="set_pos_name">
-                                <label for="pos_name" class="col-md-2">ตำแหน่ง</label>
-                                <div class="col-md-9 mb-3">
-                                    <input type="text" class="form-control " id="pos_name" name="pos_name"
-                                        value="" placeholder="ตำแหน่ง">
-                                    <!-- <select id="pos_namexx" name="pos_namexx" class="form-control form-control-sm" data-toggle="select2" data-allow-clear="false">
-                                                                                                    </select> -->
-                                </div>
-                            </div>
-                            @error('pos_name')
-                                <span class="badge badge-warning">{{ $message }}</span>
-                            @enderror
-                            <!--/form row -->
-                            <div class="form-row " id="user_affiliation">
-                                <label for="user_affiliation" class="col-md-2">สังกัด</label>
-                                <div class="col-md-9 mb-3">
-                                    <input type="text" class="form-control " id="user_affiliation"
-                                        name="user_affiliation" value="" placeholder="สังกัด">
-
-                                </div>
-                            </div>
+                            </div>          
+                     
+                        
                             <!-- form row -->
                             <div class="form-row d-none " id="set_pos_level">
                                 <label for="mobile" class="col-md-2">ระดับตำแหน่ง</label>
@@ -492,5 +338,4 @@
             });
         });
     </script>
-    </form>
 @endsection

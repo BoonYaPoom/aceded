@@ -1,7 +1,22 @@
 @extends('layouts.adminhome')
 @section('content')
     <!-- .page-inner -->
+    @if (Session::has('message'))
+        <script>
+            toastr.options = {
+                "progressBar": true,
+                "positionClass": 'toast-top-full-width',
+                "extendedTimeOut ": 0,
+                "timeOut": 3000,
+                "fadeOut": 250,
+                "fadeIn": 250,
+                "positionClass": 'toast-top-right',
 
+
+            }
+            toastr.success("{{ Session::get('message') }}");
+        </script>
+    @endif
     <div class="page-inner">
         <!-- .page-section -->
         <div class="page-section">

@@ -36,93 +36,98 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @if($data->user_role == 1)
-                                <tr>
-                                    <td><a href="{{ route('dataci') }}">
-                                            DPM</a>
-                                    </td>
-                                    <td><a href="{{ route('dataci') }}">
-                                            จัดการDepartment LOGO / IMAGE</a>
-                                    </td>
-                                    <td>
-                                    </td>
-                                    <td>
-                                    </td>
+                                @if ($data->user_role == 1)
+                                    <tr>
+                                        <td><a href="{{ route('dataci') }}">
+                                                DPM</a>
+                                        </td>
+                                        <td><a href="{{ route('dataci') }}">
+                                                จัดการDepartment LOGO / IMAGE</a>
+                                        </td>
+                                        <td>
+                                        </td>
+                                        <td>
+                                        </td>
 
-                                </tr>
+                                    </tr>
                                 @endif
                                 @foreach ($department->sortBy('department_id') as $depart)
-                              
-                                @if($data->department_id == $depart->department_id && $data->user_role == 6 || $data->department_id == $depart->department_id && $data->user_role == 7 || $data->user_role == 1 || $data->user_role == 8)
-                                    <tr>
-                                        <td><a href="{{ route('homede', ['department_id' => $depart->department_id]) }}">
-                                                {{ $depart->name_short_en }}</a>
-                                        </td>
-                                        <td><a href="{{ route('homede', ['department_id' => $depart->department_id]) }}">
-                                                {{ $depart->name_th }}</a>
-                                        </td>
-                                        <td class="align-middle">
-                                            @if ($data->user_role == 1 || $data->user_role == 8)     
-                                            <label class="switcher-control switcher-control-success switcher-control-lg">
-                                                <input type="checkbox" class="switcher-input switcher-edit"
-                                                    {{ $depart->department_status == 1 ? 'checked' : '' }}
-                                                    data-department-id="{{ $depart->department_id }}">
-                                                <span class="switcher-indicator"></span>
-                                                <span class="switcher-label-on">ON</span>
-                                                <span class="switcher-label-off text-red">OFF</span>
-                                            </label>
-                                            @endif
-                                        </td>
-                                        <script>
-                                            $(document).ready(function() {
-                                                $(document).on('change', '.switcher-input.switcher-edit', function() {
-                                                    var department_status = $(this).prop('checked') ? 1 : 0;
-                                                    var department_id = $(this).data('department-id');
-                                                    console.log('department_status:', department_status);
-                                                    console.log('department_id:', department_id);
-                                                    $.ajax({
-                                                        type: "GET",
-                                                        dataType: "json",
-                                                        url: '{{ route('changeStatusDepart') }}',
-                                                        data: {
-                                                            'department_status': department_status,
-                                                            'department_id': department_id
-                                                        },
-                                                        success: function(data) {
-                                                            console.log(data.message); // แสดงข้อความที่ส่งกลับ
-                                                        },
-                                                        error: function(xhr, status, error) {
-                                                            console.log('ข้อผิดพลาด');
-                                                        }
+                                    @php
+                                        $userdepart = \App\Models\UserDepartment::where('user_id', $data->user_id)
+                                            ->where('department_id', $depart->department_id)
+                                            ->first();
+                                    @endphp
+                                    @if ($userdepart && ($data->user_role == 6 || $data->user_role == 7 ) || ($data->user_role == 1 || $data->user_role == 8))
+                                        <tr>
+                                            <td><a
+                                                    href="{{ route('homede', ['department_id' => $depart->department_id]) }}">
+                                                    {{ $depart->name_short_en }}</a>
+                                            </td>
+                                            <td><a
+                                                    href="{{ route('homede', ['department_id' => $depart->department_id]) }}">
+                                                    {{ $depart->name_th }}</a>
+                                            </td>
+                                            <td class="align-middle">
+                                                @if ($data->user_role == 1 || $data->user_role == 8)
+                                                    <label
+                                                        class="switcher-control switcher-control-success switcher-control-lg">
+                                                        <input type="checkbox" class="switcher-input switcher-edit"
+                                                            {{ $depart->department_status == 1 ? 'checked' : '' }}
+                                                            data-department-id="{{ $depart->department_id }}">
+                                                        <span class="switcher-indicator"></span>
+                                                        <span class="switcher-label-on">ON</span>
+                                                        <span class="switcher-label-off text-red">OFF</span>
+                                                    </label>
+                                                @endif
+                                            </td>
+                                            <script>
+                                                $(document).ready(function() {
+                                                    $(document).on('change', '.switcher-input.switcher-edit', function() {
+                                                        var department_status = $(this).prop('checked') ? 1 : 0;
+                                                        var department_id = $(this).data('department-id');
+                                                        console.log('department_status:', department_status);
+                                                        console.log('department_id:', department_id);
+                                                        $.ajax({
+                                                            type: "GET",
+                                                            dataType: "json",
+                                                            url: '{{ route('changeStatusDepart') }}',
+                                                            data: {
+                                                                'department_status': department_status,
+                                                                'department_id': department_id
+                                                            },
+                                                            success: function(data) {
+                                                                console.log(data.message); // แสดงข้อความที่ส่งกลับ
+                                                            },
+                                                            error: function(xhr, status, error) {
+                                                                console.log('ข้อผิดพลาด');
+                                                            }
+                                                        });
                                                     });
                                                 });
-                                            });
-                                        </script>
-                                        <td class="align-middle">
-                                            <a
-                                                href="{{ route('departmentedit', ['from' => $from, 'department_id' => $depart->department_id]) }}">
-                                                <i class="far fa-edit fa-lg text-success" data-toggle="tooltip"
-                                                    title="แก้ไข"></i></a>
+                                            </script>
+                                            <td class="align-middle">
+                                                <a
+                                                    href="{{ route('departmentedit', ['from' => $from, 'department_id' => $depart->department_id]) }}">
+                                                    <i class="far fa-edit fa-lg text-success" data-toggle="tooltip"
+                                                        title="แก้ไข"></i></a>
 
-                                        </td>
-                                    </tr>
+                                            </td>
+                                        </tr>
                                     @endif
-                                   
                                 @endforeach
-                                
+
                             </tbody><!-- /tbody -->
                         </table><!-- /.table -->
                     </div><!-- /.table-responsive -->
                 </div><!-- /.card-body -->
             </div><!-- /.card -->
         </div><!-- /.page-section -->
-        @if ($data->user_role == 1 || $data->user_role == 8)     
-      
-        <header class="page-title-bar">
-            <button type="button" class="btn btn-success btn-floated btn-add"
-                onclick="window.location='{{ route('departmentcreate', ['from' => $from]) }}'" data-toggle="tooltip"
-                title="เพิ่ม"><span class="fas fa-plus"></span></button>
-        </header>
+        @if ($data->user_role == 1 || $data->user_role == 8)
+            <header class="page-title-bar">
+                <button type="button" class="btn btn-success btn-floated btn-add"
+                    onclick="window.location='{{ route('departmentcreate', ['from' => $from]) }}'" data-toggle="tooltip"
+                    title="เพิ่ม"><span class="fas fa-plus"></span></button>
+            </header>
         @endif
         <!-- .page-title-bar -->
     </div><!-- /.page-inner -->

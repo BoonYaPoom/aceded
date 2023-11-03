@@ -35,7 +35,7 @@
 
                 <div class="card-body">
                     <!-- .form-group -->
-                    @foreach ($hights as $highlight)
+                    @foreach ($hights->sortBy('highlight_id')  as $highlight)
                         <div class="form-group">
                             <div class="row mb-5">
 

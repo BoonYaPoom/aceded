@@ -37,7 +37,9 @@ class DepartmentController extends Controller
     public function departmentwmspage()
     {
         $users = Users::all();
+            
         $department  = Department::all();
+
         $from = 'wms';
         return view('layouts.department.item.departmentwms', compact('department', 'from', 'users'));
     }

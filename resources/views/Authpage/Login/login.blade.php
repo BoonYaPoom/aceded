@@ -75,7 +75,7 @@
       <link rel="stylesheet" href="{{ asset('/stylesheets/logincss/logincss.css') }}">
 
   </head>
-@php
+  {{-- @php
     
 try {
     $connonName = 'mysql';
@@ -84,8 +84,8 @@ try {
 } catch (\Exception $e) {
     die("ไม่สามารถเชื่อมต่อฐานข้อมูล MySQL: " . $e->getMessage());
 }
-@endphp 
-    <!--  @php
+@endphp  --}}
+  {{-- @php
       use Illuminate\Support\Facades\DB;
       
       try {
@@ -95,8 +95,8 @@ try {
       } catch (\Exception $e) {
           echo 'Connection failed: ' . $e->getMessage();
       }
-  @endphp  -->
- <!-- @php
+  @endphp  --}}
+  {{-- @php
 try {
     $ldap_host = env('LDAP_HOST');
     $ldap_port = env('LDAP_PORT');
@@ -125,7 +125,7 @@ try {
 } catch (\Exception $e) {
     echo 'Connection failed: ' . $e->getMessage();
 }
-@endphp-->
+@endphp --}}
 
 
   <div class="wrapper fadeInDown">
@@ -134,14 +134,14 @@ try {
           <h2 class="active">
               <a class="navbar-brand" href="{{ route('homelogin') }}">Sign In</a>
           </h2>
-    
-          <!--   <h2 class="inactive underlineHover">
+
+         <h2 class="inactive underlineHover">
               <a class="navbar-brand" href="{{ route('homeRegis') }}">Sign Up </a>
-          </h2>-->
+          </h2>
 
           <!-- Icon -->
           <div class="fadeIn first">
-              <img src="{{ asset('lac/logo.png') }}" id="icon" alt="User Icon" />
+              <img src="{{ asset('upload/LOGO/logo.png') }}" id="icon" alt="User Icon" />
           </div>
           <br>
           <!-- Login Form -->
@@ -151,7 +151,7 @@ try {
               <input type="text" class="fadeIn second" name="username" id="username" placeholder="รหัสผู้ใช้"
                   aria-label="Email" aria-describedby="username" required
                   data-msg="กรุณากรอกอีเมล์ให้ถูกต้อง ลองอีกครั้ง" data-error-class="u-has-error"
-                  data-success-class="u-has-success" >
+                  data-success-class="u-has-success">
 
               <span class="text-danger">
                   @error('username')
@@ -160,11 +160,11 @@ try {
               </span>
 
               <input type="password" class="fadeIn third" name="password" id="password" placeholder="********"
-              aria-label="Password" aria-describedby="signinPasswordLabel" required
-              data-msg="กรุณากรอกรหัสผ่านให้ถูกต้อง ลองอีกครั้ง" data-error-class="u-has-error"
-              data-success-class="u-has-success"  autocomplete="off">
-          
-          
+                  aria-label="Password" aria-describedby="signinPasswordLabel" required
+                  data-msg="กรุณากรอกรหัสผ่านให้ถูกต้อง ลองอีกครั้ง" data-error-class="u-has-error"
+                  data-success-class="u-has-success" autocomplete="off">
+
+
 
               <span class="text-danger">
                   @error('password')
@@ -173,7 +173,6 @@ try {
               </span>
               <br>
               <div class="row mb-3">
-                 
 
               </div>
 

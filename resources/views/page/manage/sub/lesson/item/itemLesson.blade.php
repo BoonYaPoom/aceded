@@ -91,7 +91,7 @@
             title="สื่อเสริม"><i class="fas fa-file-video fa-lg text-success mr-1"></i>
         </a>
 
-        <a href="{{ route('destroy_lessonform', ['lesson_id' => $item]) }}" onclick="deleteRecord(event)"
+        <a href="{{ route('destroy_lessonform', [$depart,'lesson_id' => $item]) }}" onclick="deleteRecord(event)"
             class="switcher-delete" data-toggle="tooltip" title="ลบ"><i
                 class="fas fa-trash-alt fa-lg text-warning "></i></a>
     </td>

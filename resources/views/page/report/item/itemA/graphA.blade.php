@@ -18,31 +18,33 @@
 
                 $year = \Carbon\Carbon::parse($dataLearn)->year + 543;
                 $newDateTime = \Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $lrean->registerdate)->format('d/m/Y H:i:s');
+
                 if ($year == 2566) {
                     if (!in_array($lrean->user_id, $uniqueUserIds)) {
                         array_push($uniqueUserIds, $lrean->user_id);
-                        if ($lrean->congratulation == 1) {
-                            $count = \App\Models\Users::where('user_id', $lrean->user_id)->count();
+                        if ($lrean->learner_status == 1) {
+                            if ($lrean->congratulation == 1) {
+                                $count = \App\Models\Users::where('user_id', $lrean->user_id)->count();
 
-                            $totalCount += $count;
-                        }
-                        if ($lrean->registerdate) {
-                            $countregis = \App\Models\Users::where('user_id', $lrean->user_id)->count();
+                                $totalCount += $count;
+                            }
+                            if ($lrean->registerdate) {
+                                $countregis = \App\Models\Users::where('user_id', $lrean->user_id)->count();
 
-                            $totalCountRE += $countregis;
+                                $totalCountRE += $countregis;
+                            }
                         }
                     }
                 }
-              
             }
             $chartDataRe[] = [
-                    'choice' => 'ผู้สมัครเรียน',
-                    'count' => $totalCount,
-                ];
-                $chartDataCons[] = [
-                    'choice' => 'เรียบจบแล้ว',
-                    'count' => $totalCountRE,
-                ];
+                'choice' => 'ผู้สมัครเรียน',
+                'count' => $totalCount,
+            ];
+            $chartDataCons[] = [
+                'choice' => 'เรียบจบแล้ว',
+                'count' => $totalCountRE,
+            ];
             $n = 0;
 
             $result = []; // สร้างตัวแปรเก็บผลลัพธ์
@@ -86,9 +88,11 @@
 
         <script>
             var chartDataRe = {!! json_encode($chartDataRe) !!};
+            var totalCounts = {!! json_encode($totalCount) !!};
             var dateAll = {!! json_encode($dateAll) !!};
             var chartDataCon = {!! json_encode($chartDataCon) !!};
-            var chartDataCons = {!! json_encode($chartDataCons) !!};
+            var totalCountREs = {!! json_encode($totalCountRE) !!};
+
             console.log(chartDataCon);
 
             console.log(chartDataRe);
@@ -119,7 +123,7 @@
                         cursor: 'pointer',
                         dataLabels: {
                             enabled: true,
-                            format: '<b>{point.name}</b>:{point.percentage:.1f}% ',
+                            format: '<b>{point.name}</b>: {point.percentage:.1f} %',
                             style: {
                                 color: (Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black'
                             }
@@ -127,17 +131,17 @@
                     }
                 },
                 series: [{
-                    name: 'ผู้สมัครเรียน',
-                    data: chartDataRe.map(item => ({
-                        name: item.name, // Use the name property from your data
-                        y: item.count
-                    }))
-                }, {
-                    name: 'ผู้สำเร็จการเรียน',
-                    data: chartDataCons.map(item => ({
-                        name: item.name, // Use the name property from your data
-                        y: item.count
-                    }))
+                    name: 'จำนวน',
+                    data: [{
+                            name: 'เรียนอยู่',
+                            y: totalCounts,
+                        },
+                        {
+                            name: 'เรียบจบแล้ว',
+                            y: totalCountREs,
+                        }
+                    ]
+
                 }]
             });
 
@@ -166,7 +170,7 @@
                         cursor: 'pointer',
                         dataLabels: {
                             enabled: true,
-                            format: '<b>{point.name}</b>:{point.percentage:.1f}% ',
+                            format: '<b>{point.name}</b>:{point.y} คน',
                             style: {
                                 color: (Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black'
                             }

@@ -11,6 +11,7 @@ use App\Models\Users;
 
 use App\Models\UserSchool;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Storage;
@@ -39,6 +40,7 @@ class EditManageUserController extends Controller
     public function edit($user_id)
     {
         $usermanages = Users::findOrFail($user_id);
+        
         return view('page.UserAdmin.edit', ['usermanages' => $usermanages]);
     }
 
@@ -126,6 +128,24 @@ class EditManageUserController extends Controller
             ]);
         }
 
+
+        $department_data = $request->department_data;
+        if(!$department_data){
+            foreach ($department_data as $departmentId) {
+                DB::table('users_department')->insert([
+                    'user_id' =>  $user_id,
+                    'department_id' => $departmentId,
+                ]);
+            }
+        }else{
+            foreach ($department_data as $departmentId) {
+                DB::table('users_department')->update([
+                    'user_id' =>  $user_id,
+                    'department_id' => $departmentId,
+                ]);
+            }
+        }
+       
         // ส่งข้อความสำเร็จไปยังหน้าแก้ไขโปรไฟล์
         return redirect()->route('UserManage')->with('message', 'แก้ไขโปรไฟล์สำเร็จ');
     }
@@ -141,7 +161,7 @@ class EditManageUserController extends Controller
         $usermanages->user_role = $user_roleValue;
         $usermanages->save();
 
-        return redirect()->back()->with('success', 'บันทึกข้อมูลสำเร็จ');
+        return redirect()->back()->with('message', 'บันทึกข้อมูลสำเร็จ');
     }
     public function updatepassword(Request $request, $user_id)
     {
@@ -153,7 +173,7 @@ class EditManageUserController extends Controller
         $usermanages->password = Hash::make($request->usearch);
         $usermanages->save();
 
-        return redirect()->back()->with('success', 'บันทึกข้อมูลสำเร็จ');
+        return redirect()->back()->with('message', 'บันทึกข้อมูลสำเร็จ');
     }
 
     public function createUser()
@@ -207,15 +227,15 @@ class EditManageUserController extends Controller
             'username' => 'required|unique:users',
             'firstname' => 'required',
             'password' => 'required|min:3|max:20',
-            'citizen_id' => 'required|min:13|max:13',
+            'citizen_id' => 'required|unique:users',
             'email' => 'required|email|unique:users',
             'gender' => 'required',
             'mobile' => 'required',
             'user_type' => 'required',
             'pos_name' => 'required',
             'user_role' => 'required',
-
-
+            'birthday' => 'required',
+            'school' => 'required',
         ]);
 
         $usermanages = new Users();
@@ -297,6 +317,13 @@ class EditManageUserController extends Controller
         $userschool->user_id = $usermanages->user_id;
         $userschool->save();
 
+        $department_data = $request->department_data;
+        foreach ($department_data as $departmentId) {
+            DB::table('users_department')->insert([
+                'user_id' =>    $usermanages->user_id,
+                'department_id' => $departmentId,
+            ]);
+        }
         return redirect()->route('UserManage')->with('message', 'แก้ไขโปรไฟล์สำเร็จ');
     }
 

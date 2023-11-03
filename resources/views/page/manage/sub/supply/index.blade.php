@@ -39,7 +39,7 @@
                 @php  
                 $s = 0 ;
                 @endphp
-                @foreach ($supplys as $item)
+                @foreach ($supplys->sortBy('supplymentary_id')  as $item)
                 @if( $item->lesson_id == 0)
                 @php  
                 $s++ ;
