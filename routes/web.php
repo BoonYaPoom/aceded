@@ -64,6 +64,7 @@ use LdapRecord\Laravel\Facades\Ldap;
 |
 */
 
+
 Route::get('/upload-image', [PDFcreateController::class, 'upload_image'])->name('upload_image');
 // Clear application cache:
 Route::get('/generatePdfT0101', [PDFcreateController::class, 'generatePdfT0101'])->name('generatePdfT0101');
@@ -242,7 +243,7 @@ Route::group(['middleware' => 'IsLoggedIn'], function () {
                         Route::get('{department_id}/activiList/{category_id}', [ActivityController::class, 'activiList'])->name('activiList');
 
                         Route::get('{department_id}/activiListForm1/{category_id}', [ActivityController::class, 'activiListForm1'])->name('activiListForm1');
-                        Route::post('{department_id}/act1store/{category_id}', [ActivityController::class, 'act1store'])->name('act1store');
+                        Route::post('{department_id}/act1store/{category_id}', [ActivityController::class, 'act1store'])->name('act1stores');
                         Route::get('{department_id}/activiListform1_edit/{activity_id}', [ActivityController::class, 'formacttivityEdit1'])->name('activiListform1_edit');
                         Route::put('{department_id}/act1Update/{activity_id}', [ActivityController::class, 'act1update'])->name('act1Update');
 
@@ -487,6 +488,7 @@ Route::group(['middleware' => 'IsLoggedIn'], function () {
             });
 
             Route::get('/ums/{user_role?}', [EditManageUserController::class, 'UserManage'])->name('UserManage')->where('user_role', '[0-9]+');
+            Route::get('/UserManagejson/{user_role?}', [EditManageUserController::class, 'UserManagejson'])->name('UserManagejson')->where('user_role', '[0-9]+');
 
             Route::prefix('ums')->group(function () {
                 Route::get('/deleteUser/{user_id}', [EditManageUserController::class, 'delete'])->name('deleteUser');
@@ -504,7 +506,7 @@ Route::group(['middleware' => 'IsLoggedIn'], function () {
                 Route::put('/update-role/{user_id}', [EditManageUserController::class, 'updateRoleUser'])->name('updateRoleUser');
                 Route::put('/update-password/{user_id}', [EditManageUserController::class, 'updatepassword'])->name('updatePassword');
 
-                Route::get('changeStatusUser', [EditManageUserController::class, 'changeStatus'])->name('changeStatusUser');
+                Route::get('/changeStatusUser/{user_id}', [EditManageUserController::class, 'changeStatus'])->name('changeStatusUser');
 
                 Route::get('fetchUsersByDepartment', [EditManageUserController::class, 'fetchUsersByDepartment'])->name('fetchUsersByDepartment');
 
@@ -571,11 +573,8 @@ Route::group(['middleware' => 'IsLoggedIn'], function () {
                 Route::get('/home/T0125', [ReportAllController::class, 't0125'])->name('t0125');
                 Route::post('/get-user-data', [ReportAllController::class, 'getUserData'])->name('get-Uata');
             });
-
-            Route::prefix('dataall')->group(function () {
-                Route::get('/getSchools', [SchoolController::class, 'getSchools'])->name('getSchools');
-            });
-            
+            Route::get('/getSchools', [SchoolController::class, 'getSchools'])->name('getSchools');
+     
             Route::prefix('info')->group(function () {
                 Route::post('UsersDepartAllImport/{department_id}', [ExcelController::class, 'UsersDepartAllImport'])->name('UsersDepartAllImport');
                 Route::post('UsersDepartImport/{department_id}', [ExcelController::class, 'UsersDepartImport'])->name('UsersDepartImport');

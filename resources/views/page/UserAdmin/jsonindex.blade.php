@@ -27,7 +27,7 @@
                 <div class="card-header bg-muted"> ผู้ใช้งาน</div>
                 <!-- .card-body -->
                 <div class="card-body">
-                    <form id="filterForm" action="{{ route('UserManagejson') }}" method="GET">
+                    <form id="filterForm" action="{{ route('UserManage') }}" method="GET">
                         <div class="form-row">
                             <label for="user_role" class="col-md-3 text-right mt-1">เลือกประเภทผู้ใช้งาน</label>
                             <div class="col-md-6 mb-3">
@@ -54,8 +54,13 @@
                     <script>
                         function filterResults() {
                             var user_roleValue = document.getElementById('user_role').value;
-                            var table = $('#datatable').DataTable();
-                            table.ajax.url('{{ route('UserManagejson') }}/' + user_roleValue).load();
+                            var baseUrl = '{{ route('UserManage') }}';
+
+                            if (user_roleValue) {
+                                window.location.href = baseUrl + '/' + user_roleValue;
+                            } else {
+                                window.location.href = baseUrl;
+                            }
                         }
                     </script>
 
@@ -196,11 +201,6 @@
                                             confirmButtonText: 'OK'
                                         });
                                     }
-
-                                });
-                                $('#filterButton').on('click', function() {
-                                    var userRole = $('#user_role').val();
-                                    table.ajax.url('{{ route('UserManagejson') }}?user_role=' + userRole).load();
                                 });
                             });
                         });
@@ -226,7 +226,54 @@
                                     </label>
                                 </div>
 
+                                <script>
+                                    $(document).ready(function() {
+                                        var table = $('#datatable').DataTable({
 
+                                            lengthChange: false,
+                                            responsive: true,
+                                            info: true,
+                                            pageLength: 50,
+                                            language: {
+                                                info: "ลำดับที่ _START_ ถึง _END_ จากทั้งหมด _TOTAL_ รายการ",
+                                                infoEmpty: "ไม่พบรายการ",
+                                                infoFiltered: "(ค้นหาจากทั้งหมด _MAX_ รายการ)",
+                                                paginate: {
+                                                    first: "หน้าแรก",
+                                                    last: "หน้าสุดท้าย",
+                                                    previous: "ก่อนหน้า",
+                                                    next: "ถัดไป"
+                                                }
+                                            },
+
+                                        });
+
+                                        $('#myInput').on('keyup', function() {
+                                            table.search(this.value).draw();
+                                        });
+
+
+                                        $('#department_id').on('change', function() {
+                                            var selectedDepartmentId = $(this).val();
+                                            if (selectedDepartmentId == 0) {
+                                                table.columns(6).search('').draw();
+                                            } else {
+                                                // กรองข้อมูลใน DataTables ด้วยหน่วยงานที่เลือก
+                                                table.columns(6).search(selectedDepartmentId).draw();
+                                            }
+                                        });
+                                        $('#drop2').on('change', function() {
+                                            var selecteddrop2Id = $(this).val();
+                                            if (selecteddrop2Id == 0) {
+                                                table.columns(5).search('').draw();
+                                            } else {
+                                                // กรองข้อมูลใน DataTables ด้วยหน่วยงานที่เลือก
+                                                table.columns(5).search(selecteddrop2Id).draw();
+                                            }
+                                        });
+
+                                    });
+                                </script>
 
                             </div>
 
@@ -236,6 +283,7 @@
                                     <th width="10%">ลำดับ</th>
                                     <th width="12%">รหัสผู้ใช้</th>
                                     <th>ชื่อ-นามสกุล</th>
+
                                     <th width="15%">เบอร์โทรศัพท์</th>
                                     <th width="25%">email</th>
                                     <th width="10%"> จังหวัด</th>
@@ -247,10 +295,7 @@
                             <!-- /thead -->
                             <!-- tbody -->
                             <tbody>
-                  
                                 <!-- tr -->
-                                @include('page.UserAdmin.DataUser.AjexUser')
-
                                 @php
                                     $r = 0;
                                 @endphp
@@ -265,7 +310,16 @@
                                         $statususerss = $item->userstatus == 0;
                                     @endphp
 
-
+                                    @php
+                                        $clientPermissionModal = 'clientPermissionModal-' . $item->user_id;
+                                        $name_short_en = \App\Models\Department::where('department_id', $item->department_id)
+                                            ->pluck('name_en')
+                                            ->first();
+                                        $proviUser = \App\Models\Provinces::where('id', $item->province_id)
+                                            ->pluck('name_in_thai')
+                                            ->first();
+                                    @endphp
+                                    @include('page.UserAdmin.DataUser.userAll')
                                     @include('page.UserAdmin.group.ModelUser.modelRole')
                                     @include('page.UserAdmin.group.ModelUser.modelPass')
                                 @endforeach

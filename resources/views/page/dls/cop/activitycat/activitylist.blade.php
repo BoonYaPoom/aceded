@@ -8,8 +8,9 @@
             <div class="card card-fluid">
                 <!-- .card-header -->
                 <div class="card-header bg-muted"><a href="{{ route('cop', ['department_id' => $actCat->department_id]) }}"
-                    style="text-decoration: underline;">กิจกกรรม</a> / <a href="{{ route('activi', ['department_id' => $actCat->department_id]) }}"
-                    style="text-decoration: underline;">ชุมนุมนักปฏิบัติ </a> / <i>
+                        style="text-decoration: underline;">กิจกกรรม</a> / <a
+                        href="{{ route('activi', ['department_id' => $actCat->department_id]) }}"
+                        style="text-decoration: underline;">ชุมนุมนักปฏิบัติ </a> / <i>
                         {{ $actCat->category_th }}
                     </i></div>
                 <!-- /.card-header -->
@@ -36,14 +37,10 @@
                                 @php($i = 0)
                                 @foreach ($act as $a)
                                     @php($i++)
-                                    @if ($a->category_id == 10000)
+                                    @if ($actCat->category_type == 1)
                                         @include('page.dls.cop.activitycat.item.cat1item.cat1')
-                                    @elseif($a->category_id == 2)
-                                        @include('page.dls.cop.activitycat.item.cat2item.cat2')
-                                    @elseif ($a->category_id == 3)
+                                    @elseif ($actCat->category_type == 2)
                                         @include('page.dls.cop.activitycat.item.cat3item.cat3')
-                                    @elseif($a->category_id == 4)
-                                        @include('page.dls.cop.activitycat.item.cat4item.cat4')
                                     @endif
                                 @endforeach
                             </tbody><!-- /tbody -->
@@ -78,19 +75,19 @@
             });
         </script>
         <!-- .page-title-bar -->
-        @if ($actCat->category_id == 1  || $actCat->category_id == 3)
-            <button type="button"
-                onclick="window.location='{{ route('activiListForm1', [$depart,'category_id' => $actCat->category_id]) }}'"
-                class="btn btn-success btn-floated btn-addcop" id="add_activityform" data-toggle="tooltip"
-                title="เพิ่ม"><span class="fas fa-plus"></span></button>
-        @elseif($actCat->category_id == 2  || $actCat->category_id == 4)
-            <button type="button"
-                onclick="window.location='{{ route('activiListForm2', [$depart,'category_id' => $actCat->category_id]) }}'"
-                class="btn btn-success btn-floated btn-addcop" id="add_activityform" data-toggle="tooltip"
-                title="เพิ่ม"><span class="fas fa-plus"></span></button>
-        @endif
+      
         <!-- floating action -->
-
+        @if ($actCat->category_type == 1 || $actCat->category_type == 2)
+        <button type="button"
+            onclick="window.location='{{ route('activiListForm1', [$depart, 'category_id' => $actCat->category_id]) }}'"
+            class="btn btn-success btn-floated btn-addcop" id="add_activityform" data-toggle="tooltip"
+            title="เพิ่ม"><span class="fas fa-plus"></span></button>
+    @elseif($actCat->category_type == 3)
+        <button type="button"
+            onclick="window.location='{{ route('activiListForm2', [$depart, 'category_id' => $actCat->category_id]) }}'"
+            class="btn btn-success btn-floated btn-addcop" id="add_activityform" data-toggle="tooltip"
+            title="เพิ่ม"><span class="fas fa-plus"></span></button>
+    @endif
         <!-- /floating action -->
         <!-- .page-title-bar -->
     </div><!-- /.page-inner -->

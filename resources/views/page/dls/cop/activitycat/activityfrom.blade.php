@@ -1,6 +1,7 @@
 @extends('layouts.department.layout.departmenthome')
 @section('contentdepartment')
-    <form action="" autocomplete="off" id="formnews" enctype="multipart/form-data" method="post" accept-charset="utf-8">
+    <form action="{{ route('act1store', [$depart, 'category_id' => $actCat->category_id]) }}" autocomplete="off" id="formnews"
+        enctype="multipart/form-data" method="post" accept-charset="utf-8">
         <input type="hidden" name="__csrf_token_name" value="c4dd375d617e78d25f83e498dd205900" />
         <!-- .page-inner -->
         <div class="page-inner">
@@ -10,8 +11,11 @@
                 <!-- .card -->
                 <div class="card card-fluid">
                     <!-- .card-header -->
-                    <div class="card-header bg-muted"><a href="{{ route('cop', ['department_id' => $actCat->department_id]) }}" style="text-decoration: underline;">กิจกรรม</a> / <a
-                            href="{{ route('activi', ['department_id' => $actCat->department_id]) }}" style="text-decoration: underline;">ชุมนุมนักปฏิบัติ</a> /<i> แก้ไขหมวดหมู่</i>
+                    <div class="card-header bg-muted"><a
+                            href="{{ route('cop', ['department_id' => $actCat->department_id]) }}"
+                            style="text-decoration: underline;">กิจกรรม</a> / <a
+                            href="{{ route('activi', ['department_id' => $actCat->department_id]) }}"
+                            style="text-decoration: underline;">ชุมนุมนักปฏิบัติ</a> /<i> แก้ไขหมวดหมู่</i>
                     </div>
                     <!-- /.card-header -->
 

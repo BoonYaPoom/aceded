@@ -22,21 +22,21 @@
                             <div class="section-block text-center text-sm">
 
                                 @foreach ($roles->sortBy('user_role_id') as $ro)
-                                @if ($ro->user_role_id > 1)
-                                    
-                          
-                                    <div class="visual-picker visual-picker-sm has-peek px-3">
-                                        <input type="radio" id="user_role{{$ro->user_role_id}}" name="user_role" value="{{$ro->user_role_id}}"
-                                            {{ $item->user_role == $ro->user_role_id ? 'checked' : '' }}>
-                                        <label class="visual-picker-figure" for="user_role{{$ro->user_role_id}}">
-                                            <span class="visual-picker-content">
-                                                <span class="tile tile-sm user_role{{$ro->user_role_id}} user_roleactive bg-muted">
-                                                    <i class="{{$ro->role_cover_path}} fa-lg"></i>
+                                    @if ($ro->user_role_id > 1)
+                                        <div class="visual-picker visual-picker-sm has-peek px-3">
+                                            <input type="radio" id="user_role{{ $ro->user_role_id }}" name="user_role"
+                                                value="{{ $ro->user_role_id }}"
+                                                {{ $item->user_role == $ro->user_role_id ? 'checked' : '' }}>
+                                            <label class="visual-picker-figure" for="user_role{{ $ro->user_role_id }}">
+                                                <span class="visual-picker-content">
+                                                    <span
+                                                        class="tile tile-sm user_role{{ $ro->user_role_id }} user_roleactive bg-muted">
+                                                        <i class="{{ $ro->role_cover_path }} fa-lg"></i>
+                                                    </span>
                                                 </span>
-                                            </span>
-                                        </label>
-                                        <span class="visual-picker-peek">{{$ro->role_name}}</span>
-                                    </div>
+                                            </label>
+                                            <span class="visual-picker-peek">{{ $ro->role_name }}</span>
+                                        </div>
                                     @endif
                                 @endforeach
                             </div>
@@ -54,3 +54,31 @@
         </div>
     </div>
 </div>
+
+<script>
+    // เมื่อตัวเลือกถูกเลือก
+    document.querySelectorAll('input[name="user_role"]').forEach(function(radio) {
+        radio.addEventListener('change', function() {
+            // รับค่าของตัวเลือกที่ถูกเลือก
+            var selecteduser_role = document.querySelector('input[name="user_role"]:checked').value;
+            // ดำเนินการตามต้องการสำหรับตัวเลือกที่ถูกเลือก
+            console.log('ตัวเลือกที่ถูกเลือก:', selecteduser_role);
+
+        });
+    });
+    $(function() {
+        $(".visual-picker").click(function() {
+            var radioBtn = $(this).find("input[type='radio']");
+            radioBtn.prop('checked', true);
+
+        });
+        // ส่วนอื่น ๆ ของรหัส
+    });
+
+    function setuser_roleColor(user_role) {
+        var color = ['', 'info', 'danger', 'success', 'warning'];
+        $('#user_role' + user_role).prop("checked", true);
+        $('.user_roleactive').removeClass('bg-info bg-warning bg-danger bg-success');
+        $('.user_role' + user_role).removeClass('bg-muted').addClass('bg-' + color[user_role]);
+    }
+</script>

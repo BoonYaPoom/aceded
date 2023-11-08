@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Department;
 use App\Models\Districts;
+use App\Models\Provinces;
 use App\Models\School;
 use App\Models\Subdistricts;
 use App\Models\UserRole;
@@ -34,13 +35,63 @@ class EditManageUserController extends Controller
     }
 
 
+    public function UserManagejson(Request $request, $user_role = null)
+    {
+        $usermanages = Users::query();
+        $userAll = [];
+        if ($user_role !== null) {
+            $usermanages->where('user_role', $user_role);
+        }
+
+        $usermanages = $usermanages->get();
+        $r =  1;
+
+        foreach ($usermanages->sortBy('user_id') as  $item) {
+            $clientPermissionModal = 'clientPermissionModal-' . $item->user_id;
+            $name_short_en = Department::where('department_id', $item->department_id)
+                ->pluck('name_en')
+                ->first();
+            $proviUser = Provinces::where('id', $item->province_id)
+                ->pluck('name_in_thai')
+                ->first();
+            $id = $item->user_id;
+            $username = $item->username;
+            $firstname = $item->firstname;
+            $lastname = $item->lastname;
+            $fullname =  $firstname . ' ' . $lastname;
+            $email = $item->email;
+            $status = $item->userstatus;
+            $mobile = $item->mobile;
+            $user_role = $item->user_role;
+            $part1 = substr($mobile, 0, 3);
+            $part2 = substr($mobile, 3, 3);
+            $part3 = substr($mobile, 6, 4);
+            $fullMobile = $part1 . '-' . $part2 . '-' . $part3;
+            $userAll[] = [
+                'num' => $r++,
+                'id' => $id,
+                'username' => $username,
+                'firstname' => $firstname,
+                'lastname' => $lastname,
+                'fullname' => $fullname,
+                'email' => $email,
+                'status' => $status,
+                'mobile' => $fullMobile,
+                'proviUser' => $proviUser,
+                'department' => $name_short_en,
+                'user_role' => $user_role,
+            ];
+        }
+
+        return response()->json(['userAll' => $userAll]);
+    }
 
 
 
     public function edit($user_id)
     {
         $usermanages = Users::findOrFail($user_id);
-        
+
         return view('page.UserAdmin.edit', ['usermanages' => $usermanages]);
     }
 
@@ -130,14 +181,14 @@ class EditManageUserController extends Controller
 
 
         $department_data = $request->department_data;
-        if(!$department_data){
+        if (!$department_data) {
             foreach ($department_data as $departmentId) {
                 DB::table('users_department')->insert([
                     'user_id' =>  $user_id,
                     'department_id' => $departmentId,
                 ]);
             }
-        }else{
+        } else {
             foreach ($department_data as $departmentId) {
                 DB::table('users_department')->update([
                     'user_id' =>  $user_id,
@@ -145,7 +196,7 @@ class EditManageUserController extends Controller
                 ]);
             }
         }
-       
+
         // ส่งข้อความสำเร็จไปยังหน้าแก้ไขโปรไฟล์
         return redirect()->route('UserManage')->with('message', 'แก้ไขโปรไฟล์สำเร็จ');
     }
@@ -172,7 +223,7 @@ class EditManageUserController extends Controller
 
         $usermanages->password = Hash::make($request->usearch);
         $usermanages->save();
-
+            
         return redirect()->back()->with('message', 'บันทึกข้อมูลสำเร็จ');
     }
 
@@ -183,13 +234,17 @@ class EditManageUserController extends Controller
     }
 
 
-    public function changeStatus(Request $request)
+    public function changeStatus($user_id)
     {
-        $usermanages = Users::find($request->user_id);
 
+        $usermanages = Users::find($user_id);
+
+        // ตรวจสอบว่าหน้ามีค่า page_status ที่เป็น 1 หรือ 0
         if ($usermanages) {
-            $usermanages->userstatus = $request->userstatus;
+            $newuserstatus = $usermanages->userstatus == 1 ? 0 : 1;
+            $usermanages->userstatus = $newuserstatus;
             $usermanages->save();
+
 
             return response()->json(['message' => 'สถานะถูกเปลี่ยนแปลงเรียบร้อยแล้ว']);
         } else {

@@ -129,7 +129,10 @@
                                         lengthChange: false,
                                         responsive: true,
                                         info: false,
+                                     
                                         pageLength: 20,
+                                        scrollY: '100%',
+
                                         language: {
 
                                             infoEmpty: "ไม่พบรายการ",

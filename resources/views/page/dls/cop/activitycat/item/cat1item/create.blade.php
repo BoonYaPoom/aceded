@@ -1,23 +1,26 @@
 @extends('layouts.department.layout.departmenthome')
 @section('contentdepartment')
-    <form action="{{ route('act1store', [$depart,'category_id' => $actCat]) }}" method="post" enctype="multipart/form-data">
-        @csrf
-        <!-- .page-inner -->
-        <div class="page-inner">
-            <!-- .form -->
-            <!-- .page-section -->
-            <div class="page-section">
+    <!-- .page-inner -->
+    <div class="page-inner">
+        <!-- .form -->
+        <!-- .page-section -->
+        <div class="page-section">
+            <form action="{{ route('act1stores', ['department_id' => $depart, 'category_id' => $actCat]) }}" method="post"
+                enctype="multipart/form-data">
+                @csrf
                 <!-- .card -->
                 <div class="card card-fluid">
                     <!-- .card-header -->
-                    <div class="card-header bg-muted"><a href="{{ route('cop', ['department_id' => $actCat]) }}"
-                      style="text-decoration: underline;">กิจกกรรม</a> / <a href="{{ route('activi', ['department_id' => $actCat]) }}"
-                      style="text-decoration: underline;">ชุมนุมนักปฏิบัติ </a> / <i>
-                    
-                          <a href="{{ route('activiList' ,[$depart,$actCat->category_id]) }}"
-                            style="text-decoration: underline;">{{ $actCat->category_th }}</a>
-                      </i></div>
-                 
+                    <div class="card-header bg-muted"><a
+                            href="{{ route('cop', ['department_id' => $depart, 'category_id' => $actCat]) }}"
+                            style="text-decoration: underline;">กิจกกรรม</a> / <a
+                            href="{{ route('activi', ['department_id' => $depart, 'category_id' => $actCat]) }}"
+                            style="text-decoration: underline;">ชุมนุมนักปฏิบัติ </a> / <i>
+
+                            <a href="{{ route('activiList', ['department_id' => $depart, 'category_id' => $actCat]) }}"
+                                style="text-decoration: underline;">{{ $actCat->category_th }}</a>
+                        </i></div>
+
                     <!-- .card-body -->
                     <div class="card-body">
                         <!-- .form-group -->
@@ -27,10 +30,10 @@
                                 placeholder="ชื่อเรื่อง" required="" value="">
                         </div><!-- /.form-group -->
 
-                        <!-- .form-group -->
-                        <div class="form-group ">
-                            <label for="detail">รายละเอียด </label>
-                            <textarea class="editor" required="" data-placeholder="รายละเอียด" data-height="200" name="detail"></textarea>
+                  
+                        <div class="form-group">
+                            <label for="detail">เนื้อหาโดยย่อ</label>
+                            <textarea class="editor" data-placeholder="รายละเอียด" data-height="200" name="detail" ></textarea>
                         </div><!-- /.form-group -->
                         <div class="form-row">
                             <div class="col-md-6 mb-3">
@@ -49,18 +52,18 @@
                                 class="switcher-control switcher-control-success switcher-control-lg"><input type="checkbox"
                                     class="switcher-input" name="activity_status" id="activity_status" value="1"> <span
                                     class="switcher-indicator"></span>
-                                     <span class="switcher-label-on">ON</span>
-                                      <span class="switcher-label-off text-red">OFF</span></label>
+                                <span class="switcher-label-on">ON</span>
+                                <span class="switcher-label-off text-red">OFF</span></label>
                         </div><!-- /.form-group -->
                     </div><!-- /.card-body -->
                 </div><!-- /.card -->
-
-                <!-- .form-actions -->
                 <div class="form-actions">
                     <button class="btn btn-lg btn-primary ml-auto" type="submit"><i class="far fa-save"></i>
                         บันทึก</button>
                 </div><!-- /.form-actions -->
-            </div><!-- /.page-section -->
-        </div><!-- /.page-inner -->
-    </form>
+                <!-- .form-actions -->
+            </form>
+        </div><!-- /.page-section -->
+
+    </div><!-- /.page-inner -->
 @endsection

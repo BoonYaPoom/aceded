@@ -14,22 +14,22 @@ use Illuminate\Support\Facades\Validator;
 
 class ActivityController extends Controller
 {
-    public function activiList($department_id,$category_id)
+    public function activiList($department_id, $category_id)
     {
         $actCat = ActivityCategory::findOrFail($category_id);
         $act = $actCat->activa()->where('category_id', $category_id)->get();
         $department_id   = $actCat->department_id;
         $depart = Department::findOrFail($department_id);
-        return view('page.dls.cop.activitycat.activitylist', compact('actCat', 'act','depart'));
+        return view('page.dls.cop.activitycat.activitylist', compact('actCat', 'act', 'depart'));
     }
-    public function activiListForm1($department_id,$category_id)
+    public function activiListForm1($department_id, $category_id)
     {
         $actCat = ActivityCategory::findOrFail($category_id);
         $department_id   = $actCat->department_id;
         $depart = Department::findOrFail($department_id);
-        return view('page.dls.cop.activitycat.item.cat1item.create', compact('actCat','depart'));
+        return view('page.dls.cop.activitycat.item.cat1item.create', compact('actCat', 'depart'));
     }
-    public function act1store(Request $request,$department_id, $category_id)
+    public function act1store(Request $request, $department_id, $category_id)
     {
 
         $request->validate([
@@ -58,51 +58,51 @@ class ActivityController extends Controller
         $act->activity_status = $request->input('activity_status', 0);
         libxml_use_internal_errors(true);
         if (!file_exists(public_path('/upload/act/ck/'))) {
-           mkdir(public_path('/upload/act/ck/'), 0755, true);
+            mkdir(public_path('/upload/act/ck/'), 0755, true);
         }
         if ($request->has('detail')) {
-           $detail = $request->detail;
-           if (!empty($detail)) {
-              $de_th = new DOMDocument();
-              $de_th->encoding = 'UTF-8'; // กำหนด encoding เป็น UTF-8
-              $de_th->loadHTML(mb_convert_encoding($detail, 'HTML-ENTITIES', 'UTF-8'), LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
-  
-              $images_des_th = $de_th->getElementsByTagName('img');
-  
-              foreach ($images_des_th as $key => $img) {
-                 if (strpos($img->getAttribute('src'), 'data:image/') === 0) {
-                    $data = base64_decode(explode(',', explode(';', $img->getAttribute('src'))[1])[1]);
-                    $image_name = '/upload/act/ck/' . time() . $key . '.png'; // ใส่ .png เพื่อให้เป็นนามสกุลไฟล์ถูกต้อง
-                    file_put_contents(public_path() . $image_name, $data);
-                    $img->removeAttribute('src');
-                    $newImageUrl = asset($image_name);
-                    $img->setAttribute('src', $newImageUrl);
-                 }
-              }
-              $detail = $de_th->saveHTML();
-           }
-  
-           $act->detail = $detail;
+            $detail = $request->detail;
+            if (!empty($detail)) {
+                $de_th = new DOMDocument();
+                $de_th->encoding = 'UTF-8'; // กำหนด encoding เป็น UTF-8
+                $de_th->loadHTML(mb_convert_encoding($detail, 'HTML-ENTITIES', 'UTF-8'), LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
+
+                $images_des_th = $de_th->getElementsByTagName('img');
+
+                foreach ($images_des_th as $key => $img) {
+                    if (strpos($img->getAttribute('src'), 'data:image/') === 0) {
+                        $data = base64_decode(explode(',', explode(';', $img->getAttribute('src'))[1])[1]);
+                        $image_name = '/upload/act/ck/' . time() . $key . '.png'; // ใส่ .png เพื่อให้เป็นนามสกุลไฟล์ถูกต้อง
+                        file_put_contents(public_path() . $image_name, $data);
+                        $img->removeAttribute('src');
+                        $newImageUrl = asset($image_name);
+                        $img->setAttribute('src', $newImageUrl);
+                    }
+                }
+                $detail = $de_th->saveHTML();
+            }
+
+            $act->detail = $detail;
         }
         $act->invite = null;
         $act->user_id = $loginId;
         $act->save();
 
-        return redirect()->route('activiList', ['category_id' => $category_id])->with('message', 'Success Acti');
+        return redirect()->route('activiList', [$department_id, 'category_id' => $category_id])->with('message', 'Success Acti');
     }
 
 
 
-    public function formacttivityEdit1($department_id,$activity_id)
+    public function formacttivityEdit1($department_id, $activity_id)
     {
         $act = Activity::findOrFail($activity_id);
         $category_id = $act->category_id;
         $actCat = ActivityCategory::findOrFail($category_id);
         $department_id   = $actCat->department_id;
         $depart = Department::findOrFail($department_id);
-        return view('page.dls.cop.activitycat.item.cat1item.edit', compact('act','actCat','depart'));
+        return view('page.dls.cop.activitycat.item.cat1item.edit', compact('act', 'actCat', 'depart'));
     }
-    public function act1update(Request $request,$department_id, $activity_id)
+    public function act1update(Request $request, $department_id, $activity_id)
     {
 
 
@@ -119,56 +119,57 @@ class ActivityController extends Controller
         $act->activity_status = $request->input('activity_status', 0);
         libxml_use_internal_errors(true);
         if (!file_exists(public_path('/upload/act/ck/'))) {
-           mkdir(public_path('/upload/act/ck/'), 0755, true);
+            mkdir(public_path('/upload/act/ck/'), 0755, true);
         }
         if ($request->has('detail')) {
-           $detail = $request->detail;
-           if (!empty($detail)) {
-              $de_th = new DOMDocument();
-              $de_th->encoding = 'UTF-8'; // กำหนด encoding เป็น UTF-8
-              $de_th->loadHTML(mb_convert_encoding($detail, 'HTML-ENTITIES', 'UTF-8'), LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
-  
-              $images_des_th = $de_th->getElementsByTagName('img');
-  
-              foreach ($images_des_th as $key => $img) {
-                 if (strpos($img->getAttribute('src'), 'data:image/') === 0) {
-                    $data = base64_decode(explode(',', explode(';', $img->getAttribute('src'))[1])[1]);
-                    $image_name = '/upload/act/ck/' . time() . $key . '.png'; // ใส่ .png เพื่อให้เป็นนามสกุลไฟล์ถูกต้อง
-                    file_put_contents(public_path() . $image_name, $data);
-                    $img->removeAttribute('src');
-                    $newImageUrl = asset($image_name);
-                    $img->setAttribute('src', $newImageUrl);
-                 }
-              }
-              $detail = $de_th->saveHTML();
-           }
-  
-           $act->detail = $detail;
+            $detail = $request->detail;
+            if (!empty($detail)) {
+                $de_th = new DOMDocument();
+                $de_th->encoding = 'UTF-8'; // กำหนด encoding เป็น UTF-8
+                $de_th->loadHTML(mb_convert_encoding($detail, 'HTML-ENTITIES', 'UTF-8'), LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
+
+                $images_des_th = $de_th->getElementsByTagName('img');
+
+                foreach ($images_des_th as $key => $img) {
+                    if (strpos($img->getAttribute('src'), 'data:image/') === 0) {
+                        $data = base64_decode(explode(',', explode(';', $img->getAttribute('src'))[1])[1]);
+                        $image_name = '/upload/act/ck/' . time() . $key . '.png'; // ใส่ .png เพื่อให้เป็นนามสกุลไฟล์ถูกต้อง
+                        file_put_contents(public_path() . $image_name, $data);
+                        $img->removeAttribute('src');
+                        $newImageUrl = asset($image_name);
+                        $img->setAttribute('src', $newImageUrl);
+                    }
+                }
+                $detail = $de_th->saveHTML();
+            }
+
+            $act->detail = $detail;
         }
 
         $act->user_id = $loginId;
         $act->save();
 
 
-        return redirect()->route('activiList', [$department_id,'category_id' => $act->category_id])->with('message', 'Success Acti');
+        return redirect()->route('activiList', [$department_id, 'category_id' => $act->category_id])->with('message', 'Success Acti');
     }
 
 
 
 
-    public function activiListForm2($department_id,$category_id)
+    public function activiListForm2($department_id, $category_id)
     {
         $actCat = ActivityCategory::findOrFail($category_id);
         $department_id   = $actCat->department_id;
         $depart = Department::findOrFail($department_id);
-        return view('page.dls.cop.activitycat.item.cat2item.create', compact('actCat','depart'));
+        return view('page.dls.cop.activitycat.item.cat2item.create', compact('actCat', 'depart'));
     }
 
-    public function act2store(Request $request,$department_id, $category_id)
+    public function act2store(Request $request, $department_id, $category_id)
     {
         $validator = Validator::make($request->all(), [
             'title' => 'required',
-            'detail' => 'required'
+            'starttime' => 'required',
+            'enddate' => 'required',
         ]);
 
         if ($validator->fails()) {
@@ -177,87 +178,87 @@ class ActivityController extends Controller
                 ->withInput()
                 ->with('error', 'ข้อมูลไม่ถูกต้อง');
         }
-        
+
         if (Session::has('loginId')) {
             $loginId = Session::get('loginId');
         }
-        
+
         try {
-          
-        $act = new Activity;
-        $act->category_id = $category_id;
-        $act->title = $request->title;
 
-        if ($request->hasFile('media')) {
-            $fileName = time() . '.' . $request->media->getClientOriginalExtension();
-            $filePath = public_path('uploads'); // กำหนดพาธของโฟลเดอร์ที่เก็บไฟล์
-            $request->media->move($filePath, $fileName);
-        }
-        $act->media = $fileName;
-        $act->location = null;
-        $act->url = null;
-        $act->startdate = now();
-        $act->enddate =  now();
-        $act->starttime = null;
-        $act->endtime = null;
-        $act->frequency = null;
-        $act->persontype = null;
-        $act->comment = null;
-        $act->options = null;
-        $act->activity_status = $request->input('activity_status', 0);
-        libxml_use_internal_errors(true);
-        if (!file_exists(public_path('/upload/act/ck/'))) {
-           mkdir(public_path('/upload/act/ck/'), 0755, true);
-        }
-        if ($request->has('detail')) {
-           $detail = $request->detail;
-           if (!empty($detail)) {
-              $de_th = new DOMDocument();
-              $de_th->encoding = 'UTF-8'; // กำหนด encoding เป็น UTF-8
-              $de_th->loadHTML(mb_convert_encoding($detail, 'HTML-ENTITIES', 'UTF-8'), LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
-  
-              $images_des_th = $de_th->getElementsByTagName('img');
-  
-              foreach ($images_des_th as $key => $img) {
-                 if (strpos($img->getAttribute('src'), 'data:image/') === 0) {
-                    $data = base64_decode(explode(',', explode(';', $img->getAttribute('src'))[1])[1]);
-                    $image_name = '/upload/act/ck/' . time() . $key . '.png'; // ใส่ .png เพื่อให้เป็นนามสกุลไฟล์ถูกต้อง
-                    file_put_contents(public_path() . $image_name, $data);
-                    $img->removeAttribute('src');
-                    $newImageUrl = asset($image_name);
-                    $img->setAttribute('src', $newImageUrl);
-                 }
-              }
-              $detail = $de_th->saveHTML();
-           }
-  
-           $act->detail = $detail;
-        }
-        $act->invite = null;
-        $act->user_id = $loginId;
-        $act->save();
-        
-        DB::commit();
-    } catch (\Exception $e) {
+            $act = new Activity;
+            $act->category_id = $category_id;
+            $act->title = $request->title;
 
-        DB::rollBack();
-        
-        return response()->view('error.error-500', [], 500);
+            if ($request->hasFile('media')) {
+                $fileName = time() . '.' . $request->media->getClientOriginalExtension();
+                $filePath = public_path('uploads'); // กำหนดพาธของโฟลเดอร์ที่เก็บไฟล์
+                $request->media->move($filePath, $fileName);
+            }
+            $act->media = $fileName;
+            $act->location = null;
+            $act->url = null;
+            $act->startdate = now();
+            $act->enddate =  now();
+            $act->starttime = null;
+            $act->endtime = null;
+            $act->frequency = null;
+            $act->persontype = null;
+            $act->comment = null;
+            $act->options = null;
+            $act->activity_status = $request->input('activity_status', 0);
+            libxml_use_internal_errors(true);
+            if (!file_exists(public_path('/upload/act/ck/'))) {
+                mkdir(public_path('/upload/act/ck/'), 0755, true);
+            }
+            if ($request->has('detail')) {
+                $detail = $request->detail;
+                if (!empty($detail)) {
+                    $de_th = new DOMDocument();
+                    $de_th->encoding = 'UTF-8'; // กำหนด encoding เป็น UTF-8
+                    $de_th->loadHTML(mb_convert_encoding($detail, 'HTML-ENTITIES', 'UTF-8'), LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
+
+                    $images_des_th = $de_th->getElementsByTagName('img');
+
+                    foreach ($images_des_th as $key => $img) {
+                        if (strpos($img->getAttribute('src'), 'data:image/') === 0) {
+                            $data = base64_decode(explode(',', explode(';', $img->getAttribute('src'))[1])[1]);
+                            $image_name = '/upload/act/ck/' . time() . $key . '.png'; // ใส่ .png เพื่อให้เป็นนามสกุลไฟล์ถูกต้อง
+                            file_put_contents(public_path() . $image_name, $data);
+                            $img->removeAttribute('src');
+                            $newImageUrl = asset($image_name);
+                            $img->setAttribute('src', $newImageUrl);
+                        }
+                    }
+                    $detail = $de_th->saveHTML();
+                }
+
+                $act->detail = $detail;
+            }
+            $act->invite = null;
+            $act->user_id = $loginId;
+            $act->save();
+
+            DB::commit();
+        } catch (\Exception $e) {
+
+            DB::rollBack();
+
+            return response()->view('error.error-500', [], 500);
+        }
+        return redirect()->route('activiList', [$department_id, 'category_id' => $category_id])->with('message', 'Success Acti');
     }
-        return redirect()->route('activiList', [$department_id,'category_id' => $category_id])->with('message', 'Success Acti');
-    }
 
-    public function formacttivityEdit2($department_id,$activity_id)
+    public function formacttivityEdit2($department_id, $activity_id)
     {
         $act = Activity::findOrFail($activity_id);
         $category_id = $act->category_id;
         $actCat = ActivityCategory::findOrFail($category_id);
         $department_id   = $actCat->department_id;
         $depart = Department::findOrFail($department_id);
-        return view('page.dls.cop.activitycat.item.cat2item.edit', compact('act','actCat','depart'));
+        return view('page.dls.cop.activitycat.item.cat2item.edit', compact('act', 'actCat', 'depart'));
     }
 
-    public function act2update(Request $request,$department_id, $activity_id)
+    public function act2update(Request $request, $department_id, $activity_id)
     {
 
 
@@ -277,38 +278,38 @@ class ActivityController extends Controller
         $act->activity_status = $request->input('activity_status', 0);
         libxml_use_internal_errors(true);
         if (!file_exists(public_path('/upload/act/ck/'))) {
-           mkdir(public_path('/upload/act/ck/'), 0755, true);
+            mkdir(public_path('/upload/act/ck/'), 0755, true);
         }
         if ($request->has('detail')) {
-           $detail = $request->detail;
-           if (!empty($detail)) {
-              $de_th = new DOMDocument();
-              $de_th->encoding = 'UTF-8'; // กำหนด encoding เป็น UTF-8
-              $de_th->loadHTML(mb_convert_encoding($detail, 'HTML-ENTITIES', 'UTF-8'), LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
-  
-              $images_des_th = $de_th->getElementsByTagName('img');
-  
-              foreach ($images_des_th as $key => $img) {
-                 if (strpos($img->getAttribute('src'), 'data:image/') === 0) {
-                    $data = base64_decode(explode(',', explode(';', $img->getAttribute('src'))[1])[1]);
-                    $image_name = '/upload/act/ck/' . time() . $key . '.png'; // ใส่ .png เพื่อให้เป็นนามสกุลไฟล์ถูกต้อง
-                    file_put_contents(public_path() . $image_name, $data);
-                    $img->removeAttribute('src');
-                    $newImageUrl = asset($image_name);
-                    $img->setAttribute('src', $newImageUrl);
-                 }
-              }
-              $detail = $de_th->saveHTML();
-           }
-  
-           $act->detail = $detail;
+            $detail = $request->detail;
+            if (!empty($detail)) {
+                $de_th = new DOMDocument();
+                $de_th->encoding = 'UTF-8'; // กำหนด encoding เป็น UTF-8
+                $de_th->loadHTML(mb_convert_encoding($detail, 'HTML-ENTITIES', 'UTF-8'), LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
+
+                $images_des_th = $de_th->getElementsByTagName('img');
+
+                foreach ($images_des_th as $key => $img) {
+                    if (strpos($img->getAttribute('src'), 'data:image/') === 0) {
+                        $data = base64_decode(explode(',', explode(';', $img->getAttribute('src'))[1])[1]);
+                        $image_name = '/upload/act/ck/' . time() . $key . '.png'; // ใส่ .png เพื่อให้เป็นนามสกุลไฟล์ถูกต้อง
+                        file_put_contents(public_path() . $image_name, $data);
+                        $img->removeAttribute('src');
+                        $newImageUrl = asset($image_name);
+                        $img->setAttribute('src', $newImageUrl);
+                    }
+                }
+                $detail = $de_th->saveHTML();
+            }
+
+            $act->detail = $detail;
         }
 
         $act->user_id = $loginId;
         $act->save();
 
 
-        return redirect()->route('activiList', [$department_id,'category_id' => $act->category_id])->with('message', 'Success Acti');
+        return redirect()->route('activiList', [$department_id, 'category_id' => $act->category_id])->with('message', 'Success Acti');
     }
 
     public function changeStatus(Request $request)

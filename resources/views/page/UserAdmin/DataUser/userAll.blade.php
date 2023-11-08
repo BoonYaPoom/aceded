@@ -73,30 +73,3 @@
     </td>
 </tr><!-- /tr -->
 
-<script>
-    // เมื่อตัวเลือกถูกเลือก
-    document.querySelectorAll('input[name="user_role"]').forEach(function(radio) {
-        radio.addEventListener('change', function() {
-            // รับค่าของตัวเลือกที่ถูกเลือก
-            var selecteduser_role = document.querySelector('input[name="user_role"]:checked').value;
-            // ดำเนินการตามต้องการสำหรับตัวเลือกที่ถูกเลือก
-            console.log('ตัวเลือกที่ถูกเลือก:', selecteduser_role);
-
-        });
-    });
-    $(function() {
-        $(".visual-picker").click(function() {
-            var radioBtn = $(this).find("input[type='radio']");
-            radioBtn.prop('checked', true);
-
-        });
-        // ส่วนอื่น ๆ ของรหัส
-    });
-
-    function setuser_roleColor(user_role) {
-        var color = ['', 'info', 'danger', 'success', 'warning'];
-        $('#user_role' + user_role).prop("checked", true);
-        $('.user_roleactive').removeClass('bg-info bg-warning bg-danger bg-success');
-        $('.user_role' + user_role).removeClass('bg-muted').addClass('bg-' + color[user_role]);
-    }
-</script>
