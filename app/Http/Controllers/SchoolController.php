@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Department;
+use App\Models\Provinces;
 use App\Models\School;
 use App\Models\Users;
 use App\Models\UserSchool;
@@ -13,11 +14,39 @@ class SchoolController extends Controller
 {
     public function schoolManage()
     {
+        set_time_limit(0);
         $users = Users::all();
         $userschool = UserSchool::all();
         $school = School::all();
+
         return view('page.UserAdmin.group.umsschool.index', compact('users', 'school', 'userschool'));
     }
+    public function getSchools()
+    {
+        $schools = School::all();
+        $schoolsaa = [];
+        $userschool = UserSchool::all();
+        $i = 1;
+        foreach ($schools as $school) {
+            $proviUser = Provinces::where('code', $school->provinces_code)
+                ->pluck('name_in_thai')
+                ->first();
+            $userCount = $userschool->where('school_id', $school->school_id)->count();
+
+            $schoolsaa[] = [
+                'num' => $i++, 
+                'id' => $school->school_id,
+                'school_name' => $school->school_name,
+                'province_name' => $proviUser,
+                'userCount' => $userCount,
+
+            ];
+        }
+
+        return response()->json(['schoolsaa' => $schoolsaa]);
+    }
+
+
     public function create()
     {
         $depart = Department::all();
@@ -39,14 +68,14 @@ class SchoolController extends Controller
     {
         $school = School::findOrFail($school_id);
         $depart = Department::all();
-        return view('page.UserAdmin.group.umsschool.edit', ['school' => $school,'depart'=> $depart]);
+        return view('page.UserAdmin.group.umsschool.edit', ['school' => $school, 'depart' => $depart]);
     }
 
     public function update(Request $request, $school_id)
     {
         $school = School::findOrFail($school_id);
         $school->school_name = $request->school_name;
-        $school->provinces_id = $request->province_id;
+        $school->provinces_code = $request->code;
 
         $school->department_id = $request->department_id;
         $school->save();
@@ -58,7 +87,7 @@ class SchoolController extends Controller
         $school->delete();
 
 
-        return redirect()->back()->with('message', 'PersonType ลบข้อมูลสำเร็จ');
+        return redirect()->back()->with('message', 'school ลบข้อมูลสำเร็จ');
     }
     public function adduser($school_id)
     {

@@ -33,6 +33,7 @@ h2 {
 .wrapper {
     display: flex;
     align-items: center;
+    
     flex-direction: column;
     justify-content: center;
     width: 100%;
@@ -181,13 +182,13 @@ select.fadeIn {
     background-color: #f6f6f6;
     border: none;
     color: #0d0d0d;
-    padding: 15px 32px;
+    padding: 10px 26px;
     text-align: center;
     text-decoration: none;
     display: inline-block;
     font-size: 16px;
     margin: 5px;
-    width: 85%;
+    width: 60%;
     border: 2px solid #f6f6f6;
     -webkit-transition: all 0.5s ease-in-out;
     -moz-transition: all 0.5s ease-in-out;
@@ -196,6 +197,7 @@ select.fadeIn {
     transition: all 0.5s ease-in-out;
     -webkit-border-radius: 5px 5px 5px 5px;
     border-radius: 5px 5px 5px 5px;
+    
 }
 
 select.fadeIn:focus {
@@ -206,33 +208,7 @@ select.fadeIn:focus {
 select.fadeIn::placeholder {
     color: #cccccc;
 }
-select.fadeIn option {
-    background-color: #f6f6f6;
-    color: #0d0d0d;
-    padding: 15px 32px;
-    text-align: center;
-    font-size: 16px;
-    
-    border: 2px solid #f6f6f6;
-    -webkit-transition: all 0.5s ease-in-out;
-    -moz-transition: all 0.5s ease-in-out;
-    -ms-transition: all 0.5s ease-in-out;
-    -o-transition: all 0.5s ease-in-out;
-    transition: all 0.5s ease-in-out;
-}
 
-select.fadeIn option:focus {
-    background-color: #fff;
-    border: 2px solid #5fbae9;
-
-}
-
-select.fadeIn option::placeholder {
-    color: #cccccc;
-}
-select.fadeIn option:first-child {
-    text-align: center;
-}
 .inputfile {
     width: 0.1px;
     height: 0.1px;

@@ -24,16 +24,16 @@
                                 placeholder="สถานศึกษา" required="" value="{{ $school->school_name }}">
                         </div><!-- /.form-group -->
                         <div class="form-group">
-                            <label for="province_id" class="col-md-1">จังหวัด </label>
+                            <label for="code" class="col-md-1">จังหวัด </label>
                             <span class="badge badge-warning">Required</span></label>
-                            <select id="province_id" name="province_id" class="form-control form-control-sm"
+                            <select id="code" name="code" class="form-control form-control-sm"
                                 data-toggle="select2" data-allow-clear="false">
                                 <option value="0">โปรดเลือกจังหวัด</option>
                                 @php
                                     $Provinces = \App\Models\Provinces::all();
                                 @endphp
-                                @foreach ($Provinces as $provin)
-                                    <option value="{{ $provin->id }}"
+                                @foreach ($Provinces->sortBy('id') as $provin)
+                                    <option value="{{ $provin->code }}"
                                         {{ $school->provinces_id == $provin->id ? 'selected' : '0' }}>
                                         {{ $provin->name_in_thai }} </option>
                                 @endforeach
@@ -46,7 +46,7 @@
                                 data-toggle="select2" data-allow-clear="false">
                                 <option value="0">โปรดเลือกหน่วยงาน</option>
                        
-                                @foreach ($depart as $depa)
+                                @foreach ($depart->sortBy('department_id') as $depa)
                                     <option value="{{ $depa->department_id }}"   {{ $school->department_id == $depa->department_id ? 'selected' : '0' }}>
                                         {{ $depa->name_th }} </option>
                                 @endforeach

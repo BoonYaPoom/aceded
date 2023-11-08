@@ -20,6 +20,11 @@
                                 : '' }}"
                                 href="{{ route('UserManage') }}"><span class="menu-icon fas fa-users-cog  "></span>
                                 จัดการผู้ใช้</a>
+                                <a class="nav-link  font-weight-bold {{ Str::startsWith(request()->url(), route('UserManage')) || request()->is('ums', 'ums/*')
+                                    ? ' active text-info'
+                                    : '' }}"
+                                    href="{{ route('UserManage') }}"><span class="menu-icon fas fa-users-cog  "></span>
+                                    คำขอสมัคร Admin </a>
                         @endif
                         <!-- End Account Sidebar Toggle Button -->
                         </li>

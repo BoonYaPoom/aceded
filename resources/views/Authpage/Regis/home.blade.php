@@ -149,18 +149,44 @@ try {
             @csrf
 
             <h3>จังหวัด</h3>
-            <select class="fadeIn third" name="province_id" id="province_id" p>
+            <select class="fadeIn third" name="province_id" id="province_id">
                 <option value="" selected disabled>เลือกจังหวัด</option>
-
+                @foreach ($provinces->sortBy('id') as $pro)
+                    <option value="{{$pro->code}}">{{$pro->name_in_thai}}</option>
+                @endforeach
             </select>
+            
+            
             <br>
             <br>
 
             <h3>โรงเรียนสถานศึกษา</h3>
-            <select class="fadeIn third" name="school_id" id="school_id" p>
+            <select class="fadeIn third" name="school_id" id="school_id">
                 <option value="" selected disabled>เลือกสถานศึกษา</option>
-                
             </select>
+            <script>
+                document.getElementById('province_id').addEventListener('change', function () {
+                    // รหัสจังหวัดที่เลือก
+                    var selectedProvinceCode = this.value;
+            
+                    // เลือกรายการ "เลือกสถานศึกษา"
+                    var schoolSelect = document.getElementById('school_id');
+                    
+                    // ล้างรายการเดิม
+                    schoolSelect.innerHTML = '<option value="" selected disabled>เลือกสถานศึกษา</option>';
+                    
+                    // เลือกรายการโรงเรียนที่มีรหัสจังหวัดที่ตรงกัน
+                    @foreach ($school as $schoolItem)
+                        if ("{{ $schoolItem->provinces_code }}" === selectedProvinceCode) {
+                            var option = document.createElement('option');
+                            option.value = "{{ $schoolItem->school_id }}";
+                            option.textContent = "{{ $schoolItem->school_name }}";
+                            schoolSelect.appendChild(option);
+                        }
+                    @endforeach
+                });
+            </script>
+
             <br>
             <br>
 

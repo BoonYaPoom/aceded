@@ -572,8 +572,9 @@ Route::group(['middleware' => 'IsLoggedIn'], function () {
                 Route::post('/get-user-data', [ReportAllController::class, 'getUserData'])->name('get-Uata');
             });
 
-
-
+            Route::prefix('dataall')->group(function () {
+                Route::get('/getSchools', [SchoolController::class, 'getSchools'])->name('getSchools');
+            });
             
             Route::prefix('info')->group(function () {
                 Route::post('UsersDepartAllImport/{department_id}', [ExcelController::class, 'UsersDepartAllImport'])->name('UsersDepartAllImport');

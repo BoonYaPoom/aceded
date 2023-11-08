@@ -27,14 +27,14 @@
                         href="{{ route('schoolManage') }}">จัดการสถานศึกษา</a></div>
                 <!-- .card-body -->
                 <div class="card-body">
-                   
-              
-                   
+
+
+
                     <!-- .table-responsive -->
                     <div class="table-responsive">
                         <!-- .table -->
                         <table id="datatable" class="table w3-hoverable">
-                            
+
                             <div class="dataTables_filter text-right">
                                 <label>ค้นหา
                                     <input type="search" id="myInput" class="form-control" placeholder=""
@@ -47,12 +47,13 @@
                                             $Provinces = \App\Models\Provinces::all();
                                         @endphp
                                         @foreach ($Provinces as $provin)
-                                            <option value="{{ $provin->name_in_thai }}"> {{ $provin->name_in_thai }} </option>
+                                            <option value="{{ $provin->name_in_thai }}"> {{ $provin->name_in_thai }}
+                                            </option>
                                         @endforeach
                                     </select>
                                 </label>
                             </div>
-                            
+
                             <!-- thead -->
                             <thead>
                                 <tr class="bg-infohead">
@@ -64,80 +65,99 @@
                                     <th width="12%" class="text-center">กระทำ</th>
                                 </tr>
                             </thead>
-                            <!-- /thead -->
-                            <!-- tbody -->
-                            <tbody>
-                                @php
-                                    $i = 1 ;
-                             
-                                @endphp
-                                @foreach ($school as $scho)
-                                @php
-                                           $proviUser = \App\Models\Provinces::where('id', $scho->provinces_id)
-                                            ->pluck('name_in_thai')
-                                            ->first();
-                                @endphp
-                                    <tr>
-                                        <td>{{ $i ++ }}</td>
-                                        <td>{{ $scho->school_name }}</td>
-                                        <td>{{ $proviUser }}</td>
-                                        <td class="text-center"><a href="{{ route('umsschooluser', ['school_id' => $scho->school_id]) }}"><i class="fas fa-users"></i> (
-                                                {{ $userschool->where('school_id', $scho->school_id)->count() }}
-                                                )
-                                            </a></td>
-                                        <td class="text-center"><a href="{{ route('umsschooluser', ['school_id' => $scho->school_id]) }}"><i class="fas fa-user-plus"></i></a></td>
-                                        <td class="text-center">
-                                            <a href="{{ route('editschool', ['school_id' => $scho->school_id]) }}"
-                                                data-toggle="tooltip" title="แก้ไข"><i
-                                                    class="far fa-edit fa-lg text-success mr-3"></i></a>
-                                            <a href="{{ route('deleteschool', ['school_id' => $scho->school_id]) }}"
-                                                onclick="deleteRecord(event)" rel="" class="switcher-delete"
-                                                data-toggle="tooltip" title="ลบ">
-                                                <i class="fas fa-trash-alt fa-lg text-warning "></i></a>
-                                        </td>
-                                        
-                                    </tr><!-- /tr -->
-                                @endforeach
-
-
-                                <!-- tr -->
-                                <script>
-                                    $(document).ready(function() {
-                                        var table = $('#datatable').DataTable({
-
-                                            lengthChange: false,
-                                            responsive: true,
-                                            info: false,
-
-                                            language: {
-
-                                                infoEmpty: "ไม่พบรายการ",
-                                                infoFiltered: "(ค้นหาจากทั้งหมด _MAX_ รายการ)",
-                                                paginate: {
-                                                    first: "หน้าแรก",
-                                                    last: "หน้าสุดท้าย",
-                                                    previous: "ก่อนหน้า",
-                                                    next: "ถัดไป" // ปิดการแสดงหน้าของ DataTables
+                            <script>
+                                $(document).ready(function() {
+                                    var table = $('#datatable').DataTable({
+                                        ajax: {
+                                            url: '{{ route('getSchools') }}',
+                                            dataSrc: 'schoolsaa',
+                                        },
+                                        columns: [{
+                                                data: 'num'
+                                            }, // Replace with your actual column name
+                                            {
+                                                data: 'school_name'
+                                            }, // Replace with your actual column name
+                                            {
+                                                data: 'province_name'
+                                            },
+                                            {
+                                                data: 'userCount',
+                                                render: function(data, type, row) {
+                                                    
+                                                    var link = '<i class="fas fa-users"></i> (' + data + ')';
+                                                    return link;
                                                 }
-                                            }
+                                            },
+                                            {
+                                                data: null,
+                                                render: function(data, type, row) {
 
-                                        });
-                                        $('#drop2').on('change', function() {
-                                            var selecteddrop2Id = $(this).val();
-                                            if (selecteddrop2Id == 0) {
-                                                table.columns(2).search('').draw();
-                                            } else {
-                                                // กรองข้อมูลใน DataTables ด้วยหน่วยงานที่เลือก
-                                                table.columns(2).search(selecteddrop2Id).draw();
+                                                    var schoolId = data.id;
+                                                    var url = "{{ route('umsschooluser', ['school_id' => 'schoolId']) }}";
+                                                    url = url.replace('schoolId', schoolId);
+
+                                                    var link = '<a href="' + url + '"><i class="fas fa-user-plus"></i></a>';
+                                                    return link;
+                                                },
+                                            },
+                                            {
+                                                data: null,
+                                                render: function(data, type, row) {
+
+                                                    var schoolId = data.id;
+
+                                                    var deleteschool =
+                                                        "{{ route('deleteschool', ['school_id' => 'schoolId']) }}";
+                                                    deleteschool = deleteschool.replace('schoolId', schoolId);
+
+                                                    var editschool =
+                                                        "{{ route('editschool', ['school_id' => 'schoolId']) }}";
+                                                    editschool = editschool.replace('schoolId', schoolId);
+
+                                                    var linkb = '<a href="' + editschool +
+                                                        '" data-toggle="tooltip" title="แก้ไข"><i class="far fa-edit fa-lg text-success mr-3"></i></a>';
+                                                    var linkc = '<a href="' + deleteschool +
+                                                        '" onclick="deleteRecord(event)" rel="" class="switcher-delete" data-toggle="tooltip" title="ลบ"><i class="fas fa-trash-alt fa-lg text-warning"></i></a>';
+                                                    return linkb + linkc;
+
+                                                },
+
+                                            },
+                                        ],
+
+                                        lengthChange: false,
+                                        responsive: true,
+                                        info: false,
+                                        pageLength: 20,
+                                        language: {
+
+                                            infoEmpty: "ไม่พบรายการ",
+                                            infoFiltered: "(ค้นหาจากทั้งหมด _MAX_ รายการ)",
+                                            paginate: {
+                                                first: "หน้าแรก",
+                                                last: "หน้าสุดท้าย",
+                                                previous: "ก่อนหน้า",
+                                                next: "ถัดไป" // ปิดการแสดงหน้าของ DataTables
                                             }
-                                        });
-                                        $('#myInput').on('keyup', function() {
-                                            table.search(this.value).draw();
-                                        });
+                                        }
+
                                     });
-                                </script>
+                                    $('#drop2').on('change', function() {
+                                        var selecteddrop2Id = $(this).val();
+                                        if (selecteddrop2Id == 0) {
+                                            table.columns(2).search('').draw();
+                                        } else {
+                                            // กรองข้อมูลใน DataTables ด้วยหน่วยงานที่เลือก
+                                            table.columns(2).search(selecteddrop2Id).draw();
+                                        }
+                                    });
+                                    $('#myInput').on('keyup', function() {
+                                        table.search(this.value).draw();
+                                    });
+                                });
+                            </script>
 
-                            </tbody><!-- /tbody -->
                         </table><!-- /.table -->
                     </div><!-- /.table-responsive -->
                     <input type="hidden" id="useruser_role" name="useruser_role">
