@@ -76,7 +76,7 @@
 
                     <div class="col-md-6 mb-3">
                         <label for="department_id" class="col-md-3 text-left mt-1">หน่วยงาน</label>
-                        <select id="department_id" name="department_id" class="form-control form-control-sm"
+                        <select id="department_id" name="department_id" class="form-control"
                             data-allow-clear="false">
                             <option value="0"selected>ทั้งหมด</option>
 
@@ -91,7 +91,7 @@
 
                     <div class="col-md-6 mb-3">
                         <label for="drop2" class="col-md-3 text-right mt-1">จังหวัด</label>
-                        <select id="drop2" name="drop2" class="form-control form-control-sm" data-allow-clear="false">
+                        <select id="drop2" name="drop2" class="form-control" data-allow-clear="false">
                             <option value="0"selected>ทั้งหมด</option>
                             @php
                                 $Provinces = \App\Models\Provinces::all();

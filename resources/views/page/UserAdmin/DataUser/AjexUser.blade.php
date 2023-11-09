@@ -57,7 +57,7 @@
                         var userRole = data.user_role;
                         var user_id = data.id;
                         // ในสคริปต์ Blade คุณสามารถรับค่า user_role จาก Laravel
-                        var user_dataValue = {!! json_encode($data->user_role) !!};
+                        var user_dataLogin = {!! json_encode($data->user_role) !!};
                         
                         // กำหนด route และ id 
                         var logusers = "{{ route('logusers', ['user_id' => 'user_id']) }}";
@@ -92,7 +92,7 @@
 
                         // ตรวจสอบเงื่อนไข
                         if (row.user_role == 1 || row.user_role == 8) {
-                            return Admina + (user_dataValue == 1 || user_dataValue == 8 ?
+                            return Admina + (user_dataLogin == 1 || user_dataLogin == 8 ?
                                 linkedituser : '');
                         } else {
                             return linkedituser + linklogusers + modelPass + modelRole +
@@ -107,6 +107,7 @@
             pageLength: 50,
             scrollY: '100%',
             language: {
+                zeroRecords: "ไม่พบข้อมูลที่ต้องการ",
                 info: "ลำดับที่ _START_ ถึง _END_ จากทั้งหมด _TOTAL_ รายการ",
                 infoEmpty: "ไม่พบรายการ",
                 infoFiltered: "(ค้นหาจากทั้งหมด _MAX_ รายการ)",

@@ -30,7 +30,7 @@
                 $.ajax({
                     type: "GET",
                     dataType: "json",
-                    url: '{{ route('changeStatusUser') }}',
+                    url: '{{ route('changeStatusUser', ['user_id' => $item ]) }}',
                     data: {
                         'userstatus': userstatus,
                         'user_id': user_id

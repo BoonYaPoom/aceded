@@ -43,6 +43,7 @@ use App\Http\Controllers\RolemanageController;
 use App\Http\Controllers\SchoolController;
 use App\Http\Controllers\SchoolDepartController;
 use App\Http\Controllers\ScoreController;
+use App\Http\Controllers\SubmitController;
 use App\Http\Controllers\SurResponseController;
 use App\Http\Controllers\SurveyController;
 use App\Http\Controllers\SurveyQuestionController;
@@ -78,6 +79,7 @@ Route::get('/exportSubject', [ExcelController::class, 'exportSubject'])->name('e
 
 Route::get('/QuestionExport', [ExcelController::class, 'questionExport'])->name('questionExport');
 Route::post('/importall', [ExcelController::class, 'importall'])->name('importall');
+Route::post('/storeregis', [SubmitController::class, 'store'])->name('storeregisRequest');
 
 Route::group(['middleware' => ['web', 'App\Http\Middleware\ClearOptimizeCacheMiddleware']], function () {
 
@@ -463,11 +465,10 @@ Route::group(['middleware' => 'IsLoggedIn'], function () {
                     Route::get('{department_id}/umslogsuser/{user_id}', [UserLogController::class, 'logusersDP'])->name('logusersDP');
                     Route::get('{department_id}/umsschooluserdepart/{school_id}', [SchoolDepartController::class, 'adduser'])->name('umsschooluserDepart');
                     Route::post('{department_id}/{school_id}/saveSelectedSchooldepart_umsschoolform', [SchoolDepartController::class, 'saveSelectedSchool'])->name('saveSelectedSchoolDepart');
-                    
+
                     Route::get('{department_id}/DPSchoolcreateUser_umsschoolform/{school_id}', [DepartUsersController::class, 'DPSchoolcreateUser'])->name('DPSchoolcreateUser');
                     Route::post('{department_id}/{school_id}/DPSchoolstoreUser_umsschoolform', [DepartUsersController::class, 'DPSchoolstoreUser'])->name('DPSchoolstoreUser');
-                  
-                 });
+                });
                 Route::get('{department_id}/homeDepart', [DepartReportController::class, 'DepartReportview'])->name('DepartReportview');
                 Route::prefix('homeDepart')->group(function () {
 
@@ -549,7 +550,7 @@ Route::group(['middleware' => 'IsLoggedIn'], function () {
                 Route::get('/home/dashboard', [ReportAllController::class, 'ReportB'])->name('dashboard');
                 Route::get('/home/table', [ReportAllController::class, 'ReportC'])->name('table');
                 Route::get('/autocomplete-search', [DepartUsersController::class, 'autoschool'])->name('DPautocompleteSearch');
-               
+
 
                 Route::get('/home/T0101', [ReportAllController::class, 'ReportUserAuth'])->name('ReportUserAuth');
                 Route::get('/home/T0108', [ReportAllController::class, 'trainUserAuth'])->name('trainUserAuth');
@@ -573,8 +574,16 @@ Route::group(['middleware' => 'IsLoggedIn'], function () {
                 Route::get('/home/T0125', [ReportAllController::class, 't0125'])->name('t0125');
                 Route::post('/get-user-data', [ReportAllController::class, 'getUserData'])->name('get-Uata');
             });
+
+
             Route::get('/getSchools', [SchoolController::class, 'getSchools'])->name('getSchools');
-     
+            Route::get('/rad', [SubmitController::class, 'requestSchool'])->name('requestSchool');
+            Route::prefix('rad')->group(function () {
+                
+                Route::get('/requestSchooldataJson', [SubmitController::class, 'requestSchooldataJson'])->name('requestSchooldataJson');
+                Route::get('/detaildata/{submit_id}', [SubmitController::class, 'detaildata'])->name('detaildata');
+                Route::put('/storeAdmin/{submit_id}', [SubmitController::class, 'storeAdmin'])->name('storeAdmin');
+            });
             Route::prefix('info')->group(function () {
                 Route::post('UsersDepartAllImport/{department_id}', [ExcelController::class, 'UsersDepartAllImport'])->name('UsersDepartAllImport');
                 Route::post('UsersDepartImport/{department_id}', [ExcelController::class, 'UsersDepartImport'])->name('UsersDepartImport');

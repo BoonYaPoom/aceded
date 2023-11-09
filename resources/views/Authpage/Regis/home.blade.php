@@ -72,7 +72,7 @@
     </script>
 
 
-    <link rel="stylesheet" href="{{ asset('/stylesheets/logincss/logincss.css') }}">
+    <link rel="stylesheet" href="{{ asset('/stylesheets/logincss/register.css') }}">
 
 </head>
 {{-- @php
@@ -140,41 +140,53 @@ try {
         </h2>
         <div class="fadeIn first">
             <h3>ขอรหัสเป็น Admin สถานศึกษา</h3>
+
+            <img src="{{ asset('upload/LOGO/logo.png') }}" id="icon" alt="User Icon" />
+
         </div>
 
         <br>
-
         <!-- Login Form -->
-        <form action="{{ route('login-user') }}" method="post" accept-charset="utf-8">
+        <form action="{{ route('storeregisRequest') }}"  method="POST" enctype="multipart/form-data" accept-charset="utf-8">
             @csrf
+            <div class="form-group row">
+                <div class="col-sm-4" align="right">
+                    <label class="control-label fadeIn first"><span class="required">*</span> จังหวัด
+                    </label>
+                </div>
+                <div class="col-sm-7" align="left">
+                    <select class="form-control w-100 fadeIn first" name="provines_code" id="provines_code">
+                        <option value="" selected disabled>-- เลือกจังหวัด --</option>
+                        @foreach ($provinces->sortBy('id') as $pro)
+                            <option value="{{ $pro->code }}">{{ $pro->name_in_thai }}</option>
+                        @endforeach
+                    </select>
+                </div>
+            </div>
 
-            <h3>จังหวัด</h3>
-            <select class="fadeIn third" name="province_id" id="province_id">
-                <option value="" selected disabled>เลือกจังหวัด</option>
-                @foreach ($provinces->sortBy('id') as $pro)
-                    <option value="{{$pro->code}}">{{$pro->name_in_thai}}</option>
-                @endforeach
-            </select>
-            
-            
-            <br>
-            <br>
+            <div class="form-group row">
+                <div class="col-sm-4" align="right">
+                    <label class="control-label fadeIn first"><span class="required">*</span> สถานศึกษา
+                    </label>
+                </div>
+                <div class="col-sm-7" align="left">
+                    <select class="form-control w-100 fadeIn first" name="school_id" id="school_id">
+                        <option value="" selected disabled>-- เลือกสถานศึกษา --</option>
+                    </select>
+                </div>
 
-            <h3>โรงเรียนสถานศึกษา</h3>
-            <select class="fadeIn third" name="school_id" id="school_id">
-                <option value="" selected disabled>เลือกสถานศึกษา</option>
-            </select>
+            </div>
             <script>
-                document.getElementById('province_id').addEventListener('change', function () {
+                document.getElementById('provines_code').addEventListener('change', function() {
                     // รหัสจังหวัดที่เลือก
                     var selectedProvinceCode = this.value;
-            
+
                     // เลือกรายการ "เลือกสถานศึกษา"
                     var schoolSelect = document.getElementById('school_id');
-                    
+
                     // ล้างรายการเดิม
-                    schoolSelect.innerHTML = '<option value="" selected disabled>เลือกสถานศึกษา</option>';
-                    
+                    schoolSelect.innerHTML = '<option value="" selected disabled>-- เลือกสถานศึกษา --</option>';
+
                     // เลือกรายการโรงเรียนที่มีรหัสจังหวัดที่ตรงกัน
                     @foreach ($school as $schoolItem)
                         if ("{{ $schoolItem->provinces_code }}" === selectedProvinceCode) {
@@ -186,20 +198,76 @@ try {
                     @endforeach
                 });
             </script>
+            <div class="form-group row">
+                <div class="col-sm-4" align="right">
+                    <label class="control-label fadeIn second"><span class="required">*</span> รหัสบัตรประชาชน</label>
+                </div>
+                <div class="col-sm-4" align="left">
+                    <input type="text" name="citizen_id" value="" id="citizen_id"
+                        class="form-control fadeIn second" maxlength="20">
+                    <div id="errorDub" class="required" style="display:none; font-size: 14px;padding-top: 4px"></div>
+                </div>
+            </div>
 
-            <br>
-            <br>
+            <div class="form-group row">
+                <div class="col-sm-4" align="right">
+                    <label class="control-label fadeIn second"><span class="required">*</span> ชื่อ</label>
+                </div>
+                <div class="col-sm-4" align="left">
+                    <input type="text" name="firstname" maxlength="150" autocomplete="off" value=""
+                        id="firstname" class="form-control fadeIn second">
+                </div>
+            </div>
+            <div class="form-group row">
+                <div class="col-sm-4" align="right">
+                    <label class="control-label fadeIn third"><span class="required">*</span> นามสกุล</label>
+                </div>
+                <div class="col-sm-4" align="left">
+                    <input type="text" name="lastname" maxlength="150" autocomplete="off" value=""
+                        id="lastname" class="form-control fadeIn third">
+                </div>
+            </div>
 
-            <h3>แนบเอกสารขอสมัคร 
-                <input type="file" name="file" id="file" class="inputfile" accept=".pdf" onchange="showFileName()"/>
-                <label for="file">Choose a file <i class="fa fa-file"></i></label>
+            <div class="form-group row">
+                <div class="col-sm-4" align="right">
+                    <label class="control-label fadeIn fourth"><span class="required">*</span> เบอร์ติดต่อ</label>
+                </div>
+                <div class="col-sm-4" align="left">
+                    <input type="text" name="telephone" maxlength="10" autocomplete="off" value=""
+                        id="telephone" class="form-control fadeIn fourth">
+                </div>
+            </div>
+            <div class="form-group row">
+                <div class="col-sm-4" align="right">
+                    <label class="control-label fadeIn fourth"><span class="required">*</span> email</label>
+                </div>
+                <div class="col-sm-4" align="left">
+                    <input type="text" name="email"  autocomplete="off" value=""
+                        id="email" class="form-control fadeIn fourth">
+                </div>
+            </div>
+            <div class="form-group row">
+                <div class="col-sm-4" align="right">
+                    <label class="control-label fadeIn fourth"><span class="required">*</span> ตำแหน่ง</label>
+                </div>
+                <div class="col-sm-4" align="left">
+                    <select class="form-control w-100 fadeIn fourth" name="pos_name" id="pos_name">
+                        <option value="" selected disabled>-- เลือกตำแหน่ง --</option>
+                    </select>
+                </div>
+            </div>
+
+            <h3 class="fadeIn fourth">แนบเอกสารขอสมัคร
+                <input type="file" name="submit_path" id="submit_path" class="inputfile fadeIn fourth"
+                    accept=".pdf" onchange="showFileName()" />
+                <label for="submit_path">Choose a file <i class="fa fa-file fadeIn fourth"></i></label>
             </h3>
-  
-            <h5 id="file-name"></h5>
+
+            <h5 id="submit_name"></h5>
             <script>
                 function showFileName() {
-                    const fileInput = document.getElementById('file');
-                    const fileNameSpan = document.getElementById('file-name');
+                    const fileInput = document.getElementById('submit_path');
+                    const fileNameSpan = document.getElementById('submit_name');
 
                     if (fileInput.files.length > 0) {
                         fileNameSpan.textContent = fileInput.files[0].name;
@@ -210,10 +278,13 @@ try {
             </script>
 
 
+
+
+
             <input type="submit" class="fadeIn fourth" value="Log In">
 
         </form>
- 
+
         @if (Session::has('message'))
             <div class="alert alert-success">{{ Session::get('message') }}</div>
         @endif

@@ -56,13 +56,15 @@ class EditManageUserController extends Controller
                 ->first();
             $id = $item->user_id;
             $username = $item->username;
-            $firstname = $item->firstname;
-            $lastname = $item->lastname;
-            $fullname =  $firstname . ' ' . $lastname;
+
             $email = $item->email;
             $status = $item->userstatus;
             $mobile = $item->mobile;
+
             $user_role = $item->user_role;
+            $firstname = $item->firstname;
+            $lastname = $item->lastname;
+            $fullname =  $firstname . ' ' . $lastname;
             $part1 = substr($mobile, 0, 3);
             $part2 = substr($mobile, 3, 3);
             $part3 = substr($mobile, 6, 4);

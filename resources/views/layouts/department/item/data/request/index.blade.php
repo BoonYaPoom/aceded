@@ -1,156 +1,171 @@
-@extends('layouts.department.layout.departmenthome')
-@section('contentdepartment')
-@if (Session::has('message'))
-<script>
-    toastr.options = {
-        "progressBar": true,
-        "positionClass": 'toast-top-full-width',
-        "extendedTimeOut ": 0,
-        "timeOut": 3000,
-        "fadeOut": 250,
-        "fadeIn": 250,
-        "positionClass": 'toast-top-right',
+@extends('layouts.adminhome')
+@section('content')
+    @if (Session::has('message'))
+        <script>
+            toastr.options = {
+                "progressBar": true,
+                "positionClass": 'toast-top-full-width',
+                "extendedTimeOut ": 0,
+                "timeOut": 3000,
+                "fadeOut": 250,
+                "fadeIn": 250,
+                "positionClass": 'toast-top-right',
 
 
-    }
-    toastr.success("{{ Session::get('message') }}");
-</script>
-@endif
+            }
+            toastr.success("{{ Session::get('message') }}");
+        </script>
+    @endif
+
     <div class="page-inner">
-        <!-- .page-section -->
         <div class="page-section">
-            <!-- .card -->
             <div class="card card-fluid">
-                <!-- .card-header -->
-                <div class="card-header bg-muted"><a
-                        href="{{ route('DPUserManage', ['department_id' => $depart->department_id]) }}">ผู้ใช้งาน</a>/ <a
-                        href="{{ route('schoolManageDepart', ['department_id' => $depart->department_id]) }}">จัดการสถานศึกษา</a>/
-                    {{ $school->school_name }}</div>
-                <!-- .card-body -->
+                <div class="card-header bg-muted">คำขอสมัคร Admin</div>
                 <div class="card-body">
-                    <div class="form-actions ">
-                        <button class="btn btn-lg btn-icon btn-light ml-auto d-none" type="button" id="btnsearch"><i
-                                class="fas fa-search"></i></button>
-                    </div>
-                    <form action="" enctype="multipart/form-data" method="post" accept-charset="utf-8">
-                        <input type="hidden" name="__csrf_token_name" value="ea0b9ce804a7987cdcdf2cd0892f78be" />
-                        <!-- form row -->
-
-                        <!-- /form row -->
-                    </form>
                     <!-- .table-responsive -->
+
+
                     <div class="table-responsive">
-                        <!-- .table -->
+                        <div class="dataTables_filter text-right">
+                            <label>ค้นหา
+                                <input type="search" id="myInput" class="form-control" placeholder=""
+                                    aria-controls="datatable">
+                            </label>
+                            @if ($data->user_role == 1 || $data->user_role == 8)
+                                <label>จังหวัด
+                                    <select id="provines_code" name="provines_code" class="form-control "
+                                        data-allow-clear="false">
+                                        <option value="0"selected>ทั้งหมด</option>
+                                        @php
+                                            $Provinces = \App\Models\Provinces::all();
+                                        @endphp
+                                        @foreach ($Provinces as $provin)
+                                            <option value="{{ $provin->name_in_thai }}"> {{ $provin->name_in_thai }}
+                                            </option>
+                                        @endforeach
+                                    </select>
 
+                                </label>
+                            @endif
+                        </div>
                         <table id="datatable" class="table w3-hoverable">
-
-                            <div class="dataTables_filter">
-                                <div class="d-flex justify-content-between align-items-center">
-                                    <div>
-                                        <button type="button" class="btn btn-success btn-md" onclick="$('#clientUploadModal').modal('toggle');">
-                                            <i class="fas fa-user-plus"></i> นำเข้าผู้ใช้งาน
-                                        </button>
-                                    </div>
-                                    <div>
-                                        <label>ค้นหา
-                                            <input type="search" id="myInput" class="form-control" placeholder="" aria-controls="datatable">
-                                        </label>
-                                    </div>
-                                </div>
-                            </div>
-                            
-                            <!-- thead -->
                             <thead>
                                 <tr class="bg-infohead">
-                                    <th width="5%">ลำดับ </th>
-                                    <th width="20%">รหัสผู้ใช้</th>
-                                    <th>ชื่อ สกุล</th>
-                                    <th width="20%">กลุ่มผู้ใช้งาน </th>
-
+                                    <th class="text-center" width="5%"> รหัส </th>
+                                    <th class="text-center" width="10%"> ชื่อผู้ขอ </th>
+                                    <th class="text-center" width="15%"> โรงเรียน </th>
+                                    <th class="text-center" width="10%"> จังหวัด </th>
+                                    <th class="text-center" width="10%"> วันที่ขอ </th>
+                                    <th class="text-center" width="10%"> วันที่ยืนยัน </th>
+                                    <th class="text-center" width="10%"> กระทำ </th>
                                 </tr>
                             </thead>
-                            <!-- /thead -->
-                            <!-- tbody -->
-                            <tbody>
-                                @include('layouts.department.item.data.UserAdmin.group.umsschool.item.viewuser')
-                            </tbody><!-- /tbody -->
 
+                            <script>
+                                $(document).ready(function() {
+                                    var table = $('#datatable').DataTable({
+                                        ajax: {
+                                            url: '{{ route('requestSchooldataJson') }}',
+                                            dataSrc: 'mitdata',
+                                        },
+                                        columns: [{
+                                                data: 'num',
+                                                className: 'text-center'
+                                            },
+                                            {
+                                                data: 'fullname',
+
+                                            },
+                                            {
+                                                data: 'school',
+
+                                            },
+                                            {
+                                                data: 'proviUser',
+
+                                            },
+                                            {
+                                                data: 'startdate',
+
+                                            },
+                                            {
+                                                data: 'enddate',
+
+                                            },
+                                            {
+                                                data: null,
+                                                className: 'text-center',
+                                                render: function(data, type, row) {
+                                                    var submit_id = data.submit_id;
+                                                    var detaildata =
+                                                        "{{ route('detaildata', ['submit_id' => 'submit_id']) }}";
+                                                    detaildata = detaildata.replace('submit_id', submit_id);
+                                                    var storeAdmin =
+                                                        "{{ route('storeAdmin', ['submit_id' => 'submit_id']) }}";
+                                                    storeAdmin = storeAdmin.replace('submit_id', submit_id);
+                                                    var linkedata =
+                                                        '<a href="' + detaildata +
+                                                        '" data-toggle="tooltip" title="ดูประวัติ"><i class="far fa-address-book text-info  mr-1 fa-lg "></i></a>';
+
+                                                    var linkdelete =
+                                                        '<a href="" onclick="deleteRecord(event)" rel="" class="switcher-delete" data-toggle="tooltip" title="ลบข้อมูล"><i class="fas fa-trash-alt  text-warning mr-1 fa-lg "></i></a>';
+                                                    var linkPlus =
+                                                        '<a href="' + storeAdmin +
+                                                        '"  rel="" onclick="createRecord(event)" data-toggle="tooltip" title="กดยืนยัน"><i class="fas fa-plus text-success mr-1 fa-lg "></i></a>';
+
+                                                    return linkPlus + linkedata + linkdelete;
+
+                                                },
+                                            },
+                                        ],
+
+                                        lengthChange: false,
+                                        responsive: true,
+                                        info: true,
+                                        pageLength: 30,
+                                        scrollY: '100%',
+                                        language: {
+                                            zeroRecords: "ไม่พบข้อมูลที่ต้องการ",
+                                            info: "ลำดับที่ _START_ ถึง _END_ จากทั้งหมด _TOTAL_ รายการ",
+                                            infoEmpty: "ไม่พบข้อมูลที่ต้องการ",
+                                            infoFiltered: "(ค้นหาจากทั้งหมด _MAX_ รายการ)",
+                                            paginate: {
+                                                first: "หน้าแรก",
+                                                last: "หน้าสุดท้าย",
+                                                previous: "ก่อนหน้า",
+                                                next: "ถัดไป"
+                                            }
+                                        },
+
+                                    });
+                                    $('#provines_code').on('change', function() {
+                                        var selectedprovines_code = $(this).val();
+                                        if (selectedprovines_code == 0) {
+                                            table.columns(3).search('').draw();
+                                        } else {
+                                            // กรองข้อมูลใน DataTables ด้วยหน่วยงานที่เลือก
+                                            table.columns(3).search(selectedprovines_code).draw();
+                                        }
+                                    });
+                                    $('#myInput').on('keyup', function() {
+                                        var searchTerm = this.value;
+                                        table.columns().search('').draw(); // รีเซ็ตการค้นหาทั้งหมด
+                                        if (searchTerm !== '') {
+                                            table.columns(2).search(searchTerm, true, false).draw(); // ค้นหาเฉพาะในคอลัมน์ 'school'
+                                        }
+                                    });
+
+
+                                });
+                            </script>
 
 
                         </table><!-- /.table -->
-
-
                     </div><!-- /.table-responsive -->
-                    <hr>
-                    <!-- .table-responsive -->
-                    <form method="POST"
-                        action="{{ route('saveSelectedSchoolDepart', ['department_id' => $depart, 'school_id' => $school->school_id]) }}">
-                        @csrf
-
-                        <div class="table-responsive">
-                            <div class="input-group mb-3">
-                                <form action="" method="post" action="/admin/ums/umsgroupuser/1">
-                                    <input type="text" class="form-control" name="search" id="searchNa"
-                                        aria-describedby="search" placeholder="ค้นหาโดยการพิมพ์ ชื่อ สกุล " value="">
-
-                                </form>
-                            </div>
-                            @include('layouts.department.item.data.UserAdmin.group.umsschool.item.adduser')
-
-                        </div><!-- /.table-responsive -->
-                    </form>
-                    <!-- tr -->
                 </div><!-- /.card-body -->
             </div><!-- /.card -->
         </div><!-- /.page-section -->
+
         <!-- .page-title-bar -->
-        <header class="page-title-bar">
-
-            <button type="button" class="btn btn-success btn-floated btn-addums"
-                onclick="window.location='{{ route('DPSchoolcreateUser', ['department_id' => $depart, 'school_id' => $school->school_id]) }}'"
-                id="add_umsform" data-toggle="tooltip" title="เพิ่ม"><span class="fas fa-plus"></span></button>
-
-        </header>
     </div><!-- /.page-inner -->
-
-  
-    <div>
-
-        <script>
-            $(function() {
-                $("#checkall").click(function() {
-                    $('.custom-control-input').prop('checked', $(this).prop('checked'));
-                });
-
-            });
-        </script>
-        <script>
-            $(document).ready(function() {
-                var table = $('#datatable').DataTable({
-
-                    lengthChange: false,
-                    responsive: true,
-                    info: false,
-                    language: {
-
-                        infoEmpty: "ไม่พบรายการ",
-                        infoFiltered: "(ค้นหาจากทั้งหมด _MAX_ รายการ)",
-                        paginate: {
-                            first: "หน้าแรก",
-                            last: "หน้าสุดท้าย",
-                            previous: "ก่อนหน้า",
-                            next: "ถัดไป" // ปิดการแสดงหน้าของ DataTables
-                        }
-                    }
-
-                });
-
-                $('#myInput').on('keyup', function() {
-                    table.search(this.value).draw();
-                });
-
-
-            });
-        </script>
-     
-    @endsection
+@endsection
