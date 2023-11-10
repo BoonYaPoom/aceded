@@ -93,9 +93,9 @@
                                                 data: null,
                                                 render: function(data, type, row) {
 
-                                                    var schoolId = data.id;
-                                                    var url = "{{ route('umsschooluser', ['school_id' => 'schoolId']) }}";
-                                                    url = url.replace('schoolId', schoolId);
+                                                    var schoolcode = data.code;
+                                                    var url = "{{ route('umsschooluser', ['school_code' => 'schoolcode']) }}";
+                                                    url = url.replace('schoolcode', schoolcode);
 
                                                     var link = '<a href="' + url + '"><i class="fas fa-user-plus"></i></a>';
                                                     return link;
@@ -106,7 +106,7 @@
                                                 render: function(data, type, row) {
 
                                                     var schoolId = data.id;
-
+                                                
                                                     var deleteschool =
                                                         "{{ route('deleteschool', ['school_id' => 'schoolId']) }}";
                                                     deleteschool = deleteschool.replace('schoolId', schoolId);

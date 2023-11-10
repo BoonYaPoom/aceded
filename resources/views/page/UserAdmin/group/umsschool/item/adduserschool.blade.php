@@ -72,7 +72,7 @@
                     </div><!-- /.table-responsive -->
                     <hr>
                     <!-- .table-responsive -->
-                    <form method="POST" action="{{route('saveSelectedSchool',['school_id'=> $school->school_id])}}">
+                    <form method="POST" action="{{route('saveSelectedSchool',['school_code'=> $school->school_code])}}">
                         @csrf
 
                         <div class="table-responsive">

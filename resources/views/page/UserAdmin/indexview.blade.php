@@ -24,7 +24,7 @@
             <!-- .card -->
             <div class="card card-fluid">
                 <!-- .card-header -->
-                <div class="card-header bg-muted"> ผู้ใช้งาน</div>
+                <div class="card-header bg-muted"> ผู้ใช้งาน </div>
                 <!-- .card-body -->
                 <div class="card-body">
                     <form id="filterForm" action="{{ route('UserManagejson') }}" method="GET">

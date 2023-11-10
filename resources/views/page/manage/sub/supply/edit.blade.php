@@ -1,6 +1,6 @@
 @extends('layouts.department.layout.departmenthome')
 @section('contentdepartment')
-    <form action="{{ route('update_supplyform', [$depart,'supplymentary_id' => $supplys]) }}" method="post"
+    <form action="{{ route('update_supplyform', [$depart, 'supplymentary_id' => $supplys]) }}" method="post"
         enctype="multipart/form-data">
         @csrf
         @method('PUT')
@@ -11,10 +11,10 @@
                 <!-- .card -->
                 <div class="card card-fluid">
                     <!-- .card-header -->
-                    <div class="card-header bg-muted"><a href="{{ route('lessonpage', [$depart,$supplys->subject_id]) }}"
-                        style="text-decoration: underline;">หมวดหมู่</a> / <a
-                        href="{{ route('supplypage', [$depart,$supplys->subject_id]) }}"
-                        style="text-decoration: underline;">จัดการวิชา</a> </div><!-- /.card-header -->
+                    <div class="card-header bg-muted"><a href="{{ route('lessonpage', [$depart, $supplys->subject_id]) }}"
+                            style="text-decoration: underline;">หมวดหมู่</a> / <a
+                            href="{{ route('supplypage', [$depart, $supplys->subject_id]) }}"
+                            style="text-decoration: underline;">จัดการวิชา</a> </div><!-- /.card-header -->
                     <!-- .card-body -->
                     <div class="card-body">
                         <!-- .form-group -->
@@ -23,7 +23,7 @@
                             <label class="control-label" for="type">ชนิดสื่อ</label>
 
                             <select id="type" name="type" class="form-control" data-toggle="select2"
-                                data-placeholder="ชนิดสื่อ" data-allow-clear="false" >
+                                data-placeholder="ชนิดสื่อ" data-allow-clear="false">
                                 <option value="0">เลือกชนิดสื่อ</option>
                                 @foreach ($types as $type)
                                     <option value="{{ $type->supplymentary_type }}">{{ $type->content_th }}</option>
@@ -32,7 +32,7 @@
                         </div><!-- /.form-group -->
                         <script>
                             $(document).ready(function() {
-                                
+
                                 $('#type').change(function() {
                                     var selectedValue = $(this).val();
                                     // ซ่อนข้อมูลทั้งหมด
@@ -59,7 +59,7 @@
 
 
                                 });
-                                
+
                             });
                         </script>
 
@@ -93,8 +93,9 @@
                                 class="switcher-control switcher-control-success switcher-control-lg"><input type="checkbox"
                                     class="switcher-input" name="supplymentary_status" id="supplymentary_status"
                                     value="{{ $supplys->supplymentary_status }}">
-                                <span class="switcher-indicator"></span> <span class="switcher-label-on">ON</span> <span
-                                    class="switcher-label-off text-red">OFF</span></label>
+                                <span class="switcher-indicator"></span>
+                                <span class="switcher-label-on">ON</span> 
+                                <span class="switcher-label-off text-red">OFF</span></label>
                         </div><!-- /.form-group -->
 
                         <div id="data1" style="display:none;">
@@ -105,7 +106,7 @@
                                     accept=".pdf,.docx,.doc,.pptx,.ppt,.ppsx,.xls,.xlsx,image/x-png,image/gif,image/jpeg,video/mp4">
 
                             </div>
-                            
+
                         </div>
                         <input type="hidden" name="book_id" id="book_id" value="">
 
@@ -183,8 +184,8 @@
                             <!-- tbody -->
                             <tbody class="showbook">
                                 @php
-                                $BB = 1 ;
-                            @endphp
+                                    $BB = 1;
+                                @endphp
                                 @foreach ($books as $book)
                                     <tr>
                                         <td class="align-middle" style="width: 10%">{{ $BB++ }}</td>

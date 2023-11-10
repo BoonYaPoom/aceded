@@ -8,7 +8,7 @@
 				<!-- .card -->
           <div class="card card-fluid">
             <!-- .card-header -->
-              <div class="card-header bg-muted"><a href="{{ route('departmentLearnpage') }}">หน่วยงาน</a> / จัดการข้อมูลและความรู้</div>
+              <div class="card-header bg-muted"><a href="{{ route('departmentLearnpage') }}">หน่วยงาน</a> / จัดการข้อมูลและความรู้ ระดับ {{$depart->name_th}}</div>
                 <!-- .card-body -->
                   <div class="card-body">
                     <!-- .table-responsive -->

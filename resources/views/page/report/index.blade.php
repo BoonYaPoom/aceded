@@ -64,7 +64,7 @@
             <div class="card card-reflow">
                 <div class="card-body">
                     <button type="button" class="dropdown-toggle" id="sidebarToggle" aria-label="Toggle Sidebar">
-                        <span class="menu-icon fas fa-bars  "></span> รายงาน
+                        <span class="menu-icon fas fa-bars  "></span> รายงาน 
                     </button>
                     <div class="dropdown-content" id="sidebarDropdown">
                         <div class="card-body pb-1 ">

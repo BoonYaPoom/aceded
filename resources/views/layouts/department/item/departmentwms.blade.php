@@ -60,11 +60,11 @@
                                     @if ($userdepart && ($data->user_role == 6 || $data->user_role == 7 ) || ($data->user_role == 1 || $data->user_role == 8))
                                         <tr>
                                             <td><a
-                                                    href="{{ route('homede', ['department_id' => $depart->department_id]) }}">
+                                                    href="{{ route('manage', ['department_id' => $depart->department_id]) }}">
                                                     {{ $depart->name_short_en }}</a>
                                             </td>
                                             <td><a
-                                                    href="{{ route('homede', ['department_id' => $depart->department_id]) }}">
+                                                    href="{{ route('manage', ['department_id' => $depart->department_id]) }}">
                                                     {{ $depart->name_th }}</a>
                                             </td>
                                             <td class="align-middle">

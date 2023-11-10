@@ -136,7 +136,7 @@ try {
         </h2>
 
         <h2 class="active">
-            <a class="navbar-brand" href="{{ route('homeRegis') }}">Sign Up </a>
+            <a class="navbar-brand" href="{{ route('homeRegis') }}">Request</a>
         </h2>
         <div class="fadeIn first">
             <h3>ขอรหัสเป็น Admin สถานศึกษา</h3>

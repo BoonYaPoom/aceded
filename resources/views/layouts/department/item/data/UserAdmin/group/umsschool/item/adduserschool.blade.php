@@ -24,7 +24,7 @@
                 <!-- .card-header -->
                 <div class="card-header bg-muted"><a
                         href="{{ route('DPUserManage', ['department_id' => $depart->department_id]) }}">ผู้ใช้งาน</a>/ <a
-                        href="{{ route('schoolManageDepart', ['department_id' => $depart->department_id]) }}">จัดการสถานศึกษา</a>/
+                        href="{{ route('schoolManageDepart', ['department_id' => $depart->department_id]) }}">จัดการสถานศึกษาของ ระดับ {{$depart->name_th}}</a>/
                     {{ $school->school_name }}</div>
                 <!-- .card-body -->
                 <div class="card-body">
@@ -84,7 +84,7 @@
                     <hr>
                     <!-- .table-responsive -->
                     <form method="POST"
-                        action="{{ route('saveSelectedSchoolDepart', ['department_id' => $depart, 'school_id' => $school->school_id]) }}">
+                        action="{{ route('saveSelectedSchoolDepart', ['department_id' => $depart, 'school_code' => $school->school_code]) }}">
                         @csrf
 
                         <div class="table-responsive">
@@ -107,7 +107,7 @@
         <header class="page-title-bar">
 
             <button type="button" class="btn btn-success btn-floated btn-addums"
-                onclick="window.location='{{ route('DPSchoolcreateUser', ['department_id' => $depart, 'school_id' => $school->school_id]) }}'"
+                onclick="window.location='{{ route('DPSchoolcreateUser', ['department_id' => $depart, 'school_code' => $school->school_code]) }}'"
                 id="add_umsform" data-toggle="tooltip" title="เพิ่ม"><span class="fas fa-plus"></span></button>
 
         </header>

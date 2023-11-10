@@ -31,11 +31,12 @@ class SchoolController extends Controller
             $proviUser = Provinces::where('code', $school->provinces_code)
                 ->pluck('name_in_thai')
                 ->first();
-            $userCount = $userschool->where('school_id', $school->school_id)->count();
+            $userCount = $userschool->where('school_code', $school->school_code)->count();
 
             $schoolsaa[] = [
                 'num' => $i++, 
                 'id' => $school->school_id,
+                'code' => $school->school_code,
                 'school_name' => $school->school_name,
                 'province_name' => $proviUser,
                 'userCount' => $userCount,
@@ -89,24 +90,24 @@ class SchoolController extends Controller
 
         return redirect()->back()->with('message', 'school ลบข้อมูลสำเร็จ');
     }
-    public function adduser($school_id)
+    public function adduser($school_code)
     {
-        $school = School::findOrFail($school_id);
-        $userschool = $school->userScho()->where('school_id', $school_id)->get();
+        $school = School::findOrFail($school_code);
+        $userschool = $school->userScho()->where('school_code', $school->school_code)->get();
         $users = Users::all();
 
 
         return view('page.UserAdmin.group.umsschool.item.adduserschool', ['school' => $school, 'userschool' => $userschool, 'users' => $users]);
     }
 
-    public function saveSelectedSchool(Request $request, $school_id)
+    public function saveSelectedSchool(Request $request, $school_code)
 
     {
-
+        $school = School::findOrFail($school_code);
         $userDataString = $request->user_data;
         foreach ($userDataString as $userId) {
             DB::table('user_school')->insert([
-                'school_id' => $school_id,
+                'school_code' => $school->school_code,
                 'user_id' => $userId,
 
             ]);

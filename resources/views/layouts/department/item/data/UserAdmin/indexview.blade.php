@@ -23,7 +23,7 @@
             <!-- .card -->
             <div class="card card-fluid">
                 <!-- .card-header -->
-                <div class="card-header bg-muted"> ผู้ใช้งาน</div>
+                <div class="card-header bg-muted"> ผู้ใช้งาน ระดับ {{$depart->name_th}}</div>
                 <!-- .card-body -->
                 <div class="card-body">
                     <form id="filterForm" action="{{ route('DPUserManage', ['department_id' => $depart->department_id]) }}"

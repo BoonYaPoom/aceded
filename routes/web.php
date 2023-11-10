@@ -96,7 +96,7 @@ Route::group(['middleware' => ['web', 'App\Http\Middleware\ClearOptimizeCacheMid
     Route::post('/register-user', [CustomAuthController::class, 'registerUser'])->name('register-user');
     Route::post('/login-user', [CustomAuthController::class, 'loginUser'])->name('login-user');
 
-    Route::get('/home', [CustomAuthController::class, 'homeregis'])->name('homeRegis');
+    Route::get('/regisadmin', [CustomAuthController::class, 'homeregis'])->name('homeRegis');
 });
 
 // middleware Isloggedin ต้องสมัครก่อนถึงเข้าได้
@@ -463,11 +463,11 @@ Route::group(['middleware' => 'IsLoggedIn'], function () {
                     Route::put('{department_id}/{school_id}/update_umsschooldepartform', [SchoolDepartController::class, 'update'])->name('updateschoolDepart');
 
                     Route::get('{department_id}/umslogsuser/{user_id}', [UserLogController::class, 'logusersDP'])->name('logusersDP');
-                    Route::get('{department_id}/umsschooluserdepart/{school_id}', [SchoolDepartController::class, 'adduser'])->name('umsschooluserDepart');
-                    Route::post('{department_id}/{school_id}/saveSelectedSchooldepart_umsschoolform', [SchoolDepartController::class, 'saveSelectedSchool'])->name('saveSelectedSchoolDepart');
+                    Route::get('{department_id}/umsschooluserdepart/{school_code}', [SchoolDepartController::class, 'adduser'])->name('umsschooluserDepart');
+                    Route::post('{department_id}/{school_code}/saveSelectedSchooldepart_umsschoolform', [SchoolDepartController::class, 'saveSelectedSchool'])->name('saveSelectedSchoolDepart');
 
-                    Route::get('{department_id}/DPSchoolcreateUser_umsschoolform/{school_id}', [DepartUsersController::class, 'DPSchoolcreateUser'])->name('DPSchoolcreateUser');
-                    Route::post('{department_id}/{school_id}/DPSchoolstoreUser_umsschoolform', [DepartUsersController::class, 'DPSchoolstoreUser'])->name('DPSchoolstoreUser');
+                    Route::get('{department_id}/DPSchoolcreateUser_umsschoolform/{school_code}', [DepartUsersController::class, 'DPSchoolcreateUser'])->name('DPSchoolcreateUser');
+                    Route::post('{department_id}/{school_code}/DPSchoolstoreUser_umsschoolform', [DepartUsersController::class, 'DPSchoolstoreUser'])->name('DPSchoolstoreUser');
                 });
                 Route::get('{department_id}/homeDepart', [DepartReportController::class, 'DepartReportview'])->name('DepartReportview');
                 Route::prefix('homeDepart')->group(function () {
@@ -538,8 +538,8 @@ Route::group(['middleware' => 'IsLoggedIn'], function () {
                 Route::put('{school_id}/update_umsschoolform', [SchoolController::class, 'update'])->name('updateschool');
 
 
-                Route::get('/umsschooluser/{school_id}', [SchoolController::class, 'adduser'])->name('umsschooluser');
-                Route::post('{school_id}/saveSelectedSchool_umsschoolform', [SchoolController::class, 'saveSelectedSchool'])->name('saveSelectedSchool');
+                Route::get('/umsschooluser/{school_code}', [SchoolController::class, 'adduser'])->name('umsschooluser');
+                Route::post('{school_code}/saveSelectedSchool_umsschoolform', [SchoolController::class, 'saveSelectedSchool'])->name('saveSelectedSchool');
             });
 
 
@@ -549,8 +549,6 @@ Route::group(['middleware' => 'IsLoggedIn'], function () {
                 Route::get('/home/D0100', [ReportAllController::class, 'ReportA'])->name('D0100');
                 Route::get('/home/dashboard', [ReportAllController::class, 'ReportB'])->name('dashboard');
                 Route::get('/home/table', [ReportAllController::class, 'ReportC'])->name('table');
-                Route::get('/autocomplete-search', [DepartUsersController::class, 'autoschool'])->name('DPautocompleteSearch');
-
 
                 Route::get('/home/T0101', [ReportAllController::class, 'ReportUserAuth'])->name('ReportUserAuth');
                 Route::get('/home/T0108', [ReportAllController::class, 'trainUserAuth'])->name('trainUserAuth');
@@ -590,7 +588,7 @@ Route::group(['middleware' => 'IsLoggedIn'], function () {
                 Route::get('/autocomplete-search', [EditManageUserController::class, 'autoschool'])->name('autocompleteSearch');
                 Route::post('UsersImport', [ExcelController::class, 'UsersImport'])->name('UsersImport');
                 Route::get('exportLeact', [ExcelController::class, 'exportLeact'])->name('exportLeact');
-
+                Route::get('/autocomplete-search/{department_id}', [DepartUsersController::class, 'autoschool'])->name('DPautocompleteSearch');
                 Route::post('UsersDepartSchoolImport/{department_id}/{school_id}', [ExcelController::class, 'UsersDepartSchoolImport'])->name('UsersDepartSchoolImport');
                 Route::get('/changeStatus', [HighlightController::class, 'changeStatus'])->name('changeStatus');
                 Route::post('/storeban', [HighlightController::class, 'store'])->name('storeban');

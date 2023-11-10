@@ -225,7 +225,7 @@ class EditManageUserController extends Controller
 
         $usermanages->password = Hash::make($request->usearch);
         $usermanages->save();
-            
+
         return redirect()->back()->with('message', 'บันทึกข้อมูลสำเร็จ');
     }
 
@@ -287,12 +287,8 @@ class EditManageUserController extends Controller
             'citizen_id' => 'required|unique:users',
             'email' => 'required|email|unique:users',
             'gender' => 'required',
-            'mobile' => 'required',
-            'user_type' => 'required',
-            'pos_name' => 'required',
             'user_role' => 'required',
-            'birthday' => 'required',
-            'school' => 'required',
+            'department_id' => 'required',
         ]);
 
         $usermanages = new Users();
@@ -341,7 +337,7 @@ class EditManageUserController extends Controller
         $usermanages->user_type = $request->input('user_type', 0);
         $usermanages->province_id = $request->province_id;
         $usermanages->user_type_card =  $request->input('user_type_card', 0);
-        if ($request->school) {
+        if (!empty($request->school)) {
             // ค้นหาโรงเรียนโดยใช้ชื่อโรงเรียนจาก $request
             $existingSchool = School::where('school_name', $request->school)
                 ->where('provinces_id', $request->province_id)
@@ -361,6 +357,11 @@ class EditManageUserController extends Controller
                 // ถ้าพบโรงเรียนในระบบแล้วให้ใช้ id ของโรงเรียนที่มีอยู่
                 $scho = $existingSchool;
             }
+
+            $userschool = new UserSchool;
+            $userschool->school_id = $scho->school_id;
+            $userschool->user_id = $usermanages->user_id;
+            $userschool->save();
         }
 
         $usermanages->district_id = null;
@@ -369,10 +370,6 @@ class EditManageUserController extends Controller
         $usermanages->save();
 
 
-        $userschool = new UserSchool;
-        $userschool->school_id = $scho->school_id;
-        $userschool->user_id = $usermanages->user_id;
-        $userschool->save();
 
         $department_data = $request->department_data;
         foreach ($department_data as $departmentId) {
@@ -381,6 +378,9 @@ class EditManageUserController extends Controller
                 'department_id' => $departmentId,
             ]);
         }
+
+
+
         return redirect()->route('UserManage')->with('message', 'แก้ไขโปรไฟล์สำเร็จ');
     }
 

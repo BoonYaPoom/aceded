@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Department;
 use App\Models\School;
+use App\Models\UserDepartment;
 use App\Models\UserRole;
 use App\Models\Users;
 use App\Models\UserSchool;
@@ -23,19 +24,23 @@ class DepartUsersController extends Controller
             // ดึงข้อมูลผู้ใช้จากฐานข้อมูล
             $data = Users::where('user_id', Session::get('loginId'))->first();
             $provicValue = $data->province_id;
-
+            $userDepart = UserDepartment::where('department_id', $department_id);
+            $userIds = $userDepart->pluck('user_id');
             // ดึงผู้ใช้ที่มีค่า provic เท่ากันกับ $provicValue
             if ($data->user_role == 1) {
                 // ถ้า data->role เป็น 1 แสดงผู้ใช้ทั้งหมด
-                $usermanages = $depart->UserDe()->where('department_id', $department_id);
+                // นำ user_id ที่ได้ไปหาข้อมูลจากตาราง User
+                $usermanages = Users::whereIn('user_id', $userIds);
                 if ($user_role !== null) {
                     $usermanages->where('user_role', $user_role);
                 }
 
                 $usermanages = $usermanages->get();
-            } elseif($data->user_role == 7) {
+            } elseif ($data->user_role == 7) {
                 // ถ้า data->role เป็น 0 แสดงผู้ใช้ที่มีค่า province_id เท่ากับ $provicValue
                 $usermanages = $depart->UserDe()->where('department_id', $department_id)
+                    ->where('province_id', $provicValue);
+                $users = Users::whereIn('user_id', $userIds)
                     ->where('province_id', $provicValue);
                 if ($user_role !== null) {
                     $usermanages->where('user_role', $user_role);
@@ -60,6 +65,16 @@ class DepartUsersController extends Controller
         return view('layouts.department.item.data.UserAdmin.edit', ['usermanages' => $usermanages, 'depart' => $depart]);
     }
 
+    public function autoschool(Request $request, $department_id)
+    {
+
+        $data = School::select("school_name as value", "school_id")
+            ->where('department_id', $department_id)
+            ->where('school_name', 'LIKE', '%' . $request->get('search') . '%')
+            ->get();
+
+        return response()->json($data);
+    }
     public function DPupdateUser(Request $request, $department_id, $user_id)
     {
 
@@ -126,9 +141,6 @@ class DepartUsersController extends Controller
             'citizen_id' => 'required|unique:users',
             'email' => 'required|email|unique:users',
             'gender' => 'required',
-            'mobile' => 'required',
-            'user_type' => 'required',
-            'pos_name' => 'required',
             'user_role' => 'required',
 
 
@@ -176,7 +188,7 @@ class DepartUsersController extends Controller
         $usermanages->sector_id = 0;
         $usermanages->office_id = 0;
 
-        $usermanages->user_type = $request->input('user_type', 0);
+        $usermanages->user_type = 2;
         $usermanages->province_id = $request->province_id;
         $usermanages->district_id = null;
         $usermanages->subdistrict_id = null;
@@ -184,48 +196,48 @@ class DepartUsersController extends Controller
         $usermanages->user_affiliation = $request->user_affiliation;
         $usermanages->user_type_card =  $request->input('user_type_card', 0);
 
-        // ค้นหาโรงเรียนโดยใช้ชื่อโรงเรียนจาก $request
-        $existingSchool = School::where('school_name', $request->school)
-            ->where('provinces_id', $request->province_id)
-            ->where('subdistrict_id', null)
-            ->where('district_id', null)
-            ->first();
+        if (!empty($request->school)) {
+            $existingSchool = School::where('school_name', $request->school)
+                ->where('provinces_id', $request->province_id)
+                ->where('subdistrict_id', null)
+                ->where('district_id', null)
+                ->first();
 
-        // ถ้าไม่พบโรงเรียนในระบบใหม่
-        if (!$existingSchool) {
-            $scho = new School;
-            $scho->school_name = $request->school;
-            $scho->provinces_id = $request->province_id;
-            $scho->subdistrict_id = null;
-            $scho->district_id = null;
-            $scho->save();
-        } else {
-            // ถ้าพบโรงเรียนในระบบแล้วให้ใช้ id ของโรงเรียนที่มีอยู่
-            $scho = $existingSchool;
+            if (!$existingSchool) {
+                $scho = new School;
+                $scho->school_name = $request->school;
+                $scho->provinces_id = $request->province_id;
+                $scho->subdistrict_id = null;
+                $scho->district_id = null;
+                $scho->save();
+            } else {
+                $scho = $existingSchool;
+            }
+            $userschool = new UserSchool;
+            $userschool->school_id = $scho->school_id;
+            $userschool->user_id = $usermanages->user_id;
+            $userschool->save();
         }
 
         $usermanages->save();
 
-        $userschool = new UserSchool;
-        $userschool->school_id = $scho->school_id;
-        $userschool->user_id = $usermanages->user_id;
-        $userschool->save();
+
         return redirect()->route('DPUserManage', ['department_id' => $department_id])->with('message', 'แก้ไขโปรไฟล์สำเร็จ');
     }
 
-    public function DPSchoolcreateUser($department_id, $school_id)
+    public function DPSchoolcreateUser($department_id, $school_code)
     {
         $depart = Department::findOrFail($department_id);
-        $school = School::findOrFail($school_id);
+        $school = School::findOrFail($school_code);
         $role = UserRole::all();
         return view('layouts.department.item.data.UserAdmin.group.umsschool.item.add_umsform', compact('depart', 'role', 'school'));
     }
 
 
 
-    public function DPSchoolstoreUser(Request $request, $department_id, $school_id)
+    public function DPSchoolstoreUser(Request $request, $department_id, $school_code)
     {
-        $school = School::find($school_id);
+        $school = School::find($school_code);
 
         $request->validate([
 
@@ -290,10 +302,10 @@ class DepartUsersController extends Controller
         $usermanages->province_id = $school->provinces_id;
         $usermanages->save();
         $userschool = new UserSchool;
-        $userschool->school_id = $school_id;
+        $userschool->school_id = $school_code;
         $userschool->user_id = $usermanages->user_id;
         $userschool->save();
 
-        return redirect()->route('umsschooluserDepart', ['department_id' => $department_id, 'school_id' => $school_id])->with('message', 'แก้ไขโปรไฟล์สำเร็จ');
+        return redirect()->route('umsschooluserDepart', ['department_id' => $department_id, 'school_code' => $school_code])->with('message', 'แก้ไขโปรไฟล์สำเร็จ');
     }
 }

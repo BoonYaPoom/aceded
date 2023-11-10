@@ -15,7 +15,8 @@
                         <div class="card-body">
                             <!-- form row -->
                             <div class="form-row ">
-                                <label for="usertype" class="col-md-2">ประเภทบุคลากร </label>
+                                <label for="usertype" class="col-md-2">ประเภทบุคลากร <span
+                                    class="badge badge-warning">Required</span> </label>
                                 <div class="col-md-9 mb-3">
                                     <div class="custom-control custom-control-inline custom-radio mr-3">
                                         <input type="radio" class="custom-control-input usertypeselect" name="user_type"
@@ -30,11 +31,14 @@
 
                                 </div>
                                 @error('user_type')
+                                        <div class="col-md-9 mb-3">
                                     <span class="badge badge-warning">{{ $message }}</span>
+                                </div>
                                 @enderror
                             </div>
                             <div class="form-row " id="department_id">
-                                <label for="department_id" class="col-md-2">เลือกหน่วยงาน </label>
+                                <label for="department_id" class="col-md-2">เลือกหน่วยงาน <span
+                                    class="badge badge-warning">Required</span></label>
                                 <div class="col-md-9 mb-3">
                                     <button type="button" class="ml-1 btn btn-success btn-md"
                                         style="background-color: #F04A23;"
@@ -45,7 +49,8 @@
                             </div>
                             @include('page.UserAdmin.modeleditDpart')
                             <div class="form-row " id="user_role">
-                                <label for="user_role" class="col-md-2">เลือกประเภทผู้ใช้งาน </label>
+                                <label for="user_role" class="col-md-2">เลือกประเภทผู้ใช้งาน <span
+                                    class="badge badge-warning">Required</span></label>
                                 <div class="col-md-9 mb-3">
                                     <select id="user_role" name="user_role" class="form-control form-control-md"
                                         data-toggle="select2" data-allow-clear="false">
@@ -62,7 +67,9 @@
                                 </div>
                             </div>
                             @error('user_role')
-                                <span class="badge badge-warning">{{ $message }}</span>
+                                    <div class="col-md-9 mb-3">
+                                    <span class="badge badge-warning">{{ $message }}</span>
+                                </div>
                             @enderror
                             <div class="container mt-5">
 
@@ -82,11 +89,14 @@
                             </div>
                             <!-- /form row -->
                             @error('username')
-                                <span class="badge badge-warning">{{ $message }}</span>
+                                    <div class="col-md-9 mb-3">
+                                    <span class="badge badge-warning">{{ $message }}</span>
+                                </div>
                             @enderror
                             <!-- form row -->
                             <div class="form-row">
-                                <label for="password" class="col-md-2"> รหัสผ่าน</label>
+                                <label for="password" class="col-md-2"> รหัสผ่าน <span
+                                    class="badge badge-warning">Required</span></label>
                                 <div class="col-md-9 mb-3">
                                     <input type="text" class="form-control " id="password" name="password"
                                         placeholder="รหัสผ่าน" minlength="8" maxlength="20">
@@ -94,11 +104,14 @@
                                 </div>
                             </div>
                             @error('password')
-                                <span class="badge badge-warning">{{ $message }}</span>
+                                    <div class="col-md-9 mb-3">
+                                    <span class="badge badge-warning">{{ $message }}</span>
+                                </div>
                             @enderror
                             <!-- /form row -->
                             <div class="form-row ">
-                                <label for="user_type_card" class="col-md-2">ประเภทบุคลากร </label>
+                                <label for="user_type_card" class="col-md-2">ประเภทบุคลากร <span
+                                    class="badge badge-warning">Required</span></label>
                                 <div class="col-md-9 mb-3">
                                     <div class="custom-control custom-control-inline custom-radio mr-3">
                                         <input type="radio" class="custom-control-input user_type_cardselect"
@@ -124,11 +137,14 @@
                                 </div>
                             </div>
                             @error('user_type_card')
-                                <span class="badge badge-warning">{{ $message }}</span>
+                                    <div class="col-md-9 mb-3">
+                                    <span class="badge badge-warning">{{ $message }}</span>
+                                </div>
                             @enderror
                             <!-- form row -->
                             <div class="form-row ">
-                                <label for="citizen_id" class="col-md-2">เลขประจำตัวประชาชน</label>
+                                <label for="citizen_id" class="col-md-2">เลขประจำตัวประชาชน <span
+                                    class="badge badge-warning">Required</span></label>
                                 <div class="col-xs-1 mb-1  showdiscount  d-none">
                                     <select id="citizen_id_select" class="form-control" data-toggle="select2"
                                         data-allow-clear="false">
@@ -147,7 +163,9 @@
                             </div>
                             <!-- /form row -->
                             @error('citizen_id')
-                                <span class="badge badge-warning">{{ $message }}</span>
+                                    <div class="col-md-9 mb-3">
+                                    <span class="badge badge-warning">{{ $message }}</span>
+                                </div>
                             @enderror
                             <script>
                                 document.addEventListener("DOMContentLoaded", function() {
@@ -176,7 +194,8 @@
 
                             <!-- form row -->
                             <div class="form-row">
-                                <label for="input04" class="col-md-2">เพศ</label>
+                                <label for="input04" class="col-md-2">เพศ <span
+                                    class="badge badge-warning">Required</span></label>
                                 <div class="col-md-9 mb-3">
                                     <div class="custom-control custom-control-inline custom-radio">
                                         <input type="radio" class="custom-control-input " name="gender"
@@ -193,7 +212,9 @@
                             <!-- /form row -->
 
                             @error('gender')
-                                <span class="badge badge-warning">{{ $message }}</span>
+                                    <div class="col-md-9 mb-3">
+                                    <span class="badge badge-warning">{{ $message }}</span>
+                                </div>
                             @enderror
                             <!-- form row -->
                             <div class="form-row">
@@ -206,7 +227,9 @@
                             </div>
                             <!-- /form row -->
                             @error('firstname')
-                                <span class="badge badge-warning">{{ $message }}</span>
+                                    <div class="col-md-9 mb-3">
+                                    <span class="badge badge-warning">{{ $message }}</span>
+                                </div>
                             @enderror
                             <!-- form row -->
                             <div class="form-row">
@@ -226,7 +249,9 @@
                                 </div>
                             </div>
                             @error('birthday')
-                                <span class="badge badge-warning">{{ $message }}</span>
+                                    <div class="col-md-9 mb-3">
+                                    <span class="badge badge-warning">{{ $message }}</span>
+                                </div>
                             @enderror
                             <script>
                                 document.addEventListener("DOMContentLoaded", function() {
@@ -256,7 +281,8 @@
 
                             <!-- form row -->
                             <div class="form-row">
-                                <label for="email" class="col-md-2">อีเมล</label>
+                                <label for="email" class="col-md-2">อีเมล <span
+                                    class="badge badge-warning">Required</span></label>
                                 <div class="col-md-9 mb-3">
                                     <input type="email" class="form-control " id="email" name="email"
                                         placeholder="อีเมล" value="">
@@ -264,7 +290,9 @@
                             </div>
                             <!-- /form row -->
                             @error('email')
-                                <span class="badge badge-warning">{{ $message }}</span>
+                                    <div class="col-md-9 mb-3">
+                                    <span class="badge badge-warning">{{ $message }}</span>
+                                </div>
                             @enderror
                             <!-- form row -->
                             <div class="form-row">
@@ -274,10 +302,7 @@
                                         value="" placeholder="เบอร์โทรศัพท์มือถือ">
                                 </div>
                             </div>
-                            <!-- /form row -->
-                            @error('mobile')
-                                <span class="badge badge-warning">{{ $message }}</span>
-                            @enderror
+                    
                             <!-- form row -->
                             <div class="form-row d-none " id="set_workplace">
                                 <label for="workplace" class="col-md-2">ที่อยู่</label>
@@ -290,7 +315,7 @@
 
                             <!-- form row -->
                             <div class="form-row " id="set_province_id">
-                                <label for="province_id" class="col-md-2">จังหวัด </label>
+                                <label for="province_id" class="col-md-2">จังหวัด</label>
                                 <div class="col-md-9 mb-3">
                                     <select id="province_id" name="province_id" class="form-control "
                                         data-toggle="select2" data-allow-clear="false">
@@ -331,8 +356,7 @@
                             </div>
                             <!-- /form row -->
                             <div class="form-row">
-                                <label for="school" class="col-md-2">โรงเรียน / มหาลัย <span
-                                        class="badge badge-warning">Required</span></label>
+                                <label for="school" class="col-md-2">โรงเรียน / มหาลัย </label>
                                 <div class="col-md-9 mb-3">
                                     <input type="text" class="form-control inputuname " id="search" name="school"
                                         placeholder="school" value="" required=""><small
@@ -340,7 +364,9 @@
                                 </div>
                             </div>
                             @error('school')
-                                <span class="badge badge-warning">{{ $message }}</span>
+                                    <div class="col-md-9 mb-3">
+                                    <span class="badge badge-warning">{{ $message }}</span>
+                                </div>
                             @enderror
                             <script type="text/javascript">
                                 var path = "{{ route('autocompleteSearch') }}";
@@ -383,7 +409,9 @@
                                 </div>
                             </div>
                             @error('pos_name')
-                                <span class="badge badge-warning">{{ $message }}</span>
+                                    <div class="col-md-9 mb-3">
+                                    <span class="badge badge-warning">{{ $message }}</span>
+                                </div>
                             @enderror
                             <!--/form row -->
                             <div class="form-row " id="user_affiliation">

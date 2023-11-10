@@ -1,7 +1,7 @@
 @extends('layouts.department.layout.departmenthome')
 @section('contentdepartment')
     <!-- .page-inner -->
-    <form action="{{ route('DPSchoolstoreUser', ['department_id' => $depart, 'school_id' => $school->school_id]) }}" method="post"
+    <form action="{{ route('DPSchoolstoreUser', ['department_id' => $depart, 'school_code' => $school->school_code]) }}" method="post"
         enctype="multipart/form-data">
         @csrf
 

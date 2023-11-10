@@ -68,7 +68,7 @@
                             <label for="lesson_status">สถานะหัวข้อ </label>
                             <label class="switcher-control switcher-control-success switcher-control-lg">
                                 <input type="checkbox" class="switcher-input" name="lesson_status"
-                                    value="1"> <span class="switcher-indicator"></span>
+                                value="{{ $lessons->lesson_status }}"> <span class="switcher-indicator"></span>
                                 <span class="switcher-label-on">ON</span> <span
                                     class="switcher-label-off text-red">OFF</span></label>
                         </div>
@@ -77,7 +77,7 @@
                         <div class="form-group">
                             <label for="exercise">แบบฝึกหัดท้ายบท </label>
                             <label class="switcher-control switcher-control-success switcher-control-lg">
-                                <input type="checkbox" class="switcher-input" name="exercise"  value="1">
+                                <input type="checkbox" class="switcher-input" name="exercise"  value="{{ $lessons->exercise }}">
                                 <span class="switcher-indicator"></span>
                                 <span class="switcher-label-on">ON</span> <span
                                     class="switcher-label-off text-red">OFF</span></label>

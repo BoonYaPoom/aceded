@@ -9,7 +9,7 @@
             <div class="card card-fluid">
                 <!-- .card-header -->
                 <div class="card-header bg-muted">
-                    <a href="{{ route('manage', ['department_id' => $depart->department_id]) }}">หน่วยงาน</a> / จัดการเว็บ
+                    <a href="{{ route('manage', ['department_id' => $depart->department_id]) }}">หน่วยงาน</a> / จัดการเว็บ ระดับ {{$depart->name_th}}
                 </div>
                 <!-- .card-body -->
                 <div class="card-body">

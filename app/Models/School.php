@@ -15,7 +15,7 @@ class School extends Model
 
     public function userScho()
     {
-        return $this->hasMany(UserSchool::class, 'school_id');
+        return $this->hasMany(UserSchool::class, 'school_code');
     }
     public function DeScho() {
         return $this->belongsTo(School::class,'dewpartment_id');

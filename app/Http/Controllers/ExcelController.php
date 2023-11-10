@@ -575,7 +575,7 @@ class ExcelController extends Controller
                             $user_idplus = Users::max('user_id') ?? 0;
                             $uidUserSchool = UserSchool::max('user_school_id') ?? 0;
                             $uiduserdepartment_id = UserDepartment::max('user_department_id') ?? 0;
-                            $user_role = 5;
+                            $user_role = 3;
                             $prefix = null;
                             $gender = null;
                             $per_id = null;
@@ -674,7 +674,7 @@ class ExcelController extends Controller
                             $userschool =  new UserSchool([
 
                                 'user_school_id' =>  $uidUserSchool + 1,
-                                'school_id' =>   $row[9],
+                                'school_code' =>   $row[9],
                                 'user_id' =>   $user_idplus + 1,
                                 'department_id' => $department_id,
             
@@ -682,11 +682,9 @@ class ExcelController extends Controller
                             $userschool->save();
 
                             $UserDepartment =  new UserDepartment([
-
                                 'user_department_id' =>  $uiduserdepartment_id + 1,
                                 'user_id' =>     $user_idplus + 1,
                                 'department_id' => $department_id,
-            
                             ]);
                             $UserDepartment ->save();
                         }

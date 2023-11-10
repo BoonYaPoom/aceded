@@ -14,7 +14,7 @@ class UserSchool extends Model
     protected $primaryKey = 'user_school_id';
     public $timestamps = false;
     public function schouser() {
-        return $this->belongsTo(School::class,'school_id');
+        return $this->belongsTo(School::class,'school_code');
       }
       public function usersChool() {
         return $this->belongsTo(Users::class,'user_id');

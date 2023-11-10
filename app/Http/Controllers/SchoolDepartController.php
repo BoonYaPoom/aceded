@@ -21,17 +21,13 @@ class SchoolDepartController extends Controller
             $depart = Department::findOrFail($department_id);
             $users  = $depart->UserDe()->where('department_id', $department_id);
             $userschool  = $depart->SchouserDe()->where('department_id', $department_id);
-            $provinceId = $data->province_id;     
+            $provinceId = $data->province_id;
             if ($data->user_role == 1) {
                 $school = School::where('department_id', $department_id)->get();
-                
             } elseif ($data->user_role == 6 || $data->user_role == 7) {
                 $school = School::where('provinces_id', $provinceId)
-                ->where('department_id', $department_id)->get();
-              
+                    ->where('department_id', $department_id)->get();
             }
- 
-   
         }
         return view('layouts.department.item.data.UserAdmin.group.umsschool.index', compact('depart', 'users', 'school', 'userschool'));
     }
@@ -44,7 +40,7 @@ class SchoolDepartController extends Controller
 
     public function store(Request $request, $department_id)
     {
-  
+
         $school = new School;
         $school->school_name = $request->school_name;
         $school->provinces_id = $request->province_id;
@@ -80,10 +76,10 @@ class SchoolDepartController extends Controller
 
         return redirect()->back()->with('message', 'PersonType ลบข้อมูลสำเร็จ');
     }
-    public function adduser($department_id, $school_id)
+    public function adduser($department_id, $school_code)
     {
-        $school = School::findOrFail($school_id);
-        $userschool = $school->userScho()->where('school_id', $school_id)->get();
+        $school = School::findOrFail($school_code);
+        $userschool = $school->userScho()->where('school_code', $school->school_code)->get();
 
         $depart = Department::findOrFail($department_id);
 
@@ -95,14 +91,14 @@ class SchoolDepartController extends Controller
         return view('layouts.department.item.data.UserAdmin.group.umsschool.item.adduserschool', ['depart' => $depart, 'school' => $school, 'userschool' => $userschool, 'users' => $users]);
     }
 
-    public function saveSelectedSchool(Request $request, $department_id, $school_id)
+    public function saveSelectedSchool(Request $request, $department_id, $school_code)
 
     {
-
+        $school = School::findOrFail($school_code);
         $userDataString = $request->user_data;
         foreach ($userDataString as $userId) {
             DB::table('user_school')->insert([
-                'school_id' => $school_id,
+                'school_code' => $school->school_code,
                 'user_id' => $userId,
                 'department_id' => $department_id,
             ]);

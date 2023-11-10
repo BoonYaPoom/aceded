@@ -26,7 +26,7 @@
                 <!-- .card-header -->
                 <div class="card-header bg-muted"><a
                         href="{{ route('DPUserManage', ['department_id' => $depart->department_id]) }}">ผู้ใช้งาน</a> / <a
-                        href="{{ route('schoolManageDepart', ['department_id' => $depart->department_id]) }}">จัดการสถานศึกษา</a>
+                        href="{{ route('schoolManageDepart', ['department_id' => $depart->department_id]) }}">จัดการสถานศึกษาของ ระดับ {{$depart->name_th}}</a>
                 </div>
                 <!-- .card-body -->
                 <div class="card-body">
@@ -94,13 +94,13 @@
                                         <td>{{ $scho->school_name }}</td>
                                         <td>{{ $proviUser }}</td>
                                         <td class="text-center"><a
-                                                href="{{ route('umsschooluserDepart', ['department_id' => $depart, 'school_id' => $scho->school_id]) }}">
+                                                href="{{ route('umsschooluserDepart', ['department_id' => $depart, 'school_code' => $scho->school_code]) }}">
                                                 <i class="fas fa-users"></i>
                                                
                                             </a></td>
 
                                         <td class="text-center"><a
-                                                href="{{ route('umsschooluserDepart', ['department_id' => $depart, 'school_id' => $scho->school_id]) }}"><i
+                                                href="{{ route('umsschooluserDepart', ['department_id' => $depart, 'school_code' => $scho->school_code]) }}"><i
                                                     class="fas fa-user-plus"></i></a></td>
 
                                         <td class="text-center">
