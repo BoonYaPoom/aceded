@@ -1,20 +1,19 @@
 @extends('page.report.index')
 @section('reports')
     <!-- .page-inner -->
-
     <div class="page-inner">
 
         <form method="post" id="formreport">
             <div class="form-row">
                 <!-- form column -->
                 <!--    <div class="col-md-1"><span class="mt-1 ">ปี</span></div>
-                                        <div class="col-md-3">
-                                            <div class=""><select id="selectyear" name="selectyear" class="form-control" data-toggle="select2"
-                                                    data-placeholder="ปี" data-allow-clear="false" onchange="$('#formreport').submit();">
-                                                    <option value="2022"> {{ $oneYearsAgo }} </option>
-                                                    <option value="2023" selected> {{ $currentYear }} </option>
-                                                </select></div>
-                                        </div>-->
+                                                <div class="col-md-3">
+                                                    <div class=""><select id="selectyear" name="selectyear" class="form-control" data-toggle="select2"
+                                                            data-placeholder="ปี" data-allow-clear="false" onchange="$('#formreport').submit();">
+                                                            <option value="2022"> {{ $oneYearsAgo }} </option>
+                                                            <option value="2023" selected> {{ $currentYear }} </option>
+                                                        </select></div>
+                                                </div>-->
                 <div class="col-md-3 ">
                     <div class="d-none"><select id="selectmonth" name="selectmonth" class="form-control "
                             data-toggle="select2" data-placeholder="เดือน" data-allow-clear="false"
@@ -37,10 +36,10 @@
                 <div class="d-flex align-items-center">
                     <span class="mr-auto">ข้อมูล Log File ในรูปแบบรายงานทางสถิติ</span>
                     <!-- <a
-                                                  href="https://aced.dlex.ai/childhood/admin/export/pdf.html"
-                                                  class="btn btn-icon btn-outline-danger"><i class="fa fa-file-pdf"></i></a>&nbsp;<a
-                                                  href="https://aced.dlex.ai/childhood/admin/export/excel.html"
-                                                  class="btn btn-icon btn-outline-primary"><i class="fa fa-file-excel "></i></a>-->&nbsp;<a
+                                                          href="https://aced.dlex.ai/childhood/admin/export/pdf.html"
+                                                          class="btn btn-icon btn-outline-danger"><i class="fa fa-file-pdf"></i></a>&nbsp;<a
+                                                          href="https://aced.dlex.ai/childhood/admin/export/excel.html"
+                                                          class="btn btn-icon btn-outline-primary"><i class="fa fa-file-excel "></i></a>-->&nbsp;<a
                         href="javascript:window.print();" class="btn btn-icon btn-outline-success"><i
                             class="fa fa-print "></i></a>
                 </div>
@@ -65,20 +64,6 @@
                                 <th align="center" width="15%">N/A = กำลังเรียน P = เรียนจบ
                                 </th>
                             </tr>
-
-                            @foreach ($learners as $learner)
-                            @foreach($learners as $l => $learns)
-                            @if ($learns->learner_status == 1)
-                                <tr>
-                                    <td>{{ $users->username }}</td>
-                                    <td>{{ $users->firstname }}</td>
-                                    <td>{{ $schoolName }}</td>
-                                    <td>{{ $course_th }}</td>
-                                    <td></td>
-                                </tr>
-                            @endif
-                        @endforeach
-                            @endforeach
 
                             </tbody><!-- /tbody -->
                     </table><!-- /.table -->

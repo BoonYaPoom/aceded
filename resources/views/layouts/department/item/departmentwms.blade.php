@@ -57,7 +57,9 @@
                                             ->where('department_id', $depart->department_id)
                                             ->first();
                                     @endphp
-                                    @if ($userdepart && ($data->user_role == 6 || $data->user_role == 7 ) || ($data->user_role == 1 || $data->user_role == 8))
+                                    @if (
+                                        ($userdepart && ($data->user_role == 3 || $data->user_role == 6 || $data->user_role == 7)) ||
+                                            ($data->user_role == 1 || $data->user_role == 8))
                                         <tr>
                                             <td><a
                                                     href="{{ route('manage', ['department_id' => $depart->department_id]) }}">

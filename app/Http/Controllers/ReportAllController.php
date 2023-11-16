@@ -226,41 +226,10 @@ class ReportAllController extends Controller
         $oneYearsAgo = Carbon::now()->subYears(1)->addYears(543)->year;
         $pro = Provinces::all();
         $learners = CourseLearner::all();
-        $users = null;
-        $UserSchool = null;
-        $schoolName = null;
-        $course_th = null;
-        $courses = null;
+    
 
-        foreach ($learners as $l => $learns) {
-            if ($learns->learner_status == 1) {
-
-
-                $courses = Course::find($learns->course_id);
-
-                if ($courses) {
-
-                    $course_th = $courses->course_th;
-                } else {
-                }
-                $users = Users::find($learns->user_id);
-                if ($users) {
-                    $UserSchool = UserSchool::with('schouser')
-                        ->where('user_id', $users->user_id)
-                        ->first();
-
-                    if ($UserSchool) {
-                        $schoolName = optional($UserSchool->schouser)->school_name;
-                    } else {
-                        $schoolName = [];
-                    }
-                } else {
-                    $schoolName = [];
-                }
-            }
- 
-        }
-        return view('page.report.tables.datatest.t0116', compact('learners', 'course_th', 'users', 'schoolName', 'pro', 'month', 'oneYearsAgo', 'currentYear'));
+    
+        return view('page.report.tables.datatest.t0116', compact('learners' ,'pro', 'month', 'oneYearsAgo', 'currentYear'));
     }
     public function t0117()
     {

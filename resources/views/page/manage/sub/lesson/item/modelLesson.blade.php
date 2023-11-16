@@ -301,7 +301,7 @@
                                                 data-dismiss="modal">ยกเลิก</button>
                                         </div>
                                     </div>
-                                @endif
+                              
                                 @elseif ($contentType->content_type === 12)
                                 <h1>{{ $contentType->content_th }}  zip </h1>
                                 <div class="showcontent show-zip "><object
@@ -310,7 +310,7 @@
                                         width="100%" height="200px" data="">
                                     </object>
 
-                            
+                
 
                                 </div>
 
@@ -349,7 +349,7 @@
                                         width="100%" height="200px" data="">
                                     </object>
 
-                       
+                
 
                                 </div>
 
@@ -380,6 +380,7 @@
                                             data-dismiss="modal">ยกเลิก</button>
                                     </div>
                                 </div>
+                                @endif
                             @endif
                         </div>
 

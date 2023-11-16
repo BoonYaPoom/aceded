@@ -254,7 +254,6 @@ class CourseSubjectController extends Controller
         $teachers = implode(',', $selectedTeachers);
         $subs->teacher = $teachers;
 
-        $subs->department_id = $request->input('department_id', 0);
         $subs->subject_status = $request->input('subject_status', 0);
 
         $subs->update_date = now();
@@ -281,10 +280,10 @@ class CourseSubjectController extends Controller
             }
         }
 
-        return redirect()->route('suppage', ['department_id' => $subs->department_id])->with('message', 'CourseSub บันทึกข้อมูลสำเร็จ');
+        return redirect()->route('suppage', [ $department_id])->with('message', 'CourseSub บันทึกข้อมูลสำเร็จ');
     }
 
-    public function destory($subject_id)
+    public function destory($department_id,$subject_id)
     {
         $subs = CourseSubject::findOrFail($subject_id);
         $subs->subjs()->delete();

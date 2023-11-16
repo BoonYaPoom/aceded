@@ -9,6 +9,7 @@ use App\Models\UserRole;
 use App\Models\Users;
 use App\Models\UserSchool;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Session;
 use Intervention\Image\Facades\Image;
@@ -36,7 +37,7 @@ class DepartUsersController extends Controller
                 }
 
                 $usermanages = $usermanages->get();
-            } elseif ($data->user_role == 7) {
+            } elseif ($data->user_role == 7||$data->user_role == 6||$data->user_role == 3) {
                 // ถ้า data->role เป็น 0 แสดงผู้ใช้ที่มีค่า province_id เท่ากับ $provicValue
                 $usermanages = $depart->UserDe()->where('department_id', $department_id)
                     ->where('province_id', $provicValue);
@@ -196,31 +197,48 @@ class DepartUsersController extends Controller
         $usermanages->user_affiliation = $request->user_affiliation;
         $usermanages->user_type_card =  $request->input('user_type_card', 0);
 
+        $usermanages->save();
+
+
         if (!empty($request->school)) {
             $existingSchool = School::where('school_name', $request->school)
-                ->where('provinces_id', $request->province_id)
-                ->where('subdistrict_id', null)
-                ->where('district_id', null)
+                ->where('provinces_code', $request->province_id)
+                ->where('subdistrict_code', null)
+                ->where('district_code', null)
                 ->first();
 
             if (!$existingSchool) {
                 $scho = new School;
+
                 $scho->school_name = $request->school;
-                $scho->provinces_id = $request->province_id;
-                $scho->subdistrict_id = null;
-                $scho->district_id = null;
+                $scho->provinces_code = $request->province_id;
+                $scho->subdistrict_code = null;
+                $scho->district_code = null;
+                $scho->department_id = $department_id;
+                $scho->save();
+
+                $scho->school_code = $scho->school_id;
                 $scho->save();
             } else {
                 $scho = $existingSchool;
+                if (empty($scho->school_code)) {
+                    $scho->school_code = $scho->school_id;
+                    $scho->save();
+        
             }
+        }
             $userschool = new UserSchool;
-            $userschool->school_id = $scho->school_id;
+            $userschool->school_code = $scho->school_code;
             $userschool->user_id = $usermanages->user_id;
+            $userschool->department_id = $department_id;
             $userschool->save();
         }
 
-        $usermanages->save();
 
+        DB::table('users_department')->insert([
+            'user_id' =>    $usermanages->user_id,
+            'department_id' => $department_id,
+        ]);
 
         return redirect()->route('DPUserManage', ['department_id' => $department_id])->with('message', 'แก้ไขโปรไฟล์สำเร็จ');
     }
@@ -306,6 +324,11 @@ class DepartUsersController extends Controller
         $userschool->user_id = $usermanages->user_id;
         $userschool->save();
 
+
+        DB::table('users_department')->insert([
+            'user_id' =>    $usermanages->user_id,
+            'department_id' => $department_id,
+        ]);
         return redirect()->route('umsschooluserDepart', ['department_id' => $department_id, 'school_code' => $school_code])->with('message', 'แก้ไขโปรไฟล์สำเร็จ');
     }
 }

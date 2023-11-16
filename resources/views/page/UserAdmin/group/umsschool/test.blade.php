@@ -68,16 +68,26 @@
                             <script>
                                 $(document).ready(function() {
                                     var table = $('#datatable').DataTable({
+                                        serverSide: true,
+                                        processing: true,
                                         ajax: {
+
                                             url: '{{ route('getSchools') }}',
-                                            dataSrc: 'dataschool',
+                                            dataType: 'json',
+                                            data: function(d) {
+                                                d.user_role = 'your_user_role_value'; 
+                                            },
+                                            dataSrc: 'dataall'
+
+                                            
                                         },
+                                        
                                         columns: [{
                                                 data: 'num'
-                                            }, // Replace with your actual column name
+                                            },
                                             {
                                                 data: 'school_name'
-                                            }, // Replace with your actual column name
+                                            },
                                             {
                                                 data: 'province_name'
                                             },
@@ -126,21 +136,11 @@
 
                                             },
                                         ],
-                                        deferRender: true,
-                                        success: function(data) {
-                                            if (data.success) {
-                                                // การเข้าถึงข้อมูลสำเร็จ
-                                                console.log('การเข้าถึงข้อมูลสำเร็จ:', data.message);
-                                            } else {
-                                                // การเข้าถึงข้อมูลไม่สำเร็จ
-                                                console.error('การเข้าถึงข้อมูลไม่สำเร็จ:', data.message);
-                                            }
-                                        },
 
                                         lengthChange: false,
                                         responsive: true,
                                         info: false,
-                                        serverSide: false,
+
                                         pageLength: 20,
                                         scrollY: '100%',
 
@@ -157,6 +157,7 @@
                                         }
 
                                     });
+                                    console.log('{{route('getSchools')}}');
                                     $('#drop2').on('change', function() {
                                         var selecteddrop2Id = $(this).val();
                                         if (selecteddrop2Id == 0) {

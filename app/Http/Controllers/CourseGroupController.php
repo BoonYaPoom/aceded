@@ -69,7 +69,7 @@ class CourseGroupController extends Controller
         $courses = CourseGroup::findOrFail($group_id);
         $courses->group_th = $request->group_th;
         $courses->group_en = $request->group_en;
-        $courses->department_id = 12;
+        $courses->department_id =  $department_id;
         $courses->group_status  = $request->input('group_status ', 0);
         $courses->save();
 

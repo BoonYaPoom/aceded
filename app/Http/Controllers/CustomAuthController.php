@@ -135,7 +135,7 @@ class CustomAuthController extends Controller
 
             if ($user) {
                 if (Hash::check($request->password, $user->password)) {
-                    if ($user->user_role == 1 || $user->user_role == 6 && $user->userstatus == 1 || $user->user_role == 7 && $user->userstatus == 1 || $user->user_role == 8 && $user->userstatus == 1) {
+                    if ($user->user_role == 1 || $user->user_role == 6 && $user->userstatus == 1 || $user->user_role == 7 && $user->userstatus == 1 || $user->user_role == 8 && $user->userstatus == 1|| $user->user_role == 3 && $user->userstatus == 1) {
                         $request->session()->put('loginId', $user->user_id);
                         return redirect()->route('departmentwmspage')->with('message', 'ผู้ใช้เข้าสู่ระบบ');
                     } else {

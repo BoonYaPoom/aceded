@@ -39,6 +39,7 @@ use App\Http\Controllers\PDFcreateController;
 use App\Http\Controllers\PersonController;
 use App\Http\Controllers\ProviDepartUserController;
 use App\Http\Controllers\ReportAllController;
+use App\Http\Controllers\ReportJsonController;
 use App\Http\Controllers\RolemanageController;
 use App\Http\Controllers\SchoolController;
 use App\Http\Controllers\SchoolDepartController;
@@ -572,12 +573,13 @@ Route::group(['middleware' => 'IsLoggedIn'], function () {
                 Route::get('/home/T0125', [ReportAllController::class, 't0125'])->name('t0125');
                 Route::post('/get-user-data', [ReportAllController::class, 'getUserData'])->name('get-Uata');
             });
-
-
+            Route::prefix('datareport')->group(function () {
+                Route::get('/T0103', [ReportJsonController::class, 't0103'])->name('t0103json');
+            });
             Route::get('/getSchools', [SchoolController::class, 'getSchools'])->name('getSchools');
             Route::get('/rad', [SubmitController::class, 'requestSchool'])->name('requestSchool');
             Route::prefix('rad')->group(function () {
-                
+
                 Route::get('/requestSchooldataJson', [SubmitController::class, 'requestSchooldataJson'])->name('requestSchooldataJson');
                 Route::get('/detaildata/{submit_id}', [SubmitController::class, 'detaildata'])->name('detaildata');
                 Route::put('/storeAdmin/{submit_id}', [SubmitController::class, 'storeAdmin'])->name('storeAdmin');
@@ -625,7 +627,7 @@ Route::group(['middleware' => 'IsLoggedIn'], function () {
                 Route::get('/delete_linksform/{links_id}', [LinkController::class, 'destory'])->name('destorylink');
                 Route::get('/changeStatusLinks', [LinkController::class, 'changeStatus'])->name('changeStatusLinks');
                 Route::get('/changeSortIink', [LinkController::class, 'changeSortIink'])->name('changeSortIink');
-                Route::get('/destorysub/{subject_id}', [CourseSubjectController::class, 'destory'])->name('destorysub');
+                Route::get('{department_id}/destorysub/{subject_id}', [CourseSubjectController::class, 'destory'])->name('destorysub');
 
                 Route::get('/changeStatusSubject', [CourseSubjectController::class, 'changeStatus'])->name('changeStatusSubject');
 

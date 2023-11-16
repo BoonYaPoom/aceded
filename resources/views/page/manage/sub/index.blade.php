@@ -161,7 +161,7 @@
                                             <a href="{{ route('editsub', [$depart, $item->subject_id]) }}"><i
                                                     class="far fa-edit fa-lg text-success" data-toggle="tooltip"
                                                     title="แก้ไข"></i></a>
-                                            <a href="{{ route('destorysub', [$item->subject_id]) }}"
+                                            <a href="{{ route('destorysub', [$depart,$item->subject_id]) }}"
                                                 onclick="deleteRecord(event)"
                                                 rel="หน่วยการเรียนรู้ที่ 1 การคิดแยกแยะระหว่างผลประโยชน์ส่วนตนและผลประโยชน์ส่วนรวม"
                                                 class="switcher-delete" data-toggle="tooltip" title="ลบข้อมูล"><i

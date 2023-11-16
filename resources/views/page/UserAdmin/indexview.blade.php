@@ -249,26 +249,10 @@
                             <tbody>
                   
                                 <!-- tr -->
-                                @include('page.UserAdmin.DataUser.AjexUser')
-
                                 @php
                                     $r = 0;
                                 @endphp
-                                @foreach ($usermanages->sortBy('user_id') as $item)
-                                    @php
-                                        $r++;
-                                    @endphp
-                                    @php
-                                        $user_roleadmin = $item->user_role == 1;
-                                    @endphp
-                                    @php
-                                        $statususerss = $item->userstatus == 0;
-                                    @endphp
-
-
-                                    @include('page.UserAdmin.group.ModelUser.modelRole')
-                                    @include('page.UserAdmin.group.ModelUser.modelPass')
-                                @endforeach
+                                
 
                             </tbody><!-- /tbody -->
                         </table><!-- /.table -->

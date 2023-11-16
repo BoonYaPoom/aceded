@@ -577,7 +577,6 @@ class ExcelController extends Controller
                             $uiduserdepartment_id = UserDepartment::max('user_department_id') ?? 0;
                             $user_role = 3;
                             $prefix = null;
-                            $gender = null;
                             $per_id = null;
 
                             $permission = null;

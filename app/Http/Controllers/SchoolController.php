@@ -21,12 +21,13 @@ class SchoolController extends Controller
 
         return view('page.UserAdmin.group.umsschool.index', compact('users', 'school', 'userschool'));
     }
-    public function getSchools()
+    public function getSchools(Request $request )
     {
-        $schools = School::all();
+        $schools = School::paginate(2000);
         $schoolsaa = [];
         $userschool = UserSchool::all();
         $i = 1;
+        $draw = $request->input('draw');
         foreach ($schools as $school) {
             $proviUser = Provinces::where('code', $school->provinces_code)
                 ->pluck('name_in_thai')
@@ -42,9 +43,16 @@ class SchoolController extends Controller
                 'userCount' => $userCount,
 
             ];
+            $response = [
+                'draw' => $draw, // ครั้งที่การดึงข้อมูล ค่าของ dataTable ส่งมาอัตโนมัติ
+                'recordsTotal' => count($schoolsaa), // รวมทั้งหมด
+                'recordsFiltered' => count($schoolsaa), // จำนวนที่ตรงกับคำค้น
+                'dataschool' => $schoolsaa,
+            ];
+
         }
 
-        return response()->json(['schoolsaa' => $schoolsaa]);
+        return response()->json(['response' => $response]);
     }
 
 
