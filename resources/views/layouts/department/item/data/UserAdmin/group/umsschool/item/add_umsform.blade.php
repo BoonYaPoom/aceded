@@ -9,7 +9,7 @@
         <div class="page-inner">
             <div class="page-section">
                 <div class="card card-fluid">
-                    <div class="card-header bg-muted"><a href="{{ route('schoolManageDepart', ['department_id' => $depart->department_id])}}">จัดการสถานศึกษา</a> / สร้างนักเรียน {{$school->school_name}}</div>
+                    <div class="card-header bg-muted"><a href="{{ route('umsschooldepartment', ['department_id' => $depart->department_id])}}">จัดการสถานศึกษา</a> / สร้างนักเรียน {{$school->school_name}}</div>
                     <div class="col-lg">
                         <h3 class="card-header">  {{$school->school_name}} </h3>
                         <div class="card-body">

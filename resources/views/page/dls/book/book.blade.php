@@ -68,7 +68,7 @@
                                                             'category_id': category_id
                                                         },
                                                         success: function(data) {
-                                                            console.log(data.message); 
+                                                            console.log(data.message);
                                                         },
                                                         error: function(xhr, status, error) {
                                                             console.log('ข้อผิดพลาด');
@@ -79,13 +79,14 @@
                                         </script>
 
                                         <td class="align-middle">
-                                            <a href="{{ route('bookcatpage', [$depart,'category_id' => $item->category_id]) }}"><i
+                                            <a
+                                                href="{{ route('bookcatpage', [$depart, 'category_id' => $item->category_id]) }}"><i
                                                     class="fas fa-book fa-lg text-info" data-toggle="tooltip"
                                                     title="ข้อมูล"></i></a>
-                                            <a href="{{ route('editbook', [$depart,$item->category_id]) }}"><i
+                                            <a href="{{ route('editbook', [$depart, $item->category_id]) }}"><i
                                                     class="far fa-edit fa-lg text-success" data-toggle="tooltip"
                                                     title="แก้ไข"></i></a>
-                                            <a href="{{ route('bookdestory', [$item->category_id]) }}"
+                                            <a href="{{ route('bookdestory', [$depart, $item->category_id]) }}"
                                                 onclick="deleteRecord(event)" rel="บทเรียนแบบ e-book ระดับปฐมวัย"
                                                 class="switcher-delete" data-toggle="tooltip" title="ลบ">
                                                 <i class="fas fa-trash-alt fa-lg text-warning "></i></a>
@@ -130,8 +131,8 @@
         <header class="page-title-bar">
             <!-- floating action -->
             <button type="button" class="btn btn-success btn-floated btn-addwms"
-                onclick="window.location='{{ route('createbook', ['department_id' => $depart]) }}'" data-toggle="tooltip" title="เพิ่ม"><span
-                    class="fas fa-plus"></span></button>
+                onclick="window.location='{{ route('createbook', ['department_id' => $depart]) }}'" data-toggle="tooltip"
+                title="เพิ่ม"><span class="fas fa-plus"></span></button>
             <!-- /floating action -->
         </header><!-- /.page-title-bar -->
     </div>

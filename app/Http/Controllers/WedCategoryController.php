@@ -55,98 +55,100 @@ class WedCategoryController extends Controller
                 ->withInput()
                 ->with('error', 'ข้อมูลไม่ถูกต้อง');
         }
-        try{
-        $wed = new WebCategory;
-       
-
-     
-        $wed->category_th = $request->category_th;
-        $wed->category_en = $request->category_en;
-        $wed->startdate = null;
-        $wed->enddate = null;
-        $wed->detail_th = '';
-        $wed->detail_en = '';
-        $wed->category_date = now();
-        $wed->category_update = null;
-        $wed->category_status = $request->input('category_status', 0);
-        $wed->category_type = 1;
-        $wed->category_option = null;
-        $wed->department_id = (int)$department_id;
-        $wed->recommended = 1;
-        $wed->save();
+        try {
+            $wed = new WebCategory;
 
 
-        if ($request->hasFile('cover')) {
-            $file_name = 'cover' . $wed->category_id . '.' . $request->cover->getClientOriginalExtension();
-            $uploadDirectory = public_path('upload/webcategory/');
-            if (!file_exists($uploadDirectory)) {
-                mkdir($uploadDirectory, 0755, true);
+
+            $wed->category_th = $request->category_th;
+            $wed->category_en = $request->category_en;
+            $wed->startdate = null;
+            $wed->enddate = null;
+            $wed->detail_th = '';
+            $wed->detail_en = '';
+            $wed->category_date = now();
+            $wed->category_update = null;
+            $wed->category_status = $request->input('category_status', 0);
+            $wed->category_type = 1;
+            $wed->category_option = null;
+            $wed->department_id = (int)$department_id;
+            $wed->recommended = 1;
+            $wed->save();
+
+
+            if ($request->hasFile('cover')) {
+                $file_name = 'cover' . $wed->category_id . '.' . $request->cover->getClientOriginalExtension();
+                $uploadDirectory = public_path('upload/webcategory/');
+                if (!file_exists($uploadDirectory)) {
+                    mkdir($uploadDirectory, 0755, true);
+                }
+                if (file_exists($uploadDirectory)) {
+
+                    file_put_contents(public_path('upload/webcategory/' . $file_name), file_get_contents($request->cover));
+                    $wed->cover = 'upload/webcategory/' . $file_name;
+                    $wed->save();
+                }
+            } else {
+                $file_name = '';
+                $wed->cover = $file_name;
+                $wed->save();
             }
-            if (file_exists($uploadDirectory)) {
+            if (Session::has('loginId')) {
+                $loginId = Session::get('loginId');
 
-                file_put_contents(public_path('upload/webcategory/' . $file_name), file_get_contents($request->cover));
-                $wed->cover = 'upload/webcategory/' . $file_name;
+                $userAgent = $request->header('User-Agent');
             }
-        } else {
-            $file_name = '';
-            $wed->cover = $file_name;
-        }
-        if (Session::has('loginId')) {
-            $loginId = Session::get('loginId');
+            $conditions = [
+                'Windows' => 'Windows',
+                'Mac' => 'Macintosh|Mac OS',
+                'Linux' => 'Linux',
+                'Android' => 'Android',
+                'iOS' => 'iPhone|iPad|iPod',
+            ];
 
-            $userAgent = $request->header('User-Agent');
-        }
-        $conditions = [
-            'Windows' => 'Windows',
-            'Mac' => 'Macintosh|Mac OS',
-            'Linux' => 'Linux',
-            'Android' => 'Android',
-            'iOS' => 'iPhone|iPad|iPod',
-        ];
+            $os = '';
 
-        $os = '';
-
-        // Loop through the conditions and check the user agent for the operating system
-        foreach ($conditions as $osName => $pattern) {
-            if (preg_match("/$pattern/i", $userAgent)) {
-                $os = $osName;
-                break; // Exit the loop once a match is found
+            // Loop through the conditions and check the user agent for the operating system
+            foreach ($conditions as $osName => $pattern) {
+                if (preg_match("/$pattern/i", $userAgent)) {
+                    $os = $osName;
+                    break; // Exit the loop once a match is found
+                }
             }
+            if (preg_match('/(Chrome|Firefox|Safari|Opera|Edge|IE|Edg)[\/\s](\d+\.\d+)/i', $userAgent, $matches)) {
+                $browser = $matches[1];
+            }
+
+
+            if ($loginId) {
+                $loginLog = Log::where('user_id', $loginId)->where('logaction', 2)->first();
+
+
+                $loginLog = new Log;
+                $loginLog->logid = 2;
+                $loginLog->logaction = 2;
+                $loginLog->logdetail = '';
+                $loginLog->idref  = 1;
+                $loginLog->subject_id  = 1;
+                $loginLog->duration = 1;
+                $loginLog->status  = 0;
+                $loginLog->user_id = $loginId;
+                $loginLog->logagents = $browser;
+                $loginLog->logip = $request->ip();
+
+                $loginLog->logdate = now()->format('Y-m-d H:i:s');
+                $loginLog->logplatform = $os;
+            }
+
+
+            $loginLog->save();
+            DB::commit();
+        } catch (\Exception $e) {
+
+            DB::rollBack();
+
+            return response()->view('error.error-500', [], 500);
         }
-        if (preg_match('/(Chrome|Firefox|Safari|Opera|Edge|IE|Edg)[\/\s](\d+\.\d+)/i', $userAgent, $matches)) {
-            $browser = $matches[1];
-        }
-
-
-        if ($loginId) {
-            $loginLog = Log::where('user_id', $loginId)->where('logaction', 2)->first();
-
-
-            $loginLog = new Log;
-            $loginLog->logid = 2;
-            $loginLog->logaction = 2;
-            $loginLog->logdetail = '';
-            $loginLog->idref  = 1;
-            $loginLog->subject_id  = 1;
-            $loginLog->duration = 1;
-            $loginLog->status  = 0;
-            $loginLog->user_id = $loginId;
-            $loginLog->logagents = $browser;
-            $loginLog->logip = $request->ip();
-
-            $loginLog->logdate = now()->format('Y-m-d H:i:s');
-            $loginLog->logplatform = $os;
-        }
-
-
-        $loginLog->save();
-        DB::commit();
-    } catch (\Exception $e) {
-
-        DB::rollBack();
-
-        return response()->view('error.error-500', [], 500);
-    }
 
         return redirect()->route('evenpage', ['department_id' => $department_id])->with('message', 'Data saved successfully');
     }
@@ -156,23 +158,121 @@ class WedCategoryController extends Controller
             'category_th' => 'required'
 
         ]);
-        try{
-        $wed = new WebCategory;
-      
-      
-        $wed->category_th = $request->category_th;
-        $wed->category_en = $request->category_en;
-        $wed->detail_th = '';
-        $wed->detail_en = '';
-        $wed->category_date = now();
-        $wed->startdate = $request->startdate;
-        $wed->enddate = $request->enddate;
-        $wed->category_status = $request->input('category_status', 0);
-        $wed->category_type = 2;
-        $wed->category_option = null;
-        $wed->department_id = (int)$department_id;
-        $wed->recommended = 1;
-        $wed->save();
+        try {
+            $wed = new WebCategory;
+
+
+            $wed->category_th = $request->category_th;
+            $wed->category_en = $request->category_en;
+            $wed->detail_th = '';
+            $wed->detail_en = '';
+            $wed->category_date = now();
+            $wed->startdate = $request->startdate;
+            $wed->enddate = $request->enddate;
+            $wed->category_status = $request->input('category_status', 0);
+            $wed->category_type = 2;
+            $wed->category_option = null;
+            $wed->department_id = (int)$department_id;
+            $wed->recommended = 1;
+            $wed->save();
+
+            if ($request->hasFile('cover')) {
+                $file_name = 'cover' . $wed->category_id . '.' . $request->cover->getClientOriginalExtension();
+                $uploadDirectory = public_path('upload/webcategory/');
+                if (!file_exists($uploadDirectory)) {
+                    mkdir($uploadDirectory, 0755, true);
+                }
+                if (file_exists($uploadDirectory)) {
+
+                    file_put_contents(public_path('upload/webcategory/' . $file_name), file_get_contents($request->cover));
+                    $wed->cover = 'upload/webcategory/' . $file_name;
+                    $wed->save();
+                }
+            }
+
+
+
+
+            if (Session::has('loginId')) {
+                $loginId = Session::get('loginId');
+
+                $userAgent = $request->header('User-Agent');
+            }
+            $conditions = [
+                'Windows' => 'Windows',
+                'Mac' => 'Macintosh|Mac OS',
+                'Linux' => 'Linux',
+                'Android' => 'Android',
+                'iOS' => 'iPhone|iPad|iPod',
+            ];
+
+            $os = '';
+
+            // Loop through the conditions and check the user agent for the operating system
+            foreach ($conditions as $osName => $pattern) {
+                if (preg_match("/$pattern/i", $userAgent)) {
+                    $os = $osName;
+                    break; // Exit the loop once a match is found
+                }
+            }
+            if (preg_match('/(Chrome|Firefox|Safari|Opera|Edge|IE|Edg)[\/\s](\d+\.\d+)/i', $userAgent, $matches)) {
+                $browser = $matches[1];
+            }
+
+
+            if ($loginId) {
+                $loginLog = Log::where('user_id', $loginId)->where('logaction', 2)->first();
+
+
+                $loginLog = new Log;
+                $loginLog->logid = 2;
+                $loginLog->logaction = 2;
+                $loginLog->logdetail = '';
+                $loginLog->idref  = 1;
+                $loginLog->subject_id  = 1;
+                $loginLog->duration = 1;
+                $loginLog->status  = 0;
+                $loginLog->user_id = $loginId;
+                $loginLog->logagents = $browser;
+                $loginLog->logip = $request->ip();
+
+                $loginLog->logdate = now()->format('Y-m-d H:i:s');
+                $loginLog->logplatform = $os;
+            }
+
+
+            $loginLog->save();
+
+            $loginLog->save();
+            DB::commit();
+        } catch (\Exception $e) {
+
+            DB::rollBack();
+
+            return response()->view('error.error-500', [], 500);
+        }
+        return redirect()->route('acteven', ['department_id' => $department_id])->with('message', 'Data saved successfully');
+    }
+    public function edit($department_id, $category_id)
+    {
+        $wed = WebCategory::findOrFail($category_id);
+        $department_id   = $wed->department_id;
+        $depart = Department::findOrFail($department_id);
+        return view('page.manages.even.page.even.edit', ['wed' => $wed, 'depart' => $depart]);
+    }
+    public function editact($department_id, $category_id)
+    {
+        $wed = WebCategory::findOrFail($category_id);
+        $department_id   = $wed->department_id;
+        $depart = Department::findOrFail($department_id);
+        return view('page.manages.even.page.act.editact', ['wed' => $wed, 'depart' => $depart]);
+    }
+
+    public function update(Request $request, $department_id, $category_id)
+    {
+
+        $wed = WebCategory::findOrFail($category_id);
+
 
         if ($request->hasFile('cover')) {
             $file_name = 'cover' . $wed->category_id . '.' . $request->cover->getClientOriginalExtension();
@@ -184,106 +284,9 @@ class WedCategoryController extends Controller
 
                 file_put_contents(public_path('upload/webcategory/' . $file_name), file_get_contents($request->cover));
                 $wed->cover = 'upload/webcategory/' . $file_name;
-            }
-        } else {
-            $file_name = '';
-            $wed->cover = $file_name;
-        }
-    
-
-        if (Session::has('loginId')) {
-            $loginId = Session::get('loginId');
-
-            $userAgent = $request->header('User-Agent');
-        }
-        $conditions = [
-            'Windows' => 'Windows',
-            'Mac' => 'Macintosh|Mac OS',
-            'Linux' => 'Linux',
-            'Android' => 'Android',
-            'iOS' => 'iPhone|iPad|iPod',
-        ];
-
-        $os = '';
-
-        // Loop through the conditions and check the user agent for the operating system
-        foreach ($conditions as $osName => $pattern) {
-            if (preg_match("/$pattern/i", $userAgent)) {
-                $os = $osName;
-                break; // Exit the loop once a match is found
+                $wed->save();
             }
         }
-        if (preg_match('/(Chrome|Firefox|Safari|Opera|Edge|IE|Edg)[\/\s](\d+\.\d+)/i', $userAgent, $matches)) {
-            $browser = $matches[1];
-        }
-
-
-        if ($loginId) {
-            $loginLog = Log::where('user_id', $loginId)->where('logaction', 2)->first();
-
-
-            $loginLog = new Log;
-            $loginLog->logid = 2;
-            $loginLog->logaction = 2;
-            $loginLog->logdetail = '';
-            $loginLog->idref  = 1;
-            $loginLog->subject_id  = 1;
-            $loginLog->duration = 1;
-            $loginLog->status  = 0;
-            $loginLog->user_id = $loginId;
-            $loginLog->logagents = $browser;
-            $loginLog->logip = $request->ip();
-
-            $loginLog->logdate = now()->format('Y-m-d H:i:s');
-            $loginLog->logplatform = $os;
-        }
-
-
-        $loginLog->save();
-
-        $loginLog->save();
-        DB::commit();
-    } catch (\Exception $e) {
-
-        DB::rollBack();
-
-        return response()->view('error.error-500', [], 500);
-    }
-        return redirect()->route('acteven', ['department_id' => $department_id])->with('message', 'Data saved successfully');
-    }
-    public function edit($department_id,$category_id)
-    {
-        $wed = WebCategory::findOrFail($category_id);
-        $department_id   = $wed->department_id;
-        $depart = Department::findOrFail($department_id);
-        return view('page.manages.even.page.even.edit', ['wed' => $wed, 'depart' => $depart]);
-    }
-    public function editact($department_id,$category_id)
-    {
-        $wed = WebCategory::findOrFail($category_id);
-        $department_id   = $wed->department_id;
-        $depart = Department::findOrFail($department_id);
-        return view('page.manages.even.page.act.editact', ['wed' => $wed, 'depart' => $depart]);
-    }
-
-    public function update(Request $request,$department_id, $category_id)
-    {
-
-        $wed = WebCategory::findOrFail($category_id);
-        if ($request->hasFile('cover')) {
-            $file_name = 'cover' . $category_id . '.' . $request->cover->getClientOriginalExtension();
-            $uploadDirectory = public_path('upload/webcategory/');
-            if (!file_exists($uploadDirectory)) {
-                mkdir($uploadDirectory, 0755, true);
-            }
-            if (file_exists($uploadDirectory)) {
-
-                file_put_contents(public_path('upload/webcategory/' . $file_name), file_get_contents($request->cover));
-                $wed->cover = 'upload/webcategory/' . $file_name;
-            }
-        } 
-    
-
 
         $wed->category_th = $request->category_th;
         $wed->category_en = $request->category_en;
@@ -344,7 +347,7 @@ class WedCategoryController extends Controller
 
         return redirect()->route('evenpage', ['department_id' => $wed->department_id])->with('warning', 'Data update successfully');
     }
-    public function updateact(Request $request,$department_id, $category_id)
+    public function updateact(Request $request, $department_id, $category_id)
     {
 
         $wed = WebCategory::findOrFail($category_id);
@@ -359,8 +362,9 @@ class WedCategoryController extends Controller
 
                 file_put_contents(public_path('upload/webcategory/' . $file_name), file_get_contents($request->cover));
                 $wed->cover = 'upload/webcategory/' . $file_name;
+                $wed->save();
             }
-        } 
+        }
 
         $wed->category_th = $request->category_th;
         $wed->category_en = $request->category_en;

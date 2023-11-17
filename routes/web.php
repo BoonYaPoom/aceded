@@ -141,9 +141,9 @@ Route::group(['middleware' => 'IsLoggedIn'], function () {
                     Route::put('{department_id}/editdepartment/{id}', [GenaralController::class, 'updateDP'])->name('updategenDP');
                     Route::get('{department_id}/home', [NavController::class, 'manage'])->name('manage');
 
-                    Route::get('{department_id}/hightDep', [HighlightController::class, 'hightDep'])->name('hightDep');
+                    Route::get('{department_id}/hight-Dep', [HighlightController::class, 'hightDep'])->name('hightDep');
                     Route::post('{department_id}/storeDep', [HighlightController::class, 'storeDep'])->name('storeDep');
-                    Route::put('{highlight_id}/updateLinkDep', [HighlightController::class, 'updateLinkDep'])->name('updateLinkDep');
+                    Route::put('{department_id}/updateLinkDep/{highlight_id}', [HighlightController::class, 'updateLinkDep'])->name('updateLinkDep');
 
 
 
@@ -457,7 +457,7 @@ Route::group(['middleware' => 'IsLoggedIn'], function () {
                     Route::get('{department_id}/edit/{user_id}', [DepartUsersController::class, 'DPeditUser'])->name('DPeditUser');
                     Route::put('{department_id}/DPupdateUser/{user_id}', [DepartUsersController::class, 'DPupdateUser'])->name('DPupdateUser');
 
-                    Route::get('{department_id}/umsschooldepart', [SchoolDepartController::class, 'schoolManage'])->name('schoolManageDepart');
+                    Route::get('{department_id}/umsschooldepartment', [SchoolDepartController::class, 'indexschool'])->name('umsschooldepartment');
                     Route::get('{department_id}/add_umsschooldepartform', [SchoolDepartController::class, 'create'])->name('createschoolDepart');
                     Route::post('{department_id}/store_umsschooldepartform', [SchoolDepartController::class, 'store'])->name('storeschoolDepart');
                     Route::get('{department_id}/{school_id}/edit_umsschooldepartform', [SchoolDepartController::class, 'edit'])->name('editschoolDepart');
@@ -617,7 +617,7 @@ Route::group(['middleware' => 'IsLoggedIn'], function () {
                 Route::get('/ActChangeStatus', [ActivityController::class, 'changeStatus'])->name('ActChangeStatus');
                 Route::get('/delete_blogform/{blog_id}', [BlogController::class, 'destory'])->name('destoryblog');
                 Route::get('/changeStatusBlog', [BlogController::class, 'changeStatus'])->name('changeStatusBlog');
-                Route::get('/delete_bookcategoryform/{category_id}', [BookCategoryController::class, 'destory'])->name('bookdestory');
+                Route::get('{department_id}/delete_bookcategoryform/{category_id}', [BookCategoryController::class, 'destory'])->name('bookdestory');
                 Route::get('/changeStatuBookCategory', [BookCategoryController::class, 'changeStatus'])->name('changeStatuBookCategory');
                 Route::get('/delete_manualform/{manual_id}', [ManualController::class, 'destory'])->name('destorymanual');
                 Route::get('/changeStatusManual', [ManualController::class, 'changeStatus'])->name('changeStatusManual');

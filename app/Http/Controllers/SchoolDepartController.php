@@ -12,7 +12,7 @@ use Illuminate\Support\Facades\Session;
 
 class SchoolDepartController extends Controller
 {
-    public function schoolManage($department_id)
+    public function umsschooldepartment($department_id)
     {
         if (Session::has('loginId')) {
             // ดึงข้อมูลผู้ใช้จากฐานข้อมูล
@@ -22,7 +22,7 @@ class SchoolDepartController extends Controller
             $users  = $depart->UserDe()->where('department_id', $department_id);
             $userschool  = $depart->SchouserDe()->where('department_id', $department_id);
             $provinceId = $data->province_id;
-            if ($data->user_role == 1) {
+            if ($data->user_role == 1 || $data->user_role == 8) {
                 $school = School::where('department_id', $department_id)->get();
             } elseif ($data->user_role == 6 || $data->user_role == 7) {
                 $school = School::where('provinces_id', $provinceId)
@@ -31,6 +31,27 @@ class SchoolDepartController extends Controller
         }
         return view('layouts.department.item.data.UserAdmin.group.umsschool.index', compact('depart', 'users', 'school', 'userschool'));
     }
+
+    public function indexschool($department_id)
+    {
+        if (Session::has('loginId')) {
+            // ดึงข้อมูลผู้ใช้จากฐานข้อมูล
+            $school = [];
+            $data = Users::where('user_id', Session::get('loginId'))->first();
+            $depart = Department::findOrFail($department_id);
+            $users  = $depart->UserDe()->where('department_id', $department_id);
+            $userschool  = $depart->SchouserDe()->where('department_id', $department_id);
+            $provinceId = $data->province_id;
+            if ($data->user_role == 1 || $data->user_role == 8) {
+                $school = School::where('department_id', $department_id)->get();
+            } elseif ($data->user_role == 6 || $data->user_role == 7) {
+                $school = School::where('provinces_id', $provinceId)
+                    ->where('department_id', $department_id)->get();
+            }
+        }
+        return view('layouts.department.item.data.UserAdmin.group.umsschool.index', compact('depart', 'users', 'school', 'userschool'));
+    }
+
     public function create($department_id)
     {
         $depart = Department::findOrFail($department_id);
@@ -50,6 +71,8 @@ class SchoolDepartController extends Controller
         $school->save();
         return redirect()->route('schoolManageDepart', ['department_id' => $department_id])->with('message', 'personTypes บันทึกข้อมูลสำเร็จ');
     }
+
+
     public function edit($department_id, $school_id)
     {
         $school = School::findOrFail($school_id);

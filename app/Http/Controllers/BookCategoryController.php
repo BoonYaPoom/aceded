@@ -168,12 +168,12 @@ class BookCategoryController extends Controller
         }
         return redirect()->route('bookpage', ['department_id' => $book->department_id])->with('message', 'book    เปลี่ยนแปลงเรียบร้อยแล้ว');
     }
-    public function destory($category_id)
+    public function destory($department_id,$category_id)
     {
         $book = BookCategory::findOrFail($category_id);
 
         $book->delete();
-        return redirect()->route('bookpage',)->with('message', 'book  ลบข้อมูลเรียบร้อยแล้ว');
+        return redirect()->back()->with('message', 'book  ลบข้อมูลเรียบร้อยแล้ว');
     }
 
     public function changeStatus(Request $request)

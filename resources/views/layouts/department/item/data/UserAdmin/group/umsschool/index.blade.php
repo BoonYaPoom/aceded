@@ -25,13 +25,11 @@
             <div class="card card-fluid">
                 <!-- .card-header -->
                 <div class="card-header bg-muted"><a
-                        href="{{ route('DPUserManage', ['department_id' => $depart->department_id]) }}">ผู้ใช้งาน</a> / <a
-                        href="{{ route('schoolManageDepart', ['department_id' => $depart->department_id]) }}">จัดการสถานศึกษาของ ระดับ {{$depart->name_th}}</a>
+                        href="{{ route('DPUserManage', [$depart]) }}">ผู้ใช้งาน</a> / <a
+                        href="{{ route('umsschooldepartment', [$depart]) }}">จัดการสถานศึกษาของ ระดับ {{$depart->name_th}}</a>
                 </div>
                 <!-- .card-body -->
                 <div class="card-body">
-
-
 
                     <!-- .table-responsive -->
                     <div class="table-responsive">

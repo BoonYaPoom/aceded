@@ -71,12 +71,13 @@
                             <!-- tbody -->
                             <tbody>
                                 <!-- tr -->
-                                @foreach ($webs->sortBy('web_id')  as $index => $item)
-                                    @php
-                                        $rowNumber = $index + 1;
-                                    @endphp
+                                @php
+                                $rowNumber = 1;
+                            @endphp
+                                @foreach ($webs->sortBy('sort')  as $index => $item)
+                                   
                                     <tr>
-                                        <td><a href="#">{{ $rowNumber }}</a></td>
+                                        <td><a href="#">{{ $rowNumber++ }}</a></td>
                                         <td>{{ $item->web_th }}</td>
                                         <td>{{ $item->web_en }}</td>
                                         <td>

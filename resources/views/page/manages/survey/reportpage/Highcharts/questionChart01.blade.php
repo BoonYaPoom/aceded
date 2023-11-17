@@ -17,6 +17,7 @@
             <tbody>
                 @php
                     $chartData = [];
+                $newqures = $item->question;
                 @endphp
                 @for ($i = 1; $i <= 8; $i++)
                     @if (isset($item->{'choice' . $i}))
@@ -72,7 +73,7 @@
                                 @endif %</td>
                         </tr>
                         <script>
-                            var question = {!! json_encode(strip_tags($item->question)) !!};
+                            var question = {!! json_encode(html_entity_decode(strip_tags($item->question))) !!};
                             var chartData = {!! json_encode($chartData) !!};
 
                             Highcharts.chart("pie_4{{ $item->question_id }}", {

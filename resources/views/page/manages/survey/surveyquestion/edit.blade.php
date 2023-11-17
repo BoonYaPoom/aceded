@@ -13,7 +13,8 @@
                         href="{{ route('surveypage', ['department_id' => $sur->department_id]) }}"
                         style="text-decoration: underline;">แบบสำรวจ</a> / <a
                         href="{{ route('questionpage', [$depart, $surques->survey_id]) }}" style="text-decoration: underline;">
-                        {{ strip_tags($surques->question) }}</a> /
+                        {{ html_entity_decode(strip_tags($surques->question)) }}
+                    </a> /
                     <i> แก้ไขแบบสำรวจ</i>
                 </div><!-- /.card-header -->
                 <form action="{{ route('updateque', ['department_id' => $depart, 'question_id' => $surques]) }}"
@@ -36,6 +37,11 @@
 
                             </select>
                         </div>
+                          <!-- .form-group -->
+                          <div class="form-group">
+                            <label for="question">คำถาม <span class="badge badge-warning">Required</span></label>
+                            <textarea class="editor" data-placeholder="คำถาม" data-height="150" name="question" id="question">{{ $surques->question }}</textarea>
+                        </div><!-- /.form-group -->
                         <!-- data == 1 -->
                         @include('page.manages.survey.surveyquestion.itemedit.data1')
                         <!-- data == 2 -->
@@ -57,11 +63,7 @@
                                 });
                             });
                         </script>
-                        <!-- .form-group -->
-                        <div class="form-group">
-                            <label for="question">คำถาม <span class="badge badge-warning">Required</span></label>
-                            <textarea class="editor" data-placeholder="คำถาม" data-height="150" name="question" id="question">{{ $surques->question }}</textarea>
-                        </div><!-- /.form-group -->
+                      
 
 
 

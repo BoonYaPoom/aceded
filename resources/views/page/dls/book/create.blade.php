@@ -36,9 +36,11 @@
                                 placeholder="ชื่อหมวด (ไทย)" required="" value="">
                         </div>
                         <!-- /.form-group -->
-                        @error('category_th')
-                            <span class="badge badge-warning">{{ $message }}</span>
-                        @enderror
+                        @if($errors->has('category_th'))
+                        <span class="badge badge-warning">{{ $errors->first('category_th') }}</span>
+                    @endif
+                    
+                     
 
                         <!-- .form-group -->
                         <div class="form-group">
@@ -49,14 +51,16 @@
                         <!-- /.form-group -->
 
                         <!-- .form-group -->
-                        <div class="form-group"><label for="cover">ภาพปก </label>
+                        <div class="form-group"><label for="cover">ภาพปก <span
+                            class="badge badge-warning">Required</span></label>
                             <input type="file" class="form-control" id="cover" name="cover" placeholder="ภาพปก"
-                                accept="image/*">
+                                accept="image/*" required="เพิ่มภาพ">
 
                         </div> <!-- /.form-group -->
-                        @error('cover')
-                            <span class="badge badge-warning">{{ $message }}</span>
-                        @enderror
+                        @if($errors->has('cover'))
+                        <span class="badge badge-warning">{{ $errors->first('cover') }}</span>
+                    @endif
+                    
                         <!-- .form-group -->
                         <div class="form-group d-none">
                             <label for="detail_th">รายละเอียด (ไทย)</label>

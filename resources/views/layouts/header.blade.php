@@ -6,7 +6,7 @@
                 <button class="hamburger hamburger-squeeze mr-2 d-lg-none d-xl-none" type="button" data-toggle="aside"
                     aria-label="toggle menu"><span class="hamburger-box"><span
                             class="hamburger-inner"></span></span></button>
-                <a href=""><img src="{{ asset($logo->detail) }}"
+                <a href=""><img src="{{ asset('upload/LOGO/logo.png') }}"
                         alt="" style="height: 50px;" class="bg-white border mt-3 mb-3"></a>
             </div>
             <div class="top-bar-list">

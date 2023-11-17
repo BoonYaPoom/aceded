@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('users', function (Blueprint $table) {
             $table->charset = 'utf8';
             $table->collation = 'utf8_general_ci';
-            $table->increments('user_id')->start(50000)->nocache();
+            $table->increments('user_id')->start(200000)->nocache();
             $table->string('username', 100)->collation('utf8_general_ci');
             $table->string('firstname', 400)->collation('utf8_general_ci');
             $table->string('lastname', 400)->nullable()->collation('utf8_general_ci');

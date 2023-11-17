@@ -70,113 +70,10 @@
 
 
 
-                    <a class="ml-1 btn btn-info btn-md " style="color:#fff"
-                        href="{{ route('schoolManageDepart', ['department_id' => $depart->department_id]) }}"><i
-                            class="fas fa-users"></i>
-                        จัดการสถานศึกษา</a>
-
-                        <div>
-                            <button type="button" class="btn btn-success btn-md" onclick="$('#clientuploadFormUserModal').modal('toggle');">
-                                <i class="fas fa-user-plus"></i> นำเข้าผู้ใช้งานทั้งหมด
-                            </button>
-                        </div>
-                        <div class="modal fade " id="clientuploadFormUserModal" tabindex="-1" user_role="dialog"
-                            aria-labelledby="clientuploadFormUserModalLabel" aria-modal="true">
-                            <!-- .modal-dialog -->
-                            <form id="uploadFormUser" enctype="multipart/form-data">
-                                @csrf
-                                <div class="modal-dialog" user_role="document">
-                                    <!-- .modal-content -->
-                                    <div class="modal-content">
-                                        <!-- .modal-header -->
-                                        <div class="modal-header bg-success">
-                                            <h6 id="clientUploadModalLabel" class="modal-title text-white">
-                                                <span class="sr-only">Upload</span> <span><i class="fas fa-user-plus text-white"></i>
-                                                    นำเข้าผู้ใช้งาน</span>
-                                            </h6>
-                                        </div><!-- /.modal-header -->
-                                        <!-- .modal-body -->
-                                        <div class="modal-body">
-                                            <!-- .form-group -->
-                                            <div class="container">
-                                                <input type="file" class="form-control" id="uploaduser" name="fileexcel" accept=".xlsx"
-                                                    required>
-                                                <small class="form-text text-muted"><a
-                                                        href="https://1drv.ms/x/s!Aneojfnh1p7QgepezApvu9n8MZCmBg?e=8RLia9" target="_blank">
-                                                        ไฟล์ตัวอย่าง
-                                                        (.xlsx)</a>
-                                                </small>
-                                            </div>
-                                        </div><!-- /.modal-body -->
-                                        <!-- .modal-footer -->
-                                        <div class="modal-footer">
-                                            <button type="submit" class="btn btn-success" id="btnsetuser_role"><i class="fas fa-user-plus"></i>
-                                                นำเข้าผู้ใช้งานทั้งหมด</button>
-                                            <button type="button" class="btn btn-light" data-dismiss="modal">ยกเลิก</button>
-                                        </div><!-- /.modal-footer -->
-                                    </div><!-- /.modal-content -->
-                                </div><!-- /.modal-dialog -->
-                            </form>
-                    
-                        </div>
-                        <div>
-                            <script>
-                                $(document).ready(function() {
-                                    $('#uploadFormUser').on('submit', function(e) {
-                                        e.preventDefault();
-                    
-                                        var formData = new FormData(this);
-                    
-                                        $.ajax({
-                                            url: '{{ route('UsersDepartAllImport', ['department_id' => $depart ]) }}',
-                                            type: 'POST',
-                                            data: formData,
-                                            dataType: 'json',
-                                            cache: false,
-                                            contentType: false,
-                                            processData: false,
-                                            success: function(response) {
-                                                console.log(response);
-                                     
-                                                if (response.message) {
-                                                    Swal.fire({
-                                                        title: 'User Successful',
-                                                        text: 'ข้อมูล User ถูกบันทึกเรียบร้อย',
-                                                        icon: 'success',
-                                                        confirmButtonText: 'OK'
-                                                    }).then(function(result) {
-                                                        if (result.isConfirmed) {
-                                                            // รีเซ็ตแบบฟอร์มเมื่อกด OK
-                                                            $('#uploadFormUser')[0].reset();
-                                                            $('#clientuploadFormUserModal').modal(
-                                                                'hide');
-                                                            location.reload();
-                                                        }
-                    
-                                                    });
-                                                } else {
-                                                    Swal.fire({
-                                                        title: 'Error!',
-                                                        text: 'Import failed: ' + response.error,
-                                                        icon: 'error',
-                                                        confirmButtonText: 'OK'
-                                                    });
-                                                }
-                                            },
-                                            error: function(xhr, status, error) {
-                                                console.log(xhr.responseJSON.error);
-                                                Swal.fire({
-                                                    title: 'Error!',
-                                                    text: 'Import failed: ' + xhr.responseJSON.error,
-                                                    icon: 'error',
-                                                    confirmButtonText: 'OK'
-                                                });
-                                            }
-                                        });
-                                    });
-                                });
-                            </script>
-
+                        {{-- <a class="ml-1 btn btn-info btn-md " style="color:#fff"
+                            href="{{ route('umsschooldepartment', [$depart]) }}"><i
+                                class="fas fa-users"></i>
+                            จัดการสถานศึกษา</a> --}}
 
 
                     <div class="col-md-6 mb-3">
@@ -191,7 +88,7 @@
                             @endforeach
                         </select>
                     </div>
-                    <div class="col-md-6 mb-3">
+                    {{-- <div class="col-md-6 mb-3">
                         <label for="drop2" class="col-md-3 text-right mt-1">จังหวัด</label>
                         <select id="drop2" name="drop2" class="form-control form-control-sm" data-allow-clear="false">
                             <option value="0"selected>ทั้งหมด</option>
@@ -202,7 +99,7 @@
                                 <option value="{{ $provin->name_in_thai }}"> {{ $provin->name_in_thai }} </option>
                             @endforeach
                         </select>
-                    </div>
+                    </div> --}}
 
                 </div>
 
@@ -402,7 +299,36 @@
                             <!-- tbody -->
                             <tbody>
                                 <!-- tr -->
-                              
+                               @php
+                                    $r = 0;
+                                @endphp
+                                @foreach ($usermanages->sortBy('user_id') as $item)
+                                    @php
+                                        $r++;
+                                    @endphp
+                                    @php
+
+                                        $user_roleadmin = $item->user_role == 1;
+                                    @endphp
+                                    @php
+                                        $statususerss = $item->userstatus == 0;
+                                    @endphp
+
+                                    @php
+                                        $clientPermissionModal = 'clientPermissionModal-' . $item->user_id;
+                                        $person = \App\Models\PersonType::where('person_type', $item->user_type)
+                                            ->pluck('person')
+                                            ->first();
+                                        $proviUser = \App\Models\Provinces::where('id', $item->province_id)
+                                            ->pluck('name_in_thai')
+                                            ->first();
+                                    @endphp
+
+                                    @include('layouts.department.item.data.UserAdmin.DataUser.userAll')
+
+                                    @include('layouts.department.item.data.UserAdmin.group.ModelUser.modelRole')
+                                    @include('layouts.department.item.data.UserAdmin.group.ModelUser.modelPass')
+                                @endforeach
                             </tbody><!-- /tbody -->
                         </table><!-- /.table -->
                     </div><!-- /.table-responsive -->

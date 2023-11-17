@@ -96,7 +96,7 @@
                                 <label for="firstname" class="col-md-2">เลขประจำตัวประชาชน</label>
                                 <div class="col-md-9 mb-3">
                                     <input type="text" class="form-control " id="citizen_id" name="citizen_id"
-                                        minlength="13" maxlength="13" placeholder="เลขประจำตัวประชาชน"
+                                       placeholder="เลขประจำตัวประชาชน"
                                         value="{{ $usermanages->citizen_id }}" disabled>
                                 </div>
                             </div>
@@ -263,40 +263,7 @@
                                 </div>
                             </div>
                             <!-- /form row -->
-                            <!-- /form row -->
-                            <div class="form-row">
-                                <label for="school" class="col-md-2">โรงเรียน / มหาลัย <span
-                                        class="badge badge-warning">Required</span></label>
-                                <div class="col-md-9 mb-3">
-                                    <input type="text" class="form-control inputuname " id="search" name="school"
-                                        placeholder="school" value="" required=""><small
-                                        class="form-text text-muted">โรงเรียน / มหาลัย </small>
-                                </div>
-                            </div>
-                            <script type="text/javascript">
-                                var path = "{{ route('autocompleteSearch') }}";
-
-                                $("#search").autocomplete({
-                                    source: function(request, response) {
-                                        $.ajax({
-                                            url: path,
-                                            type: 'GET',
-                                            dataType: "json",
-                                            data: {
-                                                search: request.term
-                                            },
-                                            success: function(data) {
-                                                response(data);
-                                            }
-                                        });
-                                    },
-                                    select: function(event, ui) {
-                                        $('#search').val(ui.item.label);
-                                        console.log(ui.item);
-                                        return false;
-                                    }
-                                });
-                            </script>
+                      
 
                             <div class="form-row " id="set_pos_name">
                                 <label for="pos_name" class="col-md-2">ตำแหน่ง</label>

@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('user_school', function (Blueprint $table) {
             $table->charset = 'utf8';
             $table->collation = 'utf8_general_ci';
-            $table->increments('user_school_id')->start(10000)->nocache();
+            $table->increments('user_school_id')->start(300000)->nocache();
             $table->integer('school_code');
             $table->integer('user_id');
             $table->integer('department_id')->nullable();

@@ -75,7 +75,6 @@ class WebController extends Controller
                     $de_th = new DOMDocument();
                     $de_th->loadHTML($detail_th, LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
                     $images_des_th = $de_th->getElementsByTagName('img');
-    
                     foreach ($images_des_th as $key => $img) {
                         if (strpos($img->getAttribute('src'), 'data:image/') === 0) {
                             $data = base64_decode(explode(',', explode(';', $img->getAttribute('src'))[1])[1]);
@@ -116,6 +115,7 @@ class WebController extends Controller
             }
             
             $webs->save();
+
             if ($request->hasFile('cover')) {
                 $file_name = 'cover' .  $webs->web_id  . '.' . $request->cover->getClientOriginalExtension();
                 $uploadDirectory = public_path('upload/Web/');
@@ -126,11 +126,14 @@ class WebController extends Controller
 
                     file_put_contents(public_path('upload/Web/' . $file_name), file_get_contents($request->cover));
                     $webs->cover = 'upload/Web/' . $file_name;
+                    $webs->save();
                 }
             } else {
                 $file_name = '';
                 $webs->cover = $file_name;
+                $webs->save();
             }
+           
             if (Session::has('loginId')) {
                 $loginId = Session::get('loginId');
 

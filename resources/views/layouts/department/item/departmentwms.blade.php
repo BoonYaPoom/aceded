@@ -36,7 +36,7 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @if ($data->user_role == 1)
+                                {{-- @if ($data->user_role == 1)
                                     <tr>
                                         <td><a href="{{ route('dataci') }}">
                                                 DPM</a>
@@ -50,7 +50,7 @@
                                         </td>
 
                                     </tr>
-                                @endif
+                                @endif --}}
                                 @foreach ($department->sortBy('department_id') as $depart)
                                     @php
                                         $userdepart = \App\Models\UserDepartment::where('user_id', $data->user_id)

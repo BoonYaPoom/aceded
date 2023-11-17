@@ -103,7 +103,8 @@ class EditManageUserController extends Controller
 
         $usermanages = Users::findOrFail($user_id);
 
-        if ($request->hasFile('avatar')) {
+
+        if (!empty($request->hasFile('avatar'))) {
             $image_name = 'avatar' .  $user_id . '.' . $request->avatar->getClientOriginalExtension();
             $image = Image::make($request->avatar)->resize(400, 400);
             $uploadDirectory = public_path('upload/Profile/' . $image_name);
@@ -139,61 +140,28 @@ class EditManageUserController extends Controller
         $usermanages->mobile = $request->mobile;
 
         $usermanages->pos_name = $request->pos_name;
-        if ($request->school) {
-            // ค้นหาโรงเรียนโดยใช้ชื่อโรงเรียนจาก $request
-            $existingSchool = School::where('school_name', $request->school)
-                ->where('provinces_code', $request->province_id)
-                ->where('subdistrict_code', null)
-                ->where('district_code', null)
-                ->first();
-
-            // ถ้าไม่พบโรงเรียนในระบบใหม่
-            if (!$existingSchool) {
-                $scho = new School;
-                $scho->school_name = $request->school;
-                $scho->provinces_code = $request->province_code;
-                $scho->subdistrict_code = null;
-                $scho->district_code = null;
-                $scho->save();
-            } else {
-                // ถ้าพบโรงเรียนในระบบแล้วให้ใช้ id ของโรงเรียนที่มีอยู่
-                $scho = $existingSchool;
-            }
-        }
+    
 
         // บันทึกการเปลี่ยนแปลง
         $usermanages->save();
-        // ค้นหารายการ UserSchool ที่มี user_id และ school_id ที่ตรงกับข้อมูลที่คุณต้องการผูก
-        $existingUserSchool = UserSchool::where('user_id', $usermanages->user_id)
-            ->where('school_code', $scho->school_code)
-            ->first();
-
-        if (!$existingUserSchool) {
-            // ถ้าไม่พบ UserSchool ในระบบใหม่
-            $userschool = new UserSchool;
-            $userschool->school_code = $scho->school_code;
-            $userschool->user_id = $usermanages->user_id;
-            $userschool->save();
-        } else {
-            $existingUserSchool->update([
-                'school_id' => $scho->school_id,
-                'user_id' => $usermanages->user_id,
-            ]);
-        }
+   
 
 
         $department_data = $request->department_data;
-        DB::table('users_department')
-        ->where('user_id', $user_id)
-        ->delete();
+        if (!empty($department_data)) {
+            DB::table('users_department')
+                ->where('user_id', $user_id)
+                ->delete();
 
-        
-        foreach ($department_data as $departmentId) {
-        DB::table('users_department')->insert([
-            'user_id' =>  $user_id,
-            'department_id' => $departmentId,
-        ]);
-    }
+
+            foreach ($department_data as $departmentId) {
+                DB::table('users_department')->insert([
+                    'user_id' =>  $user_id,
+                    'department_id' => $departmentId,
+                ]);
+            }
+        }
+
 
         // ส่งข้อความสำเร็จไปยังหน้าแก้ไขโปรไฟล์
         return redirect()->route('UserManage')->with('message', 'แก้ไขโปรไฟล์สำเร็จ');
@@ -332,7 +300,7 @@ class EditManageUserController extends Controller
         $usermanages->user_type = $request->input('user_type', 0);
         $usermanages->province_id = $request->province_id;
         $usermanages->user_type_card =  $request->input('user_type_card', 0);
-      
+
 
         $usermanages->district_id = null;
         $usermanages->subdistrict_id = null;
@@ -363,9 +331,9 @@ class EditManageUserController extends Controller
                 $scho = $existingSchool;
                 if (empty($scho->school_code)) {
                     $scho->school_code = $scho->school_id;
-                    $scho->save();      
+                    $scho->save();
+                }
             }
-        }
             $userschool = new UserSchool;
             $userschool->school_code = $scho->school_code;
             $userschool->user_id = $usermanages->user_id;

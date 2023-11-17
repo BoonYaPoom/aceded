@@ -58,8 +58,9 @@ class CustomAuthController extends Controller
 
 
         ]);
-
+        $user_idplus = Users::max('user_id') ?? 0;
         $users = new Users();
+        $users->user_id = $user_idplus;
         $users->username = $request->username;
         $users->firstname = $request->firstname;
         $users->lastname = $request->lastname;
@@ -130,7 +131,7 @@ class CustomAuthController extends Controller
             'username' => 'required',
             'password' => 'required|min:3|max:20'
         ]);
-        try {
+      
             $user = Users::where('username', '=', $request->username)->first();
 
             if ($user) {
@@ -147,9 +148,7 @@ class CustomAuthController extends Controller
             } else {
                 return back()->with('fail', 'ไม่พบผู้ใช้ในระบบ');
             }
-        } catch (\Exception $e) {
-            return response()->view('error.error-500', [], 500);
-        }
+        
     }
 
     public function loginLdapUser(Request $request)
@@ -175,9 +174,10 @@ class CustomAuthController extends Controller
                     $randomcitizen = random_int(1000000000000, 9999999999999);
                     $randomtell = random_int(1000000000, 9999999999);
                     $users = new Users();
+
                     $users->username = $request->username;
                     $users->firstname = $request->username;
-                    $users->lastname = $request->username;
+                    $users->lastname = $request->lastname;
                     $users->password = Hash::make($request->password);
                     $users->citizen_id = $randomcitizen;
                     $users->prefix  = '';
