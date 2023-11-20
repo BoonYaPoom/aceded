@@ -201,7 +201,7 @@
                             <label for="limitdatetime">กำหนดวันทำข้อสอบ</label>
                             <label class="switcher-control switcher-control-success switcher-control-lg">
                                 <input type="checkbox" class="switcher-input" name="limitdatetime" id="limitdatetime"
-                                    value="1">
+                                    value="1" {{ $exams->limitdatetime == 1 ? 'checked' : '' }}>
                                 <span class="switcher-indicator"></span>
                                 <span class="switcher-label-on">ON</span>
                                 <span class="switcher-label-off text-red">OFF</span>
@@ -253,7 +253,7 @@
                             <label for="limittime">กำหนดเวลาทำข้อสอบ </label> <label
                                 class="switcher-control switcher-control-success switcher-control-lg"><input
                                     type="checkbox" class="switcher-input" name="limittime" id="limittime"
-                                    value="1"> <span class="switcher-indicator"></span> <span
+                                    value="1" {{ $exams->limittime == 1 ? 'checked' : '' }}> <span class="switcher-indicator"></span> <span
                                     class="switcher-label-on">ON</span> <span
                                     class="switcher-label-off text-red">OFF</span></label>
                         </div><!-- /.form-group -->

@@ -75,7 +75,8 @@
                                                  </div>
 
                                              </td>
-                                             <td>{{ strip_tags($questions->question) }}</td>
+                                             <td>{{ strip_tags(html_entity_decode($questions->question)) }}</td>
+
                                              <td>{{ $questions->score }} </td>
                                              <td>{{ $questionType->question_type_th }}</td>
                                              @if ($questions->lesson_id == 0)

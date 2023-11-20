@@ -94,7 +94,14 @@ class ExcelController extends Controller
                             $questionType = 1;
                             $questionStatus = 1;
                             $score = 0;
-                            $numChoice = 5;
+                            $numChoice = count(array_filter([
+                                $row[2] !== '' ? $row[2] : null,
+                                $row[3] !== '' ? $row[3] : null,
+                                $row[4] !== '' ? $row[4] : null,
+                                $row[5] !== '' ? $row[5] : null,
+                                $row[6] !== '' ? $row[6] : null,
+                            ]));
+                            
                             $Choice6 = null;
                             $Choice7 = null;
                             $Choice8 = null;
@@ -106,11 +113,11 @@ class ExcelController extends Controller
                             $newQuestion = new Question([
                                 'question_id' => $lastQuestionId + 1,
                                 'question' => $row[1],
-                                'choice1' => $row[2],
-                                'choice2' => $row[3],
-                                'choice3' => $row[4],
-                                'choice4' => $row[5],
-                                'choice5' => $row[6],
+                                'choice1' => isset($row[2]) ? $row[2] : null,
+                                'choice2' => isset($row[3]) ? $row[3] : null,
+                                'choice3' => isset($row[4]) ? $row[4] : null,
+                                'choice4' => isset($row[5]) ? $row[5] : null,
+                                'choice5' => isset($row[6]) ? $row[6] : null,                                
                                 'answer' => $row[7],
                                 'explain' => $row[8],
                                 'choice6' => $Choice6,
@@ -386,9 +393,9 @@ class ExcelController extends Controller
                                 'user_department_id' =>  $uiduserdepartment_id + 1,
                                 'user_id' =>     $user_idplus + 1,
                                 'department_id' => $department_id,
-            
+
                             ]);
-                            $UserDepartment ->save();
+                            $UserDepartment->save();
                             $newUsers->save();
                         }
                     }
@@ -520,14 +527,14 @@ class ExcelController extends Controller
 
 
                             $newUsers->save();
-                        
+
                             $userschool =  new UserSchool([
 
                                 'user_school_id' =>  $uidUserSchool + 1,
                                 'school_id' =>   $school_id,
                                 'user_id' =>   $user_idplus + 1,
                                 'department_id' => $department_id,
-            
+
                             ]);
                             $userschool->save();
 
@@ -536,9 +543,9 @@ class ExcelController extends Controller
                                 'user_department_id' =>  $uiduserdepartment_id + 1,
                                 'user_id' =>     $user_idplus + 1,
                                 'department_id' => $department_id,
-            
+
                             ]);
-                            $UserDepartment ->save();
+                            $UserDepartment->save();
                         }
                     }
 
@@ -627,7 +634,7 @@ class ExcelController extends Controller
                                 'citizen_id' =>   $row[7],
                                 'gender' => $row[8],
                                 'prefix' =>  $prefix,
-                            
+
                                 'user_role' => $user_role,
                                 'per_id' => $per_id,
                                 'department_id' => $department_id,
@@ -669,14 +676,14 @@ class ExcelController extends Controller
                             ]);
 
                             $newUsers->save();
-                    
+
                             $userschool =  new UserSchool([
 
                                 'user_school_id' =>  $uidUserSchool + 1,
                                 'school_code' =>   $row[9],
                                 'user_id' =>   $user_idplus + 1,
                                 'department_id' => $department_id,
-            
+
                             ]);
                             $userschool->save();
 
@@ -685,7 +692,7 @@ class ExcelController extends Controller
                                 'user_id' =>     $user_idplus + 1,
                                 'department_id' => $department_id,
                             ]);
-                            $UserDepartment ->save();
+                            $UserDepartment->save();
                         }
                     }
 

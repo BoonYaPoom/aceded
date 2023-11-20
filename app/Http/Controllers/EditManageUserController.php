@@ -96,8 +96,9 @@ class EditManageUserController extends Controller
     public function edit($user_id)
     {
         $usermanages = Users::findOrFail($user_id);
-
-        return view('page.UserAdmin.edit', ['usermanages' => $usermanages]);
+        
+        $role = UserRole::all();
+        return view('page.UserAdmin.edit', ['usermanages' => $usermanages ,'role'=>$role]);
     }
 
 
@@ -132,7 +133,7 @@ class EditManageUserController extends Controller
         $usermanages->citizen_id = $request->citizen_id;
         $usermanages->gender = $request->input('gender', 0);
         $usermanages->email = $request->email;
-
+        $usermanages->user_role = $request->user_role;
         $usermanages->modifieddate = now();
         $usermanages->birthday = $request->birthday;
         $usermanages->user_affiliation = $request->user_affiliation;

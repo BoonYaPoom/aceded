@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Department;
 use App\Models\Provinces;
 use App\Models\School;
 use App\Models\SubmitSchool;
@@ -32,7 +33,7 @@ class SubmitController extends Controller
 
         $thaiEndDate = [];
         foreach ($mit as  $value) {
-            $school = School::where('school_id', $value->school_id)
+            $school = School::where('school_code', $value->school_code)
                 ->pluck('school_name')
                 ->first();
             $proviUser = Provinces::where('code', $value->provines_code)
@@ -73,8 +74,15 @@ class SubmitController extends Controller
 
     public function store(Request $request)
     {
+
+        $request->validate([
+            'citizen_id' => 'unique:users',
+        ], [
+            'citizen_id.unique' => 'เลขบัตรนี้เคยขอรหัส admin ไปแล้ว',
+        ]);
+        
         $mit = new SubmitSchool;
-        $mit->school_id = $request->school_id;
+        $mit->school_code = $request->school_code;
         $mit->provines_code = $request->provines_code;
 
         $mit->submit_status = 0;
@@ -100,17 +108,11 @@ class SubmitController extends Controller
     }
 
 
-    public function detaildata(Request $request, $submit_id)
+    public function detaildata($submit_id)
     {
-
-
-
         $mit =  SubmitSchool::findOrFail($submit_id);
-   
-
-        
         $thaiEndDate = [];
-        $school = School::where('school_id', $mit->school_id)
+        $school = School::where('school_code', $mit->school_code)
             ->pluck('school_name')
             ->first();
         $proviUser = Provinces::where('code', $mit->provines_code)
@@ -126,25 +128,39 @@ class SubmitController extends Controller
         if ($mit->enddate !== null) {
             $thaiEndDate = Carbon::parse($mit->enddate)->locale('th')->isoFormat('LL');
         }
-        return view("layouts.department.item.data.request.detail", compact("mit", 'school', 'proviUser', 'fullMobile', 'thaiStartDate', 'thaiEndDate'));
+        $citizen_id = Users::where('citizen_id', $mit->citizen_id)
+            ->pluck('username')
+            ->first();
+
+
+        return view("layouts.department.item.data.request.detail", compact("mit", 'school','citizen_id', 'proviUser', 'fullMobile', 'thaiStartDate', 'thaiEndDate'));
     }
 
-    public function storeAdmin(Request $request, $submit_id)
+    public function storeAdminreq(Request $request, $submit_id)
     {
+
+        
         $mit =  SubmitSchool::findOrFail($submit_id);
         $mit->submit_status = 1;
         $mit->enddate = now();
         $mit->save();
+        $school = School::where('school_code', $mit->school_code)
+        ->pluck('school_name')
+        ->first();
+        $proviUser = Provinces::where('code', $mit->provines_code)
+        ->pluck('name_in_thai')
+        ->first();
 
+      
         $usermanages = new Users();
-        $usermanages->username = $request->username;
-        $usermanages->firstname = $request->firstname;
-        $usermanages->lastname = $request->lastname;
-        $usermanages->password = Hash::make($request->password);
-        $usermanages->citizen_id = $request->citizen_id;
+        $usermanages->username =  $mit->school_code;
+        $usermanages->firstname = $school;
+        $usermanages->lastname = $proviUser;
+        $usermanages->password = Hash::make($mit->school_code);
+        $usermanages->citizen_id = $mit->citizen_id;
         $usermanages->prefix  = '';
         $usermanages->gender = 1;
-        $usermanages->email = $request->email;
+        $usermanages->email = $mit->email;
         $usermanages->user_role =  6;
         $usermanages->per_id = null;
         $usermanages->department_id = '';
@@ -158,7 +174,7 @@ class SubmitController extends Controller
         $usermanages->user_position = '';
         $usermanages->workplace = $request->workplace;
         $usermanages->telephone = '';
-        $usermanages->mobile = $request->mobile;
+        $usermanages->mobile = $mit->telephone;
         $usermanages->socialnetwork = '';
         $usermanages->experience = null;
         $usermanages->recommened = null;
@@ -174,14 +190,14 @@ class SubmitController extends Controller
         $usermanages->profiles = null;
         $usermanages->editflag = null;
         $usermanages->pos_level = 0;
-        $usermanages->pos_name = $request->pos_name;
+        $usermanages->pos_name = $mit->pos_name;
         $usermanages->sector_id = 0;
         $usermanages->office_id = 0;
-        $usermanages->birthday = $request->birthday;
-        $usermanages->user_affiliation = $request->user_affiliation;
-        $usermanages->user_type = $request->input('user_type', 0);
-        $usermanages->province_id = $request->province_id;
-        $usermanages->user_type_card =  $request->input('user_type_card', 0);
+        $usermanages->birthday = null;
+        $usermanages->user_affiliation = null;
+        $usermanages->user_type = 1 ;
+        $usermanages->province_id = $mit->province_id;
+        $usermanages->user_type_card =  1;
         $usermanages->district_id = null;
         $usermanages->subdistrict_id = null;
 
@@ -189,17 +205,17 @@ class SubmitController extends Controller
 
 
         $userschool = new UserSchool;
-        $userschool->school_id = $mit->school_id;
+        $userschool->school_code = $mit->school_code;
         $userschool->user_id = $usermanages->user_id;
         $userschool->save();
 
-        $department_data = $request->department_data;
+        $department_data = Department::all();
         foreach ($department_data as $departmentId) {
             DB::table('users_department')->insert([
                 'user_id' =>    $usermanages->user_id,
-                'department_id' => $departmentId,
+                'department_id' => $departmentId->department_id,
             ]);
         }
-        return redirect()->route('UserManage')->with('message', 'แก้ไขโปรไฟล์สำเร็จ');
+        return redirect()->route('detaildata', $submit_id)->with('message', 'แก้ไขโปรไฟล์สำเร็จ');
     }
 }

@@ -1,8 +1,7 @@
 @extends('layouts.adminhome')
 @section('content')
     <!-- .page-inner -->
-    <form action="" method="post" enctype="multipart/form-data">
-        @csrf
+
 
         <!-- .page-inner -->
         <div class="page-inner">
@@ -79,13 +78,25 @@
                                         </div>
                                     @endif
 
-
+                                  
+                                    <label for="username" class="col-md-2">รหัส :</label>
+                                    <div class="col-md-4 mb-3">
+                                        <label for="username" class="col-md-12">Username : {{ $citizen_id }}</label>  
+                                        <label for="username" class="col-md-12">Password : {{ $citizen_id }}</label> 
+                                    </div>
+                                    <label for="username" class="col-md-2">เช็๋คไฟล์ :</label>
+                                    <div class="col-md-4 mb-3">
+                                        <a
+                                        href="{{asset($mit->submit_path)}}"
+                                        target="_blank"> ไฟล์ตัวอย่าง
+                                        (.pdf)</a>
+                                    </div>
                                 </div>
                             </fieldset>
                         </div>
 
                         @if ($mit->submit_status == 0)
-                            <form action="{{ route('storeAdmin', ['submit_id' => $mit->submit_id]) }}">
+                            <form action="{{ route('storeAdminreq', ['submit_id' => $mit]) }}" method="post">
                                 @csrf
                                 @method('PUT')
                                 <div class="card-body">
@@ -96,17 +107,10 @@
                                 </div>
                             </form>
                         @else
-                            <div class="card-body">
-                                <div class="form-actions">
-                                    <button type="submit" class="btn btn-primary-theme ml-auto btn-lg"><i
-                                            class="far fa-save"
-                                            onclick="window.location='{{ route('requestSchool') }}'"></i> กดเพื่อย้อนกลับ
-                                    </button>
-                                </div>
-                            </div>
+                        
                         @endif
 
-    </form>
+   
     </div>
     </div>
     </div>

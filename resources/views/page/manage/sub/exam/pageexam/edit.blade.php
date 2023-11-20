@@ -41,8 +41,8 @@
                                 data-placeholder="ประเภทข้อสอบ" data-allow-clear="false">
                                 <option value="0" selected  disabled>เลือก</option>
                                 @foreach ($typequs as $type)
-                                @if ($type->question_type == 1)
-
+                                @if ($type->question_type > 2 || $type->question_type < 2)
+                     
                                     <option value="{{ $type->question_type }}" {{ $type->question_type == $ques->question_type ? 'selected' : '' }} > {{ $type->question_type_th }} </option>
                                     @endif
                                     @endforeach
@@ -129,28 +129,34 @@
                                 <label class="control-label" for="numchoice">จำนวนตัวเลือก</label> <select id="numchoice"
                                     name="numchoice" class="form-control" data-toggle="select2"
                                     data-placeholder="จำนวนตัวเลือก" data-allow-clear="false">
-                                    @for ($i = 4; $i <= 8; $i++)
-                                        <option value="{{ $i }}" {{ $i == 4 ? 'selected' : '' }}>
+                                    @for ($i = 2; $i <= 8; $i++)
+                                        <option value="{{ $i }}" {{ $i == $ques->numchoice ? 'selected' : '' }}>
                                             {{ $i }}</option>
                                     @endfor
                                 </select>
 
                             </div><!-- /.form-group -->
-
+                                @php
+                                                $examnum = $ques->answer;
+                                         $jsonexam = json_decode($examnum);
+                                         $datajsonexam = collect($jsonexam);
+                                @endphp
                             @for ($i = 1; $i <= 8; $i++)
                                 <div class="form-group qtype1" id="showchoice{{ $i }}"
-                                    style="{{ $i > 4 ? 'display:none' : '' }}">
+                                    style="{{ $i > $ques->numchoice ? 'display:none' : '' }}"   >
                                     <label for="choice{{ $i }}">ตัวเลือกที่ {{ $i }}</label>
                                     <div class="custom-control custom-control-inline custom-checkbox">
                                         <input type="checkbox" class="custom-control-input" id="check{{ $i }}"
-                                            name="checkanswer[]" value="{{ $i }}">
+                                            name="checkanswer[]" value="{{ $i }}" {{ in_array($i, $datajsonexam->toArray()) ? 'checked' : '' }}>
                                         <label class="custom-control-label"
                                             for="check{{ $i }}">คำตอบถูกต้อง</label>
                                     </div>
                                     
                                     <textarea class="editor" data-placeholder="ตัวเลือกที่ {{ $i }}" data-height="120"
-                                    name="choice{{ $i }}" id="choice{{ $i }}">
+                                    name="choice{{ $i }}" id="choice{{ $i }}" >
                                     <figure><figcaption></figcaption></figure>
+                                    {{ $ques['choice'.$i] ?? '' }}
+                    
                                 </textarea>
                                 
                                 </div><!-- /.form-group -->

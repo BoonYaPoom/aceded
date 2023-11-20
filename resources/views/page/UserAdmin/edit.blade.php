@@ -66,6 +66,30 @@
                             </div>
                             @include('page.UserAdmin.modeleditDpart')
 
+                            <div class="form-row " id="user_role">
+                                <label for="user_role" class="col-md-2">เลือกประเภทผู้ใช้งาน <span
+                                    class="badge badge-warning">Required</span></label>
+                                <div class="col-md-9 mb-3">
+                                    <select id="user_role" name="user_role" class="form-control form-control-md"
+                                        data-toggle="select2" data-allow-clear="false">
+                                        <option value="0" disabled>เลือกประเภทผู้ใช้งาน</option>
+                                        @foreach ($role as $roles)
+                                            @if ($roles->role_status == 1)
+                                                @if ($roles->user_role_id > 1)
+                                                    <option value="{{ $roles->user_role_id }}" 
+                                                        {{ $roles->user_role_id == $usermanages->user_role ? 'checked' : '' }}>{{ $roles->role_name }}
+                                                    </option>
+                                                @endif
+                                            @endif
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div>
+                            @error('user_role')
+                                    <div class="col-md-9 mb-3">
+                                    <span class="badge badge-warning">{{ $message }}</span>
+                                </div>
+                            @enderror
                             <!-- form row -->
                             <div class="form-row">
                                 <label for="username" class="col-md-2">Username <span

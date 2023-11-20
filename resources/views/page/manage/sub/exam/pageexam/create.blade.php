@@ -25,10 +25,10 @@
                 <!-- .card -->
                 <div class="card card-fluid">
                     <!-- .card-header -->
-                    <div class="card-header bg-muted"><a href="{{ route('exampage', [$depart,$subs->subject_id]) }}"
+                    <div class="card-header bg-muted"><a href="{{ route('exampage', [$depart,$subject_id]) }}"
                             style="text-decoration: underline;">หมวดหมู่</a> / <a
-                            href="{{ route('pagequess', [$depart,$subs->subject_id]) }}"
-                            style="text-decoration: underline;">จัดการวิชา</a> / <i>คลังข้อสอบ</i> / <i></i></div>
+                            href="{{ route('pagequess', [$depart,$subject_id]) }}"
+                            style="text-decoration: underline;">จัดการวิชา</a></div>
                     <!-- /.card-header -->
                     <!-- .nav-scroller -->
 
@@ -38,18 +38,18 @@
                             <label class="control-label" for="question_type">ประเภทข้อสอบ</label> <select id="question_type"
                                 name="question_type" class="form-control" data-toggle="select2"
                                 data-placeholder="ประเภทข้อสอบ" data-allow-clear="false">
-                                <option value="0" selected disabled>เลือก</option>
+                                <option value="0" selected  disabled>เลือก</option>
                                 @foreach ($typequs as $type)
-                                    @if ($type->question_type == 1)
-                                        <option value="{{ $type->question_type }}"> {{ $type->question_type_th }} </option>
+                                @if ($type->question_type > 2 || $type->question_type < 2)
+                     
+                                    <option value="{{ $type->question_type }}" > {{ $type->question_type_th }} </option>
                                     @endif
-                                @endforeach
+                                    @endforeach
                             </select>
                             @error('question_type')
-                                <span class="badge badge-warning">{{ $message }}</span>
+                            <span class="badge badge-warning">{{$message}}</span>
+                            
                             @enderror
-
-
                             <script>
                                 $(document).ready(function() {
                                     $('#question_type').change(function() {
@@ -85,21 +85,22 @@
                             <label class="control-label" for="lesson_id">หมวดข้อสอบ</label> <select id="lesson_id"
                                 name="lesson_id" class="form-control" data-toggle="select2" data-placeholder="หมวดข้อสอบ"
                                 data-allow-clear="false">
-                                <option value="0" selected>ข้อสอบ </option>
+                                <option value="0" selected  >ข้อสอบ </option>
 
                                 @foreach ($lossen as $lession)
-                                    <option value="{{ $lession->lesson_id }}">{{ $lession->lesson_th }} </option>
+                                    <option value="{{ $lession->lesson_id }}" >{{ $lession->lesson_th }} </option>
                                 @endforeach
                             </select>
                         </div><!-- /.form-group -->
                         @error('lesson_id')
-                            <span class="badge badge-warning">{{ $message }}</span>
+                        <span class="badge badge-warning">{{$message}}</span>
+                        
                         @enderror
                         <!-- .form-group -->
                         <div class="form-group">
                             <label class="control-label" for="score">คะแนน</label> <select id="score" name="score"
                                 class="form-control" data-toggle="select2" data-placeholder="คะแนน"
-                                data-allow-clear="false">
+                                data-allow-clear="false" >
                                 @for ($i = 1; $i <= 10; $i++)
                                     <option value="{{ $i }}" {{ $i == 1 ? 'selected' : '' }}>
                                         {{ $i }}</option>
@@ -117,7 +118,8 @@
                         </div><!-- /.form-group -->
                         <!-- .form-group -->
                         @error('question')
-                            <span class="badge badge-warning">{{ $message }}</span>
+                        <span class="badge badge-warning">{{$message}}</span>
+                        
                         @enderror
 
 
@@ -126,26 +128,30 @@
                                 <label class="control-label" for="numchoice">จำนวนตัวเลือก</label> <select id="numchoice"
                                     name="numchoice" class="form-control" data-toggle="select2"
                                     data-placeholder="จำนวนตัวเลือก" data-allow-clear="false">
-                                    @for ($i = 4; $i <= 8; $i++)
-                                        <option value="{{ $i }}" {{ $i == 4 ? 'selected' : '' }}>
+                                    @for ($i = 2; $i <= 8; $i++)
+                                        <option value="{{ $i }}" >
                                             {{ $i }}</option>
                                     @endfor
                                 </select>
 
                             </div><!-- /.form-group -->
-
+                                @php
+                                @endphp
                             @for ($i = 1; $i <= 8; $i++)
                                 <div class="form-group qtype1" id="showchoice{{ $i }}"
-                                    style="{{ $i > 4 ? 'display:none' : '' }}">
+                                    style="{{ $i > 2 ? 'display:none' : '' }}"   >
                                     <label for="choice{{ $i }}">ตัวเลือกที่ {{ $i }}</label>
                                     <div class="custom-control custom-control-inline custom-checkbox">
                                         <input type="checkbox" class="custom-control-input" id="check{{ $i }}"
-                                            name="checkanswer[]" value="{{ $i }}">
+                                            name="checkanswer[]" value="{{ $i }}" >
                                         <label class="custom-control-label"
                                             for="check{{ $i }}">คำตอบถูกต้อง</label>
                                     </div>
                                     <textarea class="editor" data-placeholder="ตัวเลือกที่ {{ $i }}" data-height="120"
-                                        name="choice{{ $i }}" id="choice{{ $i }}"></textarea>
+                                    name="choice{{ $i }}" id="choice{{ $i }}" >
+                                    <figure><figcaption></figcaption></figure>
+                                </textarea>
+                                
                                 </div><!-- /.form-group -->
                             @endfor
                             <script>
@@ -182,7 +188,7 @@
 
 
                         <div id="data4" style="display:none;">
-
+               
                             <!-- grid row -->
                             <div class="row qtype4 ">
                                 <div class="col-lg-6">
@@ -202,7 +208,8 @@
                                                     data-allow-clear="false">
                                                     <option value="0">เลือกคำตอบ</option>
                                                     @for ($i = 1; $i <= 10; $i++)
-                                                        <option value="{{ $i }}">{{ chr($i + 64) }}</option>
+                                                    <option value="{{ $i }}"   >{{ chr($i + 64) }}</option>
+
                                                     @endfor
                                                 </select>
 
@@ -218,7 +225,7 @@
                                                     data-allow-clear="false">
                                                     <option value="0">เลือกคำตอบ</option>
                                                     @for ($i = 1; $i <= 10; $i++)
-                                                        <option value="{{ $i }}">{{ chr($i + 64) }}</option>
+                                                        <option value="{{ $i }}" >{{ chr($i + 64) }}</option>
                                                     @endfor
                                                 </select>
 
@@ -248,9 +255,9 @@
                                                 <select id="ans4" name="ans4" class="form-control"
                                                     data-toggle="select2" data-placeholder="คำตอบ 4"
                                                     data-allow-clear="false">
-                                                    <option value="0">เลือกคำตอบ</option>
+                                                    <option value="0" >เลือกคำตอบ</option>
                                                     @for ($i = 1; $i <= 10; $i++)
-                                                        <option value="{{ $i }}">{{ chr($i + 64) }}</option>
+                                                        <option value="{{ $i }}" >{{ chr($i + 64) }}</option>
                                                     @endfor
                                                 </select>
                                             </div>
@@ -265,7 +272,7 @@
                                                     data-allow-clear="false">
                                                     <option value="0">เลือกคำตอบ</option>
                                                     @for ($i = 1; $i <= 10; $i++)
-                                                        <option value="{{ $i }}">{{ chr($i + 64) }}</option>
+                                                        <option value="{{ $i }}" >{{ chr($i + 64) }}</option>
                                                     @endfor
                                                 </select>
                                             </div>
@@ -280,7 +287,7 @@
                                                     data-allow-clear="false">
                                                     <option value="0">เลือกคำตอบ</option>
                                                     @for ($i = 1; $i <= 10; $i++)
-                                                        <option value="{{ $i }}">{{ chr($i + 64) }}</option>
+                                                        <option value="{{ $i }}" >{{ chr($i + 64) }}</option>
                                                     @endfor
                                                 </select>
                                             </div>
@@ -295,7 +302,7 @@
                                                     data-allow-clear="false">
                                                     <option value="0">เลือกคำตอบ</option>
                                                     @for ($i = 1; $i <= 10; $i++)
-                                                        <option value="{{ $i }}">{{ chr($i + 64) }}</option>
+                                                        <option value="{{ $i }}" >{{ chr($i + 64) }}</option>
                                                     @endfor
                                                 </select>
                                             </div>
@@ -325,7 +332,7 @@
                                                     data-allow-clear="false">
                                                     <option value="0">เลือกคำตอบ</option>
                                                     @for ($i = 1; $i <= 10; $i++)
-                                                        <option value="{{ $i }}">{{ chr($i + 64) }}</option>
+                                                        <option value="{{ $i }}" >{{ chr($i + 64) }}</option>
                                                     @endfor
                                                 </select>
                                             </div>
@@ -340,7 +347,7 @@
                                                     data-allow-clear="false">
                                                     <option value="0">เลือกคำตอบ</option>
                                                     @for ($i = 1; $i <= 10; $i++)
-                                                        <option value="{{ $i }}">{{ chr($i + 64) }}</option>
+                                                        <option value="{{ $i }}" >{{ chr($i + 64) }}</option>
                                                     @endfor
                                                 </select>
                                             </div>
@@ -514,7 +521,9 @@
 
                         <div class="form-group">
                             <label for="explain">คำอธิบาย </label>
-                            <textarea class="editor" data-placeholder="คำอธิบาย" data-height="150" name="explain" id="explain"></textarea>
+                            <textarea class="editor" data-placeholder="คำอธิบาย" data-height="150" name="explain" id="explain">
+                           
+                            </textarea>
                         </div><!-- /.form-group -->
 
                         <!-- .form-group -->
@@ -536,6 +545,5 @@
                 </div><!-- /.form-actions -->
             </div><!-- /.page-section -->
         </div><!-- /.page-inner -->
-
     </form>
 @endsection

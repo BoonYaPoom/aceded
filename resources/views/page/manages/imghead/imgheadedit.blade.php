@@ -89,7 +89,7 @@
                                 </div>
 
                             </div>
-                            <form action="{{ route('updateLinkDep', ['highlight_id' => $highlight->highlight_id]) }}"
+                            <form action="{{ route('updateLinkDep', [$depart,'highlight_id' => $highlight->highlight_id]) }}"
                                 method="post" enctype="multipart/form-data">
                                 @csrf
                                 @method('PUT')

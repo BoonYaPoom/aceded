@@ -105,17 +105,12 @@ class HighlightController extends Controller
         return redirect()->route('hightpage')->with('message', 'hightpage บันทึกข้อมูลสำเร็จ');
     }
 
-
-
-
-
     public function destory($highlight_id)
     {
         $hights = Highlight::findOrFail($highlight_id);
         $filePath = public_path($hights->highlight_path);
 
         if (file_exists($filePath)) {
-
             unlink($filePath);
         }
 

@@ -151,7 +151,7 @@ class ExamController extends Controller
     $exams->perpage    = $request->perpage;
     $exams->score_pass   = $request->score_pass;
     $exams->save();
-    return redirect()->route('exampage', ['subject_id' => $exams->subject_id])->with('message', 'Exam add successfully');
+    return redirect()->route('exampage', [$department_id, 'subject_id' => $exams->subject_id])->with('message', 'Exam add successfully');
   }
 
 
@@ -213,9 +213,8 @@ class ExamController extends Controller
         ->with('error', 'ข้อมูลไม่ถูกต้อง');
     }
 
+
     $ques = new Question;
-
-
     $ques->question_type = $request->question_type;
     $ques->question_status = $request->input('question_status', 0);
 
@@ -247,181 +246,190 @@ class ExamController extends Controller
 
       $ques->question = $question;
     }
-    if ($request->has('choice1')) {
-      $choice1 = $request->choice1;
-      if (!empty($choice1)) {
-        $choice_1 = new DOMDocument();
-        $choice_1->encoding = 'UTF-8'; // กำหนด encoding เป็น UTF-8
-        $choice_1->loadHTML(mb_convert_encoding($choice1, 'HTML-ENTITIES', 'UTF-8'), LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
-
-        $images_choice_1 = $choice_1->getElementsByTagName('img');
-
-        foreach ($images_choice_1 as $key => $img) {
-          if (strpos($img->getAttribute('src'), 'data:image/') === 0) {
-            $data = base64_decode(explode(',', explode(';', $img->getAttribute('src'))[1])[1]);
-            $image_name = '/upload/Que/ck/' . time() . $key . '.png'; // ใส่ .png เพื่อให้เป็นนามสกุลไฟล์ถูกต้อง
-            file_put_contents(public_path() . $image_name, $data);
-            $img->removeAttribute('src');
-            $newImageUrl = asset($image_name);
-            $img->setAttribute('src', $newImageUrl);
-          }
+    if ($ques->question_type == 4 || $ques->question_type == 5) {
+      $questions = [];
+      for ($i = 1; $i <= 10; $i++) {
+        $question = "q$i";
+        if ($request->$question) {
+          $questions[] = $request->$question;
         }
-        $choice1 = $choice_1->saveHTML();
       }
 
-      $ques->choice1 = $choice1;
-    }
-
-    $questions = [];
-    for ($i = 1; $i <= 10; $i++) {
-      $question = "q$i";
-      if ($request->$question) {
-        $questions[] = $request->$question;
-      }
-    }
-
-    $ques->choice1 .= !empty($questions) ?  implode(',', $questions) : '';
-
-
-    if ($request->has('choice2')) {
-      $choice2 = $request->choice2;
-      if (!empty($choice1)) {
-        $choice_2 = new DOMDocument();
-        $choice_2->encoding = 'UTF-8'; // กำหนด encoding เป็น UTF-8
-        $choice_2->loadHTML(mb_convert_encoding($choice2, 'HTML-ENTITIES', 'UTF-8'), LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
-
-        $images_choice_2 = $choice_2->getElementsByTagName('img');
-
-        foreach ($images_choice_2 as $key => $img) {
-          if (strpos($img->getAttribute('src'), 'data:image/') === 0) {
-            $data = base64_decode(explode(',', explode(';', $img->getAttribute('src'))[1])[1]);
-            $image_name = '/upload/Que/ck/' . time() . $key . '.png'; // ใส่ .png เพื่อให้เป็นนามสกุลไฟล์ถูกต้อง
-            file_put_contents(public_path() . $image_name, $data);
-            $img->removeAttribute('src');
-            $newImageUrl = asset($image_name);
-            $img->setAttribute('src', $newImageUrl);
-          }
+      $ques->choice1 .= !empty($questions) ?  implode(',', $questions) : '';
+      $coluques = [];
+      for ($i = 1; $i <= 10; $i++) {
+        $coluquesKey  = "c$i";
+        if ($request->$coluquesKey) {
+          $coluques[] = $request->$coluquesKey;
         }
-        $choice2 = $choice_2->saveHTML();
       }
 
-      $ques->choice2 = $choice2;
-    }
-    // สร้างอาร์เรย์เก็บตัวเลือกใหม่
-    $coluques = [];
-    for ($i = 1; $i <= 10; $i++) {
-      $coluquesKey  = "c$i";
-      if ($request->$coluquesKey) {
-        $coluques[] = $request->$coluquesKey;
-      }
+      // ต่อข้อมูลตัวเลือกใหม่ไปยัง choice2
+      $ques->choice2 .= !empty($coluques) ?  implode(',', $coluques) : '';
     }
 
-    // ต่อข้อมูลตัวเลือกใหม่ไปยัง choice2
-    $ques->choice2 .= !empty($coluques) ?  implode(',', $coluques) : '';
-
-    if ($request->has('choice3')) {
-      $choice3 = $request->choice3;
-      if (!empty($choice3)) {
-        $choice_3 = new DOMDocument();
-        $choice_3->encoding = 'UTF-8'; // กำหนด encoding เป็น UTF-8
-        $choice_3->loadHTML(mb_convert_encoding($choice3, 'HTML-ENTITIES', 'UTF-8'), LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
-
-        $images_choice_3 = $choice_3->getElementsByTagName('img');
-
-        foreach ($images_choice_3 as $key => $img) {
-          if (strpos($img->getAttribute('src'), 'data:image/') === 0) {
-            $data = base64_decode(explode(',', explode(';', $img->getAttribute('src'))[1])[1]);
-            $image_name = '/upload/Que/ck/' . time() . $key . '.png'; // ใส่ .png เพื่อให้เป็นนามสกุลไฟล์ถูกต้อง
-            file_put_contents(public_path() . $image_name, $data);
-            $img->removeAttribute('src');
-            $newImageUrl = asset($image_name);
-            $img->setAttribute('src', $newImageUrl);
+    if ($ques->question_type == 1 ) {
+      
+      if ($request->has('choice1')) {
+        $choice1 = $request->choice1;
+        if (!empty($choice1)) {
+          $choice_1 = new DOMDocument();
+          $choice_1->encoding = 'UTF-8'; // กำหนด encoding เป็น UTF-8
+          $choice_1->loadHTML(mb_convert_encoding($choice1, 'HTML-ENTITIES', 'UTF-8'), LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
+  
+          $images_choice_1 = $choice_1->getElementsByTagName('img');
+          if (!file_exists(public_path('/upload/Que/ck/qu1/'))) {
+            mkdir(public_path('/upload/Que/ck/qu1/'), 0755, true);
           }
-        }
-        $choice3 = $choice_3->saveHTML();
-      }
-
-      $ques->choice3 = $choice3;
-    }
-
-    $quesanss = [];
-    for ($i = 1; $i <= 10; $i++) {
-      $quesansKey = "ans$i";
-      if ($request->$quesansKey) {
-        $quesanss[] = $request->$quesansKey;
-      }
-    }
-
-    // ต่อข้อมูลตัวเลือกใหม่ไปยัง choice3
-    $ques->choice3 .= !empty($quesanss) ? implode(',', $quesanss) : '';
-
-    if ($request->has('choice4')) {
-      $choice4 = $request->choice4;
-      if (!empty($choice4)) {
-        $choice_4 = new DOMDocument();
-        $choice_4->encoding = 'UTF-8'; // กำหนด encoding เป็น UTF-8
-        $choice_4->loadHTML(mb_convert_encoding($choice4, 'HTML-ENTITIES', 'UTF-8'), LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
-
-        $images_choice_4 = $choice_4->getElementsByTagName('img');
-
-        foreach ($images_choice_4 as $key => $img) {
-          if (strpos($img->getAttribute('src'), 'data:image/') === 0) {
-            $data = base64_decode(explode(',', explode(';', $img->getAttribute('src'))[1])[1]);
-            $image_name = '/upload/Que/ck/' . time() . $key . '.png'; // ใส่ .png เพื่อให้เป็นนามสกุลไฟล์ถูกต้อง
-            file_put_contents(public_path() . $image_name, $data);
-            $img->removeAttribute('src');
-            $newImageUrl = asset($image_name);
-            $img->setAttribute('src', $newImageUrl);
+          foreach ($images_choice_1 as $key1 => $img1) {
+            if (strpos($img1->getAttribute('src'), 'data:image/') === 0) {
+              $data1 = base64_decode(explode(',', explode(';', $img1->getAttribute('src'))[1])[1]);
+              $image_name1 = '/upload/Que/ck/qu1/' . time() . $key1 . '.png'; // ใส่ .png เพื่อให้เป็นนามสกุลไฟล์ถูกต้อง
+              file_put_contents(public_path() . $image_name1, $data1);
+              $img1->removeAttribute('src');
+              $newImageUrl1 = asset($image_name1);
+              $img1->setAttribute('src', $newImageUrl1);
+            }
           }
+          $choice1 = $choice_1->saveHTML();
         }
-        $choice4 = $choice_4->saveHTML();
+  
+        $ques->choice1 = $choice1;
       }
-
-      $ques->choice4 = $choice4;
-    }
-
-
-    $queskos = [];
-    for ($i = 1; $i <= 10; $i++) {
-      $queskook = "o$i";
-      if ($request->$queskook) {
-        $queskos[] = $request->$queskook;
-      }
-    }
-
-    // ต่อข้อมูลตัวเลือกใหม่ไปยัง choice4
-    $ques->choice4 .= !empty($queskos) ?  implode(',', $queskos) : '';
-
-    $checkanswer = request('checkanswer');
-    $ques->answer = json_encode($checkanswer);
-
-
-
-    if ($request->has('choice5')) {
-      $choice5 = $request->choice5;
-      if (!empty($choice5)) {
-        $choice_5 = new DOMDocument();
-        $choice_5->encoding = 'UTF-8'; // กำหนด encoding เป็น UTF-8
-        $choice_5->loadHTML(mb_convert_encoding($choice5, 'HTML-ENTITIES', 'UTF-8'), LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
-
-        $images_choice_5 = $choice_5->getElementsByTagName('img');
-
-        foreach ($images_choice_5 as $key => $img) {
-          if (strpos($img->getAttribute('src'), 'data:image/') === 0) {
-            $data = base64_decode(explode(',', explode(';', $img->getAttribute('src'))[1])[1]);
-            $image_name = '/upload/Que/ck/' . time() . $key . '.png'; // ใส่ .png เพื่อให้เป็นนามสกุลไฟล์ถูกต้อง
-            file_put_contents(public_path() . $image_name, $data);
-            $img->removeAttribute('src');
-            $newImageUrl = asset($image_name);
-            $img->setAttribute('src', $newImageUrl);
+  
+  
+      if ($request->has('choice2')) {
+        $choice2 = $request->choice2;
+        if (!empty($choice2)) {
+          $choice_2 = new DOMDocument();
+          $choice_2->encoding = 'UTF-8'; // กำหนด encoding เป็น UTF-8
+          $choice_2->loadHTML(mb_convert_encoding($choice2, 'HTML-ENTITIES', 'UTF-8'), LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
+  
+          $images_choice_2 = $choice_2->getElementsByTagName('img');
+          if (!file_exists(public_path('/upload/Que/ck/qu2/'))) {
+            mkdir(public_path('/upload/Que/ck/qu2/'), 0755, true);
           }
+          foreach ($images_choice_2 as $key2 => $img2) {
+            if (strpos($img2->getAttribute('src'), 'data:image/') === 0) {
+              $data2 = base64_decode(explode(',', explode(';', $img2->getAttribute('src'))[1])[1]);
+              $image_name2 = '/upload/Que/ck/qu2/' . time() . $key2 . '.png'; // ใส่ .png เพื่อให้เป็นนามสกุลไฟล์ถูกต้อง
+              file_put_contents(public_path() . $image_name2, $data2);
+              $img2->removeAttribute('src');
+              $newImageUrl2 = asset($image_name2);
+              $img2->setAttribute('src', $newImageUrl2);
+            }
+          }
+          $choice2 = $choice_2->saveHTML();
         }
-        $choice5 = $choice_5->saveHTML();
+  
+        $ques->choice2 = $choice2;
       }
-
-      $ques->choice5 = $choice5;
-    }
-
+  
+      if ($request->has('choice3')) {
+        $choice3 = $request->choice3;
+        if (!empty($choice3)) {
+          $choice_3 = new DOMDocument();
+          $choice_3->encoding = 'UTF-8'; // กำหนด encoding เป็น UTF-8
+          $choice_3->loadHTML(mb_convert_encoding($choice3, 'HTML-ENTITIES', 'UTF-8'), LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
+  
+          $images_choice_3 = $choice_3->getElementsByTagName('img');
+          if (!file_exists(public_path('/upload/Que/ck/qu3/'))) {
+            mkdir(public_path('/upload/Que/ck/qu3/'), 0755, true);
+          }
+          foreach ($images_choice_3 as $key3 => $img3) {
+            if (strpos($img3->getAttribute('src'), 'data:image/') === 0) {
+              $data3 = base64_decode(explode(',', explode(';', $img3->getAttribute('src'))[1])[1]);
+              $image_name3 = '/upload/Que/ck/qu3/' . time() . $key3 . '.png'; // ใส่ .png เพื่อให้เป็นนามสกุลไฟล์ถูกต้อง
+              file_put_contents(public_path() . $image_name3, $data3);
+              $img3->removeAttribute('src');
+              $newImageUrl3 = asset($image_name3);
+              $img3->setAttribute('src', $newImageUrl3);
+            }
+          }
+          $choice3 = $choice_3->saveHTML();
+        }
+  
+        $ques->choice3 = $choice3;
+      }
+  
+      $quesanss = [];
+      for ($i = 1; $i <= 10; $i++) {
+        $quesansKey = "ans$i";
+        if ($request->$quesansKey) {
+          $quesanss[] = $request->$quesansKey;
+        }
+      }
+  
+      // ต่อข้อมูลตัวเลือกใหม่ไปยัง choice3
+      $ques->choice3 .= !empty($quesanss) ? implode(',', $quesanss) : '';
+  
+  
+      if ($request->has('choice4')) {
+        $choice4 = $request->choice4;
+        if (!empty($choice4)) {
+          $choice_4 = new DOMDocument();
+          $choice_4->encoding = 'UTF-8'; // กำหนด encoding เป็น UTF-8
+          $choice_4->loadHTML(mb_convert_encoding($choice4, 'HTML-ENTITIES', 'UTF-8'), LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
+  
+          $images_choice_4 = $choice_4->getElementsByTagName('img');
+          if (!file_exists(public_path('/upload/Que/ck/qu4/'))) {
+            mkdir(public_path('/upload/Que/ck/qu4/'), 0755, true);
+          }
+          foreach ($images_choice_4 as $key4 => $img4) {
+            if (strpos($img4->getAttribute('src'), 'data:image/') === 0) {
+              $data4 = base64_decode(explode(',', explode(';', $img4->getAttribute('src'))[1])[1]);
+              $image_name4 = '/upload/Que/ck/qu4/' . time() . $key4 . '.png'; // ใส่ .png เพื่อให้เป็นนามสกุลไฟล์ถูกต้อง
+              file_put_contents(public_path() . $image_name4, $data4);
+              $img4->removeAttribute('src');
+              $newImageUrl4 = asset($image_name4);
+              $img4->setAttribute('src', $newImageUrl4);
+            }
+          }
+          $choice4 = $choice_4->saveHTML();
+        }
+  
+        $ques->choice4 = $choice4;
+      }
+  
+  
+      $queskos = [];
+      for ($i = 1; $i <= 10; $i++) {
+        $queskook = "o$i";
+        if ($request->$queskook) {
+          $queskos[] = $request->$queskook;
+        }
+      }
+  
+      // ต่อข้อมูลตัวเลือกใหม่ไปยัง choice4
+      $ques->choice4 .= !empty($queskos) ?  implode(',', $queskos) : '';
+  
+  
+      if ($request->has('choice5')) {
+        $choice5 = $request->choice5;
+        if (!empty($choice5)) {
+          $choice_5 = new DOMDocument();
+          $choice_5->encoding = 'UTF-8'; // กำหนด encoding เป็น UTF-8
+          $choice_5->loadHTML(mb_convert_encoding($choice5, 'HTML-ENTITIES', 'UTF-8'), LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
+  
+          $images_choice_5 = $choice_5->getElementsByTagName('img');
+          if (!file_exists(public_path('/upload/Que/ck/qu5/'))) {
+            mkdir(public_path('/upload/Que/ck/qu5/'), 0755, true);
+          }
+          foreach ($images_choice_5 as $key5 => $img5) {
+            if (strpos($img5->getAttribute('src'), 'data:image/') === 0) {
+              $data5 = base64_decode(explode(',', explode(';', $img5->getAttribute('src'))[1])[1]);
+              $image_name5 = '/upload/Que/ck/qu5/' . time() . $key5 . '.png'; // ใส่ .png เพื่อให้เป็นนามสกุลไฟล์ถูกต้อง
+              file_put_contents(public_path() . $image_name5, $data5);
+              $img5->removeAttribute('src');
+              $newImageUrl5 = asset($image_name5);
+              $img5->setAttribute('src', $newImageUrl5);
+            }
+          }
+          $choice5 = $choice_5->saveHTML();
+        }
+  
+        $ques->choice5 = $choice5;
+      }
 
     if ($request->has('choice6')) {
       $choice6 = $request->choice6;
@@ -431,15 +439,17 @@ class ExamController extends Controller
         $choice_6->loadHTML(mb_convert_encoding($choice6, 'HTML-ENTITIES', 'UTF-8'), LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
 
         $images_choice_6 = $choice_6->getElementsByTagName('img');
-
-        foreach ($images_choice_6 as $key => $img) {
-          if (strpos($img->getAttribute('src'), 'data:image/') === 0) {
-            $data = base64_decode(explode(',', explode(';', $img->getAttribute('src'))[1])[1]);
-            $image_name = '/upload/Que/ck/' . time() . $key . '.png'; // ใส่ .png เพื่อให้เป็นนามสกุลไฟล์ถูกต้อง
-            file_put_contents(public_path() . $image_name, $data);
-            $img->removeAttribute('src');
-            $newImageUrl = asset($image_name);
-            $img->setAttribute('src', $newImageUrl);
+        if (!file_exists(public_path('/upload/Que/ck/qu6/'))) {
+          mkdir(public_path('/upload/Que/ck/qu6/'), 0755, true);
+        }
+        foreach ($images_choice_6 as $key6 => $img6) {
+          if (strpos($img6->getAttribute('src'), 'data:image/') === 0) {
+            $data6 = base64_decode(explode(',', explode(';', $img6->getAttribute('src'))[1])[1]);
+            $image_name6 = '/upload/Que/ck/qu6/' . time() . $key6 . '.png'; // ใส่ .png เพื่อให้เป็นนามสกุลไฟล์ถูกต้อง
+            file_put_contents(public_path() . $image_name6, $data6);
+            $img6->removeAttribute('src');
+            $newImageUrl6 = asset($image_name6);
+            $img6->setAttribute('src', $newImageUrl6);
           }
         }
         $choice6 = $choice_6->saveHTML();
@@ -456,15 +466,17 @@ class ExamController extends Controller
         $choice_7->loadHTML(mb_convert_encoding($choice7, 'HTML-ENTITIES', 'UTF-8'), LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
 
         $images_choice_7 = $choice_7->getElementsByTagName('img');
-
-        foreach ($images_choice_7 as $key => $img) {
-          if (strpos($img->getAttribute('src'), 'data:image/') === 0) {
-            $data = base64_decode(explode(',', explode(';', $img->getAttribute('src'))[1])[1]);
-            $image_name = '/upload/Que/ck/' . time() . $key . '.png'; // ใส่ .png เพื่อให้เป็นนามสกุลไฟล์ถูกต้อง
-            file_put_contents(public_path() . $image_name, $data);
-            $img->removeAttribute('src');
-            $newImageUrl = asset($image_name);
-            $img->setAttribute('src', $newImageUrl);
+        if (!file_exists(public_path('/upload/Que/ck/qu7/'))) {
+          mkdir(public_path('/upload/Que/ck/qu7/'), 0755, true);
+        }
+        foreach ($images_choice_7 as $key7 => $img7) {
+          if (strpos($img7->getAttribute('src'), 'data:image/') === 0) {
+            $data7 = base64_decode(explode(',', explode(';', $img7->getAttribute('src'))[1])[1]);
+            $image_name7 = '/upload/Que/ck/qu7/' . time() . $key7 . '.png'; // ใส่ .png เพื่อให้เป็นนามสกุลไฟล์ถูกต้อง
+            file_put_contents(public_path() . $image_name7, $data7);
+            $img7->removeAttribute('src');
+            $newImageUrl7 = asset($image_name7);
+            $img7->setAttribute('src', $newImageUrl7);
           }
         }
         $choice7 = $choice_7->saveHTML();
@@ -481,15 +493,17 @@ class ExamController extends Controller
         $choice_8->loadHTML(mb_convert_encoding($choice8, 'HTML-ENTITIES', 'UTF-8'), LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
 
         $images_choice_8 = $choice_8->getElementsByTagName('img');
-
-        foreach ($images_choice_8 as $key => $img) {
-          if (strpos($img->getAttribute('src'), 'data:image/') === 0) {
-            $data = base64_decode(explode(',', explode(';', $img->getAttribute('src'))[1])[1]);
-            $image_name = '/upload/Que/ck/' . time() . $key . '.png'; // ใส่ .png เพื่อให้เป็นนามสกุลไฟล์ถูกต้อง
-            file_put_contents(public_path() . $image_name, $data);
-            $img->removeAttribute('src');
-            $newImageUrl = asset($image_name);
-            $img->setAttribute('src', $newImageUrl);
+        if (!file_exists(public_path('/upload/Que/ck/qu8/'))) {
+          mkdir(public_path('/upload/Que/ck/qu8/'), 0755, true);
+        }
+        foreach ($images_choice_8 as $key8 => $img8) {
+          if (strpos($img8->getAttribute('src'), 'data:image/') === 0) {
+            $data8 = base64_decode(explode(',', explode(';', $img8->getAttribute('src'))[1])[1]);
+            $image_name8 = '/upload/Que/ck/qu8/' . time() . $key8 . '.png'; // ใส่ .png เพื่อให้เป็นนามสกุลไฟล์ถูกต้อง
+            file_put_contents(public_path() . $image_name8, $data8);
+            $img8->removeAttribute('src');
+            $newImageUrl8 = asset($image_name);
+            $img8->setAttribute('src', $newImageUrl8);
           }
         }
         $choice8 = $choice_8->saveHTML();
@@ -497,8 +511,7 @@ class ExamController extends Controller
 
       $ques->choice8 = $choice8;
     }
-    $ques->score = $request->score;
-    $ques->numchoice = $request->numchoice;
+  }
 
     if ($request->has('explain')) {
       $explain = $request->explain;
@@ -508,15 +521,17 @@ class ExamController extends Controller
         $choice_explain->loadHTML(mb_convert_encoding($explain, 'HTML-ENTITIES', 'UTF-8'), LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
 
         $images_choice_explain = $choice_explain->getElementsByTagName('img');
-
-        foreach ($images_choice_explain as $key => $img) {
-          if (strpos($img->getAttribute('src'), 'data:image/') === 0) {
-            $data = base64_decode(explode(',', explode(';', $img->getAttribute('src'))[1])[1]);
-            $image_name = '/upload/Que/ck/' . time() . $key . '.png'; // ใส่ .png เพื่อให้เป็นนามสกุลไฟล์ถูกต้อง
-            file_put_contents(public_path() . $image_name, $data);
-            $img->removeAttribute('src');
-            $newImageUrl = asset($image_name);
-            $img->setAttribute('src', $newImageUrl);
+        if (!file_exists(public_path('/upload/Que/ck/exp/'))) {
+          mkdir(public_path('/upload/Que/ck/exp/'), 0755, true);
+        }
+        foreach ($images_choice_explain as $exp => $imgexp) {
+          if (strpos($imgexp->getAttribute('src'), 'data:image/') === 0) {
+            $dataexp = base64_decode(explode(',', explode(';', $imgexp->getAttribute('src'))[1])[1]);
+            $image_nameexp = '/upload/Que/ck/exp/' . time() . $exp . '.png'; // ใส่ .png เพื่อให้เป็นนามสกุลไฟล์ถูกต้อง
+            file_put_contents(public_path() . $image_nameexp, $dataexp);
+            $imgexp->removeAttribute('src');
+            $newImageUrlexp = asset($image_nameexp);
+            $imgexp->setAttribute('src', $newImageUrlexp);
           }
         }
         $explain = $choice_explain->saveHTML();
@@ -524,7 +539,11 @@ class ExamController extends Controller
 
       $ques->explain = $explain;
     }
-    $ques->ordering = null;
+    $ques->score = $request->score;
+    $ques->numchoice = $request->numchoice;
+
+    $checkanswer = request('checkanswer');
+    $ques->answer = json_encode($checkanswer);
     $ques->lesson_id = $request->lesson_id;
     $ques->subject_id = $subject_id;
     $ques->explainquestion = '';
@@ -550,10 +569,10 @@ class ExamController extends Controller
   {
 
     $ques = Question::findOrFail($question_id);
-  
+
     $ques->question_type = $request->question_type;
     $ques->question_status = $request->input('question_status', 0);
- 
+
     libxml_use_internal_errors(true);
     if (!file_exists(public_path('/upload/Que/ck/'))) {
       mkdir(public_path('/upload/Que/ck/'), 0755, true);
@@ -582,182 +601,190 @@ class ExamController extends Controller
 
       $ques->question = $question;
     }
-    if ($request->has('choice1')) {
-      $choice1 = $request->choice1;
-      if (!empty($choice1)) {
-        $choice_1 = new DOMDocument();
-        $choice_1->encoding = 'UTF-8'; // กำหนด encoding เป็น UTF-8
-        $choice_1->loadHTML(mb_convert_encoding($choice1, 'HTML-ENTITIES', 'UTF-8'), LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
-
-        $images_choice_1 = $choice_1->getElementsByTagName('img');
-
-        foreach ($images_choice_1 as $key => $img) {
-          if (strpos($img->getAttribute('src'), 'data:image/') === 0) {
-            $data = base64_decode(explode(',', explode(';', $img->getAttribute('src'))[1])[1]);
-            $image_name = '/upload/Que/ck/' . time() . $key . '.png'; // ใส่ .png เพื่อให้เป็นนามสกุลไฟล์ถูกต้อง
-            file_put_contents(public_path() . $image_name, $data);
-            $img->removeAttribute('src');
-            $newImageUrl = asset($image_name);
-            $img->setAttribute('src', $newImageUrl);
-          }
+    if ($ques->question_type == 4 || $ques->question_type == 5) {
+      $questions = [];
+      for ($i = 1; $i <= 10; $i++) {
+        $question = "q$i";
+        if ($request->$question) {
+          $questions[] = $request->$question;
         }
-        $choice1 = $choice_1->saveHTML();
       }
 
-      $ques->choice1 = $choice1;
-    }
-
-
-
-    $questions = [];
-    for ($i = 1; $i <= 10; $i++) {
-      $question = "q$i";
-      if ($request->$question) {
-        $questions[] = $request->$question;
-      }
-    }
-
-    $ques->choice1 .= !empty($questions) ?  implode(',', $questions) : '';
-
-
-
-    if ($request->has('choice2')) {
-      $choice2 = $request->choice2;
-      if (!empty($choice1)) {
-        $choice_2 = new DOMDocument();
-        $choice_2->encoding = 'UTF-8'; // กำหนด encoding เป็น UTF-8
-        $choice_2->loadHTML(mb_convert_encoding($choice2, 'HTML-ENTITIES', 'UTF-8'), LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
-
-        $images_choice_2 = $choice_2->getElementsByTagName('img');
-
-        foreach ($images_choice_2 as $key => $img) {
-          if (strpos($img->getAttribute('src'), 'data:image/') === 0) {
-            $data = base64_decode(explode(',', explode(';', $img->getAttribute('src'))[1])[1]);
-            $image_name = '/upload/Que/ck/' . time() . $key . '.png'; // ใส่ .png เพื่อให้เป็นนามสกุลไฟล์ถูกต้อง
-            file_put_contents(public_path() . $image_name, $data);
-            $img->removeAttribute('src');
-            $newImageUrl = asset($image_name);
-            $img->setAttribute('src', $newImageUrl);
-          }
+      $ques->choice1 .= !empty($questions) ?  implode(',', $questions) : '';
+      $coluques = [];
+      for ($i = 1; $i <= 10; $i++) {
+        $coluquesKey  = "c$i";
+        if ($request->$coluquesKey) {
+          $coluques[] = $request->$coluquesKey;
         }
-        $choice2 = $choice_2->saveHTML();
       }
 
-      $ques->choice2 = $choice2;
+      // ต่อข้อมูลตัวเลือกใหม่ไปยัง choice2
+      $ques->choice2 .= !empty($coluques) ?  implode(',', $coluques) : '';
     }
 
-    // สร้างอาร์เรย์เก็บตัวเลือกใหม่
-    $coluques = [];
-    for ($i = 1; $i <= 10; $i++) {
-      $coluquesKey  = "c$i";
-      if ($request->$coluquesKey) {
-        $coluques[] = $request->$coluquesKey;
-      }
-    }
-
-    // ต่อข้อมูลตัวเลือกใหม่ไปยัง choice2
-    $ques->choice2 .= !empty($coluques) ?  implode(',', $coluques) : '';
-
-if ($request->has('choice3')) {
-      $choice3 = $request->choice3;
-      if (!empty($choice3)) {
-        $choice_3 = new DOMDocument();
-        $choice_3->encoding = 'UTF-8'; // กำหนด encoding เป็น UTF-8
-        $choice_3->loadHTML(mb_convert_encoding($choice3, 'HTML-ENTITIES', 'UTF-8'), LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
-
-        $images_choice_3 = $choice_3->getElementsByTagName('img');
-
-        foreach ($images_choice_3 as $key => $img) {
-          if (strpos($img->getAttribute('src'), 'data:image/') === 0) {
-            $data = base64_decode(explode(',', explode(';', $img->getAttribute('src'))[1])[1]);
-            $image_name = '/upload/Que/ck/' . time() . $key . '.png'; // ใส่ .png เพื่อให้เป็นนามสกุลไฟล์ถูกต้อง
-            file_put_contents(public_path() . $image_name, $data);
-            $img->removeAttribute('src');
-            $newImageUrl = asset($image_name);
-            $img->setAttribute('src', $newImageUrl);
-          }
-        }
-        $choice3 = $choice_3->saveHTML();
-      }
-
-      $ques->choice3 = $choice3;
-    }
-
-    $quesanss = [];
-    for ($i = 1; $i <= 10; $i++) {
-      $quesansKey = "ans$i";
-      if ($request->$quesansKey) {
-        $quesanss[] = $request->$quesansKey;
-      }
-    }
-
-    // ต่อข้อมูลตัวเลือกใหม่ไปยัง choice3
-    $ques->choice3 .= !empty($quesanss) ? implode(',', $quesanss) : '';
-
-
-    if ($request->has('choice4')) {
-      $choice4 = $request->choice4;
-      if (!empty($choice4)) {
-        $choice_4 = new DOMDocument();
-        $choice_4->encoding = 'UTF-8'; // กำหนด encoding เป็น UTF-8
-        $choice_4->loadHTML(mb_convert_encoding($choice4, 'HTML-ENTITIES', 'UTF-8'), LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
-
-        $images_choice_4 = $choice_4->getElementsByTagName('img');
-
-        foreach ($images_choice_4 as $key => $img) {
-          if (strpos($img->getAttribute('src'), 'data:image/') === 0) {
-            $data = base64_decode(explode(',', explode(';', $img->getAttribute('src'))[1])[1]);
-            $image_name = '/upload/Que/ck/' . time() . $key . '.png'; // ใส่ .png เพื่อให้เป็นนามสกุลไฟล์ถูกต้อง
-            file_put_contents(public_path() . $image_name, $data);
-            $img->removeAttribute('src');
-            $newImageUrl = asset($image_name);
-            $img->setAttribute('src', $newImageUrl);
-          }
-        }
-        $choice4 = $choice_4->saveHTML();
-      }
-
-      $ques->choice4 = $choice4;
-    }
-
-
-    $queskos = [];
-    for ($i = 1; $i <= 10; $i++) {
-      $queskook = "o$i";
-      if ($request->$queskook) {
-        $queskos[] = $request->$queskook;
-      }
-    }
-
-    // ต่อข้อมูลตัวเลือกใหม่ไปยัง choice4
-    $ques->choice4 .= !empty($queskos) ?  implode(',', $queskos) : '';
-
+    if ($ques->question_type == 1 ) {
+      
+      if ($request->has('choice1')) {
+        $choice1 = $request->choice1;
+        if (!empty($choice1)) {
+          $choice_1 = new DOMDocument();
+          $choice_1->encoding = 'UTF-8'; // กำหนด encoding เป็น UTF-8
+          $choice_1->loadHTML(mb_convert_encoding($choice1, 'HTML-ENTITIES', 'UTF-8'), LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
   
-    if ($request->has('choice5')) {
-      $choice5 = $request->choice5;
-      if (!empty($choice5)) {
-        $choice_5 = new DOMDocument();
-        $choice_5->encoding = 'UTF-8'; // กำหนด encoding เป็น UTF-8
-        $choice_5->loadHTML(mb_convert_encoding($choice5, 'HTML-ENTITIES', 'UTF-8'), LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
-
-        $images_choice_5 = $choice_5->getElementsByTagName('img');
-
-        foreach ($images_choice_5 as $key => $img) {
-          if (strpos($img->getAttribute('src'), 'data:image/') === 0) {
-            $data = base64_decode(explode(',', explode(';', $img->getAttribute('src'))[1])[1]);
-            $image_name = '/upload/Que/ck/' . time() . $key . '.png'; // ใส่ .png เพื่อให้เป็นนามสกุลไฟล์ถูกต้อง
-            file_put_contents(public_path() . $image_name, $data);
-            $img->removeAttribute('src');
-            $newImageUrl = asset($image_name);
-            $img->setAttribute('src', $newImageUrl);
+          $images_choice_1 = $choice_1->getElementsByTagName('img');
+          if (!file_exists(public_path('/upload/Que/ck/qu1/'))) {
+            mkdir(public_path('/upload/Que/ck/qu1/'), 0755, true);
           }
+          foreach ($images_choice_1 as $key1 => $img1) {
+            if (strpos($img1->getAttribute('src'), 'data:image/') === 0) {
+              $data1 = base64_decode(explode(',', explode(';', $img1->getAttribute('src'))[1])[1]);
+              $image_name1 = '/upload/Que/ck/qu1/' . time() . $key1 . '.png'; // ใส่ .png เพื่อให้เป็นนามสกุลไฟล์ถูกต้อง
+              file_put_contents(public_path() . $image_name1, $data1);
+              $img1->removeAttribute('src');
+              $newImageUrl1 = asset($image_name1);
+              $img1->setAttribute('src', $newImageUrl1);
+            }
+          }
+          $choice1 = $choice_1->saveHTML();
         }
-        $choice5 = $choice_5->saveHTML();
+  
+        $ques->choice1 = $choice1;
       }
-
-      $ques->choice5 = $choice5;
-    }
-
+  
+  
+      if ($request->has('choice2')) {
+        $choice2 = $request->choice2;
+        if (!empty($choice2)) {
+          $choice_2 = new DOMDocument();
+          $choice_2->encoding = 'UTF-8'; // กำหนด encoding เป็น UTF-8
+          $choice_2->loadHTML(mb_convert_encoding($choice2, 'HTML-ENTITIES', 'UTF-8'), LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
+  
+          $images_choice_2 = $choice_2->getElementsByTagName('img');
+          if (!file_exists(public_path('/upload/Que/ck/qu2/'))) {
+            mkdir(public_path('/upload/Que/ck/qu2/'), 0755, true);
+          }
+          foreach ($images_choice_2 as $key2 => $img2) {
+            if (strpos($img2->getAttribute('src'), 'data:image/') === 0) {
+              $data2 = base64_decode(explode(',', explode(';', $img2->getAttribute('src'))[1])[1]);
+              $image_name2 = '/upload/Que/ck/qu2/' . time() . $key2 . '.png'; // ใส่ .png เพื่อให้เป็นนามสกุลไฟล์ถูกต้อง
+              file_put_contents(public_path() . $image_name2, $data2);
+              $img2->removeAttribute('src');
+              $newImageUrl2 = asset($image_name2);
+              $img2->setAttribute('src', $newImageUrl2);
+            }
+          }
+          $choice2 = $choice_2->saveHTML();
+        }
+  
+        $ques->choice2 = $choice2;
+      }
+  
+      if ($request->has('choice3')) {
+        $choice3 = $request->choice3;
+        if (!empty($choice3)) {
+          $choice_3 = new DOMDocument();
+          $choice_3->encoding = 'UTF-8'; // กำหนด encoding เป็น UTF-8
+          $choice_3->loadHTML(mb_convert_encoding($choice3, 'HTML-ENTITIES', 'UTF-8'), LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
+  
+          $images_choice_3 = $choice_3->getElementsByTagName('img');
+          if (!file_exists(public_path('/upload/Que/ck/qu3/'))) {
+            mkdir(public_path('/upload/Que/ck/qu3/'), 0755, true);
+          }
+          foreach ($images_choice_3 as $key3 => $img3) {
+            if (strpos($img3->getAttribute('src'), 'data:image/') === 0) {
+              $data3 = base64_decode(explode(',', explode(';', $img3->getAttribute('src'))[1])[1]);
+              $image_name3 = '/upload/Que/ck/qu3/' . time() . $key3 . '.png'; // ใส่ .png เพื่อให้เป็นนามสกุลไฟล์ถูกต้อง
+              file_put_contents(public_path() . $image_name3, $data3);
+              $img3->removeAttribute('src');
+              $newImageUrl3 = asset($image_name3);
+              $img3->setAttribute('src', $newImageUrl3);
+            }
+          }
+          $choice3 = $choice_3->saveHTML();
+        }
+  
+        $ques->choice3 = $choice3;
+      }
+  
+      $quesanss = [];
+      for ($i = 1; $i <= 10; $i++) {
+        $quesansKey = "ans$i";
+        if ($request->$quesansKey) {
+          $quesanss[] = $request->$quesansKey;
+        }
+      }
+  
+      // ต่อข้อมูลตัวเลือกใหม่ไปยัง choice3
+      $ques->choice3 .= !empty($quesanss) ? implode(',', $quesanss) : '';
+  
+  
+      if ($request->has('choice4')) {
+        $choice4 = $request->choice4;
+        if (!empty($choice4)) {
+          $choice_4 = new DOMDocument();
+          $choice_4->encoding = 'UTF-8'; // กำหนด encoding เป็น UTF-8
+          $choice_4->loadHTML(mb_convert_encoding($choice4, 'HTML-ENTITIES', 'UTF-8'), LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
+  
+          $images_choice_4 = $choice_4->getElementsByTagName('img');
+          if (!file_exists(public_path('/upload/Que/ck/qu4/'))) {
+            mkdir(public_path('/upload/Que/ck/qu4/'), 0755, true);
+          }
+          foreach ($images_choice_4 as $key4 => $img4) {
+            if (strpos($img4->getAttribute('src'), 'data:image/') === 0) {
+              $data4 = base64_decode(explode(',', explode(';', $img4->getAttribute('src'))[1])[1]);
+              $image_name4 = '/upload/Que/ck/qu4/' . time() . $key4 . '.png'; // ใส่ .png เพื่อให้เป็นนามสกุลไฟล์ถูกต้อง
+              file_put_contents(public_path() . $image_name4, $data4);
+              $img4->removeAttribute('src');
+              $newImageUrl4 = asset($image_name4);
+              $img4->setAttribute('src', $newImageUrl4);
+            }
+          }
+          $choice4 = $choice_4->saveHTML();
+        }
+  
+        $ques->choice4 = $choice4;
+      }
+  
+  
+      $queskos = [];
+      for ($i = 1; $i <= 10; $i++) {
+        $queskook = "o$i";
+        if ($request->$queskook) {
+          $queskos[] = $request->$queskook;
+        }
+      }
+  
+      // ต่อข้อมูลตัวเลือกใหม่ไปยัง choice4
+      $ques->choice4 .= !empty($queskos) ?  implode(',', $queskos) : '';
+  
+  
+      if ($request->has('choice5')) {
+        $choice5 = $request->choice5;
+        if (!empty($choice5)) {
+          $choice_5 = new DOMDocument();
+          $choice_5->encoding = 'UTF-8'; // กำหนด encoding เป็น UTF-8
+          $choice_5->loadHTML(mb_convert_encoding($choice5, 'HTML-ENTITIES', 'UTF-8'), LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
+  
+          $images_choice_5 = $choice_5->getElementsByTagName('img');
+          if (!file_exists(public_path('/upload/Que/ck/qu5/'))) {
+            mkdir(public_path('/upload/Que/ck/qu5/'), 0755, true);
+          }
+          foreach ($images_choice_5 as $key5 => $img5) {
+            if (strpos($img5->getAttribute('src'), 'data:image/') === 0) {
+              $data5 = base64_decode(explode(',', explode(';', $img5->getAttribute('src'))[1])[1]);
+              $image_name5 = '/upload/Que/ck/qu5/' . time() . $key5 . '.png'; // ใส่ .png เพื่อให้เป็นนามสกุลไฟล์ถูกต้อง
+              file_put_contents(public_path() . $image_name5, $data5);
+              $img5->removeAttribute('src');
+              $newImageUrl5 = asset($image_name5);
+              $img5->setAttribute('src', $newImageUrl5);
+            }
+          }
+          $choice5 = $choice_5->saveHTML();
+        }
+  
+        $ques->choice5 = $choice5;
+      }
 
     if ($request->has('choice6')) {
       $choice6 = $request->choice6;
@@ -767,15 +794,17 @@ if ($request->has('choice3')) {
         $choice_6->loadHTML(mb_convert_encoding($choice6, 'HTML-ENTITIES', 'UTF-8'), LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
 
         $images_choice_6 = $choice_6->getElementsByTagName('img');
-
-        foreach ($images_choice_6 as $key => $img) {
-          if (strpos($img->getAttribute('src'), 'data:image/') === 0) {
-            $data = base64_decode(explode(',', explode(';', $img->getAttribute('src'))[1])[1]);
-            $image_name = '/upload/Que/ck/' . time() . $key . '.png'; // ใส่ .png เพื่อให้เป็นนามสกุลไฟล์ถูกต้อง
-            file_put_contents(public_path() . $image_name, $data);
-            $img->removeAttribute('src');
-            $newImageUrl = asset($image_name);
-            $img->setAttribute('src', $newImageUrl);
+        if (!file_exists(public_path('/upload/Que/ck/qu6/'))) {
+          mkdir(public_path('/upload/Que/ck/qu6/'), 0755, true);
+        }
+        foreach ($images_choice_6 as $key6 => $img6) {
+          if (strpos($img6->getAttribute('src'), 'data:image/') === 0) {
+            $data6 = base64_decode(explode(',', explode(';', $img6->getAttribute('src'))[1])[1]);
+            $image_name6 = '/upload/Que/ck/qu6/' . time() . $key6 . '.png'; // ใส่ .png เพื่อให้เป็นนามสกุลไฟล์ถูกต้อง
+            file_put_contents(public_path() . $image_name6, $data6);
+            $img6->removeAttribute('src');
+            $newImageUrl6 = asset($image_name6);
+            $img6->setAttribute('src', $newImageUrl6);
           }
         }
         $choice6 = $choice_6->saveHTML();
@@ -792,15 +821,17 @@ if ($request->has('choice3')) {
         $choice_7->loadHTML(mb_convert_encoding($choice7, 'HTML-ENTITIES', 'UTF-8'), LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
 
         $images_choice_7 = $choice_7->getElementsByTagName('img');
-
-        foreach ($images_choice_7 as $key => $img) {
-          if (strpos($img->getAttribute('src'), 'data:image/') === 0) {
-            $data = base64_decode(explode(',', explode(';', $img->getAttribute('src'))[1])[1]);
-            $image_name = '/upload/Que/ck/' . time() . $key . '.png'; // ใส่ .png เพื่อให้เป็นนามสกุลไฟล์ถูกต้อง
-            file_put_contents(public_path() . $image_name, $data);
-            $img->removeAttribute('src');
-            $newImageUrl = asset($image_name);
-            $img->setAttribute('src', $newImageUrl);
+        if (!file_exists(public_path('/upload/Que/ck/qu7/'))) {
+          mkdir(public_path('/upload/Que/ck/qu7/'), 0755, true);
+        }
+        foreach ($images_choice_7 as $key7 => $img7) {
+          if (strpos($img7->getAttribute('src'), 'data:image/') === 0) {
+            $data7 = base64_decode(explode(',', explode(';', $img7->getAttribute('src'))[1])[1]);
+            $image_name7 = '/upload/Que/ck/qu7/' . time() . $key7 . '.png'; // ใส่ .png เพื่อให้เป็นนามสกุลไฟล์ถูกต้อง
+            file_put_contents(public_path() . $image_name7, $data7);
+            $img7->removeAttribute('src');
+            $newImageUrl7 = asset($image_name7);
+            $img7->setAttribute('src', $newImageUrl7);
           }
         }
         $choice7 = $choice_7->saveHTML();
@@ -817,15 +848,17 @@ if ($request->has('choice3')) {
         $choice_8->loadHTML(mb_convert_encoding($choice8, 'HTML-ENTITIES', 'UTF-8'), LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
 
         $images_choice_8 = $choice_8->getElementsByTagName('img');
-
-        foreach ($images_choice_8 as $key => $img) {
-          if (strpos($img->getAttribute('src'), 'data:image/') === 0) {
-            $data = base64_decode(explode(',', explode(';', $img->getAttribute('src'))[1])[1]);
-            $image_name = '/upload/Que/ck/' . time() . $key . '.png'; // ใส่ .png เพื่อให้เป็นนามสกุลไฟล์ถูกต้อง
-            file_put_contents(public_path() . $image_name, $data);
-            $img->removeAttribute('src');
-            $newImageUrl = asset($image_name);
-            $img->setAttribute('src', $newImageUrl);
+        if (!file_exists(public_path('/upload/Que/ck/qu8/'))) {
+          mkdir(public_path('/upload/Que/ck/qu8/'), 0755, true);
+        }
+        foreach ($images_choice_8 as $key8 => $img8) {
+          if (strpos($img8->getAttribute('src'), 'data:image/') === 0) {
+            $data8 = base64_decode(explode(',', explode(';', $img8->getAttribute('src'))[1])[1]);
+            $image_name8 = '/upload/Que/ck/' . time() . $key8 . '.png'; // ใส่ .png เพื่อให้เป็นนามสกุลไฟล์ถูกต้อง
+            file_put_contents(public_path() . $image_name8, $data8);
+            $img8->removeAttribute('src');
+            $newImageUrl8 = asset($image_name);
+            $img8->setAttribute('src', $newImageUrl8);
           }
         }
         $choice8 = $choice_8->saveHTML();
@@ -833,7 +866,7 @@ if ($request->has('choice3')) {
 
       $ques->choice8 = $choice8;
     }
-
+  }
 
     if ($request->has('explain')) {
       $explain = $request->explain;
@@ -844,14 +877,17 @@ if ($request->has('choice3')) {
 
         $images_choice_explain = $choice_explain->getElementsByTagName('img');
 
-        foreach ($images_choice_explain as $key => $img) {
-          if (strpos($img->getAttribute('src'), 'data:image/') === 0) {
-            $data = base64_decode(explode(',', explode(';', $img->getAttribute('src'))[1])[1]);
-            $image_name = '/upload/Que/ck/' . time() . $key . '.png'; // ใส่ .png เพื่อให้เป็นนามสกุลไฟล์ถูกต้อง
-            file_put_contents(public_path() . $image_name, $data);
-            $img->removeAttribute('src');
-            $newImageUrl = asset($image_name);
-            $img->setAttribute('src', $newImageUrl);
+        if (!file_exists(public_path('/upload/Que/ck/exp/'))) {
+          mkdir(public_path('/upload/Que/ck/exp/'), 0755, true);
+        }
+        foreach ($images_choice_explain as $exp => $imgexp) {
+          if (strpos($imgexp->getAttribute('src'), 'data:image/') === 0) {
+            $dataexp = base64_decode(explode(',', explode(';', $imgexp->getAttribute('src'))[1])[1]);
+            $image_nameexp = '/upload/Que/ck/exp/' . time() . $exp . '.png'; // ใส่ .png เพื่อให้เป็นนามสกุลไฟล์ถูกต้อง
+            file_put_contents(public_path() . $image_nameexp, $dataexp);
+            $imgexp->removeAttribute('src');
+            $newImageUrlexp = asset($image_nameexp);
+            $imgexp->setAttribute('src', $newImageUrlexp);
           }
         }
         $explain = $choice_explain->saveHTML();
@@ -859,6 +895,7 @@ if ($request->has('choice3')) {
 
       $ques->explain = $explain;
     }
+
     $ques->score = $request->score;
     $ques->numchoice = $request->numchoice;
 

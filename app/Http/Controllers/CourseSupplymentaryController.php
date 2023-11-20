@@ -45,8 +45,7 @@ class CourseSupplymentaryController extends Controller
 
         $validator = Validator::make($request->all(), [
             'title_th' => 'required',
-            'title_en' => 'required',
-            // เพิ่มรายการตรวจสอบข้อมูลที่ต้องการตรวจสอบ
+
         ]);
 
         if ($validator->fails()) {

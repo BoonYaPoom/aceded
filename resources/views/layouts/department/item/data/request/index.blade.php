@@ -20,7 +20,7 @@
     <div class="page-inner">
         <div class="page-section">
             <div class="card card-fluid">
-                <div class="card-header bg-muted">คำขอสมัคร Admin</div>
+                <div class="card-header bg-muted">คำขอสมัคร Admin สถานศึกษา</div>
                 <div class="card-body">
                     <!-- .table-responsive -->
 
@@ -74,23 +74,23 @@
                                             },
                                             {
                                                 data: 'fullname',
-
+                                                className: 'text-center'
                                             },
                                             {
                                                 data: 'school',
-
+                                                className: 'text-center'
                                             },
                                             {
                                                 data: 'proviUser',
-
+                                                className: 'text-center'
                                             },
                                             {
                                                 data: 'startdate',
-
+                                                className: 'text-center'
                                             },
                                             {
                                                 data: 'enddate',
-
+                                                className: 'text-center'
                                             },
                                             {
                                                 data: null,
@@ -101,7 +101,7 @@
                                                         "{{ route('detaildata', ['submit_id' => 'submit_id']) }}";
                                                     detaildata = detaildata.replace('submit_id', submit_id);
                                                     var storeAdmin =
-                                                        "{{ route('storeAdmin', ['submit_id' => 'submit_id']) }}";
+                                                        "{{ route('storeAdminreq', ['submit_id' => 'submit_id']) }}";
                                                     storeAdmin = storeAdmin.replace('submit_id', submit_id);
                                                     var linkedata =
                                                         '<a href="' + detaildata +

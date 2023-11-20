@@ -42,7 +42,8 @@
                                                 <input type="checkbox" class="custom-control-input"
                                                     name="department_data[]"
                                                     id="department_data{{ $part->department_id }}"
-                                                    value="{{ $part->department_id }}">
+                                                    value="{{ $part->department_id }}"
+                                                    {{ in_array($part->department_id, $datajsonexam->toArray()) ? 'checked' : '' }}>
                                                 <label class="custom-control-label"
                                                     for="department_data{{ $part->department_id }}"></label>
 

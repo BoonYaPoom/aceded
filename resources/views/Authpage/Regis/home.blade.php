@@ -155,7 +155,7 @@ try {
                     </label>
                 </div>
                 <div class="col-sm-7" align="left">
-                    <select class="form-control w-100 fadeIn first" name="provines_code" id="provines_code">
+                    <select class="form-control w-100 fadeIn first" name="provines_code" id="provines_code" required="">
                         <option value="" selected disabled>-- เลือกจังหวัด --</option>
                         @foreach ($provinces->sortBy('id') as $pro)
                             <option value="{{ $pro->code }}">{{ $pro->name_in_thai }}</option>
@@ -170,7 +170,7 @@ try {
                     </label>
                 </div>
                 <div class="col-sm-7" align="left">
-                    <select class="form-control w-100 fadeIn first" name="school_id" id="school_id">
+                    <select class="form-control w-100 fadeIn first" name="school_code" id="school_code" required="">
                         <option value="" selected disabled>-- เลือกสถานศึกษา --</option>
                     </select>
                 </div>
@@ -182,7 +182,7 @@ try {
                     var selectedProvinceCode = this.value;
 
                     // เลือกรายการ "เลือกสถานศึกษา"
-                    var schoolSelect = document.getElementById('school_id');
+                    var schoolSelect = document.getElementById('school_code');
 
                     // ล้างรายการเดิม
                     schoolSelect.innerHTML = '<option value="" selected disabled>-- เลือกสถานศึกษา --</option>';
@@ -191,7 +191,7 @@ try {
                     @foreach ($school as $schoolItem)
                         if ("{{ $schoolItem->provinces_code }}" === selectedProvinceCode) {
                             var option = document.createElement('option');
-                            option.value = "{{ $schoolItem->school_id }}";
+                            option.value = "{{ $schoolItem->school_code }}";
                             option.textContent = "{{ $schoolItem->school_name }}";
                             schoolSelect.appendChild(option);
                         }
@@ -204,7 +204,7 @@ try {
                 </div>
                 <div class="col-sm-4" align="left">
                     <input type="text" name="citizen_id" value="" id="citizen_id"
-                        class="form-control fadeIn second" maxlength="20">
+                        class="form-control fadeIn second" maxlength="20" required="">
                     <div id="errorDub" class="required" style="display:none; font-size: 14px;padding-top: 4px"></div>
                 </div>
             </div>
@@ -215,7 +215,7 @@ try {
                 </div>
                 <div class="col-sm-4" align="left">
                     <input type="text" name="firstname" maxlength="150" autocomplete="off" value=""
-                        id="firstname" class="form-control fadeIn second">
+                        id="firstname" class="form-control fadeIn second" required="">
                 </div>
             </div>
             <div class="form-group row">
@@ -224,7 +224,7 @@ try {
                 </div>
                 <div class="col-sm-4" align="left">
                     <input type="text" name="lastname" maxlength="150" autocomplete="off" value=""
-                        id="lastname" class="form-control fadeIn third">
+                        id="lastname" class="form-control fadeIn third" required="">
                 </div>
             </div>
 
@@ -234,7 +234,7 @@ try {
                 </div>
                 <div class="col-sm-4" align="left">
                     <input type="text" name="telephone" maxlength="10" autocomplete="off" value=""
-                        id="telephone" class="form-control fadeIn fourth">
+                        id="telephone" class="form-control fadeIn fourth" required="">
                 </div>
             </div>
             <div class="form-group row">
@@ -243,7 +243,7 @@ try {
                 </div>
                 <div class="col-sm-4" align="left">
                     <input type="text" name="email"  autocomplete="off" value=""
-                        id="email" class="form-control fadeIn fourth">
+                        id="email" class="form-control fadeIn fourth" required="">
                 </div>
             </div>
             <div class="form-group row">

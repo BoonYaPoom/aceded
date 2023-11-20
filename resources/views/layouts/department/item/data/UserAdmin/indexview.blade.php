@@ -70,10 +70,10 @@
 
 
 
-                        {{-- <a class="ml-1 btn btn-info btn-md " style="color:#fff"
+                        <a class="ml-1 btn btn-info btn-md " style="color:#fff"
                             href="{{ route('umsschooldepartment', [$depart]) }}"><i
                                 class="fas fa-users"></i>
-                            จัดการสถานศึกษา</a> --}}
+                            จัดการสถานศึกษา</a>
 
 
                     <div class="col-md-6 mb-3">
