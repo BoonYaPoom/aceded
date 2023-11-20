@@ -57,15 +57,15 @@ class CourseSupplymentaryController extends Controller
         }
         try {
             $supplys = new CourseSupplymentary;
-
+            $supplys->supplymentary_type = $request->type;
 
             $supplys->title_th = $request->title_th;
             $supplys->title_en = $request->title_en;
             $supplys->cover_image = $request->cover;
             $supplys->author = $request->author;
             $supplys->supplymentary_status = $request->input('supplymentary_status', 0);
-            $supplys->supplymentary_type = $request->type;
-            if ($supplys->supplymentary_type = 3) {
+
+            if ($supplys->supplymentary_type == 3) {
                 if ($request->hasFile('path')) {
                     $image_name = 'path' . '.' . $request->path->getClientOriginalExtension();
                     $uploadDirectory = public_path('upload/Subject/Supplys/');
@@ -79,9 +79,9 @@ class CourseSupplymentaryController extends Controller
                     }
                 }
             }
-           
 
-            if ($supplys->supplymentary_type = 5) {
+
+            if ($supplys->supplymentary_type == 5) {
                 $supplys->cover_image = $request->cover;
                 $supplys->path = $request->cover;
             }
@@ -93,15 +93,15 @@ class CourseSupplymentaryController extends Controller
             set_time_limit(0);
             ini_set('max_execution_time', 300);
             ini_set('pcre.backtrack_limit', 5000000);
-            if ($supplys->supplymentary_type = 2) {
+            if ($supplys->supplymentary_type == 2) {
                 if ($request->hasFile('path')) {
-                 // บันทึกไฟล์ PDF           
+                 // บันทึกไฟล์ PDF
                     $file_name = $request->file('path');
                     $file_namess = 'Supplys' . '.' . $request->path->getClientOriginalExtension();
                     // ระบุโฟลเดอร์ที่ต้องการดึงข้อมูล
                     // ตรวจสอบว่าโฟลเดอร์ปลายทางมีอยู่หรือไม่ ถ้าไม่มีให้สร้างขึ้น
                     $sourceDirectory = public_path('upload/Subject/Supplys/');
-    
+
                     // ระบุโฟลเดอร์ที่ต้องการบันทึกข้อมูลใหม่
                     $destinationDirectory = public_path('upload/Subject/Supplys/' . $supplys->supplymentary_id);
                     // สร้างโพลเดอร์ปลายทางหากยังไม่มี
@@ -110,18 +110,18 @@ class CourseSupplymentaryController extends Controller
                     }
                     // ดึงรายการไฟล์ในโฟลเดอร์ "uploads/Supplys"
                     $files = File::allFiles($sourceDirectory);
-    
+
                     // วนลูปเพื่อคัดลอกและบันทึกไฟล์ใหม่ในโฟลเดอร์ปลายทาง
                     foreach ($files as $file) {
                         // หาชื่อโฟลเดอร์เดิมที่อยู่ในชื่อไฟล์
                         $originalDirectoryName = pathinfo($file->getRelativePathname(), PATHINFO_DIRNAME);
-    
+
                         // สร้างโฟลเดอร์ปลายทางในกรณีที่ยังไม่มี
                         $newDirectoryPath = $destinationDirectory . '/' . $originalDirectoryName;
                         if (!File::exists($newDirectoryPath)) {
                             File::makeDirectory($newDirectoryPath, 0777, true, true);
                         }
-    
+
                         // คัดลอกและบันทึกไฟล์ใหม่
                         $newFileName = $file->getFilename();
                         $fileContents = File::get($file->getPathname());
@@ -129,43 +129,43 @@ class CourseSupplymentaryController extends Controller
                     }
                     $file_path = public_path('upload/Subject/Supplys/' .  $supplys->supplymentary_id) . '/' . $file_namess;
                     $file_name->move(public_path('upload/Subject/Supplys/' .   $supplys->supplymentary_id), $file_namess);
-    
+
                     // Check if the PDF file exists
                     if (file_exists($file_path)) {
                         // สร้างโฟลเดอร์เพื่อเก็บรูปภาพที่แปลง
                         $outputPath = public_path('upload/Subject/Supplys/' .   $supplys->supplymentary_id);
-    
+
                         // Construct the folder name based on the count
-                        $folderName = 'page'; 
+                        $folderName = 'page';
                         $newFolder = $outputPath . '/' . $folderName . '/large';
                         File::makeDirectory($newFolder, $mode = 0777, true, true);
                         $newFolder1 = $outputPath . '/' . $folderName . '/thumb';
                         File::makeDirectory($newFolder1, $mode = 0777, true, true);
-    
-                   
+
+
                         $pdf = new Pdf($file_path);
-    
+
                         $pages = array();
                         $pagesCount = $pdf->getNumberOfPages();
-    
+
                         for ($page = 1; $page <= $pagesCount; $page++) {
                             $imageFilename = "book-{$page}.png";
                             $imageFilename1 = "book-thumb-{$page}.png";
-    
+
                             $pdf->setPage($page)->saveImage($newFolder . '/' . $imageFilename);
                             $pdf->setPage($page)->saveImage($newFolder1 . '/' . $imageFilename1);
-    
+
                             // โหลดรูปภาพ
                             $img = Image::make($newFolder . '/' . $imageFilename);
-    
+
                             // ปรับขนาดรูปภาพ
                             $img->resize(600, 849);
                             $imgs = Image::make($newFolder1 . '/' . $imageFilename1);
-    
+
                             // ปรับขนาดรูปภาพ
                             $imgs->resize(300, 425);
-    
-    
+
+
                             // เซฟรูปภาพที่ปรับขนาดลงในไฟล์เดิม
                             $img->save($newFolder . '/' . $imageFilename);
                             $img->save($newFolder1 . '/' . $imageFilename1);
@@ -179,16 +179,16 @@ class CourseSupplymentaryController extends Controller
                                 // ลบไฟล์เดิม
                                 unlink($htmlPath);
                             }
-    
+
                             $htmlContent = view('flipbook.flipbook', ['pages' => $pages, 'pageLCount' => $pageLCount])->render();
                             file_put_contents($htmlPath, $htmlContent);
                         }
-    
+
                         $supplys->path =  'upload/Subject/Supplys/' .  $supplys->supplymentary_id . '/' . 'index.html';
                         $supplys->save();
                     }
                 }
-              
+
             }
             DB::commit();
         } catch (\Exception $e) {
@@ -222,7 +222,7 @@ class CourseSupplymentaryController extends Controller
         $supplys->supplymentary_status = $request->input('supplymentary_status', 0);
         $supplys->supplymentary_type = $request->type;
 
-        if ($supplys->supplymentary_type = 3) {
+        if ($supplys->supplymentary_type == 3) {
             if ($request->hasFile('path')) {
                 $image_name = 'path' . '.' . $request->path->getClientOriginalExtension();
                 $uploadDirectory = public_path('upload/Subject/Supplys/');
@@ -236,18 +236,18 @@ class CourseSupplymentaryController extends Controller
                 }
             }
         }
-       
 
-        if ($supplys->supplymentary_type = 5) {
+
+        if ($supplys->supplymentary_type == 5) {
             $supplys->cover_image = $request->cover;
             $supplys->path = $request->cover;
         }
         set_time_limit(0);
         ini_set('max_execution_time', 300);
         ini_set('pcre.backtrack_limit', 5000000);
-        if ($supplys->supplymentary_type = 2) {
+        if ($supplys->supplymentary_type == 2) {
             if ($request->hasFile('path')) {
-             // บันทึกไฟล์ PDF           
+             // บันทึกไฟล์ PDF
                 $file_name = $request->file('path');
                 $file_namess = 'Supplys' . '.' . $request->path->getClientOriginalExtension();
                 // ระบุโฟลเดอร์ที่ต้องการดึงข้อมูล
@@ -288,13 +288,13 @@ class CourseSupplymentaryController extends Controller
                     $outputPath = public_path('upload/Subject/Supplys/' .   $supplys->supplymentary_id);
 
                     // Construct the folder name based on the count
-                    $folderName = 'page'; 
+                    $folderName = 'page';
                     $newFolder = $outputPath . '/' . $folderName . '/large';
                     File::makeDirectory($newFolder, $mode = 0777, true, true);
                     $newFolder1 = $outputPath . '/' . $folderName . '/thumb';
                     File::makeDirectory($newFolder1, $mode = 0777, true, true);
 
-               
+
                     $pdf = new Pdf($file_path);
 
                     $pages = array();
@@ -340,7 +340,7 @@ class CourseSupplymentaryController extends Controller
                     $supplys->save();
                 }
             }
-          
+
         }
 
         $supplys->save();
@@ -407,10 +407,13 @@ class CourseSupplymentaryController extends Controller
         $supplys->author = $request->author;
         $supplys->supplymentary_status = $request->input('supplymentary_status', 0);
         $supplys->supplymentary_type = $request->supplymentary_type;
+        $supplys->cover_image = $request->cover;
 
-  
-        
-        if ($supplys->supplymentary_type = 3) {
+        $supplys->lesson_id = (int)$lesson_id;
+        $supplys->subject_id = $subject_id;
+
+
+        if ($supplys->supplymentary_type == 3) {
             if ($request->hasFile('path')) {
                 $image_name = 'path' . '.' . $request->path->getClientOriginalExtension();
                 $uploadDirectory = public_path('upload/Subject/Lesson/Supplymentary/');
@@ -424,18 +427,18 @@ class CourseSupplymentaryController extends Controller
                 }
             }
         }
-       
 
-        if ($supplys->supplymentary_type = 5) {
+
+        if ($supplys->supplymentary_type == 5) {
             $supplys->cover_image = $request->cover;
             $supplys->path = $request->cover;
         }
         set_time_limit(0);
         ini_set('max_execution_time', 300);
         ini_set('pcre.backtrack_limit', 5000000);
-        if ($supplys->supplymentary_type = 2) {
+        if ($supplys->supplymentary_type == 2) {
             if ($request->hasFile('path')) {
-             // บันทึกไฟล์ PDF           
+             // บันทึกไฟล์ PDF
                 $file_name = $request->file('path');
                 $file_namess = 'Supplys' . '.' . $request->path->getClientOriginalExtension();
                 // ระบุโฟลเดอร์ที่ต้องการดึงข้อมูล
@@ -476,13 +479,13 @@ class CourseSupplymentaryController extends Controller
                     $outputPath = public_path('upload/Subject/Lesson/Supplymentary/' .   $supplys->supplymentary_id);
 
                     // Construct the folder name based on the count
-                    $folderName = 'page'; 
+                    $folderName = 'page';
                     $newFolder = $outputPath . '/' . $folderName . '/large';
                     File::makeDirectory($newFolder, $mode = 0777, true, true);
                     $newFolder1 = $outputPath . '/' . $folderName . '/thumb';
                     File::makeDirectory($newFolder1, $mode = 0777, true, true);
 
-               
+
                     $pdf = new Pdf($file_path);
 
                     $pages = array();
@@ -528,12 +531,9 @@ class CourseSupplymentaryController extends Controller
                     $supplys->save();
                 }
             }
-          
-        }
-        $supplys->cover_image = $request->cover;
 
-        $supplys->lesson_id = (int)$lesson_id;
-        $supplys->subject_id = (int)$subject_id;
+        }
+
 
         $supplys->save();
 
@@ -543,7 +543,7 @@ class CourseSupplymentaryController extends Controller
     {
         $supplys  = CourseSupplymentary::findOrFail($supplymentary_id);
         $types = CourseSupplymentaryType::all();
-      
+
         $subject_id =  $supplys->subject_id;
         $subs = CourseSubject::findOrFail($subject_id);
         $department_id =   $subs->department_id;
@@ -563,9 +563,9 @@ class CourseSupplymentaryController extends Controller
         $supplys->supplymentary_status = $request->input('supplymentary_status', 0);
         $supplys->supplymentary_type = $request->type;
 
-  
-        
-        if ($supplys->supplymentary_type = 3) {
+
+
+        if ($supplys->supplymentary_type == 3) {
             if ($request->hasFile('path')) {
                 $image_name = 'path' . '.' . $request->path->getClientOriginalExtension();
                 $uploadDirectory = public_path('upload/Subject/Lesson/Supplymentary/');
@@ -579,18 +579,18 @@ class CourseSupplymentaryController extends Controller
                 }
             }
         }
-       
 
-        if ($supplys->supplymentary_type = 5) {
+
+        if ($supplys->supplymentary_type == 5) {
             $supplys->cover_image = $request->cover;
             $supplys->path = $request->cover;
         }
         set_time_limit(0);
         ini_set('max_execution_time', 300);
         ini_set('pcre.backtrack_limit', 5000000);
-        if ($supplys->supplymentary_type = 2) {
+        if ($supplys->supplymentary_type == 2) {
             if ($request->hasFile('path')) {
-             // บันทึกไฟล์ PDF           
+             // บันทึกไฟล์ PDF
                 $file_name = $request->file('path');
                 $file_namess = 'Supplys' . '.' . $request->path->getClientOriginalExtension();
                 // ระบุโฟลเดอร์ที่ต้องการดึงข้อมูล
@@ -631,13 +631,13 @@ class CourseSupplymentaryController extends Controller
                     $outputPath = public_path('upload/Subject/Lesson/Supplymentary/' .   $supplys->supplymentary_id);
 
                     // Construct the folder name based on the count
-                    $folderName = 'page'; 
+                    $folderName = 'page';
                     $newFolder = $outputPath . '/' . $folderName . '/large';
                     File::makeDirectory($newFolder, $mode = 0777, true, true);
                     $newFolder1 = $outputPath . '/' . $folderName . '/thumb';
                     File::makeDirectory($newFolder1, $mode = 0777, true, true);
 
-               
+
                     $pdf = new Pdf($file_path);
 
                     $pages = array();
@@ -683,7 +683,7 @@ class CourseSupplymentaryController extends Controller
                     $supplys->save();
                 }
             }
-          
+
         }
 
         $supplys->save();

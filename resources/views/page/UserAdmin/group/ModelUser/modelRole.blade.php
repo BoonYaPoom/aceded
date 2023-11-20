@@ -23,8 +23,8 @@
 
                                 @foreach ($roles->sortBy('user_role_id') as $ro)
                                 @if ($ro->user_role_id > 1)
-                                    
-                          
+
+
                                     <div class="visual-picker visual-picker-sm has-peek px-3">
                                         <input type="radio" id="user_role{{$ro->user_role_id}}" name="user_role" value="{{$ro->user_role_id}}"
                                             {{ $item->user_role == $ro->user_role_id ? 'checked' : '' }}>

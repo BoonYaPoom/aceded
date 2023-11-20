@@ -23,7 +23,7 @@ class SchoolController extends Controller
     }
     public function getSchools(Request $request )
     {
-        $schools = School::paginate(2000);
+        $schools = School::all();
         $schoolsaa = [];
         $userschool = UserSchool::all();
         $i = 1;
@@ -33,9 +33,9 @@ class SchoolController extends Controller
                 ->pluck('name_in_thai')
                 ->first();
             $userCount = $userschool->where('school_code', $school->school_code)->count();
-
+            ini_set('memory_limit', '1028M');
             $schoolsaa[] = [
-                'num' => $i++, 
+                'num' => $i++,
                 'id' => $school->school_id,
                 'code' => $school->school_code,
                 'school_name' => $school->school_name,
@@ -52,7 +52,7 @@ class SchoolController extends Controller
 
         }
 
-        return response()->json(['response' => $response]);
+        return response()->json(['schoolsaa' => $schoolsaa]);
     }
 
 

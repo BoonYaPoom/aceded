@@ -70,7 +70,7 @@
                                     var table = $('#datatable').DataTable({
                                         ajax: {
                                             url: '{{ route('getSchools') }}',
-                                            dataSrc: 'dataschool',
+                                            dataSrc: 'schoolsaa',
                                         },
                                         columns: [{
                                                 data: 'num'

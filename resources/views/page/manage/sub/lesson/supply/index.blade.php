@@ -24,7 +24,7 @@
             <!-- .card -->
             <div class="card card-fluid">
                 <!-- .card-header -->
-                <div class="card-header bg-muted"><a href="" style="text-decoration: underline;">จัดการเว็บ</a> / <a
+                <div class="card-header bg-muted"><a href="{{ route('lessonpage', [$depart,$subs->subject_id]) }}" style="text-decoration: underline;">จัดการเว็บ</a> / <a
                         href="" style="text-decoration: underline;">
                         สื่อเสริม</a> /<i> แก้ไขข้อมูล</i></div><!-- /.card-header -->
                 <!-- .card-body -->
@@ -133,7 +133,7 @@
                     <!-- /floating action -->
                 </header><!-- /.page-title-bar -->
             </div><!-- /.card -->
-       
+
 
         </div><!-- /.page-section -->
     </div><!-- /.page-inner -->

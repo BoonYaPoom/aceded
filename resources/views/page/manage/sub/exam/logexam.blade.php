@@ -20,7 +20,7 @@
 
 
 
-      
+
                     <!-- .card-body -->
                     <div class="card-body">
 
@@ -49,18 +49,18 @@
                                     @foreach ($score as $scores)
                                         @php
                                             $user = \App\Models\Users::find($scores->user_id);
-                                                
+
                                             if ($user !== null) {
                                                 $fullscore = $scores->fullscore;
                                                 $scoreexam = $scores->score;
                                                 $ansscore = 0; // Initialize $ansscore to 0
-                                            
+
                                                 if ($fullscore != 0) {
                                                     $ansscore = ($scoreexam / $fullscore) * 100;
                                                 }
                                             $sc++;
 
-                                        
+
                                         @endphp
 
                                         <tr>
@@ -70,7 +70,7 @@
                                             <td>{{ $fullscore }}</td>
                                             <td>{{ $scoreexam }}</td>
                                             <td>{{ number_format($ansscore, 2) }} %</td>
-                                            <td>{{ $scores->date }}</td>
+                                            <td>{{ $scores->score_date }}</td>
                                         </tr><!-- /tr -->
                                         @php
                                             }
@@ -117,5 +117,5 @@
                     title="บันทึกคะแนน"><span class="fas fa-save"></span></button>
                 <!-- /floating action -->
             </header><!-- /.page-title-bar -->
-      
+
     @endsection

@@ -1,6 +1,6 @@
 @extends('layouts.department.layout.departmenthome')
 @section('contentdepartment')
-    <form action="{{ route('store_supplyLessform', [$depart,'lesson_id' => $lesson, 'subject_id' => $subs]) }}" method="post"
+    <form action="{{ route('store_supplyLessform', [$depart, 'lesson_id' => $lesson, 'subject_id' => $subs]) }}" method="post"
         enctype="multipart/form-data">
         @csrf
         <div class="page-inner">
@@ -10,9 +10,9 @@
                 <!-- .card -->
                 <div class="card card-fluid">
                     <!-- .card-header -->
-                    <div class="card-header bg-muted"><a href="{{ route('lessonpage', [$depart,$lesson->lesson_id]) }}"
+                    <div class="card-header bg-muted"><a href="{{ route('lessonpage', [$depart, $lesson->lesson_id]) }}"
                             style="text-decoration: underline;">หมวดหมู่</a> / <a
-                            href="{{ route('supplypage', [$depart,$lesson->lesson_id]) }}"
+                            href="{{ route('supplypage', [$depart, $lesson->lesson_id]) }}"
                             style="text-decoration: underline;">จัดการวิชา</a> </div><!-- /.card-header -->
 
                     <!-- .card-body -->
@@ -22,15 +22,15 @@
 
                             <label class="control-label" for="supplymentary_type">ชนิดสื่อ</label>
 
-                            <select id="supplymentary_type" name="supplymentary_type" class="form-control"
-                                data-toggle="select2" data-placeholder="ชนิดสื่อ" data-allow-clear="false">
+                            <select id="supplymentary_type" name="supplymentary_type" class="form-control" data-toggle="select2"
+                                data-placeholder="ชนิดสื่อ" data-allow-clear="false">
                                 <option value="0">เลือกชนิดสื่อ</option>
                                 @foreach ($types as $type)
                                     <option value="{{ $type->supplymentary_type }}">{{ $type->content_th }}</option>
                                 @endforeach
                             </select>
 
-                        </div><!-- /.form-group -->
+                        </div>
                         <script>
                             $(document).ready(function() {
                                 $('#supplymentary_type').change(function() {
@@ -130,7 +130,6 @@
                 </div><!-- /.card-body -->
                 <!-- .form-actions -->
                 <div class="form-actions ">
-                    <input type="hidden" name="cover_image" id="cover_image" class="form-control" value="">
 
                     <button class="btn btn-lg btn-primary ml-auto" type="submit"><i class="far fa-save"></i>
                         บันทึก</button>
@@ -173,8 +172,8 @@
                             <!-- tbody -->
                             <tbody class="showbook">
                                 @php
-                                $BB = 1 ;
-                            @endphp
+                                    $BB = 1;
+                                @endphp
                                 @foreach ($books as $book)
                                     <tr>
                                         <td class="align-middle" style="width: 10%">{{ $BB++ }}</td>

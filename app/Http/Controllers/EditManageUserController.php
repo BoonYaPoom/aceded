@@ -9,6 +9,7 @@ use App\Models\School;
 use App\Models\Subdistricts;
 use App\Models\UserRole;
 use App\Models\Users;
+use Illuminate\Support\Facades\Cache;
 
 use App\Models\UserSchool;
 use Illuminate\Http\Request;
@@ -23,13 +24,14 @@ class EditManageUserController extends Controller
 
     public function UserManage(Request $request, $user_role = null)
     {
-        $usermanages = Users::query();
+        $usermanages = Cache::remember('usermanages', 60, function () use ($user_role) {
+            $query = Users::query();
 
-        if ($user_role !== null) {
-            $usermanages->where('user_role', $user_role);
-        }
-
-        $usermanages = $usermanages->get();
+            if ($user_role !== null) {
+                $query->where('user_role', $user_role);
+            }
+            return $query->get();
+        });
 
         return view('page.UserAdmin.indexview', compact('usermanages'));
     }
@@ -44,10 +46,9 @@ class EditManageUserController extends Controller
         }
 
         $usermanages = $usermanages->get();
-        $r =  1;
 
+        $i = 1;
         foreach ($usermanages->sortBy('user_id') as  $item) {
-            $clientPermissionModal = 'clientPermissionModal-' . $item->user_id;
             $name_short_en = Department::where('department_id', $item->department_id)
                 ->pluck('name_en')
                 ->first();
@@ -69,8 +70,9 @@ class EditManageUserController extends Controller
             $part2 = substr($mobile, 3, 3);
             $part3 = substr($mobile, 6, 4);
             $fullMobile = $part1 . '-' . $part2 . '-' . $part3;
-            $userAll[] = [
-                'num' => $r++,
+            $datauser[] = [
+
+                'i' => $i++,
                 'id' => $id,
                 'username' => $username,
                 'firstname' => $firstname,
@@ -83,9 +85,10 @@ class EditManageUserController extends Controller
                 'department' => $name_short_en,
                 'user_role' => $user_role,
             ];
+
         }
 
-        return response()->json(['userAll' => $userAll]);
+        return response()->json(['datauser' => $datauser]);
     }
 
 
@@ -140,11 +143,11 @@ class EditManageUserController extends Controller
         $usermanages->mobile = $request->mobile;
 
         $usermanages->pos_name = $request->pos_name;
-    
+
 
         // บันทึกการเปลี่ยนแปลง
         $usermanages->save();
-   
+
 
 
         $department_data = $request->department_data;

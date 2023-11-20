@@ -61,9 +61,6 @@
                         </script>
 
 
-                        @error('supplymentary_type')
-                            <span class="badge badge-warning">{{ $message }}</span>
-                        @enderror
 
                         <div id="data2" style="display:none;">
                             <div class="form-group digitallibrary ">
@@ -135,8 +132,7 @@
                 </div><!-- /.card-body -->
                 <!-- .form-actions -->
                 <div class="form-actions ">
-                    <input type="hidden" name="cover_image" id="cover_image" class="form-control" value="">
-                    <input type="hidden" name="supplymentary_type" id="supplymentary_type" value="">
+
                     <button class="btn btn-lg btn-primary ml-auto" type="submit"><i class="far fa-save"></i>
                         บันทึก</button>
                 </div><!-- /.form-actions -->
@@ -164,7 +160,7 @@
                 </div>
                 <div class="modal-body">
                     <!-- เนื้อหาภายในโมดัล -->
-                  
+
                     <div class="table-responsive">
                         <table class="table w3-hoverable">
                             <!-- thead -->

@@ -20,19 +20,19 @@
                         <!-- .form-group -->
                         <div class="form-group">
 
-                            <label class="control-label" for="type">ชนิดสื่อ</label>
+                            <label class="control-label" for="supplymentary_type">ชนิดสื่อ</label>
 
-                            <select id="type" name="type" class="form-control" data-toggle="select2"
+                            <select id="supplymentary_type" name="supplymentary_type" class="form-control" data-toggle="select2"
                                 data-placeholder="ชนิดสื่อ" data-allow-clear="false" >
                                 <option value="0">เลือกชนิดสื่อ</option>
                                 @foreach ($types as $type)
-                                    <option value="{{ $type->supplymentary_type }}">{{ $type->content_th }}</option>
+                                    <option value="{{ $type->supplymentary_type }}"  {{ $type->supplymentary_type == $supplys->supplymentary_type ? 'selected' : '' }}>{{ $type->content_th }}</option>
                                 @endforeach
                             </select>
                         </div><!-- /.form-group -->
                         <script>
                             $(document).ready(function() {
-                                
+
                                 $('#type').change(function() {
                                     var selectedValue = $(this).val();
                                     // ซ่อนข้อมูลทั้งหมด
@@ -59,7 +59,7 @@
 
 
                                 });
-                                
+
                             });
                         </script>
 
@@ -105,7 +105,7 @@
                                     accept=".pdf,.docx,.doc,.pptx,.ppt,.ppsx,.xls,.xlsx,image/x-png,image/gif,image/jpeg,video/mp4">
 
                             </div>
-                            
+
                         </div>
                         <input type="hidden" name="book_id" id="book_id" value="">
 
@@ -140,8 +140,7 @@
                 </div><!-- /.card-body -->
                 <!-- .form-actions -->
                 <div class="form-actions ">
-                    <input type="hidden" name="cover_image" id="cover_image" class="form-control" value="">
-                    <input type="hidden" name="supplymentary_type" id="supplymentary_type" value="">
+
                     <button class="btn btn-lg btn-primary ml-auto" type="submit"><i class="far fa-save"></i>
                         บันทึก</button>
                 </div><!-- /.form-actions -->

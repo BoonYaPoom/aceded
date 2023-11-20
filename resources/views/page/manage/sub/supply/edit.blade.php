@@ -94,7 +94,7 @@
                                     class="switcher-input" name="supplymentary_status" id="supplymentary_status"
                                     value="{{ $supplys->supplymentary_status }}">
                                 <span class="switcher-indicator"></span>
-                                <span class="switcher-label-on">ON</span> 
+                                <span class="switcher-label-on">ON</span>
                                 <span class="switcher-label-off text-red">OFF</span></label>
                         </div><!-- /.form-group -->
 
@@ -141,8 +141,7 @@
                 </div><!-- /.card-body -->
                 <!-- .form-actions -->
                 <div class="form-actions ">
-                    <input type="hidden" name="cover_image" id="cover_image" class="form-control" value="">
-                    <input type="hidden" name="supplymentary_type" id="supplymentary_type" value="">
+
                     <button class="btn btn-lg btn-primary ml-auto" type="submit"><i class="far fa-save"></i>
                         บันทึก</button>
                 </div><!-- /.form-actions -->

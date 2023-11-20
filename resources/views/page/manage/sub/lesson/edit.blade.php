@@ -10,7 +10,7 @@
                 <!-- .card-header -->
                 <div class="card-header bg-muted">
                     <a href="{{ route('lessonpage', [$depart,$lessons->subject_id]) }}"
-                        style="text-decoration: underline;">จัดการวิชา</a> / <i>{{ $lessons->lesson_th }}</i> 
+                        style="text-decoration: underline;">จัดการวิชา</a> / <i>{{ $lessons->lesson_th }}</i>
                 </div>
                 <!-- /.card-header -->
                 <form action="{{ route('update_lessonform', [$depart,'lesson_id' => $lessons]) }}" method="post"
@@ -57,7 +57,7 @@
                             <select  name="content_type" class="form-control" data-toggle="select2"
                                 data-placeholder="ชนิดสื่อ" data-allow-clear="false">
                                 @foreach ($content_types as $content_type)
-                                    <option value="{{ $content_type->content_type }}">{{ $content_type->content_th }}
+                                    <option value="{{ $content_type->content_type }}"   {{ $content_type->content_type == $lessons->content_type ? 'selected' : '' }}>{{ $content_type->content_th }}
                                     </option>
                                 @endforeach
                             </select>
@@ -86,7 +86,7 @@
                         <!-- .fieldset -->
 
                     </div><!-- /.card-body -->
-                   
+
             </div>
             <!-- .form-actions -->
             <div class="form-actions ">

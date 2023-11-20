@@ -74,8 +74,7 @@
 
                     <div class="col-md-6 mb-3">
                         <label for="department_id" class="col-md-3 text-left mt-1">หน่วยงาน</label>
-                        <select id="department_id" name="department_id" class="form-control"
-                            data-allow-clear="false">
+                        <select id="department_id" name="department_id" class="form-control" data-allow-clear="false">
                             <option value="0"selected>ทั้งหมด</option>
 
                             @php
@@ -244,43 +243,14 @@
                             </thead>
                             <!-- /thead -->
                             <!-- tbody -->
-                            <tbody>
-                  
-                                <!-- tr -->
-                  
-                                    <!-- tr -->
-                                    @php
-                                    $r = 0;
-                                @endphp
-                                @foreach ($usermanages->sortBy('user_id') as $item)
-                                    @php
-                                        $r++;
-                                    @endphp
-                                    @php
-                                        $user_roleadmin = $item->user_role == 1;
-                                    @endphp
-                                    @php
-                                        $statususerss = $item->userstatus == 0;
-                                    @endphp
-
-                                    @php
-                                        $clientPermissionModal = 'clientPermissionModal-' . $item->user_id;
-                                        $name_short_en = \App\Models\Department::where('department_id', $item->department_id)
-                                            ->pluck('name_en')
-                                            ->first();
-                                        $proviUser = \App\Models\Provinces::where('id', $item->province_id)
-                                            ->pluck('name_in_thai')
-                                            ->first();
-                                    @endphp
-                                    @include('page.UserAdmin.DataUser.AjexUser')
-                                    @include('page.UserAdmin.group.ModelUser.modelRole')
-                                    @include('page.UserAdmin.group.ModelUser.modelPass')
-                                @endforeach
-
+                            <tbody id="userallna">
 
                             </tbody><!-- /tbody -->
+
                         </table><!-- /.table -->
                     </div><!-- /.table-responsive -->
+
+                    @include('page.UserAdmin.DataUser.scripUser')
 
                 </div><!-- /.card-body -->
 
