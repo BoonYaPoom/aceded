@@ -15,6 +15,7 @@ return new class extends Migration
             $table->charset = 'utf8';
             $table->collation = 'utf8_general_ci';
             $table->increments('submit_id')->start(10)->nocache();
+            $table->integer('user_id')->nullable();
             $table->integer('school_code')->nullable();
             $table->integer('provines_code')->nullable();
             $table->string('firstname',800)->collation('utf8_general_ci')->nullable();

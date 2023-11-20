@@ -25,22 +25,25 @@ class CustomAuthController extends Controller
         return view('Authpage.Login.ldaplogin');
     }
 
-    public function regis()
+    public function regis(Request $request)
     {
         $provinces = Provinces::all();
         $districts = Districts::all();
         $supdist = Subdistricts::all();
+        $uid = $request->query('uid');
 
         return view('Authpage.Regis.registration', compact('provinces', 'districts', 'supdist'));
     }
 
 
 
-    public function homeregis()
+    public function homeregis(Request $request)
     {
         $school = School::all();
         $provinces = Provinces::all();
-        return view('Authpage.Regis.home', compact('provinces','school'));
+        $uid = $request->query('uid');
+
+        return view('Authpage.Regis.home', compact('provinces','school','uid'));
     }
     public function registerUser(Request $request)
     {
@@ -131,7 +134,7 @@ class CustomAuthController extends Controller
             'username' => 'required',
             'password' => 'required|min:3|max:20'
         ]);
-      
+
             $user = Users::where('username', '=', $request->username)->first();
 
             if ($user) {
@@ -148,7 +151,7 @@ class CustomAuthController extends Controller
             } else {
                 return back()->with('fail', 'ไม่พบผู้ใช้ในระบบ');
             }
-        
+
     }
 
     public function loginLdapUser(Request $request)

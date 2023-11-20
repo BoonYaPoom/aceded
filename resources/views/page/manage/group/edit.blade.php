@@ -34,7 +34,8 @@
                         <div class="form-group">
                             <label for="group_status">สถานะ </label>
                             <label class="switcher-control switcher-control-success switcher-control-lg">
-                                <input type="checkbox" class="switcher-input" name="group_status" value="1">
+                                <input type="checkbox" class="switcher-input" name="group_status" value="1"
+                                {{ $courses->group_status == 1 ? 'checked' : '' }}>
                                 <span class="switcher-indicator"></span>
                                 <span class="switcher-label-on">ON</span>
                                 <span class="switcher-label-off text-red">OFF</span>

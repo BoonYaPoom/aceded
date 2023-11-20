@@ -1,11 +1,9 @@
-@foreach ($users as $index => $utype)
-<!-- tr -->
 
-@php
-    $usernum = ($users->currentPage() - 1) * $users->perPage() + $index + 1;
-@endphp
+@php($u = 1)
+@foreach ($users as $index => $utype)
+
 <tr>
-    <td>{{ $usernum }}</td>
+    <td>{{ $u++ }}</td>
     <td>{{ $utype->username }}</td>
     <td>{{ $utype->firstname }} {{ $utype->lastname }} </td>
     <td>
@@ -13,6 +11,6 @@
             {{ $pertype->person }}
         @endif
     </td>
-</tr><!-- /tr -->
-<!-- tr -->
+</tr>
+
 @endforeach

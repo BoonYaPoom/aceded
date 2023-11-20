@@ -41,7 +41,7 @@
                                     <input type="search" id="myInput" class="form-control" placeholder=""
                                         aria-controls="datatable">
                                 </label>
-                                @if ($data->user_role == 1 || $data->user_role == 8)     
+                                @if ($data->user_role == 1 || $data->user_role == 8)
                                     <label>จังหวัด
                                         <select id="drop2" name="drop2" class="form-control form-control-sm"
                                             data-allow-clear="false">
@@ -56,7 +56,7 @@
                                         </select>
 
                                     </label>
-                                    
+
                                 @endif
                             </div>
 
@@ -94,7 +94,7 @@
                                         <td class="text-center"><a
                                                 href="{{ route('umsschooluserDepart', ['department_id' => $depart, 'school_code' => $scho->school_code]) }}">
                                                 <i class="fas fa-users"></i>
-                                               
+
                                             </a></td>
 
                                         <td class="text-center"><a

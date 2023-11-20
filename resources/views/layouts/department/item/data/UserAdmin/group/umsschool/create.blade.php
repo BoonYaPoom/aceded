@@ -1,6 +1,6 @@
 @extends('layouts.department.layout.departmenthome')
 @section('contentdepartment')
-    <form action="{{ route('storeschoolDepart', [$depart]) }}" method="post" enctype="multipart/form-data">
+    <form action="{{ route('storeschoolDepart', $depart) }}" method="post" enctype="multipart/form-data">
         @csrf
 
         <!-- .page-inner -->
@@ -26,16 +26,16 @@
                                 placeholder="สถานศึกษา" required="" value="">
                         </div><!-- /.form-group -->
                         <div class="form-group">
-                            <label for="province_id" class="col-md-1">จังหวัด </label>
+                            <label for="province_code" class="col-md-1">จังหวัด </label>
                             <span class="badge badge-warning">Required</span></label>
-                            <select id="province_id" name="province_id" class="form-control form-control-sm"
-                                data-toggle="select2" data-allow-clear="false">
+                            <select id="province_code" name="province_code" class="form-control form-control-sm"
+                                data-toggle="select2" data-allow-clear="false" required="">
                                 <option value="0">โปรดเลือกจังหวัด</option>
                                 @php
                                     $Provinces = \App\Models\Provinces::all();
                                 @endphp
                                 @foreach ($Provinces as $provin)
-                                    <option value="{{ $provin->id }}">
+                                    <option value="{{ $provin->code }}">
                                         {{ $provin->name_in_thai }} </option>
                                 @endforeach
                             </select>

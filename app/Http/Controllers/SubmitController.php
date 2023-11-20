@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\ActivityInvite;
 use App\Models\Department;
 use App\Models\Provinces;
 use App\Models\School;
@@ -17,11 +18,13 @@ class SubmitController extends Controller
 {
 
 
-    public function requestSchool()
+    public function requestSchool(Request $request)
     {
+
         $school = School::all();
 
         $mit = SubmitSchool::all();
+
         return view("layouts.department.item.data.request.index", compact("mit", 'school'));
     }
     public function requestSchooldataJson()
@@ -72,7 +75,7 @@ class SubmitController extends Controller
         return response()->json(['mitdata' => $mitdata]);
     }
 
-    public function store(Request $request)
+    public function store(Request $request, $uid = null)
     {
 
         $request->validate([
@@ -80,11 +83,11 @@ class SubmitController extends Controller
         ], [
             'citizen_id.unique' => 'เลขบัตรนี้เคยขอรหัส admin ไปแล้ว',
         ]);
-        
+
         $mit = new SubmitSchool;
         $mit->school_code = $request->school_code;
         $mit->provines_code = $request->provines_code;
-
+        $mit->user_id = $uid;
         $mit->submit_status = 0;
         $mit->firstname = $request->firstname;
         $mit->lastname = $request->lastname;
@@ -139,7 +142,7 @@ class SubmitController extends Controller
     public function storeAdminreq(Request $request, $submit_id)
     {
 
-        
+
         $mit =  SubmitSchool::findOrFail($submit_id);
         $mit->submit_status = 1;
         $mit->enddate = now();
@@ -151,7 +154,7 @@ class SubmitController extends Controller
         ->pluck('name_in_thai')
         ->first();
 
-      
+
         $usermanages = new Users();
         $usermanages->username =  $mit->school_code;
         $usermanages->firstname = $school;
@@ -216,6 +219,38 @@ class SubmitController extends Controller
                 'department_id' => $departmentId->department_id,
             ]);
         }
+
+        $inva = new ActivityInvite;
+        $inva->activity_id  = 0;
+        $inva->user_id  = $submit_id->user_id;
+        $inva->message  = 'คุณได้รับสิทธิ์ ในการเป็น Admin สถานศึกษารหัสผ่าน username ='. $mit->school_code . ' ' . 'password ='. $mit->school_code;
+        $inva->activity_date  = now();
+        $inva->status  = 1;
+        $inva->activity_type  = null;
+        $inva->from_id  = 0;
+        $inva->save();
+
+        return redirect()->route('detaildata', $submit_id)->with('message', 'แก้ไขโปรไฟล์สำเร็จ');
+    }
+    public function storeAdminreq2( $submit_id)
+    {
+
+
+        $mit =  SubmitSchool::findOrFail($submit_id);
+        $mit->submit_status = 2;
+        $mit->enddate = now();
+        $mit->save();
+
+        $inva = new ActivityInvite;
+        $inva->activity_id  = 0;
+        $inva->user_id  = $mit->user_id;
+        $inva->message  = 'คุณไม่ได้รับสิทธิ์ในการเป็น admin สถานศึกษา';
+        $inva->activity_date  = now();
+        $inva->status  = 1;
+        $inva->activity_type  = null;
+        $inva->from_id  = 0;
+        $inva->save();
+
         return redirect()->route('detaildata', $submit_id)->with('message', 'แก้ไขโปรไฟล์สำเร็จ');
     }
 }

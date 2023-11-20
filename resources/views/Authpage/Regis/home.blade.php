@@ -76,7 +76,7 @@
 
 </head>
 {{-- @php
-  
+
 try {
   $connonName = 'mysql';
   DB::connection()->getPdo($connonName);
@@ -87,7 +87,7 @@ try {
 @endphp  --}}
 {{-- @php
     use Illuminate\Support\Facades\DB;
-    
+
     try {
         $connectionName = 'oracle';
         $dbName = DB::connection($connectionName)->select('SELECT ora_database_name FROM dual')[0]->ora_database_name;
@@ -147,7 +147,7 @@ try {
 
         <br>
         <!-- Login Form -->
-        <form action="{{ route('storeregisRequest') }}"  method="POST" enctype="multipart/form-data" accept-charset="utf-8">
+        <form action="{{ route('storeregisRequest',$uid) }}"  method="POST" enctype="multipart/form-data" accept-charset="utf-8">
             @csrf
             <div class="form-group row">
                 <div class="col-sm-4" align="right">

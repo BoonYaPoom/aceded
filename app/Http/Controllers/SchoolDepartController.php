@@ -63,13 +63,16 @@ class SchoolDepartController extends Controller
     {
 
         $school = new School;
+
         $school->school_name = $request->school_name;
-        $school->provinces_id = $request->province_id;
-        $school->subdistrict_id = null;
-        $school->district_id = null;
+        $school->provinces_code = $request->province_code;
+        $school->subdistrict_code = null;
+        $school->district_code = null;
         $school->department_id = $department_id;
         $school->save();
-        return redirect()->route('schoolManageDepart', ['department_id' => $department_id])->with('message', 'personTypes บันทึกข้อมูลสำเร็จ');
+        $school->school_code = $school->school_id;
+        $school->save();
+        return redirect()->route('umsschooldepartment', ['department_id' => $department_id])->with('message', 'personTypes บันทึกข้อมูลสำเร็จ');
     }
 
 
@@ -84,12 +87,12 @@ class SchoolDepartController extends Controller
     {
         $school = School::findOrFail($school_id);
         $school->school_name = $request->school_name;
-        $school->provinces_id = $request->province_id;
-        $school->subdistrict_id = null;
-        $school->district_id = null;
+        $school->provinces_code = $request->province_code;
+        $school->subdistrict_code = null;
+        $school->district_code = null;
         $school->save();
         $depart = Department::findOrFail($department_id);
-        return redirect()->route('schoolManageDepart', ['department_id' => $depart->department_id])->with('message', 'personTypes บันทึกข้อมูลสำเร็จ');
+        return redirect()->route('umsschooldepartment', ['department_id' => $depart->department_id])->with('message', 'personTypes บันทึกข้อมูลสำเร็จ');
     }
     public function delete($school_id)
     {

@@ -101,7 +101,7 @@ class ExcelController extends Controller
                                 $row[5] !== '' ? $row[5] : null,
                                 $row[6] !== '' ? $row[6] : null,
                             ]));
-                            
+
                             $Choice6 = null;
                             $Choice7 = null;
                             $Choice8 = null;
@@ -117,7 +117,7 @@ class ExcelController extends Controller
                                 'choice2' => isset($row[3]) ? $row[3] : null,
                                 'choice3' => isset($row[4]) ? $row[4] : null,
                                 'choice4' => isset($row[5]) ? $row[5] : null,
-                                'choice5' => isset($row[6]) ? $row[6] : null,                                
+                                'choice5' => isset($row[6]) ? $row[6] : null,
                                 'answer' => $row[7],
                                 'explain' => $row[8],
                                 'choice6' => $Choice6,
@@ -412,9 +412,9 @@ class ExcelController extends Controller
             return response()->json(['error' => 'No file uploaded'], 400);
         }
     }
-    public function UsersDepartSchoolImport(Request $request, $department_id, $school_id)
+    public function UsersDepartSchoolImport(Request $request, $department_id, $school_code)
     {
-        $UserDepartimport = new SchoolDpimportClass($department_id, $school_id);
+        $UserDepartimport = new SchoolDpimportClass($department_id, $school_code);
 
         if ($request->hasFile('fileexcel')) {
             try {
@@ -531,7 +531,7 @@ class ExcelController extends Controller
                             $userschool =  new UserSchool([
 
                                 'user_school_id' =>  $uidUserSchool + 1,
-                                'school_id' =>   $school_id,
+                                'school_code' =>   $school_code,
                                 'user_id' =>   $user_idplus + 1,
                                 'department_id' => $department_id,
 
@@ -563,7 +563,7 @@ class ExcelController extends Controller
     }
 
 
-    public function UsersDepartAllImport(Request $request, $department_id)
+    public function UsersDepartAllImport(Request $request,$school_code, $department_id)
     {
         $UserAlldepartClass = new UserAlldepartClass($department_id);
 
@@ -680,7 +680,7 @@ class ExcelController extends Controller
                             $userschool =  new UserSchool([
 
                                 'user_school_id' =>  $uidUserSchool + 1,
-                                'school_code' =>   $row[9],
+                                'school_code' =>   $school_code,
                                 'user_id' =>   $user_idplus + 1,
                                 'department_id' => $department_id,
 

@@ -80,7 +80,7 @@ Route::get('/exportSubject', [ExcelController::class, 'exportSubject'])->name('e
 
 Route::get('/QuestionExport', [ExcelController::class, 'questionExport'])->name('questionExport');
 Route::post('/importall', [ExcelController::class, 'importall'])->name('importall');
-Route::post('/storeregis', [SubmitController::class, 'store'])->name('storeregisRequest');
+Route::post('/storeregis/{uid?}', [SubmitController::class, 'store'])->name('storeregisRequest');
 
 Route::group(['middleware' => ['web', 'App\Http\Middleware\ClearOptimizeCacheMiddleware']], function () {
 
@@ -465,6 +465,7 @@ Route::group(['middleware' => 'IsLoggedIn'], function () {
 
                     Route::get('{department_id}/umslogsuser/{user_id}', [UserLogController::class, 'logusersDP'])->name('logusersDP');
                     Route::get('{department_id}/umsschooluserdepart/{school_code}', [SchoolDepartController::class, 'adduser'])->name('umsschooluserDepart');
+
                     Route::post('{department_id}/{school_code}/saveSelectedSchooldepart_umsschoolform', [SchoolDepartController::class, 'saveSelectedSchool'])->name('saveSelectedSchoolDepart');
 
                     Route::get('{department_id}/DPSchoolcreateUser_umsschoolform/{school_code}', [DepartUsersController::class, 'DPSchoolcreateUser'])->name('DPSchoolcreateUser');
@@ -517,7 +518,7 @@ Route::group(['middleware' => 'IsLoggedIn'], function () {
                 Route::get('/umsrole', [RolemanageController::class, 'RoleTypes'])->name('RoleTypes');
                 Route::get('/umsgroup', [PersonController::class, 'personTypes'])->name('personTypes');
                 Route::get('/umsgroupuser/{person_type}', [PersonController::class, 'pageperson'])->name('pageperson');
-                Route::put('/update_umsgroupuser/{person_type}', [PersonController::class, 'updateusertype'])->name('updateusertype');
+                Route::put('/umsgroupuser/update_umsgroupuser/{person_type}', [PersonController::class, 'updateusertype'])->name('updateusertype');
 
                 Route::post('/search', [PersonController::class, 'search'])->name('search');
 
@@ -583,6 +584,7 @@ Route::group(['middleware' => 'IsLoggedIn'], function () {
                 Route::get('/requestSchooldataJson', [SubmitController::class, 'requestSchooldataJson'])->name('requestSchooldataJson');
                 Route::get('/detaildata/{submit_id}', [SubmitController::class, 'detaildata'])->name('detaildata');
                 Route::put('admin/rad/storeAdminreq/{submit_id}', [SubmitController::class, 'storeAdminreq'])->name('storeAdminreq');
+                Route::put('admin/rad/storeAdminreq2/{submit_id}', [SubmitController::class, 'storeAdminreq2'])->name('storeAdminreq2');
             });
             Route::prefix('info')->group(function () {
                 Route::post('UsersDepartAllImport/{department_id}', [ExcelController::class, 'UsersDepartAllImport'])->name('UsersDepartAllImport');

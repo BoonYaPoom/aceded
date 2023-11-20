@@ -6,6 +6,7 @@ use App\Exports\UsersExport;
 use App\Models\PersonType;
 use App\Models\Users;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class PersonController extends Controller
 {
@@ -15,7 +16,7 @@ class PersonController extends Controller
      return view('page.UserAdmin.group.umsgroup.index' ,compact('pertype','userper'));
     }
     public function create(){
- 
+
      return view('page.UserAdmin.group.umsgroup.create' );
     }
 
@@ -44,26 +45,28 @@ class PersonController extends Controller
 
     public function pageperson($person_type){
         $pertype = PersonType::findOrFail($person_type);
-        $users = Users::where('user_type', $pertype->person_type)->paginate(10);
-        $usersnulls = Users::whereNull('user_type')->get();
+        $users = Users::where('user_type', $pertype->person_type)->get();
+        $usersnulls = Users::whereNull('user_type')
+        ->orWhere('user_type', '')
+        ->get();
+
         return view('page.UserAdmin.group.umsgroup.groupuser.create', compact('users', 'pertype','usersnulls'));
     }
-    
+
     public function updateusertype(Request $request,$person_type){
-        $pertype = PersonType::findOrFail($person_type);
-        $usersnulls = Users::whereIn('user_id', $request->input('user_data'))->get();
-    
-    foreach ($usersnulls as $user) {
-        $user->user_type = $pertype->person_type;
-        $user->save();
+
+    $userDataString = $request->user_data;
+    foreach ($userDataString as $userId) {
+        DB::table('users')->where('user_id', $userId)->update([
+            'user_type' => $person_type,
+        ]);
     }
-    
+
     return redirect()->back()->with('message', 'personTypes บันทึกข้อมูลสำเร็จ');
 }
 public function search(Request $request)
 {
     $searchTerm = $request->input('search');
-
     // Perform the search logic based on your requirements
     $results = Users::where('firstname', 'like', '%' . $searchTerm . '%')
                         ->orWhere('user_id', 'like', '%' . $searchTerm . '%')
@@ -81,5 +84,5 @@ public function search(Request $request)
     return redirect()->back()->with('message', 'PersonType ลบข้อมูลสำเร็จ');
 
     }
-   
+
 }

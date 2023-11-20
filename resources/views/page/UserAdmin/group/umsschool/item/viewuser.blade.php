@@ -1,13 +1,9 @@
 
-
 @php
-       
        $i = 1 ;
 @endphp
 @foreach ($userschool as $us)
-
 @php
-       
          $usersscho = \App\Models\Users::find($us->user_id);
          $departcho = \App\Models\Department::find($us->department_id);
 @endphp
@@ -19,11 +15,11 @@
             @if ($departcho)
             {{ $departcho->name_th }}
         @else
-            
+
         @endif
         </td>
         <td>
             {{ $school->school_name }}
         </td>
-    </tr><!-- /tr -->
+    </tr>
 @endforeach

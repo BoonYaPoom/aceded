@@ -22,7 +22,7 @@ class UserAlldepartClass implements ToModel
     public function __construct($department_id)
     {
         $this->department_id = $department_id;
-       
+
     }
 
     public function model(array $row)
@@ -30,7 +30,7 @@ class UserAlldepartClass implements ToModel
 
         // ใช้ $this->subjectId เพื่อเข้าถึงค่า subject_id ที่ถูกส่งเข้ามา
         $department_id = $this->department_id;
-   
+
 
         if ($row[0] >= 2) {
             return DB::transaction(function () use ($row, $department_id) {
@@ -38,7 +38,7 @@ class UserAlldepartClass implements ToModel
                 $uidplus = Users::max('uid');
                 $role = 5;
                 $prefix = null;
-        
+
                 $per_id = null;
 
                 $permission = null;
@@ -50,7 +50,7 @@ class UserAlldepartClass implements ToModel
                 $position = '';
                 $workplace = '';
                 $telephone = '';
-          
+
                 $socialnetwork = '';
                 $experience = null;
                 $recommened = null;
@@ -89,7 +89,7 @@ class UserAlldepartClass implements ToModel
                     'citizen_id' =>  $row[7],
                     'gender' => $row[8],
                     'prefix' =>  $prefix,
-           
+
                     'user_role' => $role,
                     'per_id' => $per_id,
                     'department_id' => $department_id,
@@ -102,7 +102,7 @@ class UserAlldepartClass implements ToModel
                     'position' =>  $position,
                     'workplace' =>  $workplace,
                     'telephone' =>  $telephone,
-                 
+
                     'socialnetwork' =>  $socialnetwork,
                     'experience' =>  $experience,
                     'recommened' => $recommened,

@@ -395,7 +395,7 @@
                                 <label for="province_id" class="col-md-3">จังหวัด <span
                                         class="text-primary-theme">*</span></label>
                                 <div class="col-md-9 mb-3">
-                                  <select  id="province_id" name="province_id" 
+                                  <select  id="province_id" name="province_id"
                                   class="form-control form-control-sm" data-toggle="select2" data-placeholder="จังหวัด"
                                   data-allow-clear="false">
                                   <option value="0">จังหวัด</option>
@@ -403,7 +403,7 @@
                                   <option value="{{ $province->id }}">{{ $province->name_in_thai }}</option>
                                   @endforeach
                               </select>
-                              
+
                                 </div>
                             </div>
                             <!-- /form row -->
@@ -421,11 +421,11 @@
                                     </select>
                                 </div>
                             </div>
-                 
-                           
 
-                          
-                          
+
+
+
+
                             <!-- form row -->
                             <div class="form-row" id="set_subdistrict_id">
                                 <label for="subdistrict_id" class="col-md-3">แขวง/ตำบล <span
@@ -523,8 +523,8 @@
 
 
             </div>
-        
-           
+
+
 
 
 
@@ -532,5 +532,4 @@
     </form>
 
 
-  
-   
+

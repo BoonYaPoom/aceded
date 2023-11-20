@@ -57,46 +57,25 @@
                                     <th class="text-center" width="10%"> จังหวัด </th>
                                     <th class="text-center" width="10%"> วันที่ขอ </th>
                                     <th class="text-center" width="10%"> วันที่ยืนยัน </th>
+                                    <th class="text-center" width="10%"> สถานะ </th>
                                     <th class="text-center" width="10%"> กระทำ </th>
                                 </tr>
                             </thead>
+                            <tbody id="userallna">
 
+                            </tbody>
                             <script>
-                                $(document).ready(function() {
-                                    var table = $('#datatable').DataTable({
-                                        ajax: {
-                                            url: '{{ route('requestSchooldataJson') }}',
-                                            dataSrc: 'mitdata',
-                                        },
-                                        columns: [{
-                                                data: 'num',
-                                                className: 'text-center'
-                                            },
-                                            {
-                                                data: 'fullname',
-                                                className: 'text-center'
-                                            },
-                                            {
-                                                data: 'school',
-                                                className: 'text-center'
-                                            },
-                                            {
-                                                data: 'proviUser',
-                                                className: 'text-center'
-                                            },
-                                            {
-                                                data: 'startdate',
-                                                className: 'text-center'
-                                            },
-                                            {
-                                                data: 'enddate',
-                                                className: 'text-center'
-                                            },
-                                            {
-                                                data: null,
-                                                className: 'text-center',
-                                                render: function(data, type, row) {
-                                                    var submit_id = data.submit_id;
+                                $(document).ready(() => {
+                                    $.ajax({
+                                        method: 'get',
+                                        url: '{{ route('requestSchooldataJson') }}',
+                                        success: (response) => {
+                                            if (response.mitdata.length > 0) {
+                                                var html = '';
+
+                                                for (var i = 0; i < response.mitdata.length; i++) {
+                                                    const dataall = response.mitdata[i];
+                                                    const submit_id = dataall.submit_id;
                                                     var detaildata =
                                                         "{{ route('detaildata', ['submit_id' => 'submit_id']) }}";
                                                     detaildata = detaildata.replace('submit_id', submit_id);
@@ -113,51 +92,59 @@
                                                         '<a href="' + storeAdmin +
                                                         '"  rel="" onclick="createRecord(event)" data-toggle="tooltip" title="กดยืนยัน"><i class="fas fa-plus text-success mr-1 fa-lg "></i></a>';
 
-                                                    return linkPlus + linkedata + linkdelete;
+                                                    html += `
+                                                    <tr>
+                                                        <td class="text-center">${i + 1}</td>
+                                                        <td class="text-center">${dataall.fullname !== null ? dataall.fullname : ''}</td>
+                                                        <td class="text-center">${dataall.school !== null ? dataall.school : ''}</td>
+                                                        <td class="text-center">${dataall.proviUser !== null ? dataall.proviUser : ''}</td>
+                                                        <td class="text-center">${dataall.startdate !== null ? dataall.startdate : ''}</td>
+                                                        <td class="text-center">${dataall.enddate !== null ? dataall.enddate : ''}</td>
+                                                        <td class="text-center align-middle">
+                                                            ${dataall.submit_status === 0 ? 'รอ' :
+                                                             (dataall.submit_status === 1 ? 'ผ่าน' : 'หมดสิทธิ์')}
+                                                        </td>
+                                                        <td class="text-center align-middle">
+                                                                ${linkedata}
+                                                        </td>
+                                                    </tr>
+                                                            `;
+                                                }
+                                                //datatable
 
-                                                },
-                                            },
-                                        ],
+                                                $('#userallna').html(html).promise().done(() => {
+                                                    var table = $('#datatable').DataTable({
+                                                        lengthChange: false,
+                                                        responsive: true,
+                                                        info: true,
+                                                        pageLength: 50,
+                                                        scrollY: '100%',
+                                                        language: {
+                                                            zeroRecords: "ไม่พบข้อมูลที่ต้องการ",
+                                                            info: "ลำดับที่ _START_ ถึง _END_ จากทั้งหมด _TOTAL_ รายการ",
+                                                            infoEmpty: "ไม่พบรายการ",
+                                                            infoFiltered: "(ค้นหาจากทั้งหมด _MAX_ รายการ)",
+                                                            paginate: {
+                                                                first: "หน้าแรก",
+                                                                last: "หน้าสุดท้าย",
+                                                                previous: "ก่อนหน้า",
 
-                                        lengthChange: false,
-                                        responsive: true,
-                                        info: true,
-                                        pageLength: 30,
-                                        scrollY: '100%',
-                                        language: {
-                                            zeroRecords: "ไม่พบข้อมูลที่ต้องการ",
-                                            info: "ลำดับที่ _START_ ถึง _END_ จากทั้งหมด _TOTAL_ รายการ",
-                                            infoEmpty: "ไม่พบข้อมูลที่ต้องการ",
-                                            infoFiltered: "(ค้นหาจากทั้งหมด _MAX_ รายการ)",
-                                            paginate: {
-                                                first: "หน้าแรก",
-                                                last: "หน้าสุดท้าย",
-                                                previous: "ก่อนหน้า",
-                                                next: "ถัดไป"
+                                                                next: "ถัดไป"
+                                                            }
+                                                        },
+                                                    });
+
+
+
+                                                })
+
                                             }
-                                        },
-
-                                    });
-                                    $('#provines_code').on('change', function() {
-                                        var selectedprovines_code = $(this).val();
-                                        if (selectedprovines_code == 0) {
-                                            table.columns(3).search('').draw();
-                                        } else {
-                                            // กรองข้อมูลใน DataTables ด้วยหน่วยงานที่เลือก
-                                            table.columns(3).search(selectedprovines_code).draw();
                                         }
                                     });
-                                    $('#myInput').on('keyup', function() {
-                                        var searchTerm = this.value;
-                                        table.columns().search('').draw(); // รีเซ็ตการค้นหาทั้งหมด
-                                        if (searchTerm !== '') {
-                                            table.columns(2).search(searchTerm, true, false).draw(); // ค้นหาเฉพาะในคอลัมน์ 'school'
-                                        }
-                                    });
-
 
                                 });
                             </script>
+
 
 
                         </table><!-- /.table -->
