@@ -79,7 +79,8 @@
                         @enderror
 
                         <div class="form-group">
-                            <label for="name_short_th">ภาพปก </label>
+                            <label for="name_short_th">ภาพปก <small
+                                class=" text-muted">( ขนาด 337px * 48px )</small></label>
                             <input type="file" class="form-control" name="name_short_th" placeholder="ภาพปก"
                                 accept="image/*">
                         </div><!-- /.form-group -->
@@ -89,7 +90,8 @@
                         @enderror
 
                         <div class="form-group">
-                            <label for="detail">logo </label>
+                            <label for="detail">logo <small
+                                class="text-muted">( ขนาด 585px * 350px )</small> </label>
                             <input type="file" class="form-control" name="detail" placeholder="logo"
                                 accept="image/*">
                         </div><!-- /.form-group -->

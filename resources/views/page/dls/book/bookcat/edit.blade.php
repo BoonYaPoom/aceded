@@ -22,9 +22,9 @@
                         <div class="form-group">
                             <label for="book_type">ประเภทหนังสือ</label>
                             <select id="book_type" name="book_type" class="form-control " \ data-toggle="select2"
-                                data-placeholder="ประเภทหนังสือ" data-allow-clear="false">
-                                <option value="0"> Flip Book</option>
-                                <option value="1"> Pdf</option>
+                                data-placeholder="ประเภทหนังสือ" data-allow-clear="false" >
+                                <option value="0" {{ $books->book_type == 0 ? 'selected' : '' }}> Flip Book</option>
+                                <option value="1" {{ $books->book_type == 1 ? 'selected' : '' }}> Pdf</option>
                             </select>
                         </div>
                         <!-- .form-group -->
@@ -110,7 +110,7 @@
                             <label for="book_status">สถานะ </label>
                             <label class="switcher-control switcher-control-success switcher-control-lg">
                                 <input type="checkbox" class="switcher-input" name="book_status" id="book_status"
-                                    value="1">
+                                    value="1" {{ $books->book_status == 1 ? 'checked' : '' }}>
                                 <span class="switcher-indicator"></span> <span class="switcher-label-on">ON</span>
                                 <span class="switcher-label-off text-red">OFF</span>
                             </label>

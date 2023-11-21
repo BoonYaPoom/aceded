@@ -99,7 +99,7 @@
                             <label for="book_status">สถานะ </label>
                             <label class="switcher-control switcher-control-success switcher-control-lg">
                                 <input type="checkbox" class="switcher-input" name="book_status" id="book_status"
-                                    value="1">
+                                    value="1" >
                                 <span class="switcher-indicator"></span> <span class="switcher-label-on">ON</span>
                                 <span class="switcher-label-off text-red">OFF</span>
                             </label>

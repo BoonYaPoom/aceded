@@ -655,6 +655,8 @@ Route::group(['middleware' => 'IsLoggedIn'], function () {
                 Route::get('/{topic_id}/topic_destroy', [CategoryTopicController::class, 'destroy'])->name('topic_destroy');
                 Route::get('/changeStatuCategoryTopic', [CategoryTopicController::class, 'changeStatuCategoryTopic'])->name('changeStatuCategoryTopic');
                 Route::get('/schooldepart_delete/{school_id}', [SchoolDepartController::class, 'delete'])->name('deleteschoolDepart');
+                Route::get('/department_delete/{department_id}', [DepartmentController::class, 'destroy'])->name('deleteDepart');
+            
             });
         });
     });

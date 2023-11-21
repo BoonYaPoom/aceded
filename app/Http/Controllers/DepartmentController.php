@@ -263,4 +263,14 @@ class DepartmentController extends Controller
             return response()->json(['message' => 'ไม่พบข้อมูล web']);
         }
     }
+
+    public function destroy($department_id)
+    {
+        $Depart = Department::findOrFail($department_id);
+
+        $Depart->delete();
+        return redirect()->back()->with('message', 'Department ลบข้อมูลสำเร็จ');
+    }
+
+
 }

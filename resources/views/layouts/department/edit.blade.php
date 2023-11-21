@@ -63,7 +63,8 @@
                                 <label for="cover"><img src="{{ asset($depart->name_short_th) }}"
                                         alt="{{ $depart->name_short_th }}" style="height:350px">
                             </div>
-                            <label for="name_short_th">ภาพปก </label>
+                            <label for="name_short_th">ภาพปก <small
+                                class="text-muted">( ขนาด 337px * 48px )</small> </label>
                             <input type="file" class="form-control" name="name_short_th" placeholder="ภาพปก"
                                 accept="image/*">
                         </div><!-- /.form-group -->
