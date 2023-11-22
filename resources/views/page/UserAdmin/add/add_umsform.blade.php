@@ -14,28 +14,7 @@
                         <h6 class="card-header"> ข้อมูลส่วนตัว </h6>
                         <div class="card-body">
                             <!-- form row -->
-                            <div class="form-row ">
-                                <label for="usertype" class="col-md-2">ประเภทบุคลากร <span
-                                    class="badge badge-warning">Required</span> </label>
-                                <div class="col-md-9 mb-3">
-                                    <div class="custom-control custom-control-inline custom-radio mr-3">
-                                        <input type="radio" class="custom-control-input usertypeselect" name="user_type"
-                                            id="usertype1" value="1">
-                                        <label class="custom-control-label" for="usertype1">บุคลากรของสำนักงาน</label>
-                                    </div>
-                                    <div class="custom-control custom-control-inline custom-radio mr-3">
-                                        <input type="radio" class="custom-control-input usertypeselect" name="user_type"
-                                            id="usertype2" value="2">
-                                        <label class="custom-control-label" for="usertype2">บุคคลทั่วไป</label>
-                                    </div>
-
-                                </div>
-                                @error('user_type')
-                                        <div class="col-md-9 mb-3">
-                                    <span class="badge badge-warning">{{ $message }}</span>
-                                </div>
-                                @enderror
-                            </div>
+      
                             <div class="form-row " id="department_id">
                                 <label for="department_id" class="col-md-2">เลือกหน่วยงาน <span
                                     class="badge badge-warning">Required</span></label>

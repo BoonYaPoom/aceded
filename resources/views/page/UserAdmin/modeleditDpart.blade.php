@@ -22,9 +22,8 @@
                             <!-- thead -->
                             <thead>
                                 <tr class="bg-infohead">
-                                    <th class="align-middle" style="width: 10%"><input type="checkbox"
-                                           name="checkall" id="checkall"
-                                            value="1">เลือก</th>
+                                    <th class="align-middle" style="width: 10%"><input type="checkbox" name="checkall"
+                                            id="checkall" value="1">เลือก</th>
                                     <th class="align-middle" style="width: 40%">ชื่อหน่วยงาน</th>
                                     <th class="align-middle" style="width: 40%">ชื่อย่อ</th>
 
@@ -34,8 +33,14 @@
                             <tbody>
                                 @php
                                     $Department = \App\Models\Department::all();
+
                                 @endphp
                                 @foreach ($Department->sortBy('department_id') as $part)
+                                    @php
+                                        $userdepart = \App\Models\UserDepartment::where('user_id', $usermanages->user_id)
+                                            ->where('department_id', $part->department_id)
+                                            ->first();
+                                    @endphp
                                     <tr>
                                         <td class="align-middle" style="width: 10%">
                                             <div class="custom-control custom-checkbox">
@@ -43,7 +48,8 @@
                                                     name="department_data[]"
                                                     id="department_data{{ $part->department_id }}"
                                                     value="{{ $part->department_id }}"
-                                                    {{ in_array($part->department_id, $datajsonexam->toArray()) ? 'checked' : '' }}>
+                                                    {{ !empty($userdepart) && in_array($part->department_id, $userdepart->toArray()) ? 'checked' : '' }}
+                                                    >
                                                 <label class="custom-control-label"
                                                     for="department_data{{ $part->department_id }}"></label>
 
@@ -60,9 +66,9 @@
                 </div>
                 <!-- .modal-footer -->
                 <div class="modal-footer">
-               
+
                     <button type="button" class="btn btn-success" style="background-color: #F04A23;"
-                        data-dismiss="modal" ><i class="fas fa-user-plus"></i> ยืนยันหน่วยงาน</button>
+                        data-dismiss="modal"><i class="fas fa-user-plus"></i> ยืนยันหน่วยงาน</button>
                     <button type="button" class="btn btn-light" data-dismiss="modal">ยกเลิก</button>
                 </div><!-- /.modal-footer -->
             </div><!-- /.modal-content -->

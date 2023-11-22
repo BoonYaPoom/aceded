@@ -16,7 +16,8 @@
             toastr.success("{{ Session::get('message') }}");
         </script>
     @endif
-    <form action="{{route('update_question',[$depart,'question_id' => $ques])}}" method="post" enctype="multipart/form-data">
+    <form action="{{ route('update_question', [$depart, 'question_id' => $ques]) }}" method="post"
+        enctype="multipart/form-data">
         @csrf
         @method('PUT')
         <div class="page-inner">
@@ -26,10 +27,11 @@
                 <!-- .card -->
                 <div class="card card-fluid">
                     <!-- .card-header -->
-                    <div class="card-header bg-muted"><a href="{{ route('exampage', [$depart,$ques->subject_id]) }}"
+                    <div class="card-header bg-muted"><a href="{{ route('exampage', [$depart, $ques->subject_id]) }}"
                             style="text-decoration: underline;">หมวดหมู่</a> / <a
-                            href="{{ route('pagequess', [$depart,$ques->subject_id]) }}"
-                            style="text-decoration: underline;">จัดการวิชา</a> / <i>{!! $ques->question !!}</i> / <i></i></div>
+                            href="{{ route('pagequess', [$depart, $ques->subject_id]) }}"
+                            style="text-decoration: underline;">จัดการวิชา</a> / <i>{!! $ques->question !!}</i> / <i></i>
+                    </div>
                     <!-- /.card-header -->
                     <!-- .nav-scroller -->
 
@@ -39,17 +41,17 @@
                             <label class="control-label" for="question_type">ประเภทข้อสอบ</label> <select id="question_type"
                                 name="question_type" class="form-control" data-toggle="select2"
                                 data-placeholder="ประเภทข้อสอบ" data-allow-clear="false">
-                                <option value="0" selected  disabled>เลือก</option>
+                                <option value="0" selected disabled>เลือก</option>
                                 @foreach ($typequs as $type)
-                                @if ($type->question_type > 2 || $type->question_type < 2)
-                     
-                                    <option value="{{ $type->question_type }}" {{ $type->question_type == $ques->question_type ? 'selected' : '' }} > {{ $type->question_type_th }} </option>
+                                    @if ($type->question_type > 2 || $type->question_type < 2)
+                                        <option value="{{ $type->question_type }}"
+                                            {{ $type->question_type == $ques->question_type ? 'selected' : '' }}>
+                                            {{ $type->question_type_th }} </option>
                                     @endif
-                                    @endforeach
+                                @endforeach
                             </select>
                             @error('question_type')
-                            <span class="badge badge-warning">{{$message}}</span>
-                            
+                                <span class="badge badge-warning">{{ $message }}</span>
                             @enderror
                             <script>
                                 $(document).ready(function() {
@@ -86,22 +88,23 @@
                             <label class="control-label" for="lesson_id">หมวดข้อสอบ</label> <select id="lesson_id"
                                 name="lesson_id" class="form-control" data-toggle="select2" data-placeholder="หมวดข้อสอบ"
                                 data-allow-clear="false">
-                                <option value="0" selected  >ข้อสอบ </option>
+                                <option value="0" selected>ข้อสอบ </option>
 
                                 @foreach ($lossen as $lession)
-                                    <option value="{{ $lession->lesson_id }}" {{ $lession->lesson_id == $ques->lesson_id ? 'selected' : '' }}>{{ $lession->lesson_th }} </option>
+                                    <option value="{{ $lession->lesson_id }}"
+                                        {{ $lession->lesson_id == $ques->lesson_id ? 'selected' : '' }}>
+                                        {{ $lession->lesson_th }} </option>
                                 @endforeach
                             </select>
                         </div><!-- /.form-group -->
                         @error('lesson_id')
-                        <span class="badge badge-warning">{{$message}}</span>
-                        
+                            <span class="badge badge-warning">{{ $message }}</span>
                         @enderror
                         <!-- .form-group -->
                         <div class="form-group">
                             <label class="control-label" for="score">คะแนน</label> <select id="score" name="score"
                                 class="form-control" data-toggle="select2" data-placeholder="คะแนน"
-                                data-allow-clear="false" >
+                                data-allow-clear="false">
                                 @for ($i = 1; $i <= 10; $i++)
                                     <option value="{{ $i }}" {{ $i == 1 ? 'selected' : '' }}>
                                         {{ $i }}</option>
@@ -119,8 +122,7 @@
                         </div><!-- /.form-group -->
                         <!-- .form-group -->
                         @error('question')
-                        <span class="badge badge-warning">{{$message}}</span>
-                        
+                            <span class="badge badge-warning">{{ $message }}</span>
                         @enderror
 
 
@@ -130,35 +132,37 @@
                                     name="numchoice" class="form-control" data-toggle="select2"
                                     data-placeholder="จำนวนตัวเลือก" data-allow-clear="false">
                                     @for ($i = 2; $i <= 8; $i++)
-                                        <option value="{{ $i }}" {{ $i == $ques->numchoice ? 'selected' : '' }}>
+                                        <option value="{{ $i }}"
+                                            {{ $i == $ques->numchoice ? 'selected' : '' }}>
                                             {{ $i }}</option>
                                     @endfor
                                 </select>
 
                             </div><!-- /.form-group -->
-                                @php
-                                                $examnum = $ques->answer;
-                                         $jsonexam = json_decode($examnum);
-                                         $datajsonexam = collect($jsonexam);
-                                @endphp
+                            @php
+                                $examnum = $ques->answer;
+                                $jsonexam = json_decode($examnum);
+                                $datajsonexam = collect($jsonexam);
+                            @endphp
                             @for ($i = 1; $i <= 8; $i++)
                                 <div class="form-group qtype1" id="showchoice{{ $i }}"
-                                    style="{{ $i > $ques->numchoice ? 'display:none' : '' }}"   >
+                                    style="{{ $i > $ques->numchoice ? 'display:none' : '' }}">
                                     <label for="choice{{ $i }}">ตัวเลือกที่ {{ $i }}</label>
-                                    <div class="custom-control custom-control-inline custom-checkbox">
-                                        <input type="checkbox" class="custom-control-input" id="check{{ $i }}"
-                                            name="checkanswer[]" value="{{ $i }}" {{ in_array($i, $datajsonexam->toArray()) ? 'checked' : '' }}>
-                                        <label class="custom-control-label"
-                                            for="check{{ $i }}">คำตอบถูกต้อง</label>
+                                    <div class="custom-control  custom-radio">
+                                        <input type="radio" class="custom-control-input" name="checkanswer[]"
+                                            id="radio{{ $i }}" value="{{ $i }}"
+                                            {{ in_array($i, $datajsonexam->toArray()) ? 'checked' : '' }}>      
+                                       <label class="custom-control-label" for="radio{{ $i }}">
+                                            คำตอบถูกต้อง
+                                        </label>
                                     </div>
-                                    
                                     <textarea class="editor" data-placeholder="ตัวเลือกที่ {{ $i }}" data-height="120"
-                                    name="choice{{ $i }}" id="choice{{ $i }}" >
+                                        name="choice{{ $i }}" id="choice{{ $i }}">
                                     <figure><figcaption></figcaption></figure>
-                                    {{ $ques['choice'.$i] ?? '' }}
+                                    {{ $ques['choice' . $i] ?? '' }}
                     
                                 </textarea>
-                                
+
                                 </div><!-- /.form-group -->
                             @endfor
                             <script>
@@ -194,16 +198,17 @@
 
 
 
-                        <div id="data4" style="{{ $ques->question_type == 4 ? 'display: block;' : 'display: none;' }}">
+                        <div id="data4"
+                            style="{{ $ques->question_type == 4 ? 'display: block;' : 'display: none;' }}">
                             @php
-                            $choice3 = explode(',', $ques->choice3);
-                        @endphp
+                                $choice3 = explode(',', $ques->choice3);
+                            @endphp
                             @php
-                            $choice1 = explode(',', $ques->choice1);
-                        @endphp
+                                $choice1 = explode(',', $ques->choice1);
+                            @endphp
                             @php
-                            $choice2 = explode(',', $ques->choice2);
-                        @endphp
+                                $choice2 = explode(',', $ques->choice2);
+                            @endphp
                             <!-- grid row -->
                             <div class="row qtype4 ">
                                 <div class="col-lg-6">
@@ -223,14 +228,16 @@
                                                     data-allow-clear="false">
                                                     <option value="0">เลือกคำตอบ</option>
                                                     @for ($i = 1; $i <= 10; $i++)
-                                                    <option value="{{ $i }}"  {{ isset($choice3[0]) && $i == $choice3[0] ? 'selected' : '' }} >{{ chr($i + 64) }}</option>
-
+                                                        <option value="{{ $i }}"
+                                                            {{ isset($choice3[0]) && $i == $choice3[0] ? 'selected' : '' }}>
+                                                            {{ chr($i + 64) }}</option>
                                                     @endfor
                                                 </select>
 
                                             </div>
                                             <div class="list-group-item-body"> <input type="text" class="form-control"
-                                                    id="q1" name="q1" placeholder="คำถาม" value="{{ isset($choice1[0]) ? $choice1[0] : '' }}">
+                                                    id="q1" name="q1" placeholder="คำถาม"
+                                                    value="{{ isset($choice1[0]) ? $choice1[0] : '' }}">
                                             </div>
                                         </div>
                                         <div class="list-group-item">
@@ -240,13 +247,16 @@
                                                     data-allow-clear="false">
                                                     <option value="0">เลือกคำตอบ</option>
                                                     @for ($i = 1; $i <= 10; $i++)
-                                                        <option value="{{ $i }}" {{ isset($choice3[1]) && $i == $choice3[1] ? 'selected' : '' }}>{{ chr($i + 64) }}</option>
+                                                        <option value="{{ $i }}"
+                                                            {{ isset($choice3[1]) && $i == $choice3[1] ? 'selected' : '' }}>
+                                                            {{ chr($i + 64) }}</option>
                                                     @endfor
                                                 </select>
 
                                             </div>
                                             <div class="list-group-item-body"> <input type="text" class="form-control"
-                                                    id="q2" name="q2" placeholder="คำถาม" value="{{ isset($choice1[1]) ? $choice1[1] : '' }}">
+                                                    id="q2" name="q2" placeholder="คำถาม"
+                                                    value="{{ isset($choice1[1]) ? $choice1[1] : '' }}">
                                             </div>
                                         </div>
                                         <div class="list-group-item">
@@ -256,13 +266,16 @@
                                                     data-allow-clear="false">
                                                     <option value="0">เลือกคำตอบ</option>
                                                     @for ($i = 1; $i <= 10; $i++)
-                                                        <option value="{{ $i }}" {{ isset($choice3[2]) && $i == $choice3[2] ? 'selected' : '' }}>{{ chr($i + 64) }}</option>
+                                                        <option value="{{ $i }}"
+                                                            {{ isset($choice3[2]) && $i == $choice3[2] ? 'selected' : '' }}>
+                                                            {{ chr($i + 64) }}</option>
                                                     @endfor
                                                 </select>
 
                                             </div>
                                             <div class="list-group-item-body"> <input type="text" class="form-control"
-                                                    id="q3" name="q3" placeholder="คำถาม" value="{{ isset($choice1[2]) ? $choice1[2] : '' }}">
+                                                    id="q3" name="q3" placeholder="คำถาม"
+                                                    value="{{ isset($choice1[2]) ? $choice1[2] : '' }}">
                                             </div>
                                         </div>
                                         <div class="list-group-item">
@@ -270,14 +283,17 @@
                                                 <select id="ans4" name="ans4" class="form-control"
                                                     data-toggle="select2" data-placeholder="คำตอบ 4"
                                                     data-allow-clear="false">
-                                                    <option value="0" >เลือกคำตอบ</option>
+                                                    <option value="0">เลือกคำตอบ</option>
                                                     @for ($i = 1; $i <= 10; $i++)
-                                                        <option value="{{ $i }}" {{ isset($choice3[3]) && $i == $choice3[3] ? 'selected' : '' }}>{{ chr($i + 64) }}</option>
+                                                        <option value="{{ $i }}"
+                                                            {{ isset($choice3[3]) && $i == $choice3[3] ? 'selected' : '' }}>
+                                                            {{ chr($i + 64) }}</option>
                                                     @endfor
                                                 </select>
                                             </div>
                                             <div class="list-group-item-body"> <input type="text" class="form-control"
-                                                    id="q4" name="q4" placeholder="คำถาม" value="{{ isset($choice1[3]) ? $choice1[3] : '' }}">
+                                                    id="q4" name="q4" placeholder="คำถาม"
+                                                    value="{{ isset($choice1[3]) ? $choice1[3] : '' }}">
                                             </div>
                                         </div>
                                         <div class="list-group-item">
@@ -287,12 +303,15 @@
                                                     data-allow-clear="false">
                                                     <option value="0">เลือกคำตอบ</option>
                                                     @for ($i = 1; $i <= 10; $i++)
-                                                        <option value="{{ $i }}" {{ isset($choice3[4]) && $i == $choice3[4] ? 'selected' : '' }}>{{ chr($i + 64) }}</option>
+                                                        <option value="{{ $i }}"
+                                                            {{ isset($choice3[4]) && $i == $choice3[4] ? 'selected' : '' }}>
+                                                            {{ chr($i + 64) }}</option>
                                                     @endfor
                                                 </select>
                                             </div>
                                             <div class="list-group-item-body"> <input type="text" class="form-control"
-                                                    id="q5" name="q5" placeholder="คำถาม" value="{{ isset($choice1[4]) ? $choice1[4] : '' }}">
+                                                    id="q5" name="q5" placeholder="คำถาม"
+                                                    value="{{ isset($choice1[4]) ? $choice1[4] : '' }}">
                                             </div>
                                         </div>
                                         <div class="list-group-item">
@@ -302,12 +321,15 @@
                                                     data-allow-clear="false">
                                                     <option value="0">เลือกคำตอบ</option>
                                                     @for ($i = 1; $i <= 10; $i++)
-                                                        <option value="{{ $i }}" {{ isset($choice3[5]) && $i == $choice3[5] ? 'selected' : '' }}>{{ chr($i + 64) }}</option>
+                                                        <option value="{{ $i }}"
+                                                            {{ isset($choice3[5]) && $i == $choice3[5] ? 'selected' : '' }}>
+                                                            {{ chr($i + 64) }}</option>
                                                     @endfor
                                                 </select>
                                             </div>
                                             <div class="list-group-item-body"> <input type="text" class="form-control"
-                                                    id="q6" name="q6" placeholder="คำถาม" value="{{ isset($choice1[5]) ? $choice1[5] : '' }}">
+                                                    id="q6" name="q6" placeholder="คำถาม"
+                                                    value="{{ isset($choice1[5]) ? $choice1[5] : '' }}">
                                             </div>
                                         </div>
                                         <div class="list-group-item">
@@ -317,12 +339,15 @@
                                                     data-allow-clear="false">
                                                     <option value="0">เลือกคำตอบ</option>
                                                     @for ($i = 1; $i <= 10; $i++)
-                                                        <option value="{{ $i }}" {{ isset($choice3[6]) && $i == $choice3[6] ? 'selected' : '' }}>{{ chr($i + 64) }}</option>
+                                                        <option value="{{ $i }}"
+                                                            {{ isset($choice3[6]) && $i == $choice3[6] ? 'selected' : '' }}>
+                                                            {{ chr($i + 64) }}</option>
                                                     @endfor
                                                 </select>
                                             </div>
                                             <div class="list-group-item-body"> <input type="text" class="form-control"
-                                                    id="q7" name="q7" placeholder="คำถาม" value="{{ isset($choice1[6]) ? $choice1[6] : '' }}">
+                                                    id="q7" name="q7" placeholder="คำถาม"
+                                                    value="{{ isset($choice1[6]) ? $choice1[6] : '' }}">
                                             </div>
                                         </div>
                                         <div class="list-group-item">
@@ -332,12 +357,15 @@
                                                     data-allow-clear="false">
                                                     <option value="0">เลือกคำตอบ</option>
                                                     @for ($i = 1; $i <= 10; $i++)
-                                                        <option value="{{ $i }}" {{ isset($choice3[7]) && $i == $choice3[7] ? 'selected' : '' }}>{{ chr($i + 64) }}</option>
+                                                        <option value="{{ $i }}"
+                                                            {{ isset($choice3[7]) && $i == $choice3[7] ? 'selected' : '' }}>
+                                                            {{ chr($i + 64) }}</option>
                                                     @endfor
                                                 </select>
                                             </div>
                                             <div class="list-group-item-body"> <input type="text" class="form-control"
-                                                    id="q8" name="q8" placeholder="คำถาม" value="{{ isset($choice1[7]) ? $choice1[7] : '' }}">
+                                                    id="q8" name="q8" placeholder="คำถาม"
+                                                    value="{{ isset($choice1[7]) ? $choice1[7] : '' }}">
                                             </div>
                                         </div>
                                         <div class="list-group-item">
@@ -347,12 +375,15 @@
                                                     data-allow-clear="false">
                                                     <option value="0">เลือกคำตอบ</option>
                                                     @for ($i = 1; $i <= 10; $i++)
-                                                        <option value="{{ $i }}" {{ isset($choice3[8]) && $i == $choice3[8] ? 'selected' : '' }}>{{ chr($i + 64) }}</option>
+                                                        <option value="{{ $i }}"
+                                                            {{ isset($choice3[8]) && $i == $choice3[8] ? 'selected' : '' }}>
+                                                            {{ chr($i + 64) }}</option>
                                                     @endfor
                                                 </select>
                                             </div>
                                             <div class="list-group-item-body"> <input type="text" class="form-control"
-                                                    id="q9" name="q9" placeholder="คำถาม" value="{{ isset($choice1[8]) ? $choice1[8] : '' }}">
+                                                    id="q9" name="q9" placeholder="คำถาม"
+                                                    value="{{ isset($choice1[8]) ? $choice1[8] : '' }}">
                                             </div>
                                         </div>
                                         <div class="list-group-item">
@@ -362,12 +393,15 @@
                                                     data-allow-clear="false">
                                                     <option value="0">เลือกคำตอบ</option>
                                                     @for ($i = 1; $i <= 10; $i++)
-                                                        <option value="{{ $i }}" {{ isset($choice3[9]) && $i == $choice3[9] ? 'selected' : '' }}>{{ chr($i + 64) }}</option>
+                                                        <option value="{{ $i }}"
+                                                            {{ isset($choice3[9]) && $i == $choice3[9] ? 'selected' : '' }}>
+                                                            {{ chr($i + 64) }}</option>
                                                     @endfor
                                                 </select>
                                             </div>
                                             <div class="list-group-item-body"> <input type="text" class="form-control"
-                                                    id="q10" name="q10" placeholder="คำถาม" value="{{ isset($choice1[9]) ? $choice1[9] : '' }}">
+                                                    id="q10" name="q10" placeholder="คำถาม"
+                                                    value="{{ isset($choice1[9]) ? $choice1[9] : '' }}">
                                             </div>
                                         </div>
                                     </div><!-- /.list-group -->
@@ -386,61 +420,71 @@
                                         <div class="list-group-item">
                                             <div class="list-group-item-figure h6">A</div>
                                             <div class="list-group-item-body"> <input type="text" class="form-control"
-                                                    id="c1" name="c1" placeholder="ตัวเลือก" value="{{ isset($choice2[0]) ? $choice2[0] : '' }}">
+                                                    id="c1" name="c1" placeholder="ตัวเลือก"
+                                                    value="{{ isset($choice2[0]) ? $choice2[0] : '' }}">
                                             </div>
                                         </div>
                                         <div class="list-group-item">
                                             <div class="list-group-item-figure h6">B</div>
                                             <div class="list-group-item-body"> <input type="text" class="form-control"
-                                                    id="c2" name="c2" placeholder="ตัวเลือก" value="{{ isset($choice2[1]) ? $choice2[1] : '' }}">
+                                                    id="c2" name="c2" placeholder="ตัวเลือก"
+                                                    value="{{ isset($choice2[1]) ? $choice2[1] : '' }}">
                                             </div>
                                         </div>
                                         <div class="list-group-item">
                                             <div class="list-group-item-figure h6">C</div>
                                             <div class="list-group-item-body"> <input type="text" class="form-control"
-                                                    id="c3" name="c3" placeholder="ตัวเลือก" value="{{ isset($choice2[2]) ? $choice2[2] : '' }}">
+                                                    id="c3" name="c3" placeholder="ตัวเลือก"
+                                                    value="{{ isset($choice2[2]) ? $choice2[2] : '' }}">
                                             </div>
                                         </div>
                                         <div class="list-group-item">
                                             <div class="list-group-item-figure h6">D</div>
                                             <div class="list-group-item-body"> <input type="text" class="form-control"
-                                                    id="c4" name="c4" placeholder="ตัวเลือก" value="{{ isset($choice2[3]) ? $choice2[3] : '' }}">
+                                                    id="c4" name="c4" placeholder="ตัวเลือก"
+                                                    value="{{ isset($choice2[3]) ? $choice2[3] : '' }}">
                                             </div>
                                         </div>
                                         <div class="list-group-item">
                                             <div class="list-group-item-figure h6">E</div>
                                             <div class="list-group-item-body"> <input type="text" class="form-control"
-                                                    id="c5" name="c5" placeholder="ตัวเลือก" value="{{ isset($choice2[4]) ? $choice2[4] : '' }}">
+                                                    id="c5" name="c5" placeholder="ตัวเลือก"
+                                                    value="{{ isset($choice2[4]) ? $choice2[4] : '' }}">
                                             </div>
                                         </div>
                                         <div class="list-group-item">
                                             <div class="list-group-item-figure h6">F</div>
                                             <div class="list-group-item-body"> <input type="text" class="form-control"
-                                                    id="c6" name="c6" placeholder="ตัวเลือก" value="{{ isset($choice2[5]) ? $choice2[5] : '' }}">
+                                                    id="c6" name="c6" placeholder="ตัวเลือก"
+                                                    value="{{ isset($choice2[5]) ? $choice2[5] : '' }}">
                                             </div>
                                         </div>
                                         <div class="list-group-item">
                                             <div class="list-group-item-figure h6">G</div>
                                             <div class="list-group-item-body"> <input type="text" class="form-control"
-                                                    id="c7" name="c7" placeholder="ตัวเลือก" value="{{ isset($choice2[6]) ? $choice2[6] : '' }}">
+                                                    id="c7" name="c7" placeholder="ตัวเลือก"
+                                                    value="{{ isset($choice2[6]) ? $choice2[6] : '' }}">
                                             </div>
                                         </div>
                                         <div class="list-group-item">
                                             <div class="list-group-item-figure h6">H</div>
                                             <div class="list-group-item-body"> <input type="text" class="form-control"
-                                                    id="c8" name="c8" placeholder="ตัวเลือก" value="{{ isset($choice2[7]) ? $choice2[7] : '' }}">
+                                                    id="c8" name="c8" placeholder="ตัวเลือก"
+                                                    value="{{ isset($choice2[7]) ? $choice2[7] : '' }}">
                                             </div>
                                         </div>
                                         <div class="list-group-item">
                                             <div class="list-group-item-figure h6">I</div>
                                             <div class="list-group-item-body"> <input type="text" class="form-control"
-                                                    id="c9" name="c9" placeholder="ตัวเลือก" value="{{ isset($choice2[8]) ? $choice2[8] : '' }}">
+                                                    id="c9" name="c9" placeholder="ตัวเลือก"
+                                                    value="{{ isset($choice2[8]) ? $choice2[8] : '' }}">
                                             </div>
                                         </div>
                                         <div class="list-group-item">
                                             <div class="list-group-item-figure h6">J</div>
                                             <div class="list-group-item-body"> <input type="text" class="form-control"
-                                                    id="c10" name="c10" placeholder="ตัวเลือก" value="{{ isset($choice2[9]) ? $choice2[9] : '' }}">
+                                                    id="c10" name="c10" placeholder="ตัวเลือก"
+                                                    value="{{ isset($choice2[9]) ? $choice2[9] : '' }}">
                                             </div>
                                         </div>
                                     </div><!-- /.list-group -->
@@ -453,11 +497,12 @@
 
 
 
-                        <div id="data5" style="{{ $ques->question_type == 5 ? 'display: block;' : 'display: none;' }}">
+                        <div id="data5"
+                            style="{{ $ques->question_type == 5 ? 'display: block;' : 'display: none;' }}">
                             <!-- grid row -->
                             @php
-                            $choice4 = explode(',', $ques->choice4);
-                        @endphp
+                                $choice4 = explode(',', $ques->choice4);
+                            @endphp
                             <div class="form-group qtype5 ">
                                 <!-- .list-group -->
                                 <div class="list-group list-group mb-3">
@@ -471,61 +516,71 @@
                                     <div class="list-group-item">
                                         <div class="list-group-item-figure">1.</div>
                                         <div class="list-group-item-body"> <input type="text" class="form-control"
-                                                id="o1" name="o1" placeholder="ลำดับ  1" value="{{ isset($choice4[0]) ? $choice4[0] : '' }}">
+                                                id="o1" name="o1" placeholder="ลำดับ  1"
+                                                value="{{ isset($choice4[0]) ? $choice4[0] : '' }}">
                                         </div>
                                     </div>
                                     <div class="list-group-item">
                                         <div class="list-group-item-figure">2.</div>
                                         <div class="list-group-item-body"> <input type="text" class="form-control"
-                                                id="o2" name="o2" placeholder="ลำดับ  2" value="{{ isset($choice4[1]) ? $choice4[1] : '' }}">
+                                                id="o2" name="o2" placeholder="ลำดับ  2"
+                                                value="{{ isset($choice4[1]) ? $choice4[1] : '' }}">
                                         </div>
                                     </div>
                                     <div class="list-group-item">
                                         <div class="list-group-item-figure">3.</div>
                                         <div class="list-group-item-body"> <input type="text" class="form-control"
-                                                id="o3" name="o3" placeholder="ลำดับ  3" value="{{ isset($choice4[2]) ? $choice4[2] : '' }}">
+                                                id="o3" name="o3" placeholder="ลำดับ  3"
+                                                value="{{ isset($choice4[2]) ? $choice4[2] : '' }}">
                                         </div>
                                     </div>
                                     <div class="list-group-item">
                                         <div class="list-group-item-figure">4.</div>
                                         <div class="list-group-item-body"> <input type="text" class="form-control"
-                                                id="o4" name="o4" placeholder="ลำดับ  4" value="{{ isset($choice4[3]) ? $choice4[3] : '' }}">
+                                                id="o4" name="o4" placeholder="ลำดับ  4"
+                                                value="{{ isset($choice4[3]) ? $choice4[3] : '' }}">
                                         </div>
                                     </div>
                                     <div class="list-group-item">
                                         <div class="list-group-item-figure">5.</div>
                                         <div class="list-group-item-body"> <input type="text" class="form-control"
-                                                id="o5" name="o5" placeholder="ลำดับ  5" value="{{ isset($choice4[4]) ? $choice4[4] : '' }}">
+                                                id="o5" name="o5" placeholder="ลำดับ  5"
+                                                value="{{ isset($choice4[4]) ? $choice4[4] : '' }}">
                                         </div>
                                     </div>
                                     <div class="list-group-item">
                                         <div class="list-group-item-figure">6.</div>
                                         <div class="list-group-item-body"> <input type="text" class="form-control"
-                                                id="o6" name="o6" placeholder="ลำดับ  6" value="{{ isset($choice4[5]) ? $choice4[5] : '' }}">
+                                                id="o6" name="o6" placeholder="ลำดับ  6"
+                                                value="{{ isset($choice4[5]) ? $choice4[5] : '' }}">
                                         </div>
                                     </div>
                                     <div class="list-group-item">
                                         <div class="list-group-item-figure">7.</div>
                                         <div class="list-group-item-body"> <input type="text" class="form-control"
-                                                id="o7" name="o7" placeholder="ลำดับ  7" value="{{ isset($choice4[6]) ? $choice4[6] : '' }}">
+                                                id="o7" name="o7" placeholder="ลำดับ  7"
+                                                value="{{ isset($choice4[6]) ? $choice4[6] : '' }}">
                                         </div>
                                     </div>
                                     <div class="list-group-item">
                                         <div class="list-group-item-figure">8.</div>
                                         <div class="list-group-item-body"> <input type="text" class="form-control"
-                                                id="o8" name="o8" placeholder="ลำดับ  8" value="{{ isset($choice4[7]) ? $choice4[7] : '' }}">
+                                                id="o8" name="o8" placeholder="ลำดับ  8"
+                                                value="{{ isset($choice4[7]) ? $choice4[7] : '' }}">
                                         </div>
                                     </div>
                                     <div class="list-group-item">
                                         <div class="list-group-item-figure">9.</div>
                                         <div class="list-group-item-body"> <input type="text" class="form-control"
-                                                id="o9" name="o9" placeholder="ลำดับ  9" value="{{ isset($choice4[8]) ? $choice4[8] : '' }}">
+                                                id="o9" name="o9" placeholder="ลำดับ  9"
+                                                value="{{ isset($choice4[8]) ? $choice4[8] : '' }}">
                                         </div>
                                     </div>
                                     <div class="list-group-item">
                                         <div class="list-group-item-figure">10.</div>
                                         <div class="list-group-item-body"> <input type="text" class="form-control"
-                                                id="o10" name="o10" placeholder="ลำดับ  10" value="{{ isset($choice4[9]) ? $choice4[9] : '' }}">
+                                                id="o10" name="o10" placeholder="ลำดับ  10"
+                                                value="{{ isset($choice4[9]) ? $choice4[9] : '' }}">
                                         </div>
                                     </div>
                                 </div><!-- /.list-group -->
@@ -540,7 +595,7 @@
                         <div class="form-group">
                             <label for="explain">คำอธิบาย </label>
                             <textarea class="editor" data-placeholder="คำอธิบาย" data-height="150" name="explain" id="explain">
-                                {{$ques->explain}}
+                                {{ $ques->explain }}
                             </textarea>
                         </div><!-- /.form-group -->
 

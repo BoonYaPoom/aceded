@@ -139,8 +139,6 @@ class EditManageUserController extends Controller
         $usermanages->user_affiliation = $request->user_affiliation;
         $usermanages->province_id = $request->province_id;
         $usermanages->department_id = $request->department_id;
-
-        $usermanages->user_type = $request->input('user_type', 0);
         $usermanages->mobile = $request->mobile;
 
         $usermanages->pos_name = $request->pos_name;
@@ -301,7 +299,7 @@ class EditManageUserController extends Controller
         $usermanages->office_id = 0;
         $usermanages->birthday = $request->birthday;
         $usermanages->user_affiliation = $request->user_affiliation;
-        $usermanages->user_type = $request->input('user_type', 0);
+        $usermanages->user_type = null;
         $usermanages->province_id = $request->province_id;
         $usermanages->user_type_card =  $request->input('user_type_card', 0);
 

@@ -36,23 +36,7 @@
                                 <!-- /.media-body -->
                             </div>
                             <!-- form row -->
-                            <div class="form-row">
-                                <label for="usertype" class="col-md-2">ประเภทบุคลากร </label>
-                                <div class="col-md-9 mb-3">
-                                    <div class="custom-control custom-control-inline custom-radio mr-3">
-                                        <input type="radio" class="custom-control-input usertypeselect" name="user_type"
-                                            id="usertype1" value="1"
-                                            {{ $usermanages->user_type == 1 ? 'checked' : '' }}>
-                                        <label class="custom-control-label" for="usertype1">บุคลากรของสำนักงาน</label>
-                                    </div>
-                                    <div class="custom-control custom-control-inline custom-radio mr-3">
-                                        <input type="radio" class="custom-control-input usertypeselect" name="user_type"
-                                            id="usertype2" value="2"
-                                            {{ $usermanages->user_type == 2 ? 'checked' : '' }}>
-                                        <label class="custom-control-label" for="usertype2">บุคคลทั่วไป</label>
-                                    </div>
-                                </div>
-                            </div>
+                         
 
                             <!-- /form row -->
                             <div class="form-row " id="department_id">

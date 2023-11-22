@@ -18,7 +18,7 @@
     @endif
 
     <form action="{{ route('departmentstore', ['from' => $from]) }}" method="post" enctype="multipart/form-data">
-
+        @csrf
         <!-- .page-inner -->
         <div class="page-inner">
             <!-- .form -->

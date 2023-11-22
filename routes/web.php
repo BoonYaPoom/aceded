@@ -43,6 +43,7 @@ use App\Http\Controllers\ReportJsonController;
 use App\Http\Controllers\RolemanageController;
 use App\Http\Controllers\SchoolController;
 use App\Http\Controllers\SchoolDepartController;
+use App\Http\Controllers\SchoolDepartUserController;
 use App\Http\Controllers\ScoreController;
 use App\Http\Controllers\SubmitController;
 use App\Http\Controllers\SurResponseController;
@@ -580,6 +581,11 @@ Route::group(['middleware' => 'IsLoggedIn'], function () {
             Route::get('/getSchools', [SchoolController::class, 'getSchools'])->name('getSchools');
             Route::get('/rad', [SubmitController::class, 'requestSchool'])->name('requestSchool');
             Route::prefix('rad')->group(function () {
+                
+                Route::get('/requestup', [SchoolDepartUserController::class, 'requestSchool'])->name('requestup');
+                
+                Route::post('/uploadPdf', [SchoolDepartUserController::class, 'uploadPdf'])->name('uploadPdf');
+              
 
                 Route::get('/requestSchooldataJson', [SubmitController::class, 'requestSchooldataJson'])->name('requestSchooldataJson');
                 Route::get('/detaildata/{submit_id}', [SubmitController::class, 'detaildata'])->name('detaildata');
