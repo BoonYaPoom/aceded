@@ -163,7 +163,6 @@ return [
         /*
          * Application Service Providers...
          */
-        
          'rudrarajiv\flipbooklaravel\FlipBookServiceProvider',
          LdapRecord\Laravel\LdapServiceProvider::class,
          Hedii\ArtisanLogCleaner\ArtisanLogCleanerServiceProvider::class,

@@ -172,10 +172,6 @@ class BookController extends Controller
 
                     // ปรับขนาดรูปภาพ
                     $img->resize(600, 849);
-                    $imgs = Image::make($newFolder1 . '/' . $imageFilename1);
-
-                    // ปรับขนาดรูปภาพ
-                    $imgs->resize(300, 425);
 
 
                     // เซฟรูปภาพที่ปรับขนาดลงในไฟล์เดิม
@@ -354,10 +350,7 @@ class BookController extends Controller
 
                 // ปรับขนาดรูปภาพ
                 $img->resize(600, 849);
-                $imgs = Image::make($newFolder1 . '/' . $imageFilename1);
-
-                // ปรับขนาดรูปภาพ
-                $imgs->resize(300, 425);
+     
 
 
                 // เซฟรูปภาพที่ปรับขนาดลงในไฟล์เดิม

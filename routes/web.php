@@ -579,6 +579,7 @@ Route::group(['middleware' => 'IsLoggedIn'], function () {
                 Route::get('/T0103', [ReportJsonController::class, 't0103'])->name('t0103json');
             });
             Route::get('/getSchools', [SchoolController::class, 'getSchools'])->name('getSchools');
+          
             Route::get('/rad', [SubmitController::class, 'requestSchool'])->name('requestSchool');
             Route::prefix('rad')->group(function () {
                 

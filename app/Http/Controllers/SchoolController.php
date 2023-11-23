@@ -9,6 +9,7 @@ use App\Models\Users;
 use App\Models\UserSchool;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Yajra\DataTables\Facades\DataTables;
 
 class SchoolController extends Controller
 {
@@ -23,33 +24,39 @@ class SchoolController extends Controller
     }
     public function getSchools(Request $request )
     {
-        $schools = School::all();
-        $schoolsaa = [];
+        set_time_limit(0);
+        ini_set('max_execution_time', 300);
+        ini_set('pcre.backtrack_limit', 5000000);
+        $page = $request->has('page') ? $request->get('page') : 1;
+        $limit = $request->has('limit') ? $request->get('limit') : 20;
+        $schools = School::skip($limit)->take(($page - 1)* $limit)->get()->toArray();
+        $datas = [];
         $userschool = UserSchool::all();
         $i = 1;
         foreach ($schools as $school) {
-            $proviUser = Provinces::where('code', $school->provinces_code)
-                ->pluck('name_in_thai')
-                ->first();
-            $userCount = $userschool->where('school_code', $school->school_code)->count();
+          
             ini_set('memory_limit', '1028M');
-            $schoolsaa[] = [
+            $datas[] = [
                 'num' => $i++,
                 'id' => $school->school_id,
                 'code' => $school->school_code,
                 'school_name' => $school->school_name,
-                'province_name' => $proviUser,
-                'userCount' => $userCount,
+
+          
 
             ];
             $allschool = [
-                'recordsTotal' => count($schoolsaa), // รวมทั้งหมด
-                'schoolsaa' => $schoolsaa,
+                'draw' =>intval($request->input('draw')),
+                'recordsTotal' => intval(count($datas)), 
+                'datas' => $datas,
             ];
 
         }
-
-        return response()->json(['schoolsaa' => $schoolsaa]);
+       
+        if($request->ajax()){
+            return DataTables::of($datas)->make(true);
+        }
+  
     }
 
 
