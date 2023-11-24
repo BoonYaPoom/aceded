@@ -41,13 +41,15 @@
                                         aria-controls="datatable">
                                 </label>
                                 <label>จังหวัด
-                                    <select id="drop2" name="drop2" class="form-control" data-allow-clear="false">
+                                    <select id="drop2" name="drop2" class="form-control" data-allow-clear="false"
+                                        aria-controls="datatable">
                                         <option value="0"selected>ทั้งหมด</option>
                                         @php
                                             $Provinces = \App\Models\Provinces::all();
+
                                         @endphp
                                         @foreach ($Provinces as $provin)
-                                            <option value="{{ $provin->name_in_thai }}"> {{ $provin->name_in_thai }}
+                                            <option value="{{ $provin->code }}"> {{ $provin->name_in_thai }}
                                             </option>
                                         @endforeach
                                     </select>
@@ -58,34 +60,57 @@
                             <thead>
                                 <tr class="bg-infohead">
                                     <th width="5%">ลำดับ</th>
-                                    <th>สถานศึกษา</th>
-                              
-                                    <th width="8%">เพิ่มสมาชิก</th>
-                                    <th width="12%" class="text-center">กระทำ</th>
+                                    <th width="40%">สถานศึกษา</th>
+                                    <th width="25%">จังหวัด</th>
+                                    <th width="10%">จำนวน</th>
+                                    <th width="10%">เพิ่มสมาชิก</th>
+                                    <th width="10%" class="text-center">กระทำ</th>
                                 </tr>
                             </thead>
 
                             <script>
                                 $(document).ready(function() {
                                     var table = $('#datatable').DataTable({
-                                        processing: true,
+
                                         serverSide: true,
                                         ajax: {
                                             url: '{{ route('getSchools') }}',
-                                           
+                                            data: function(d) {
+                                                d.myInput = $('#myInput').val();
+                                                d.drop2 = $('#drop2').val();
+                                            },
                                         },
                                         columns: [{
-                                                data: 'num'
-                                            }, // Replace with your actual column name
+                                                data: 'num',
+                                                name: 'id',
+
+                                            },
                                             {
-                                                data: 'school_name'
-                                            }, // Replace with your actual column name
-                                           
+                                                data: 'school_name',
+                                                name: 'school_name',
+
+                                            },
+                                            {
+                                                data: 'name_in_thai',
+                                                name: 'name_in_thai',
+
+                                            },
+                                            {
+                                                data: 'scount',
+                                                name: 'scount',
+
+                                                render: function(data, type, row) {
+                                                    var link = '<i class="fas fa-users"></i> (' + data + ')';
+                                                    return link;
+                                                }
+                                            },
                                             {
                                                 data: null,
+                                                name: 'school_name',
+                                                className: 'align-center',
                                                 render: function(data, type, row) {
 
-                                                    var schoolcode = data.code;
+                                                    var schoolcode = data.name_in_thai;
                                                     var url =
                                                         "{{ route('umsschooluser', ['school_code' => 'schoolcode']) }}";
                                                     url = url.replace('schoolcode', schoolcode);
@@ -96,6 +121,8 @@
                                             },
                                             {
                                                 data: null,
+                                                name: 'school_name',
+                                                className: 'align-middle',
                                                 render: function(data, type, row) {
 
                                                     var schoolId = data.id;
@@ -118,14 +145,16 @@
 
                                             },
                                         ],
+                                        order: [
+                                            [0, 'asc']
+                                        ],
                                         deferRender: true,
                                         lengthChange: false,
                                         responsive: true,
                                         info: false,
                                         paging: true,
-                                        pageLength: 20,
-                                        scrollY: '100%',
-
+                                        pageLength: 50,
+                                        scrollY: false,
                                         language: {
 
                                             infoEmpty: "ไม่พบรายการ",
@@ -140,14 +169,15 @@
 
                                     });
                                     $('#drop2').on('change', function() {
-                                        var selecteddrop2Id = $(this).val();
-                                        if (selecteddrop2Id == 0) {
-                                            table.columns(2).search('').draw();
+                                        var selectedDrop2Id = $(this).val();
+                                        console.log(selectedDrop2Id);
+                                        if (selectedDrop2Id == 0) {
+                                            table.column(2).search('').draw();
                                         } else {
-                                            // กรองข้อมูลใน DataTables ด้วยหน่วยงานที่เลือก
-                                            table.columns(2).search(selecteddrop2Id).draw();
+                                            table.column(2).search(selectedDrop2Id).draw();
                                         }
                                     });
+
                                     $('#myInput').on('keyup', function() {
                                         table.search(this.value).draw();
                                     });

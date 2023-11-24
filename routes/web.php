@@ -450,6 +450,8 @@ Route::group(['middleware' => 'IsLoggedIn'], function () {
 
                 Route::get('{department_id}/departums/{user_role?}', [DepartUsersController::class, 'DPUserManage'])->name('DPUserManage')->where('user_role', '[0-9]+');
 
+                Route::get('{department_id}/DPUserManagejson/{user_role?}', [DepartUsersController::class, 'DPUserManagejson'])->name('DPUserManagejson')->where('user_role', '[0-9]+');
+
                 Route::prefix('departums')->group(function () {
 
                     Route::get('/add_dpumsform/{department_id}', [DepartUsersController::class, 'createUser'])->name('DPcreateUser');
@@ -510,7 +512,7 @@ Route::group(['middleware' => 'IsLoggedIn'], function () {
                 Route::put('/update-role/{user_id}', [EditManageUserController::class, 'updateRoleUser'])->name('updateRoleUser');
                 Route::put('/update-password/{user_id}', [EditManageUserController::class, 'updatepassword'])->name('updatePassword');
 
-                Route::get('/changeStatusUser/{user_id}', [EditManageUserController::class, 'changeStatus'])->name('changeStatusUser');
+                Route::get('/changeStatusUser', [EditManageUserController::class, 'changeStatus'])->name('changeStatusUser');
 
                 Route::get('fetchUsersByDepartment', [EditManageUserController::class, 'fetchUsersByDepartment'])->name('fetchUsersByDepartment');
 

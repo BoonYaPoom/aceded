@@ -9,7 +9,7 @@
     <td>{{ $item->email }}</td>
     <td>{{ $proviUser }}</td>
 
-    @if ($data->user_role == 1)
+ 
         <td class="align-middle"> <label class="switcher-control switcher-control-success switcher-control-lg">
                 <input type="checkbox" class="switcher-input switcher-edit" {{ $item->userstatus == 1 ? 'checked' : '' }}
                     data-user_id="{{ $item->user_id }}">
@@ -17,34 +17,9 @@
                 <span class="switcher-label-on">ON</span>
                 <span class="switcher-label-off text-red">OFF</span>
             </label></td>
-    @else
-        <td>ใช้งาน</td>
-    @endif
 
-    <script>
-        $(document).ready(function() {
-            $(document).on('change', '.switcher-input.switcher-edit', function() {
-                var userstatus = $(this).prop('checked') ? 1 : 0;
-                var user_id = $(this).data('user_id');
 
-                $.ajax({
-                    type: "GET",
-                    dataType: "json",
-                    url: '{{ route('changeStatusUser', ['user_id' => $item ]) }}',
-                    data: {
-                        'userstatus': userstatus,
-                        'user_id': user_id
-                    },
-                    success: function(data) {
-
-                    },
-                    error: function(xhr, status, error) {
-
-                    }
-                });
-            });
-        });
-    </script>
+    
 
     <td>
         <a href="{{ route('DPeditUser', ['department_id' => $depart->department_id, 'user_id' => $item->user_id]) }}"

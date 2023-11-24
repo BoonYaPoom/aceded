@@ -18,6 +18,9 @@ class School extends Model
         return $this->hasMany(UserSchool::class, 'school_code');
     }
     public function DeScho() {
-        return $this->belongsTo(School::class,'dewpartment_id');
+        return $this->belongsTo(School::class,'department_id');
+      }
+      public function proschool() {
+        return $this->belongsTo(Provinces::class,'provinces_code');
       }
 }

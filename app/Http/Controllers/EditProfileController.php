@@ -44,7 +44,7 @@ class EditProfileController extends Controller
                 }
             
                 $image->save($uploadDirectory);
-                $users->avatar = 'upload/Profile/' . 'avatar' . $users->user_id . '.' . $request->avatar->getClientOriginalExtension();
+                $users->avatar = 'https://aced-bn.nacc.go.th/' . 'upload/Profile/' . 'avatar' . $users->user_id . '.' . $request->avatar->getClientOriginalExtension();
             } 
             $users->username = $request->username;
             $users->firstname = $request->firstname;

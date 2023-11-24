@@ -66,38 +66,9 @@
                         กลุ่มผู้ใช้งาน</a>
 
 
-                    {{-- <a class="ml-1 btn btn-info btn-md " style="color:#fff" href="{{ route('schoolManage') }}"><i
+                    <a class="ml-1 btn btn-info btn-md " style="color:#fff" href="{{ route('schoolManage') }}"><i
                             class="fas fa-users"></i>
-                        จัดการสถานศึกษา</a> --}}
-
-
-
-                    <div class="col-md-6 mb-3">
-                        <label for="department_id" class="col-md-3 text-left mt-1">หน่วยงาน</label>
-                        <select id="department_id" name="department_id" class="form-control" data-allow-clear="false">
-                            <option value="0"selected>ทั้งหมด</option>
-
-                            @php
-                                $department = \App\Models\Department::all();
-                            @endphp
-                            @foreach ($department->sortBy('department_id') as $depart)
-                                <option value="{{ $depart->name_en }}"> {{ $depart->name_en }} </option>
-                            @endforeach
-                        </select>
-                    </div>
-
-                    <div class="col-md-6 mb-3">
-                        <label for="drop2" class="col-md-3 text-right mt-1">จังหวัด</label>
-                        <select id="drop2" name="drop2" class="form-control" data-allow-clear="false">
-                            <option value="0"selected>ทั้งหมด</option>
-                            @php
-                                $Provinces = \App\Models\Provinces::all();
-                            @endphp
-                            @foreach ($Provinces as $provin)
-                                <option value="{{ $provin->name_in_thai }}"> {{ $provin->name_in_thai }} </option>
-                            @endforeach
-                        </select>
-                    </div>
+                        จัดการสถานศึกษา</a>
 
 
                 </div>
@@ -221,9 +192,23 @@
                                         <input type="search" id="myInput" class="form-control" placeholder=""
                                             aria-controls="datatable">
                                     </label>
+                                    <label>จังหวัด
+                                        <select id="drop2" name="drop2" class="form-control" data-allow-clear="false"
+                                            aria-controls="datatable">
+                                            <option value="0"selected>ทั้งหมด</option>
+                                            @php
+                                                $Provinces = \App\Models\Provinces::all();
+    
+                                            @endphp
+                                            @foreach ($Provinces as $provin)
+                                                <option value="{{ $provin->code }}"> {{ $provin->name_in_thai }}
+                                                </option>
+                                            @endforeach
+                                        </select>
+                                    </label>
+    
                                 </div>
-
-
+                               
 
                             </div>
 
@@ -236,17 +221,12 @@
                                     <th width="15%">เบอร์โทรศัพท์</th>
                                     <th width="25%">email</th>
                                     <th width="10%"> จังหวัด</th>
-                                    <th>หน่วยงาน</th>
                                     <th width="10%">สถานะ</th>
                                     <th width="12%" class="text-center">กระทำ</th>
                                 </tr>
                             </thead>
                             <!-- /thead -->
-                            <!-- tbody -->
-                            <tbody id="userallna">
-
-                            </tbody><!-- /tbody -->
-
+            
                         </table><!-- /.table -->
                     </div><!-- /.table-responsive -->
 
