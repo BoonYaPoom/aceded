@@ -38,7 +38,7 @@
                             <label for="fileexcel">เลือกไฟล์รายชื่อ <span
                                     class="badge badge-warning">Required</span></label>
                             <a class="ml-3"
-                                href="https://view.officeapps.live.com/op/view.aspx?src=https%3A%2F%2Felearning.tcct.or.th%2Fadmin%2Fupload-files%2F%25E0%25B8%2582%25E0%25B9%2589%25E0%25B8%25AD%25E0%25B8%25AA%25E0%25B8%25AD%25E0%25B8%259A.xlsx&wdOrigin=BROWSELINK"
+                                href="https://1drv.ms/x/s!Aneojfnh1p7QgesIwjbgQ5koULOO5g?e=OMOCid&nav=MTVfezAwMDAwMDAwLTAwMDEtMDAwMC0wMDAwLTAwMDAwMDAwMDAwMH0"
                                 target="_blank">ไฟล์ตัวอย่าง
                             </a>
                         </div>

@@ -2,13 +2,16 @@
     $(document).ready(function() {
         var user_roleValue = "{{ request('user_role') }}";
         var table = $('#datatable').DataTable({
+            serverSide: true,
             ajax: {
                 url: '{{ route('UserManagejson') }}' + user_roleValue,
-
-                dataSrc: 'datauser',
+                data: function(d) {
+                    d.myInput = $('#myInput').val();
+                    d.drop2 = $('#drop2').val();
+                },
             },
             columns: [{
-                    data: 'i'
+                    data: 'num'
                 },
                 {
                     data: 'username'
@@ -23,10 +26,7 @@
                     data: 'email'
                 },
                 {
-                    data: 'proviUser'
-                },
-                {
-                    data: 'department'
+                    data: 'name_in_thai'
                 },
                 {
                     data: 'status',
@@ -46,7 +46,6 @@
                         return switcherHtml;
 
                     },
-
                 },
                 {
                     data: null,
@@ -92,17 +91,23 @@
                             return Admina + (user_dataLogin == 1 || user_dataLogin == 8 ?
                                 linkedituser : '');
                         } else {
-                            return linkedituser + linklogusers  +
+                            return linkedituser + linklogusers +
                                 linkdeleteuser;
                         }
                     },
                 },
             ],
+            order: [
+                [0, 'asc']
+            ],
+            deferRender: true,
             lengthChange: false,
             responsive: true,
-            info: true,
+            info: false,
+            paging: true,
             pageLength: 50,
-            scrollY: '100%',
+            scrollY: false,
+
             language: {
                 zeroRecords: "ไม่พบข้อมูลที่ต้องการ",
                 info: "ลำดับที่ _START_ ถึง _END_ จากทั้งหมด _TOTAL_ รายการ",
@@ -121,37 +126,37 @@
         $('#myInput').on('keyup', function() {
             table.search(this.value).draw();
         });
-
-        // คำค้นโดยการเลือกค่าจาก select box 'department_id'
-        $('#department_id').on('change', function() {
-            var selectedDepartmentId = $(this).val();
-            if (selectedDepartmentId == 0) {
-                table.column(6).search('').draw();
-            } else {
-                table.column(6).search(selectedDepartmentId).draw();
-            }
-        });
-
-        // คำค้นโดยการเลือกค่าจาก select box 'drop2'
         $('#drop2').on('change', function() {
             var selectedDrop2Id = $(this).val();
+            console.log(selectedDrop2Id);
             if (selectedDrop2Id == 0) {
                 table.column(5).search('').draw();
             } else {
                 table.column(5).search(selectedDrop2Id).draw();
             }
         });
+
     });
 
 
-    $(document).on('change', '.switcher-input', function() {
+    $(document).on('change', '.switcher-input.switcher-edit', function() {
+        var userstatus = $(this).prop('checked') ? 1 : 0;
         var user_id = $(this).data('user_id');
-        var user_status = $(this).data('user_status');
-        var changeStatusUrl = '{{ route('changeStatusUser', ['user_id' => ':user_id']) }}';
-        changeStatusUrl = changeStatusUrl.replace(':user_id', user_id);
-        $.get(changeStatusUrl, function(response) {
-            if (response.message) {
-                console.log(response.message);
+
+        $.ajax({
+            type: "GET",
+            dataType: "json",
+            url: '{{ route('changeStatusUser') }}',
+            data: {
+                'userstatus': userstatus,
+                'user_id': user_id
+            },
+            success: function(data) {
+                console.log(data);
+                console.log(user_id);
+            },
+            error: function(xhr, status, error) {
+                console.log(error);
             }
         });
     });

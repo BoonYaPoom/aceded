@@ -1,21 +1,21 @@
 @extends('layouts.department.layout.departmenthome')
 @section('contentdepartment')
-@if (Session::has('message'))
-<script>
-    toastr.options = {
-        "progressBar": true,
-        "positionClass": 'toast-top-full-width',
-        "extendedTimeOut ": 0,
-        "timeOut": 3000,
-        "fadeOut": 250,
-        "fadeIn": 250,
-        "positionClass": 'toast-top-right',
+    @if (Session::has('message'))
+        <script>
+            toastr.options = {
+                "progressBar": true,
+                "positionClass": 'toast-top-full-width',
+                "extendedTimeOut ": 0,
+                "timeOut": 3000,
+                "fadeOut": 250,
+                "fadeIn": 250,
+                "positionClass": 'toast-top-right',
 
 
-    }
-    toastr.success("{{ Session::get('message') }}");
-</script>
-@endif
+            }
+            toastr.success("{{ Session::get('message') }}");
+        </script>
+    @endif
     <div class="page-inner">
         <!-- .page-section -->
 
@@ -23,7 +23,7 @@
             <!-- .card -->
             <div class="card card-fluid">
                 <!-- .card-header -->
-                <div class="card-header bg-muted"> ผู้ใช้งาน ระดับ {{$depart->name_th}}</div>
+                <div class="card-header bg-muted"> ผู้ใช้งาน ระดับ {{ $depart->name_th }}</div>
                 <!-- .card-body -->
                 <div class="card-body">
                     <form id="filterForm" action="{{ route('DPUserManage', ['department_id' => $depart->department_id]) }}"
@@ -53,16 +53,10 @@
                     <script>
                         function filterResults() {
                             var user_roleValue = document.getElementById('user_role').value;
-                            var baseUrl = '{{ route('DPUserManage', ['department_id' => $depart->department_id]) }}';
-
-                            if (user_roleValue) {
-                                window.location.href = baseUrl + '/' + user_roleValue;
-                            } else {
-                                window.location.href = baseUrl;
-                            }
+                            var table = $('#datatable').DataTable();
+                            table.ajax.url('{{ route('DPUserManagejson', ['department_id' => $depart]) }}/' + user_roleValue).load();
                         }
                     </script>
-
 
                     <button type="button" class="ml-1 btn btn-success btn-md"
                         onclick="$('#clientUploadModal').modal('toggle');"><i class="fas fa-user-plus"></i>
@@ -70,13 +64,12 @@
 
 
 
-                        <a class="ml-1 btn btn-info btn-md " style="color:#fff"
-                            href="{{ route('umsschooldepartment', [$depart]) }}"><i
-                                class="fas fa-users"></i>
-                            จัดการสถานศึกษา</a>
+                    <a class="ml-1 btn btn-info btn-md " style="color:#fff"
+                        href="{{ route('umsschooldepartment', [$depart]) }}"><i class="fas fa-users"></i>
+                        จัดการสถานศึกษา</a>
 
 
-                    <div class="col-md-6 mb-3">
+                    {{-- <div class="col-md-6 mb-3">
                         <label for="drop2" class="col-md-3 text-right mt-1">จังหวัด</label>
                         <select id="drop2" name="drop2" class="form-control form-control-sm" data-allow-clear="false">
                             <option value="0"selected>ทั้งหมด</option>
@@ -87,7 +80,7 @@
                                 <option value="{{ $provin->name_in_thai }}"> {{ $provin->name_in_thai }} </option>
                             @endforeach
                         </select>
-                    </div>
+                    </div> --}}
                     {{-- <div class="col-md-6 mb-3">
                         <label for="drop2" class="col-md-3 text-right mt-1">จังหวัด</label>
                         <select id="drop2" name="drop2" class="form-control form-control-sm" data-allow-clear="false">
@@ -228,57 +221,22 @@
                                         <input type="search" id="myInput" class="form-control" placeholder=""
                                             aria-controls="datatable">
                                     </label>
+                                    <label>จังหวัด
+                                        <select id="drop2" name="drop2" class="form-control" data-allow-clear="false"
+                                            aria-controls="datatable">
+                                            <option value="0"selected>ทั้งหมด</option>
+                                            @php
+                                                $Provinces = \App\Models\Provinces::all();
+
+                                            @endphp
+                                            @foreach ($Provinces as $provin)
+                                                <option value="{{ $provin->code }}"> {{ $provin->name_in_thai }}
+                                                </option>
+                                            @endforeach
+                                        </select>
+                                    </label>
                                 </div>
 
-                                <script>
-                                    $(document).ready(function() {
-                                        var table = $('#datatable').DataTable({
-
-                                            lengthChange: false,
-                                            responsive: true,
-                                            info: true,
-                                            pageLength: 50,
-                                            language: {
-                                                info: "ลำดับที่ _START_ ถึง _END_ จากทั้งหมด _TOTAL_ รายการ",
-                                                infoEmpty: "ไม่พบรายการ",
-                                                infoFiltered: "(ค้นหาจากทั้งหมด _MAX_ รายการ)",
-                                                paginate: {
-                                                    first: "หน้าแรก",
-                                                    last: "หน้าสุดท้าย",
-                                                    previous: "ก่อนหน้า",
-
-                                                    next: "ถัดไป"
-                                                }
-                                            },
-
-                                        });
-
-                                        $('#myInput').on('keyup', function() {
-                                            table.search(this.value).draw();
-                                        });
-
-
-                                        $('#department_id').on('change', function() {
-                                            var selectedDepartmentId = $(this).val();
-                                            if (selectedDepartmentId == 0) {
-                                                table.columns(6).search('').draw();
-                                            } else {
-                                                // กรองข้อมูลใน DataTables ด้วยหน่วยงานที่เลือก
-                                                table.columns(6).search(selectedDepartmentId).draw();
-                                            }
-                                        });
-                                        $('#drop2').on('change', function() {
-                                            var selecteddrop2Id = $(this).val();
-                                            if (selecteddrop2Id == 0) {
-                                                table.columns(5).search('').draw();
-                                            } else {
-                                                // กรองข้อมูลใน DataTables ด้วยหน่วยงานที่เลือก
-                                                table.columns(5).search(selecteddrop2Id).draw();
-                                            }
-                                        });
-
-                                    });
-                                </script>
 
                             </div>
 
@@ -296,40 +254,12 @@
                                 </tr>
                             </thead>
                             <!-- /thead -->
-                            <!-- tbody -->
-                            <tbody>
-                                <!-- tr -->
-                               @php
-                                    $r = 0;
-                                @endphp
-                                @foreach ($usermanages->sortBy('user_id') as $item)
-                                    @php
-                                        $r++;
-                                    @endphp
-                                    @php
 
-                                        $user_roleadmin = $item->user_role == 1;
-                                    @endphp
-                                    @php
-                                        $statususerss = $item->userstatus == 0;
-                                    @endphp
 
-                                    @php
-                                        $clientPermissionModal = 'clientPermissionModal-' . $item->user_id;
-                                        $person = \App\Models\PersonType::where('person_type', $item->user_type)
-                                            ->pluck('person')
-                                            ->first();
-                                        $proviUser = \App\Models\Provinces::where('id', $item->province_id)
-                                            ->pluck('name_in_thai')
-                                            ->first();
-                                    @endphp
 
-                                    @include('layouts.department.item.data.UserAdmin.DataUser.userAll')
+                            @include('layouts.department.item.data.UserAdmin.DataUser.scripUser')
 
-                                    @include('layouts.department.item.data.UserAdmin.group.ModelUser.modelRole')
-                                    @include('layouts.department.item.data.UserAdmin.group.ModelUser.modelPass')
-                                @endforeach
-                            </tbody><!-- /tbody -->
+
                         </table><!-- /.table -->
                     </div><!-- /.table-responsive -->
 
@@ -339,12 +269,12 @@
 
         </div><!-- /.page-section -->
         <!-- .page-title-bar -->
-      <header class="page-title-bar">
-         
+        <header class="page-title-bar">
+
             <button type="button" class="btn btn-success btn-floated btn-addums"
                 onclick="window.location='{{ route('DPcreateUser', ['department_id' => $depart->department_id]) }}'"
                 id="add_umsform" data-toggle="tooltip" title="เพิ่ม"><span class="fas fa-plus"></span></button>
-           
+
         </header>
     </div><!-- /.page-inner -->
 @endsection

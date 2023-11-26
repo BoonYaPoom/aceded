@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Department;
+use App\Models\Provinces;
 use App\Models\School;
 use App\Models\UserDepartment;
 use App\Models\UserRole;
@@ -13,11 +14,19 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Session;
 use Intervention\Image\Facades\Image;
+use Yajra\DataTables\Facades\DataTables;
 
 class DepartUsersController extends Controller
 {
 
     public function DPUserManage(Request $request, $department_id, $user_role = null)
+    {
+        $depart = Department::findOrFail($department_id);
+        return view('layouts.department.item.data.UserAdmin.indexview', compact( 'depart'));
+    }
+
+
+    public function DPUserManagejson(Request $request, $department_id, $user_role = null)
     {
         $depart = Department::findOrFail($department_id);
 
@@ -28,16 +37,14 @@ class DepartUsersController extends Controller
             $userDepart = UserDepartment::where('department_id', $department_id);
             $userIds = $userDepart->pluck('user_id');
             // ดึงผู้ใช้ที่มีค่า provic เท่ากันกับ $provicValue
-            if ($data->user_role == 1) {
+            if ($data->user_role == 1|| $data->user_role == 8) {
                 // ถ้า data->role เป็น 1 แสดงผู้ใช้ทั้งหมด
                 // นำ user_id ที่ได้ไปหาข้อมูลจากตาราง User
                 $usermanages = Users::whereIn('user_id', $userIds);
                 if ($user_role !== null) {
                     $usermanages->where('user_role', $user_role);
                 }
-
-                $usermanages = $usermanages->get();
-            } elseif ($data->user_role == 7||$data->user_role == 6||$data->user_role == 3) {
+            } elseif ($data->user_role == 7 || $data->user_role == 6 || $data->user_role == 3) {
                 // ถ้า data->role เป็น 0 แสดงผู้ใช้ที่มีค่า province_id เท่ากับ $provicValue
                 $usermanages = $depart->UserDe()->where('department_id', $department_id)
                     ->where('province_id', $provicValue);
@@ -46,17 +53,75 @@ class DepartUsersController extends Controller
                 if ($user_role !== null) {
                     $usermanages->where('user_role', $user_role);
                 }
-
-                $usermanages = $usermanages->get();
             }
         } else {
             $usermanages = collect(); // ถ้า Session::get('loginId') ไม่มีค่า, กำหนด $usermanages เป็นคอลเลกชันว่าง
         }
 
+        $i = 1;
+        $perPage = $request->input('length', 10);
+        $currentPage = $request->input('start', 0) / $perPage + 1;
 
-        return view('layouts.department.item.data.UserAdmin.indexview', compact('usermanages', 'depart'));
+
+        return DataTables::eloquent($usermanages)
+            ->addColumn('num', function () use (&$i, $currentPage, $perPage) {
+                return $i++ + ($currentPage - 1) * $perPage;
+            })
+            ->addColumn('id', function ($userdata) {
+                return $userdata->user_id;
+            })
+            ->addColumn('username', function ($userdata) {
+                return $userdata->username;
+            })
+
+            ->addColumn('fullname', function ($userdata) {
+
+                return  $userdata->firstname . ' ' . $userdata->lastname;
+            })
+
+            ->addColumn('email', function ($userdata) {
+                return $userdata->email;
+            })
+
+            ->addColumn('fullMobile', function ($userdata) {
+                $mobile = $userdata->mobile;
+                $part1 = substr($mobile, 0, 3);
+                $part2 = substr($mobile, 3, 3);
+                $part3 = substr($mobile, 6, 4);
+                $fullMobile = $part1 . '-' . $part2 . '-' . $part3;
+                return $fullMobile;
+            })
+
+            ->addColumn('status', function ($userdata) {
+                return $userdata->userstatus;
+            })
+
+            ->addColumn('name_in_thai', function ($userdata) {
+                $name_in_thai = Provinces::where('code', $userdata->province_id)
+                    ->pluck('name_in_thai')
+                    ->first();
+
+                return $name_in_thai;
+            })
+            ->addColumn('user_role', function ($userdata) {
+                return $userdata->user_role;
+            })
+
+            ->filter(function ($userdata) use ($request) {
+
+                if ($request->has('myInput') && !empty($request->myInput)) {
+                    $userdata->where('firstname', 'like', '%' . $request->myInput . '%');
+                }
+            })
+            ->filterColumn('name_in_thai', function ($userdata) use ($request) {
+
+                if ($request->drop2 != '0') {
+                    $userdata->where('province_id', $request->drop2);
+                }
+            })
+
+            ->make(true);
     }
-
 
     public function DPeditUser($department_id, $user_id)
     {
@@ -91,7 +156,7 @@ class DepartUsersController extends Controller
             }
 
             $image->save($uploadDirectory);
-            $usermanages->avatar = 'upload/Profile/' . 'avatar' .  $user_id . '.' . $request->avatar->getClientOriginalExtension();
+            $usermanages->avatar = 'https://aced-bn.nacc.go.th/' . 'upload/Profile/' . 'avatar' .  $user_id . '.' . $request->avatar->getClientOriginalExtension();
         }
 
         // ... อัปเดตฟิลด์อื่น ๆ ตามต้องการ
@@ -224,9 +289,8 @@ class DepartUsersController extends Controller
                 if (empty($scho->school_code)) {
                     $scho->school_code = $scho->school_id;
                     $scho->save();
-        
+                }
             }
-        }
             $userschool = new UserSchool;
             $userschool->school_code = $scho->school_code;
             $userschool->user_id = $usermanages->user_id;

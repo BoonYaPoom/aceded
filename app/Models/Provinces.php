@@ -10,6 +10,7 @@ class Provinces extends Model
     use HasFactory;
     protected $table = 'provinces';
     protected $guarded =[];
+    protected $primaryKey = 'id';
     public function districts()
     {
         return $this->hasMany(Districts::class, 'province_id');
@@ -20,5 +21,9 @@ class Provinces extends Model
     public function userpor()
     {
         return $this->hasMany(Users::class,'province_id');
+    }
+    public function schoolpor()
+    {
+        return $this->hasMany(School::class,'provinces_code');
     }
 }

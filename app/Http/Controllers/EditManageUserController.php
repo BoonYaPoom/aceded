@@ -18,6 +18,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Storage;
 use Intervention\Image\Facades\Image;
+use Yajra\DataTables\Facades\DataTables;
 
 class EditManageUserController extends Controller
 {
@@ -37,7 +38,7 @@ class EditManageUserController extends Controller
     }
 
 
-    public function UserManagejson(Request $request, $user_role = null)
+    public function UserManagejson1(Request $request, $user_role = null)
     {
         $usermanages = Users::query();
         $userAll = [];
@@ -49,9 +50,7 @@ class EditManageUserController extends Controller
 
         $i = 1;
         foreach ($usermanages->sortBy('user_id') as  $item) {
-            $name_short_en = Department::where('department_id', $item->department_id)
-                ->pluck('name_en')
-                ->first();
+
             $proviUser = Provinces::where('id', $item->province_id)
                 ->pluck('name_in_thai')
                 ->first();
@@ -60,12 +59,13 @@ class EditManageUserController extends Controller
 
             $email = $item->email;
             $status = $item->userstatus;
-            $mobile = $item->mobile;
+            
 
             $user_role = $item->user_role;
             $firstname = $item->firstname;
             $lastname = $item->lastname;
             $fullname =  $firstname . ' ' . $lastname;
+            $mobile = $item->mobile;
             $part1 = substr($mobile, 0, 3);
             $part2 = substr($mobile, 3, 3);
             $part3 = substr($mobile, 6, 4);
@@ -82,16 +82,87 @@ class EditManageUserController extends Controller
                 'status' => $status,
                 'mobile' => $fullMobile,
                 'proviUser' => $proviUser,
-                'department' => $name_short_en,
+ 
                 'user_role' => $user_role,
             ];
 
         }
-
+       
         return response()->json(['datauser' => $datauser]);
     }
+    public function UserManagejson(Request $request, $user_role = null)
+    {
+        $usermanages = Users::query();
+        if ($user_role !== null) {
+            $usermanages->where('user_role', $user_role);
+        }
+
+        $i = 1;
+        $perPage = $request->input('length', 10); 
+        $currentPage = $request->input('start', 0) / $perPage + 1;
 
 
+        return DataTables::eloquent($usermanages)
+        ->addColumn('num', function () use (&$i, $currentPage, $perPage) {
+            return $i++ + ($currentPage - 1) * $perPage;
+        })
+        ->addColumn('id', function ($userdata) {
+            return $userdata->user_id;
+        })
+        ->addColumn('username', function ($userdata) {
+            return $userdata->username;
+        })
+
+        ->addColumn('fullname', function ($userdata) {
+
+            return  $userdata->firstname . ' ' . $userdata->lastname;
+        })
+
+        ->addColumn('email', function ($userdata) {
+            return $userdata->email;
+        })
+
+        ->addColumn('fullMobile', function ($userdata) {
+            $mobile = $userdata->mobile;
+            $part1 = substr($mobile, 0, 3);
+            $part2 = substr($mobile, 3, 3);
+            $part3 = substr($mobile, 6, 4);
+            $fullMobile = $part1 . '-' . $part2 . '-' . $part3;
+            return $fullMobile;
+        })
+
+        ->addColumn('status', function ($userdata) {
+            return $userdata->userstatus;
+        })
+
+        ->addColumn('name_in_thai', function ($userdata) {
+            $name_in_thai = Provinces::where('code', $userdata->province_id)
+                ->pluck('name_in_thai')
+                ->first();
+
+            return $name_in_thai;
+        })
+        ->addColumn('user_role', function ($userdata) {
+            return $userdata->user_role;
+        })
+
+        ->filter(function ($userdata) use ($request) {
+      
+            if ($request->has('myInput') && !empty($request->myInput)) {
+                $userdata->where( 'firstname', 'like', '%' . $request->myInput . '%');
+            }
+        })
+        ->filterColumn('name_in_thai', function ($userdata) use ($request) {
+    
+            if ($request->drop2 != '0') {
+                    $userdata->where('province_id', $request->drop2);
+         
+            }
+        })
+    
+        ->make(true);
+    }
+   
 
     public function edit($user_id)
     {
@@ -118,7 +189,7 @@ class EditManageUserController extends Controller
             }
 
             $image->save($uploadDirectory);
-            $usermanages->avatar = 'upload/Profile/' . 'avatar' .  $user_id . '.' . $request->avatar->getClientOriginalExtension();
+            $usermanages->avatar = 'https://aced-bn.nacc.go.th/' . 'upload/Profile/' . 'avatar' .  $user_id . '.' . $request->avatar->getClientOriginalExtension();
         }
 
         // ... อัปเดตฟิลด์อื่น ๆ ตามต้องการ
@@ -139,8 +210,6 @@ class EditManageUserController extends Controller
         $usermanages->user_affiliation = $request->user_affiliation;
         $usermanages->province_id = $request->province_id;
         $usermanages->department_id = $request->department_id;
-
-        $usermanages->user_type = $request->input('user_type', 0);
         $usermanages->mobile = $request->mobile;
 
         $usermanages->pos_name = $request->pos_name;
@@ -204,24 +273,23 @@ class EditManageUserController extends Controller
     }
 
 
-    public function changeStatus($user_id)
+    public function changeStatus(Request $request)
     {
 
-        $usermanages = Users::find($user_id);
+        $usermanages = Users::find($request->user_id);
 
         // ตรวจสอบว่าหน้ามีค่า page_status ที่เป็น 1 หรือ 0
         if ($usermanages) {
-            $newuserstatus = $usermanages->userstatus == 1 ? 0 : 1;
-            $usermanages->userstatus = $newuserstatus;
+            $usermanages->userstatus  = $request->userstatus;
             $usermanages->save();
 
 
             return response()->json(['message' => 'สถานะถูกเปลี่ยนแปลงเรียบร้อยแล้ว']);
         } else {
-            return response()->json(['message' => 'ไม่พบข้อมูล usermanages']);
+            return response()->json(['message' => 'ไม่พบข้อมูล links']);
         }
     }
-
+    
     public function autoschool(Request $request)
     {
 
@@ -301,7 +369,7 @@ class EditManageUserController extends Controller
         $usermanages->office_id = 0;
         $usermanages->birthday = $request->birthday;
         $usermanages->user_affiliation = $request->user_affiliation;
-        $usermanages->user_type = $request->input('user_type', 0);
+        $usermanages->user_type = null;
         $usermanages->province_id = $request->province_id;
         $usermanages->user_type_card =  $request->input('user_type_card', 0);
 

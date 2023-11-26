@@ -141,11 +141,13 @@
                                 <div class="form-group qtype1" id="showchoice{{ $i }}"
                                     style="{{ $i > 2 ? 'display:none' : '' }}"   >
                                     <label for="choice{{ $i }}">ตัวเลือกที่ {{ $i }}</label>
-                                    <div class="custom-control custom-control-inline custom-checkbox">
-                                        <input type="checkbox" class="custom-control-input" id="check{{ $i }}"
-                                            name="checkanswer[]" value="{{ $i }}" >
-                                        <label class="custom-control-label"
-                                            for="check{{ $i }}">คำตอบถูกต้อง</label>
+                                    <div class="custom-control  custom-radio">
+                                        <input type="radio" class="custom-control-input" name="checkanswer[]"
+                                            id="radio{{ $i }}" value="{{ $i }}"
+                                            >      
+                                       <label class="custom-control-label" for="radio{{ $i }}">
+                                            คำตอบถูกต้อง
+                                        </label>
                                     </div>
                                     <textarea class="editor" data-placeholder="ตัวเลือกที่ {{ $i }}" data-height="120"
                                     name="choice{{ $i }}" id="choice{{ $i }}" >

@@ -43,6 +43,7 @@ use App\Http\Controllers\ReportJsonController;
 use App\Http\Controllers\RolemanageController;
 use App\Http\Controllers\SchoolController;
 use App\Http\Controllers\SchoolDepartController;
+use App\Http\Controllers\SchoolDepartUserController;
 use App\Http\Controllers\ScoreController;
 use App\Http\Controllers\SubmitController;
 use App\Http\Controllers\SurResponseController;
@@ -449,6 +450,8 @@ Route::group(['middleware' => 'IsLoggedIn'], function () {
 
                 Route::get('{department_id}/departums/{user_role?}', [DepartUsersController::class, 'DPUserManage'])->name('DPUserManage')->where('user_role', '[0-9]+');
 
+                Route::get('{department_id}/DPUserManagejson/{user_role?}', [DepartUsersController::class, 'DPUserManagejson'])->name('DPUserManagejson')->where('user_role', '[0-9]+');
+
                 Route::prefix('departums')->group(function () {
 
                     Route::get('/add_dpumsform/{department_id}', [DepartUsersController::class, 'createUser'])->name('DPcreateUser');
@@ -509,7 +512,7 @@ Route::group(['middleware' => 'IsLoggedIn'], function () {
                 Route::put('/update-role/{user_id}', [EditManageUserController::class, 'updateRoleUser'])->name('updateRoleUser');
                 Route::put('/update-password/{user_id}', [EditManageUserController::class, 'updatepassword'])->name('updatePassword');
 
-                Route::get('/changeStatusUser/{user_id}', [EditManageUserController::class, 'changeStatus'])->name('changeStatusUser');
+                Route::get('/changeStatusUser', [EditManageUserController::class, 'changeStatus'])->name('changeStatusUser');
 
                 Route::get('fetchUsersByDepartment', [EditManageUserController::class, 'fetchUsersByDepartment'])->name('fetchUsersByDepartment');
 
@@ -578,8 +581,14 @@ Route::group(['middleware' => 'IsLoggedIn'], function () {
                 Route::get('/T0103', [ReportJsonController::class, 't0103'])->name('t0103json');
             });
             Route::get('/getSchools', [SchoolController::class, 'getSchools'])->name('getSchools');
+          
             Route::get('/rad', [SubmitController::class, 'requestSchool'])->name('requestSchool');
             Route::prefix('rad')->group(function () {
+                
+                Route::get('/requestup', [SchoolDepartUserController::class, 'requestSchool'])->name('requestup');
+                
+                Route::post('/uploadPdf', [SchoolDepartUserController::class, 'uploadPdf'])->name('uploadPdf');
+              
 
                 Route::get('/requestSchooldataJson', [SubmitController::class, 'requestSchooldataJson'])->name('requestSchooldataJson');
                 Route::get('/detaildata/{submit_id}', [SubmitController::class, 'detaildata'])->name('detaildata');

@@ -115,6 +115,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
     <script src="{{ asset('/javascript/vendor/flatpickr/flatpickr.min.js') }}"></script>
     <!-- BEGIN PLUGINS JS -->
+ 
     <script src="{{ asset('/javascript/vendor/datatables/jquery.dataTables.min.js') }}"></script>
     <script src="{{ asset('/javascript/vendor/datatables/extensions/buttons/dataTables.buttons.min.js') }}"></script>
     <script src="{{ asset('/javascript/vendor/datatables/extensions/buttons/buttons.bootstrap4.min.js') }}"></script>

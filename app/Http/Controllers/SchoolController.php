@@ -9,6 +9,7 @@ use App\Models\Users;
 use App\Models\UserSchool;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Yajra\DataTables\Facades\DataTables;
 
 class SchoolController extends Controller
 {
@@ -21,37 +22,108 @@ class SchoolController extends Controller
 
         return view('page.UserAdmin.group.umsschool.index', compact('users', 'school', 'userschool'));
     }
-    public function getSchools(Request $request )
+    public function getSchools2(Request $request)
     {
-        $schools = School::all();
-        $schoolsaa = [];
-        $userschool = UserSchool::all();
+        set_time_limit(0);
+        ini_set('max_execution_time', 300);
+        ini_set('pcre.backtrack_limit', 5000000);
+        $draw = $request->get('draw');
+        $start = $request->get('start');
+        $rowPerPage = $request->get('length');
+        $orderArray = $request->get('order');
+        $columnsNameArray = $request->get('columns');
+        $searchArray = $request->get('search');
+        $columnIndex = $request->get('column');
+        $columnsName = $columnsNameArray[$columnIndex]['datas'];
+
+        $columSortOrder = $orderArray[0]['dir'];
+        $searchValue = $searchArray['value'];
+
+
+        $schoolsdata = School::query();
+        $perPage = $schoolsdata->count();
+        $currentPage = $request->input('page', 1);
+        $schools = $schoolsdata->skip($start)->take($rowPerPage);
+        $schools = $schoolsdata->orderBy($columnsName, $columSortOrder);
         $i = 1;
         foreach ($schools as $school) {
-            $proviUser = Provinces::where('code', $school->provinces_code)
-                ->pluck('name_in_thai')
-                ->first();
-            $userCount = $userschool->where('school_code', $school->school_code)->count();
+
             ini_set('memory_limit', '1028M');
-            $schoolsaa[] = [
+            $datas[] = [
                 'num' => $i++,
                 'id' => $school->school_id,
                 'code' => $school->school_code,
                 'school_name' => $school->school_name,
-                'province_name' => $proviUser,
-                'userCount' => $userCount,
+
+
 
             ];
+            $total = count($datas);
             $allschool = [
-                'recordsTotal' => count($schoolsaa), // รวมทั้งหมด
-                'schoolsaa' => $schoolsaa,
+                'draw' => intval($draw),
+                'recordsTotal' => $total,
+                'datas' => $datas,
             ];
-
         }
-
-        return response()->json(['schoolsaa' => $schoolsaa]);
+        return response()->json(['allschool' => $allschool]);
     }
 
+    public function getSchools(Request $request)
+    {
+        set_time_limit(0);
+        ini_set('max_execution_time', 300);
+        ini_set('pcre.backtrack_limit', 5000000);
+
+        $query = School::query();
+
+        $i = 1;
+
+        $perPage = $request->input('length', 10); 
+        $currentPage = $request->input('start', 0) / $perPage + 1;
+        return DataTables::eloquent($query)
+            ->addColumn('num', function () use (&$i, $currentPage, $perPage) {
+                return $i++ + ($currentPage - 1) * $perPage;
+            })
+            ->addColumn('id', function ($school) {
+                return $school->school_id;
+            })
+            ->addColumn('name_in_thai', function ($school) {
+                $name_in_thai = Provinces::where('code', $school->provinces_code)
+                    ->pluck('name_in_thai')
+                    ->first();
+
+                return $name_in_thai;
+            })
+            ->addColumn('scount', function ($school) {
+                $UserSchoolcount = UserSchool::where('school_code', $school->school_code)
+                    ->count();
+                return $UserSchoolcount;
+            })
+            ->addColumn('school_name', function ($school) {
+
+
+                return $school->school_name;
+            })
+            ->addColumn('code', function ($school) {
+
+
+                return $school->school_code;
+            })
+            ->filter(function ($query) use ($request) {
+                if ($request->has('myInput') && !empty($request->myInput)) {
+                    $query->where('school_name', 'like', '%' . $request->myInput . '%');
+                }
+            })
+            ->filterColumn('name_in_thai', function ($query) use ($request) {
+ 
+                if ($request->drop2 != '0') {
+                        $query->where('provinces_code', $request->drop2);
+             
+                }
+            })
+    
+            ->make(true);
+    }
 
     public function create()
     {
