@@ -43,7 +43,7 @@
                                             <td class="d-none"></td>
                                             <td>{{ $item->survey_lang }}</td>
                                             <td class="text-center">
-                                                {!! QrCode::generate(route('responsess', [$item->survey_id])) !!}
+                                                {!! QrCode::generate(url('')) !!}
                                             </td>
                                             <td class="align-middle"> <label
                                                     class="switcher-control switcher-control-success switcher-control-lg">

@@ -39,7 +39,7 @@ class SurveyController extends Controller
       $sur = new Survey;
       $sur->survey_th = $request->survey_th;
       $sur->survey_en = 0;
-      libxml_use_internal_errors(true);
+      
       if (!file_exists(public_path('/upload/suy/ck/'))) {
          mkdir(public_path('/upload/suy/ck/'), 0755, true);
       }
@@ -49,7 +49,7 @@ class SurveyController extends Controller
             $de_th = new DOMDocument();
             $de_th->encoding = 'UTF-8'; // กำหนด encoding เป็น UTF-8
             $de_th->loadHTML(mb_convert_encoding($detail_th, 'HTML-ENTITIES', 'UTF-8'), LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
-
+            libxml_use_internal_errors(true);
             $images_des_th = $de_th->getElementsByTagName('img');
 
             foreach ($images_des_th as $key => $img) {
@@ -104,7 +104,7 @@ class SurveyController extends Controller
       $sur = Survey::findOrFail($survey_id);
       $sur->survey_th = $request->survey_th;
       $sur->survey_en = $request->survey_th;
-      libxml_use_internal_errors(true);
+  
       if (!file_exists(public_path('/upload/suy/ck/'))) {
          mkdir(public_path('/upload/suy/ck/'), 0755, true);
       }
@@ -114,7 +114,7 @@ class SurveyController extends Controller
             $de_th = new DOMDocument();
             $de_th->encoding = 'UTF-8'; // กำหนด encoding เป็น UTF-8
             $de_th->loadHTML(mb_convert_encoding($detail_th, 'HTML-ENTITIES', 'UTF-8'), LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
-
+            libxml_use_internal_errors(true);
             $images_des_th = $de_th->getElementsByTagName('img');
 
             foreach ($images_des_th as $key => $img) {
@@ -182,7 +182,7 @@ class SurveyController extends Controller
       $sur = new Survey;
       $sur->survey_th = $request->survey_th;
       $sur->survey_en = $request->survey_en;
-      libxml_use_internal_errors(true);
+      
       if (!file_exists(public_path('/upload/suy/Dp/ck/'))) {
          mkdir(public_path('/upload/suy/Dp/ck/'), 0755, true);
       }
@@ -192,7 +192,7 @@ class SurveyController extends Controller
             $de_th = new DOMDocument();
             $de_th->encoding = 'UTF-8'; // กำหนด encoding เป็น UTF-8
             $de_th->loadHTML(mb_convert_encoding($detail_th, 'HTML-ENTITIES', 'UTF-8'), LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
-
+            libxml_use_internal_errors(true);
             $images_des_th = $de_th->getElementsByTagName('img');
 
             foreach ($images_des_th as $key => $img) {
@@ -216,7 +216,7 @@ class SurveyController extends Controller
             $de_e = new DOMDocument();
             $de_e->encoding = 'UTF-8'; // กำหนด encoding เป็น UTF-8
             $de_e->loadHTML(mb_convert_encoding($detail_en, 'HTML-ENTITIES', 'UTF-8'), LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
-
+            libxml_use_internal_errors(true);
             $images_de_e = $de_e->getElementsByTagName('img');
 
             foreach ($images_de_e as $key => $img) {
@@ -266,7 +266,7 @@ class SurveyController extends Controller
       $suruy  = Survey::findOrFail($survey_id);
       $suruy->survey_th = $request->survey_th;
       $suruy->survey_en = $request->survey_en;
-      libxml_use_internal_errors(true);
+     
       if (!file_exists(public_path('/upload/suy/Dp/ck/'))) {
          mkdir(public_path('/upload/suy/Dp/ck/'), 0755, true);
       }
@@ -276,7 +276,7 @@ class SurveyController extends Controller
             $de_th = new DOMDocument();
             $de_th->encoding = 'UTF-8'; // กำหนด encoding เป็น UTF-8
             $de_th->loadHTML(mb_convert_encoding($detail_th, 'HTML-ENTITIES', 'UTF-8'), LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
-
+            libxml_use_internal_errors(true);
             $images_des_th = $de_th->getElementsByTagName('img');
 
             foreach ($images_des_th as $key => $img) {
@@ -302,7 +302,7 @@ class SurveyController extends Controller
             $de_e->loadHTML(mb_convert_encoding($detail_en, 'HTML-ENTITIES', 'UTF-8'), LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
 
             $images_de_e = $de_e->getElementsByTagName('img');
-
+            libxml_use_internal_errors(true);
             foreach ($images_de_e as $key => $img) {
                if (strpos($img->getAttribute('src'), 'data:image/') === 0) {
                   $data = base64_decode(explode(',', explode(';', $img->getAttribute('src'))[1])[1]);

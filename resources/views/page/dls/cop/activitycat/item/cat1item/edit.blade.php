@@ -23,7 +23,7 @@
                     <div class="form-group">
                         <label for="title">ชื่อเรื่อง <span class="badge badge-warning">Required</span></label> <input
                             type="text" class="form-control" id="title" name="title" placeholder="ชื่อเรื่อง"
-                            required="" value="{{$act->title}}">
+                          value="{{$act->title}}">
                     </div><!-- /.form-group -->
 
                     <!-- .form-group -->

@@ -42,6 +42,9 @@ class LinkController extends Controller
                 ->withInput()
                 ->with('error', 'ข้อมูลไม่ถูกต้อง');
         }
+        $depart = Department::findOrFail($department_id);
+        $linkssort  = $depart->LinksDe()->where('department_id', $department_id)->get();
+      
         try {
             $links = new Links;
 
@@ -52,7 +55,7 @@ class LinkController extends Controller
             $links->links_date  = now();
             $links->department_id  = (int)$department_id;
             $links->links_status = $request->input('links_status', 0);
-            $links->sort  = Links::max('sort') + 1;
+            $links->sort  = $linkssort->max('sort') + 1;
             $links->save();
 
             if ($request->hasFile('cover')) {
@@ -162,13 +165,9 @@ class LinkController extends Controller
 
                 file_put_contents(public_path('upload/Links/' . $filename), file_get_contents($request->cover));
                 $links->cover = 'upload/Links/' .   'cover' . $links_id . '.' . $request->cover->getClientOriginalExtension();
-                $links->save();
+
             }
-        } else {
-            $filename = '';
-            $links->cover = $filename;
-            $links->save();
-        }
+        } 
 
         $links->links_title = $request->links_title;
         $links->links_title = $request->links_title;

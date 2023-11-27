@@ -17,7 +17,7 @@
                     <div class="card-body">
                         <!-- .form-group -->
                         <div class="form-group">
-                            <label for="manual">ชื่อคู่มือใช้งาน </label>
+                            <label for="manual">ชื่อคู่มือใช้งาน <span class="badge badge-warning">Required</span></label>
                             <input type="text" class="form-control" name="manual" placeholder="คู่มือใช้งาน"
                                 required="" value="">
                         </div><!-- /.form-group -->
@@ -30,9 +30,9 @@
                                 placeholder="ภาพปก" accept="image/*">
                         </div><!-- /.form-group -->
                         <div class="form-group">
-                            <label for="manual_path">ไฟล์คู่มือใช้งาน </label>
+                            <label for="manual_path">ไฟล์คู่มือใช้งาน <span class="badge badge-warning">Required</span></label>
                             <input type="file" class="form-control" name="manual_path" placeholder="ไฟล์คู่มือใช้งาน"
-                                required="" accept=".doc,.docx,.xls,.xlsx,.pdf,.ppt,.pptx">
+                                required="" accept="">
                         </div><!-- /.form-group -->
                         @error('manual_path')
                             <span class="badge badge-warning">{{ $message }}</span>

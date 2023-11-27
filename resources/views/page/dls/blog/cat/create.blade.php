@@ -20,7 +20,7 @@
                     <div class="card-body">
                         <!-- .form-group -->
                         <div class="form-group">
-                            <label for="title">ชื่อเรื่อง (ไทย)</label> <input type="text" class="form-control"
+                            <label for="title">ชื่อเรื่อง (ไทย) <span class="badge badge-warning">Required</span></label> <input type="text" class="form-control"
                                 id="title" name="title" placeholder="ชื่อเรื่อง (ไทย)" required="" value="">
                         </div>
                         @error('title')

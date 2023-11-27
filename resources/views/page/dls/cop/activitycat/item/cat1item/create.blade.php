@@ -32,23 +32,23 @@
 
                   
                         <div class="form-group">
-                            <label for="detail">เนื้อหาโดยย่อ</label>
-                            <textarea class="editor" data-placeholder="รายละเอียด" data-height="200" name="detail" ></textarea>
+                            <label for="detail">เนื้อหาโดยย่อ  <span class="badge badge-warning">Required</span></label>
+                            <textarea class="editor" required="" data-placeholder="รายละเอียด" data-height="200" name="detail" ></textarea>
                         </div><!-- /.form-group -->
                         <div class="form-row">
                             <div class="col-md-6 mb-3">
-                                <label for="flatpickr03">วันที่เริ่ม</label>
+                                <label for="flatpickr03">วันที่เริ่ม  <span class="badge badge-warning">Required</span></label>
                                 <input id="flatpickr03" name="startdate" value="" type="text"
                                     class="form-control startdate " data-toggle="flatpickr">
                             </div>
                             <div class="col-md-6 mb-3">
-                                <label for="flatpickr04">วันที่สิ้นสุด</label>
+                                <label for="flatpickr04">วันที่สิ้นสุด  <span class="badge badge-warning">Required</span></label>
                                 <input id="flatpickr04" name="enddate" value="" type="text"
                                     class="form-control enddate " data-toggle="flatpickr">
                             </div>
                         </div>
                         <div class="form-group">
-                            <label for="activity_status">สถานะ </label> <label
+                            <label for="activity_status">สถานะ   <span class="badge badge-warning">Required</span></label> <label
                                 class="switcher-control switcher-control-success switcher-control-lg"><input type="checkbox"
                                     class="switcher-input" name="activity_status" id="activity_status" value="1"> <span
                                     class="switcher-indicator"></span>

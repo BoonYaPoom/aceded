@@ -67,6 +67,12 @@ class DepartmentController extends Controller
     }
     public function store(Request $request)
     {
+
+        $request->validate([
+
+            'name_short_en' => 'required|unique:department',
+        
+        ]);
         try {
 
             $depart = new Department;

@@ -59,7 +59,7 @@ class BookController extends Controller
         $books->book_member = 0;
         $books->book_year = date('Y');
 
-        libxml_use_internal_errors(true);
+
         if (!file_exists(public_path('/upload/Book/ck/'))) {
             mkdir(public_path('/upload/Book/ck/'), 0755, true);
         }
@@ -67,11 +67,13 @@ class BookController extends Controller
             $contents = $request->contents;
             if (!empty($contents)) {
                 $de_th = new DOMDocument();
-                $de_th->encoding = 'UTF-8'; // กำหนด encoding เป็น UTF-8
-                $de_th->loadHTML(mb_convert_encoding($contents, 'HTML-ENTITIES', 'UTF-8'), LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
-
+                $de_th->encoding = 'UTF-8'; // Set encoding to UTF-8
+                $contents = mb_convert_encoding($contents, 'HTML-ENTITIES', 'UTF-8');
+                libxml_use_internal_errors(true); // Enable internal error handling
+                $de_th->loadHTML($contents, LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
+                libxml_clear_errors(); // Clear any accumulated errors
                 $images_des_th = $de_th->getElementsByTagName('img');
-
+        
                 foreach ($images_des_th as $key => $img) {
                     if (strpos($img->getAttribute('src'), 'data:image/') === 0) {
                         $data = base64_decode(explode(',', explode(';', $img->getAttribute('src'))[1])[1]);
@@ -230,15 +232,19 @@ class BookController extends Controller
         if (!file_exists(public_path('/upload/Book/ck/'))) {
             mkdir(public_path('/upload/Book/ck/'), 0755, true);
         }
+    
+         
         if ($request->has('contents')) {
             $contents = $request->contents;
             if (!empty($contents)) {
                 $de_th = new DOMDocument();
-                $de_th->encoding = 'UTF-8'; // กำหนด encoding เป็น UTF-8
-                $de_th->loadHTML(mb_convert_encoding($contents, 'HTML-ENTITIES', 'UTF-8'), LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
-
+                $de_th->encoding = 'UTF-8'; // Set encoding to UTF-8
+                $contents = mb_convert_encoding($contents, 'HTML-ENTITIES', 'UTF-8');
+                libxml_use_internal_errors(true); // Enable internal error handling
+                $de_th->loadHTML($contents, LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
+                libxml_clear_errors(); // Clear any accumulated errors
                 $images_des_th = $de_th->getElementsByTagName('img');
-
+        
                 foreach ($images_des_th as $key => $img) {
                     if (strpos($img->getAttribute('src'), 'data:image/') === 0) {
                         $data = base64_decode(explode(',', explode(';', $img->getAttribute('src'))[1])[1]);
@@ -263,29 +269,18 @@ class BookController extends Controller
         set_time_limit(0);
         if ($request->hasFile('cover')) {
             $image_name = 'cover' . '.' . $request->cover->getClientOriginalExtension();
-            $uploadDirectory = public_path('upload/Book/' . $book_id);
-
-            // ตรวจสอบว่าโฟลเดอร์เป้าหมายไม่มีอยู่แล้ว
+            $uploadDirectory = public_path('upload/Book/' . $books->book_id);
             if (!file_exists($uploadDirectory)) {
                 mkdir($uploadDirectory, 0755, true);
-                $oldCoverPath = public_path($books->cover);
-                if (file_exists($oldCoverPath)) {
-                    // ลบไฟล์ cover เดิม
-                    unlink($oldCoverPath);
-                }
             }
-
-            // ตรวจสอบว่าไฟล์ cover เดิมมีอยู่หรือไม่
-
-            // อัปโหลดไฟล์ cover ใหม่
-            $request->cover->move($uploadDirectory, $image_name);
-
-            // สร้างและบันทึกพาธใหม่ลงในโมเดล
-            $books->cover = 'upload/Book/' .  $book_id . '/' . $image_name;
-
-        }
-
-
+            if (file_exists($uploadDirectory)) {
+                file_put_contents(public_path('upload/Book/' . $books->book_id . '/' . $image_name), file_get_contents($request->cover));
+                // สร้างและบันทึกชื่อ cover ลงในโมเดล
+                $books->cover = 'upload/Book/' . $books->book_id . '/' . 'cover' . '.' . $request->cover->getClientOriginalExtension();
+           
+            }
+        } 
+     
         set_time_limit(0);
         ini_set('max_execution_time', 300);
         ini_set('pcre.backtrack_limit', 5000000);

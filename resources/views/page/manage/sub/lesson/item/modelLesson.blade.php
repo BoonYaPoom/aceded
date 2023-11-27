@@ -38,7 +38,7 @@
 
                                     </div>
                                     <div class="card-body">
-                                        <label class="mr-2">เลือกไฟล์</label>
+                                        <label class="mr-2">เลือกไฟล์ ( .mp4 )</label>
                                         <div class="custom-file">
                                             <input type="file" name="content_path"
                                                 id="content_path" class="custom-file-input"

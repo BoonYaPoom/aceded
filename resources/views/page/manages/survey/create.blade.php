@@ -18,7 +18,7 @@
                     <div class="card-body">
                         <!-- .form-group -->
                         <div class="form-group">
-                            <label for="survey_th">ชื่อ </label> <input type="text" class="form-control" id="survey_th"
+                            <label for="survey_th">ชื่อ <span class="badge badge-warning">Required</span></label> <input type="text" class="form-control" id="survey_th"
                                 name="survey_th" placeholder="ชื่อ (ไทย)" required="" value="">
                         </div><!-- /.form-group -->
                         @error('survey_th')

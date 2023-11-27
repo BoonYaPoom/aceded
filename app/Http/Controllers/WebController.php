@@ -65,7 +65,7 @@ class WebController extends Controller
             $webs->web_option = null;
             $webs->category_id = (int)$category_id;
 
-            libxml_use_internal_errors(true);
+        
             if (!file_exists(public_path('/upload/Web/ck/'))) {
                 mkdir(public_path('/upload/Web/ck/'), 0755, true);
             }
@@ -73,7 +73,11 @@ class WebController extends Controller
                 $detail_th = $request->detail_th;
                 if (!empty($detail_th)) {
                     $de_th = new DOMDocument();
+                    $de_th->encoding = 'UTF-8'; // Set encoding to UTF-8
+                    $detail_th = mb_convert_encoding($detail_th, 'HTML-ENTITIES', 'UTF-8');
+                    libxml_use_internal_errors(true); // Enable internal error handling
                     $de_th->loadHTML($detail_th, LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
+                    libxml_clear_errors(); // Clear any accumulated errors
                     $images_des_th = $de_th->getElementsByTagName('img');
                     foreach ($images_des_th as $key => $img) {
                         if (strpos($img->getAttribute('src'), 'data:image/') === 0) {
@@ -95,8 +99,12 @@ class WebController extends Controller
                 $detail_en = $request->detail_en;
                 if (!empty($detail_en)) {
                     $de_en = new DOMDocument();
+                    $de_en->encoding = 'UTF-8'; // Set encoding to UTF-8
+                    $detail_en = mb_convert_encoding($detail_en, 'HTML-ENTITIES', 'UTF-8');
+                    libxml_use_internal_errors(true); // Enable internal error handling
                     $de_en->loadHTML($detail_en, LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
-                    $images_de_en = $de_en->getElementsByTagName('img');
+                    libxml_clear_errors(); // Clear any accumulated errors
+                                    $images_de_en = $de_en->getElementsByTagName('img');
     
                     foreach ($images_de_en as $key => $img) {
                         if (strpos($img->getAttribute('src'), 'data:image/') === 0) {
@@ -237,11 +245,13 @@ class WebController extends Controller
             $detail_th = $request->detail_th;
             if (!empty($detail_th)) {
                 $de_th = new DOMDocument();
-                $de_th->encoding = 'UTF-8'; // กำหนด encoding เป็น UTF-8
-                $de_th->loadHTML(mb_convert_encoding($detail_th, 'HTML-ENTITIES', 'UTF-8'), LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
-         
+                $de_th->encoding = 'UTF-8'; // Set encoding to UTF-8
+                $detail_th = mb_convert_encoding($detail_th, 'HTML-ENTITIES', 'UTF-8');
+                libxml_use_internal_errors(true); // Enable internal error handling
+                $de_th->loadHTML($detail_th, LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
+                libxml_clear_errors(); // Clear any accumulated errors
                 $images_des_th = $de_th->getElementsByTagName('img');
-
+        
                 foreach ($images_des_th as $key => $img) {
                     if (strpos($img->getAttribute('src'), 'data:image/') === 0) {
                         $data = base64_decode(explode(',', explode(';', $img->getAttribute('src'))[1])[1]);
@@ -262,9 +272,12 @@ class WebController extends Controller
             $detail_en = $request->detail_en;
             if (!empty($detail_en)) {
                 $de_en = new DOMDocument();
-                $de_en->encoding = 'UTF-8'; // กำหนด encoding เป็น UTF-8
-                $de_en->loadHTML(mb_convert_encoding($detail_en, 'HTML-ENTITIES', 'UTF-8'), LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
-                $images_de_en = $de_en->getElementsByTagName('img');
+                $de_en->encoding = 'UTF-8'; // Set encoding to UTF-8
+                $detail_en = mb_convert_encoding($detail_en, 'HTML-ENTITIES', 'UTF-8');
+                libxml_use_internal_errors(true); // Enable internal error handling
+                $de_en->loadHTML($detail_en, LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
+                libxml_clear_errors(); // Clear any accumulated errors
+                                $images_de_en = $de_en->getElementsByTagName('img');
 
                 foreach ($images_de_en as $key => $img) {
                     if (strpos($img->getAttribute('src'), 'data:image/') === 0) {

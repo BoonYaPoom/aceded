@@ -55,7 +55,7 @@ class BlogController extends Controller
         $blogs->title_en = $request->title;
 
                      
-      libxml_use_internal_errors(true);
+   
       if (!file_exists(public_path('/upload/Blog/ck/'))) {
          mkdir(public_path('/upload/Blog/ck/'), 0755, true);
       }
@@ -65,7 +65,7 @@ class BlogController extends Controller
             $de_th = new DOMDocument();
             $de_th->encoding = 'UTF-8'; // กำหนด encoding เป็น UTF-8
             $de_th->loadHTML(mb_convert_encoding($detail, 'HTML-ENTITIES', 'UTF-8'), LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
-
+            libxml_use_internal_errors(true);
             $images_des_th = $de_th->getElementsByTagName('img');
 
             foreach ($images_des_th as $key => $img) {
@@ -180,7 +180,7 @@ class BlogController extends Controller
         $blogs = Blog::findOrFail($blog_id);
 
         $blogs->title = $request->title;
-        libxml_use_internal_errors(true);
+      
         if (!file_exists(public_path('/upload/Blog/ck/'))) {
            mkdir(public_path('/upload/Blog/ck/'), 0755, true);
         }
@@ -190,7 +190,7 @@ class BlogController extends Controller
               $de_th = new DOMDocument();
               $de_th->encoding = 'UTF-8'; // กำหนด encoding เป็น UTF-8
               $de_th->loadHTML(mb_convert_encoding($detail, 'HTML-ENTITIES', 'UTF-8'), LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
-  
+              libxml_use_internal_errors(true);
               $images_des_th = $de_th->getElementsByTagName('img');
   
               foreach ($images_des_th as $key => $img) {
@@ -210,7 +210,7 @@ class BlogController extends Controller
         }
         $blogs->blog_date = now();
         $blogs->blog_status = $request->input('blog_status', 0);
-        $blogs->author = 'TCCT';
+        $blogs->author = 'ACED';
         $blogs->comment = 1;
         $blogs->recommended = 1;
         $blogs->options = null;

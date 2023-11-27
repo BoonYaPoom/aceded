@@ -110,7 +110,7 @@
                                                 className: 'align-center',
                                                 render: function(data, type, row) {
 
-                                                    var schoolcode = data.name_in_thai;
+                                                    var schoolcode = data.code;
                                                     var url =
                                                         "{{ route('umsschooluser', ['school_code' => 'schoolcode']) }}";
                                                     url = url.replace('schoolcode', schoolcode);

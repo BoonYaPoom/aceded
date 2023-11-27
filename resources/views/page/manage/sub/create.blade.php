@@ -35,15 +35,15 @@
                     @csrf
                     <div class="card-body">
                         <div class="form-group">
-                            <label for="subject_code ">รหัสวิชา</label>
+                            <label for="subject_code ">รหัสวิชา <span class="badge badge-warning">Required</span></label>
                             <input type="text" class="form-control " name="subject_code" placeholder="รหัสวิชา"
-                                value="">
+                                value="" required="">
                         </div>
                         @error('subject_code')
                             <span class="badge badge-warning">{{ $message }}</span>
                         @enderror
                         <div class="form-group">
-                            <label for="subject_th">วิชา (ไทย)
+                            <label for="subject_th">วิชา (ไทย) 
                                 <span class="badge badge-warning">Required</span></label>
                             <input type="text" class="form-control" name="subject_th" placeholder="วิชา (ไทย)"
                                 required="" value="">
@@ -57,9 +57,9 @@
                                 value="">
                         </div>
                         <div class="form-group">
-                            <label for="banner">ภาพแบนเนอร์ </label>
+                            <label for="banner">ภาพแบนเนอร์   <span class="badge badge-warning">Required</span></label>
                             <input type="file" class="form-control" id="banner" name="banner"
-                                placeholder="ภาพแบนเนอร์" accept="image/*">
+                                placeholder="ภาพแบนเนอร์" accept="image/*" required="">
                         </div>
                         <div class="row">
                             <div class="col-md-6">

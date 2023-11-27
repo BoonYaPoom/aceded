@@ -20,7 +20,7 @@
                         @csrf
 
                         <div class="form-group">
-                            <label for="category_th">ชื่อหมวด (ไทย) </label>
+                            <label for="category_th">ชื่อหมวด (ไทย) <span class="badge badge-warning">Required</span> </label>
                             <input type="text" class="form-control" name="category_th" placeholder="ชื่อหมวด (ไทย)"
                                 required="" value="">
                         </div><!-- /.form-group -->

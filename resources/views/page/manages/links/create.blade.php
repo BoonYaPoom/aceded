@@ -22,7 +22,7 @@
                         </div><!-- /.form-group -->
                         <!-- .form-group -->
                         <div class="form-group">
-                            <label for="links_title">ลิงค์ที่น่าสนใจ </label>
+                            <label for="links_title">ลิงค์ที่น่าสนใจ <span class="badge badge-warning">Required</span></label>
                             <input type="text" class="form-control" name="links_title" placeholder="ลิงค์ที่น่าสนใจ"
                                 required="" value="">
                         </div><!-- /.form-group -->
@@ -31,7 +31,7 @@
                         @enderror
                         <!-- .form-group -->
                         <div class="form-group">
-                            <label for="links">URL </label>
+                            <label for="links">URL <span class="badge badge-warning">Required</span></label>
                             <input type="text" class="form-control" name="links" placeholder="ลิงค์ที่น่าสนใจ"
                                 required="" value="">
                         </div><!-- /.form-group -->

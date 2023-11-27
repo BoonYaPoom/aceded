@@ -308,7 +308,7 @@ class CourseSubjectController extends Controller
         $subs = CourseSubject::findOrFail($subject_id);
 
         set_time_limit(0);
-        libxml_use_internal_errors(true);
+      
         if (!file_exists(public_path('/uplade'))) {
             mkdir(public_path('/uplade'), 0755, true);
         }
@@ -320,7 +320,7 @@ class CourseSubjectController extends Controller
                 $des_th = new DOMDocument();
                 $des_th->encoding = 'UTF-8'; // กำหนด encoding เป็น UTF-8
                 $des_th->loadHTML(mb_convert_encoding($description_th, 'HTML-ENTITIES', 'UTF-8'), LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
-         
+                libxml_use_internal_errors(true);
                 $images_des_th = $des_th->getElementsByTagName('img');
 
                 foreach ($images_des_th as $key => $img) {
@@ -344,7 +344,7 @@ class CourseSubjectController extends Controller
                 $des_en = new DOMDocument();
                 $des_en->encoding = 'UTF-8'; // กำหนด encoding เป็น UTF-8
                 $des_en->loadHTML(mb_convert_encoding($description_en, 'HTML-ENTITIES', 'UTF-8'), LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
-         
+                libxml_use_internal_errors(true);
                 $images_des_en = $des_en->getElementsByTagName('img');
 
                 // แปลงรูปภาพสำหรับเนื้อหาภาษาอังกฤษ
@@ -369,7 +369,7 @@ class CourseSubjectController extends Controller
             $ob_th = new DOMDocument();
             $ob_th->encoding = 'UTF-8'; // กำหนด encoding เป็น UTF-8
             $ob_th->loadHTML(mb_convert_encoding($objectives_th, 'HTML-ENTITIES', 'UTF-8'), LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
-     
+            libxml_use_internal_errors(true);
             $images_ob_th = $ob_th->getElementsByTagName('img');
 
             foreach ($images_ob_th as $key => $img) {
@@ -393,7 +393,7 @@ class CourseSubjectController extends Controller
             $ob_en = new DOMDocument();
             $ob_en->encoding = 'UTF-8'; // กำหนด encoding เป็น UTF-8
             $ob_en->loadHTML(mb_convert_encoding($objectives_en, 'HTML-ENTITIES', 'UTF-8'), LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
-     
+       libxml_use_internal_errors(true);
             $images_ob_en = $ob_en->getElementsByTagName('img');
             foreach ($images_ob_en as $key => $img) {
                 if (strpos($img->getAttribute('src'), 'data:image/') === 0) {
@@ -416,7 +416,7 @@ class CourseSubjectController extends Controller
             $qua_th = new DOMDocument();
             $qua_th->encoding = 'UTF-8'; // กำหนด encoding เป็น UTF-8
             $qua_th->loadHTML(mb_convert_encoding($schedule_th, 'HTML-ENTITIES', 'UTF-8'), LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
-     
+            libxml_use_internal_errors(true);
             $images_qua_th = $qua_th->getElementsByTagName('img');
 
             foreach ($images_qua_th as $key => $img) {
@@ -440,7 +440,7 @@ class CourseSubjectController extends Controller
             $qua_en = new DOMDocument();
             $qua_en->encoding = 'UTF-8'; // กำหนด encoding เป็น UTF-8
             $qua_en->loadHTML(mb_convert_encoding($schedule_en, 'HTML-ENTITIES', 'UTF-8'), LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
-     
+            libxml_use_internal_errors(true);
             $images_qua_en = $qua_en->getElementsByTagName('img');
 
             foreach ($images_qua_en as $key => $img) {
@@ -464,7 +464,7 @@ class CourseSubjectController extends Controller
             $eva_th = new DOMDocument();
             $eva_th->encoding = 'UTF-8'; // กำหนด encoding เป็น UTF-8
             $eva_th->loadHTML(mb_convert_encoding($evaluation_th, 'HTML-ENTITIES', 'UTF-8'), LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
-     
+            libxml_use_internal_errors(true);
             $images_eva_th = $eva_th->getElementsByTagName('img');
 
             foreach ($images_eva_th as $key => $img) {
@@ -488,7 +488,7 @@ class CourseSubjectController extends Controller
             $eva_en = new DOMDocument();
             $eva_en->encoding = 'UTF-8'; // กำหนด encoding เป็น UTF-8
             $eva_en->loadHTML(mb_convert_encoding($evaluation_en, 'HTML-ENTITIES', 'UTF-8'), LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
-     
+            libxml_use_internal_errors(true);
             $images_eva_en = $eva_en->getElementsByTagName('img');
 
             foreach ($images_eva_en as $key => $img) {

@@ -29,7 +29,7 @@
                         </div>
                         <!-- .form-group -->
                         <div class="form-group">
-                            <label for="book_name">ชื่อหนังสือ </label>
+                            <label for="book_name">ชื่อหนังสือ  <span class="badge badge-warning">Required</span></label>
                             <input type="text" class="form-control" id="book_name" name="book_name"
                                 placeholder="ชื่อหนังสือ" required="" value="">
                         </div><!-- /.form-group -->
@@ -40,7 +40,7 @@
                         <div class="form-group  d-none">
                             <label for="book_author">ชื่อผู้แต่ง </label>
                             <input type="text" class="form-control" id="book_author" name="book_author"
-                                placeholder="ชื่อผู้แต่ง" value="สำนักงาน ป.ป.ช.">
+                                placeholder="ชื่อผู้แต่ง"  value="สำนักงาน ป.ป.ช.">
                         </div><!-- /.form-group -->
                         <!-- .form-group -->
                         <div class="form-group  d-none">
@@ -50,16 +50,16 @@
                         </div><!-- /.form-group -->
                         <!-- .form-group -->
                         <div class="form-group">
-                            <label for="cover">ภาพปก </label>
+                            <label for="cover">ภาพปก <span class="badge badge-warning">Required</span></label>
                             <input type="file" class="form-control" id="cover" name="cover" placeholder="ภาพปก"
-                                accept="image/*"><small class="form-text text-muted">JPG, GIF or PNG 400x400, < 2
+                                accept="image/*" required=""><small class="form-text text-muted">JPG, GIF or PNG 400x400, < 2
                                     MB.</small>
                         </div><!-- /.form-group -->
                         <!-- .form-group -->
                         <div class="form-group">
-                            <label for="bookfile">เนื้อหา </label>
+                            <label for="bookfile">เนื้อหา <span class="badge badge-warning">Required</span></label>
                             <input type="file" class="form-control" id="bookfile" name="bookfile" placeholder="เนื้อหา"
-                                accept=".pdf">
+                                accept=".pdf" required="">
                         </div><!-- /.form-group -->
                         <!-- .form-group -->
                         <div class="form-group  d-none">

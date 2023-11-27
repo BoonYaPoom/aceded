@@ -56,7 +56,7 @@ class ActivityController extends Controller
         $act->comment = null;
         $act->options = null;
         $act->activity_status = $request->input('activity_status', 0);
-        libxml_use_internal_errors(true);
+
         if (!file_exists(public_path('/upload/act/ck/'))) {
             mkdir(public_path('/upload/act/ck/'), 0755, true);
         }
@@ -66,7 +66,7 @@ class ActivityController extends Controller
                 $de_th = new DOMDocument();
                 $de_th->encoding = 'UTF-8'; // กำหนด encoding เป็น UTF-8
                 $de_th->loadHTML(mb_convert_encoding($detail, 'HTML-ENTITIES', 'UTF-8'), LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
-
+                libxml_use_internal_errors(true);
                 $images_des_th = $de_th->getElementsByTagName('img');
 
                 foreach ($images_des_th as $key => $img) {
@@ -127,7 +127,7 @@ class ActivityController extends Controller
                 $de_th = new DOMDocument();
                 $de_th->encoding = 'UTF-8'; // กำหนด encoding เป็น UTF-8
                 $de_th->loadHTML(mb_convert_encoding($detail, 'HTML-ENTITIES', 'UTF-8'), LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
-
+     libxml_use_internal_errors(true);
                 $images_des_th = $de_th->getElementsByTagName('img');
 
                 foreach ($images_des_th as $key => $img) {

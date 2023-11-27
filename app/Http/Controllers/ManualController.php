@@ -50,11 +50,27 @@ class ManualController extends Controller
 
             $manuals->detail = '';
             $manuals->department_id = (int)$department_id;
-            $manuals->manual_status = 0;
+            $manuals->manual_status = 1;
 
             $manuals->manual_type = 1;
             $manuals->save();
-        
+            if ($request->hasFile('cover')) {
+                $image_name = 'cover' .  $manuals->manual_id . '.' . $request->cover->getClientOriginalExtension();
+                $uploadDirectory = public_path('upload/Manual/image/');
+                if (!file_exists($uploadDirectory)) {
+                    mkdir($uploadDirectory, 0755, true);
+                }
+                if (file_exists($uploadDirectory)) {
+    
+                    file_put_contents(public_path('upload/Manual/image/' . $image_name), file_get_contents($request->cover));
+                    $manuals->cover = 'upload/Manual/image/' .   $image_name;
+                }
+                $manuals->save();
+            } else {
+                $image_name = '';
+                $manuals->cover = $image_name;
+                $manuals->save();
+            }
     
             DB::commit();
         } catch (\Exception $e) {
@@ -64,21 +80,7 @@ class ManualController extends Controller
             return response()->view('error.error-500', [], 500);
         }
     
-        if ($request->hasFile('cover')) {
-            $image_name = 'cover' .  $manuals->manual_id . '.' . $request->cover->getClientOriginalExtension();
-            $uploadDirectory = public_path('upload/Manual/image/');
-            if (!file_exists($uploadDirectory)) {
-                mkdir($uploadDirectory, 0755, true);
-            }
-            if (file_exists($uploadDirectory)) {
-
-                file_put_contents(public_path('upload/Manual/image/' . $image_name), file_get_contents($request->cover));
-                $manuals->cover = 'upload/Manual/image/' .   $image_name;
-            }
-        } else {
-            $image_name = '';
-            $manuals->cover = $image_name;
-        }
+   
 
 
 
@@ -158,10 +160,7 @@ class ManualController extends Controller
                 file_put_contents(public_path('upload/Manual/image/' . $image_name), file_get_contents($request->cover));
                 $manuals->cover = 'upload/Manual/image/' .   $image_name;
             }
-        } else {
-            $image_name = '';
-            $manuals->cover = $image_name;
-        }
+        } 
 
         if ($request->hasFile('manual_path')) {
             $filename = 'manual_path' .  $manual_id . '.' . $request->manual_path->getClientOriginalExtension();

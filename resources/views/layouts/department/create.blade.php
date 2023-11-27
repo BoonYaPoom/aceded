@@ -35,22 +35,22 @@
 
                         <!-- .form-group -->
                         <div class="form-group">
-                            <label for="name_th">หน่วยงาน (th)</label>
+                            <label for="name_th">หน่วยงาน (th) <span class="badge badge-warning">Required</span></label>
                             <input type="text" class="form-control" name="name_th" placeholder="หน่วยงาน" required=""
-                                value="">
+                                value="" >
                         </div><!-- /.form-group -->
                         @error('name_th')
                             <span class="badge badge-warning">{{ $message }}</span>
                         @enderror
                         <div class="form-group">
-                            <label for="name_en">หน่วยงาน (en)</label>
-                            <input type="text" class="form-control" name="name_en" placeholder="หน่วยงาน" value="">
+                            <label for="name_en">หน่วยงาน (en) <span class="badge badge-warning">Required</span></label>
+                            <input type="text" class="form-control" name="name_en" placeholder="หน่วยงาน" value="" required="">
                         </div><!-- /.form-group -->
                         @error('name_en')
                             <span class="badge badge-warning">{{ $message }}</span>
                         @enderror
                         <div class="form-group">
-                            <label for="name_short_en">URL (EN)</label>
+                            <label for="name_short_en">URL (EN) <span class="badge badge-warning">Required</span></label>
                             <input type="text" class="form-control" name="name_short_en" id="name_short_en" placeholder="URL (EN)"
                                 required="" value="" maxlength="4">
                         </div><!-- /.form-group -->
@@ -79,10 +79,10 @@
                         @enderror
 
                         <div class="form-group">
-                            <label for="name_short_th">ภาพปก <small
+                            <label for="name_short_th">ภาพปก <span class="badge badge-warning">Required</span> <small
                                 class=" text-muted">( ขนาด 337px * 48px )</small></label>
                             <input type="file" class="form-control" name="name_short_th" placeholder="ภาพปก"
-                                accept="image/*">
+                                accept="image/*" required="">
                         </div><!-- /.form-group -->
 
                         @error('name_short_th')
@@ -90,10 +90,10 @@
                         @enderror
 
                         <div class="form-group">
-                            <label for="detail">logo <small
+                            <label for="detail">logo <span class="badge badge-warning">Required</span><small
                                 class="text-muted">( ขนาด 585px * 350px )</small> </label>
                             <input type="file" class="form-control" name="detail" placeholder="logo"
-                                accept="image/*">
+                                accept="image/*" required="">
                         </div><!-- /.form-group -->
                         @error('detail')
                         <span class="badge badge-warning">{{ $message }}</span>
