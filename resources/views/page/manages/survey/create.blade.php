@@ -24,16 +24,18 @@
                         @error('survey_th')
                             <span class="badge badge-danger">{{ $message }}</span>
                         @enderror
+
                         <!-- .form-group -->
                         <div class="form-group d-none">
                             <label for="survey_en">ชื่อ (อังกฤษ) <span class="badge badge-warning">Required</span></label> <input type="text" class="form-control"
                                 id="survey_en" name="survey_en" placeholder="ชื่อ (อังกฤษ)" value="">
-                        </div><!-- /.form-group -->
+                        </div>
 
                         <div class="form-group">
                             <label for="detail_th">รายละเอียด </label>
                             <textarea class="editor" data-placeholder="รายละเอียด" data-height="200" name="detail_th"></textarea>
-                        </div><!-- /.form-group -->
+                        </div>
+
                         @error('detail_th')
                             <span class="badge badge-danger">{{ $message }}</span>
                         @enderror
@@ -73,7 +75,7 @@
                         </div><!-- /.form-group -->
                     </div><!-- /.card-body -->
                     <!-- .form-actions -->
-                
+
             </div><!-- /.card -->
 
             <div class="form-actions ">

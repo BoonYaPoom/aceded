@@ -177,7 +177,7 @@
                 })
                 .then((confirm) => {
                     if (confirm) {
-                        window.location.href = urlToredirect; 
+                        window.location.href = urlToredirect;
                     } else {
                         swal("คุญได้ยกเลิกการสร้าง Admin สถานศึกษา !");
                     }
@@ -193,6 +193,9 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.css" />
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+
+  <link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-lite.min.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-lite.min.js"></script>
 </head>
 
 <body>
@@ -214,7 +217,6 @@
         border-radius: 10px;
         border: 3px solid {{ $depart->color }};
 
-
     }
 
     .ck-editor__editable {
@@ -228,7 +230,17 @@
         resize: none;
     }
 </style>
+<style>
+ .custom-summernote {
+    background-color: {{ $depart->color }};
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    border: 3px solid {{ $depart->color }};
+}
 
-<script src="{{ asset('/javascript/textedit.js') }}"></script>
+</style>
 
+
+<script src="{{ asset('/javascript/summerediter.js') }}"></script>
+<script  src="{{ asset('/javascript/summernote-th-TH.js') }}" ></script>
 </html>

@@ -26,6 +26,9 @@
     $d6 = 0;
     $d7 = 0;
     $d8 = 0;
+    $d9 = 0;
+
+    $d10 = 0;
     $countsd1 = [];
     $countsd2 = [];
     $countsd3 = [];
@@ -34,7 +37,8 @@
     $countsd6 = [];
     $countsd7 = [];
     $countsd8 = [];
-
+    $countsd9 = [];
+    $countsd10 = [];
 @endphp
 @foreach ($respoe as $val => $reitem)
     @php
@@ -48,8 +52,8 @@
 
         $dataArray = $dataRespon->toArray();
 
-        $dataArray = array_pad($dataArray, 8, null);
-        [$d1, $d2, $d3, $d4, $d5, $d6, $d7, $d8] = array_pad($dataArray, 8, null);
+        $dataArray = array_pad($dataArray, 10, null);
+        [$d1, $d2, $d3, $d4, $d5, $d6, $d7, $d8, $d9, $d10] = array_pad($dataArray, 10, null);
 
         $countsd1[] = (int) $d1;
         $countsd2[] = (int) $d2;
@@ -59,56 +63,48 @@
         $countsd6[] = (int) $d6;
         $countsd7[] = (int) $d7;
         $countsd8[] = (int) $d8;
-
+        $countsd9[] = (int) $d9;
+        $countsd10[] = (int) $d10;
     @endphp
 @endforeach
 
 @php
 
+    $results = [];
+    $maxSum = 0;
+    $maxValue = 0;
+    $totalSums = [];
+    for ($c = 1; $c <= 10; $c++) {
+        // สร้างตัวแปร result_c
+        ${'result' . $c} = [];
+        // วนลูปเพื่อคำนวณค่าแต่ละตัวแปร
+        for ($i = 1; $i <= 5; $i++) {
+            // กรองข้อมูล
+            $filteredData = array_filter(${'countsd' . $c}, function ($value) use ($i) {
+                return $value == $i;
+            });
+            // นับจำนวนและเก็บในตัวแปร result_c
+            ${'result' . $c}[$i] = count($filteredData);
+        }
+        $totalCount = count(${'countsd' . $c});
 
+        // ตรวจสอบว่ามีข้อมูลใน ${'countsd' . $c} หรือไม่
+        if ($totalCount > 0) {
+            // วนลูป ${'result' . $c} เพื่อคำนวณร้อยละ
+            foreach (${'result' . $c} as $key => $value) {
+                // คำนวณร้อยละแล้วเก็บใน ${'result' . $c} อีกครั้ง
+                ${'result' . $c}[$key] = ($value / $totalCount) * 100;
+            }
 
-    $result1 = [];
-    $result2 = [];
-    $result3 = [];
-    $result4 = [];
-    $result5 = [];
-
-    $numbersInRange = range(1, 5);
-
-    foreach ($numbersInRange as $number) {
-        $result1[$number] = 0;
-        $result2[$number] = 0;
-        $result3[$number] = 0;
-        $result4[$number] = 0;
-        $result5[$number] = 0;
-    }
-
-    // นับจำนวนของแต่ละตัวเลขใน $countsd1
-    foreach ($countsd1 as $number) {
-        if (isset($result1[$number])) {
-            $result1[$number]++;
+            // เก็บผลลัพธ์ใน $results
+            $results['result' . $c] = ${'result' . $c};
+            $currentSum = array_sum($results['result' . $c]);
+            $maxSum = max($maxSum, $currentSum);
+            $totalSums['result' . $c] = array_sum(${'result' . $c});
         }
     }
-    foreach ($countsd2 as $number) {
-        if (isset($result2[$number])) {
-            $result2[$number]++;
-        }
-    }
-    foreach ($countsd3 as $number) {
-        if (isset($result3[$number])) {
-            $result3[$number]++;
-        }
-    }
-    foreach ($countsd4 as $number) {
-        if (isset($result4[$number])) {
-            $result4[$number]++;
-        }
-    }
-    foreach ($countsd5 as $number) {
-        if (isset($result5[$number])) {
-            $result5[$number]++;
-        }
-    }
+
+    $maxTotalSum = !empty($totalSums) ? max($totalSums) : 0;
 
 @endphp
 
@@ -136,35 +132,62 @@
 
 </tr>
 
-@for ($c = 1; $c <= 8; $c++)
+@for ($c = 1; $c <= 10; $c++)
     @if (isset(${'c' . $c}))
         <td>{{ $c }}</td>
+        <td>{{ ${'c' . $c} }}</td>
 
-        @if (isset(${'c' . $c}))
-        @if ($c == 1) {{-- Display only for c1 --}}
-            <td>{{ ${'c' . $c} }}</td>
-            @for ($a = 1; $a <= 5; $a++)
-                @if (isset(${'a' . $a}))
-                    <td>{{ ${'a' . $a} }}</td>
-                @endif
+        @if (!empty($respoe))
+
+            @for ($d = 1; $d <= 5; $d++)
+                <td align="center">
+                    @if (isset(${'result' . $c}[$d]))
+                        {{ number_format(${'result' . $c}[$d], 0) }}%
+                    @else
+                        -
+                    @endif
+                </td>
             @endfor
-        @elseif ($c == 2)  {{-- Display empty cells for c2 to c8 --}}
-        @for ($a = 1; $a <= 5; $a++)
-        @if (isset(${'a' . $a}))
-            <td>{{ ${'a' . $a} }}</td>
-            @else
+
+
+            <td align="center">
+                @if (isset(${'result' . $c}))
+                    @php
+                        $maxValue = max(${'result' . $c});
+                        $maxKeys = array_keys(${'result' . $c}, $maxValue);
+
+                    @endphp
+                    @for ($a = 1; $a <= 5; $a++)
+                        @if (isset(${'a' . $a}))
+                            @if (in_array($a, $maxKeys))
+                                {{ ${'a' . $a} }}
+                            @endif
+                        @endif
+                    @endfor
+                @endif
+            </td>
+
+            @php
+                $chart[] = [
+                    'choic' => ${'c' . $c},
+                    'coun' => number_format($maxValue, 0),
+                    'pos' => implode(
+                        ', ',
+                        array_map(function ($key) use ($a1, $a2, $a3, $a4, $a5) {
+                            return ${'a' . $key};
+                        }, $maxKeys),
+                    ),
+                ];
+            @endphp
+        @else
+            <td></td>
+            <td></td>
             <td></td>
             <td></td>
             <td></td>
             <td></td>
         @endif
 
-    @endfor
-        @endif
-    @endif
-        <td align="center">
-
-        </td>
 
         </tr>
     @endif
@@ -211,7 +234,7 @@
                 borderWidth: 0,
                 dataLabels: {
                     enabled: true,
-                    format: '{point.y}',
+                    format: '{point.y} <br/> <b>{point.pos}</b>',
                     style: {
                         textOutline: false
                     }
@@ -221,15 +244,17 @@
 
         tooltip: {
             headerFormat: '<span style="font-size:12px">{series.name}</span><br>',
-            pointFormat: '<span>{point.name}</span> : <b>{point.y}</b> คะแนน<br/>'
+            pointFormat: '<span>{point.name}</span> : <b>{point.y}</b> คะแนน<br/> <b>{point.pos}</b>'
         },
         series: [{
             name: 'จำนวน',
             colorByPoint: true,
             data: chart.map(item => ({
                 name: item.choic,
-                y: parseFloat(item.coun)
+                y: parseFloat(item.coun),
+                pos: item.pos
             }))
+
         }]
     });
 </script>

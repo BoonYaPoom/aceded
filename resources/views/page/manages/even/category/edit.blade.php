@@ -66,7 +66,7 @@
                         <!-- .form-group -->
 
                         @if ($category->category_type == 2)
-          
+
                         <div class="form-row">
                             <div class="col-md-6 mb-3">
                                 <label for="flatpickr03">วันที่เริ่ม</label>

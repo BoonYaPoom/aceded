@@ -88,33 +88,33 @@
                     <div class="list-group-item-figure h6"></div>
                     <div class="list-group-item-body"> <input type="text" class="form-control"
                             id="c1" name="c1" placeholder="ตัวเลือก"
-                            value="น้อยที่สุด" disabled></div>
+                            value="น้อยที่สุด" ></div>
                 </div>
                 <div class="list-group-item">
                     <div class="list-group-item-figure h6"></div>
                     <div class="list-group-item-body"> <input type="text" class="form-control"
-                            id="c2" name="c2" placeholder="ตัวเลือก" value="น้อย" disabled>
+                            id="c2" name="c2" placeholder="ตัวเลือก" value="น้อย" >
                     </div>
                 </div>
                 <div class="list-group-item">
                     <div class="list-group-item-figure h6"></div>
                     <div class="list-group-item-body"> <input type="text" class="form-control"
                             id="c3" name="c3" placeholder="ตัวเลือก"
-                            value="ปานกลาง" disabled></div>
+                            value="ปานกลาง" ></div>
                 </div>
                 <div class="list-group-item">
                     <div class="list-group-item-figure h6"></div>
                     <div class="list-group-item-body"> <input type="text" class="form-control"
-                            id="c4" name="c4" placeholder="ตัวเลือก" value="มาก" disabled>
+                            id="c4" name="c4" placeholder="ตัวเลือก" value="มาก" >
                     </div>
                 </div>
                 <div class="list-group-item">
                     <div class="list-group-item-figure h6"></div>
                     <div class="list-group-item-body"> <input type="text" class="form-control"
                             id="c5" name="c5" placeholder="ตัวเลือก"
-                            value="มากที่สุด" disabled></div>
+                            value="มากที่สุด" ></div>
                 </div>
-               
+
             </div><!-- /.list-group -->
         </div><!-- /grid column -->
 
