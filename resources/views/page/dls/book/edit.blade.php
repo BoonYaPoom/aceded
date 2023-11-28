@@ -36,17 +36,7 @@
                             <input type="text" class="form-control" id="category_th" name="category_th"
                                 placeholder="ชื่อหมวด (ไทย)" required="" value="{{ $book->category_th }}">
                         </div>
-                        <!-- /.form-group -->
-                        @error('category_th')
-                            <span class="badge badge-warning">{{ $message }}</span>
-                        @enderror
-                        <!-- .form-group -->
-                        <div class="form-group">
-                            <label for="category_en">ชื่อหมวด (อังกฤษ) </label>
-                            <input type="text" class="form-control" id="category_en" name="category_en"
-                                placeholder="ชื่อหมวด (อังกฤษ)" value="{{ $book->category_en }}">
-                        </div>
-                        <!-- /.form-group -->
+
 
                         <!-- .form-group -->
                         <div class="form-group"><label for="cover">ภาพปก </label>

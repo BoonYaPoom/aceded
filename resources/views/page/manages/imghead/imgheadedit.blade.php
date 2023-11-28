@@ -89,21 +89,7 @@
                                 </div>
 
                             </div>
-                            <form action="{{ route('updateLinkDep', [$depart,'highlight_id' => $highlight->highlight_id]) }}"
-                                method="post" enctype="multipart/form-data">
-                                @csrf
-                                @method('PUT')
-                                <div class="form-group">
-                                    <label for="faq">ลิงค์เชื่อมโยง </label>
-                                    <input type="text" class="form-control" id="highlight_link" name="highlight_link"
-                                        placeholder="ลิงค์เชื่อมโยง" value="{{ $highlight->highlight_link }}">
-                                </div><!-- /.form-group -->
-                                <div class="form-actions">
-                                    <button class="btn btn-lg btn-primary ml-auto" type="submit"><i
-                                            class="far fa-save"></i>
-                                        บันทึก</button>
-                                </div><!-- /.form-actions -->
-                            </form>
+                           
                             <br>
                             <div style="border-bottom: 1px solid #e7d8d5;">
 
@@ -135,7 +121,8 @@
                                 <label for="highlight_path">ภาพประชาสัมพันธ์ <small
                                         class="form-text text-muted">ขนาด 1900*486</small> </label> <input type="file"
                                     class="form-control" id="highlight_path" accept="image/*" name="highlight_path"
-                                    placeholder="ภาพประชาสัมพันธ์	" accept="banner/*">
+                                    placeholder="ภาพประชาสัมพันธ์	" accept="banner/*"
+                                    required="">
                             </div><!-- /.form-group -->
 
 
@@ -143,11 +130,7 @@
                                 <span class="badge badge-warning">{{ $message }}</span>
                             @enderror
 
-                            <!-- .form-group -->
-                            <div class="form-group">
-                                <label for="faq">ลิงค์เชื่อมโยง </label> <input type="text" class="form-control"
-                                    id="highlight_link" name="highlight_link" placeholder="ลิงค์เชื่อมโยง">
-                            </div><!-- /.form-group --><!-- .form-group -->
+                
                     </div><!-- /.card-body -->
 
                 </div><!-- /.card -->

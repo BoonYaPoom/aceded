@@ -29,15 +29,15 @@
                             <span class="badge badge-warning">{{ $message }}</span>
                         @enderror
                         <div class="form-group">
-                            <label for="category_en">ชื่อหมวด (อังกฤษ) </label>
-                            <input type="text" class="form-control" name="category_en" placeholder="ชื่อหมวด (อังกฤษ)"
+                            <label for="category_en">ชื่อหมวด (อังกฤษ)  <span class="badge badge-warning">Required</span></label>
+                            <input type="text" required=""  class="form-control" name="category_en" placeholder="ชื่อหมวด (อังกฤษ)"
                                 value="">
                         </div><!-- /.form-group -->
 
 
                         <div class="form-group">
-                            <label for="cover">ภาพปก </label>
-                            <input type="file" class="form-control" accept="image/*" name="cover" placeholder="ภาพปก">
+                            <label for="cover">ภาพปก <span class="badge badge-warning">Required</span></label>
+                            <input type="file" class="form-control" required=""  accept="image/*" name="cover" placeholder="ภาพปก">
 
                         </div><!-- /.card-body -->
 

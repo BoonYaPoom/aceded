@@ -224,11 +224,13 @@ class ExamController extends Controller
     }
     if ($request->has('question')) {
       $question = $request->question;
+      $decodedTextquestion = '';
       if (!empty($question)) {
         $de_th = new DOMDocument();
         $de_th->encoding = 'UTF-8'; // กำหนด encoding เป็น UTF-8
-        $de_th->loadHTML(mb_convert_encoding($question, 'HTML-ENTITIES', 'UTF-8'), LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
-
+        $question = mb_convert_encoding($question, 'HTML-ENTITIES', 'UTF-8');
+        $question = preg_replace('/<figure\b[^>]*>(.*?)<\/figure>/is', '$1', $question);
+        $de_th->loadHTML($question, LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
         $images_des_th = $de_th->getElementsByTagName('img');
 
         foreach ($images_des_th as $key => $img) {
@@ -242,9 +244,12 @@ class ExamController extends Controller
           }
         }
         $question = $de_th->saveHTML();
+     
+        $decodedTextquestion = html_entity_decode($question, ENT_QUOTES, 'UTF-8');
       }
 
-      $ques->question = $question;
+
+      $ques->question = $decodedTextquestion;
     }
     if ($ques->question_type == 4 || $ques->question_type == 5) {
       $questions = [];
@@ -272,11 +277,13 @@ class ExamController extends Controller
       
       if ($request->has('choice1')) {
         $choice1 = $request->choice1;
+        $decodedTextchoice1='';
         if (!empty($choice1)) {
           $choice_1 = new DOMDocument();
           $choice_1->encoding = 'UTF-8'; // กำหนด encoding เป็น UTF-8
-          $choice_1->loadHTML(mb_convert_encoding($choice1, 'HTML-ENTITIES', 'UTF-8'), LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
-  
+          $choice1 = mb_convert_encoding($choice1, 'HTML-ENTITIES', 'UTF-8');
+          $choice1 = preg_replace('/<figure\b[^>]*>(.*?)<\/figure>/is', '$1', $choice1);
+          $choice_1->loadHTML($choice1, LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
           $images_choice_1 = $choice_1->getElementsByTagName('img');
           if (!file_exists(public_path('/upload/Que/ck/qu1/'))) {
             mkdir(public_path('/upload/Que/ck/qu1/'), 0755, true);
@@ -292,19 +299,22 @@ class ExamController extends Controller
             }
           }
           $choice1 = $choice_1->saveHTML();
+          $decodedTextchoice1 = html_entity_decode($choice1, ENT_QUOTES, 'UTF-8');
         }
   
-        $ques->choice1 = $choice1;
+        $ques->choice1 = $decodedTextchoice1;
       }
   
   
       if ($request->has('choice2')) {
         $choice2 = $request->choice2;
+        $decodedTextchoice2 ='';
         if (!empty($choice2)) {
           $choice_2 = new DOMDocument();
           $choice_2->encoding = 'UTF-8'; // กำหนด encoding เป็น UTF-8
-          $choice_2->loadHTML(mb_convert_encoding($choice2, 'HTML-ENTITIES', 'UTF-8'), LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
-  
+          $choice2 = mb_convert_encoding($choice2, 'HTML-ENTITIES', 'UTF-8');
+          $choice2 = preg_replace('/<figure\b[^>]*>(.*?)<\/figure>/is', '$1', $choice2);
+          $choice_2->loadHTML($choice2, LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
           $images_choice_2 = $choice_2->getElementsByTagName('img');
           if (!file_exists(public_path('/upload/Que/ck/qu2/'))) {
             mkdir(public_path('/upload/Que/ck/qu2/'), 0755, true);
@@ -320,18 +330,22 @@ class ExamController extends Controller
             }
           }
           $choice2 = $choice_2->saveHTML();
+          $decodedTextchoice2 = html_entity_decode($choice2, ENT_QUOTES, 'UTF-8');
+          
         }
   
-        $ques->choice2 = $choice2;
+        $ques->choice2 = $decodedTextchoice2;
       }
   
       if ($request->has('choice3')) {
         $choice3 = $request->choice3;
+        $decodedTextchoice3 ='';
         if (!empty($choice3)) {
           $choice_3 = new DOMDocument();
           $choice_3->encoding = 'UTF-8'; // กำหนด encoding เป็น UTF-8
-          $choice_3->loadHTML(mb_convert_encoding($choice3, 'HTML-ENTITIES', 'UTF-8'), LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
-  
+          $choice3 = mb_convert_encoding($choice3, 'HTML-ENTITIES', 'UTF-8');
+          $choice3 = preg_replace('/<figure\b[^>]*>(.*?)<\/figure>/is', '$1', $choice3);
+          $choice_3->loadHTML($choice3, LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
           $images_choice_3 = $choice_3->getElementsByTagName('img');
           if (!file_exists(public_path('/upload/Que/ck/qu3/'))) {
             mkdir(public_path('/upload/Que/ck/qu3/'), 0755, true);
@@ -347,9 +361,11 @@ class ExamController extends Controller
             }
           }
           $choice3 = $choice_3->saveHTML();
+          $decodedTextchoice3 = html_entity_decode($choice3, ENT_QUOTES, 'UTF-8');
+          
         }
   
-        $ques->choice3 = $choice3;
+        $ques->choice3 = $decodedTextchoice3;
       }
   
       $quesanss = [];
@@ -366,11 +382,14 @@ class ExamController extends Controller
   
       if ($request->has('choice4')) {
         $choice4 = $request->choice4;
+        $decodedTextchoice4 ='';
         if (!empty($choice4)) {
           $choice_4 = new DOMDocument();
+
           $choice_4->encoding = 'UTF-8'; // กำหนด encoding เป็น UTF-8
-          $choice_4->loadHTML(mb_convert_encoding($choice4, 'HTML-ENTITIES', 'UTF-8'), LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
-  
+          $choice4 = mb_convert_encoding($choice4, 'HTML-ENTITIES', 'UTF-8');
+          $choice4 = preg_replace('/<figure\b[^>]*>(.*?)<\/figure>/is', '$1', $choice4);
+          $choice_4->loadHTML($choice4, LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
           $images_choice_4 = $choice_4->getElementsByTagName('img');
           if (!file_exists(public_path('/upload/Que/ck/qu4/'))) {
             mkdir(public_path('/upload/Que/ck/qu4/'), 0755, true);
@@ -386,9 +405,11 @@ class ExamController extends Controller
             }
           }
           $choice4 = $choice_4->saveHTML();
+          $decodedTextchoice4 = html_entity_decode($choice4, ENT_QUOTES, 'UTF-8');
+          
         }
   
-        $ques->choice4 = $choice4;
+        $ques->choice4 = $decodedTextchoice4;
       }
   
   
@@ -406,11 +427,13 @@ class ExamController extends Controller
   
       if ($request->has('choice5')) {
         $choice5 = $request->choice5;
+        $decodedTextchoice5 ='';
         if (!empty($choice5)) {
           $choice_5 = new DOMDocument();
           $choice_5->encoding = 'UTF-8'; // กำหนด encoding เป็น UTF-8
-          $choice_5->loadHTML(mb_convert_encoding($choice5, 'HTML-ENTITIES', 'UTF-8'), LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
-  
+          $choice5 = mb_convert_encoding($choice5, 'HTML-ENTITIES', 'UTF-8');
+          $choice5 = preg_replace('/<figure\b[^>]*>(.*?)<\/figure>/is', '$1', $choice5);
+          $choice_5->loadHTML($choice5, LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
           $images_choice_5 = $choice_5->getElementsByTagName('img');
           if (!file_exists(public_path('/upload/Que/ck/qu5/'))) {
             mkdir(public_path('/upload/Que/ck/qu5/'), 0755, true);
@@ -426,18 +449,22 @@ class ExamController extends Controller
             }
           }
           $choice5 = $choice_5->saveHTML();
+          $decodedTextchoice5 = html_entity_decode($choice5, ENT_QUOTES, 'UTF-8');
+          
         }
   
-        $ques->choice5 = $choice5;
+        $ques->choice5 = $decodedTextchoice5;
       }
 
     if ($request->has('choice6')) {
       $choice6 = $request->choice6;
+      $decodedTextchoice6 ='';
       if (!empty($choice6)) {
         $choice_6 = new DOMDocument();
         $choice_6->encoding = 'UTF-8'; // กำหนด encoding เป็น UTF-8
-        $choice_6->loadHTML(mb_convert_encoding($choice6, 'HTML-ENTITIES', 'UTF-8'), LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
-
+        $choice6 = mb_convert_encoding($choice6, 'HTML-ENTITIES', 'UTF-8');
+        $choice6 = preg_replace('/<figure\b[^>]*>(.*?)<\/figure>/is', '$1', $choice6);
+        $choice_6->loadHTML($choice6, LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
         $images_choice_6 = $choice_6->getElementsByTagName('img');
         if (!file_exists(public_path('/upload/Que/ck/qu6/'))) {
           mkdir(public_path('/upload/Que/ck/qu6/'), 0755, true);
@@ -453,18 +480,22 @@ class ExamController extends Controller
           }
         }
         $choice6 = $choice_6->saveHTML();
+        $decodedTextchoice6 = html_entity_decode($choice6, ENT_QUOTES, 'UTF-8');
+        
       }
 
-      $ques->choice6 = $choice6;
+      $ques->choice6 = $decodedTextchoice6;
     }
 
     if ($request->has('choice7')) {
       $choice7 = $request->choice7;
+      $decodedTextchoice7 ='';
       if (!empty($choice7)) {
         $choice_7 = new DOMDocument();
         $choice_7->encoding = 'UTF-8'; // กำหนด encoding เป็น UTF-8
-        $choice_7->loadHTML(mb_convert_encoding($choice7, 'HTML-ENTITIES', 'UTF-8'), LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
-
+        $choice7 = mb_convert_encoding($choice7, 'HTML-ENTITIES', 'UTF-8');
+        $choice7 = preg_replace('/<figure\b[^>]*>(.*?)<\/figure>/is', '$1', $choice7);
+        $choice_7->loadHTML($choice7, LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
         $images_choice_7 = $choice_7->getElementsByTagName('img');
         if (!file_exists(public_path('/upload/Que/ck/qu7/'))) {
           mkdir(public_path('/upload/Que/ck/qu7/'), 0755, true);
@@ -480,18 +511,23 @@ class ExamController extends Controller
           }
         }
         $choice7 = $choice_7->saveHTML();
+        $decodedTextchoice7 = html_entity_decode($choice7, ENT_QUOTES, 'UTF-8');
+        
+        
       }
 
-      $ques->choice7 = $choice7;
+      $ques->choice7 = $decodedTextchoice7;
     }
 
     if ($request->has('choice8')) {
       $choice8 = $request->choice8;
+      $decodedTextchoice8 ='';
       if (!empty($choice8)) {
         $choice_8 = new DOMDocument();
         $choice_8->encoding = 'UTF-8'; // กำหนด encoding เป็น UTF-8
-        $choice_8->loadHTML(mb_convert_encoding($choice8, 'HTML-ENTITIES', 'UTF-8'), LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
-
+        $choice8 = mb_convert_encoding($choice8, 'HTML-ENTITIES', 'UTF-8');
+        $choice8 = preg_replace('/<figure\b[^>]*>(.*?)<\/figure>/is', '$1', $choice8);
+        $choice_8->loadHTML($choice8, LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
         $images_choice_8 = $choice_8->getElementsByTagName('img');
         if (!file_exists(public_path('/upload/Que/ck/qu8/'))) {
           mkdir(public_path('/upload/Que/ck/qu8/'), 0755, true);
@@ -507,19 +543,22 @@ class ExamController extends Controller
           }
         }
         $choice8 = $choice_8->saveHTML();
+        $decodedTextchoice8 = html_entity_decode($choice8, ENT_QUOTES, 'UTF-8');
       }
 
-      $ques->choice8 = $choice8;
+      $ques->choice8 = $decodedTextchoice8;
     }
   }
 
     if ($request->has('explain')) {
       $explain = $request->explain;
+      $decodedTextexplain ='' ;
       if (!empty($explain)) {
         $choice_explain = new DOMDocument();
         $choice_explain->encoding = 'UTF-8'; // กำหนด encoding เป็น UTF-8
-        $choice_explain->loadHTML(mb_convert_encoding($explain, 'HTML-ENTITIES', 'UTF-8'), LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
-
+        $explain = mb_convert_encoding($explain, 'HTML-ENTITIES', 'UTF-8');
+        $explain = preg_replace('/<figure\b[^>]*>(.*?)<\/figure>/is', '$1', $explain);
+        $choice_explain->loadHTML($explain, LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
         $images_choice_explain = $choice_explain->getElementsByTagName('img');
         if (!file_exists(public_path('/upload/Que/ck/exp/'))) {
           mkdir(public_path('/upload/Que/ck/exp/'), 0755, true);
@@ -535,9 +574,11 @@ class ExamController extends Controller
           }
         }
         $explain = $choice_explain->saveHTML();
+        $decodedTextexplain = html_entity_decode($explain, ENT_QUOTES, 'UTF-8');
+        
       }
 
-      $ques->explain = $explain;
+      $ques->explain = $decodedTextexplain;
     }
     $ques->score = $request->score;
     $ques->numchoice = $request->numchoice;
@@ -579,11 +620,13 @@ class ExamController extends Controller
     }
     if ($request->has('question')) {
       $question = $request->question;
+      $decodedTextquestion ='' ;
       if (!empty($question)) {
         $de_th = new DOMDocument();
         $de_th->encoding = 'UTF-8'; // กำหนด encoding เป็น UTF-8
-        $de_th->loadHTML(mb_convert_encoding($question, 'HTML-ENTITIES', 'UTF-8'), LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
-
+        $question = mb_convert_encoding($question, 'HTML-ENTITIES', 'UTF-8');
+        $question = preg_replace('/<figure\b[^>]*>(.*?)<\/figure>/is', '$1', $question);
+        $de_th->loadHTML($question, LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
         $images_des_th = $de_th->getElementsByTagName('img');
 
         foreach ($images_des_th as $key => $img) {
@@ -597,6 +640,7 @@ class ExamController extends Controller
           }
         }
         $question = $de_th->saveHTML();
+        $decodedTextquestion = html_entity_decode($question, ENT_QUOTES, 'UTF-8');
       }
 
       $ques->question = $question;
@@ -627,11 +671,13 @@ class ExamController extends Controller
       
       if ($request->has('choice1')) {
         $choice1 = $request->choice1;
+        $decodedTextchoice1='';
         if (!empty($choice1)) {
           $choice_1 = new DOMDocument();
           $choice_1->encoding = 'UTF-8'; // กำหนด encoding เป็น UTF-8
-          $choice_1->loadHTML(mb_convert_encoding($choice1, 'HTML-ENTITIES', 'UTF-8'), LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
-  
+          $choice1 = mb_convert_encoding($choice1, 'HTML-ENTITIES', 'UTF-8');
+          $choice1 = preg_replace('/<figure\b[^>]*>(.*?)<\/figure>/is', '$1', $choice1);
+          $choice_1->loadHTML($choice1, LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
           $images_choice_1 = $choice_1->getElementsByTagName('img');
           if (!file_exists(public_path('/upload/Que/ck/qu1/'))) {
             mkdir(public_path('/upload/Que/ck/qu1/'), 0755, true);
@@ -647,19 +693,23 @@ class ExamController extends Controller
             }
           }
           $choice1 = $choice_1->saveHTML();
+
+          $decodedTextchoice1 = html_entity_decode($choice1, ENT_QUOTES, 'UTF-8');
         }
   
-        $ques->choice1 = $choice1;
+        $ques->choice1 = $decodedTextchoice1;
       }
   
   
       if ($request->has('choice2')) {
         $choice2 = $request->choice2;
+        $decodedTextchoice2 ='';
         if (!empty($choice2)) {
           $choice_2 = new DOMDocument();
           $choice_2->encoding = 'UTF-8'; // กำหนด encoding เป็น UTF-8
-          $choice_2->loadHTML(mb_convert_encoding($choice2, 'HTML-ENTITIES', 'UTF-8'), LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
-  
+          $choice2 = mb_convert_encoding($choice2, 'HTML-ENTITIES', 'UTF-8');
+          $choice2 = preg_replace('/<figure\b[^>]*>(.*?)<\/figure>/is', '$1', $choice2);
+          $choice_2->loadHTML($choice2, LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
           $images_choice_2 = $choice_2->getElementsByTagName('img');
           if (!file_exists(public_path('/upload/Que/ck/qu2/'))) {
             mkdir(public_path('/upload/Que/ck/qu2/'), 0755, true);
@@ -675,18 +725,22 @@ class ExamController extends Controller
             }
           }
           $choice2 = $choice_2->saveHTML();
+
+          $decodedTextchoice2 = html_entity_decode($choice2, ENT_QUOTES, 'UTF-8');
         }
   
-        $ques->choice2 = $choice2;
+        $ques->choice2 = $decodedTextchoice2;
       }
   
       if ($request->has('choice3')) {
         $choice3 = $request->choice3;
+        $decodedTextchoice3 ='';
         if (!empty($choice3)) {
           $choice_3 = new DOMDocument();
           $choice_3->encoding = 'UTF-8'; // กำหนด encoding เป็น UTF-8
-          $choice_3->loadHTML(mb_convert_encoding($choice3, 'HTML-ENTITIES', 'UTF-8'), LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
-  
+          $choice3 = mb_convert_encoding($choice3, 'HTML-ENTITIES', 'UTF-8');
+          $choice3 = preg_replace('/<figure\b[^>]*>(.*?)<\/figure>/is', '$1', $choice3);
+          $choice_3->loadHTML($choice3, LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
           $images_choice_3 = $choice_3->getElementsByTagName('img');
           if (!file_exists(public_path('/upload/Que/ck/qu3/'))) {
             mkdir(public_path('/upload/Que/ck/qu3/'), 0755, true);
@@ -702,9 +756,11 @@ class ExamController extends Controller
             }
           }
           $choice3 = $choice_3->saveHTML();
+
+          $decodedTextchoice3 = html_entity_decode($choice3, ENT_QUOTES, 'UTF-8');
         }
   
-        $ques->choice3 = $choice3;
+        $ques->choice3 = $decodedTextchoice3;
       }
   
       $quesanss = [];
@@ -721,11 +777,13 @@ class ExamController extends Controller
   
       if ($request->has('choice4')) {
         $choice4 = $request->choice4;
+        $decodedTextchoice4 ='';
         if (!empty($choice4)) {
           $choice_4 = new DOMDocument();
           $choice_4->encoding = 'UTF-8'; // กำหนด encoding เป็น UTF-8
-          $choice_4->loadHTML(mb_convert_encoding($choice4, 'HTML-ENTITIES', 'UTF-8'), LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
-  
+          $choice4 = mb_convert_encoding($choice4, 'HTML-ENTITIES', 'UTF-8');
+          $choice4 = preg_replace('/<figure\b[^>]*>(.*?)<\/figure>/is', '$1', $choice4);
+          $choice_4->loadHTML($choice4, LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
           $images_choice_4 = $choice_4->getElementsByTagName('img');
           if (!file_exists(public_path('/upload/Que/ck/qu4/'))) {
             mkdir(public_path('/upload/Que/ck/qu4/'), 0755, true);
@@ -741,9 +799,11 @@ class ExamController extends Controller
             }
           }
           $choice4 = $choice_4->saveHTML();
+      
+          $decodedTextchoice4 = html_entity_decode($choice4, ENT_QUOTES, 'UTF-8');
         }
   
-        $ques->choice4 = $choice4;
+        $ques->choice4 = $decodedTextchoice4;
       }
   
   
@@ -761,11 +821,13 @@ class ExamController extends Controller
   
       if ($request->has('choice5')) {
         $choice5 = $request->choice5;
+        $decodedTextchoice5 ='';
         if (!empty($choice5)) {
           $choice_5 = new DOMDocument();
           $choice_5->encoding = 'UTF-8'; // กำหนด encoding เป็น UTF-8
-          $choice_5->loadHTML(mb_convert_encoding($choice5, 'HTML-ENTITIES', 'UTF-8'), LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
-  
+          $choice5 = mb_convert_encoding($choice5, 'HTML-ENTITIES', 'UTF-8');
+          $choice5 = preg_replace('/<figure\b[^>]*>(.*?)<\/figure>/is', '$1', $choice5);
+          $choice_5->loadHTML($choice5, LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
           $images_choice_5 = $choice_5->getElementsByTagName('img');
           if (!file_exists(public_path('/upload/Que/ck/qu5/'))) {
             mkdir(public_path('/upload/Que/ck/qu5/'), 0755, true);
@@ -781,18 +843,22 @@ class ExamController extends Controller
             }
           }
           $choice5 = $choice_5->saveHTML();
+
+          $decodedTextchoice5 = html_entity_decode($choice5, ENT_QUOTES, 'UTF-8');
         }
   
-        $ques->choice5 = $choice5;
+        $ques->choice5 = $decodedTextchoice5;
       }
 
     if ($request->has('choice6')) {
       $choice6 = $request->choice6;
+      $decodedTextchoice6 ='';
       if (!empty($choice6)) {
         $choice_6 = new DOMDocument();
         $choice_6->encoding = 'UTF-8'; // กำหนด encoding เป็น UTF-8
-        $choice_6->loadHTML(mb_convert_encoding($choice6, 'HTML-ENTITIES', 'UTF-8'), LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
-
+        $choice6 = mb_convert_encoding($choice6, 'HTML-ENTITIES', 'UTF-8');
+        $choice6 = preg_replace('/<figure\b[^>]*>(.*?)<\/figure>/is', '$1', $choice6);
+        $choice_6->loadHTML($choice6, LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
         $images_choice_6 = $choice_6->getElementsByTagName('img');
         if (!file_exists(public_path('/upload/Que/ck/qu6/'))) {
           mkdir(public_path('/upload/Que/ck/qu6/'), 0755, true);
@@ -808,18 +874,22 @@ class ExamController extends Controller
           }
         }
         $choice6 = $choice_6->saveHTML();
+
+        $decodedTextchoice6 = html_entity_decode($choice6, ENT_QUOTES, 'UTF-8');
       }
 
-      $ques->choice6 = $choice6;
+      $ques->choice6 = $decodedTextchoice6;
     }
 
     if ($request->has('choice7')) {
       $choice7 = $request->choice7;
+      $decodedTextchoice7 ='';
       if (!empty($choice7)) {
         $choice_7 = new DOMDocument();
         $choice_7->encoding = 'UTF-8'; // กำหนด encoding เป็น UTF-8
-        $choice_7->loadHTML(mb_convert_encoding($choice7, 'HTML-ENTITIES', 'UTF-8'), LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
-
+        $choice7 = mb_convert_encoding($choice7, 'HTML-ENTITIES', 'UTF-8');
+        $choice7 = preg_replace('/<figure\b[^>]*>(.*?)<\/figure>/is', '$1', $choice7);
+        $choice_7->loadHTML($choice7, LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
         $images_choice_7 = $choice_7->getElementsByTagName('img');
         if (!file_exists(public_path('/upload/Que/ck/qu7/'))) {
           mkdir(public_path('/upload/Que/ck/qu7/'), 0755, true);
@@ -835,18 +905,22 @@ class ExamController extends Controller
           }
         }
         $choice7 = $choice_7->saveHTML();
+
+        $decodedTextchoice7 = html_entity_decode($choice7, ENT_QUOTES, 'UTF-8');
       }
 
-      $ques->choice7 = $choice7;
+      $ques->choice7 = $decodedTextchoice7;
     }
 
     if ($request->has('choice8')) {
       $choice8 = $request->choice8;
+      $decodedTextchoice8 ='';
       if (!empty($choice8)) {
         $choice_8 = new DOMDocument();
         $choice_8->encoding = 'UTF-8'; // กำหนด encoding เป็น UTF-8
-        $choice_8->loadHTML(mb_convert_encoding($choice8, 'HTML-ENTITIES', 'UTF-8'), LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
-
+        $choice8 = mb_convert_encoding($choice8, 'HTML-ENTITIES', 'UTF-8');
+        $choice8 = preg_replace('/<figure\b[^>]*>(.*?)<\/figure>/is', '$1', $choice8);
+        $choice_8->loadHTML($choice8, LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
         $images_choice_8 = $choice_8->getElementsByTagName('img');
         if (!file_exists(public_path('/upload/Que/ck/qu8/'))) {
           mkdir(public_path('/upload/Que/ck/qu8/'), 0755, true);
@@ -862,19 +936,22 @@ class ExamController extends Controller
           }
         }
         $choice8 = $choice_8->saveHTML();
+        $decodedTextchoice8 = html_entity_decode($choice8, ENT_QUOTES, 'UTF-8');
       }
 
-      $ques->choice8 = $choice8;
+      $ques->choice8 = $decodedTextchoice8;
     }
   }
 
     if ($request->has('explain')) {
       $explain = $request->explain;
+      $decodedTextexplain ='' ;
       if (!empty($explain)) {
         $choice_explain = new DOMDocument();
         $choice_explain->encoding = 'UTF-8'; // กำหนด encoding เป็น UTF-8
-        $choice_explain->loadHTML(mb_convert_encoding($explain, 'HTML-ENTITIES', 'UTF-8'), LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
-
+        $explain = mb_convert_encoding($explain, 'HTML-ENTITIES', 'UTF-8');
+        $explain = preg_replace('/<figure\b[^>]*>(.*?)<\/figure>/is', '$1', $explain);
+        $choice_explain->loadHTML($explain, LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
         $images_choice_explain = $choice_explain->getElementsByTagName('img');
 
         if (!file_exists(public_path('/upload/Que/ck/exp/'))) {
@@ -890,10 +967,12 @@ class ExamController extends Controller
             $imgexp->setAttribute('src', $newImageUrlexp);
           }
         }
+
         $explain = $choice_explain->saveHTML();
+        $decodedTextexplain = html_entity_decode($explain, ENT_QUOTES, 'UTF-8');
       }
 
-      $ques->explain = $explain;
+      $ques->explain = $decodedTextexplain;
     }
 
     $ques->score = $request->score;

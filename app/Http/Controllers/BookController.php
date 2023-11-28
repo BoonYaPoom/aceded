@@ -63,13 +63,16 @@ class BookController extends Controller
         if (!file_exists(public_path('/upload/Book/ck/'))) {
             mkdir(public_path('/upload/Book/ck/'), 0755, true);
         }
+
         if ($request->has('contents')) {
             $contents = $request->contents;
+            $decodedText = '';
             if (!empty($contents)) {
                 $de_th = new DOMDocument();
                 $de_th->encoding = 'UTF-8'; // Set encoding to UTF-8
                 $contents = mb_convert_encoding($contents, 'HTML-ENTITIES', 'UTF-8');
                 libxml_use_internal_errors(true); // Enable internal error handling
+                $contents = preg_replace('/<figure\b[^>]*>(.*?)<\/figure>/is', '$1', $contents);
                 $de_th->loadHTML($contents, LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
                 libxml_clear_errors(); // Clear any accumulated errors
                 $images_des_th = $de_th->getElementsByTagName('img');
@@ -85,9 +88,11 @@ class BookController extends Controller
                     }
                 }
                 $contents = $de_th->saveHTML();
+                $decodedText = html_entity_decode($contents, ENT_QUOTES, 'UTF-8');
             }
 
-            $books->contents = $contents;
+            $books->contents = $decodedText;
+            
         }
         $books->save();
 
@@ -115,6 +120,8 @@ class BookController extends Controller
         ini_set('max_execution_time', 300);
         ini_set('pcre.backtrack_limit', 5000000);
 
+        
+        if ($request->hasFile('bookfile')) {
         // บันทึกไฟล์ PDF และแปลงเป็นรูปภาพ
         if ($request->book_type == 0) {
             $file_name = $request->file('bookfile');
@@ -208,7 +215,7 @@ class BookController extends Controller
                 $books->save();
             }
         }
-
+    }
 
         return redirect()->route('bookcatpage', [$department_id, 'category_id' => $category_id])->with('message', 'book สร้างเรียบร้อยแล้ว');
     }
@@ -236,13 +243,15 @@ class BookController extends Controller
          
         if ($request->has('contents')) {
             $contents = $request->contents;
+            $decodedText = '';
             if (!empty($contents)) {
                 $de_th = new DOMDocument();
-                $de_th->encoding = 'UTF-8'; // Set encoding to UTF-8
+                $de_th->encoding = 'UTF-8'; 
                 $contents = mb_convert_encoding($contents, 'HTML-ENTITIES', 'UTF-8');
-                libxml_use_internal_errors(true); // Enable internal error handling
+                libxml_use_internal_errors(true); 
+                $contents = preg_replace('/<figure\b[^>]*>(.*?)<\/figure>/is', '$1', $contents);
                 $de_th->loadHTML($contents, LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
-                libxml_clear_errors(); // Clear any accumulated errors
+                libxml_clear_errors(); 
                 $images_des_th = $de_th->getElementsByTagName('img');
         
                 foreach ($images_des_th as $key => $img) {
@@ -255,10 +264,12 @@ class BookController extends Controller
                         $img->setAttribute('src', $newImageUrl);
                     }
                 }
+                
                 $contents = $de_th->saveHTML();
+                $decodedText = html_entity_decode($contents, ENT_QUOTES, 'UTF-8');
             }
 
-            $books->contents = $contents;
+            $books->contents = $decodedText;
         }
         $books->book_update = now();
         $books->book_status = $request->input('book_status', 0);
@@ -287,6 +298,7 @@ class BookController extends Controller
         ini_set('fastcgi_read_timeout', 400);
 
      // บันทึกไฟล์ PDF และแปลงเป็นรูปภาพ
+     if ($request->hasFile('bookfile')) {
      if ($request->book_type == 0) {
         $file_name = $request->file('bookfile');
         $file_namess = 'book' . '.' . $request->bookfile->getClientOriginalExtension();
@@ -383,7 +395,7 @@ class BookController extends Controller
         }
     }
     
-
+}
         $books->save();
 
         return redirect()->route('bookcatpage', [$department_id, 'category_id' => $books->category_id])->with('message', 'book  เปลี่ยนแปลงเรียบร้อยแล้ว');

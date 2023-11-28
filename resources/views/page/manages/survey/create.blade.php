@@ -22,11 +22,11 @@
                                 name="survey_th" placeholder="ชื่อ (ไทย)" required="" value="">
                         </div><!-- /.form-group -->
                         @error('survey_th')
-                            <span class="badge badge-warning">{{ $message }}</span>
+                            <span class="badge badge-danger">{{ $message }}</span>
                         @enderror
                         <!-- .form-group -->
                         <div class="form-group d-none">
-                            <label for="survey_en">ชื่อ (อังกฤษ) </label> <input type="text" class="form-control"
+                            <label for="survey_en">ชื่อ (อังกฤษ) <span class="badge badge-warning">Required</span></label> <input type="text" class="form-control"
                                 id="survey_en" name="survey_en" placeholder="ชื่อ (อังกฤษ)" value="">
                         </div><!-- /.form-group -->
 
@@ -35,7 +35,7 @@
                             <textarea class="editor" data-placeholder="รายละเอียด" data-height="200" name="detail_th"></textarea>
                         </div><!-- /.form-group -->
                         @error('detail_th')
-                            <span class="badge badge-warning">{{ $message }}</span>
+                            <span class="badge badge-danger">{{ $message }}</span>
                         @enderror
                         <!-- .form-group -->
                         <div class="form-group d-none">
@@ -57,8 +57,8 @@
                                 <label class="control-label" for="survey_lang">ภาษา</label>
                                 <select id="survey_lang" name="survey_lang" class="form-control" data-toggle="select2"
                                     data-placeholder="ภาษา" data-allow-clear="false">
-                                    <option value="TH">TH </option>
-                                    <option value="EN">EN </option>
+                                    <option value="th">TH </option>
+                                    <option value="en">EN </option>
                                 </select>
                             </div><!-- /.form-group -->
                         </div>

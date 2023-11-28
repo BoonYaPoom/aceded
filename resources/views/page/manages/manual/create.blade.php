@@ -37,9 +37,17 @@
                         @error('manual_path')
                             <span class="badge badge-warning">{{ $message }}</span>
                         @enderror
-                       
+                        <div class="form-group">
+                            <label for="manual_status">สถานะ </label> <label
+                                class="switcher-control switcher-control-success switcher-control-lg"><input type="checkbox"
+                                    class="switcher-input" name="manual_status" id="manual_status" value="1"
+                                  > <span class="switcher-indicator"></span>
+                                <span class="switcher-label-on">ON</span> <span
+                                    class="switcher-label-off text-red">OFF</span></label>
+                        </div><!-- /.form-group -->
                     </div><!-- /.card-body -->
            
+                  
             </div><!-- /.card -->
             <div class="form-actions">
                 <button class="btn btn-lg btn-primary ml-auto" type="submit"><i class="far fa-save"></i>

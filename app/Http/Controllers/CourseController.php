@@ -143,11 +143,13 @@ class CourseController extends Controller
         }
         if ($request->has('paymentdetail')) {
             $paymentdetail = $request->paymentdetail;
+            $decodedTextpaymentdetail = '';
             if (!empty($paymentdetail)) {
                 $des_th = new DOMDocument();
                 $des_th->encoding = 'UTF-8'; // กำหนด encoding เป็น UTF-8
-                $des_th->loadHTML(mb_convert_encoding($paymentdetail, 'HTML-ENTITIES', 'UTF-8'), LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
-
+                $paymentdetail = mb_convert_encoding($paymentdetail, 'HTML-ENTITIES', 'UTF-8');
+                $paymentdetail = preg_replace('/<figure\b[^>]*>(.*?)<\/figure>/is', '$1', $paymentdetail);
+                $des_th->loadHTML($paymentdetail, LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
                 $images_des_th = $des_th->getElementsByTagName('img');
 
                 foreach ($images_des_th as $key => $img) {
@@ -161,9 +163,10 @@ class CourseController extends Controller
                     }
                 }
                 $paymentdetail = $des_th->saveHTML();
+                $decodedTextpaymentdetail = html_entity_decode($paymentdetail, ENT_QUOTES, 'UTF-8');
             }
 
-            $cour->paymentdetail = $paymentdetail;
+            $cour->paymentdetail = $decodedTextpaymentdetail;
         }
         $cour->paymentdate = $request->paymentdate;
         $cour->payinslip = $request->input('payinslip', 0);
@@ -398,11 +401,13 @@ class CourseController extends Controller
         }
         if ($request->has('paymentdetail')) {
             $paymentdetail = $request->paymentdetail;
+            $decodedTextpaymentdetail = '';
             if (!empty($paymentdetail)) {
                 $des_th = new DOMDocument();
                 $des_th->encoding = 'UTF-8'; // กำหนด encoding เป็น UTF-8
-                $des_th->loadHTML(mb_convert_encoding($paymentdetail, 'HTML-ENTITIES', 'UTF-8'), LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
-
+                $paymentdetail = mb_convert_encoding($paymentdetail, 'HTML-ENTITIES', 'UTF-8');
+                $paymentdetail = preg_replace('/<figure\b[^>]*>(.*?)<\/figure>/is', '$1', $paymentdetail);
+                $des_th->loadHTML($paymentdetail, LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
                 $images_des_th = $des_th->getElementsByTagName('img');
 
                 foreach ($images_des_th as $key => $img) {
@@ -416,9 +421,10 @@ class CourseController extends Controller
                     }
                 }
                 $paymentdetail = $des_th->saveHTML();
+                $decodedTextpaymentdetail= html_entity_decode($paymentdetail, ENT_QUOTES, 'UTF-8');
             }
 
-            $cour->paymentdetail = $paymentdetail;
+            $cour->paymentdetail = $decodedTextpaymentdetail;
         }
         $cour->paymentdate = $request->paymentdate;
         $cour->payinslip = $request->input('payinslip', 0);
@@ -560,11 +566,13 @@ class CourseController extends Controller
         $cour = Course::findOrFail($course_id);
         if ($request->has('description_th')) {
             $description_th = $request->description_th;
+            $decodedTextdescription_th = '';
             if (!empty($description_th)) {
                 $des_th = new DOMDocument();
                 $des_th->encoding = 'UTF-8'; // กำหนด encoding เป็น UTF-8
-                $des_th->loadHTML(mb_convert_encoding($description_th, 'HTML-ENTITIES', 'UTF-8'), LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
-
+                $description_th = mb_convert_encoding($description_th, 'HTML-ENTITIES', 'UTF-8');
+                $description_th = preg_replace('/<figure\b[^>]*>(.*?)<\/figure>/is', '$1', $description_th);
+                $des_th->loadHTML($description_th, LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
                 $images_des_th = $des_th->getElementsByTagName('img');
 
                 foreach ($images_des_th as $key => $img) {
@@ -578,17 +586,20 @@ class CourseController extends Controller
                     }
                 }
                 $description_th = $des_th->saveHTML();
+                $decodedTextdescription_th= html_entity_decode($description_th, ENT_QUOTES, 'UTF-8');
             }
 
-            $cour->description_th = $description_th;
+            $cour->description_th = $decodedTextdescription_th;
         }
         if ($request->has('description_en')) {
             $description_en = $request->description_en;
+            $decodedTextdescription_en = '';
             if (!empty($description_en)) {
                 $des_en = new DOMDocument();
                 $des_en->encoding = 'UTF-8'; // กำหนด encoding เป็น UTF-8
-                $des_en->loadHTML(mb_convert_encoding($description_en, 'HTML-ENTITIES', 'UTF-8'), LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
-
+                $description_en = mb_convert_encoding($description_en, 'HTML-ENTITIES', 'UTF-8');
+                $description_en = preg_replace('/<figure\b[^>]*>(.*?)<\/figure>/is', '$1', $description_en);
+                $des_en->loadHTML($description_en, LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
                 $images_des_en = $des_en->getElementsByTagName('img');
 
                 // แปลงรูปภาพสำหรับเนื้อหาภาษาอังกฤษ
@@ -603,17 +614,21 @@ class CourseController extends Controller
                     }
                 }
                 $description_en = $des_en->saveHTML();
+                $decodedTextdescription_en = html_entity_decode($description_en, ENT_QUOTES, 'UTF-8');
             }
 
-            $cour->description_en = $description_en;
+            $cour->description_en = $decodedTextdescription_en;
+   
         }
         if ($request->has('objectives_th')) {
             $objectives_th = $request->objectives_th;
+            $decodedTextobjectives_th = '';
             if (!empty($objectives_th)) {
                 $ob_th = new DOMDocument();
                 $ob_th->encoding = 'UTF-8'; // กำหนด encoding เป็น UTF-8
-                $ob_th->loadHTML(mb_convert_encoding($objectives_th, 'HTML-ENTITIES', 'UTF-8'), LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
-
+                $objectives_th = mb_convert_encoding($objectives_th, 'HTML-ENTITIES', 'UTF-8');
+                $objectives_th = preg_replace('/<figure\b[^>]*>(.*?)<\/figure>/is', '$1', $objectives_th);
+                $ob_th->loadHTML($objectives_th, LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
                 $images_ob_th = $ob_th->getElementsByTagName('img');
 
                 foreach ($images_ob_th as $key => $img) {
@@ -627,17 +642,20 @@ class CourseController extends Controller
                     }
                 }
                 $objectives_th = $ob_th->saveHTML();
+                $decodedTextobjectives_th = html_entity_decode($objectives_th, ENT_QUOTES, 'UTF-8');
             }
 
-            $cour->objectives_th = $objectives_th;
+            $cour->objectives_th = $decodedTextobjectives_th;
         }
         if ($request->has('objectives_en')) {
             $objectives_en = $request->objectives_en;
+            $decodedTextobjectives_en = '';
             if (!empty($objectives_en)) {
                 $ob_en = new DOMDocument();
                 $ob_en->encoding = 'UTF-8'; // กำหนด encoding เป็น UTF-8
-                $ob_en->loadHTML(mb_convert_encoding($objectives_en, 'HTML-ENTITIES', 'UTF-8'), LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
-
+                $objectives_en = mb_convert_encoding($objectives_en, 'HTML-ENTITIES', 'UTF-8');
+                $objectives_en = preg_replace('/<figure\b[^>]*>(.*?)<\/figure>/is', '$1', $objectives_en);
+                $ob_en->loadHTML($objectives_en, LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
                 $images_ob_en = $ob_en->getElementsByTagName('img');
                 foreach ($images_ob_en as $key => $img) {
                     if (strpos($img->getAttribute('src'), 'data:image/') === 0) {
@@ -650,17 +668,20 @@ class CourseController extends Controller
                     }
                 }
                 $objectives_en = $ob_en->saveHTML();
+                $decodedTextobjectives_en = html_entity_decode($objectives_en, ENT_QUOTES, 'UTF-8');
             }
 
-            $cour->objectives_en = $objectives_en;
+            $cour->objectives_en = $decodedTextobjectives_en;
         }
         if ($request->has('qualification_th')) {
             $qualification_th = $request->qualification_th;
+            $decodedTextqualification_th = '';
             if (!empty($qualification_th)) {
                 $qua_th = new DOMDocument();
                 $qua_th->encoding = 'UTF-8'; // กำหนด encoding เป็น UTF-8
-                $qua_th->loadHTML(mb_convert_encoding($qualification_th, 'HTML-ENTITIES', 'UTF-8'), LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
-
+                $qualification_th = mb_convert_encoding($qualification_th, 'HTML-ENTITIES', 'UTF-8');
+                $qualification_th = preg_replace('/<figure\b[^>]*>(.*?)<\/figure>/is', '$1', $qualification_th);
+                $qua_th->loadHTML($qualification_th, LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
                 $images_qua_th = $qua_th->getElementsByTagName('img');
 
                 foreach ($images_qua_th as $key => $img) {
@@ -674,17 +695,20 @@ class CourseController extends Controller
                     }
                 }
                 $qualification_th = $qua_th->saveHTML();
+                $decodedTextqualification_th = html_entity_decode($qualification_th, ENT_QUOTES, 'UTF-8');
             }
 
-            $cour->qualification_th = $qualification_th;
+            $cour->qualification_th = $decodedTextqualification_th;
         }
         if ($request->has('qualification_en')) {
             $qualification_en = $request->qualification_en;
+            $decodedTextqualification_en = '';
             if (!empty($qualification_en)) {
                 $qua_en = new DOMDocument();
                 $qua_en->encoding = 'UTF-8'; // กำหนด encoding เป็น UTF-8
-                $qua_en->loadHTML(mb_convert_encoding($qualification_en, 'HTML-ENTITIES', 'UTF-8'), LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
-
+                $qualification_en = mb_convert_encoding($qualification_en, 'HTML-ENTITIES', 'UTF-8');
+                $qualification_en = preg_replace('/<figure\b[^>]*>(.*?)<\/figure>/is', '$1', $qualification_en);
+                $qua_en->loadHTML($qualification_en, LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
                 $images_qua_en = $qua_en->getElementsByTagName('img');
 
                 foreach ($images_qua_en as $key => $img) {
@@ -698,17 +722,20 @@ class CourseController extends Controller
                     }
                 }
                 $qualification_en = $qua_en->saveHTML();
+                $decodedTextqualification_en = html_entity_decode($qualification_en, ENT_QUOTES, 'UTF-8');
             }
 
-            $cour->qualification_en = $qualification_en;
+            $cour->qualification_en = $decodedTextqualification_en;
         }
         if ($request->has('evaluation_th')) {
             $evaluation_th = $request->evaluation_th;
+            $decodedTextevaluation_th = '';
             if (!empty($evaluation_th)) {
                 $eva_th = new DOMDocument();
                 $eva_th->encoding = 'UTF-8'; // กำหนด encoding เป็น UTF-8
-                $eva_th->loadHTML(mb_convert_encoding($evaluation_th, 'HTML-ENTITIES', 'UTF-8'), LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
-
+                $evaluation_th = mb_convert_encoding($evaluation_th, 'HTML-ENTITIES', 'UTF-8');
+                $evaluation_th = preg_replace('/<figure\b[^>]*>(.*?)<\/figure>/is', '$1', $evaluation_th);
+                $eva_th->loadHTML($evaluation_th, LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
                 $images_eva_th = $eva_th->getElementsByTagName('img');
 
                 foreach ($images_eva_th as $key => $img) {
@@ -722,17 +749,20 @@ class CourseController extends Controller
                     }
                 }
                 $evaluation_th = $eva_th->saveHTML();
+                $decodedTextevaluation_th = html_entity_decode($evaluation_th, ENT_QUOTES, 'UTF-8');
             }
 
-            $cour->evaluation_th = $evaluation_th;
+            $cour->evaluation_th = $decodedTextevaluation_th;
         }
         if ($request->has('evaluation_en')) {
             $evaluation_en = $request->evaluation_en;
+            $decodedTextevaluation_en = '';
             if (!empty($evaluation_en)) {
                 $eva_en = new DOMDocument();
                 $eva_en->encoding = 'UTF-8'; // กำหนด encoding เป็น UTF-8
-                $eva_en->loadHTML(mb_convert_encoding($evaluation_en, 'HTML-ENTITIES', 'UTF-8'), LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
-
+                $evaluation_en = mb_convert_encoding($evaluation_en, 'HTML-ENTITIES', 'UTF-8');
+                $evaluation_en = preg_replace('/<figure\b[^>]*>(.*?)<\/figure>/is', '$1', $evaluation_en);
+                $eva_en->loadHTML($evaluation_en, LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
                 $images_eva_en = $eva_en->getElementsByTagName('img');
 
                 foreach ($images_eva_en as $key => $img) {
@@ -746,9 +776,10 @@ class CourseController extends Controller
                     }
                 }
                 $evaluation_en = $eva_en->saveHTML();
+                $decodedTextevaluation_en = html_entity_decode($evaluation_en, ENT_QUOTES, 'UTF-8');
             }
 
-            $cour->evaluation_en = $evaluation_en;
+            $cour->evaluation_en = $decodedTextevaluation_en;
         }
 
 

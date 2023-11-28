@@ -21,7 +21,7 @@
 
                         <div class="form-group">
                             <label for="category_th">ชื่อหมวด (ไทย) <span class="badge badge-warning">Required</span> </label>
-                            <input type="text" class="form-control" name="category_th" placeholder="ชื่อหมวด (ไทย)"
+                            <input type="text" class="form-control"  name="category_th" placeholder="ชื่อหมวด (ไทย)"
                                 required="" value="">
                         </div><!-- /.form-group -->
                         <div class="my-2"></div>
@@ -29,26 +29,15 @@
                             <span class="badge badge-warning">{{ $message }}</span>
                         @enderror
                         <div class="form-group">
-                            <label for="category_en">ชื่อหมวด (อังกฤษ) </label>
-                            <input type="text" class="form-control" name="category_en" placeholder="ชื่อหมวด (อังกฤษ)"
+                            <label for="category_en">ชื่อหมวด (อังกฤษ) <span class="badge badge-warning">Required</span> </label></label>
+                            <input type="text" class="form-control" required=""  name="category_en" placeholder="ชื่อหมวด (อังกฤษ)"
                                 value="">
                         </div><!-- /.form-group -->
-                        <div class="form-row">
-                            <div class="col-md-6 mb-3">
-                                <label for="flatpickr03">วันที่เริ่ม</label>
-                                <input id="flatpickr03" name="startdate" value="" type="text"
-                                    class="form-control startdate " data-toggle="flatpickr">
-                            </div>
-                            <div class="col-md-6 mb-3">
-                                <label for="flatpickr04">วันที่สิ้นสุด</label>
-                                <input id="flatpickr04" name="enddate" value="" type="text"
-                                    class="form-control enddate " data-toggle="flatpickr">
-                            </div>
-                        </div>
+                  
 
                         <div class="form-group">
-                            <label for="cover">ภาพปก </label>
-                            <input type="file" class="form-control" accept="image/*" name="cover" placeholder="ภาพปก">
+                            <label for="cover">ภาพปก <span class="badge badge-warning">Required</span> </label></label>
+                            <input type="file" class="form-control"  required=""  accept="image/*" name="cover" placeholder="ภาพปก">
 
                         </div><!-- /.card-body -->
 

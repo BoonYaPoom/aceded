@@ -36,7 +36,7 @@ class WebController extends Controller
     public function store(Request $request, $department_id, $category_id)
     {
 
-
+        $category  = WebCategory::findOrFail($category_id);
         $validator = Validator::make($request->all(), [
             'web_th' => 'required',
 
@@ -49,12 +49,12 @@ class WebController extends Controller
                 ->with('error', 'ข้อมูลไม่ถูกต้อง');
         }
 
-        try {
+    
             $lastSort = Web::where('category_id', $category_id)->max('sort');
             $newSort = $lastSort + 1;
-          
-            $webs = new Web;
 
+            $webs = new Web;
+   
             $webs->web_th = $request->web_th;
             $webs->web_en = $request->web_en;
             $webs->web_date = now();
@@ -64,19 +64,34 @@ class WebController extends Controller
             $webs->sort = $newSort;;
             $webs->web_option = null;
             $webs->category_id = (int)$category_id;
+            if($category->category_type == 2){
+                if ($request->startdate) {
+                    $webs->startdate = $request->startdate;
+                }else{
+                    $webs->startdate = null ;
+                }
+                if ($request->enddate) {
+                    $webs->enddate = $request->enddate;
+                }else{
+                    $webs->enddate = null ;
+                }
+            }
+    
 
-        
             if (!file_exists(public_path('/upload/Web/ck/'))) {
                 mkdir(public_path('/upload/Web/ck/'), 0755, true);
             }
             if ($request->has('detail_th')) {
                 $detail_th = $request->detail_th;
+                $decodedTextdetail_th = '';
                 if (!empty($detail_th)) {
                     $de_th = new DOMDocument();
                     $de_th->encoding = 'UTF-8'; // Set encoding to UTF-8
                     $detail_th = mb_convert_encoding($detail_th, 'HTML-ENTITIES', 'UTF-8');
-                    libxml_use_internal_errors(true); // Enable internal error handling
+                    $detail_th = preg_replace('/<figure\b[^>]*>(.*?)<\/figure>/is', '$1', $detail_th);
                     $de_th->loadHTML($detail_th, LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
+                  
+                    libxml_use_internal_errors(true); // Enable internal error handling
                     libxml_clear_errors(); // Clear any accumulated errors
                     $images_des_th = $de_th->getElementsByTagName('img');
                     foreach ($images_des_th as $key => $img) {
@@ -90,22 +105,25 @@ class WebController extends Controller
                         }
                     }
                     $detail_th = $de_th->saveHTML();
+                    $decodedTextdetail_th = html_entity_decode($detail_th, ENT_QUOTES, 'UTF-8');
                 }
-    
-                $webs->detail_th = $detail_th;
+
+                $webs->detail_th = $decodedTextdetail_th;
             }
 
             if ($request->has('detail_en')) {
                 $detail_en = $request->detail_en;
+                $decodedTextdetail_en = '';
                 if (!empty($detail_en)) {
                     $de_en = new DOMDocument();
                     $de_en->encoding = 'UTF-8'; // Set encoding to UTF-8
                     $detail_en = mb_convert_encoding($detail_en, 'HTML-ENTITIES', 'UTF-8');
+                    $detail_en = preg_replace('/<figure\b[^>]*>(.*?)<\/figure>/is', '$1', $detail_en);
                     libxml_use_internal_errors(true); // Enable internal error handling
                     $de_en->loadHTML($detail_en, LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
                     libxml_clear_errors(); // Clear any accumulated errors
-                                    $images_de_en = $de_en->getElementsByTagName('img');
-    
+                    $images_de_en = $de_en->getElementsByTagName('img');
+
                     foreach ($images_de_en as $key => $img) {
                         if (strpos($img->getAttribute('src'), 'data:image/') === 0) {
                             $data = base64_decode(explode(',', explode(';', $img->getAttribute('src'))[1])[1]);
@@ -117,11 +135,13 @@ class WebController extends Controller
                         }
                     }
                     $detail_en = $de_en->saveHTML();
+                    $decodedTextdetail_en = html_entity_decode($detail_en, ENT_QUOTES, 'UTF-8');
                 }
-    
-                $webs->detail_en = $detail_en;
+
+
+                $webs->detail_en = $decodedTextdetail_en;
             }
-            
+
             $webs->save();
 
             if ($request->hasFile('cover')) {
@@ -141,7 +161,7 @@ class WebController extends Controller
                 $webs->cover = $file_name;
                 $webs->save();
             }
-           
+
             if (Session::has('loginId')) {
                 $loginId = Session::get('loginId');
 
@@ -192,14 +212,9 @@ class WebController extends Controller
 
             $loginLog->save();
             DB::commit();
-        } catch (\Exception $e) {
-
-            DB::rollBack();
-
-            return response()->view('error.error-500', [], 500);
-        }
-        return redirect()->route('catpage', ['department_id' => $department_id, 'category_id' => $category_id])->with('message', 'Data update successfully');
-    }
+      
+        return redirect()->route('catpage', ['department_id' => $department_id, 'category_id' => $webs->category_id])->with('message', 'Data create successfully');
+     }
     public function edit($department_id, $web_id)
     {
         $webs = Web::findOrFail($web_id);
@@ -232,7 +247,12 @@ class WebController extends Controller
 
         $webs->web_th = $request->web_th;
         $webs->web_en = $request->web_en;
-   
+        if ($request->startdate) {
+            $webs->startdate = $request->startdate;
+        }
+        if ($request->enddate) {
+            $webs->enddate = $request->enddate;
+        }
         $webs->web_update = now();
         $webs->web_status = $request->input('web_status', 0);
         $webs->recommended = $request->input('recommended', 0);
@@ -243,15 +263,17 @@ class WebController extends Controller
         }
         if ($request->has('detail_th')) {
             $detail_th = $request->detail_th;
+            $decodedTextdetail_th = '';
             if (!empty($detail_th)) {
                 $de_th = new DOMDocument();
                 $de_th->encoding = 'UTF-8'; // Set encoding to UTF-8
                 $detail_th = mb_convert_encoding($detail_th, 'HTML-ENTITIES', 'UTF-8');
                 libxml_use_internal_errors(true); // Enable internal error handling
+                $detail_th = preg_replace('/<figure\b[^>]*>(.*?)<\/figure>/is', '$1', $detail_th);
                 $de_th->loadHTML($detail_th, LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
                 libxml_clear_errors(); // Clear any accumulated errors
                 $images_des_th = $de_th->getElementsByTagName('img');
-        
+
                 foreach ($images_des_th as $key => $img) {
                     if (strpos($img->getAttribute('src'), 'data:image/') === 0) {
                         $data = base64_decode(explode(',', explode(';', $img->getAttribute('src'))[1])[1]);
@@ -263,21 +285,24 @@ class WebController extends Controller
                     }
                 }
                 $detail_th = $de_th->saveHTML();
+                $decodedTextdetail_th = html_entity_decode($detail_th, ENT_QUOTES, 'UTF-8');
             }
 
-            $webs->detail_th = $detail_th;
+            $webs->detail_th = $decodedTextdetail_th;
         }
 
         if ($request->has('detail_en')) {
             $detail_en = $request->detail_en;
+            $decodedTextdetail_en = '';
             if (!empty($detail_en)) {
                 $de_en = new DOMDocument();
                 $de_en->encoding = 'UTF-8'; // Set encoding to UTF-8
                 $detail_en = mb_convert_encoding($detail_en, 'HTML-ENTITIES', 'UTF-8');
                 libxml_use_internal_errors(true); // Enable internal error handling
+                $detail_en = preg_replace('/<figure\b[^>]*>(.*?)<\/figure>/is', '$1', $detail_en);
                 $de_en->loadHTML($detail_en, LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
                 libxml_clear_errors(); // Clear any accumulated errors
-                                $images_de_en = $de_en->getElementsByTagName('img');
+                $images_de_en = $de_en->getElementsByTagName('img');
 
                 foreach ($images_de_en as $key => $img) {
                     if (strpos($img->getAttribute('src'), 'data:image/') === 0) {
@@ -290,11 +315,12 @@ class WebController extends Controller
                     }
                 }
                 $detail_en = $de_en->saveHTML();
+                $decodedTextdetail_en = html_entity_decode($detail_en, ENT_QUOTES, 'UTF-8');
             }
 
-            $webs->detail_en = $detail_en;
+            $webs->detail_en = $decodedTextdetail_en;
         }
-        
+
         $webs->save();
 
 
@@ -348,7 +374,7 @@ class WebController extends Controller
 
         $loginLog->save();
 
-        return redirect()->route('catpage', ['department_id' => $department_id, 'category_id' => $webs->category_id])->with('warning', 'Data update successfully');
+        return redirect()->route('catpage', ['department_id' => $department_id, 'category_id' => $webs->category_id])->with('message', 'Data update successfully');
     }
 
     public function destroy($web_id)

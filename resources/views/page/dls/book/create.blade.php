@@ -26,8 +26,6 @@
                             </select>
                         </div>
                         <!-- /.form-group -->
-
-
                         <!-- .form-group -->
                         <div class="form-group">
                             <label for="category_th">ชื่อหมวด (ไทย) <span
@@ -44,46 +42,15 @@
 
                         <!-- .form-group -->
                         <div class="form-group">
-                            <label for="category_en">ชื่อหมวด (อังกฤษ) </label>
+                            <label for="category_en">ชื่อหมวด (อังกฤษ) <span
+                                class="badge badge-warning">Required</span></label>
                             <input type="text" class="form-control" id="category_en" name="category_en"
-                                placeholder="ชื่อหมวด (อังกฤษ)" value="">
+                                placeholder="ชื่อหมวด (อังกฤษ)" value="" required="">
                         </div>
                         <!-- /.form-group -->
 
-                        <!-- .form-group -->
-                        <div class="form-group"><label for="cover">ภาพปก <span
-                            class="badge badge-warning">Required</span></label>
-                            <input type="file" class="form-control" id="cover" name="cover" placeholder="ภาพปก"
-                                accept="image/*" required="เพิ่มภาพ">
+               
 
-                        </div> <!-- /.form-group -->
-                        @if($errors->has('cover'))
-                        <span class="badge badge-warning">{{ $errors->first('cover') }}</span>
-                    @endif
-                    
-                        <!-- .form-group -->
-                        <div class="form-group d-none">
-                            <label for="detail_th">รายละเอียด (ไทย)</label>
-                            <textarea class="editor" data-placeholder="รายละเอียด (ไทย)" data-height="200" name="detail_th"></textarea>
-                        </div>
-                        <!-- /.form-group -->
-
-                        <!-- .form-group -->
-                        <div class="form-group d-none">
-                            <label for="detail_en">รายละเอียด (อังกฤษ)</label>
-                            <textarea class="editor" data-placeholder="รายละเอียด (อังกฤษ)" data-height="200" name="detail_en"></textarea>
-                        </div>
-                        <!-- /.form-group -->
-
-                        <!-- .form-group -->
-                        <div class="form-group d-none">
-                            <label for="recommended">แนะนำ </label>
-                            <label class="switcher-control switcher-control-success switcher-control-lg">
-                                <input type="checkbox" class="switcher-input" name="recommended" id="recommended"
-                                    value="1">
-                                <span class="switcher-indicator"></span> <span class="switcher-label-on">ON</span> <span
-                                    class="switcher-label-off text-red">OFF</span></label>
-                        </div>
                         <!-- /.form-group -->
                         <div class="form-group">
                             <label for="category_status">สถานะ </label>

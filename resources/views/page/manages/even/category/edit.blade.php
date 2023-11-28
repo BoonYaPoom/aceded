@@ -64,6 +64,73 @@
                                 value="{{ $webs->detail_en }}">{{ $webs->detail_en }}</textarea>
                         </div><!-- /.form-group -->
                         <!-- .form-group -->
+
+                        @if ($category->category_type == 2)
+          
+                        <div class="form-row">
+                            <div class="col-md-6 mb-3">
+                                <label for="flatpickr03">วันที่เริ่ม</label>
+                                <input type="text" class="form-control" name="startdate" id="flatpickr03"
+                                    value="{{$webs->startdate}}" />
+                            </div>
+
+                            <div class="col-md-6 mb-3">
+                                <label for="flatpickr04">วันที่สิ้นสุด</label>
+                                <input type="text" class="form-control" name="enddate" id="flatpickr04"
+                                    value="{{$webs->enddate}}" />
+                            </div>
+
+                        </div>
+                        @endif
+                        <script>
+                            document.addEventListener("DOMContentLoaded", function() {
+                                flatpickr("#flatpickr03", {
+                                    altInput: true,
+                                    altFormat: "j F, Y",
+                                    dateFormat: "Y-m-d",
+                                    locale: {
+                                        firstDayOfWeek: 1, // Monday
+                                        weekdays: {
+                                            shorthand: ["อา", "จ", "อ", "พ", "พฤ", "ศ", "ส"],
+                                            longhand: ["อาทิตย์", "จันทร์", "อังคาร", "พุธ", "พฤหัสบดี", "ศุกร์", "เสาร์"]
+                                        },
+                                        months: {
+                                            shorthand: ["ม.ค.", "ก.พ.", "มี.ค.", "เม.ย.", "พ.ค.", "มิ.ย.", "ก.ค.", "ส.ค.",
+                                                "ก.ย.", "ต.ค.", "พ.ย.", "ธ.ค."
+                                            ],
+                                            longhand: [
+                                                "มกราคม", "กุมภาพันธ์", "มีนาคม", "เมษายน", "พฤษภาคม", "มิถุนายน",
+                                                "กรกฎาคม", "สิงหาคม", "กันยายน", "ตุลาคม", "พฤศจิกายน", "ธันวาคม"
+                                            ]
+                                        }
+                                    }
+                                });
+                            });
+                            document.addEventListener("DOMContentLoaded", function() {
+                                flatpickr("#flatpickr04", {
+                                    altInput: true,
+                                    altFormat: "j F, Y",
+                                    dateFormat: "Y-m-d",
+                                    locale: {
+                                        firstDayOfWeek: 1, // Monday
+                                        weekdays: {
+                                            shorthand: ["อา", "จ", "อ", "พ", "พฤ", "ศ", "ส"],
+                                            longhand: ["อาทิตย์", "จันทร์", "อังคาร", "พุธ", "พฤหัสบดี", "ศุกร์", "เสาร์"]
+                                        },
+                                        months: {
+                                            shorthand: ["ม.ค.", "ก.พ.", "มี.ค.", "เม.ย.", "พ.ค.", "มิ.ย.", "ก.ค.", "ส.ค.",
+                                                "ก.ย.", "ต.ค.", "พ.ย.", "ธ.ค."
+                                            ],
+                                            longhand: [
+                                                "มกราคม", "กุมภาพันธ์", "มีนาคม", "เมษายน", "พฤษภาคม", "มิถุนายน",
+                                                "กรกฎาคม", "สิงหาคม", "กันยายน", "ตุลาคม", "พฤศจิกายน", "ธันวาคม"
+                                            ]
+                                        }
+                                    }
+                                });
+                            });
+                        </script>
+
                         <div class="form-group">
                             <label for="recommended">แนะนำ </label> <label
                                 class="switcher-control switcher-control-success switcher-control-lg"><input type="checkbox"

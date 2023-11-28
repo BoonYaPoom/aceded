@@ -27,11 +27,11 @@
                             <span class="badge badge-warning">{{ $message }}</span>
                         @enderror
                         <div class="form-group ">
-                            <label for="detail">รายละเอียด (ไทย)</label>
+                            <label for="detail">รายละเอียด (ไทย) <span class="badge badge-warning">Required</span></label>
                             <textarea class="editor" data-placeholder="รายละเอียด" data-height="200" name="detail"></textarea>
                         </div>
                         @error('detail')
-                            <span class="badge badge-warning">{{ $message }}</span>
+                            <span class="badge badge-warning">เพิ่มรายละเอียด </span>
                         @enderror
                         <!-- .form-group -->
                         <div class="form-group d-none">

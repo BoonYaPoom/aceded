@@ -50,8 +50,7 @@ class ManualController extends Controller
 
             $manuals->detail = '';
             $manuals->department_id = (int)$department_id;
-            $manuals->manual_status = 1;
-
+            $manuals->manual_status = $request->input('manual_status', 0);
             $manuals->manual_type = 1;
             $manuals->save();
             if ($request->hasFile('cover')) {
@@ -175,6 +174,7 @@ class ManualController extends Controller
         }
         $manuals->detail = '';
         $manuals->manual_status = 0;
+        $manuals->manual_status = $request->input('manual_status', 0);
         $manuals->manual_type = 1;
         $manuals->save();
 

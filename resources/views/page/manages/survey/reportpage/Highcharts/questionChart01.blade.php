@@ -1,10 +1,8 @@
-
-
-    <td>
-        {!! $item->question !!}
-    </td>
-    <td>{{ $item->question_type == 1 ? 'ตัวเลือก' : ($item->question_type == 2 ? 'หลายมิติ' : 'เขียนอธิบาย') }}
-    </td>
+<td>
+    {!! $item->question !!}
+</td>
+<td>{{ $item->question_type == 1 ? 'ตัวเลือก' : ($item->question_type == 2 ? 'หลายมิติ' : 'เขียนอธิบาย') }}
+</td>
 </tr>
 <tr>
 </tr>
@@ -17,7 +15,7 @@
             <tbody>
                 @php
                     $chartData = [];
-                $newqures = $item->question;
+                    $newqures = $item->question;
                 @endphp
                 @for ($i = 1; $i <= 8; $i++)
                     @if (isset($item->{'choice' . $i}))
@@ -25,7 +23,7 @@
                             <td></td>
                             @php
                                 $totalPeople = 0; // เก็บจำนวนคนทั้งหมดที่แสดง
-                                
+
                             @endphp
                             @foreach ($respoe as $reitem)
                                 @php
@@ -33,12 +31,12 @@
                                     $jsonRespon = json_decode($itemrespon, true);
                                     $dataRespon = collect($jsonRespon);
                                     $datajson = isset($dataRespon[$item->question_id]) ? json_decode($dataRespon[$item->question_id], true) : null;
-                                    
+
                                 @endphp
                                 @if (isset($datajson) && $datajson == $i)
                                     @php
                                         $totalPeople += 1; // เพิ่มจำนวนคนที่แสดงลงใน $totalPeople
-                                        
+
                                     @endphp
                                 @endif
                             @endforeach
@@ -111,7 +109,7 @@
                                         y: item.count
                                     }))
                                 }]
-                                
+
                             });
                         </script>
                     @endif

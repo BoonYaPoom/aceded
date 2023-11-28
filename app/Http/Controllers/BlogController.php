@@ -15,7 +15,7 @@ use Illuminate\Support\Facades\Validator;
 
 class BlogController extends Controller
 {
-    public function index($department_id,$category_id)
+    public function index($department_id, $category_id)
     {
         $blogcat = BlogCategory::findOrFail($category_id);
         $blogs = $blogcat->blogs()->where('category_id', $category_id)->get();
@@ -24,7 +24,7 @@ class BlogController extends Controller
         return view('page.dls.blog.cat.index', compact('blogcat', 'blogs', 'depart'));
     }
 
-    public function create($department_id,$category_id)
+    public function create($department_id, $category_id)
     {
         $blogcat = BlogCategory::findOrFail($category_id);
         $department_id   = $blogcat->department_id;
@@ -32,7 +32,7 @@ class BlogController extends Controller
         return view('page.dls.blog.cat.create', compact('blogcat', 'depart'));
     }
 
-    public function store(Request $request,$department_id, $category_id)
+    public function store(Request $request, $department_id, $category_id)
     {
 
 
@@ -47,46 +47,52 @@ class BlogController extends Controller
                 ->withInput()
                 ->with('error', 'ข้อมูลไม่ถูกต้อง');
         }
-        try{
+
         $latest_sort = Blog::max('sort');
         $new_sort = $latest_sort + 1;
         $blogs = new Blog;
         $blogs->title = $request->title;
         $blogs->title_en = $request->title;
 
-                     
-   
-      if (!file_exists(public_path('/upload/Blog/ck/'))) {
-         mkdir(public_path('/upload/Blog/ck/'), 0755, true);
-      }
-      if ($request->has('detail')) {
-         $detail = $request->detail;
-         if (!empty($detail)) {
-            $de_th = new DOMDocument();
-            $de_th->encoding = 'UTF-8'; // กำหนด encoding เป็น UTF-8
-            $de_th->loadHTML(mb_convert_encoding($detail, 'HTML-ENTITIES', 'UTF-8'), LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
-            libxml_use_internal_errors(true);
-            $images_des_th = $de_th->getElementsByTagName('img');
 
-            foreach ($images_des_th as $key => $img) {
-               if (strpos($img->getAttribute('src'), 'data:image/') === 0) {
-                  $data = base64_decode(explode(',', explode(';', $img->getAttribute('src'))[1])[1]);
-                  $image_name = '/upload/Blog/ck/' . time() . $key . '.png'; // ใส่ .png เพื่อให้เป็นนามสกุลไฟล์ถูกต้อง
-                  file_put_contents(public_path() . $image_name, $data);
-                  $img->removeAttribute('src');
-                  $newImageUrl = asset($image_name);
-                  $img->setAttribute('src', $newImageUrl);
-               }
+
+        if (!file_exists(public_path('/upload/Blog/ck/'))) {
+            mkdir(public_path('/upload/Blog/ck/'), 0755, true);
+        }
+        if ($request->has('detail')) {
+            $detail = $request->detail;
+            $decodedText = '';
+            if (!empty($detail)) {
+                $de_th = new DOMDocument();
+                $de_th->encoding = 'UTF-8';
+                libxml_use_internal_errors(true);
+                $detail = mb_convert_encoding($detail, 'HTML-ENTITIES', 'UTF-8');
+                $detail = preg_replace('/<figure\b[^>]*>(.*?)<\/figure>/is', '$1', $detail);
+                $de_th->loadHTML($detail, LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
+                // ปิดการใช้งานการบันทึกข้อผิดพลาด
+                libxml_use_internal_errors(false);
+                $images_des_th = $de_th->getElementsByTagName('img');
+
+                foreach ($images_des_th as $key => $img) {
+                    if (strpos($img->getAttribute('src'), 'data:image/') === 0) {
+                        $data = base64_decode(explode(',', explode(';', $img->getAttribute('src'))[1])[1]);
+                        $image_name = '/upload/Blog/ck/' . time() . $key . '.png'; // ใส่ .png เพื่อให้เป็นนามสกุลไฟล์ถูกต้อง
+                        file_put_contents(public_path() . $image_name, $data);
+                        $img->removeAttribute('src');
+                        $newImageUrl = asset($image_name);
+                        $img->setAttribute('src', $newImageUrl);
+                    }
+                }
+                $detail = $de_th->saveHTML();
+                $decodedText = html_entity_decode($detail, ENT_QUOTES, 'UTF-8');
             }
-            $detail = $de_th->saveHTML();
-         }
 
-         $blogs->detail = $detail;
-      }
+            $blogs->detail = $decodedText;
+        }
         $blogs->detail_en =  $request->detail;
         $blogs->blog_date = now();
         $blogs->blog_status = $request->input('blog_status', 0);
-        $blogs->author = 'TCCT';
+        $blogs->author = 'ACED';
         $blogs->comment = 1;
         $blogs->recommended = 1;
         $blogs->options = null;
@@ -98,13 +104,7 @@ class BlogController extends Controller
         $blogs->bgcustom = null;
         $blogs->category_id = (int)$category_id;
         $blogs->save();
-        DB::commit();
-    } catch (\Exception $e) {
 
-        DB::rollBack();
-        
-        return response()->view('error.error-500', [], 500);
-    }
 
         if (Session::has('loginId')) {
             $loginId = Session::get('loginId');
@@ -157,9 +157,9 @@ class BlogController extends Controller
         $loginLog->save();
 
 
-        return redirect()->route('blog', [$department_id,'category_id' => $category_id])->with('message', 'blog สร้างเรียบร้อยแล้ว');
+        return redirect()->route('blog', [$department_id, 'category_id' => $category_id])->with('message', 'blog สร้างเรียบร้อยแล้ว');
     }
-    public function edit($department_id,$blog_id)
+    public function edit($department_id, $blog_id)
     {
         $blogs = Blog::findOrFail($blog_id);
         $category_id = $blogs->category_id;
@@ -169,7 +169,7 @@ class BlogController extends Controller
         return view('page.dls.blog.cat.edit', ['blogs' => $blogs, 'blogcat' => $blogcat, 'depart' => $depart]);
     }
 
-    public function update(Request $request,$department_id, $blog_id)
+    public function update(Request $request, $department_id, $blog_id)
     {
 
         $request->validate([
@@ -180,33 +180,39 @@ class BlogController extends Controller
         $blogs = Blog::findOrFail($blog_id);
 
         $blogs->title = $request->title;
-      
+
         if (!file_exists(public_path('/upload/Blog/ck/'))) {
-           mkdir(public_path('/upload/Blog/ck/'), 0755, true);
+            mkdir(public_path('/upload/Blog/ck/'), 0755, true);
         }
         if ($request->has('detail')) {
-           $detail = $request->detail;
-           if (!empty($detail)) {
-              $de_th = new DOMDocument();
-              $de_th->encoding = 'UTF-8'; // กำหนด encoding เป็น UTF-8
-              $de_th->loadHTML(mb_convert_encoding($detail, 'HTML-ENTITIES', 'UTF-8'), LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
-              libxml_use_internal_errors(true);
-              $images_des_th = $de_th->getElementsByTagName('img');
-  
-              foreach ($images_des_th as $key => $img) {
-                 if (strpos($img->getAttribute('src'), 'data:image/') === 0) {
-                    $data = base64_decode(explode(',', explode(';', $img->getAttribute('src'))[1])[1]);
-                    $image_name = '/upload/Blog/ck/' . time() . $key . '.png'; // ใส่ .png เพื่อให้เป็นนามสกุลไฟล์ถูกต้อง
-                    file_put_contents(public_path() . $image_name, $data);
-                    $img->removeAttribute('src');
-                    $newImageUrl = asset($image_name);
-                    $img->setAttribute('src', $newImageUrl);
-                 }
-              }
-              $detail = $de_th->saveHTML();
-           }
-  
-           $blogs->detail = $detail;
+            $detail = $request->detail;
+            $decodedText = '';
+            if (!empty($detail)) {
+                $de_th = new DOMDocument();
+                $de_th->encoding = 'UTF-8'; // กำหนด encoding เป็น UTF-8
+                $detail = mb_convert_encoding($detail, 'HTML-ENTITIES', 'UTF-8');
+                $detail = preg_replace('/<figure\b[^>]*>(.*?)<\/figure>/is', '$1', $detail);
+                $de_th->loadHTML($detail, LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
+                libxml_use_internal_errors(true);
+                $images_des_th = $de_th->getElementsByTagName('img');
+                libxml_clear_errors();
+
+                libxml_use_internal_errors(false);
+                foreach ($images_des_th as $key => $img) {
+                    if (strpos($img->getAttribute('src'), 'data:image/') === 0) {
+                        $data = base64_decode(explode(',', explode(';', $img->getAttribute('src'))[1])[1]);
+                        $image_name = '/upload/Blog/ck/' . time() . $key . '.png'; // ใส่ .png เพื่อให้เป็นนามสกุลไฟล์ถูกต้อง
+                        file_put_contents(public_path() . $image_name, $data);
+                        $img->removeAttribute('src');
+                        $newImageUrl = asset($image_name);
+                        $img->setAttribute('src', $newImageUrl);
+                    }
+                }
+                $detail = $de_th->saveHTML();
+                $decodedText = html_entity_decode($detail, ENT_QUOTES, 'UTF-8');
+            }
+
+            $blogs->detail = $decodedText;
         }
         $blogs->blog_date = now();
         $blogs->blog_status = $request->input('blog_status', 0);
@@ -272,7 +278,7 @@ class BlogController extends Controller
 
         $loginLog->save();
 
-        return redirect()->route('blog', [$department_id,'category_id' => $blogs->category_id])->with('message', 'blog เปลี่ยนแปลงเรียบร้อยแล้ว');
+        return redirect()->route('blog', [$department_id, 'category_id' => $blogs->category_id])->with('message', 'blog เปลี่ยนแปลงเรียบร้อยแล้ว');
     }
 
     public function destory($blog_id)

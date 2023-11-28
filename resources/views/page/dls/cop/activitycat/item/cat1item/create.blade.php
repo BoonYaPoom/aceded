@@ -33,20 +33,74 @@
                   
                         <div class="form-group">
                             <label for="detail">เนื้อหาโดยย่อ  <span class="badge badge-warning">Required</span></label>
-                            <textarea class="editor" required="" data-placeholder="รายละเอียด" data-height="200" name="detail" ></textarea>
+                            <textarea class="editor"  data-placeholder="รายละเอียด" data-height="200" name="detail" ></textarea>
                         </div><!-- /.form-group -->
+                        @error('web_th')
+                        <span class="badge badge-warning">เพิ่มรายละเอียด </span>
+                    @enderror
                         <div class="form-row">
                             <div class="col-md-6 mb-3">
-                                <label for="flatpickr03">วันที่เริ่ม  <span class="badge badge-warning">Required</span></label>
-                                <input id="flatpickr03" name="startdate" value="" type="text"
-                                    class="form-control startdate " data-toggle="flatpickr">
+                                <label for="flatpickr03">วันที่เริ่ม</label>
+                                <input type="text" class="form-control" name="startdate" id="flatpickr03"
+                                    value="" />
                             </div>
+
                             <div class="col-md-6 mb-3">
-                                <label for="flatpickr04">วันที่สิ้นสุด  <span class="badge badge-warning">Required</span></label>
-                                <input id="flatpickr04" name="enddate" value="" type="text"
-                                    class="form-control enddate " data-toggle="flatpickr">
+                                <label for="flatpickr04">วันที่สิ้นสุด</label>
+                                <input type="text" class="form-control" name="enddate" id="flatpickr04"
+                                    value="" />
                             </div>
+
                         </div>
+
+                        <script>
+                            document.addEventListener("DOMContentLoaded", function() {
+                                flatpickr("#flatpickr03", {
+                                    altInput: true,
+                                    altFormat: "j F, Y",
+                                    dateFormat: "Y-m-d",
+                                    locale: {
+                                        firstDayOfWeek: 1, // Monday
+                                        weekdays: {
+                                            shorthand: ["อา", "จ", "อ", "พ", "พฤ", "ศ", "ส"],
+                                            longhand: ["อาทิตย์", "จันทร์", "อังคาร", "พุธ", "พฤหัสบดี", "ศุกร์", "เสาร์"]
+                                        },
+                                        months: {
+                                            shorthand: ["ม.ค.", "ก.พ.", "มี.ค.", "เม.ย.", "พ.ค.", "มิ.ย.", "ก.ค.", "ส.ค.",
+                                                "ก.ย.", "ต.ค.", "พ.ย.", "ธ.ค."
+                                            ],
+                                            longhand: [
+                                                "มกราคม", "กุมภาพันธ์", "มีนาคม", "เมษายน", "พฤษภาคม", "มิถุนายน",
+                                                "กรกฎาคม", "สิงหาคม", "กันยายน", "ตุลาคม", "พฤศจิกายน", "ธันวาคม"
+                                            ]
+                                        }
+                                    }
+                                });
+                            });
+                            document.addEventListener("DOMContentLoaded", function() {
+                                flatpickr("#flatpickr04", {
+                                    altInput: true,
+                                    altFormat: "j F, Y",
+                                    dateFormat: "Y-m-d",
+                                    locale: {
+                                        firstDayOfWeek: 1, // Monday
+                                        weekdays: {
+                                            shorthand: ["อา", "จ", "อ", "พ", "พฤ", "ศ", "ส"],
+                                            longhand: ["อาทิตย์", "จันทร์", "อังคาร", "พุธ", "พฤหัสบดี", "ศุกร์", "เสาร์"]
+                                        },
+                                        months: {
+                                            shorthand: ["ม.ค.", "ก.พ.", "มี.ค.", "เม.ย.", "พ.ค.", "มิ.ย.", "ก.ค.", "ส.ค.",
+                                                "ก.ย.", "ต.ค.", "พ.ย.", "ธ.ค."
+                                            ],
+                                            longhand: [
+                                                "มกราคม", "กุมภาพันธ์", "มีนาคม", "เมษายน", "พฤษภาคม", "มิถุนายน",
+                                                "กรกฎาคม", "สิงหาคม", "กันยายน", "ตุลาคม", "พฤศจิกายน", "ธันวาคม"
+                                            ]
+                                        }
+                                    }
+                                });
+                            });
+                        </script>
                         <div class="form-group">
                             <label for="activity_status">สถานะ   <span class="badge badge-warning">Required</span></label> <label
                                 class="switcher-control switcher-control-success switcher-control-lg"><input type="checkbox"

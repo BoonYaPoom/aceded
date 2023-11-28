@@ -35,8 +35,8 @@ class CourseSubjectController extends Controller
     {
 
         $validator = Validator::make($request->all(), [
-
-            'subject_code' => 'required',
+      
+            'subject_code' => 'required|unique:course_subject',
             'subject_th' => 'required'
         ]);
 
@@ -316,10 +316,13 @@ class CourseSubjectController extends Controller
     
         if ($request->has('description_th')) {
             $description_th = $request->description_th;
+            $decodedTextdescription_th = '';
             if (!empty($description_th)) {
                 $des_th = new DOMDocument();
                 $des_th->encoding = 'UTF-8'; // กำหนด encoding เป็น UTF-8
-                $des_th->loadHTML(mb_convert_encoding($description_th, 'HTML-ENTITIES', 'UTF-8'), LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
+                $description_th = mb_convert_encoding($description_th, 'HTML-ENTITIES', 'UTF-8');
+                $description_th = preg_replace('/<figure\b[^>]*>(.*?)<\/figure>/is', '$1', $description_th);
+                $des_th->loadHTML($description_th, LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
                 libxml_use_internal_errors(true);
                 $images_des_th = $des_th->getElementsByTagName('img');
 
@@ -334,16 +337,20 @@ class CourseSubjectController extends Controller
                     }
                 }
                 $description_th = $des_th->saveHTML();
+                $decodedTextdescription_th = html_entity_decode($description_th, ENT_QUOTES, 'UTF-8');
             }
 
-            $subs->description_th = $description_th;
+            $subs->description_th = $decodedTextdescription_th;
         }
         if ($request->has('description_en')) {
             $description_en = $request->description_en;
+            $decodedTextdescription_en = '';
             if (!empty($description_en)) {
                 $des_en = new DOMDocument();
                 $des_en->encoding = 'UTF-8'; // กำหนด encoding เป็น UTF-8
-                $des_en->loadHTML(mb_convert_encoding($description_en, 'HTML-ENTITIES', 'UTF-8'), LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
+                $description_en = mb_convert_encoding($description_en, 'HTML-ENTITIES', 'UTF-8');
+                $description_en = preg_replace('/<figure\b[^>]*>(.*?)<\/figure>/is', '$1', $description_en);
+                $des_en->loadHTML($description_en, LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
                 libxml_use_internal_errors(true);
                 $images_des_en = $des_en->getElementsByTagName('img');
 
@@ -359,16 +366,20 @@ class CourseSubjectController extends Controller
                     }
                 }
                 $description_en = $des_en->saveHTML();
+                $decodedTextdescription_en = html_entity_decode($description_en, ENT_QUOTES, 'UTF-8');
             }
 
-            $subs->description_en = $description_en;
+            $subs->description_en = $decodedTextdescription_en;
         }
         if ($request->has('objectives_th')) {
             $objectives_th = $request->objectives_th;
+            $decodedTextobjectives_th = '';
             if (!empty($objectives_th)) {
             $ob_th = new DOMDocument();
             $ob_th->encoding = 'UTF-8'; // กำหนด encoding เป็น UTF-8
-            $ob_th->loadHTML(mb_convert_encoding($objectives_th, 'HTML-ENTITIES', 'UTF-8'), LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
+            $objectives_th = mb_convert_encoding($objectives_th, 'HTML-ENTITIES', 'UTF-8');
+            $objectives_th = preg_replace('/<figure\b[^>]*>(.*?)<\/figure>/is', '$1', $objectives_th);
+            $ob_th->loadHTML($objectives_th, LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
             libxml_use_internal_errors(true);
             $images_ob_th = $ob_th->getElementsByTagName('img');
 
@@ -383,17 +394,21 @@ class CourseSubjectController extends Controller
                 }
             }
             $objectives_th = $ob_th->saveHTML();
+            $decodedTextobjectives_th = html_entity_decode($objectives_th, ENT_QUOTES, 'UTF-8');
         }
 
-            $subs->objectives_th = $objectives_th;
+            $subs->objectives_th = $decodedTextobjectives_th;
         }
         if ($request->has('objectives_en')) {
             $objectives_en = $request->objectives_en;
+            $decodedTextobjectives_en = '';
             if (!empty($objectives_en)) {
             $ob_en = new DOMDocument();
             $ob_en->encoding = 'UTF-8'; // กำหนด encoding เป็น UTF-8
-            $ob_en->loadHTML(mb_convert_encoding($objectives_en, 'HTML-ENTITIES', 'UTF-8'), LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
-       libxml_use_internal_errors(true);
+            $objectives_en = mb_convert_encoding($objectives_en, 'HTML-ENTITIES', 'UTF-8');
+            $objectives_en = preg_replace('/<figure\b[^>]*>(.*?)<\/figure>/is', '$1', $objectives_en);
+            $ob_en->loadHTML($objectives_en, LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
+            libxml_use_internal_errors(true);
             $images_ob_en = $ob_en->getElementsByTagName('img');
             foreach ($images_ob_en as $key => $img) {
                 if (strpos($img->getAttribute('src'), 'data:image/') === 0) {
@@ -406,17 +421,21 @@ class CourseSubjectController extends Controller
                 }
             }
             $objectives_en = $ob_en->saveHTML();
+            $decodedTextobjectives_en = html_entity_decode($objectives_en, ENT_QUOTES, 'UTF-8');
         }
        
-            $subs->objectives_en = $objectives_en;
+            $subs->objectives_en = $decodedTextobjectives_en;
         }
         if ($request->has('schedule_th')) {
             $schedule_th = $request->schedule_th;
+            $decodedTextschedule_th = '';
             if (!empty($schedule_th)) {
             $qua_th = new DOMDocument();
             $qua_th->encoding = 'UTF-8'; // กำหนด encoding เป็น UTF-8
-            $qua_th->loadHTML(mb_convert_encoding($schedule_th, 'HTML-ENTITIES', 'UTF-8'), LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
-            libxml_use_internal_errors(true);
+            $schedule_th = mb_convert_encoding($schedule_th, 'HTML-ENTITIES', 'UTF-8');
+            $schedule_th = preg_replace('/<figure\b[^>]*>(.*?)<\/figure>/is', '$1', $schedule_th);
+            $qua_th->loadHTML($schedule_th, LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
+                 libxml_use_internal_errors(true);
             $images_qua_th = $qua_th->getElementsByTagName('img');
 
             foreach ($images_qua_th as $key => $img) {
@@ -430,17 +449,21 @@ class CourseSubjectController extends Controller
                 }
             }
             $schedule_th = $qua_th->saveHTML();
+            $decodedTextschedule_th = html_entity_decode($schedule_th, ENT_QUOTES, 'UTF-8');
         }
      
-            $subs->schedule_th = $schedule_th;
+            $subs->schedule_th = $decodedTextschedule_th;
         }
         if ($request->has('schedule_en')) {
             $schedule_en = $request->schedule_en;
+            $decodedTextschedule_en = '';
             if (!empty($schedule_en)) {
             $qua_en = new DOMDocument();
             $qua_en->encoding = 'UTF-8'; // กำหนด encoding เป็น UTF-8
-            $qua_en->loadHTML(mb_convert_encoding($schedule_en, 'HTML-ENTITIES', 'UTF-8'), LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
-            libxml_use_internal_errors(true);
+            $schedule_en = mb_convert_encoding($schedule_en, 'HTML-ENTITIES', 'UTF-8');
+            $schedule_en = preg_replace('/<figure\b[^>]*>(.*?)<\/figure>/is', '$1', $schedule_en);
+            $qua_en->loadHTML($schedule_th, LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
+              libxml_use_internal_errors(true);
             $images_qua_en = $qua_en->getElementsByTagName('img');
 
             foreach ($images_qua_en as $key => $img) {
@@ -453,17 +476,22 @@ class CourseSubjectController extends Controller
                     $img->setAttribute('src', $newImageUrl);
                 }
             }
+
             $schedule_en = $qua_en->saveHTML();
+            $decodedTextschedule_en = html_entity_decode($schedule_en, ENT_QUOTES, 'UTF-8');
         }
 
-            $subs->schedule_en = $schedule_en;
+            $subs->schedule_en = $decodedTextschedule_en;
         }
         if ($request->has('evaluation_th')) {
             $evaluation_th = $request->evaluation_th;
+            $decodedTextevaluation_th = '';
             if (!empty($evaluation_th)) {
             $eva_th = new DOMDocument();
             $eva_th->encoding = 'UTF-8'; // กำหนด encoding เป็น UTF-8
-            $eva_th->loadHTML(mb_convert_encoding($evaluation_th, 'HTML-ENTITIES', 'UTF-8'), LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
+            $evaluation_th = mb_convert_encoding($evaluation_th, 'HTML-ENTITIES', 'UTF-8');
+            $evaluation_th = preg_replace('/<figure\b[^>]*>(.*?)<\/figure>/is', '$1', $evaluation_th);
+            $eva_th->loadHTML($evaluation_th, LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
             libxml_use_internal_errors(true);
             $images_eva_th = $eva_th->getElementsByTagName('img');
 
@@ -478,16 +506,20 @@ class CourseSubjectController extends Controller
                 }
             }
             $evaluation_th = $eva_th->saveHTML();
+            $decodedTextevaluation_th = html_entity_decode($evaluation_th, ENT_QUOTES, 'UTF-8');
         }
 
-            $subs->evaluation_th = $evaluation_th;
+            $subs->evaluation_th = $decodedTextevaluation_th;
         }
         if ($request->has('evaluation_en')) {
             $evaluation_en = $request->evaluation_en;
+            $decodedTextevaluation_en = '';
             if (!empty($evaluation_en)) {
             $eva_en = new DOMDocument();
             $eva_en->encoding = 'UTF-8'; // กำหนด encoding เป็น UTF-8
-            $eva_en->loadHTML(mb_convert_encoding($evaluation_en, 'HTML-ENTITIES', 'UTF-8'), LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
+            $evaluation_en = mb_convert_encoding($evaluation_en, 'HTML-ENTITIES', 'UTF-8');
+            $evaluation_en = preg_replace('/<figure\b[^>]*>(.*?)<\/figure>/is', '$1', $evaluation_en);
+            $eva_en->loadHTML($evaluation_en, LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
             libxml_use_internal_errors(true);
             $images_eva_en = $eva_en->getElementsByTagName('img');
 
@@ -502,9 +534,10 @@ class CourseSubjectController extends Controller
                 }
             }
             $evaluation_en = $eva_en->saveHTML();
+            $decodedTextevaluation_en = html_entity_decode($evaluation_en, ENT_QUOTES, 'UTF-8');
         }
 
-            $subs->evaluation_en = $evaluation_en;
+            $subs->evaluation_en = $decodedTextevaluation_en;
         }
      
         $subs->create_date = now();

@@ -37,13 +37,7 @@
                             <span class="badge badge-warning">{{ $message }}</span>
                         @enderror
                         <!-- .form-group -->
-                        <div class="form-group d-none">
-                            <label for="recommended">แนะนำ </label> <label
-                                class="switcher-control switcher-control-success switcher-control-lg"><input type="checkbox"
-                                    class="switcher-input" name="recommended" id="recommended" value="1"> <span
-                                    class="switcher-indicator"></span> <span class="switcher-label-on">ON</span> <span
-                                    class="switcher-label-off text-red">OFF</span></label>
-                        </div><!-- /.form-group -->
+
                         <div class="form-group">
                             <label for="blog_status">สถานะ </label> <label
                                 class="switcher-control switcher-control-success switcher-control-lg"><input type="checkbox"

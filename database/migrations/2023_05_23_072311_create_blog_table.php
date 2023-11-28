@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('blog', function (Blueprint $table) {
             $table->charset = 'utf8';
             $table->collation = 'utf8_general_ci';
-            $table->increments('blog_id')->start(10000)->nocache();
+            $table->increments('blog_id')->start(100000)->nocache();
             $table->string('title',400)->collation('utf8_general_ci');
             $table->string('title_en',400)->nullable()->default('')->collation('utf8_general_ci');
             $table->longText('detail')->nullable()->collation('utf8_general_ci');

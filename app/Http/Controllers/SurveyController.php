@@ -45,10 +45,13 @@ class SurveyController extends Controller
       }
       if ($request->has('detail_th')) {
          $detail_th = $request->detail_th;
+         $decodedTextdetail_th ='' ;
          if (!empty($detail_th)) {
             $de_th = new DOMDocument();
             $de_th->encoding = 'UTF-8'; // กำหนด encoding เป็น UTF-8
-            $de_th->loadHTML(mb_convert_encoding($detail_th, 'HTML-ENTITIES', 'UTF-8'), LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
+            $detail_th = mb_convert_encoding($detail_th, 'HTML-ENTITIES', 'UTF-8');
+            $detail_th = preg_replace('/<figure\b[^>]*>(.*?)<\/figure>/is', '$1', $detail_th);
+            $de_th->loadHTML($detail_th, LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
             libxml_use_internal_errors(true);
             $images_des_th = $de_th->getElementsByTagName('img');
 
@@ -63,9 +66,10 @@ class SurveyController extends Controller
                }
             }
             $detail_th = $de_th->saveHTML();
+            $decodedTextdetail_th = html_entity_decode($detail_th, ENT_QUOTES, 'UTF-8');
          }
 
-         $sur->detail_th = $detail_th;
+         $sur->detail_th = $decodedTextdetail_th;
       }
       $sur->detail_en = null;
       $sur->survey_date = now();
@@ -110,11 +114,14 @@ class SurveyController extends Controller
       }
       if ($request->has('detail_th')) {
          $detail_th = $request->detail_th;
+         $decodedTextdetail_th ='' ;
          if (!empty($detail_th)) {
             $de_th = new DOMDocument();
             $de_th->encoding = 'UTF-8'; // กำหนด encoding เป็น UTF-8
-            $de_th->loadHTML(mb_convert_encoding($detail_th, 'HTML-ENTITIES', 'UTF-8'), LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
-            libxml_use_internal_errors(true);
+            $detail_th = mb_convert_encoding($detail_th, 'HTML-ENTITIES', 'UTF-8');
+            $detail_th = preg_replace('/<figure\b[^>]*>(.*?)<\/figure>/is', '$1', $detail_th);
+            $de_th->loadHTML($detail_th, LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
+               libxml_use_internal_errors(true);
             $images_des_th = $de_th->getElementsByTagName('img');
 
             foreach ($images_des_th as $key => $img) {
@@ -128,9 +135,10 @@ class SurveyController extends Controller
                }
             }
             $detail_th = $de_th->saveHTML();
+            $decodedTextdetail_th = html_entity_decode($detail_th, ENT_QUOTES, 'UTF-8');
          }
 
-         $sur->detail_th = $detail_th;
+         $sur->detail_th = $decodedTextdetail_th;
       }
       $sur->detail_en = null;
       $sur->survey_date = now();
@@ -188,11 +196,14 @@ class SurveyController extends Controller
       }
       if ($request->has('detail_th')) {
          $detail_th = $request->detail_th;
+         $decodedTextdetail_th ='' ;
          if (!empty($detail_th)) {
             $de_th = new DOMDocument();
             $de_th->encoding = 'UTF-8'; // กำหนด encoding เป็น UTF-8
-            $de_th->loadHTML(mb_convert_encoding($detail_th, 'HTML-ENTITIES', 'UTF-8'), LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
-            libxml_use_internal_errors(true);
+            $detail_th = mb_convert_encoding($detail_th, 'HTML-ENTITIES', 'UTF-8');
+            $detail_th = preg_replace('/<figure\b[^>]*>(.*?)<\/figure>/is', '$1', $detail_th);
+            $de_th->loadHTML($detail_th, LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
+               libxml_use_internal_errors(true);
             $images_des_th = $de_th->getElementsByTagName('img');
 
             foreach ($images_des_th as $key => $img) {
@@ -206,17 +217,21 @@ class SurveyController extends Controller
                }
             }
             $detail_th = $de_th->saveHTML();
+            $decodedTextdetail_th = html_entity_decode($detail_th, ENT_QUOTES, 'UTF-8');
          }
 
-         $sur->detail_th = $detail_th;
+         $sur->detail_th = $decodedTextdetail_th;
       }
       if ($request->has('detail_en')) {
          $detail_en = $request->detail_en;
+         $decodedTextdetail_en ='' ;
          if (!empty($detail_en)) {
             $de_e = new DOMDocument();
             $de_e->encoding = 'UTF-8'; // กำหนด encoding เป็น UTF-8
-            $de_e->loadHTML(mb_convert_encoding($detail_en, 'HTML-ENTITIES', 'UTF-8'), LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
-            libxml_use_internal_errors(true);
+            $detail_en = mb_convert_encoding($detail_en, 'HTML-ENTITIES', 'UTF-8');
+            $detail_en = preg_replace('/<figure\b[^>]*>(.*?)<\/figure>/is', '$1', $detail_en);
+            $de_e->loadHTML($detail_en, LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
+               libxml_use_internal_errors(true);
             $images_de_e = $de_e->getElementsByTagName('img');
 
             foreach ($images_de_e as $key => $img) {
@@ -230,9 +245,10 @@ class SurveyController extends Controller
                }
             }
             $detail_en = $de_e->saveHTML();
+            $decodedTextdetail_en = html_entity_decode($detail_en, ENT_QUOTES, 'UTF-8');
          }
 
-         $sur->detail_en = $detail_en;
+         $sur->detail_en = $decodedTextdetail_en;
       }
 
       $sur->survey_date = now();
@@ -272,10 +288,14 @@ class SurveyController extends Controller
       }
       if ($request->has('detail_th')) {
          $detail_th = $request->detail_th;
+         $decodedTextdetail_th ='' ;
          if (!empty($detail_th)) {
             $de_th = new DOMDocument();
             $de_th->encoding = 'UTF-8'; // กำหนด encoding เป็น UTF-8
-            $de_th->loadHTML(mb_convert_encoding($detail_th, 'HTML-ENTITIES', 'UTF-8'), LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
+            $detail_th = mb_convert_encoding($detail_th, 'HTML-ENTITIES', 'UTF-8');
+            $detail_th = preg_replace('/<figure\b[^>]*>(.*?)<\/figure>/is', '$1', $detail_th);
+            $de_th->loadHTML($detail_th, LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
+      
             libxml_use_internal_errors(true);
             $images_des_th = $de_th->getElementsByTagName('img');
 
@@ -290,17 +310,21 @@ class SurveyController extends Controller
                }
             }
             $detail_th = $de_th->saveHTML();
+            $decodedTextdetail_th = html_entity_decode($detail_th, ENT_QUOTES, 'UTF-8');
          }
 
-         $suruy->detail_th = $detail_th;
+
+         $suruy->detail_th = $decodedTextdetail_th;
       }
       if ($request->has('detail_en')) {
          $detail_en = $request->detail_en;
+         $decodedTextdetail_en ='' ;
          if (!empty($detail_en)) {
             $de_e = new DOMDocument();
             $de_e->encoding = 'UTF-8'; // กำหนด encoding เป็น UTF-8
-            $de_e->loadHTML(mb_convert_encoding($detail_en, 'HTML-ENTITIES', 'UTF-8'), LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
-
+            $detail_en = mb_convert_encoding($detail_en, 'HTML-ENTITIES', 'UTF-8');
+            $detail_en = preg_replace('/<figure\b[^>]*>(.*?)<\/figure>/is', '$1', $detail_en);
+            $de_e->loadHTML($detail_en, LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
             $images_de_e = $de_e->getElementsByTagName('img');
             libxml_use_internal_errors(true);
             foreach ($images_de_e as $key => $img) {
@@ -314,9 +338,11 @@ class SurveyController extends Controller
                }
             }
             $detail_en = $de_e->saveHTML();
+            $decodedTextdetail_en = html_entity_decode($detail_en, ENT_QUOTES, 'UTF-8');
          }
 
-         $suruy->detail_en = $detail_en;
+         $suruy->detail_en = $decodedTextdetail_en;
+
       }
       $suruy->survey_update = now();
 

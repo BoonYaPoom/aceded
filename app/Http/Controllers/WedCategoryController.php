@@ -167,8 +167,6 @@ class WedCategoryController extends Controller
             $wed->detail_th = '';
             $wed->detail_en = '';
             $wed->category_date = now();
-            $wed->startdate = $request->startdate;
-            $wed->enddate = $request->enddate;
             $wed->category_status = $request->input('category_status', 0);
             $wed->category_type = 2;
             $wed->category_option = null;
@@ -345,7 +343,7 @@ class WedCategoryController extends Controller
 
         $loginLog->save();
 
-        return redirect()->route('evenpage', ['department_id' => $wed->department_id])->with('warning', 'Data update successfully');
+        return redirect()->route('evenpage', ['department_id' => $wed->department_id])->with('message', 'Data update successfully');
     }
     public function updateact(Request $request, $department_id, $category_id)
     {
@@ -368,8 +366,7 @@ class WedCategoryController extends Controller
 
         $wed->category_th = $request->category_th;
         $wed->category_en = $request->category_en;
-        $wed->startdate = $request->startdate;
-        $wed->enddate = $request->enddate;
+
         $wed->category_update = now();
 
         $wed->save();
@@ -424,7 +421,7 @@ class WedCategoryController extends Controller
 
         $loginLog->save();
 
-        return redirect()->route('acteven', ['department_id' => $wed->department_id])->with('warning', 'Data update successfully');
+        return redirect()->route('acteven', ['department_id' => $wed->department_id])->with('message', 'Data update successfully');
     }
 
     public function destroy($category_id)

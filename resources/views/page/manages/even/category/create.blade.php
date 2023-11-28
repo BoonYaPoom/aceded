@@ -6,17 +6,19 @@
         <!-- .page-section -->
         <div class="page-section">
             <!-- .card -->
-            <div class="card card-fluid" >
-                <div class="card-header bg-muted"><a href="{{ route('manage', ['department_id' => $category->department_id]) }}"
-                    style="text-decoration: underline;">จัดการเว็บ</a> / <a href="{{ route('Webpage', ['department_id' => $category->department_id]) }}"
-                    style="text-decoration: underline;">ข่าว/{{ $category->category_th }}</a> / <a
-                    href="{{ route('catpage', ['department_id' => $depart,'category_id' => $category->category_id]) }}"
-                    style="text-decoration: underline;">
-                    กิจกรรม</a> / <i> เพิ่ม</i></div><!-- /.card-header -->
+            <div class="card card-fluid">
+                <div class="card-header bg-muted"><a
+                        href="{{ route('manage', ['department_id' => $category->department_id]) }}"
+                        style="text-decoration: underline;">จัดการเว็บ</a> / <a
+                        href="{{ route('Webpage', ['department_id' => $category->department_id]) }}"
+                        style="text-decoration: underline;">ข่าว/{{ $category->category_th }}</a> / <a
+                        href="{{ route('catpage', ['department_id' => $depart, 'category_id' => $category->category_id]) }}"
+                        style="text-decoration: underline;">
+                        กิจกรรม</a> / <i> เพิ่ม</i></div><!-- /.card-header -->
 
 
-                <form action="{{ route('catstore', ['department_id' => $depart,'category_id' => $category]) }}" method="post"
-                    enctype="multipart/form-data">
+                <form action="{{ route('catstore', ['department_id' => $depart, 'category_id' => $category]) }}"
+                    method="post" enctype="multipart/form-data">
                     @csrf
                     <!-- .card-body -->
                     <div class="card-body">
@@ -54,6 +56,71 @@
                             <label for="detail_en">รายละเอียด (อังกฤษ)</label>
                             <textarea class="editor" data-placeholder="รายละเอียด (อังกฤษ)" data-height="200" name="detail_en"></textarea>
                         </div><!-- /.form-group -->
+                        @if ($category->category_type == 2)
+                            <div class="form-row">
+                                <div class="col-md-6 mb-3">
+                                    <label for="flatpickr03">วันที่เริ่ม</label>
+                                    <input type="text" class="form-control" name="startdate" id="flatpickr03"
+                                        value="" />
+                                </div>
+
+                                <div class="col-md-6 mb-3">
+                                    <label for="flatpickr04">วันที่สิ้นสุด</label>
+                                    <input type="text" class="form-control" name="enddate" id="flatpickr04"
+                                        value="" />
+                                </div>
+
+                            </div>
+                        @endif
+
+                        <script>
+                            document.addEventListener("DOMContentLoaded", function() {
+                                flatpickr("#flatpickr03", {
+                                    altInput: true,
+                                    altFormat: "j F, Y",
+                                    dateFormat: "Y-m-d",
+                                    locale: {
+                                        firstDayOfWeek: 1, // Monday
+                                        weekdays: {
+                                            shorthand: ["อา", "จ", "อ", "พ", "พฤ", "ศ", "ส"],
+                                            longhand: ["อาทิตย์", "จันทร์", "อังคาร", "พุธ", "พฤหัสบดี", "ศุกร์", "เสาร์"]
+                                        },
+                                        months: {
+                                            shorthand: ["ม.ค.", "ก.พ.", "มี.ค.", "เม.ย.", "พ.ค.", "มิ.ย.", "ก.ค.", "ส.ค.",
+                                                "ก.ย.", "ต.ค.", "พ.ย.", "ธ.ค."
+                                            ],
+                                            longhand: [
+                                                "มกราคม", "กุมภาพันธ์", "มีนาคม", "เมษายน", "พฤษภาคม", "มิถุนายน",
+                                                "กรกฎาคม", "สิงหาคม", "กันยายน", "ตุลาคม", "พฤศจิกายน", "ธันวาคม"
+                                            ]
+                                        }
+                                    }
+                                });
+                            });
+                            document.addEventListener("DOMContentLoaded", function() {
+                                flatpickr("#flatpickr04", {
+                                    altInput: true,
+                                    altFormat: "j F, Y",
+                                    dateFormat: "Y-m-d",
+                                    locale: {
+                                        firstDayOfWeek: 1, // Monday
+                                        weekdays: {
+                                            shorthand: ["อา", "จ", "อ", "พ", "พฤ", "ศ", "ส"],
+                                            longhand: ["อาทิตย์", "จันทร์", "อังคาร", "พุธ", "พฤหัสบดี", "ศุกร์", "เสาร์"]
+                                        },
+                                        months: {
+                                            shorthand: ["ม.ค.", "ก.พ.", "มี.ค.", "เม.ย.", "พ.ค.", "มิ.ย.", "ก.ค.", "ส.ค.",
+                                                "ก.ย.", "ต.ค.", "พ.ย.", "ธ.ค."
+                                            ],
+                                            longhand: [
+                                                "มกราคม", "กุมภาพันธ์", "มีนาคม", "เมษายน", "พฤษภาคม", "มิถุนายน",
+                                                "กรกฎาคม", "สิงหาคม", "กันยายน", "ตุลาคม", "พฤศจิกายน", "ธันวาคม"
+                                            ]
+                                        }
+                                    }
+                                });
+                            });
+                        </script>
 
                         <!-- .form-group -->
                         <div class="form-group">
@@ -71,17 +138,17 @@
                                     class="switcher-label-off text-red">OFF</span></label>
                         </div><!-- /.form-group -->
                     </div><!-- /.card-body -->
-                   
+
             </div><!-- /.card -->
 
         </div><!-- /.page-section -->
     </div><!-- /.page-inner -->
- <!-- .form-actions -->
- <div class="form-actions">
-    <button class="btn btn-lg btn-primary ml-auto" type="submit"><i class="far fa-save"></i>
-        บันทึก</button>
-</div><!-- /.form-actions -->
-</form>
+    <!-- .form-actions -->
+    <div class="form-actions">
+        <button class="btn btn-lg btn-primary ml-auto" type="submit"><i class="far fa-save"></i>
+            บันทึก</button>
+    </div><!-- /.form-actions -->
+    </form>
 
     </div><!-- /.card -->
 @endsection

@@ -40,14 +40,9 @@
                         <div class="form-group  d-none">
                             <label for="book_author">ชื่อผู้แต่ง </label>
                             <input type="text" class="form-control" id="book_author" name="book_author"
-                                placeholder="ชื่อผู้แต่ง"  value="สำนักงาน ป.ป.ช.">
+                                placeholder="ชื่อผู้แต่ง"  value="ACED">
                         </div><!-- /.form-group -->
                         <!-- .form-group -->
-                        <div class="form-group  d-none">
-                            <label for="book_year">ปีที่พิมพ์ </label>
-                            <input type="text" class="form-control" id="book_year" name="book_year"
-                                placeholder="ปีที่พิมพ์" value="">
-                        </div><!-- /.form-group -->
                         <!-- .form-group -->
                         <div class="form-group">
                             <label for="cover">ภาพปก <span class="badge badge-warning">Required</span></label>
@@ -62,39 +57,14 @@
                                 accept=".pdf" required="">
                         </div><!-- /.form-group -->
                         <!-- .form-group -->
-                        <div class="form-group  d-none">
-                            <label for="detail">ข้อมูลทั่วไป</label>
-                            <textarea class="editor" data-placeholder="ข้อมูลทั่วไป" data-height="200" name="detail"></textarea>
-                        </div><!-- /.form-group -->
+                      
                         <!-- .form-group -->
                         <div class="form-group">
                             <label for="contents">เนื้อหาโดยย่อ</label>
                             <textarea class="editor" data-placeholder="เนื้อหาโดยย่อ" data-height="200" name="contents"></textarea>
                         </div><!-- /.form-group -->
 
-                        <!-- .form-group -->
-                        <div class="form-group  d-none">
-                            <label for="recommended">แนะนำ </label>
-                            <label class="switcher-control switcher-control-success switcher-control-lg">
-                                <input type="checkbox" class="switcher-input" name="recommended" id="recommended"
-                                    value="1">
-                                <span class="switcher-indicator"></span> <span class="switcher-label-on">ON</span> <span
-                                    class="switcher-label-off text-red">OFF</span>
-                            </label>
-                        </div>
-                        <!-- /.form-group -->
-                        <!-- .form-group -->
-                        <div class="form-group d-none">
-                            <label for="book_member">เห็นเฉพาะสมาชิก </label>
-                            <label class="switcher-control switcher-control-success switcher-control-lg">
-                                <input type="checkbox" class="switcher-input" name="book_member" id="book_member"
-                                    value="1">
-                                <span class="switcher-indicator"></span> <span class="switcher-label-on">ON</span> <span
-                                    class="switcher-label-off text-red">OFF</span>
-                            </label>
-                        </div>
-                        <!-- /.form-group -->
-                        <!-- .form-group -->
+      
                         <div class="form-group">
                             <label for="book_status">สถานะ </label>
                             <label class="switcher-control switcher-control-success switcher-control-lg">

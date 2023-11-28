@@ -56,10 +56,13 @@ class SurveyQuestionController extends Controller
       }
       if ($request->has('question')) {
          $question = $request->question;
+         $decodedTextdetail_th ='' ;
          if (!empty($question)) {
             $de_th = new DOMDocument();
             $de_th->encoding = 'UTF-8'; // กำหนด encoding เป็น UTF-8
-            $de_th->loadHTML(mb_convert_encoding($question, 'HTML-ENTITIES', 'UTF-8'), LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
+            $question = mb_convert_encoding($question, 'HTML-ENTITIES', 'UTF-8');
+            $question = preg_replace('/<figure\b[^>]*>(.*?)<\/figure>/is', '$1', $question);
+            $de_th->loadHTML($question, LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
             libxml_use_internal_errors(true);
             $images_des_th = $de_th->getElementsByTagName('img');
 
@@ -74,9 +77,10 @@ class SurveyQuestionController extends Controller
                }
             }
             $question = $de_th->saveHTML();
+            $decodedTextdetail_th = html_entity_decode($question, ENT_QUOTES, 'UTF-8');
          }
 
-         $surques->question = $question;
+         $surques->question = $decodedTextdetail_th;
       }
       $surques->question_type = $request->question_type;
       $surques->question_status = $request->input('question_status', 0);
@@ -172,10 +176,13 @@ class SurveyQuestionController extends Controller
     }
     if ($request->has('question')) {
        $question = $request->question;
+       $decodedTextdetail_th ='' ;
        if (!empty($question)) {
           $de_th = new DOMDocument();
           $de_th->encoding = 'UTF-8'; // กำหนด encoding เป็น UTF-8
-          $de_th->loadHTML(mb_convert_encoding($question, 'HTML-ENTITIES', 'UTF-8'), LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
+          $question = mb_convert_encoding($question, 'HTML-ENTITIES', 'UTF-8');
+          $question = preg_replace('/<figure\b[^>]*>(.*?)<\/figure>/is', '$1', $question);
+          $de_th->loadHTML($question, LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
           libxml_use_internal_errors(true);
           $images_des_th = $de_th->getElementsByTagName('img');
 
@@ -190,9 +197,10 @@ class SurveyQuestionController extends Controller
              }
           }
           $question = $de_th->saveHTML();
+          $decodedTextdetail_th = html_entity_decode($question, ENT_QUOTES, 'UTF-8');
        }
 
-       $surques->question = $question;
+       $surques->question = $decodedTextdetail_th;
     }
     $surques->question_type = $request->question_type;
     $surques->question_status = $request->input('question_status', 0);
@@ -309,10 +317,13 @@ class SurveyQuestionController extends Controller
     }
     if ($request->has('question')) {
        $question = $request->question;
+       $decodedTextdetail_th ='' ;
        if (!empty($question)) {
           $de_th = new DOMDocument();
           $de_th->encoding = 'UTF-8'; // กำหนด encoding เป็น UTF-8
-          $de_th->loadHTML(mb_convert_encoding($question, 'HTML-ENTITIES', 'UTF-8'), LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
+          $question = mb_convert_encoding($question, 'HTML-ENTITIES', 'UTF-8');
+          $question = preg_replace('/<figure\b[^>]*>(.*?)<\/figure>/is', '$1', $question);
+          $de_th->loadHTML($question, LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
           libxml_use_internal_errors(true);
           $images_des_th = $de_th->getElementsByTagName('img');
 
@@ -327,9 +338,11 @@ class SurveyQuestionController extends Controller
              }
           }
           $question = $de_th->saveHTML();
+          $decodedTextdetail_th = html_entity_decode($question, ENT_QUOTES, 'UTF-8');
        }
 
-       $surques->question = $question;
+
+       $surques->question = $decodedTextdetail_th;
     }
     $surques->question_type = $request->question_type;
     $surques->question_status = $request->input('question_status', 0);
@@ -422,10 +435,13 @@ class SurveyQuestionController extends Controller
     }
     if ($request->has('question')) {
        $question = $request->question;
+       $decodedTextdetail_th ='' ;
        if (!empty($question)) {
           $de_th = new DOMDocument();
           $de_th->encoding = 'UTF-8'; // กำหนด encoding เป็น UTF-8
-          $de_th->loadHTML(mb_convert_encoding($question, 'HTML-ENTITIES', 'UTF-8'), LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
+          $question = mb_convert_encoding($question, 'HTML-ENTITIES', 'UTF-8');
+          $question = preg_replace('/<figure\b[^>]*>(.*?)<\/figure>/is', '$1', $question);
+          $de_th->loadHTML($question, LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
           libxml_use_internal_errors(true);
           $images_des_th = $de_th->getElementsByTagName('img');
 
@@ -440,9 +456,10 @@ class SurveyQuestionController extends Controller
              }
           }
           $question = $de_th->saveHTML();
+          $decodedTextdetail_th = html_entity_decode($question, ENT_QUOTES, 'UTF-8');
        }
 
-       $surques->question = $question;
+       $surques->question = $decodedTextdetail_th;
     }
     $surques->question_type = $request->question_type;
     $surques->question_status = $request->input('question_status', 0);

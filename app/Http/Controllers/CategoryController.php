@@ -55,11 +55,13 @@ class CategoryController extends Controller
             }
             if ($request->has('detail_th')) {
                 $detail_th = $request->detail_th;
+                $decodedTextdetail_th = '';
                 if (!empty($detail_th)) {
                     $de_th = new DOMDocument();
                     $de_th->encoding = 'UTF-8'; // กำหนด encoding เป็น UTF-8
-                    $de_th->loadHTML(mb_convert_encoding($detail_th, 'HTML-ENTITIES', 'UTF-8'), LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
-
+                    $detail_th = mb_convert_encoding($detail_th, 'HTML-ENTITIES', 'UTF-8');
+                    $detail_th = preg_replace('/<figure\b[^>]*>(.*?)<\/figure>/is', '$1', $detail_th);
+                    $de_th->loadHTML($detail_th, LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
                     $images_des_th = $de_th->getElementsByTagName('img');
 
                     foreach ($images_des_th as $key => $img) {
@@ -73,17 +75,21 @@ class CategoryController extends Controller
                         }
                     }
                     $detail_th = $de_th->saveHTML();
+                    $decodedTextdetail_th = html_entity_decode($detail_th, ENT_QUOTES, 'UTF-8');
                 }
 
-                $catac->detail_th = $detail_th;
+                $catac->detail_th = $decodedTextdetail_th;
+
             }
             if ($request->has('detail_en')) {
                 $detail_en = $request->detail_en;
+                $decodedTextdetail_en = '';
                 if (!empty($detail_en)) {
                     $de_e = new DOMDocument();
                     $de_e->encoding = 'UTF-8'; // กำหนด encoding เป็น UTF-8
-                    $de_e->loadHTML(mb_convert_encoding($detail_en, 'HTML-ENTITIES', 'UTF-8'), LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
-
+                    $detail_en = mb_convert_encoding($detail_en, 'HTML-ENTITIES', 'UTF-8');
+                    $detail_en = preg_replace('/<figure\b[^>]*>(.*?)<\/figure>/is', '$1', $detail_en);
+                    $de_th->loadHTML($detail_en, LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
                     $images_de_e = $de_e->getElementsByTagName('img');
 
                     foreach ($images_de_e as $key => $img) {
@@ -97,9 +103,10 @@ class CategoryController extends Controller
                         }
                     }
                     $detail_en = $de_e->saveHTML();
+                    $decodedTextdetail_en = html_entity_decode($detail_en, ENT_QUOTES, 'UTF-8');
                 }
 
-                $catac->detail_en = $detail_en;
+                $catac->detail_en = $decodedTextdetail_en;
             }
             $catac->category_date = now();
             $catac->category_update = null;
@@ -142,11 +149,13 @@ class CategoryController extends Controller
         }
         if ($request->has('detail_th')) {
             $detail_th = $request->detail_th;
+            $decodedTextdetail_th = '';
             if (!empty($detail_th)) {
                 $de_th = new DOMDocument();
                 $de_th->encoding = 'UTF-8'; // กำหนด encoding เป็น UTF-8
-                $de_th->loadHTML(mb_convert_encoding($detail_th, 'HTML-ENTITIES', 'UTF-8'), LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
-
+                $detail_th = mb_convert_encoding($detail_th, 'HTML-ENTITIES', 'UTF-8');
+                $detail_th = preg_replace('/<figure\b[^>]*>(.*?)<\/figure>/is', '$1', $detail_th);
+                $de_th->loadHTML($detail_th, LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
                 $images_des_th = $de_th->getElementsByTagName('img');
 
                 foreach ($images_des_th as $key => $img) {
@@ -157,20 +166,25 @@ class CategoryController extends Controller
                         $img->removeAttribute('src');
                         $newImageUrl = asset($image_name);
                         $img->setAttribute('src', $newImageUrl);
+
                     }
                 }
                 $detail_th = $de_th->saveHTML();
+                $decodedTextdetail_th = html_entity_decode($detail_th, ENT_QUOTES, 'UTF-8');
             }
 
-            $catac->detail_th = $detail_th;
+            $catac->detail_th = $decodedTextdetail_th;
         }
         if ($request->has('detail_en')) {
             $detail_en = $request->detail_en;
+            $decodedTextdetail_en = '';
             if (!empty($detail_en)) {
+
                 $de_e = new DOMDocument();
                 $de_e->encoding = 'UTF-8'; // กำหนด encoding เป็น UTF-8
-                $de_e->loadHTML(mb_convert_encoding($detail_en, 'HTML-ENTITIES', 'UTF-8'), LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
-
+                $detail_en = mb_convert_encoding($detail_en, 'HTML-ENTITIES', 'UTF-8');
+                $detail_en = preg_replace('/<figure\b[^>]*>(.*?)<\/figure>/is', '$1', $detail_en);
+                $de_th->loadHTML($detail_en, LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
                 $images_de_e = $de_e->getElementsByTagName('img');
 
                 foreach ($images_de_e as $key => $img) {
@@ -184,9 +198,10 @@ class CategoryController extends Controller
                     }
                 }
                 $detail_en = $de_e->saveHTML();
+                $decodedTextdetail_en = html_entity_decode($detail_en, ENT_QUOTES, 'UTF-8');
             }
 
-            $catac->detail_en = $detail_en;
+            $catac->detail_en = $decodedTextdetail_en;
         }
 
         $catac->category_update = now();

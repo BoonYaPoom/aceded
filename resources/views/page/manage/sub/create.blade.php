@@ -40,7 +40,7 @@
                                 value="" required="">
                         </div>
                         @error('subject_code')
-                            <span class="badge badge-warning">{{ $message }}</span>
+                            <span class="badge badge-danger">รหัสมีซ้ำในระบบ</span>
                         @enderror
                         <div class="form-group">
                             <label for="subject_th">วิชา (ไทย) 
@@ -49,11 +49,11 @@
                                 required="" value="">
                         </div>
                         @error('subject_th')
-                            <span class="badge badge-warning">{{ $message }}</span>
+                            <span class="badge badge-danger">{{ $message }}</span>
                         @enderror
                         <div class="form-group">
-                            <label for="subject_en">วิชา (อังกฤษ) </label>
-                            <input type="text" class="form-control" name="subject_en" placeholder="วิชา (อังกฤษ)"
+                            <label for="subject_en">วิชา (อังกฤษ)  <span class="badge badge-warning">Required</span></label>
+                            <input type="text" class="form-control" required="" name="subject_en" placeholder="วิชา (อังกฤษ)"
                                 value="">
                         </div>
                         <div class="form-group">

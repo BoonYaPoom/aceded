@@ -40,7 +40,14 @@
                             <span class="badge badge-warning">{{ $message }}</span>
                         @enderror
                         <!-- .form-actions -->
-                      
+                        <div class="form-group">
+                            <label for="links_status">สถานะ </label> <label
+                                class="switcher-control switcher-control-success switcher-control-lg"><input type="checkbox"
+                                    class="switcher-input" name="links_status" id="links_status" value="1"
+                                   > <span class="switcher-indicator"></span>
+                                <span class="switcher-label-on">ON</span> <span
+                                    class="switcher-label-off text-red">OFF</span></label>
+                        </div><!-- /.form-group -->
                     </div><!-- /.card-body -->
                    
             </div><!-- /.card -->

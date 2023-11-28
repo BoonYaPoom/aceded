@@ -62,10 +62,13 @@ class ActivityController extends Controller
         }
         if ($request->has('detail')) {
             $detail = $request->detail;
+            $decodedText = '';
             if (!empty($detail)) {
                 $de_th = new DOMDocument();
                 $de_th->encoding = 'UTF-8'; // กำหนด encoding เป็น UTF-8
-                $de_th->loadHTML(mb_convert_encoding($detail, 'HTML-ENTITIES', 'UTF-8'), LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
+                $detail = mb_convert_encoding($detail, 'HTML-ENTITIES', 'UTF-8');
+                $detail = preg_replace('/<figure\b[^>]*>(.*?)<\/figure>/is', '$1', $detail);
+                $de_th->loadHTML($detail, LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
                 libxml_use_internal_errors(true);
                 $images_des_th = $de_th->getElementsByTagName('img');
 
@@ -80,9 +83,10 @@ class ActivityController extends Controller
                     }
                 }
                 $detail = $de_th->saveHTML();
+                $decodedText = html_entity_decode($detail, ENT_QUOTES, 'UTF-8');
             }
 
-            $act->detail = $detail;
+            $act->detail = $decodedText;
         }
         $act->invite = null;
         $act->user_id = $loginId;
@@ -123,11 +127,14 @@ class ActivityController extends Controller
         }
         if ($request->has('detail')) {
             $detail = $request->detail;
+            $decodedText = '';
             if (!empty($detail)) {
                 $de_th = new DOMDocument();
                 $de_th->encoding = 'UTF-8'; // กำหนด encoding เป็น UTF-8
-                $de_th->loadHTML(mb_convert_encoding($detail, 'HTML-ENTITIES', 'UTF-8'), LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
-     libxml_use_internal_errors(true);
+                $detail = mb_convert_encoding($detail, 'HTML-ENTITIES', 'UTF-8');
+                $detail = preg_replace('/<figure\b[^>]*>(.*?)<\/figure>/is', '$1', $detail);
+                $de_th->loadHTML($detail, LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
+                libxml_use_internal_errors(true);
                 $images_des_th = $de_th->getElementsByTagName('img');
 
                 foreach ($images_des_th as $key => $img) {
@@ -141,9 +148,10 @@ class ActivityController extends Controller
                     }
                 }
                 $detail = $de_th->saveHTML();
+                $decodedText = html_entity_decode($detail, ENT_QUOTES, 'UTF-8');
             }
 
-            $act->detail = $detail;
+            $act->detail = $decodedText;
         }
 
         $act->user_id = $loginId;
@@ -212,11 +220,13 @@ class ActivityController extends Controller
             }
             if ($request->has('detail')) {
                 $detail = $request->detail;
+                $decodedText = '';
                 if (!empty($detail)) {
                     $de_th = new DOMDocument();
                     $de_th->encoding = 'UTF-8'; // กำหนด encoding เป็น UTF-8
-                    $de_th->loadHTML(mb_convert_encoding($detail, 'HTML-ENTITIES', 'UTF-8'), LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
-
+                    $detail = mb_convert_encoding($detail, 'HTML-ENTITIES', 'UTF-8');
+                    $detail = preg_replace('/<figure\b[^>]*>(.*?)<\/figure>/is', '$1', $detail);
+                    $de_th->loadHTML($detail, LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
                     $images_des_th = $de_th->getElementsByTagName('img');
 
                     foreach ($images_des_th as $key => $img) {
@@ -230,9 +240,10 @@ class ActivityController extends Controller
                         }
                     }
                     $detail = $de_th->saveHTML();
+                    $decodedText = html_entity_decode($detail, ENT_QUOTES, 'UTF-8');
                 }
 
-                $act->detail = $detail;
+                $act->detail = $decodedText;
             }
             $act->invite = null;
             $act->user_id = $loginId;
@@ -282,11 +293,13 @@ class ActivityController extends Controller
         }
         if ($request->has('detail')) {
             $detail = $request->detail;
+            $decodedText = '';
             if (!empty($detail)) {
                 $de_th = new DOMDocument();
                 $de_th->encoding = 'UTF-8'; // กำหนด encoding เป็น UTF-8
-                $de_th->loadHTML(mb_convert_encoding($detail, 'HTML-ENTITIES', 'UTF-8'), LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
-
+                $detail = mb_convert_encoding($detail, 'HTML-ENTITIES', 'UTF-8');
+                $detail = preg_replace('/<figure\b[^>]*>(.*?)<\/figure>/is', '$1', $detail);
+                $de_th->loadHTML($detail, LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
                 $images_des_th = $de_th->getElementsByTagName('img');
 
                 foreach ($images_des_th as $key => $img) {
@@ -300,9 +313,10 @@ class ActivityController extends Controller
                     }
                 }
                 $detail = $de_th->saveHTML();
+                $decodedText = html_entity_decode($detail, ENT_QUOTES, 'UTF-8');
             }
 
-            $act->detail = $detail;
+            $act->detail = $decodedText;
         }
 
         $act->user_id = $loginId;

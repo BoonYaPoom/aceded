@@ -14,7 +14,7 @@
 
                 <!-- .card-body -->
                 <div class="card-body">
-                    <form method="POST" action="{{ route('updateact', ['category_id' => $wed->category_id]) }}"
+                    <form method="POST" action="{{ route('updateact', ['department_id' => $depart,'category_id' => $wed->category_id]) }}"
                         enctype="multipart/form-data">
                         @csrf
                         @method('PUT')
@@ -34,18 +34,7 @@
                             <input type="text" class="form-control" name="category_en" placeholder="ชื่อหมวด (อังกฤษ)"
                                 value="{{ $wed->category_en }}">
                         </div><!-- /.form-group -->
-                        <div class="form-row">
-                            <div class="col-md-6 mb-3">
-                                <label for="flatpickr03">วันที่เริ่ม</label>
-                                <input id="flatpickr03" name="startdate" value="{{$wed->startdate}}" type="text"
-                                    class="form-control startdate " data-toggle="flatpickr">
-                            </div>
-                            <div class="col-md-6 mb-3">
-                                <label for="flatpickr04">วันที่สิ้นสุด</label>
-                                <input id="flatpickr04" name="enddate" value="{{$wed->startdate}}" type="text"
-                                    class="form-control enddate " data-toggle="flatpickr">
-                            </div>
-                        </div>
+               
                         <div class="form-group">
                             <label for="cover">ภาพปก </label>
                             <input type="file" class="form-control" accept="image/*" name="cover" placeholder="ภาพปก"

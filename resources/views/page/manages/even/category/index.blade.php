@@ -82,7 +82,7 @@
                                         <td>{{ $item->web_en }}</td>
                                         <td>
 
-                                            <select name="sort" id="sort" class="form-control" data-toggle="select2"
+                                            <select name="sort" id="sort" class="form-control " data-toggle="select2"
                                                 data-placeholder="เรียงลำดับ" data-allow-clear="false"
                                                 data-web-id="{{ $item->web_id }}">
                                                 <option value="{{ $item->sort }}" selected disabled>{{ $item->sort }}

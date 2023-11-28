@@ -102,7 +102,7 @@
                                                         title="แก้ไข"></i></a>
                                                 <a href="{{ route('destorymanual', ['manual_id' => $item->manual_id]) }}"
                                                     onclick="deleteRecord(event)"
-                                                    rel="คู่มือการใช้งานระบบ TCCT e-learning สำหรับผู้ใช้งานระบบ"
+                                                    rel="ACED"
                                                     class="switcher-delete" data-toggle="tooltip" title="ลบ">
                                                     <i class="fas fa-trash-alt fa-lg text-warning "></i></a>
                                             </td>

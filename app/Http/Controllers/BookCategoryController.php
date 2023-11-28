@@ -31,7 +31,7 @@ class BookCategoryController extends Controller
         try {
             $request->validate([
                 'category_th' => 'required',
-                'cover' => 'required'
+
             ]);
 
             $book = new BookCategory;
@@ -46,20 +46,7 @@ class BookCategoryController extends Controller
             $book->category_option = null;
             $book->department_id = (int)$department_id;
             $book->recommended = 1;
-            if ($request->hasFile('cover')) {
-                $image_name = 'cover' . '.' . $request->cover->getClientOriginalExtension();
-                $uploadDirectory = public_path('upload/BookCategory/' . $book->book_id);
-                if (!file_exists($uploadDirectory)) {
-                    mkdir($uploadDirectory, 0755, true);
-                }
-                if (file_exists($uploadDirectory)) {
-                    file_put_contents(public_path('upload/BookCategory/' . $book->book_id . '/' . $image_name), file_get_contents($request->cover));
-                    // สร้างและบันทึกชื่อ cover ลงในโมเดล
-                    $book->cover = 'upload/BookCategory/' . $book->book_id . '/' . 'cover' . '.' . $request->cover->getClientOriginalExtension();
-                    $book->save();
-                }
-            }
-            $book->cover = $image_name;
+
             $book->save();
 
 
@@ -149,23 +136,6 @@ class BookCategoryController extends Controller
         $book->recommended = 1;
         $book->save();
 
-        if ($request->hasFile('cover')) {
-            $image_name = 'cover' .  $book->category_id . '.' . $request->cover->getClientOriginalExtension();
-            $uploadDirectory = public_path('upload/BookCategory/' . $book->book_id);
-            if (!file_exists($uploadDirectory)) {
-                mkdir($uploadDirectory, 0755, true);
-            }
-            if (file_exists($uploadDirectory)) {
-                file_put_contents(public_path('upload/BookCategory/' . $book->book_id . '/' . $image_name), file_get_contents($request->cover));
-                // สร้างและบันทึกชื่อ cover ลงในโมเดล
-                $book->cover = 'upload/BookCategory/' . $book->category_id  . '/' . 'cover' . '.' . $request->cover->getClientOriginalExtension();
-                $book->save();
-            }
-        } else {
-            $image_name = '';
-            $book->cover = $image_name;
-            $book->save();
-        }
         return redirect()->route('bookpage', ['department_id' => $book->department_id])->with('message', 'book    เปลี่ยนแปลงเรียบร้อยแล้ว');
     }
     public function destory($department_id,$category_id)

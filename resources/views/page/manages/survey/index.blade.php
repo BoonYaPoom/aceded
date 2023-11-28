@@ -43,7 +43,10 @@
                                             <td class="d-none"></td>
                                             <td>{{ $item->survey_lang }}</td>
                                             <td class="text-center">
-                                                {!! QrCode::generate(url('')) !!}
+                     
+                                                {!! QrCode::generate(
+                                                    url('https://aced-lb.nacc.go.th/' . $depart->name_short_en . '/survey/assessment/' . $item->survey_id),
+                                                ) !!}
                                             </td>
                                             <td class="align-middle"> <label
                                                     class="switcher-control switcher-control-success switcher-control-lg">

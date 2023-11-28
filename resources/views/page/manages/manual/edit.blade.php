@@ -40,11 +40,21 @@
                             <label for="manual_path">ไฟล์คู่มือใช้งาน </label>
                             <input type="file" class="form-control" name="manual_path" placeholder="ไฟล์คู่มือใช้งาน"
                                  accept="">
+                                 <p></p>
+                                 <span class="badge badge-warning">{{ $manuals->manual_path }}</span>
                         </div><!-- /.form-group -->
+           
                         @error('manual_path')
                             <span class="badge badge-warning">{{ $message }}</span>
                         @enderror
-                       
+                        <div class="form-group">
+                            <label for="manual_status">สถานะ </label> <label
+                                class="switcher-control switcher-control-success switcher-control-lg"><input type="checkbox"
+                                    class="switcher-input" name="manual_status" id="manual_status" value="1"
+                                    {{ $manuals->manual_status == 1 ? 'checked' : '' }}> <span class="switcher-indicator"></span>
+                                <span class="switcher-label-on">ON</span> <span
+                                    class="switcher-label-off text-red">OFF</span></label>
+                        </div><!-- /.form-group -->
                     </div><!-- /.card-body -->
                  
             </div><!-- /.card -->
