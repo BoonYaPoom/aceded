@@ -66,7 +66,7 @@
                             <label for="name_short_th">ภาพปก <small
                                 class="text-muted">( ขนาด 337px * 48px )</small> </label>
                             <input type="file" class="form-control" name="name_short_th" placeholder="ภาพปก"
-                                accept="image/*">
+                                accept=" image/jpeg, image/png">
                         </div><!-- /.form-group -->
 
                         <!-- .form-actions -->

@@ -38,19 +38,6 @@
                         </div>
 
 
-                        <!-- .form-group -->
-                        <div class="form-group"><label for="cover">ภาพปก </label>
-                            <input type="file" class="form-control" id="cover" name="cover" placeholder="ภาพปก"
-                                accept="image/*">
-                        </div> <!-- /.form-group -->
-                        <div class="form-group">
-                            <label for="cover"><img src="{{ asset($book->cover) }}" alt="{{ $book->cover }}"
-                                    style="height:300px ">
-                        </div>
-                        @error('cover')
-                            <span class="badge badge-warning">{{ $message }}</span>
-                        @enderror
-                        <!-- .form-group -->
                         <div class="form-group d-none">
                             <label for="detail_th">รายละเอียด (ไทย)</label>
                             <textarea class="editor" data-placeholder="รายละเอียด (ไทย)" data-height="200" name="detail_th"></textarea>

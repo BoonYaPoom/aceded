@@ -59,7 +59,7 @@
                         <div class="form-group">
                             <label for="banner">ภาพแบนเนอร์   <span class="badge badge-warning">Required</span></label>
                             <input type="file" class="form-control" id="banner" name="banner"
-                                placeholder="ภาพแบนเนอร์" accept="image/*" required="">
+                                placeholder="ภาพแบนเนอร์" accept=" image/jpeg, image/png" required="">
                         </div>
                         <div class="row">
                             <div class="col-md-6">

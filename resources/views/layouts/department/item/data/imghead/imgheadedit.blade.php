@@ -104,7 +104,7 @@
                         @csrf
                         <div class="form-group">
                             <label for="highlight_path">ภาพประชาสัมพันธ์ </label> <input type="file" class="form-control"
-                                id="highlight_path" accept="image/*" name="highlight_path" placeholder="ภาพประชาสัมพันธ์"
+                                id="highlight_path" accept=" image/jpeg, image/png" name="highlight_path" placeholder="ภาพประชาสัมพันธ์"
                                 accept="banner/*">
                         </div><!-- /.form-group -->
                         

@@ -83,7 +83,7 @@
                             <label for="name_short_th">ภาพปก <span class="badge badge-warning">Required</span> <small
                                     class=" text-muted">( ขนาด 337px * 48px )</small></label>
                             <input type="file" class="form-control" name="name_short_th" placeholder="ภาพปก"
-                                accept="image/*" required="">
+                                accept=" image/jpeg, image/png" required="">
                         </div><!-- /.form-group -->
 
                         @error('name_short_th')
@@ -93,7 +93,7 @@
                         <div class="form-group">
                             <label for="detail">logo <span class="badge badge-warning">Required</span><small
                                     class="text-muted">( ขนาด 585px * 350px )</small> </label>
-                            <input type="file" class="form-control" name="detail" placeholder="logo" accept="image/*"
+                            <input type="file" class="form-control" name="detail" placeholder="logo" accept=" image/jpeg, image/png"
                                 required="">
                         </div><!-- /.form-group -->
                         @error('detail')

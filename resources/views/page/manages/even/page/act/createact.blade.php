@@ -37,7 +37,7 @@
 
                         <div class="form-group">
                             <label for="cover">ภาพปก <span class="badge badge-warning">Required</span> </label></label>
-                            <input type="file" class="form-control"  required=""  accept="image/*" name="cover" placeholder="ภาพปก">
+                            <input type="file" class="form-control"  required=""  accept=" image/jpeg, image/png" name="cover" placeholder="ภาพปก">
 
                         </div><!-- /.card-body -->
 

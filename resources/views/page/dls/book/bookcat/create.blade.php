@@ -47,7 +47,7 @@
                         <div class="form-group">
                             <label for="cover">ภาพปก <span class="badge badge-warning">Required</span></label>
                             <input type="file" class="form-control" id="cover" name="cover" placeholder="ภาพปก"
-                                accept="image/*" required=""><small class="form-text text-muted">JPG, GIF or PNG 400x400, < 2
+                                accept=" image/jpeg, image/png" required=""><small class="form-text text-muted">JPG, GIF or PNG 400x400, < 2
                                     MB.</small>
                         </div><!-- /.form-group -->
                         <!-- .form-group -->

@@ -93,7 +93,7 @@ class ExcelController extends Controller
                             $lastQuestionId = Question::max('question_id');
                             $questionType = 1;
                             $questionStatus = 1;
-                            $score = 0;
+                            $score = 1;
                             $numChoice = count(array_filter([
                                 $row[2] !== '' ? $row[2] : null,
                                 $row[3] !== '' ? $row[3] : null,

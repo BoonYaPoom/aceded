@@ -64,7 +64,7 @@
                         </div><!-- /.form-group -->
                         <div class="form-group">
                             <label for="cover">ภาพปก </label> <input type="file" class="form-control" id="cover"
-                                name="cover" placeholder="ภาพปก" accept="image/*">
+                                name="cover" placeholder="ภาพปก" accept=" image/jpeg, image/png">
                         </div><!-- /.form-group -->
                         <div class="form-group">
                             <div class="col-lg-10">
@@ -909,7 +909,7 @@
                                             <div class="form-group">
                                                 <label for="cert_custom">เพิ่มรูปแบบใบประกาศนียบัตร </label> <input
                                                     type="file" class="form-control" id="cert_custom"
-                                                    name="cert_custom" placeholder="ใบประกาศนียบัตร	" accept="image/*">
+                                                    name="cert_custom" placeholder="ใบประกาศนียบัตร	" accept=" image/jpeg, image/png">
                                             </div><!-- /.form-group -->
                                         </figcaption><!-- /.figure-caption -->
                                     </figure><!-- /.card-figure -->
@@ -944,7 +944,7 @@
                             </div><!-- /grid row -->
                             <div class="form-group">
                                 <label for="signature">ลายเซ็นต์ </label> <input type="file" class="form-control"
-                                    id="signature" name="signature" placeholder="ลายเซ็นต์" accept="image/*">
+                                    id="signature" name="signature" placeholder="ลายเซ็นต์" accept=" image/jpeg, image/png">
                             </div><!-- /.form-group -->
                         </fieldset><!-- /.fieldset -->
                     </div><!-- /.card-body -->

@@ -34,7 +34,7 @@
                                     <img src="{{ asset($data->avatar) }}"
                                         alt="{{ $data->avatar }}">
 
-                                    <input id="fileupload-avatar" type="file" name="avatar" accept="image/*">
+                                    <input id="fileupload-avatar" type="file" name="avatar" accept=" image/jpeg, image/png">
                                 </div>
                                 <!-- .media-body -->
                                 <div class="media-body pl-3">

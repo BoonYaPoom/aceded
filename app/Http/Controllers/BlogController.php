@@ -89,7 +89,7 @@ class BlogController extends Controller
 
             $blogs->detail = $decodedText;
         }
-        $blogs->detail_en =  $request->detail;
+        $blogs->detail_en =  0;
         $blogs->blog_date = now();
         $blogs->blog_status = $request->input('blog_status', 0);
         $blogs->author = 'ACED';
@@ -214,6 +214,7 @@ class BlogController extends Controller
 
             $blogs->detail = $decodedText;
         }
+        $blogs->detail_en =  0;
         $blogs->blog_date = now();
         $blogs->blog_status = $request->input('blog_status', 0);
         $blogs->author = 'ACED';

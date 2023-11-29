@@ -52,7 +52,7 @@
                         <div class="form-group">
                             <label for="cover">ภาพปก </label>
                             <input type="file" class="form-control" id="cover" name="cover" placeholder="ภาพปก"
-                                accept="image/*"><small class="form-text text-muted">JPG, GIF or PNG 400x400, < 2
+                                accept=" image/jpeg, image/png"><small class="form-text text-muted">JPG, GIF or PNG 400x400, < 2
                                     MB.</small>
                         </div><!-- /.form-group -->
                         @error('cover')

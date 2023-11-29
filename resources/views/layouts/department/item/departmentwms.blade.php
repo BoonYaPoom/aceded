@@ -108,11 +108,12 @@
                                                 });
                                             </script>
                                             <td class="align-middle">
+                                                @if ($data->user_role == 1 || $data->user_role == 8)
                                                 <a
                                                     href="{{ route('departmentedit', ['from' => $from, 'department_id' => $depart->department_id]) }}">
                                                     <i class="far fa-edit fa-lg text-success" data-toggle="tooltip"
                                                         title="แก้ไข"></i></a>
-                                                @if ($data->user_role == 1 || $data->user_role == 8)
+       
                                                     <a href="{{ route('deleteDepart', ['department_id' => $depart->department_id]) }}"
                                                         rel="" onclick="deleteRecord(event)" class="switcher-delete"
                                                         data-toggle="tooltip" title="ลบข้อมูล"><i

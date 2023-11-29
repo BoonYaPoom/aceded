@@ -5,7 +5,7 @@
             <div class="col">
                 <!-- .metric -->
 
-                <a @if ($user_role1) href="{{ route('UserManage', ['user_role' => $user_role1->user_role]) }}"
+                <a @if ($user_role1) href=""
                 @else
                 href="" @endif
                     class="metric metric-bordered align-items-center">
@@ -20,7 +20,7 @@
             <!-- metric column -->
             <div class="col">
                 <!-- .metric -->
-                <a @if ($user_role3) href="{{ route('UserManage', ['user_role' => $user_role3->user_role]) }}"
+                <a @if ($user_role3) href=""
                 @else
                 href="" @endif
                     class="metric metric-bordered align-items-center">
@@ -34,7 +34,7 @@
             <!-- metric column -->
             <div class="col">
                 <!-- .metric -->
-                <a @if ($user_role4) href="{{ route('UserManage', ['user_role' => $user_role4->user_role]) }}"
+                <a @if ($user_role4) href=""
                 @else
                 href="" @endif
                     class="metric metric-bordered align-items-center">

@@ -128,7 +128,7 @@
         @endif
     @endfor
 
-    <td width="25%" class="text-center">ร้อยละค่าเฉลี่ย</td>
+    <td width="25%" class="text-center">ระดับความพึงพอใจ</td>
 
 </tr>
 

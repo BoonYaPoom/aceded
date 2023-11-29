@@ -80,7 +80,7 @@
                                         <div class="custom-file">
                                             <input type="file" name="content_path"
                                                 id="content_path" class="custom-file-input"
-                                                accept="image/*">
+                                                accept=" image/jpeg, image/png">
                                             <label class="custom-file-label"
                                                 for="content_path">Choose
                                                 files</label>

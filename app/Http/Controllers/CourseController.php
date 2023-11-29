@@ -46,7 +46,9 @@ class CourseController extends Controller
 
         $validator = Validator::make($request->all(), [
             'course_code' => 'required',
-            'course_th' => 'required'
+            'course_th' => 'required',
+            'templete_certificate' =>'required'
+
         ]);
 
         if ($validator->fails()) {

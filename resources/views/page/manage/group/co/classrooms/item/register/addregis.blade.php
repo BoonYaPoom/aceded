@@ -39,7 +39,7 @@
                             <a class="nav-link active text-info"
                                 href="{{ route('class_page', [$depart,'course_id' => $cour->course_id]) }}"><i
                                     class="fas fa-users"></i>
-                                ผู้เรียน รายวิชาเพิ่มเติม การป้องกันการทุจริต ระดับปฐมวัย </a>
+                                ผู้เรียน  {{$depart->name_th}} </a>
                         </div><!-- /.nav -->
                     </div><!-- /.nav-scroller -->
                     <!-- .card-body -->

@@ -107,22 +107,7 @@ class DepartmentController extends Controller
             $actcat->recommended = '0';
             $actcat->cover = '';
 
-            $actcat->save();
-            $actcat = new ActivityCategory;
-            $actcat->category_th = 'คลังวิดีโอ';
-            $actcat->category_en = 'Video on demand';
-            $actcat->detail_th = '';
-            $actcat->detail_en = '';
-            $actcat->department_id = $depart->department_id;
-            $actcat->category_date = now();
-            $actcat->category_update = null;
-            $actcat->category_type = 1;
-            $actcat->category_status = 0;
-            $actcat->category_option = null;
-            $actcat->recommended = '0';
-            $actcat->cover = '';
-
-            $actcat->save();
+          
             $actcat = new ActivityCategory;
             $actcat->category_th = 'ห้องประชุม';
             $actcat->category_en = 'Meeting Room';
@@ -138,22 +123,7 @@ class DepartmentController extends Controller
             $actcat->cover = '';
 
             $actcat->save();
-            $actcat = new ActivityCategory;
-            $actcat->category_th = 'คลังวิดีโอ';
-            $actcat->category_en = 'Video on demand';
-            $actcat->detail_th = '';
-            $actcat->detail_en = '';
-            $actcat->department_id = $depart->department_id;
-            $actcat->category_date = now();
-            $actcat->category_update = null;
-            $actcat->category_type = 2;
-            $actcat->category_status = 0;
-            $actcat->category_option = null;
-            $actcat->recommended = '0';
-            $actcat->cover = '';
-
-            $actcat->save();
-
+         
 
             $genaral = new General;
             if ($request->hasFile('detail')) {

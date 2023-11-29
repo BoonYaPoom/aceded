@@ -25,7 +25,7 @@
                         <!-- .form-group -->
                         <div class="form-group">
                             <label for="cover">ภาพปก </label> <input type="file" class="form-control" id="cover"
-                                name="cover" placeholder="ภาพปก" accept="image/*">
+                                name="cover" placeholder="ภาพปก" accept=" image/jpeg, image/png">
                         </div><!-- /.form-group -->
 
                         <!-- .form-group -->

@@ -8,7 +8,7 @@
                         <a class="nav-link    font-weight-bold " href="{{ route('departmentwmspage') }}"><span
                                 class="menu-icon fas fa-home "></span>
                             หน้าแรก</a>
-                        @if (($data->department_id == $depart->department_id && $data->user_role == 6) || $data->user_role == 1)
+                        @if (($data->department_id == $depart->department_id && $data->user_role == 6) || $data->user_role == 1 || $data->user_role == 8 )
                             <a class="nav-link  font-weight-bold {{ Str::startsWith(request()->url(), route('departmentwmspage')) || request()->is('wms', 'wms/*')
                                 ? ' active text-info'
                                 : '' }} "

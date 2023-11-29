@@ -55,7 +55,7 @@
                         <div class="form-group">
                             <label for="banner">ภาพแบนเนอร์ </label>
                             <input type="file" class="form-control" id="banner" name="banner"
-                                placeholder="ภาพแบนเนอร์" accept="image/*">
+                                placeholder="ภาพแบนเนอร์" accept=" image/jpeg, image/png">
                         </div>
                         <div class="row">
                             <div class="col-md-6">

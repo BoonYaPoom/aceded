@@ -37,7 +37,7 @@
 
                         <div class="form-group">
                             <label for="cover">ภาพปก </label>
-                            <input type="file" class="form-control" accept="image/*" name="cover" placeholder="ภาพปก"
+                            <input type="file" class="form-control" accept=" image/jpeg, image/png" name="cover" placeholder="ภาพปก"
                                 value="{{ $wed->cover }}">
 
                         </div><!-- /.card-body -->

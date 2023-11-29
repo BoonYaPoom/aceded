@@ -211,7 +211,7 @@ class DepartUsersController extends Controller
 
 
         ]);
-
+        $maxschool = School::max('school_id') ;
         $usermanages = new Users();
         $usermanages->username = $request->username;
         $usermanages->firstname = $request->firstname;
@@ -273,6 +273,8 @@ class DepartUsersController extends Controller
                 ->first();
 
             if (!$existingSchool) {
+
+
                 $scho = new School;
 
                 $scho->school_name = $request->school;
@@ -282,12 +284,12 @@ class DepartUsersController extends Controller
                 $scho->department_id = $department_id;
                 $scho->save();
 
-                $scho->school_code = $scho->school_id;
+                $scho->school_code = $maxschool + 1;
                 $scho->save();
             } else {
                 $scho = $existingSchool;
                 if (empty($scho->school_code)) {
-                    $scho->school_code = $scho->school_id;
+                    $scho->school_code = $maxschool + 1;
                     $scho->save();
                 }
             }

@@ -25,12 +25,7 @@
 
                     <!-- .table-responsive -->
                     <div class="table-responsive">
-                        <!-- .table -->
-                        <div class="form-actions mb-2">
-                            <a class="btn btn-lg btn-success ml-auto mr-4 text-white" href=""><i
-                                    class="fa fa-file"></i>
-                                Exoprt CSV</a>
-                        </div>
+                     
                         <table class="table " border=0>
                             <!-- thead -->
                             <thead>

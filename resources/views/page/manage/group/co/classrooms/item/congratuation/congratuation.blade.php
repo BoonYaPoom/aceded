@@ -33,7 +33,7 @@
                     <!-- .nav -->
                     <div class="nav nav-tabs bg-muted h3">
                         <a class="nav-link " href="{{ route('class_page', [$depart,'course_id' => $cour->course_id]) }}"><i
-                                class="fas fa-users"></i> ผู้เรียน ความรู้เบื้องต้นเกี่ยวกับกฎหมายการแข่งขันทางการค้า </a>
+                                class="fas fa-users"></i> ผู้เรียน {{$depart->name_th}}  </a>
                     </div><!-- /.nav -->
                 </div><!-- /.nav-scroller --> <!-- .card-body -->
                 <div class="card-body">

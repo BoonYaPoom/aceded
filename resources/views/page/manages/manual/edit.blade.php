@@ -34,7 +34,7 @@
                                         alt="{{ $manuals->cover }}" width="40%">
                             </div>
                             <label for="cover">ภาพปก </label> <input type="file" class="form-control" name="cover"
-                                placeholder="ภาพปก" accept="image/*">
+                                placeholder="ภาพปก" accept=" image/jpeg, image/png">
                         </div><!-- /.form-group -->
                         <div class="form-group">
                             <label for="manual_path">ไฟล์คู่มือใช้งาน </label>
