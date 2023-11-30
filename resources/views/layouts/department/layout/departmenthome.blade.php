@@ -167,9 +167,9 @@
 
         function createRecord(ev) {
             ev.preventDefault();
-            var urlToredirect = ev.currentTarget.getAttribute('href');
+            var urlToredirecstsss = ev.currentTarget.getAttribute('href');
             swal({
-                    title: "คุณต้องการสร้าง Admin สถานศึกษา หรือไม่?",
+                    title: "คุณต้องการเพิ่มคุณครูให้กับวิชานี้ หรือไม่?",
                     text: "คุณจะไม่สามารถย้อนกลับได้!",
                     icon: "success",
                     buttons: true,
@@ -177,9 +177,9 @@
                 })
                 .then((confirm) => {
                     if (confirm) {
-                        window.location.href = urlToredirect;
+                        window.location.href = urlToredirecstsss;
                     } else {
-                        swal("คุญได้ยกเลิกการสร้าง Admin สถานศึกษา !");
+                        swal("คุญได้ยกเลิกการเพิ่มคุณครูให้กับวิชานี้ !");
                     }
 
                 });

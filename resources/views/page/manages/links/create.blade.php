@@ -10,7 +10,7 @@
                 <div class="card-header bg-muted"><a href="{{ route('manage', ['department_id' => $depart]) }}"
                         style="text-decoration: underline;">จัดการเว็บ</a> / <a
                         href="{{ route('linkpage', ['department_id' => $depart]) }}"
-                        style="text-decoration: underline;">ลิงค์ที่น่าสนใจ</a> </div><!-- /.card-header -->
+                        style="text-decoration: underline;">ลิงค์ที่น่าสนใจ</a> / <i>เพิ่ม</i> </div><!-- /.card-header -->
                 <form action="{{ route('storelink', ['department_id' => $depart]) }}" method="post" enctype="multipart/form-data">
                     @csrf
                     <!-- .card-body -->

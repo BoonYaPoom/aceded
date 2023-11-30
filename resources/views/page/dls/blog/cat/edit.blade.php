@@ -8,10 +8,11 @@
             <!-- .card -->
             <div class="card card-fluid">
                 <!-- .card-header -->
-                <div class="card-header bg-muted"><a href="{{ route('dls',['department_id'=> $blogcat->department_id]) }}"
-                        style="text-decoration: underline;">จัดการข้อมูลและความรู้</a> / <a
-                        href="{{ route('blog', [$depart,'category_id' => $blogs->category_id]) }}"
-                        style="text-decoration: underline;">{{ $blogs->title }}</a> / <i> เพิ่มชื่อ</i></div>
+                <div class="card-header bg-muted">         <a href="{{ route('dls', ['department_id' => $depart->department_id]) }}"
+                    style="text-decoration: underline;"> จัดการข้อมูลและความรู้</a> / <a
+                    href="{{ route('blogpage', ['department_id' => $depart]) }}" style="text-decoration: underline;">
+                    คลังความรู้</a> / <a href="{{ route('blog', [$depart, 'category_id' => $blogcat->category_id]) }}"
+                    style="text-decoration: underline;">{{ $blogcat->category_th }}</a> / <i> {{$blogs->title}}</i></div>
                 <!-- /.card-header -->
                 <form action="{{ route('updateblog', [$depart,'blog_id' => $blogs]) }}" method="post" enctype="multipart/form-data">
                     @method('PUT')

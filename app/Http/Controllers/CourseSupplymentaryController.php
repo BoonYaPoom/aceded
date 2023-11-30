@@ -34,11 +34,12 @@ class CourseSupplymentaryController extends Controller
     {
         $subs  = CourseSubject::findOrFail($subject_id);
         $types = CourseSupplymentaryType::all();
-        $books = Book::all();
 
-        $department_id =   $subs->department_id;
         $depart = Department::findOrFail($department_id);
-        return view('page.manage.sub.supply.create', compact('subs', 'books', 'types', 'depart'));
+        $bookcats  = $depart->BookCatDe()->where('department_id', $department_id)->get();
+
+ 
+        return view('page.manage.sub.supply.create', compact('subs', 'bookcats', 'types', 'depart'));
     }
     public function store(Request $request,$department_id, $subject_id)
     {
@@ -199,7 +200,7 @@ class CourseSupplymentaryController extends Controller
         return redirect()->route('supplypage', [$department_id,'subject_id' => $subject_id])->with('message', 'Course_lesson บันทึกข้อมูลสำเร็จ');
     }
 
-    public function edit($department_id,$supplymentary_id)
+    public function edit($department_id,$subject_id,$supplymentary_id)
     {
         $supplys  = CourseSupplymentary::findOrFail($supplymentary_id);
         $types = CourseSupplymentaryType::all();
@@ -208,9 +209,10 @@ class CourseSupplymentaryController extends Controller
         $subs = CourseSubject::findOrFail($subject_id);
         $department_id =   $subs->department_id;
         $depart = Department::findOrFail($department_id);
-        return view('page.manage.sub.supply.edit', compact('supplys', 'types', 'books', 'depart'));
+        $bookcats  = $depart->BookCatDe()->where('department_id', $department_id)->get();
+        return view('page.manage.sub.supply.edit', compact('supplys','subs', 'types', 'bookcats', 'depart'));
     }
-    public function update(Request $request,$department_id, $supplymentary_id)
+    public function update(Request $request,$department_id,$subject_id, $supplymentary_id)
     {
         $supplys  = CourseSupplymentary::findOrFail($supplymentary_id);
 
@@ -219,7 +221,7 @@ class CourseSupplymentaryController extends Controller
         $supplys->cover_image = $request->cover;
         $supplys->author = $request->author;
         $supplys->supplymentary_status = $request->input('supplymentary_status', 0);
-        $supplys->supplymentary_type = $request->type;
+        $supplys->supplymentary_type = $request->supplymentary_type;
 
         if ($supplys->supplymentary_type == 3) {
             if ($request->hasFile('path')) {
@@ -344,7 +346,7 @@ class CourseSupplymentaryController extends Controller
 
         $supplys->save();
 
-        return redirect()->route('supplypage', [$department_id,'subject_id' => $supplys->subject_id])->with('message', 'Course_lesson บันทึกข้อมูลสำเร็จ');
+        return redirect()->route('supplypage', [$department_id,$subject_id])->with('message', 'Course_lesson บันทึกข้อมูลสำเร็จ');
     }
     public function destroy($supplymentary_id)
     {
@@ -387,7 +389,8 @@ class CourseSupplymentaryController extends Controller
         $books = Book::all();
         $department_id =   $subs->department_id;
         $depart = Department::findOrFail($department_id);
-        return view('page.manage.sub.lesson.supply.create', compact('lesson', 'books', 'types', 'subs', 'lessonsSub', 'depart'));
+        $bookcats  = $depart->BookCatDe()->where('department_id', $department_id)->get();
+        return view('page.manage.sub.lesson.supply.create', compact('lesson', 'bookcats', 'types', 'subs', 'lessonsSub', 'depart'));
     }
 
     public function storeLess(Request $request,$department_id, $subject_id, $lesson_id)
@@ -538,20 +541,19 @@ class CourseSupplymentaryController extends Controller
 
         return redirect()->route('Supply_lessonform', [$department_id,'subject_id' => $subject_id, 'lesson_id' => $lesson_id])->with('message', 'Course_lesson บันทึกข้อมูลสำเร็จ');
     }
-    public function editLess($department_id,$supplymentary_id)
+    public function editLess($department_id,$subject_id,$lesson_id,$supplymentary_id)
     {
         $supplys  = CourseSupplymentary::findOrFail($supplymentary_id);
         $types = CourseSupplymentaryType::all();
-
-        $subject_id =  $supplys->subject_id;
-        $subs = CourseSubject::findOrFail($subject_id);
-        $department_id =   $subs->department_id;
+        $subs  = CourseSubject::findOrFail($subject_id);
+        $lesson = CourseLesson::findOrFail($lesson_id);
         $depart = Department::findOrFail($department_id);
         $books = Book::all();
-        return view('page.manage.sub.lesson.supply.edit', compact('supplys', 'types', 'books', 'depart'));
+        $bookcats  = $depart->BookCatDe()->where('department_id', $department_id)->get();
+        return view('page.manage.sub.lesson.supply.edit', compact('supplys', 'types', 'lesson','bookcats', 'depart','subs'));
     }
 
-    public function updateLess(Request $request,$department_id, $supplymentary_id)
+    public function updateLess(Request $request,$department_id,$subject_id,$lesson_id,$supplymentary_id)
     {
         $supplys  = CourseSupplymentary::findOrFail($supplymentary_id);
 
@@ -560,7 +562,7 @@ class CourseSupplymentaryController extends Controller
         $supplys->cover_image = $request->cover;
         $supplys->author = $request->author;
         $supplys->supplymentary_status = $request->input('supplymentary_status', 0);
-        $supplys->supplymentary_type = $request->type;
+        $supplys->supplymentary_type = $request->supplymentary_type;
 
 
 
@@ -687,6 +689,6 @@ class CourseSupplymentaryController extends Controller
 
         $supplys->save();
 
-        return redirect()->route('Supply_lessonform', [$department_id,'subject_id' => $supplys->subject_id, 'lesson_id' => $supplys->lesson_id])->with('message', 'Course_lesson บันทึกข้อมูลสำเร็จ');
+        return redirect()->route('Supply_lessonform', [$department_id,$subject_id,$lesson_id,$supplymentary_id])->with('message', 'Course_lesson บันทึกข้อมูลสำเร็จ');
     }
 }

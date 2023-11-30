@@ -16,14 +16,7 @@
                 toastr.success("{{ Session::get('message') }}");
             </script>
         @endif
-
-
-
-
-
-                    <!-- .card-body -->
                     <div class="card-body">
-
                         <!-- .table-responsive -->
                         <div class="table-responsive">
                             <!-- .table -->
@@ -108,14 +101,9 @@
                     });
                 });
             </script>
-            <!-- .page-title-bar -->
             <header class="page-title-bar">
-                <!-- floating action -->
-
                 <input type="hidden" />
                 <button type="button" class="d-none btn btn-success btn-floated" data-toggle="tooltip"
                     title="บันทึกคะแนน"><span class="fas fa-save"></span></button>
-                <!-- /floating action -->
-            </header><!-- /.page-title-bar -->
-
+            </header>
     @endsection

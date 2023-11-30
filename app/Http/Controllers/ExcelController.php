@@ -58,9 +58,9 @@ class ExcelController extends Controller
     {
         return Excel::download(new SubjectExport, 'Administrator Management System.xlsx');
     }
-    public function questionExport()
+    public function questionExport($subject_id)
     {
-        return Excel::download(new QuestionExport, 'Question System.xlsx');
+        return Excel::download(new QuestionExport($subject_id), 'Question System.xlsx');
     }
 
     public function importall(Request $request)
@@ -118,7 +118,7 @@ class ExcelController extends Controller
                                 'choice3' => isset($row[4]) ? $row[4] : null,
                                 'choice4' => isset($row[5]) ? $row[5] : null,
                                 'choice5' => isset($row[6]) ? $row[6] : null,
-                                'answer' => $row[7],
+                                'answer' => '["'.strval($row[7]).'"]',
                                 'explain' => $row[8],
                                 'choice6' => $Choice6,
                                 'choice7' => $Choice7,

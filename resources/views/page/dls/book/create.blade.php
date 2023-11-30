@@ -9,12 +9,16 @@
             <div class="card card-fluid">
                 <!-- .card-header -->
                 <div class="card-header bg-muted">
-                    <a href="{{ route('bookpage', ['department_id' => $depart]) }}" style="text-decoration: underline;">จัดการข้อมูลและความรู้</a> /
+                    <a href="{{ route('dls', ['department_id' => $depart->department_id]) }}"
+                        style="text-decoration: underline;"> จัดการข้อมูลและความรู้</a> / <a
+                        href="{{route('bookpage', ['department_id' => $depart])}}"
+                        style="text-decoration: underline;"> หนังสืออิเล็กทรอนิกส์</a> /
                     <i>เพิ่มหมวดหมู่</i>
                 </div>
 
 
-                <form action="{{ route('storebook', ['department_id' => $depart]) }}" method="post" enctype="multipart/form-data">
+                <form action="{{ route('storebook', ['department_id' => $depart]) }}" method="post"
+                    enctype="multipart/form-data">
                     @csrf
                     <div class="card-body">
                         <!-- .form-group -->
@@ -34,22 +38,22 @@
                                 placeholder="ชื่อหมวด (ไทย)" required="" value="">
                         </div>
                         <!-- /.form-group -->
-                        @if($errors->has('category_th'))
-                        <span class="badge badge-warning">{{ $errors->first('category_th') }}</span>
-                    @endif
-                    
-                     
+                        @if ($errors->has('category_th'))
+                            <span class="badge badge-warning">{{ $errors->first('category_th') }}</span>
+                        @endif
+
+
 
                         <!-- .form-group -->
                         <div class="form-group">
                             <label for="category_en">ชื่อหมวด (อังกฤษ) <span
-                                class="badge badge-warning">Required</span></label>
+                                    class="badge badge-warning">Required</span></label>
                             <input type="text" class="form-control" id="category_en" name="category_en"
                                 placeholder="ชื่อหมวด (อังกฤษ)" value="" required="">
                         </div>
                         <!-- /.form-group -->
 
-               
+
 
                         <!-- /.form-group -->
                         <div class="form-group">

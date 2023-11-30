@@ -24,9 +24,11 @@
             <!-- .card -->
             <div class="card card-fluid">
                 <!-- .card-header -->
-                <div class="card-header bg-muted"><a href="{{ route('manage', ['department_id' => $depart]) }}"
-                        style="text-decoration: underline;">จัดการเว็บ </a> / <i>
-                        คู่มือใช้งาน</i></div><!-- /.card-header -->
+                <div class="card-header bg-muted">
+                    <a href="{{ route('manage', ['department_id' => $depart]) }}"
+                    style="text-decoration: underline;">จัดการเว็บ</a> / 
+                    <a href="{{ route('manualpage', ['department_id' => $depart]) }}"
+                    style="text-decoration: underline;">คู่มือใช้งาน</a> </div><!-- /.card-header -->
                 <!-- .card-body -->
                 <div class="card-body">
 

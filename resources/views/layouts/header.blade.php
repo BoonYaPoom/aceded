@@ -16,28 +16,6 @@
                                 class="hamburger-inner"></span></span></button>
                 </div>
                 <div class="top-bar-item top-bar-item-right px-0 d-none d-sm-flex">
-                    <ul class="header-nav nav">
-                        <li class="nav-item dropdown header-nav-dropdown">
-                            <a class="nav-link" href="#" data-toggle="dropdown" aria-haspopup="true"
-                                aria-expanded="false"><span class=""><img
-                                        src="{{ asset('upload/land/thai.png') }}"></span></a>
-                            <div class="dropdown-arrow dropdown-arrow-left"></div>
-                            <div class="dropdown-menu">
-                                <h6 class="dropdown-header d-none d-md-block d-lg-none"> {{ $data->firstname }} </h6>
-                                <h6 class="dropdown-header stop-propagation">
-                                    <span>เลือกภาษา</span>
-                                </h6>
-                                <div class="dropdown-divider"></div>
-                                <a class="dropdown-item" href=""><span class="dropdown-icon"><img
-                                            src="{{ asset('upload/land/thai.png') }}"></span>
-                                    ไทย</a>
-                                <a class="dropdown-item" href=""><span class="dropdown-icon"><img
-                                            src="{{ asset('upload/land/english.png') }}"></span>
-                                    English</a>
-                            </div>
-                        </li>
-                    </ul>
-
                     <div class="dropdown">
                         <button class="btn-account d-none d-md-flex" type="button" data-toggle="dropdown"
                             aria-haspopup="true" aria-expanded="false"><span class="user-avatar user-avatar-md"> <img
@@ -51,7 +29,7 @@
                             <h6 class="dropdown-header d-none d-md-block d-lg-none"> {{ $data->firstname }} </h6>
                             <a class="dropdown-item" href="{{ route('edit-profile') }}">
                                 <span class="dropdown-icon oi oi-person"></span> Profile</a>
-                            <a class="dropdown-item" href=""><span class="dropdown-icon fas fa-share"></span>
+                            <a class="dropdown-item" href="{{ url('https://aced-lb.nacc.go.th')}}"><span class="dropdown-icon fas fa-share"></span>
                                 Fontend</a>
                             <a class="dropdown-item" href="{{ route('logout') }}"><span
                                     class="dropdown-icon oi oi-account-logout"></span> Logout</a>
@@ -78,7 +56,7 @@
                     <div class="pb-3">
                         <a class="dropdown-item" href="{{ route('edit-profile') }}"><span
                                 class="dropdown-icon oi oi-person"></span> Profile</a>
-                        <a class="dropdown-item" href=""><span class="dropdown-icon 	fas fa-share"></span>
+                        <a class="dropdown-item" href="{{ url('https://aced-lb.nacc.go.th')}}"><span class="dropdown-icon 	fas fa-share"></span>
                             Fontend</a>
                         <a class="dropdown-item" href="{{ route('logout') }}"><span
                                 class="dropdown-icon oi oi-account-logout"></span> ออกจากระบบ</a>
@@ -108,7 +86,7 @@
                             <a class="dropdown-item"
                                 href="{{ route('edit-profile') }}"><span
                                     class="dropdown-icon oi oi-person"></span> Profile</a>
-                            <a class="dropdown-item" href="/"><span
+                            <a class="dropdown-item" href="{{ url('https://aced-lb.nacc.go.th')}}"><span
                                     class="dropdown-icon 	fas fa-share"></span> Fontend</a>
                             <a class="dropdown-item" href="{{ route('logout') }}"><span
                                     class="dropdown-icon oi oi-account-logout"></span> ออกจากระบบ</a>

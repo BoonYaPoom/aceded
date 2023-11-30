@@ -9,12 +9,15 @@
             <div class="card card-fluid">
                 <!-- .card-header -->
                 <div class="card-header bg-muted">
-                    <a href="{{ route('bookpage', ['department_id' => $book->department_id]) }}" style="text-decoration: underline;">จัดการข้อมูลและความรู้</a> /
-                    <i>แก้ไขหมวดหมู่/{{ $book->category_th }}</i>
+                    <a href="{{ route('dls', ['department_id' => $depart->department_id]) }}"
+                        style="text-decoration: underline;"> จัดการข้อมูลและความรู้</a> / <a
+                        href="{{route('bookpage', ['department_id' => $depart])}}"
+                        style="text-decoration: underline;"> หนังสืออิเล็กทรอนิกส์</a> /
+                    <i>แก้ไข {{ $book->category_th }}</i>
                 </div>
 
 
-                <form action="{{ route('bookupdate', [$depart,'category_id' => $book->category_id]) }}" method="post"
+                <form action="{{ route('bookupdate', [$depart, 'category_id' => $book->category_id]) }}" method="post"
                     enctype="multipart/form-data">
                     @method('PUT')
                     @csrf
@@ -65,7 +68,7 @@
                             <label for="category_status">สถานะ </label>
                             <label class="switcher-control switcher-control-success switcher-control-lg">
                                 <input type="checkbox" class="switcher-input" name="category_status" id="category_status"
-                                    value="1"     {{ $book->category_status == 1 ? 'checked' : '' }}>
+                                    value="1" {{ $book->category_status == 1 ? 'checked' : '' }}>
                                 <span class="switcher-indicator"></span> <span class="switcher-label-on">ON</span> <span
                                     class="switcher-label-off text-red">OFF</span></label>
                         </div>

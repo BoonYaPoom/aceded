@@ -111,10 +111,7 @@ class CourseSubjectController extends Controller
 
             if (in_array($teacherId->user_id, $selectedTeachers)) {
                 $teach->teacher_status = 1;
-            } else {
-                $teach->teacher_status = 0;
-            }
-
+            } 
             $teach->subject_id = $subs->subject_id;
             $teach->save();
         }

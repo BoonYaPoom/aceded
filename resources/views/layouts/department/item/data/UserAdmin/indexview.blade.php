@@ -105,7 +105,7 @@
                             <!-- .modal-content -->
                             <div class="modal-content">
                                 <!-- .modal-header -->
-                                <div class="modal-header bg-success">
+                                <div class="modal-header " style="background-color: {{ $depart->color }};">
                                     <h6 id="clientUploadModalLabel" class="modal-title text-white">
                                         <span class="sr-only">Upload</span> <span><i
                                                 class="fas fa-user-plus text-white"></i> นำเข้าผู้ใช้งาน</span>

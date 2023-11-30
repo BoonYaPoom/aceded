@@ -1,7 +1,7 @@
 @extends('layouts.department.layout.departmenthome')
 @section('contentdepartment')
-    <form action="{{ route('store_supplyLessform', [$depart, 'lesson_id' => $lesson, 'subject_id' => $subs]) }}" method="post"
-        enctype="multipart/form-data">
+    <form action="{{ route('store_supplyLessform', [$depart, 'lesson_id' => $lesson, 'subject_id' => $subs]) }}"
+        method="post" enctype="multipart/form-data">
         @csrf
         <div class="page-inner">
             <!-- .form -->
@@ -10,10 +10,17 @@
                 <!-- .card -->
                 <div class="card card-fluid">
                     <!-- .card-header -->
-                    <div class="card-header bg-muted"><a href="{{ route('lessonpage', [$depart, $lesson->lesson_id]) }}"
-                            style="text-decoration: underline;">หมวดหมู่</a> / <a
-                            href="{{ route('supplypage', [$depart, $lesson->lesson_id]) }}"
-                            style="text-decoration: underline;">จัดการวิชา</a> </div><!-- /.card-header -->
+                    <div class="card-header bg-muted">
+                        <a href="{{ route('learn', ['department_id' => $depart]) }}"
+                            style="text-decoration: underline;">หมวดหมู่</a>
+                        / <a href="{{ route('suppage', ['department_id' => $depart]) }}"
+                            style="text-decoration: underline;">จัดการวิชา</a>
+                        /
+                        <a href="{{ route('lessonpage', [$depart, $subs]) }}"
+                            style="text-decoration: underline;"><i>{{ $subs->subject_th }}</i></a> / <a
+                            href="{{ route('Supply_lessonform', [$depart, $subs,$lesson]) }}"
+                            style="text-decoration: underline;"><i>สื่อเสริม</i></a> / เพิ่ม
+                    </div><!-- /.card-header -->
 
                     <!-- .card-body -->
                     <div class="card-body">
@@ -22,8 +29,8 @@
 
                             <label class="control-label" for="supplymentary_type">ชนิดสื่อ</label>
 
-                            <select id="supplymentary_type" name="supplymentary_type" class="form-control" data-toggle="select2"
-                                data-placeholder="ชนิดสื่อ" data-allow-clear="false">
+                            <select id="supplymentary_type" name="supplymentary_type" class="form-control"
+                                data-toggle="select2" data-placeholder="ชนิดสื่อ" data-allow-clear="false">
                                 <option value="0">เลือกชนิดสื่อ</option>
                                 @foreach ($types as $type)
                                     <option value="{{ $type->supplymentary_type }}">{{ $type->content_th }}</option>
@@ -69,8 +76,9 @@
 
                         <div id="data2" style="display:none;">
                             <div class="form-group digitallibrary ">
-                                <a class="btn btn-lg  btn-success" href="#clientDigitalLibrryModal" data-toggle="modal"><i
-                                        class="fas fa-book"></i> เลือกจากคลังสื่อ</a>
+                                <a class="btn btn-lg " style="background-color: {{ $depart->color }};"
+                                    href="#clientDigitalLibrryModal" data-toggle="modal"><i class="fas fa-book"></i>
+                                    เลือกจากคลังสื่อ</a>
                             </div><!-- /.form-group -->
 
 
@@ -149,7 +157,7 @@
         aria-labelledby="clientDigitalLibrryModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-xl" role="document">
             <div class="modal-content">
-                <div class="modal-header bg-success">
+                <div class="modal-header" style="background-color: {{ $depart->color }};">
                     <h6 class="modal-title inline-editable">
                         <span class="sr-only">Digital Library</span> เลือกจากคลังสื่อ
                     </h6>
@@ -174,19 +182,21 @@
                                 @php
                                     $BB = 1;
                                 @endphp
-                                @foreach ($books as $book)
-                                    <tr>
-                                        <td class="align-middle" style="width: 10%">{{ $BB++ }}</td>
-                                        <td class="align-middle" style="width: 40%">{{ $book->book_name }}</td>
-                                        <td class="align-middle" style="width: 40%">{{ $book->book_author }}</td>
-                                        <td class="align-middle" style="width: 10%">
-                                            <a href="javascript:"
-                                                onclick="selectbook('{{ $book->book_name }}', '{{ $book->book_author }}', '{{ $book->cover }}', '{{ route('book.table', $book->book_id) }}', '{{ $book->book_id }}')">
+                                @foreach ($bookcats as $bookcat)
+                                    @foreach ($bookcat->books as $book)
+                                        <tr>
+                                            <td class="align-middle" style="width: 10%">{{ $BB++ }}</td>
+                                            <td class="align-middle" style="width: 40%">{{ $book->book_name }}</td>
+                                            <td class="align-middle" style="width: 40%">{{ $book->book_author }}</td>
+                                            <td class="align-middle" style="width: 10%">
+                                                <a href="javascript:"
+                                                    onclick="selectbook('{{ $book->book_name }}', '{{ $book->book_author }}', '{{ $book->cover }}', '{{ route('book.table', $book->book_id) }}', '{{ $book->book_id }}')">
 
-                                                <i class="fas fa-book fa-lg text-success" id="book1"></i>
-                                            </a>
-                                        </td>
-                                    </tr>
+                                                    <i class="fas fa-book fa-lg text-success" id="book1"></i>
+                                                </a>
+                                            </td>
+                                        </tr>
+                                    @endforeach
                                 @endforeach
                             </tbody>
                         </table>

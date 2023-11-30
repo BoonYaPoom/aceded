@@ -26,7 +26,10 @@
             <div class="card card-fluid">
                 <!-- .card-header -->
                 <div class="card-header bg-muted">
-                    <a href="{{ route('dls', ['department_id' => $bookcat->department_id]) }}" style="text-decoration: underline;">คลังข้อมูลและความรู้</a> / <i>
+                    <a href="{{ route('dls', ['department_id' => $bookcat->department_id]) }}"
+                        style="text-decoration: underline;"> จัดการข้อมูลและความรู้</a> / <a
+                        href="{{route('bookpage', ['department_id' => $depart])}}"
+                        style="text-decoration: underline;"> หนังสืออิเล็กทรอนิกส์</a> /<i>
                         {{ $bookcat->category_th }}</i>
                 </div><!-- /.card-header -->
                 <!-- .card-body -->
@@ -91,12 +94,11 @@
                                         </script>
 
                                         <td class="align-middle">
-                                            <a href="{{ route('editcatbook', [$depart,'book_id' => $item]) }}"
+                                            <a href="{{ route('editcatbook', [$depart, 'book_id' => $item]) }}"
                                                 title="แก้ไข"><i class="far fa-edit fa-lg text-success"></i></a>
                                             <a href="{{ route('destroycatbook', ['book_id' => $item]) }}"
                                                 onclick="deleteRecord(event)" rel="" class="switcher-delete"
-                                                title="ลบ"><i
-                                                    class="fas fa-trash-alt fa-lg text-warning "></i></a>
+                                                title="ลบ"><i class="fas fa-trash-alt fa-lg text-warning "></i></a>
                                         </td>
                                         </td>
                                     </tr>
@@ -138,8 +140,8 @@
             <!-- floating action -->
             <input type="hidden" name="__id" id="__id" value="5" />
             <button type="button" class="btn btn-success btn-floated btn-adddls"
-                onclick="window.location='{{ route('catcreatebook', [$depart,'category_id' => $bookcat]) }}'" data-toggle="tooltip"
-                title="เพิ่ม"><span class="fas fa-plus"></span></button>
+                onclick="window.location='{{ route('catcreatebook', [$depart, 'category_id' => $bookcat]) }}'"
+                data-toggle="tooltip" title="เพิ่ม"><span class="fas fa-plus"></span></button>
             <!-- /floating action -->
         </header><!-- /.page-title-bar -->
     </div><!-- /.page-inner -->

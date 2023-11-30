@@ -8,13 +8,15 @@
             <!-- .card -->
             <div class="card card-fluid">
                 <!-- .card-header -->
-                <div class="card-header bg-muted"><a href="{{ route('dls',['department_id'=> $blogcat->department_id]) }}"
-                        style="text-decoration: underline;">จัดการข้อมูลและความรู้</a> / <a
-                        href="{{ route('blogpage',['department_id'=> $blogcat->department_id]) }}"
-                        style="text-decoration: underline;">{{ $blogcat->category_th }}</a> / <i> แก้ไขหมวดหมู่</i></div>
+                <div class="card-header bg-muted">
+                    <a href="{{ route('dls', ['department_id' => $depart->department_id]) }}"
+                        style="text-decoration: underline;"> จัดการข้อมูลและความรู้</a> / <a
+                        href="{{ route('blogpage', ['department_id' => $depart]) }}" style="text-decoration: underline;">
+                        คลังความรู้</a> / {{ $blogcat->category_th }} แก้ไขหมวดหมู่</a>
+                </div>
                 <!-- /.card-header -->
 
-                <form action="{{ route('updateblogcat', [$depart,'category_id' => $blogcat->category_id]) }}" method="post"
+                <form action="{{ route('updateblogcat', [$depart, 'category_id' => $blogcat->category_id]) }}" method="post"
                     enctype="multipart/form-data">
                     @method('PUT')
                     @csrf
@@ -46,14 +48,14 @@
                                     class="switcher-label-off text-red">OFF</span></label>
                         </div><!-- /.form-group -->
                     </div><!-- /.card-body -->
-                   
+
             </div><!-- /.card -->
 
             <div class="form-actions">
                 <button class="btn btn-lg btn-primary ml-auto" type="submit"><i class="far fa-save"></i>
                     บันทึก</button>
             </div><!-- /.form-actions -->
-        </form>
+            </form>
 
         </div><!-- /.page-section -->
     </div><!-- /.page-inner -->

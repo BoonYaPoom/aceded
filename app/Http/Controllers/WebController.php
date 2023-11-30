@@ -81,6 +81,7 @@ class WebController extends Controller
         if (!file_exists(public_path('/upload/Web/ck/'))) {
             mkdir(public_path('/upload/Web/ck/'), 0755, true);
         }
+        
         if ($request->has('detail_th')) {
             $detail_th = $request->detail_th;
             $decodedTextdetail_th = '';

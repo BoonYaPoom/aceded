@@ -96,7 +96,7 @@ class ExamController extends Controller
 
     return redirect()->route('exampage', [$department_id, 'subject_id' => $subject_id])->with('message', 'Exam add successfully');
   }
-  public function edit_examform($department_id, $exam_id)
+  public function edit_examform($department_id,$subject_id, $exam_id)
   {
     $exams  = Exam::findOrFail($exam_id);
     $subject_id = $exams->subject_id;
@@ -107,9 +107,9 @@ class ExamController extends Controller
     $subs = CourseSubject::findOrFail($subject_id);
     $department_id =   $subs->department_id;
     $depart = Department::findOrFail($department_id);
-    return view('page.manage.sub.exam.edit', compact('exams', 'ques', 'typequs', 'lossen', 'depart'));
+    return view('page.manage.sub.exam.edit', compact('exams','subs', 'ques', 'typequs', 'lossen', 'depart'));
   }
-  public function update_examform(Request $request, $department_id, $exam_id)
+  public function update_examform(Request $request, $department_id,$subject_id, $exam_id)
   {
     $exams  = Exam::findOrFail($exam_id);
     $exams->exam_th = $request->exam_th;
@@ -151,7 +151,7 @@ class ExamController extends Controller
     $exams->perpage    = $request->perpage;
     $exams->score_pass   = $request->score_pass;
     $exams->save();
-    return redirect()->route('exampage', [$department_id, 'subject_id' => $exams->subject_id])->with('message', 'Exam add successfully');
+    return redirect()->route('exampage', [$department_id, $subject_id])->with('message', 'Exam add successfully');
   }
 
 

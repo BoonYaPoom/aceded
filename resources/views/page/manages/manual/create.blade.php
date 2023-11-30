@@ -8,8 +8,9 @@
             <!-- .card -->
             <div class="card card-fluid">
                 <!-- .card-header -->
-                <div class="card-header bg-muted"><a href="{{ route('manualpage', ['department_id' => $depart]) }}"
-                        style="text-decoration: underline;">จัดการเว็บ</a> / <i> เพิ่มคู่มือใช้งาน</i></div>
+                <div class="card-header bg-muted"><a href="{{ route('manage', ['department_id' => $depart->department_id]) }}"
+                    style="text-decoration: underline;">จัดการเว็บ</a> / <a href="{{ route('manualpage', ['department_id' => $depart->department_id]) }}"
+                    style="text-decoration: underline;">คู่มือใช้งาน</a> / <i> เพิ่ม </i></div>
                 <!-- /.card-header -->
                 <!-- .card-body -->
                 <form action="{{ route('storemanual', ['department_id' => $depart]) }}" method="post" enctype="multipart/form-data">

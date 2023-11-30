@@ -1,19 +1,7 @@
-@extends('layouts.department.layout.departmenthome')
-@section('contentdepartment')
-    <!-- .page-inner -->
-    <div class="page-inner">
-        <!-- .form -->
-        <!-- .page-section -->
-        <div class="page-section">
-            <!-- .card -->
-            <div class="card card-fluid">
-                <!-- .card-header -->
-                <div class="card-header bg-muted">
-                    <a href="{{ route('lessonpage', [$depart,$lessons->subject_id]) }}"
-                        style="text-decoration: underline;">จัดการวิชา</a> / <i>{{ $lessons->lesson_th }}</i>
-                </div>
-                <!-- /.card-header -->
-                <form action="{{ route('update_lessonform', [$depart,'lesson_id' => $lessons]) }}" method="post"
+@extends('page.manage.sub.navsubject')
+@section('subject-data')
+
+                <form action="{{ route('update_lessonform', [$depart,$subs,'lesson_id' => $lessons]) }}" method="post"
                     enctype="multipart/form-data">
                     @csrf
                     @method('PUT')
@@ -85,15 +73,12 @@
                         <!-- /.form-group -->
                         <!-- .fieldset -->
 
+                        <div class="form-actions ">
+                            <button class="btn btn-lg btn-primary-theme ml-auto" type="submit"><i class="far fa-save"></i>
+                                บันทึก</button>
+                        </div><!-- /.form-actions -->
                     </div><!-- /.card-body -->
 
-            </div>
-            <!-- .form-actions -->
-            <div class="form-actions ">
-                <button class="btn btn-lg btn-primary-theme ml-auto" type="submit"><i class="far fa-save"></i>
-                    บันทึก</button>
-            </div><!-- /.form-actions -->
         </form>
-        </div><!-- /.page-section -->
-    </div><!-- /.page-inner -->
+       
 @endsection

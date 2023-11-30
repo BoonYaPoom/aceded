@@ -22,9 +22,10 @@
         <div class="page-section">
             <div class="card card-fluid">
                 <div class="card-header bg-muted">
-                    <a href="{{ route('dls',['department_id'=> $blogcat->department_id]) }}" style="text-decoration: underline;">จัดการข้อมูลและความรู้</a> / <a
-                        href="{{ route('blogpage',['department_id'=> $blogcat->department_id]) }}"
-                        style="text-decoration: underline;">คลังความรู้</a> / <i> {{ $blogcat->category_th }}</i>
+                    <a href="{{ route('dls', ['department_id' => $depart->department_id]) }}"
+                        style="text-decoration: underline;"> จัดการข้อมูลและความรู้</a> / <a
+                        href="{{ route('blogpage', ['department_id' => $depart]) }}" style="text-decoration: underline;">
+                        คลังความรู้</a> / <i> {{ $blogcat->category_th }}</i>
                 </div>
                 <!-- .card-body -->
                 <div class="card-body">

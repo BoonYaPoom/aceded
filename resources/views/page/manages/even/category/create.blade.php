@@ -7,14 +7,23 @@
         <div class="page-section">
             <!-- .card -->
             <div class="card card-fluid">
-                <div class="card-header bg-muted"><a
-                        href="{{ route('manage', ['department_id' => $category->department_id]) }}"
-                        style="text-decoration: underline;">จัดการเว็บ</a> / <a
-                        href="{{ route('Webpage', ['department_id' => $category->department_id]) }}"
-                        style="text-decoration: underline;">ข่าว/{{ $category->category_th }}</a> / <a
-                        href="{{ route('catpage', ['department_id' => $depart, 'category_id' => $category->category_id]) }}"
-                        style="text-decoration: underline;">
-                        กิจกรรม</a> / <i> เพิ่ม</i></div><!-- /.card-header -->
+                <div class="card-header bg-muted">
+                    @if ($category->category_type == 2)
+                        <a href="{{ route('manage', ['department_id' => $depart]) }}"
+                            style="text-decoration: underline;">จัดการเว็บ</a> / <a
+                            href="{{ route('Webpage', ['department_id' => $depart]) }}"
+                            style="text-decoration: underline;">กิจกรรม</a> / <a
+                            href="{{ route('acteven', ['department_id' => $depart]) }}"
+                            style="text-decoration: underline;">{{ $category->category_th }}</a> 
+                    @elseif ($category->category_type == 1)
+                        <a href="{{ route('manage', ['department_id' => $depart]) }}"
+                            style="text-decoration: underline;">จัดการเว็บ</a> / <a
+                            href="{{ route('Webpage', ['department_id' => $depart]) }}"
+                            style="text-decoration: underline;">ข่าว</a> / <a
+                            href="{{ route('evenpage', ['department_id' => $depart]) }}"
+                            style="text-decoration: underline;"><i> {{ $category->category_th }}</i></a> 
+                    @endif 
+                    / <i> เพิ่ม</i></div><!-- /.card-header -->
 
 
                 <form action="{{ route('catstore', ['department_id' => $depart, 'category_id' => $category]) }}"

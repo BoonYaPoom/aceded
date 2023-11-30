@@ -93,7 +93,7 @@
     
 
                         <td class="align-middle">
-                            <a href="{{ route('edit_supplyform', [$depart,'supplymentary_id' => $item]) }}"><i class="far fa-edit fa-lg text-success" data-toggle="tooltip"
+                            <a href="{{ route('edit_supplyform', [$depart,$subs,'supplymentary_id' => $item]) }}"><i class="far fa-edit fa-lg text-success" data-toggle="tooltip"
                                     title="แก้ไข"></i></a>
                             <a href="{{ route('destroy_supplyform', ['supplymentary_id' => $item]) }}"
                                 onclick="deleteRecord(event)"

@@ -41,6 +41,7 @@ class DepartUsersController extends Controller
                 // ถ้า data->role เป็น 1 แสดงผู้ใช้ทั้งหมด
                 // นำ user_id ที่ได้ไปหาข้อมูลจากตาราง User
                 $usermanages = Users::whereIn('user_id', $userIds);
+                
                 if ($user_role !== null) {
                     $usermanages->where('user_role', $user_role);
                 }

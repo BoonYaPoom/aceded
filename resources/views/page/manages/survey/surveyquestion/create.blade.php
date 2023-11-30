@@ -11,10 +11,10 @@
                 <div class="card-header bg-muted"><a href="{{ route('manage', ['department_id' => $sur->department_id]) }}"
                         style="text-decoration: underline;">จัดการเว็บ</a> / <a
                         href="{{ route('surveypage', ['department_id' => $sur->department_id]) }}"
-                        style="text-decoration: underline;">แบบสำรวจ</a> <a
-                        href="{{ route('questionpage', [$depart, $sur->survey_id]) }}" style="text-decoration: underline;">/
-                        เพิ่มแบบสำรวจ
-                    </a> </i>
+                        style="text-decoration: underline;">แบบสำรวจ</a> / <a
+                        href="{{ route('questionpage', [$depart, $sur->survey_id]) }}" style="text-decoration: underline;">
+                        {{ $sur->survey_th }}
+                    </a>/ เพิ่ม </i>
                 </div><!-- /.card-header -->
                 <form action="{{ route('storequ', ['department_id' => $depart, 'survey_id' => $sur]) }}" method="post"
                     enctype="multipart/form-data">

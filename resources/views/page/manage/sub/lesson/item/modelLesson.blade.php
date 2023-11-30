@@ -9,7 +9,7 @@
                 enctype="multipart/form-data">
                 @csrf
                 @method('PUT')
-                <div class="modal-header bg-success">
+                <div class="modal-header " style="background-color: {{ $depart->color }};">
                     <h6 id="clientUploadModalLabel" class="modal-title inline-editable">
                         <span class="titlelesson">{{ $item->lesson_th }}</span>
                     </h6>
@@ -25,7 +25,7 @@
                                 @if ($contentType->content_type === 1)
                                     <h1>video</h1> <a
                                         href="{{ asset($item->content_path) }}"
-                                        class="btn btn-primary" download>ดาวน์โหลดไฟล์</a>
+                                        class="btn " style="background-color: {{ $depart->color }};" download>ดาวน์โหลดไฟล์</a>
                                     <div class="showcontent show-video">
                                         <video width="80%" id="videoplayer" controls="">
                                             <source

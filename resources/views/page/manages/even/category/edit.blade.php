@@ -6,27 +6,39 @@
         <!-- .page-section -->
         <div class="page-section">
             <!-- .card -->
-            <div class="card card-fluid" <!-- .card-header -->
-                <div class="card-header bg-muted"><a
-                        href="{{ route('manage', ['department_id' => $category->department_id]) }}"
-                        style="text-decoration: underline;">จัดการเว็บ</a> / <a
-                        href="{{ route('Webpage', ['department_id' => $category->department_id]) }}"
-                        style="text-decoration: underline;">
+            <div class="card card-fluid">
+                <div class="card-header bg-muted">
+                    @if ($category->category_type == 2)
+                        <a href="{{ route('manage', ['department_id' => $depart]) }}"
+                            style="text-decoration: underline;">จัดการเว็บ</a> / <a
+                            href="{{ route('Webpage', ['department_id' => $depart]) }}"
+                            style="text-decoration: underline;">กิจกรรม</a> / <a
+                            href="{{ route('acteven', ['department_id' => $depart]) }}"
+                            style="text-decoration: underline;">{{ $category->category_th }}</a> /
+                    @elseif ($category->category_type == 1)
+                        <a href="{{ route('manage', ['department_id' => $depart]) }}"
+                            style="text-decoration: underline;">จัดการเว็บ</a> / <a
+                            href="{{ route('Webpage', ['department_id' => $depart]) }}"
+                            style="text-decoration: underline;">ข่าว</a> / <a
+                            href="{{ route('evenpage', ['department_id' => $depart]) }}"
+                            style="text-decoration: underline;"><i> {{ $category->category_th }}</i></a> /
+                    @endif 
+                    <a href="{{ route('catpage', [$depart, $category]) }}"
+                        style="text-decoration: underline;"><i>แก้ไข {{ $webs->web_th }}</i> </a>
+                </div><!-- /.card-header -->
 
-                        {{ $category->category_th }}
-
-                    </a> / <a href="{{ route('catpage', ['department_id' => $depart,'category_id' => $webs->category_id]) }}"
-                        style="text-decoration: underline;">
-                        กิจกรรม</a> / <i> เพิ่ม/{{ $webs->web_th }}</i></div><!-- /.card-header -->
-
-                <form action="{{ route('updatecat', ['department_id' => $depart,'web_id' => $webs]) }}" method="post" enctype="multipart/form-data">
+                <form action="{{ route('updatecat', ['department_id' => $depart, 'web_id' => $webs]) }}" method="post"
+                    enctype="multipart/form-data">
                     @csrf
                     @method('PUT')
                     <!-- .card-body -->
+
+
                     <div class="card-body">
+
                         <div class="form-group">
-                            <label for="cover"><img src="{{ asset($webs->cover) }}"
-                                    alt="{{ $webs->cover }}" style="height:350px">
+                            <label for="cover"><img src="{{ asset($webs->cover) }}" alt="{{ $webs->cover }}"
+                                    style="height:350px">
                         </div>
                         <!-- .form-group -->
                         <div class="form-group">
@@ -66,21 +78,20 @@
                         <!-- .form-group -->
 
                         @if ($category->category_type == 2)
+                            <div class="form-row">
+                                <div class="col-md-6 mb-3">
+                                    <label for="flatpickr03">วันที่เริ่ม</label>
+                                    <input type="text" class="form-control" name="startdate" id="flatpickr03"
+                                        value="{{ $webs->startdate }}" />
+                                </div>
 
-                        <div class="form-row">
-                            <div class="col-md-6 mb-3">
-                                <label for="flatpickr03">วันที่เริ่ม</label>
-                                <input type="text" class="form-control" name="startdate" id="flatpickr03"
-                                    value="{{$webs->startdate}}" />
+                                <div class="col-md-6 mb-3">
+                                    <label for="flatpickr04">วันที่สิ้นสุด</label>
+                                    <input type="text" class="form-control" name="enddate" id="flatpickr04"
+                                        value="{{ $webs->enddate }}" />
+                                </div>
+
                             </div>
-
-                            <div class="col-md-6 mb-3">
-                                <label for="flatpickr04">วันที่สิ้นสุด</label>
-                                <input type="text" class="form-control" name="enddate" id="flatpickr04"
-                                    value="{{$webs->enddate}}" />
-                            </div>
-
-                        </div>
                         @endif
                         <script>
                             document.addEventListener("DOMContentLoaded", function() {
@@ -143,7 +154,8 @@
                             <label for="web_status">สถานะ </label> <label
                                 class="switcher-control switcher-control-success switcher-control-lg"><input type="checkbox"
                                     class="switcher-input" name="web_status" id="web_status" value="1"
-                                    {{ $webs->web_status == 1 ? 'checked' : '' }}> <span class="switcher-indicator"></span>
+                                    {{ $webs->web_status == 1 ? 'checked' : '' }}> <span
+                                    class="switcher-indicator"></span>
                                 <span class="switcher-label-on">ON</span> <span
                                     class="switcher-label-off text-red">OFF</span></label>
                         </div><!-- /.form-group -->

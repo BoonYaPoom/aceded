@@ -1,52 +1,53 @@
 @extends('layouts.department.layout.departmenthome')
 @section('contentdepartment')
-                  <!-- .page-inner -->
-                  <div class="page-inner">
-                      <div class="page-section">
-                          <!-- .card -->
-                          <div class="card card-fluid">
-                              <div class="card-header bg-muted">
-                                  <a href="{{ route('suppage', [$subs->department_id]) }}" style="text-decoration: underline;">หมวดหมู่</a> / <a
-                                      href="{{ route('lessonpage', [$depart,$subs->subject_id]) }}"
-                                      style="text-decoration: underline;">จัดการวิชา</a> / <i>{{ $subs->subject_th }}</i>
-                              </div><!-- /.card-header -->
-                              <!-- .nav-scroller -->
+    <!-- .page-inner -->
+    <div class="page-inner">
+        <div class="page-section">
+            <!-- .card -->
+            <div class="card card-fluid">
+                <div class="card-header bg-muted">
+                    <a href="{{ route('suppage', [$depart]) }}" style="text-decoration: underline;">หมวดหมู่</a> / <a
+                        href="{{ route('lessonpage', [$depart, $subs]) }}" style="text-decoration: underline;">จัดการวิชา</a> /
+                    <i>{{ $subs->subject_th }}</i>
+                </div><!-- /.card-header -->
+                <!-- .nav-scroller -->
 
-                              <div class="nav-scroller border-bottom">
-                                  <!-- .nav -->
-                                  <div class="nav nav-tabs bg-muted h3">
+                <div class="nav-scroller border-bottom">
+                    <!-- .nav -->
+                    <div class="nav nav-tabs bg-muted h3">
 
-                                      <a class="nav-link {{ Str::startsWith(request()->url(), route('editdetailsub', [$depart,$subs->subject_id])) ? ' active text-info' : '' }} "
-                                          href="{{ route('editdetailsub', [$depart,$subs->subject_id]) }}"><i
-                                              class="fab fa-codepen"></i> รายละเอียดวิชา</a>
+                        <a class="nav-link {{ Str::startsWith(request()->url(), route('editdetailsub', [$depart, $subs->subject_id])) ? ' active text-info' : '' }} "
+                            href="{{ route('editdetailsub', [$depart, $subs->subject_id]) }}"><i class="fab fa-codepen"></i>
+                            รายละเอียดวิชา</a>
 
-                                      <a class="nav-link {{ Str::startsWith(request()->url(), route('lessonpage', [$depart,$subs->subject_id])) ? ' active text-info' : '' }} "
-                                          href="{{ route('lessonpage', [$depart,$subs->subject_id]) }}"><i class="	fas fa-list"></i>
-                                          เนื้อหา</a>
-                                      <a class="nav-link {{ Str::startsWith(request()->url(), route('supplypage', [$depart,$subs->subject_id])) ? ' active text-info' : '' }}"
-                                          href="{{ route('supplypage', [$depart,$subs->subject_id]) }}"><i
-                                              class="fas fa-file-video"></i> สื่อเสริม</a>
-                                      <a class="nav-link {{ Str::startsWith(request()->url(), route('exampage', [$depart,$subs->subject_id])) ? ' active text-info' : '' }} "
-                                          href="{{ route('exampage', [$depart,$subs->subject_id]) }}"><i
-                                              class="fas fa-list-alt"></i> ข้อสอบ</a> 
-                                      <a class="nav-link {{ Str::startsWith(request()->url(), route('activitypage', [$depart,$subs->subject_id]))  || request()->is('activity', 'activity/*')
-                                        ? ' active text-info'
-                                        : '' }}"
-                                          href="{{ route('activitypage', [$depart,$subs->subject_id]) }}"><i
-                                              class="far fa-comment-dots"></i> กิจกรรม</a>
-                                              
-                                      <a class="nav-link {{ Str::startsWith(request()->url(), route('teacherspage', [$depart,$subs->subject_id])) ? ' active text-info' : '' }}"
-                                          href="{{ route('teacherspage', [$depart,$subs->subject_id]) }}"><i
-                                              class="fas fa-user-tie"></i> ผู้สอน</a>
-                                      <a class="nav-link " href="" target=_blank>แสดงตัวอย่าง</a>
+                        <a class="nav-link {{ Str::startsWith(request()->url(), route('lessonpage', [$depart, $subs->subject_id])) || request()->is('lsn', 'lsn/*') ? ' active text-info' : '' }} "
+                            href="{{ route('lessonpage', [$depart, $subs->subject_id]) }}"><i class="	fas fa-list"></i>
+                            เนื้อหา</a>
+                        <a class="nav-link {{ Str::startsWith(request()->url(), route('supplypage', [$depart, $subs->subject_id])) || request()->is('spm', 'spm/*') ? ' active text-info' : '' }}"
+                            href="{{ route('supplypage', [$depart, $subs->subject_id]) }}"><i class="fas fa-file-video"></i>
+                            สื่อเสริม</a>
+                        <a class="nav-link {{ Str::startsWith(request()->url(), route('exampage', [$depart, $subs->subject_id])) || request()->is('exam', 'exam/*') ? ' active text-info' : '' }} "
+                            href="{{ route('exampage', [$depart, $subs->subject_id]) }}"><i class="fas fa-list-alt"></i>
+                            ข้อสอบ</a>
+                        <a class="nav-link {{ Str::startsWith(request()->url(), route('activitypage', [$depart, $subs->subject_id])) ||
+                        request()->is('activity', 'activity/*')
+                            ? ' active text-info'
+                            : '' }}"
+                            href="{{ route('activitypage', [$depart, $subs->subject_id]) }}"><i
+                                class="far fa-comment-dots"></i> กิจกรรม</a>
 
-                                  </div><!-- /.nav -->
-                              </div><!-- /.nav-scroller -->
+                        <a class="nav-link {{ Str::startsWith(request()->url(), route('teacherspage', [$depart, $subs->subject_id])) ? ' active text-info' : '' }}"
+                            href="{{ route('teacherspage', [$depart, $subs->subject_id]) }}"><i class="fas fa-user-tie"></i>
+                            ผู้สอน</a>
+           
 
-                              @yield('subject-data')
+                    </div><!-- /.nav -->
+                </div><!-- /.nav-scroller -->
 
-                          </div><!-- /.card -->
+                @yield('subject-data')
 
-                      </div><!-- /.page-section -->
-                  </div><!-- /.page-inner -->
-              @endsection
+            </div><!-- /.card -->
+
+        </div><!-- /.page-section -->
+    </div><!-- /.page-inner -->
+@endsection

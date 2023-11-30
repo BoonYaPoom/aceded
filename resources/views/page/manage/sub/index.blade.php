@@ -22,16 +22,11 @@
         <div class="page-section">
             <div class="card card-fluid">
 
-                <div class="card-header bg-muted">หน่วยงาน /
-                    <a href="{{ route('learn', ['department_id' => $depart->department_id]) }}">หมวดหมู่</a> / จัดการวิชา
+                <div class="card-header bg-muted"> 
+                    <a href="{{ route('learn', ['department_id' => $depart->department_id]) }}">หน่วยงาน</a> / จัดการวิชา
                 </div>
 
                 <div class="card-body">
-
-
-
-
-
                     <table id="datatable" class="table w3-hoverable table-striped no-footer" user_role="grid"
                         aria-describedby="datatable_info">
                         <div class="table-responsive">
@@ -161,7 +156,7 @@
                                             <a href="{{ route('editsub', [$depart, $item->subject_id]) }}"><i
                                                     class="far fa-edit fa-lg text-success" data-toggle="tooltip"
                                                     title="แก้ไข"></i></a>
-                                            <a href="{{ route('destorysub', [$depart,$item->subject_id]) }}"
+                                            <a href="{{ route('destorysub', [$depart, $item->subject_id]) }}"
                                                 onclick="deleteRecord(event)"
                                                 rel="หน่วยการเรียนรู้ที่ 1 การคิดแยกแยะระหว่างผลประโยชน์ส่วนตนและผลประโยชน์ส่วนรวม"
                                                 class="switcher-delete" data-toggle="tooltip" title="ลบข้อมูล"><i

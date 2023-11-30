@@ -133,16 +133,17 @@ class CourseLessonController extends Controller
         return redirect()->route('lessonpage', [$department_id,'subject_id' => $subject_id])->with('message', 'Course_lesson บันทึกข้อมูลสำเร็จ');
     }
 
-    public function edit($department_id,$lesson_id)
+    public function edit($department_id,$subject_id,$lesson_id)
     {
+
 
         $lessons = CourseLesson::findOrFail($lesson_id);
         $content_types = ContentType::where('status', 1)->get(['content_type', 'content_th']);
-        $subject_id =  $lessons->subject_id;
-        $sub = CourseSubject::findOrFail($subject_id);
-        $department_id =   $sub->department_id;
+
+        $subs = CourseSubject::findOrFail($subject_id);
+
         $depart = Department::findOrFail($department_id);
-        return view('page.manage.sub.lesson.edit', compact('lessons', 'content_types', 'sub', 'depart'));
+        return view('page.manage.sub.lesson.edit', compact('lessons', 'content_types', 'subs', 'depart'));
     }
     public function update(Request $request,$department_id, $lesson_id)
     {

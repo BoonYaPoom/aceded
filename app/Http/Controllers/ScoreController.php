@@ -9,14 +9,14 @@ use Illuminate\Http\Request;
 
 class ScoreController extends Controller
 {
-  public function examlogpage($department_id,$exam_id)
+  public function examlogpage($department_id, $subject_id, $exam_id)
   {
     $depart  = Department::findOrFail($department_id);
     $exams  = Exam::findOrFail($exam_id);
     $subject_id = $exams->subject_id;
     $subs = CourseSubject::findOrFail($subject_id);
     $score = $exams->scorelog()->where('exam_id', $exam_id)->get();
-    return view('page.manage.sub.exam.logexam', compact('exams', 'score','depart','subs'));
+    return view('page.manage.sub.exam.logexam', compact('exams', 'subs' ,'score', 'depart'));
   }
 
 
@@ -33,7 +33,7 @@ class ScoreController extends Controller
 
     return view('page.manage.gpa.item.subjects.subscore', compact('subs', 'depart'));
   }
-  public function listsubject($department_id,$subject_id)
+  public function listsubject($department_id, $subject_id)
   {
 
     $subs  = CourseSubject::findOrFail($subject_id);
@@ -42,11 +42,11 @@ class ScoreController extends Controller
     $depart  = Department::findOrFail($department_id);
     $scores = \App\Models\Score::whereHas('examlog', function ($query) use ($subject_id) {
       $query->where('subject_id', $subject_id)
-          ->where('exam_type', 2); // Additional condition for 'exam_type'
-  })
-  ->latest('score_date') // Order the results by 'score_date' in descending order
-  ->get();
-  
+        ->where('exam_type', 2); // Additional condition for 'exam_type'
+    })
+      ->latest('score_date') // Order the results by 'score_date' in descending order
+      ->get();
+
     return view('page.manage.gpa.item.subjects.listsubject', compact('subs', 'scores',  'depart'));
   }
 }

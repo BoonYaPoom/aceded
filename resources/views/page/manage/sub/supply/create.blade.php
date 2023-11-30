@@ -1,20 +1,9 @@
-@extends('layouts.department.layout.departmenthome')
-@section('contentdepartment')
-    <form action="{{ route('store_supplyform', [$depart,'subject_id' => $subs]) }}" method="post" enctype="multipart/form-data">
+@extends('page.manage.sub.navsubject')
+@section('subject-data')
+    <form action="{{ route('store_supplyform', [$depart, 'subject_id' => $subs]) }}" method="post"
+        enctype="multipart/form-data">
         @csrf
-        <div class="page-inner">
-            <!-- .form -->
-            <!-- .page-section -->
-            <div class="page-section">
-                <!-- .card -->
-                <div class="card card-fluid">
-                    <!-- .card-header -->
-                    <div class="card-header bg-muted"><a href="{{ route('lessonpage', [$depart,$subs->subject_id]) }}"
-                            style="text-decoration: underline;">หมวดหมู่</a> / <a
-                            href="{{ route('supplypage', [$depart,$subs->subject_id]) }}"
-                            style="text-decoration: underline;">จัดการวิชา</a> </div><!-- /.card-header -->
 
-                    <!-- .card-body -->
                     <div class="card-body">
                         <!-- .form-group -->
                         <div class="form-group">
@@ -64,7 +53,7 @@
 
                         <div id="data2" style="display:none;">
                             <div class="form-group digitallibrary ">
-                                <a class="btn btn-lg  btn-success" href="#clientDigitalLibrryModal" data-toggle="modal"><i
+                                <a class="btn btn-lg " style="background-color: {{ $depart->color }};" href="#clientDigitalLibrryModal" data-toggle="modal"><i
                                         class="fas fa-book"></i> เลือกจากคลังสื่อ</a>
                             </div><!-- /.form-group -->
 
@@ -125,24 +114,15 @@
 
                         </div>
 
+                        <div class="form-actions ">
 
+                            <button class="btn btn-lg btn-primary ml-auto" type="submit"><i class="far fa-save"></i>
+                                บันทึก</button>
+                        </div><!-- /.form-actions -->
 
                     </div>
+     
 
-                </div><!-- /.card-body -->
-                <!-- .form-actions -->
-                <div class="form-actions ">
-
-                    <button class="btn btn-lg btn-primary ml-auto" type="submit"><i class="far fa-save"></i>
-                        บันทึก</button>
-                </div><!-- /.form-actions -->
-
-
-            </div><!-- /.card -->
-
-
-        </div><!-- /.page-section -->
-        </div><!-- /.page-inner -->
     </form>
 
 
@@ -151,7 +131,7 @@
         aria-labelledby="clientDigitalLibrryModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-xl" user_role="document">
             <div class="modal-content">
-                <div class="modal-header bg-success">
+                <div class="modal-header" style="background-color: {{ $depart->color }};">
                     <h6 class="modal-title inline-editable">
                         <span class="sr-only">Digital Library</span> เลือกจากคลังสื่อ
                     </h6>
@@ -175,21 +155,23 @@
                             <!-- tbody -->
                             <tbody class="showbook">
                                 @php
-                                $BB = 1 ;
-                            @endphp
-                                @foreach ($books as $book)
-                                    <tr>
-                                        <td class="align-middle" style="width: 10%">{{ $BB++ }}</td>
-                                        <td class="align-middle" style="width: 40%">{{ $book->book_name }}</td>
-                                        <td class="align-middle" style="width: 40%">{{ $book->book_author }}</td>
-                                        <td class="align-middle" style="width: 10%">
-                                            <a href="javascript:"
-                                                onclick="selectbook('{{ $book->book_name }}', '{{ $book->book_author }}', '{{ $book->bookfile  }}', '{{ route('book.table', $book->book_id) }}', '{{ $book->book_id }}')">
+                                    $BB = 1;
+                                @endphp
+                                @foreach ($bookcats as $bookcat)
+                                    @foreach ($bookcat->books as $book)
+                                        <tr>
+                                            <td class="align-middle" style="width: 10%">{{ $BB++ }}</td>
+                                            <td class="align-middle" style="width: 40%">{{ $book->book_name }}</td>
+                                            <td class="align-middle" style="width: 40%">{{ $book->book_author }}</td>
+                                            <td class="align-middle" style="width: 10%">
+                                                <a href="javascript:"
+                                                    onclick="selectbook('{{ $book->book_name }}', '{{ $book->book_author }}', '{{ $book->bookfile }}', '{{ route('book.table', $book->book_id) }}', '{{ $book->book_id }}')">
 
-                                                <i class="fas fa-book fa-lg text-success" id="book1"></i>
-                                            </a>
-                                        </td>
-                                    </tr>
+                                                    <i class="fas fa-book fa-lg text-success" id="book1"></i>
+                                                </a>
+                                            </td>
+                                        </tr>
+                                    @endforeach
                                 @endforeach
                             </tbody>
                         </table>

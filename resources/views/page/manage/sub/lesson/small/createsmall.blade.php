@@ -9,8 +9,13 @@
             <div class="card card-fluid">
                 <!-- .card-header -->
                 <div class="card-header bg-muted">
-                    <a href="{{ route('lessonpage', [$depart,$lessons->subject_id]) }}"
-                        style="text-decoration: underline;">จัดการวิชา</a> / <i>{{$lessons->lesson_th}}</i> / <i>เพิ่ม</i>
+                    <a href="{{ route('learn',['department_id' =>$depart]) }}"
+                        style="text-decoration: underline;">หมวดหมู่</a>
+                    / <a href="{{route('suppage',['department_id' =>$depart])}}"
+                        style="text-decoration: underline;">จัดการวิชา</a>
+                    / 
+                    <a href="{{ route('lessonpage', [$depart,$subs]) }}"
+                        style="text-decoration: underline;"><i>{{ $subs->subject_th }}</i></a> / <i>{{$lessons->lesson_th}}</i> / <i>เพิ่ม</i>
                 </div>
                 <!-- /.card-header -->
                 <form action="{{ route('smailstore', [$depart,'subject_id' => $subs , 'lesson_id' => $lessons]) }}" method="post"

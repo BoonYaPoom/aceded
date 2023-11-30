@@ -21,7 +21,8 @@
     <div class="page-inner">
         <div class="page-section">
             <div class="card card-fluid">
-                <div class="card-header bg-muted">คลังข้อมูลและความรู้</div>
+                <div class="card-header bg-muted"> <a href="{{ route('dls', ['department_id' => $depart->department_id]) }}"
+                    style="text-decoration: underline;"> จัดการข้อมูลและความรู้</a> / คลังความรู้</div>
                 <div class="card-body">
                     <!-- .table-responsive -->
                     <div class="table-responsive">

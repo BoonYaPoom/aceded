@@ -10,7 +10,7 @@
                 <!-- .card-header -->
                 <div class="card-header bg-muted"><a href="{{ route('manage', ['department_id' => $manuals->department_id]) }}"
                         style="text-decoration: underline;">จัดการเว็บ</a> / <a href="{{ route('manualpage', ['department_id' => $manuals->department_id]) }}"
-                        style="text-decoration: underline;">แก้ไขคู่มือใช้งาน</a> / <i> {{ $manuals->manual }}</i></div>
+                        style="text-decoration: underline;">คู่มือใช้งาน</a> / <i> แก้ไข {{ $manuals->manual }}</i></div>
                 <!-- /.card-header -->
                 <!-- .card-body -->
                 <form action="{{ route('updatemanual', [$depart,'manual_id' => $manuals->manual_id]) }}" method="post"
@@ -41,7 +41,7 @@
                             <input type="file" class="form-control" name="manual_path" placeholder="ไฟล์คู่มือใช้งาน"
                                  accept="">
                                  <p></p>
-                                 <span class="badge badge-warning">{{ $manuals->manual_path }}</span>
+                                 <span class="badge" style="background-color: {{ $depart->color }};">{{ $manuals->manual_path }}</span>
                         </div><!-- /.form-group -->
            
                         @error('manual_path')

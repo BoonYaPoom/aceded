@@ -44,11 +44,23 @@
             <!-- .card -->
             <div class="card card-fluid">
                 <!-- .card-header -->
-                <div class="card-header bg-muted"><a
-                        href="{{ route('manage', ['department_id' => $category->department_id]) }}"
-                        style="text-decoration: underline;">จัดการเว็บ</a> / <a
-                        href="{{ route('Webpage', ['department_id' => $category->department_id]) }}"
-                        style="text-decoration: underline;">ข่าว/กิจกรรม</a> / <i> {{ $category->category_th }}</i></div>
+                <div class="card-header bg-muted" >
+                    @if ($category->category_type == 2)
+                        <a href="{{ route('manage', ['department_id' => $depart]) }}"
+                            style="text-decoration: underline;">จัดการเว็บ</a> / <a
+                            href="{{ route('Webpage', ['department_id' => $depart]) }}"
+                            style="text-decoration: underline;">กิจกรรม</a> / <a
+                            href="{{ route('acteven', ['department_id' => $depart]) }}"
+                            style="text-decoration: underline;">{{ $category->category_th }}</a> 
+                    @elseif ($category->category_type == 1)
+                        <a href="{{ route('manage', ['department_id' => $depart]) }}"
+                            style="text-decoration: underline;">จัดการเว็บ</a> / <a
+                            href="{{ route('Webpage', ['department_id' => $depart]) }}"
+                            style="text-decoration: underline;">ข่าว</a> / <a
+                            href="{{ route('evenpage', ['department_id' => $depart]) }}"
+                            style="text-decoration: underline;"><i> {{ $category->category_th }}</i></a> 
+                    @endif 
+                </div>
                 <!-- /.card-header -->
                 <!-- .card-body -->
                 <div class="card-body">

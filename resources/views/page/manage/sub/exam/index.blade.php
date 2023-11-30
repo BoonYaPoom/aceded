@@ -40,16 +40,16 @@
                         <td><a>คลังข้อสอบ</a></td>
                         <td></td>
                         <td>
-                            <a href="{{ route('pagequess', [$depart,$subs->subject_id]) }}"><i
+                            <a href="{{ route('pagequess', [$depart, $subs->subject_id]) }}"><i
                                     class="fas fa-edit fa-lg text-success" data-toggle="tooltip"
                                     title="เพิ่มข้อสอบ"></i></a>
-                            <a href="{{ route('questionadd', [$depart,$subs->subject_id]) }}"><i
+                            <a href="{{ route('questionadd', [$depart, $subs->subject_id]) }}"><i
                                     class="fas fa-file-alt fa-lg  text-danger" data-toggle="tooltip"
                                     title="เพิ่มไฟล์ข้อสอบ"></i></a>
                         </td>
                     </tr>
                     <!-- tr -->
-                    @foreach ($exams->sortBy('exam_id')  as $index => $examtem)
+                    @foreach ($exams->sortBy('exam_id') as $index => $examtem)
                         @php
                             $examsNum = $index + 2;
                         @endphp
@@ -95,11 +95,11 @@
                             <td>
 
                                 @if (in_array($examtem->exam_type, [1, 2]))
-                                    <a href="{{ route('edit_examform', [$depart,'exam_id' => $examtem]) }}"><i
+                                    <a href="{{ route('edit_examform', [$depart, $subs, 'exam_id' => $examtem]) }}"><i
                                             class="fas fa-cog fa-lg text-success" data-toggle="tooltip"
                                             title="กำหนดค่า"></i></a>
 
-                                    <a href="{{ route('examlogpage', [$depart,'exam_id' => $examtem]) }}"><i
+                                    <a href="{{ route('examlogpage', [$depart, $subs, 'exam_id' => $examtem]) }}"><i
                                             class="fas fa-chart-bar fa-lg text-danger" data-toggle="tooltip"
                                             title="รายงาน"></i></a>
                                 @else
@@ -111,11 +111,11 @@
 
                                     <a class="d-none" href=""><i class="fas fa-file-excel fa-lg  text-primary"
                                             data-toggle="tooltip" title="Download ข้อสอบอัตนัย"></i></a>
-                                    <a href="{{ route('edit_examform', [$depart,'exam_id' => $examtem]) }}"><i
+                                    <a href="{{ route('edit_examform', [$depart, $subs, 'exam_id' => $examtem]) }}"><i
                                             class="fas fa-cog fa-lg text-success" data-toggle="tooltip"
                                             title="กำหนดค่า"></i></a>
 
-                                    <a href="{{ route('examlogpage', [$depart,'exam_id' => $examtem]) }}"><i
+                                    <a href="{{ route('examlogpage', [$depart,  $subs,'exam_id' => $examtem]) }}"><i
                                             class="fas fa-chart-bar fa-lg text-danger" data-toggle="tooltip"
                                             title="รายงาน"></i></a>
                                     <a href="{{ route('destroy_examform', ['exam_id' => $examtem]) }}"
@@ -136,7 +136,7 @@
     <header class="page-title-bar">
         <!-- floating action -->
         <input type="hidden" name="__id" />
-        <button type="button" onclick="window.location='{{ route('add_examform', [$depart,'subject_id' => $subs]) }}'"
+        <button type="button" onclick="window.location='{{ route('add_examform', [$depart, 'subject_id' => $subs]) }}'"
             class="btn btn-success btn-floated btn-add" id="add_examform" data-toggle="tooltip" title="เพิ่ม"><span
                 class="fas fa-plus"></span></button>
         <!-- /floating action -->

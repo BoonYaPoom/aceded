@@ -84,20 +84,20 @@
                             </script>
                             <td class="align-middle">
                                 @if ($item->survey_type == 1 || $item->survey_type == 2)
-                                    <a href="{{ route('surveyquestion', [$depart, $item->survey_id]) }}"><i
+                                    <a href="{{ route('surveyquestion', [$depart,$subs, $item->survey_id]) }}"><i
                                             class="fas fa-plus-circle fa-lg text-info" data-toggle="tooltip"
                                             title="เพิ่มคำถาม"></i></a>
-                                    <a href="{{ route('reportpageSubject', [$depart, $item->survey_id]) }}"><i
+                                    <a href="{{ route('reportpageSubject', [$depart,$subs, $item->survey_id]) }}"><i
                                             class="fas fa-chart-bar fa-lg text-danger" data-toggle="tooltip"
                                             title="รายงาน"></i></a>
                                     <a href="{{ route('surveyform', [$depart, $item->survey_id]) }}"><i
                                             class="far fa-edit fa-lg text-success" data-toggle="tooltip"
                                             title="แก้ไข"></i></a>
                                 @elseif ($item->survey_type == 0)
-                                    <a href="{{ route('surveyquestion', [$depart, $item->survey_id]) }}"><i
+                                    <a href="{{ route('surveyquestion', [$depart,$subs, $item->survey_id]) }}"><i
                                             class="fas fa-plus-circle fa-lg text-info" data-toggle="tooltip"
                                             title="เพิ่มคำถาม"></i></a>
-                                    <a href="{{ route('reportpageSubject', [$depart, $item->survey_id]) }}"><i
+                                    <a href="{{ route('reportpageSubject', [$depart, $subs, $item->survey_id]) }}"><i
                                             class="fas fa-chart-bar fa-lg text-danger" data-toggle="tooltip"
                                             title="รายงาน"></i></a>
                                     <a href="{{ route('surveyform', [$depart, $item->survey_id]) }}"><i

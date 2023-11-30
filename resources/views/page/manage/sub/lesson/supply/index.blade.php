@@ -24,9 +24,15 @@
             <!-- .card -->
             <div class="card card-fluid">
                 <!-- .card-header -->
-                <div class="card-header bg-muted"><a href="{{ route('lessonpage', [$depart,$subs->subject_id]) }}" style="text-decoration: underline;">จัดการเว็บ</a> / <a
-                        href="" style="text-decoration: underline;">
-                        สื่อเสริม</a> /<i> แก้ไขข้อมูล</i></div><!-- /.card-header -->
+                <div class="card-header bg-muted"> <a href="{{ route('learn', ['department_id' => $depart]) }}"
+                        style="text-decoration: underline;">หมวดหมู่</a>
+                    / <a href="{{ route('suppage', ['department_id' => $depart]) }}"
+                        style="text-decoration: underline;">จัดการวิชา</a>
+                    /
+                    <a href="{{ route('lessonpage', [$depart, $subs]) }}"
+                        style="text-decoration: underline;"><i>{{ $subs->subject_th }}</i></a> /
+                    สื่อเสริม</a>
+                </div><!-- /.card-header -->
                 <!-- .card-body -->
 
                 <div class="card-body">
@@ -107,7 +113,7 @@
 
                                         <td class="align-middle">
                                             <a
-                                                href="{{ route('edit_supplyLessform', [$depart, 'supplymentary_id' => $item]) }}"><i
+                                                href="{{ route('edit_supplyLessform', [$depart,$subs,$lesson,'supplymentary_id' => $item]) }}"><i
                                                     class="far fa-edit fa-lg text-success" data-toggle="tooltip"
                                                     title="แก้ไข"></i></a>
                                             <a href="{{ route('destroy_supplyform', ['supplymentary_id' => $item]) }}"

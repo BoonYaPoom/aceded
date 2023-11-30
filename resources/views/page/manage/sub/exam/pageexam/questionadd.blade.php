@@ -1,5 +1,5 @@
-@extends('layouts.department.layout.departmenthome')
-@section('contentdepartment')
+@extends('page.manage.sub.navsubject')
+@section('subject-data')
     @if (Session::has('message'))
         <script>
             toastr.options = {
@@ -18,20 +18,7 @@
     @endif
 
 
-    <!-- .page-inner -->
-    <div class="page-inner">
-
-        <!-- .page-section -->
-        <div class="page-section">
-            <!-- .card -->
-            <div class="card card-fluid">
-                <!-- .card-header -->
-                <div class="card-header bg-muted"><a href="{{ route('exampage', [$depart,$subs->subject_id]) }}"
-                        style="text-decoration: underline;">หมวดหมู่</a> / <a href="{{ route('exampage', [$depart,$subs->subject_id]) }}"
-                        style="text-decoration: underline;">จัดการวิชา</a>
-                    / <i>คลังข้อสอบ </i></div><!-- /.card-header -->
-
-                <!-- .card-body -->
+  
                 <div class="card-body">
                     <!-- .table-responsive -->
 
@@ -63,7 +50,7 @@
                                     <div class="dt-buttons btn-group"><button
                                             class="btn btn-secondary buttons-excel buttons-html5" tabindex="0"
                                             aria-controls="datatable" type="button"
-                                            onclick="window.location='{{ route('questionExport', [$depart,'subject_id' => $subs]) }}'"><span>Excel</span></button>
+                                            onclick="window.location='{{ route('questionExport', ['subject_id' => $subs]) }}'"><span>Excel</span></button>
                                     </div>
 
                                     <div id="datatable_filter" class="dataTables_filter">
@@ -198,19 +185,19 @@
                             </script>
                         </table><!-- /.table -->
                     </div><!-- /.table-responsive -->
+                    <header class="page-title-bar">
+                        <!-- floating action -->
+                        <input type="hidden" name="__id" />
+                        <button type="button" class="btn btn-success btn-floated btn-add"
+                            onclick="window.location='{{ route('questionform', [$depart,'subject_id' => $subs]) }}'" data-toggle="tooltip"
+                            title="เพิ่ม"><span class="fas fa-plus"></span></button>
+            
+                        <!-- /floating action -->
+                    </header><!-- /.page-title-bar -->
                 </div><!-- /.card-body -->
-            </div><!-- /.card -->
-        </div><!-- /.page-section -->
+         
 
-        <!-- .page-title-bar -->
-        <header class="page-title-bar">
-            <!-- floating action -->
-            <input type="hidden" name="__id" />
-            <button type="button" class="btn btn-success btn-floated btn-add"
-                onclick="window.location='{{ route('questionform', [$depart,'subject_id' => $subs]) }}'" data-toggle="tooltip"
-                title="เพิ่ม"><span class="fas fa-plus"></span></button>
 
-            <!-- /floating action -->
-        </header><!-- /.page-title-bar -->
-    </div><!-- /.page-inner -->
+ 
+
 @endsection

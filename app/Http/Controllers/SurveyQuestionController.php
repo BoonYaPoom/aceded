@@ -271,24 +271,26 @@ class SurveyQuestionController extends Controller
 
 
 
-  public function surveyreport($department_id,$survey_id)
+  public function surveyreport($department_id,$subject_id,$survey_id)
   {
     $sur  = Survey::findOrFail($survey_id);
     $surques = $sur->surs()->where('survey_id', $survey_id)->get();
     $department_id   = $sur->department_id;
     $depart = Department::findOrFail($department_id);
-    return view('page.manage.sub.activitys.activcontent.survey.surveyreport.index', compact('sur', 'surques', 'depart'));
+    $subs  = CourseSubject::findOrFail($subject_id);
+    return view('page.manage.sub.activitys.activcontent.survey.surveyreport.index', compact('sur','subs', 'surques', 'depart'));
   }
-  public function reportpageSubject($department_id,$survey_id)
+  public function reportpageSubject($department_id,$subject_id,$survey_id)
   {
     $sur = Survey::findOrFail($survey_id);
     $surques = $sur->surs()->where('survey_id', $survey_id)->get();
     $respoe = $sur->surRes()->where('survey_id', $survey_id)->get();
     $department_id   = $sur->department_id;
+    $subs  = CourseSubject::findOrFail($subject_id);
     $depart = Department::findOrFail($department_id);
-    return view('page.manage.sub.activitys.activcontent.survey.surveyreport.report', compact('sur', 'surques', 'respoe', 'depart'));
+    return view('page.manage.sub.activitys.activcontent.survey.surveyreport.report', compact('sur','subs', 'surques', 'respoe', 'depart'));
   }
-  public function createreport($department_id,$survey_id)
+  public function createreport($department_id,$subject_id,$survey_id)
   {
     $sur = Survey::findOrFail($survey_id);
     $surques = $sur->surs()->where('survey_id', $survey_id)->get();
@@ -297,7 +299,8 @@ class SurveyQuestionController extends Controller
     $suracts = $subs->suyvs()->where('subject_id', $subject_id)->get();
     $department_id   = $sur->department_id;
     $depart = Department::findOrFail($department_id);
-    return view('page.manage.sub.activitys.activcontent.survey.surveyreport.create', compact('sur', 'surques', 'subs', 'suracts', 'depart'));
+    $subs  = CourseSubject::findOrFail($subject_id);
+    return view('page.manage.sub.activitys.activcontent.survey.surveyreport.create', compact('sur','subs', 'surques', 'subs', 'suracts', 'depart'));
   }
 
 

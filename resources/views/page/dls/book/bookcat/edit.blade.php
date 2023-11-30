@@ -9,12 +9,18 @@
             <div class="card card-fluid">
                 <!-- .card-header -->
                 <div class="card-header bg-muted">
-                    <a href="{{route('bookpage', ['department_id' => $bookcat->department_id])}}" style="text-decoration: underline;">คลังข้อมูลและความรู้</a> / <a
-                        href="{{ route('bookcatpage', [$depart,'category_id' => $books->category_id]) }}" style="text-decoration: underline;">
-                        {{ $books->book_name }}</a> / <i> เพิ่มคลังข้อมูลและความรู้</i>
+                    <a href="{{ route('dls', ['department_id' => $depart->department_id]) }}"
+                        style="text-decoration: underline;"> จัดการข้อมูลและความรู้</a> / <a
+                        href="{{ route('bookpage', ['department_id' => $depart]) }}" style="text-decoration: underline;">
+                        หนังสืออิเล็กทรอนิกส์</a> / <a
+                        href="{{ route('bookcatpage', [$depart, 'category_id' => $bookcat->category_id]) }}"
+                        style="text-decoration: underline;"> {{ $bookcat->category_th }}</a> /
+                    <i>
+                        {{ $books->book_name }} แก้ไข
+                    </i>
                 </div><!-- /.card-header -->
                 <!-- .card-body -->
-                <form action="{{ route('updatecatbook', [$depart,'book_id' => $books]) }}" method="post"
+                <form action="{{ route('updatecatbook', [$depart, 'book_id' => $books]) }}" method="post"
                     enctype="multipart/form-data">
                     @method('PUT')
                     @csrf
@@ -22,7 +28,7 @@
                         <div class="form-group">
                             <label for="book_type">ประเภทหนังสือ</label>
                             <select id="book_type" name="book_type" class="form-control " \ data-toggle="select2"
-                                data-placeholder="ประเภทหนังสือ" data-allow-clear="false" >
+                                data-placeholder="ประเภทหนังสือ" data-allow-clear="false">
                                 <option value="0" {{ $books->book_type == 0 ? 'selected' : '' }}> Flip Book</option>
                                 <option value="1" {{ $books->book_type == 1 ? 'selected' : '' }}> Pdf</option>
                             </select>
@@ -42,7 +48,7 @@
                             <input type="text" class="form-control" id="book_author" name="book_author"
                                 placeholder="ชื่อผู้แต่ง" value="ACED">
                         </div><!-- /.form-group -->
- 
+
 
                         <!-- .form-group -->
                         <div class="form-group">
@@ -52,8 +58,8 @@
                         <div class="form-group">
                             <label for="cover">ภาพปก </label>
                             <input type="file" class="form-control" id="cover" name="cover" placeholder="ภาพปก"
-                                accept=" image/jpeg, image/png"><small class="form-text text-muted">JPG, GIF or PNG 400x400, < 2
-                                    MB.</small>
+                                accept=" image/jpeg, image/png"><small class="form-text text-muted">JPG, GIF or PNG 400x400,
+                                < 2 MB.</small>
                         </div><!-- /.form-group -->
                         @error('cover')
                             <span class="badge badge-warning">{{ $message }}</span>
@@ -64,10 +70,11 @@
                             <input type="file" class="form-control" id="bookfile" name="bookfile" placeholder="เนื้อหา"
                                 accept=".pdf">
                         </div><!-- /.form-group -->
+                        <span class="badge" style="background-color: {{ $depart->color }};">{{ $books->bookfile }}</span>
                         @error('bookfile')
                             <span class="badge badge-warning">{{ $message }}</span>
                         @enderror
-                 
+
                         <!-- .form-group -->
                         <div class="form-group">
                             <label for="contents">เนื้อหาโดยย่อ</label>
@@ -86,13 +93,13 @@
                         </div>
                         <!-- /.form-group -->
                     </div><!-- /.card-body -->
-                    
+
             </div><!-- /.card -->
             <div class="form-actions">
                 <button class="btn btn-lg btn-primary-theme ml-auto" type="submit"><i class="far fa-save"></i>
                     บันทึก</button>
             </div><!-- /.form-actions -->
-        </form>
+            </form>
         </div><!-- /.page-section -->
     </div><!-- /.page-inner -->
 @endsection

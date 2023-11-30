@@ -24,8 +24,9 @@
             <div class="card card-fluid">
                 <!-- .card-header -->
                 <div class="card-header bg-muted">
-                    <a href="{{ route('dls', ['department_id' => $depart]) }}" style="text-decoration: underline;">จัดการข้อมูลและความรู้</a> /
-                    <i>คลังความรู้</i>
+                    <a href="{{ route('dls', ['department_id' => $depart->department_id]) }}"
+                        style="text-decoration: underline;"> จัดการข้อมูลและความรู้</a> / 
+                        คลังความรู้
                 </div>
                 <!-- /.card-header -->
                 <!-- .card-body -->

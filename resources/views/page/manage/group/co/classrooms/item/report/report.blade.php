@@ -206,7 +206,7 @@
                                                                 <div class="modal-content">
 
                                                                     <!-- .modal-header -->
-                                                                    <div class="modal-header bg-theme-primary ">
+                                                                    <div class="modal-header " style="background-color: {{ $depart->color }};">
                                                                         <h6 id="clientPermissionModalLabel"
                                                                             class="modal-title text-white">
                                                                             <span class="sr-only">Permission</span> <span><i

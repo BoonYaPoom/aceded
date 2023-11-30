@@ -38,7 +38,7 @@
                             <label for="fileexcel">เลือกไฟล์รายชื่อ <span
                                     class="badge badge-warning">Required</span></label>
                             <a class="ml-3"
-                                href="https://1drv.ms/x/s!Aneojfnh1p7QgesIwjbgQ5koULOO5g?e=OMOCid&nav=MTVfezAwMDAwMDAwLTAwMDEtMDAwMC0wMDAwLTAwMDAwMDAwMDAwMH0"
+                                href="{{asset('uplade/ข้อสอบ.xlsx')}}"
                                 target="_blank">ไฟล์ตัวอย่าง
                             </a>
                         </div>

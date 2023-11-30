@@ -2,6 +2,7 @@
 
 namespace App\Exports;
 
+use App\Models\CourseSubject;
 use Maatwebsite\Excel\Concerns\WithHeadings;
 
 use Maatwebsite\Excel\Concerns\FromCollection;
@@ -22,10 +23,19 @@ WithEvents
     /**
     * @return \Illuminate\Support\Collection
     */
+    protected $subject_id;
+    public function __construct($subject_id)
+    {
+        $this->subject_id = $subject_id;
+    }
     public function collection()
     {
+        $subject = CourseSubject::findOrFail($this->subject_id); // เข้าถึง $department_id ด้วย $this->department_id
+        
+
         $ques = Question::select('question_id', 'question', 'question_type', 'lesson_id', 'question_status')
 
+        ->whereIn('subject_id', [$this->subject_id])
         ->get()
         ->map(function ($item, $index) {
             $item->question_id = $index + 1;
@@ -47,7 +57,6 @@ WithEvents
             $item->question_type =  $questionType ;
                     return $item;
         });
-    
     
         return $ques;
     }
