@@ -112,13 +112,13 @@
                                 <a href="/" class="menu-link "><span class="menu-icon fas fa fa-users"></span>
                                     <span class="menu-text">กิจกรรม</span></a>
                             </li> -->
-                   
+
                             <li class="menu-item {{ Str::startsWith(request()->url(), route('departmentLearnpage')) || request()->is('learn', 'learn/*') ? 'has-active text-info' : '' }}">
                                 <a href="{{ route('learn', ['department_id' => $depart->department_id]) }}" class="menu-link"><span
                                         class="menu-icon fas fa-chalkboard-teacher"></span> <span
                                         class="menu-text">จัดการเรียนรู้</span></a>
                             </li>
-                          
+
                             <li class="menu-item ">
                                 <a href="{{ route('logout') }}" class="menu-link"><span class="menu-icon fas fa-power-off"></span>
                                     <span class="menu-text"> ออกจากระบบ</span></a>
