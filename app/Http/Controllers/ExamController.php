@@ -603,7 +603,7 @@ class ExamController extends Controller
     $subs = CourseSubject::findOrFail($subject_id);
     $department_id =   $subs->department_id;
     $depart = Department::findOrFail($department_id);
-    return view('page.manage.sub.exam.pageexam.edit', compact('typequs', 'lossen', 'ques', 'depart'));
+    return view('page.manage.sub.exam.pageexam.edit', compact('typequs', 'lossen', 'ques', 'depart','subs'));
   }
 
   public function update(Request $request, $department_id, $question_id)

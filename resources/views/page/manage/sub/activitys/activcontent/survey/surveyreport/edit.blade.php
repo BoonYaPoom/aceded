@@ -1,21 +1,12 @@
-@extends('layouts.department.layout.departmenthome')
-@section('contentdepartment')
-    <!-- .page-inner -->
-    <div class="page-inner">
-        <!-- .form -->
-        <!-- .page-section -->
-        <div class="page-section">
-            <!-- .card -->
-            <div class="card card-fluid">
-                <!-- .card-header -->
-                <div class="card-header bg-muted"><a href="{{ route('surveyact', [$depart,$sur->subject_id]) }}" style="text-decoration: underline;"> จัดการวิชา </a> / <a
-                        href="{{ route('surveyquestion', [$depart,$surques->survey_id]) }}"
-                        style="text-decoration: underline;">แบบสำรวจ</a> / <a
-                        href="{{ route('surveyquestion', [$depart,$surques->survey_id]) }}"
-                        style="text-decoration: underline;"></a> 
-                    <i> {!! $surques->question !!}</i>
+@extends('page.manage.sub.navsubject')
+@section('subject-data')
+   
+                <div class="card-header bg-muted"> <a
+                        href="{{ route('surveyquestion', [$depart,$subs,$surques->survey_id]) }}"
+                        style="text-decoration: underline;">{!! $surques->question !!}</a> 
+
                 </div><!-- /.card-header -->
-                <form action="{{ route('updatereport', [$depart,'question_id' => $surques->question_id]) }}" method="post"
+                <form action="{{ route('updatereport', [$depart,$subs,'question_id' => $surques->question_id]) }}" method="post"
                     enctype="multipart/form-data">
                     @csrf
                     @method('PUT')
@@ -291,17 +282,13 @@
                                     class="switcher-label-on">ON</span> <span
                                     class="switcher-label-off text-red">OFF</span></label>
                         </div><!-- /.form-group -->
+                        <div class="form-actions ">
+                            <button class="btn btn-lg btn-primary ml-auto" type="submit"><i class="far fa-save"></i>
+                                บันทึก</button>
+                        </div><!-- /.form-actions -->
                     </div><!-- /.card-body -->
-                    <!-- .form-actions -->
-                   
-
-            </div><!-- /.card -->
-            <div class="form-actions ">
-                <button class="btn btn-lg btn-primary ml-auto" type="submit"><i class="far fa-save"></i>
-                    บันทึก</button>
-            </div><!-- /.form-actions -->
+              
+            
         </form>
 
-        </div><!-- /.page-section -->
-    </div><!-- /.page-inner -->
 @endsection

@@ -49,7 +49,7 @@
         <!-- <a href="{{ route('smallsmallcreate', [$depart,'subject_id' => $subs, 'lesson_id' => $subitem]) }}"
                     data-toggle="tooltip" title="เพิ่มย่อย"><i
                         class="fas fa-plus-circle fa-lg text-danger mr-1"></i></a>-->
-        <a href="{{ route('edit_lessonform', [$depart,'lesson_id' => $subitem]) }}" data-toggle="tooltip" title="แก้ไข"><i
+        <a href="{{ route('edit_lessonform', [$depart,'subject_id' => $subs,'lesson_id' => $subitem]) }}" data-toggle="tooltip" title="แก้ไข"><i
                 class="far fa-edit fa-lg text-success mr-1"></i></a>
         <a href="{{ route('Supply_lessonform', [$depart,'subject_id' => $subitem, 'lesson_id' => $subitem]) }}"
             data-toggle="tooltip" title="สื่อเสริม"><i class="fas fa-file-video fa-lg text-success mr-1"></i>

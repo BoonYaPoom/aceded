@@ -43,11 +43,11 @@
                                             <td class="d-none"></td>
                                             <td>{{ $item->survey_lang }}</td>
                                             <td class="text-center">
-                     
-                                                {!! QrCode::generate(
-                                                    url('https://aced-lb.nacc.go.th/' . $depart->name_short_en . '/survey/assessment/' . $item->survey_id),
-                                                ) !!}
+                                                <a href="{{ asset($item->cover) }}" download="{{ $item->cover }}">
+                                                    <img src="{{ asset($item->cover) }}" alt="{{ $item->cover }}" width="100" height="100">
+                                                </a>
                                             </td>
+                                            
                                             <td class="align-middle"> <label
                                                     class="switcher-control switcher-control-success switcher-control-lg">
                                                     <input type="checkbox" class="switcher-input switcher-edit"

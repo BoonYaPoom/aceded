@@ -50,37 +50,37 @@ class SurveyQuestionController extends Controller
       $surques = new SurveyQuestion;
 
 
-      
+
       if (!file_exists(public_path('/upload/suyQue/ck/'))) {
-         mkdir(public_path('/upload/suyQue/ck/'), 0755, true);
+        mkdir(public_path('/upload/suyQue/ck/'), 0755, true);
       }
       if ($request->has('question')) {
-         $question = $request->question;
-         $decodedTextdetail_th ='' ;
-         if (!empty($question)) {
-            $de_th = new DOMDocument();
-            $de_th->encoding = 'UTF-8'; // กำหนด encoding เป็น UTF-8
-            $question = mb_convert_encoding($question, 'HTML-ENTITIES', 'UTF-8');
-            $question = preg_replace('/<figure\b[^>]*>(.*?)<\/figure>/is', '$1', $question);
-            $de_th->loadHTML($question, LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
-            libxml_use_internal_errors(true);
-            $images_des_th = $de_th->getElementsByTagName('img');
+        $question = $request->question;
+        $decodedTextdetail_th = '';
+        if (!empty($question)) {
+          $de_th = new DOMDocument();
+          $de_th->encoding = 'UTF-8'; // กำหนด encoding เป็น UTF-8
+          $question = mb_convert_encoding($question, 'HTML-ENTITIES', 'UTF-8');
+          $question = preg_replace('/<figure\b[^>]*>(.*?)<\/figure>/is', '$1', $question);
+          $de_th->loadHTML($question, LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
+          libxml_use_internal_errors(true);
+          $images_des_th = $de_th->getElementsByTagName('img');
 
-            foreach ($images_des_th as $key => $img) {
-               if (strpos($img->getAttribute('src'), 'data:image/') === 0) {
-                  $data = base64_decode(explode(',', explode(';', $img->getAttribute('src'))[1])[1]);
-                  $image_name = '/upload/suyQue/ck/' . time() . $key . '.png'; // ใส่ .png เพื่อให้เป็นนามสกุลไฟล์ถูกต้อง
-                  file_put_contents(public_path() . $image_name, $data);
-                  $img->removeAttribute('src');
-                  $newImageUrl = asset($image_name);
-                  $img->setAttribute('src', $newImageUrl);
-               }
+          foreach ($images_des_th as $key => $img) {
+            if (strpos($img->getAttribute('src'), 'data:image/') === 0) {
+              $data = base64_decode(explode(',', explode(';', $img->getAttribute('src'))[1])[1]);
+              $image_name = '/upload/suyQue/ck/' . time() . $key . '.png'; // ใส่ .png เพื่อให้เป็นนามสกุลไฟล์ถูกต้อง
+              file_put_contents(public_path() . $image_name, $data);
+              $img->removeAttribute('src');
+              $newImageUrl = asset($image_name);
+              $img->setAttribute('src', $newImageUrl);
             }
-            $question = $de_th->saveHTML();
-            $decodedTextdetail_th = html_entity_decode($question, ENT_QUOTES, 'UTF-8');
-         }
+          }
+          $question = $de_th->saveHTML();
+          $decodedTextdetail_th = html_entity_decode($question, ENT_QUOTES, 'UTF-8');
+        }
 
-         $surques->question = $decodedTextdetail_th;
+        $surques->question = $decodedTextdetail_th;
       }
       $surques->question_type = $request->question_type;
       $surques->question_status = $request->input('question_status', 0);
@@ -155,7 +155,7 @@ class SurveyQuestionController extends Controller
     return redirect()->route('questionpage', [$department_id, 'survey_id' => $survey_id])->with('message', 'surveyreport update successfully');
   }
 
-  public function edit($department_id,$question_id)
+  public function edit($department_id, $question_id)
   {
     $surques = SurveyQuestion::findOrFail($question_id);
     $survey_id     = $surques->survey_id;
@@ -165,42 +165,42 @@ class SurveyQuestionController extends Controller
     return view('page.manages.survey.surveyquestion.edit', ['surques' => $surques, 'sur' => $sur, 'depart' => $depart]);
   }
 
-  public function update(Request $request,$department_id, $question_id)
+  public function update(Request $request, $department_id, $question_id)
   {
     $surques = SurveyQuestion::findOrFail($question_id);
 
-  
+
     libxml_use_internal_errors(true);
     if (!file_exists(public_path('/upload/suyQue/ck/'))) {
-       mkdir(public_path('/upload/suyQue/ck/'), 0755, true);
+      mkdir(public_path('/upload/suyQue/ck/'), 0755, true);
     }
     if ($request->has('question')) {
-       $question = $request->question;
-       $decodedTextdetail_th ='' ;
-       if (!empty($question)) {
-          $de_th = new DOMDocument();
-          $de_th->encoding = 'UTF-8'; // กำหนด encoding เป็น UTF-8
-          $question = mb_convert_encoding($question, 'HTML-ENTITIES', 'UTF-8');
-          $question = preg_replace('/<figure\b[^>]*>(.*?)<\/figure>/is', '$1', $question);
-          $de_th->loadHTML($question, LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
-          libxml_use_internal_errors(true);
-          $images_des_th = $de_th->getElementsByTagName('img');
+      $question = $request->question;
+      $decodedTextdetail_th = '';
+      if (!empty($question)) {
+        $de_th = new DOMDocument();
+        $de_th->encoding = 'UTF-8'; // กำหนด encoding เป็น UTF-8
+        $question = mb_convert_encoding($question, 'HTML-ENTITIES', 'UTF-8');
+        $question = preg_replace('/<figure\b[^>]*>(.*?)<\/figure>/is', '$1', $question);
+        $de_th->loadHTML($question, LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
+        libxml_use_internal_errors(true);
+        $images_des_th = $de_th->getElementsByTagName('img');
 
-          foreach ($images_des_th as $key => $img) {
-             if (strpos($img->getAttribute('src'), 'data:image/') === 0) {
-                $data = base64_decode(explode(',', explode(';', $img->getAttribute('src'))[1])[1]);
-                $image_name = '/upload/suyQue/ck/' . time() . $key . '.png'; // ใส่ .png เพื่อให้เป็นนามสกุลไฟล์ถูกต้อง
-                file_put_contents(public_path() . $image_name, $data);
-                $img->removeAttribute('src');
-                $newImageUrl = asset($image_name);
-                $img->setAttribute('src', $newImageUrl);
-             }
+        foreach ($images_des_th as $key => $img) {
+          if (strpos($img->getAttribute('src'), 'data:image/') === 0) {
+            $data = base64_decode(explode(',', explode(';', $img->getAttribute('src'))[1])[1]);
+            $image_name = '/upload/suyQue/ck/' . time() . $key . '.png'; // ใส่ .png เพื่อให้เป็นนามสกุลไฟล์ถูกต้อง
+            file_put_contents(public_path() . $image_name, $data);
+            $img->removeAttribute('src');
+            $newImageUrl = asset($image_name);
+            $img->setAttribute('src', $newImageUrl);
           }
-          $question = $de_th->saveHTML();
-          $decodedTextdetail_th = html_entity_decode($question, ENT_QUOTES, 'UTF-8');
-       }
+        }
+        $question = $de_th->saveHTML();
+        $decodedTextdetail_th = html_entity_decode($question, ENT_QUOTES, 'UTF-8');
+      }
 
-       $surques->question = $decodedTextdetail_th;
+      $surques->question = $decodedTextdetail_th;
     }
     $surques->question_type = $request->question_type;
     $surques->question_status = $request->input('question_status', 0);
@@ -263,7 +263,7 @@ class SurveyQuestionController extends Controller
     $surques->subject_id = null;
     $surques->required = '';
     $surques->save();
-    return redirect()->route('questionpage', [$department_id,'survey_id' => $surques->survey_id])->with('message', 'surveyreport update successfully');
+    return redirect()->route('questionpage', [$department_id, 'survey_id' => $surques->survey_id])->with('message', 'surveyreport update successfully');
   }
 
 
@@ -271,16 +271,16 @@ class SurveyQuestionController extends Controller
 
 
 
-  public function surveyreport($department_id,$subject_id,$survey_id)
+  public function surveyreport($department_id, $subject_id, $survey_id)
   {
     $sur  = Survey::findOrFail($survey_id);
     $surques = $sur->surs()->where('survey_id', $survey_id)->get();
     $department_id   = $sur->department_id;
     $depart = Department::findOrFail($department_id);
     $subs  = CourseSubject::findOrFail($subject_id);
-    return view('page.manage.sub.activitys.activcontent.survey.surveyreport.index', compact('sur','subs', 'surques', 'depart'));
+    return view('page.manage.sub.activitys.activcontent.survey.surveyreport.index', compact('sur', 'subs', 'surques', 'depart'));
   }
-  public function reportpageSubject($department_id,$subject_id,$survey_id)
+  public function reportpageSubject($department_id, $subject_id, $survey_id)
   {
     $sur = Survey::findOrFail($survey_id);
     $surques = $sur->surs()->where('survey_id', $survey_id)->get();
@@ -288,9 +288,9 @@ class SurveyQuestionController extends Controller
     $department_id   = $sur->department_id;
     $subs  = CourseSubject::findOrFail($subject_id);
     $depart = Department::findOrFail($department_id);
-    return view('page.manage.sub.activitys.activcontent.survey.surveyreport.report', compact('sur','subs', 'surques', 'respoe', 'depart'));
+    return view('page.manage.sub.activitys.activcontent.survey.surveyreport.report', compact('sur', 'subs', 'surques', 'respoe', 'depart'));
   }
-  public function createreport($department_id,$subject_id,$survey_id)
+  public function createreport($department_id, $subject_id, $survey_id)
   {
     $sur = Survey::findOrFail($survey_id);
     $surques = $sur->surs()->where('survey_id', $survey_id)->get();
@@ -300,52 +300,52 @@ class SurveyQuestionController extends Controller
     $department_id   = $sur->department_id;
     $depart = Department::findOrFail($department_id);
     $subs  = CourseSubject::findOrFail($subject_id);
-    return view('page.manage.sub.activitys.activcontent.survey.surveyreport.create', compact('sur','subs', 'surques', 'subs', 'suracts', 'depart'));
+    return view('page.manage.sub.activitys.activcontent.survey.surveyreport.create', compact('sur', 'subs', 'surques', 'subs', 'suracts', 'depart'));
   }
 
 
 
 
-  public function savereport(Request $request,$department_id, $survey_id)
+  public function savereport(Request $request, $department_id, $subject_id, $survey_id)
   {
     $request->validate([
       'question' => 'required',
     ]);
 
     $surques = new SurveyQuestion;
-  
+
     libxml_use_internal_errors(true);
     if (!file_exists(public_path('/upload/suyQue/Dp/ck/'))) {
-       mkdir(public_path('/upload/suyQue/Dp/ck/'), 0755, true);
+      mkdir(public_path('/upload/suyQue/Dp/ck/'), 0755, true);
     }
     if ($request->has('question')) {
-       $question = $request->question;
-       $decodedTextdetail_th ='' ;
-       if (!empty($question)) {
-          $de_th = new DOMDocument();
-          $de_th->encoding = 'UTF-8'; // กำหนด encoding เป็น UTF-8
-          $question = mb_convert_encoding($question, 'HTML-ENTITIES', 'UTF-8');
-          $question = preg_replace('/<figure\b[^>]*>(.*?)<\/figure>/is', '$1', $question);
-          $de_th->loadHTML($question, LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
-          libxml_use_internal_errors(true);
-          $images_des_th = $de_th->getElementsByTagName('img');
+      $question = $request->question;
+      $decodedTextdetail_th = '';
+      if (!empty($question)) {
+        $de_th = new DOMDocument();
+        $de_th->encoding = 'UTF-8'; // กำหนด encoding เป็น UTF-8
+        $question = mb_convert_encoding($question, 'HTML-ENTITIES', 'UTF-8');
+        $question = preg_replace('/<figure\b[^>]*>(.*?)<\/figure>/is', '$1', $question);
+        $de_th->loadHTML($question, LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
+        libxml_use_internal_errors(true);
+        $images_des_th = $de_th->getElementsByTagName('img');
 
-          foreach ($images_des_th as $key => $img) {
-             if (strpos($img->getAttribute('src'), 'data:image/') === 0) {
-                $data = base64_decode(explode(',', explode(';', $img->getAttribute('src'))[1])[1]);
-                $image_name = '/upload/suyQue/Dp/ck/' . time() . $key . '.png'; // ใส่ .png เพื่อให้เป็นนามสกุลไฟล์ถูกต้อง
-                file_put_contents(public_path() . $image_name, $data);
-                $img->removeAttribute('src');
-                $newImageUrl = asset($image_name);
-                $img->setAttribute('src', $newImageUrl);
-             }
+        foreach ($images_des_th as $key => $img) {
+          if (strpos($img->getAttribute('src'), 'data:image/') === 0) {
+            $data = base64_decode(explode(',', explode(';', $img->getAttribute('src'))[1])[1]);
+            $image_name = '/upload/suyQue/Dp/ck/' . time() . $key . '.png'; // ใส่ .png เพื่อให้เป็นนามสกุลไฟล์ถูกต้อง
+            file_put_contents(public_path() . $image_name, $data);
+            $img->removeAttribute('src');
+            $newImageUrl = asset($image_name);
+            $img->setAttribute('src', $newImageUrl);
           }
-          $question = $de_th->saveHTML();
-          $decodedTextdetail_th = html_entity_decode($question, ENT_QUOTES, 'UTF-8');
-       }
+        }
+        $question = $de_th->saveHTML();
+        $decodedTextdetail_th = html_entity_decode($question, ENT_QUOTES, 'UTF-8');
+      }
 
 
-       $surques->question = $decodedTextdetail_th;
+      $surques->question = $decodedTextdetail_th;
     }
     $surques->question_type = $request->question_type;
     $surques->question_status = $request->input('question_status', 0);
@@ -412,11 +412,11 @@ class SurveyQuestionController extends Controller
     $surques->save();
 
 
-    return redirect()->route('surveyquestion', ['survey_id' => $survey_id])->with('message', 'surveyreport update successfully');
+    return redirect()->route('surveyquestion', [ $department_id,$subject_id,'survey_id' => $survey_id])->with('message', 'surveyreport update successfully');
   }
 
 
-  public function editreport($department_id,$question_id)
+  public function editreport($department_id, $question_id)
   {
     $surques = SurveyQuestion::findOrFail($question_id);
     $survey_id  = $surques->survey_id;
@@ -428,41 +428,41 @@ class SurveyQuestionController extends Controller
     return view('page.manage.sub.activitys.activcontent.survey.surveyreport.edit', compact('surques', 'subs', 'sur', 'depart'));
   }
 
-  public function updatereport(Request $request,$department_id, $question_id)
+  public function updatereport(Request $request, $department_id,$subject_id, $question_id)
   {
     $surques = SurveyQuestion::findOrFail($question_id);
 
     libxml_use_internal_errors(true);
     if (!file_exists(public_path('/upload/suyQue/Dp/ck/'))) {
-       mkdir(public_path('/upload/suyQue/Dp/ck/'), 0755, true);
+      mkdir(public_path('/upload/suyQue/Dp/ck/'), 0755, true);
     }
     if ($request->has('question')) {
-       $question = $request->question;
-       $decodedTextdetail_th ='' ;
-       if (!empty($question)) {
-          $de_th = new DOMDocument();
-          $de_th->encoding = 'UTF-8'; // กำหนด encoding เป็น UTF-8
-          $question = mb_convert_encoding($question, 'HTML-ENTITIES', 'UTF-8');
-          $question = preg_replace('/<figure\b[^>]*>(.*?)<\/figure>/is', '$1', $question);
-          $de_th->loadHTML($question, LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
-          libxml_use_internal_errors(true);
-          $images_des_th = $de_th->getElementsByTagName('img');
+      $question = $request->question;
+      $decodedTextdetail_th = '';
+      if (!empty($question)) {
+        $de_th = new DOMDocument();
+        $de_th->encoding = 'UTF-8'; // กำหนด encoding เป็น UTF-8
+        $question = mb_convert_encoding($question, 'HTML-ENTITIES', 'UTF-8');
+        $question = preg_replace('/<figure\b[^>]*>(.*?)<\/figure>/is', '$1', $question);
+        $de_th->loadHTML($question, LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
+        libxml_use_internal_errors(true);
+        $images_des_th = $de_th->getElementsByTagName('img');
 
-          foreach ($images_des_th as $key => $img) {
-             if (strpos($img->getAttribute('src'), 'data:image/') === 0) {
-                $data = base64_decode(explode(',', explode(';', $img->getAttribute('src'))[1])[1]);
-                $image_name = '/upload/suyQue/Dp/ck/' . time() . $key . '.png'; // ใส่ .png เพื่อให้เป็นนามสกุลไฟล์ถูกต้อง
-                file_put_contents(public_path() . $image_name, $data);
-                $img->removeAttribute('src');
-                $newImageUrl = asset($image_name);
-                $img->setAttribute('src', $newImageUrl);
-             }
+        foreach ($images_des_th as $key => $img) {
+          if (strpos($img->getAttribute('src'), 'data:image/') === 0) {
+            $data = base64_decode(explode(',', explode(';', $img->getAttribute('src'))[1])[1]);
+            $image_name = '/upload/suyQue/Dp/ck/' . time() . $key . '.png'; // ใส่ .png เพื่อให้เป็นนามสกุลไฟล์ถูกต้อง
+            file_put_contents(public_path() . $image_name, $data);
+            $img->removeAttribute('src');
+            $newImageUrl = asset($image_name);
+            $img->setAttribute('src', $newImageUrl);
           }
-          $question = $de_th->saveHTML();
-          $decodedTextdetail_th = html_entity_decode($question, ENT_QUOTES, 'UTF-8');
-       }
+        }
+        $question = $de_th->saveHTML();
+        $decodedTextdetail_th = html_entity_decode($question, ENT_QUOTES, 'UTF-8');
+      }
 
-       $surques->question = $decodedTextdetail_th;
+      $surques->question = $decodedTextdetail_th;
     }
     $surques->question_type = $request->question_type;
     $surques->question_status = $request->input('question_status', 0);
@@ -528,7 +528,7 @@ class SurveyQuestionController extends Controller
     $surques->save();
 
 
-    return redirect()->route('surveyquestion', ['survey_id' => $surques->survey_id])->with('message', 'surveyreport update successfully');
+    return redirect()->route('surveyquestion', [$department_id, $subject_id, 'survey_id' => $surques->survey_id])->with('message', 'surveyreport update successfully');
   }
   public function destory($question_id)
   {

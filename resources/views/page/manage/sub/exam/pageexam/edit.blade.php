@@ -1,5 +1,5 @@
-@extends('layouts.department.layout.departmenthome')
-@section('contentdepartment')
+@extends('page.manage.sub.navsubject')
+@section('subject-data')
     @if (Session::has('message'))
         <script>
             toastr.options = {
@@ -20,17 +20,9 @@
         enctype="multipart/form-data">
         @csrf
         @method('PUT')
-        <div class="page-inner">
-            <!-- .form -->
-            <!-- .page-section -->
-            <div class="page-section">
-                <!-- .card -->
-                <div class="card card-fluid">
+ 
                     <!-- .card-header -->
-                    <div class="card-header bg-muted"><a href="{{ route('exampage', [$depart, $ques->subject_id]) }}"
-                            style="text-decoration: underline;">หมวดหมู่</a> / <a
-                            href="{{ route('pagequess', [$depart, $ques->subject_id]) }}"
-                            style="text-decoration: underline;">จัดการวิชา</a> / <i>{!! $ques->question !!}</i> / <i></i>
+                    <div class="card-header bg-muted"> <i>{!! $ques->question !!}</i> 
                     </div>
                     <!-- /.card-header -->
                     <!-- .nav-scroller -->
@@ -608,16 +600,14 @@
                                     class="switcher-label-on">ON</span> <span
                                     class="switcher-label-off text-red">OFF</span></label>
                         </div><!-- /.form-group -->
-                    </div><!-- /.card-body -->
-                </div><!-- /.card -->
-
-                <!-- .form-actions -->
+                        
                 <div class="form-actions ">
                     <button class="btn btn-lg btn-primary ml-auto" type="submit"><i class="far fa-save"></i>
                         บันทึก</button>
-                </div><!-- /.form-actions -->
-            </div><!-- /.page-section -->
-        </div><!-- /.page-inner -->
-
+                </div>
+                    </div><!-- /.card-body -->
+             
+               
+        
     </form>
 @endsection

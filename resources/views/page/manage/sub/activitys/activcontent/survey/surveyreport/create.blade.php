@@ -1,22 +1,13 @@
-@extends('layouts.department.layout.departmenthome')
-@section('contentdepartment')
-    <!-- .page-inner -->
-    <div class="page-inner">
-        <!-- .form -->
-        <!-- .page-section -->
-        <div class="page-section">
-            <!-- .card -->
-            <div class="card card-fluid">
+@extends('page.manage.sub.navsubject')
+@section('subject-data')
+
                 <!-- .card-header -->
-                <div class="card-header bg-muted"><a href="{{ route('surveyact', [$depart, $sur->subject_id]) }}"
-                        style="text-decoration: underline;"> จัดการวิชา </a> / <a
-                        href="{{ route('surveyquestion', [$depart, $sur->survey_id]) }}"
-                        style="text-decoration: underline;">แบบสำรวจ</a> / <a
-                        href="{{ route('surveyquestion', [$depart, $sur->survey_id]) }}"
+                <div class="card-header bg-muted"> <a
+                        href="{{ route('surveyquestion', [$depart, $subs,$sur->survey_id]) }}"
                         style="text-decoration: underline;">{{ $sur->survey_th }}</a> /
                     <i> เพิ่มแบบสำรวจ</i>
                 </div><!-- /.card-header -->
-                <form action="{{ route('savereport', [$depart, 'survey_id' => $sur->survey_id]) }}" method="post"
+                <form action="{{ route('savereport', [$depart, $subs,'survey_id' => $sur->survey_id]) }}" method="post"
                     enctype="multipart/form-data">
                     @csrf
                     <!-- .card-body -->

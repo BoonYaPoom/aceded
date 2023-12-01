@@ -1,5 +1,5 @@
-@extends('layouts.department.layout.departmenthome')
-@section('contentdepartment')
+@extends('page.manage.sub.navsubject')
+@section('subject-data')
     @if (Session::has('message'))
         <script>
             toastr.options = {
@@ -19,15 +19,9 @@
     <form action="{{ route('categoryform_update', [$depart,'category_id' => $catac]) }}" method="post" enctype="multipart/form-data">
         @csrf
         @method('PUT')
-        <div class="page-inner">
-            <!-- .form -->
-            <!-- .page-section -->
-            <div class="page-section">
-                <!-- .card -->
-                <div class="card card-fluid">
-                    <!-- .card-header -->
-                    <div class="card-header bg-muted"><a href="" style="text-decoration: underline;">หมวดหมู่</a> / <i>
-                        {{ $catac->category_th }}</i></div><!-- /.card-header -->
+
+        <div class="card-header bg-muted"><a href="{{ route('categoryac', [$depart,$subs->subject_id]) }}"
+            style="text-decoration: underline;">กระดานสนทนา {{ $catac->category_th }}</a></div><!-- /.card-header -->
 
                     <!-- .card-body -->
                     <div class="card-body">
@@ -77,14 +71,14 @@
                                     class="switcher-label-off text-red">OFF</span></label>
                         </div><!-- /.form-group -->
                     </div><!-- /.card-body -->
-                </div><!-- /.card -->
-
+                    
                 <!-- .form-actions -->
                 <div class="form-actions">
                     <button class="btn btn-lg btn-primary ml-auto" type="submit"><i class="far fa-save"></i>
                         บันทึก</button>
                 </div><!-- /.form-actions -->
-            </div><!-- /.page-section -->
-        </div><!-- /.page-inner -->
+                </div><!-- /.card -->
+
+        
     </form>
 @endsection

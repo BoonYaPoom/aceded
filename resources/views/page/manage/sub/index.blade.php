@@ -80,7 +80,7 @@
                                         responsive: true,
                                         info: false,
                                         language: {
-
+                                            url: "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Thai.json",
                                             infoEmpty: "ไม่พบรายการ",
                                             infoFiltered: "(ค้นหาจากทั้งหมด _MAX_ รายการ)",
                                             paginate: {

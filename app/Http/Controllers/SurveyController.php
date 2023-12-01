@@ -10,7 +10,7 @@ use App\Models\Survey;
 use DOMDocument;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
-
+use Illuminate\Support\Facades\File;
 class SurveyController extends Controller
 {
    public function surveypage($department_id)
@@ -27,12 +27,11 @@ class SurveyController extends Controller
    }
    public function store(Request $request, $department_id)
    {
+      $depart = Department::findOrFail($department_id);
       $request->validate([
          'survey_th' => 'required',
          'detail_th' => 'required'
       ]);
-
-      $filename = 'qrcode_' . time() . '.png';
 
 
 
@@ -50,7 +49,7 @@ class SurveyController extends Controller
             $de_th = new DOMDocument();
             $de_th->encoding = 'UTF-8'; // กำหนด encoding เป็น UTF-8
             $detail_th = mb_convert_encoding($detail_th, 'HTML-ENTITIES', 'UTF-8');
-            $detail_th = preg_replace('/<figure\b[^>]*>(.*?)<\/figure>/is', '$1', $detail_th);
+        
             $de_th->loadHTML($detail_th, LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
             libxml_use_internal_errors(true);
             $images_des_th = $de_th->getElementsByTagName('img');
@@ -73,7 +72,7 @@ class SurveyController extends Controller
       }
       $sur->detail_en = null;
       $sur->survey_date = now();
-      $sur->cover = $filename;
+
 
       $sur->survey_status = $request->input('survey_status', 0);
       $sur->survey_lang = $request->survey_lang;
@@ -82,6 +81,26 @@ class SurveyController extends Controller
       $sur->class_id = null;
       $sur->department_id = (int)$department_id;
       $saveSuccess = $sur->save();
+
+      $dataqr = QrCode::size(512)
+      ->format('png')
+      ->merge(public_path('/LOGO/logo.png'), 0.5, true) 
+      ->errorCorrection('Q')
+      ->generate(url('https://aced-lb.nacc.go.th/' . $depart->name_short_en . '/survey/assessment/' . $sur->survey_id));
+
+
+      $filename =  $request->survey_id . '.png';
+      $uploadDirectory = public_path('upload/suy/qr/');
+      
+      if (!File::exists($uploadDirectory)) {
+          mkdir($uploadDirectory, 0755, true);
+      }
+      
+      if (File::exists($uploadDirectory)) {
+         file_put_contents(public_path('upload/suy/qr/' . $filename), $dataqr);
+         $sur->cover = 'upload/suy/qr/' . $filename;
+          $sur->save();
+      }
 
       if ($saveSuccess) {
          return redirect()->route('surveypage', ['department_id' => $sur->department_id])->with('message', 'Survey บันทึกข้อมูลสำเร็จ');
@@ -101,9 +120,10 @@ class SurveyController extends Controller
 
    public function update(Request $request, $department_id, $survey_id)
    {
+      $depart = Department::findOrFail($department_id);
       $request->validate([
          'survey_th' => 'required',
-         'detail_th' => 'required'
+  
       ]);
       $sur = Survey::findOrFail($survey_id);
       $sur->survey_th = $request->survey_th;
@@ -119,7 +139,7 @@ class SurveyController extends Controller
             $de_th = new DOMDocument();
             $de_th->encoding = 'UTF-8'; // กำหนด encoding เป็น UTF-8
             $detail_th = mb_convert_encoding($detail_th, 'HTML-ENTITIES', 'UTF-8');
-            $detail_th = preg_replace('/<figure\b[^>]*>(.*?)<\/figure>/is', '$1', $detail_th);
+       
             $de_th->loadHTML($detail_th, LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
                libxml_use_internal_errors(true);
             $images_des_th = $de_th->getElementsByTagName('img');
@@ -145,8 +165,30 @@ class SurveyController extends Controller
       $sur->survey_lang = $request->survey_lang;
       $sur->recommended = null;
       $sur->class_id = null;
-      $sur->cover = null;
+    
       $sur->save();
+
+
+      
+      $dataqr = QrCode::size(512)
+      ->format('png')
+      ->merge(public_path('/LOGO/logo.png'), 0.5, true) 
+      ->errorCorrection('Q')
+      ->generate(url('https://aced-lb.nacc.go.th/' . $depart->name_short_en . '/survey/assessment/' . $sur->survey_id));
+
+
+      $filename =  $request->survey_id . '.png';
+      $uploadDirectory = public_path('upload/suy/qr/');
+      
+      if (!File::exists($uploadDirectory)) {
+          mkdir($uploadDirectory, 0755, true);
+      }
+      
+      if (File::exists($uploadDirectory)) {
+         file_put_contents(public_path('upload/suy/qr/' . $filename), $dataqr);
+         $sur->cover = 'upload/suy/qr/' . $filename;
+          $sur->save();
+      }
 
       return redirect()->route('surveypage', ['department_id' => $sur->department_id])->with('message', 'Survey บันทึกข้อมูลสำเร็จ');
    }
@@ -182,7 +224,9 @@ class SurveyController extends Controller
 
    public function storesuySupject(Request $request, $department_id, $subject_id)
    {
-
+      $depart = Department::findOrFail($department_id);
+     
+     
       $request->validate([
          'survey_th' => 'required',
          'detail_th' => 'required'
@@ -260,7 +304,6 @@ class SurveyController extends Controller
       $sur->cover = null;
       $sur->subject_id = (int)$subject_id;
       $sur->save();
-
 
 
       return redirect()->route('surveyact', ['department_id' => $sur->department_id, 'subject_id' => $subject_id])->with('message', 'Survey บันทึกข้อมูลสำเร็จ');

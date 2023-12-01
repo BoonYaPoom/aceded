@@ -3,6 +3,7 @@
 use App\Http\Controllers\ActivityCategoryController;
 use App\Http\Controllers\ActivityController;
 use App\Http\Controllers\ActivityInviteController;
+use App\Http\Controllers\ApiController;
 use App\Http\Controllers\BlogCategotyController;
 use App\Http\Controllers\BlogController;
 use App\Http\Controllers\BookCategoryController;
@@ -66,6 +67,9 @@ use LdapRecord\Laravel\Facades\Ldap;
 | be assigned to the "web" middleware group. Make something great!
 |
 */
+
+
+
 
 
 Route::get('/upload-image', [PDFcreateController::class, 'upload_image'])->name('upload_image');
@@ -381,9 +385,8 @@ Route::group(['middleware' => 'IsLoggedIn'], function () {
                         Route::get('{department_id}/edit_surveyquestionform/{question_id}', [SurveyQuestionController::class, 'editreport'])->name('editreport');
 
 
-
-                        Route::put('{department_id}/update_surveyquestionform/{question_id}', [SurveyQuestionController::class, 'updatereport'])->name('updatereport');
-                        Route::post('{department_id}/{survey_id}/add_surveyquestionform', [SurveyQuestionController::class, 'savereport'])->name('savereport');
+                        Route::put('{department_id}/{subject_id}/update_surveyquestionform/{question_id}', [SurveyQuestionController::class, 'updatereport'])->name('updatereport');
+                        Route::post('{department_id}/{subject_id}/{survey_id}/add_surveyquestionform', [SurveyQuestionController::class, 'savereport'])->name('savereport');
                         Route::get('{department_id}/{subject_id}/{survey_id}/surveyreportSub', [SurveyQuestionController::class, 'reportpageSubject'])->name('reportpageSubject');
 
 

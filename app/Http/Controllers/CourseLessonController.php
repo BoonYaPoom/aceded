@@ -166,9 +166,10 @@ class CourseLessonController extends Controller
                     $des_th = new DOMDocument();
                     $des_th->encoding = 'UTF-8'; // กำหนด encoding เป็น UTF-8
                     $resultlesson = mb_convert_encoding($resultlesson, 'HTML-ENTITIES', 'UTF-8');
-                    $resultlesson = preg_replace('/<figure\b[^>]*>(.*?)<\/figure>/is', '$1', $resultlesson);
+  
+                    libxml_use_internal_errors(true); 
                     $des_th->loadHTML($resultlesson, LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
-                        libxml_use_internal_errors(true);
+                    libxml_clear_errors();
                     $images_des_th = $des_th->getElementsByTagName('img');
     
                     foreach ($images_des_th as $key => $img) {
