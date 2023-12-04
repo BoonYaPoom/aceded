@@ -52,9 +52,10 @@ class WebController extends Controller
 
         $lastSort = Web::where('category_id', $category_id)->max('sort');
         $newSort = $lastSort + 1;
-
+        $lastid = Web::max('web_id');
+        $newid = $lastid + 1;
         $webs = new Web;
-
+        $webs->web_id = $newid;
         $webs->web_th = $request->web_th;
         $webs->web_en = $request->web_en;
         $webs->web_date = now();

@@ -59,7 +59,7 @@ class EditManageUserController extends Controller
 
             $email = $item->email;
             $status = $item->userstatus;
-            
+
 
             $user_role = $item->user_role;
             $firstname = $item->firstname;
@@ -82,12 +82,11 @@ class EditManageUserController extends Controller
                 'status' => $status,
                 'mobile' => $fullMobile,
                 'proviUser' => $proviUser,
- 
+
                 'user_role' => $user_role,
             ];
-
         }
-       
+
         return response()->json(['datauser' => $datauser]);
     }
     public function UserManagejson(Request $request, $user_role = null)
@@ -98,78 +97,77 @@ class EditManageUserController extends Controller
         }
 
         $i = 1;
-        $perPage = $request->input('length', 10); 
+        $perPage = $request->input('length', 10);
         $currentPage = $request->input('start', 0) / $perPage + 1;
 
 
         return DataTables::eloquent($usermanages)
-        ->addColumn('num', function () use (&$i, $currentPage, $perPage) {
-            return $i++ + ($currentPage - 1) * $perPage;
-        })
-        ->addColumn('id', function ($userdata) {
-            return $userdata->user_id;
-        })
-        ->addColumn('username', function ($userdata) {
-            return $userdata->username;
-        })
+            ->addColumn('num', function () use (&$i, $currentPage, $perPage) {
+                return $i++ + ($currentPage - 1) * $perPage;
+            })
+            ->addColumn('id', function ($userdata) {
+                return $userdata->user_id;
+            })
+            ->addColumn('username', function ($userdata) {
+                return $userdata->username;
+            })
 
-        ->addColumn('fullname', function ($userdata) {
+            ->addColumn('fullname', function ($userdata) {
 
-            return  $userdata->firstname . ' ' . $userdata->lastname;
-        })
+                return  $userdata->firstname . ' ' . $userdata->lastname;
+            })
 
-        ->addColumn('email', function ($userdata) {
-            return $userdata->email;
-        })
+            ->addColumn('email', function ($userdata) {
+                return $userdata->email;
+            })
 
-        ->addColumn('fullMobile', function ($userdata) {
-            $mobile = $userdata->mobile;
-            $part1 = substr($mobile, 0, 3);
-            $part2 = substr($mobile, 3, 3);
-            $part3 = substr($mobile, 6, 4);
-            $fullMobile = $part1 . '-' . $part2 . '-' . $part3;
-            return $fullMobile;
-        })
+            ->addColumn('fullMobile', function ($userdata) {
+                $mobile = $userdata->mobile;
+                $part1 = substr($mobile, 0, 3);
+                $part2 = substr($mobile, 3, 3);
+                $part3 = substr($mobile, 6, 4);
+                $fullMobile = $part1 . '-' . $part2 . '-' . $part3;
+                return $fullMobile;
+            })
 
-        ->addColumn('status', function ($userdata) {
-            return $userdata->userstatus;
-        })
+            ->addColumn('status', function ($userdata) {
+                return $userdata->userstatus;
+            })
 
-        ->addColumn('name_in_thai', function ($userdata) {
-            $name_in_thai = Provinces::where('code', $userdata->province_id)
-                ->pluck('name_in_thai')
-                ->first();
+            ->addColumn('name_in_thai', function ($userdata) {
+                $name_in_thai = Provinces::where('code', $userdata->province_id)
+                    ->pluck('name_in_thai')
+                    ->first();
 
-            return $name_in_thai;
-        })
-        ->addColumn('user_role', function ($userdata) {
-            return $userdata->user_role;
-        })
+                return $name_in_thai;
+            })
+            ->addColumn('user_role', function ($userdata) {
+                return $userdata->user_role;
+            })
 
-        ->filter(function ($userdata) use ($request) {
-      
-            if ($request->has('myInput') && !empty($request->myInput)) {
-                $userdata->where( 'firstname', 'like', '%' . $request->myInput . '%');
-            }
-        })
-        ->filterColumn('name_in_thai', function ($userdata) use ($request) {
-    
-            if ($request->drop2 != '0') {
+            ->filter(function ($userdata) use ($request) {
+
+                if ($request->has('myInput') && !empty($request->myInput)) {
+                    $userdata->where('firstname', 'like', '%' . $request->myInput . '%');
+                }
+            })
+            ->filterColumn('name_in_thai', function ($userdata) use ($request) {
+
+                if ($request->drop2 != '0') {
                     $userdata->where('province_id', $request->drop2);
-         
-            }
-        })
-    
-        ->make(true);
+                }
+            })
+
+            ->make(true);
     }
-   
+
 
     public function edit($user_id)
     {
         $usermanages = Users::findOrFail($user_id);
-        
+
         $role = UserRole::all();
-        return view('page.UserAdmin.edit', ['usermanages' => $usermanages ,'role'=>$role]);
+        return view('page.UserAdmin.edit', ['usermanages' => $usermanages, 'role' => $role]);
     }
 
 
@@ -226,12 +224,15 @@ class EditManageUserController extends Controller
                 ->where('user_id', $user_id)
                 ->delete();
 
-
+            $maxUserDepartmentId = DB::table('users_department')->max('user_department_id');
             foreach ($department_data as $departmentId) {
+                $newUserDepartmentId = $maxUserDepartmentId + 1;
                 DB::table('users_department')->insert([
+                    'user_department_id' => $newUserDepartmentId,
                     'user_id' =>  $user_id,
                     'department_id' => $departmentId,
                 ]);
+                $maxUserDepartmentId = $newUserDepartmentId;
             }
         }
 
@@ -268,8 +269,11 @@ class EditManageUserController extends Controller
 
     public function createUser()
     {
+
+        $school = School::all();
+        $provinces = Provinces::all();
         $role = UserRole::all();
-        return view('page.UserAdmin.add.add_umsform', compact('role'));
+        return view('page.UserAdmin.add.add_umsform', compact('role','school','provinces'));
     }
 
 
@@ -289,16 +293,23 @@ class EditManageUserController extends Controller
             return response()->json(['message' => 'ไม่พบข้อมูล links']);
         }
     }
-    
+
     public function autoschool(Request $request)
     {
-
-        $data = School::select("school_name as value", "school_id")
-            ->where('school_name', 'LIKE', '%' . $request->get('search') . '%')
-            ->get();
-
+        $provinceCode = $request->get('province');
+    
+        $query = School::select("school_name as value", "school_id")
+            ->where('school_name', 'LIKE', '%' . $request->get('search') . '%');
+    
+        if (!empty($provinceCode)) {
+            $query->where('provinces_code', $provinceCode);
+        }
+    
+        $data = $query->get();
+    
         return response()->json($data);
     }
+    
 
     // ใน Controller
     public function showByuser_role(Request $request, $user_role)
@@ -324,9 +335,27 @@ class EditManageUserController extends Controller
             'email' => 'required|email|unique:users',
             'gender' => 'required',
             'mobile' => 'required',
+            'user_role' => 'required',
+        ], [
+            'username.required' => 'กรุณากรอก username',
+            'username.unique' => 'มี username ซ้ำในระบบกรุณาเปลี่ยน',
+            'firstname.required' => 'กรุณากรอก ชื่อจริง',
+            'password.required' => 'กรุณากรอก password',
+            'password.min' => 'password น้อยเกินไป ต้องมากกว่า 3 ตัวอักษร',
+            'password.max' => 'password เยอะเกินไป ไม่เกิน 20 ตัวอักษร',
+            'citizen_id.required' => 'กรุณากรอกเลขบัตรประชาชน หรือ passport',
+            'citizen_id.unique' => 'มีเลขบัตรประชาชน หรือ passport ซ้ำในระบบ',
+            'email.required' => 'กรุณากรอก email',
+            'email.email' => 'กรุณาบกรอกรูปแบบ email เช่น email@gmail.com',
+            'email.unique' => 'มี email ซ้ำในระบบกรุณาเปลี่ยน',
+            'gender.required' => 'กรุณาเลือก เพศ ',
+            'mobile.required' => 'กรุณากรอกเบอร์โทร',
+            'user_role.required' => 'กรุณาเลือกประเภทผู้ใช้งาน',
         ]);
-
+        $maxUserId = Users::max('user_id');
+        $newUserId = $maxUserId + 1;
         $usermanages = new Users();
+        $usermanages->user_id = $newUserId;
         $usermanages->username = $request->username;
         $usermanages->firstname = $request->firstname;
         $usermanages->lastname = $request->lastname;
@@ -388,8 +417,10 @@ class EditManageUserController extends Controller
                 ->first();
 
             if (!$existingSchool) {
+                $maxschoolId = School::max('school_id');
+                $newschoolId = $maxschoolId + 1;
                 $scho = new School;
-
+                $scho->school_name = $newschoolId;
                 $scho->school_name = $request->school;
                 $scho->provinces_code = $request->province_id;
                 $scho->subdistrict_code = null;
@@ -406,19 +437,27 @@ class EditManageUserController extends Controller
                     $scho->save();
                 }
             }
+            $maxUserSchoolId = UserSchool::max('user_school_id');
+            $newUserSchoolId = $maxUserSchoolId + 1;
             $userschool = new UserSchool;
+            $userschool->user_school_id = $newUserSchoolId;
             $userschool->school_code = $scho->school_code;
             $userschool->user_id = $usermanages->user_id;
             $userschool->save();
         }
+        $maxUserDepartmentId = DB::table('users_department')->max('user_department_id');
         $department_data = $request->department_data;
+        if (!empty($department_data)) {
         foreach ($department_data as $departmentId) {
+            $newUserDepartmentId = $maxUserDepartmentId + 1;
             DB::table('users_department')->insert([
+                'user_department_id' => $newUserDepartmentId,
                 'user_id' =>    $usermanages->user_id,
                 'department_id' => $departmentId,
             ]);
+            $maxUserDepartmentId = $newUserDepartmentId;
         }
-
+    }
 
 
         return redirect()->route('UserManage')->with('message', 'แก้ไขโปรไฟล์สำเร็จ');

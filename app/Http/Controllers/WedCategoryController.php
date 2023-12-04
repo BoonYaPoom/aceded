@@ -56,10 +56,10 @@ class WedCategoryController extends Controller
                 ->with('error', 'ข้อมูลไม่ถูกต้อง');
         }
         try {
+            $lastid = WebCategory::max('category_id');
+            $newid = $lastid + 1;
             $wed = new WebCategory;
-
-
-
+            $wed->category_id = $newid;
             $wed->category_th = $request->category_th;
             $wed->category_en = $request->category_en;
             $wed->startdate = null;
@@ -159,9 +159,10 @@ class WedCategoryController extends Controller
 
         ]);
         try {
+            $lastid = WebCategory::max('category_id');
+            $newid = $lastid + 1;
             $wed = new WebCategory;
-
-
+            $wed->category_id = $newid;
             $wed->category_th = $request->category_th;
             $wed->category_en = $request->category_en;
             $wed->detail_th = '';

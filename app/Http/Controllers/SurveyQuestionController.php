@@ -47,10 +47,12 @@ class SurveyQuestionController extends Controller
 
     ]);
     try {
+
+
+      $maxquestion_id = Survey::max('question_id');
+      $newquestion_id = $maxquestion_id + 1;
       $surques = new SurveyQuestion;
-
-
-
+      $surques->question_id = $newquestion_id;
       if (!file_exists(public_path('/upload/suyQue/ck/'))) {
         mkdir(public_path('/upload/suyQue/ck/'), 0755, true);
       }
@@ -312,7 +314,10 @@ class SurveyQuestionController extends Controller
       'question' => 'required',
     ]);
 
+    $maxquestion_id = Survey::max('question_id');
+    $newquestion_id = $maxquestion_id + 1;
     $surques = new SurveyQuestion;
+    $surques->question_id = $newquestion_id;
 
     libxml_use_internal_errors(true);
     if (!file_exists(public_path('/upload/suyQue/Dp/ck/'))) {

@@ -16,7 +16,7 @@
             toastr.success("{{ Session::get('message') }}");
         </script>
     @endif
-    <form action="{{ route('update_question', [$depart, 'question_id' => $ques]) }}" method="post"
+    <form action="{{ route('update_question', [$depart,$subs, 'question_id' => $ques]) }}" method="post"
         enctype="multipart/form-data">
         @csrf
         @method('PUT')
@@ -193,7 +193,13 @@
                         <div id="data4"
                             style="{{ $ques->question_type == 4 ? 'display: block;' : 'display: none;' }}">
                             @php
-                                $choice3 = explode(',', $ques->answer);
+                         
+                            @endphp
+                                @php
+                                $examnum4 = $ques->answer;
+                                $jsonexam4 = json_decode($examnum4);
+                                $choice3 = collect($jsonexam4);
+                      
                             @endphp
                             @php
                                 $choice1 = explode(',', $ques->choice1);
@@ -491,11 +497,8 @@
 
                         <div id="data5"
                             style="{{ $ques->question_type == 5 ? 'display: block;' : 'display: none;' }}">
-                            <!-- grid row -->
-                            @php
-                                $choice4 = explode(',', $ques->choice4);
-                            @endphp
-                            <div class="form-group qtype5 ">
+                               <!-- grid row -->
+                               <div class="form-group qtype5 ">
                                 <!-- .list-group -->
                                 <div class="list-group list-group mb-3">
                                     <div class="list-group-item">
@@ -505,78 +508,15 @@
                                         </div>
                                         <div class="list-group-item-header"> เรียงลำดับ </div>
                                     </div>
+                                    @for ($i = 1; $i <= 8; $i++)
                                     <div class="list-group-item">
-                                        <div class="list-group-item-figure">1.</div>
+                                        <div class="list-group-item-figure">{{$i}}.</div>
                                         <div class="list-group-item-body"> <input type="text" class="form-control"
-                                                id="o1" name="o1" placeholder="ลำดับ  1"
-                                                value="{{ isset($choice4[0]) ? $choice4[0] : '' }}">
+                                                id="choice{{$i}}" name="choice{{$i}}" placeholder="ลำดับ  {{$i}}" value="{{ $ques['choice' . $i] ?? '' }}">
                                         </div>
                                     </div>
-                                    <div class="list-group-item">
-                                        <div class="list-group-item-figure">2.</div>
-                                        <div class="list-group-item-body"> <input type="text" class="form-control"
-                                                id="o2" name="o2" placeholder="ลำดับ  2"
-                                                value="{{ isset($choice4[1]) ? $choice4[1] : '' }}">
-                                        </div>
-                                    </div>
-                                    <div class="list-group-item">
-                                        <div class="list-group-item-figure">3.</div>
-                                        <div class="list-group-item-body"> <input type="text" class="form-control"
-                                                id="o3" name="o3" placeholder="ลำดับ  3"
-                                                value="{{ isset($choice4[2]) ? $choice4[2] : '' }}">
-                                        </div>
-                                    </div>
-                                    <div class="list-group-item">
-                                        <div class="list-group-item-figure">4.</div>
-                                        <div class="list-group-item-body"> <input type="text" class="form-control"
-                                                id="o4" name="o4" placeholder="ลำดับ  4"
-                                                value="{{ isset($choice4[3]) ? $choice4[3] : '' }}">
-                                        </div>
-                                    </div>
-                                    <div class="list-group-item">
-                                        <div class="list-group-item-figure">5.</div>
-                                        <div class="list-group-item-body"> <input type="text" class="form-control"
-                                                id="o5" name="o5" placeholder="ลำดับ  5"
-                                                value="{{ isset($choice4[4]) ? $choice4[4] : '' }}">
-                                        </div>
-                                    </div>
-                                    <div class="list-group-item">
-                                        <div class="list-group-item-figure">6.</div>
-                                        <div class="list-group-item-body"> <input type="text" class="form-control"
-                                                id="o6" name="o6" placeholder="ลำดับ  6"
-                                                value="{{ isset($choice4[5]) ? $choice4[5] : '' }}">
-                                        </div>
-                                    </div>
-                                    <div class="list-group-item">
-                                        <div class="list-group-item-figure">7.</div>
-                                        <div class="list-group-item-body"> <input type="text" class="form-control"
-                                                id="o7" name="o7" placeholder="ลำดับ  7"
-                                                value="{{ isset($choice4[6]) ? $choice4[6] : '' }}">
-                                        </div>
-                                    </div>
-                                    <div class="list-group-item">
-                                        <div class="list-group-item-figure">8.</div>
-                                        <div class="list-group-item-body"> <input type="text" class="form-control"
-                                                id="o8" name="o8" placeholder="ลำดับ  8"
-                                                value="{{ isset($choice4[7]) ? $choice4[7] : '' }}">
-                                        </div>
-                                    </div>
-                                    <div class="list-group-item">
-                                        <div class="list-group-item-figure">9.</div>
-                                        <div class="list-group-item-body"> <input type="text" class="form-control"
-                                                id="o9" name="o9" placeholder="ลำดับ  9"
-                                                value="{{ isset($choice4[8]) ? $choice4[8] : '' }}">
-                                        </div>
-                                    </div>
-                                    <div class="list-group-item">
-                                        <div class="list-group-item-figure">10.</div>
-                                        <div class="list-group-item-body"> <input type="text" class="form-control"
-                                                id="o10" name="o10" placeholder="ลำดับ  10"
-                                                value="{{ isset($choice4[9]) ? $choice4[9] : '' }}">
-                                        </div>
-                                    </div>
+                                    @endfor  
                                 </div><!-- /.list-group -->
-
                             </div><!-- /grid row -->
                             <!-- .form-group -->
                         </div>
@@ -596,7 +536,8 @@
                             <label for="question_status">สถานะ </label> <label
                                 class="switcher-control switcher-control-success switcher-control-lg"><input
                                     type="checkbox" class="switcher-input" name="question_status" id="question_status"
-                                    value="1" checked> <span class="switcher-indicator"></span> <span
+                                    value="1" 
+                                    {{ $ques->question_status == 1 ? 'checked' : '' }}> <span class="switcher-indicator"></span> <span
                                     class="switcher-label-on">ON</span> <span
                                     class="switcher-label-off text-red">OFF</span></label>
                         </div><!-- /.form-group -->

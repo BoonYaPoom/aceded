@@ -29,11 +29,12 @@ class ManualController extends Controller
     public function store(Request $request, $department_id)
     {
         DB::commit();
+            $lastid = Manual::max('manual_id');
+            $newid = $lastid + 1;
+            try {
 
-    
-        try {
             $manuals = new Manual;
-
+            $manuals->manual_id = $newid;
             $manuals->manual = $request->manual;
             if ($request->hasFile('manual_path')) {
                 $filename = time()  . '.' . $request->manual_path->getClientOriginalExtension();

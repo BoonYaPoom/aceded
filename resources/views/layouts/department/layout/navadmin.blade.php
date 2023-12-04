@@ -8,7 +8,10 @@
                         <a class="nav-link    font-weight-bold " href="{{ route('departmentwmspage') }}"><span
                                 class="menu-icon fas fa-home "></span>
                             หน้าแรก</a>
-                        @if (($data->department_id == $depart->department_id && $data->user_role == 6) || $data->user_role == 1 || $data->user_role == 8 )
+                        @if (
+                            ($data->department_id == $depart->department_id && $data->user_role == 6) ||
+                                $data->user_role == 1 ||
+                                $data->user_role == 8)
                             <a class="nav-link  font-weight-bold {{ Str::startsWith(request()->url(), route('departmentwmspage')) || request()->is('wms', 'wms/*')
                                 ? ' active text-info'
                                 : '' }} "
@@ -21,14 +24,8 @@
                                 จัดการข้อมูลและความรู้</a>
                             <a class="nav-link  font-weight-bold d-none" href=""><span
                                     class="menu-icon fas fa-users  "></span> กิจกรรม</a>
-                            <a class="nav-link  font-weight-bold {{ Str::startsWith(request()->url(), route('departmentLearnpage')) || request()->is('lms', 'lms/*')
-                                ? ' active text-info'
-                                : '' }}"
-                                href="{{ route('learn', ['department_id' => $depart->department_id]) }}"><span
-                                    class="menu-icon fas fa-chalkboard-teacher  "></span>
-                                จัดการเรียนรู้</a>
                         @endif
-{{-- 
+                        {{-- 
                         <a class="nav-link  font-weight-bold {{ Str::startsWith(request()->url(), route('DepartReportview', ['department_id' => $depart->department_id])) ||
                         request()->is('homeDepart', 'homeDepart/*')
                             ? ' active text-info'
@@ -44,13 +41,18 @@
                             href="{{ route('ManageExam', ['department_id' => $depart->department_id]) }}"><span
                                 class="menu-icon fas fa-align-justify  "></span> จัดการข้อสอบ</a> --}}
 
-                         
-        
-                            <a class="nav-link  font-weight-bold {{ Str::startsWith(request()->url(), route('UserManage')) ? ' active text-info' : '' }}"
-                                href="{{ route('DPUserManage', ['department_id' => $depart->department_id]) }}"><span
-                                    class="menu-icon fas fa-users-cog  "></span>
-                                จัดการผู้ใช้</a>
-                      
+
+                        <a class="nav-link  font-weight-bold {{ Str::startsWith(request()->url(), route('departmentLearnpage')) || request()->is('lms', 'lms/*')
+                            ? ' active text-info'
+                            : '' }}"
+                            href="{{ route('learn', ['department_id' => $depart->department_id]) }}"><span
+                                class="menu-icon fas fa-chalkboard-teacher  "></span>
+                            จัดการเรียนรู้</a>
+                        <a class="nav-link  font-weight-bold {{ Str::startsWith(request()->url(), route('DPUserManage', ['department_id' => $depart->department_id])) ? ' active text-info' : '' }}"
+                            href="{{ route('DPUserManage', ['department_id' => $depart->department_id]) }}"><span
+                                class="menu-icon fas fa-users-cog  "></span>
+                            จัดการผู้ใช้</a>
+
                         <!-- End Account Sidebar Toggle Button -->
                         </li>
                     </div>

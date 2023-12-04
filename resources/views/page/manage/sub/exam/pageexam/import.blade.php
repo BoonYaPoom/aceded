@@ -1,5 +1,5 @@
-@extends('layouts.department.layout.departmenthome')
-@section('contentdepartment')
+@extends('page.manage.sub.navsubject')
+@section('subject-data')
     @if (Session::has('message'))
         <script>
             toastr.options = {
@@ -18,17 +18,8 @@
     @endif
 
 
-    <!-- .page-inner -->
-    <div class="page-inner">
 
-        <!-- .page-section -->
-        <div class="page-section">
-            <!-- .card -->
-            <div class="card card-fluid">
-                <!-- .card-header -->
-                <div class="card-header bg-muted"><a href="{{ route('exampage', [$depart,$subs->subject_id]) }}"
-                        style="text-decoration: underline;">หมวดหมู่</a> / <a href="{{ route('exampage', [$depart,$subs->subject_id]) }}"
-                        style="text-decoration: underline;">จัดการวิชา</a> / <i>คลังข้อสอบ</i></div><!-- /.card-header -->
+                <div class="card-header bg-muted"> <i>เพิ่มคลังข้อสอบแบบ excel</i></div><!-- /.card-header -->
                 <!-- .card-body -->
                 <div class="card-body">
                     <form id="uploadForm" enctype="multipart/form-data">
@@ -168,7 +159,5 @@
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                 </div>
-            </div>
-        </div>
-    </div>
+      
 @endsection

@@ -14,10 +14,10 @@
                         <h6 class="card-header"> ข้อมูลส่วนตัว </h6>
                         <div class="card-body">
                             <!-- form row -->
-      
+
                             <div class="form-row " id="department_id">
                                 <label for="department_id" class="col-md-2">เลือกหน่วยงาน <span
-                                    class="badge badge-warning">Required</span></label>
+                                        class="badge badge-warning">Required</span></label>
                                 <div class="col-md-9 mb-3">
                                     <button type="button" class="ml-1 btn btn-success btn-md"
                                         style="background-color: #F04A23;"
@@ -26,19 +26,25 @@
 
                                 </div>
                             </div>
-                            @include('page.UserAdmin.modeleditDpart')
+                            @include('page.UserAdmin.add.modeleditDpart')
                             <div class="form-row " id="user_role">
                                 <label for="user_role" class="col-md-2">เลือกประเภทผู้ใช้งาน <span
-                                    class="badge badge-warning">Required</span></label>
+                                        class="badge badge-warning">Required</span></label>
                                 <div class="col-md-9 mb-3">
+
                                     <select id="user_role" name="user_role" class="form-control form-control-md"
                                         data-toggle="select2" data-allow-clear="false">
                                         <option value="0"selected disabled>เลือกประเภทผู้ใช้งาน</option>
                                         @foreach ($role as $roles)
                                             @if ($roles->role_status == 1)
-                                                @if ($roles->user_role_id > 1)
+                                                @if ($data->user_role == 1)
                                                     <option value="{{ $roles->user_role_id }}">{{ $roles->role_name }}
                                                     </option>
+                                                @else
+                                                    @if ($roles->user_role_id > 1)
+                                                        <option value="{{ $roles->user_role_id }}">{{ $roles->role_name }}
+                                                        </option>
+                                                    @endif
                                                 @endif
                                             @endif
                                         @endforeach
@@ -46,7 +52,7 @@
                                 </div>
                             </div>
                             @error('user_role')
-                                    <div class="col-md-9 mb-3">
+                                <div class="col-md-9 mb-3">
                                     <span class="badge badge-warning">{{ $message }}</span>
                                 </div>
                             @enderror
@@ -68,14 +74,14 @@
                             </div>
                             <!-- /form row -->
                             @error('username')
-                                    <div class="col-md-9 mb-3">
+                                <div class="col-md-9 mb-3">
                                     <span class="badge badge-warning">{{ $message }}</span>
                                 </div>
                             @enderror
                             <!-- form row -->
                             <div class="form-row">
                                 <label for="password" class="col-md-2"> รหัสผ่าน <span
-                                    class="badge badge-warning">Required</span></label>
+                                        class="badge badge-warning">Required</span></label>
                                 <div class="col-md-9 mb-3">
                                     <input type="text" class="form-control " id="password" name="password"
                                         placeholder="รหัสผ่าน" minlength="8" maxlength="20">
@@ -83,14 +89,14 @@
                                 </div>
                             </div>
                             @error('password')
-                                    <div class="col-md-9 mb-3">
+                                <div class="col-md-9 mb-3">
                                     <span class="badge badge-warning">{{ $message }}</span>
                                 </div>
                             @enderror
                             <!-- /form row -->
                             <div class="form-row ">
                                 <label for="user_type_card" class="col-md-2">ประเภทบุคลากร <span
-                                    class="badge badge-warning">Required</span></label>
+                                        class="badge badge-warning">Required</span></label>
                                 <div class="col-md-9 mb-3">
                                     <div class="custom-control custom-control-inline custom-radio mr-3">
                                         <input type="radio" class="custom-control-input user_type_cardselect"
@@ -116,14 +122,14 @@
                                 </div>
                             </div>
                             @error('user_type_card')
-                                    <div class="col-md-9 mb-3">
+                                <div class="col-md-9 mb-3">
                                     <span class="badge badge-warning">{{ $message }}</span>
                                 </div>
                             @enderror
                             <!-- form row -->
                             <div class="form-row ">
                                 <label for="citizen_id" class="col-md-2">เลขประจำตัวประชาชน <span
-                                    class="badge badge-warning">Required</span></label>
+                                        class="badge badge-warning">Required</span></label>
                                 <div class="col-xs-1 mb-1  showdiscount  d-none">
                                     <select id="citizen_id_select" class="form-control" data-toggle="select2"
                                         data-allow-clear="false">
@@ -142,7 +148,7 @@
                             </div>
                             <!-- /form row -->
                             @error('citizen_id')
-                                    <div class="col-md-9 mb-3">
+                                <div class="col-md-9 mb-3">
                                     <span class="badge badge-warning">{{ $message }}</span>
                                 </div>
                             @enderror
@@ -174,7 +180,7 @@
                             <!-- form row -->
                             <div class="form-row">
                                 <label for="input04" class="col-md-2">เพศ <span
-                                    class="badge badge-warning">Required</span></label>
+                                        class="badge badge-warning">Required</span></label>
                                 <div class="col-md-9 mb-3">
                                     <div class="custom-control custom-control-inline custom-radio">
                                         <input type="radio" class="custom-control-input " name="gender"
@@ -191,7 +197,7 @@
                             <!-- /form row -->
 
                             @error('gender')
-                                    <div class="col-md-9 mb-3">
+                                <div class="col-md-9 mb-3">
                                     <span class="badge badge-warning">{{ $message }}</span>
                                 </div>
                             @enderror
@@ -206,7 +212,7 @@
                             </div>
                             <!-- /form row -->
                             @error('firstname')
-                                    <div class="col-md-9 mb-3">
+                                <div class="col-md-9 mb-3">
                                     <span class="badge badge-warning">{{ $message }}</span>
                                 </div>
                             @enderror
@@ -228,7 +234,7 @@
                                 </div>
                             </div>
                             @error('birthday')
-                                    <div class="col-md-9 mb-3">
+                                <div class="col-md-9 mb-3">
                                     <span class="badge badge-warning">{{ $message }}</span>
                                 </div>
                             @enderror
@@ -261,7 +267,7 @@
                             <!-- form row -->
                             <div class="form-row">
                                 <label for="email" class="col-md-2">อีเมล <span
-                                    class="badge badge-warning">Required</span></label>
+                                        class="badge badge-warning">Required</span></label>
                                 <div class="col-md-9 mb-3">
                                     <input type="email" class="form-control " id="email" name="email"
                                         placeholder="อีเมล" value="">
@@ -269,7 +275,7 @@
                             </div>
                             <!-- /form row -->
                             @error('email')
-                                    <div class="col-md-9 mb-3">
+                                <div class="col-md-9 mb-3">
                                     <span class="badge badge-warning">{{ $message }}</span>
                                 </div>
                             @enderror
@@ -278,10 +284,10 @@
                                 <label for="mobile" class="col-md-2">เบอร์โทรศัพท์มือถือ</label>
                                 <div class="col-md-9 mb-3">
                                     <input type="text" class="form-control number" id="mobile" name="mobile"
-                                        value="" placeholder="เบอร์โทรศัพท์มือถือ">
+                                        value="" placeholder="เบอร์โทรศัพท์มือถือ" maxlength="10">
                                 </div>
                             </div>
-                    
+
                             <!-- form row -->
                             <div class="form-row d-none " id="set_workplace">
                                 <label for="workplace" class="col-md-2">ที่อยู่</label>
@@ -343,7 +349,7 @@
                                 </div>
                             </div>
                             @error('school')
-                                    <div class="col-md-9 mb-3">
+                                <div class="col-md-9 mb-3">
                                     <span class="badge badge-warning">{{ $message }}</span>
                                 </div>
                             @enderror
@@ -352,12 +358,15 @@
 
                                 $("#search").autocomplete({
                                     source: function(request, response) {
+                                        var selectedProvince = $("#province_id").val();
+
                                         $.ajax({
                                             url: path,
                                             type: 'GET',
                                             dataType: "json",
                                             data: {
-                                                search: request.term
+                                                search: request.term,
+                                                province: selectedProvince // Pass the selected province code
                                             },
                                             success: function(data) {
                                                 response(data);
@@ -366,15 +375,19 @@
                                     },
                                     select: function(event, ui) {
                                         $('#search').addClass("form-control form-control-sm");
-
                                         // Log the ui.item to the console
                                         console.log(ui.item);
-
                                         // Set the input value to the selected item's label
                                         $('#search').val(ui.item.label);
 
                                         return false;
                                     }
+                                });
+
+                                // Add change event handler for province selection
+                                $("#province_id").change(function() {
+                                    // Trigger the autocomplete search again when the province changes
+                                    $("#search").autocomplete("search", $("#search").val());
                                 });
                             </script>
                             <!-- form row -->
@@ -384,11 +397,11 @@
                                     <input type="text" class="form-control " id="pos_name" name="pos_name"
                                         value="" placeholder="ตำแหน่ง">
                                     <!-- <select id="pos_namexx" name="pos_namexx" class="form-control form-control-sm" data-toggle="select2" data-allow-clear="false">
-                                                                                                    </select> -->
+                                                                                                                        </select> -->
                                 </div>
                             </div>
                             @error('pos_name')
-                                    <div class="col-md-9 mb-3">
+                                <div class="col-md-9 mb-3">
                                     <span class="badge badge-warning">{{ $message }}</span>
                                 </div>
                             @enderror
@@ -401,79 +414,6 @@
 
                                 </div>
                             </div>
-                            <!-- form row -->
-                            <div class="form-row d-none " id="set_pos_level">
-                                <label for="mobile" class="col-md-2">ระดับตำแหน่ง</label>
-                                <div class="col-md-9 mb-3">
-                                    <select id="pos_level" name="pos_level" class="form-control form-control-sm"
-                                        data-toggle="select2" data-allow-clear="false">
-                                        <option value="0">โปรดเลือกระดับตำแหน่ง</option>
-                                        <option value="1"> ปฏิบัติงาน </option>
-                                        <option value="2"> ชำนาญงาน </option>
-                                        <option value="3"> อาวุโส </option>
-                                        <option value="4"> ทักษะพิเศษ </option>
-                                        <option value="5"> ปฏิบัติการ </option>
-                                        <option value="6"> ชำนาญการ </option>
-                                        <option value="7"> ชำนาญการพิเศษ </option>
-                                        <option value="8"> เชี่ยวชาญ </option>
-                                        <option value="9"> ทรงคุณวุฒิ </option>
-                                        <option value="10"> อำนวยการต้น </option>
-                                        <option value="11"> อำนวยการสูง </option>
-                                        <option value="12"> บริหารต้น </option>
-                                        <option value="13"> บริหารสูง </option>
-                                    </select>
-                                </div>
-                            </div>
-                            <!-- /form row -->
-
-                            <!-- form row -->
-                            <div class="form-row d-none " id="set_sector_id">
-                                <label for="sector_id" class="col-md-2">ส่วนกลาง / ต่างจังหวัด</label>
-                                <div class="col-md-9 mb-3">
-                                    <select id="sector_id" name="sector_id" class="form-control form-control-sm"
-                                        data-toggle="select2" data-allow-clear="false">
-                                        <option value="0">โปรดเลือกส่วนกลาง/ต่างจังหวัด</option>
-                                        <option value="1"> ภาค1 </option>
-                                        <option value="2"> ภาค2 </option>
-                                        <option value="3"> ภาค3 </option>
-                                        <option value="4"> ภาค4 </option>
-                                        <option value="5"> ภาค5 </option>
-                                        <option value="6"> ภาค6 </option>
-                                        <option value="7"> ภาค7 </option>
-                                        <option value="8"> ภาค8 </option>
-                                        <option value="9"> ภาค9 </option>
-                                        <option value="10"> ส่วนกลาง </option>
-                                    </select>
-                                </div>
-                            </div>
-                            <!-- /form row -->
-
-                            <!-- form row -->
-                            <div class="form-row d-none " id="set_office_id">
-                                <label for="office_id" class="col-md-2">สำนักงาน</label>
-                                <div class="col-md-9 mb-3">
-                                    <select id="office_id" name="office_id" class="form-control form-control-sm"
-                                        data-toggle="select2" data-allow-clear="false">
-                                        <option value="0">โปรดเลือกสำนักงาน</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <!-- /form row -->
-
-                            <!-- form row -->
-                            <div class="form-row d-none">
-                                <label for="editflag" class="col-md-2">อนุญาตแก้ไขข้อมูลส่วนตัว</label>
-                                <div class="col-md-9 mb-3">
-                                    <label class="switcher-control switcher-control-success switcher-control-lg">
-                                        <input type="checkbox" class="switcher-input switcher-edit" value="1"
-                                            id="2d9ccf81cb655e2b71796f3083674343__users__editflag__user_id____1690788225"
-                                            name="editflag">
-                                        <span class="switcher-indicator"></span> <span class="switcher-label-on">ON</span>
-                                        <span class="switcher-label-off text-red">OFF</span>
-                                    </label>
-                                </div>
-                            </div>
-                            <!-- /form row -->
                         </div>
                         <div class="card-body">
                             <div class="form-actions">

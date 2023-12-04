@@ -45,10 +45,13 @@ class LinkController extends Controller
 
         $lastSort = Links::where('department_id', $department_id)->max('sort');
         $newSort = $lastSort + 1;
+        $lastid = Links::max('links_id');
+        $newid = $lastid + 1;
         try {
+         
+
             $links = new Links;
-
-
+            $links->links_id = $newid;
             $links->links_title = $request->links_title;
             $links->links_title = $request->links_title;
             $links->links = $request->links;

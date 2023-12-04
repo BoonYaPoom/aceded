@@ -22,7 +22,7 @@ class DepartUsersController extends Controller
     public function DPUserManage(Request $request, $department_id, $user_role = null)
     {
         $depart = Department::findOrFail($department_id);
-        return view('layouts.department.item.data.UserAdmin.indexview', compact( 'depart'));
+        return view('layouts.department.item.data.UserAdmin.indexview', compact('depart'));
     }
 
 
@@ -37,11 +37,11 @@ class DepartUsersController extends Controller
             $userDepart = UserDepartment::where('department_id', $department_id);
             $userIds = $userDepart->pluck('user_id');
             // ดึงผู้ใช้ที่มีค่า provic เท่ากันกับ $provicValue
-            if ($data->user_role == 1|| $data->user_role == 8) {
+            if ($data->user_role == 1 || $data->user_role == 8) {
                 // ถ้า data->role เป็น 1 แสดงผู้ใช้ทั้งหมด
                 // นำ user_id ที่ได้ไปหาข้อมูลจากตาราง User
                 $usermanages = Users::whereIn('user_id', $userIds);
-                
+
                 if ($user_role !== null) {
                     $usermanages->where('user_role', $user_role);
                 }
@@ -128,8 +128,9 @@ class DepartUsersController extends Controller
     {
         $usermanages = Users::findOrFail($user_id);
 
+        $role = UserRole::all();
         $depart = Department::findOrFail($department_id);
-        return view('layouts.department.item.data.UserAdmin.edit', ['usermanages' => $usermanages, 'depart' => $depart]);
+        return view('layouts.department.item.data.UserAdmin.edit', ['usermanages' => $usermanages, 'depart' => $depart, 'role' => $role]);
     }
 
     public function autoschool(Request $request, $department_id)
@@ -178,7 +179,7 @@ class DepartUsersController extends Controller
         $usermanages->province_id = $request->province_id;
         $usermanages->department_id = $request->department_id;
 
-        $usermanages->user_type = $request->input('user_type', 0);
+        $usermanages->user_type = null;
         $usermanages->mobile = $request->mobile;
 
         $usermanages->pos_name = $request->pos_name;
@@ -193,8 +194,8 @@ class DepartUsersController extends Controller
     public function createUser($department_id)
     {
         $depart = Department::findOrFail($department_id);
-
         $role = UserRole::all();
+
         return view('layouts.department.item.data.UserAdmin.add.add_umsform', compact('depart', 'role'));
     }
 
@@ -209,10 +210,25 @@ class DepartUsersController extends Controller
             'email' => 'required|email|unique:users',
             'gender' => 'required',
             'user_role' => 'required',
+            'mobile' => 'required',
 
-
+        ], [
+            'username.required' => 'กรุณากรอก username',
+            'username.unique' => 'มี username ซ้ำในระบบกรุณาเปลี่ยน',
+            'firstname.required' => 'กรุณากรอก ชื่อจริง',
+            'password.required' => 'กรุณากรอก password',
+            'password.min' => 'password น้อยเกินไป ต้องมากกว่า 3 ตัวอักษร',
+            'password.max' => 'password เยอะเกินไป ไม่เกิน 20 ตัวอักษร',
+            'citizen_id.required' => 'กรุณากรอกเลขบัตรประชาชน หรือ passport',
+            'citizen_id.unique' => 'มีเลขบัตรประชาชน หรือ passport ซ้ำในระบบ',
+            'email.required' => 'กรุณากรอก email',
+            'email.email' => 'กรุณาบกรอกรูปแบบ email เช่น email@gmail.com',
+            'email.unique' => 'มี email ซ้ำในระบบกรุณาเปลี่ยน',
+            'gender.required' => 'กรุณาเลือก เพศ ',
+            'mobile.required' => 'กรุณากรอกเบอร์โทร',
+            'user_role.required' => 'กรุณาเลือกประเภทผู้ใช้งาน',
         ]);
-        $maxschool = School::max('school_id') ;
+
         $usermanages = new Users();
         $usermanages->username = $request->username;
         $usermanages->firstname = $request->firstname;
@@ -255,7 +271,7 @@ class DepartUsersController extends Controller
         $usermanages->sector_id = 0;
         $usermanages->office_id = 0;
 
-        $usermanages->user_type = 2;
+        $usermanages->user_type = null;
         $usermanages->province_id = $request->province_id;
         $usermanages->district_id = null;
         $usermanages->subdistrict_id = null;
@@ -274,35 +290,38 @@ class DepartUsersController extends Controller
                 ->first();
 
             if (!$existingSchool) {
-
-
+                $maxschoolId = School::max('school_id');
+                $newschoolId = $maxschoolId + 1;
                 $scho = new School;
-
+                $scho->school_name = $newschoolId;
                 $scho->school_name = $request->school;
                 $scho->provinces_code = $request->province_id;
                 $scho->subdistrict_code = null;
                 $scho->district_code = null;
-                $scho->department_id = $department_id;
+
                 $scho->save();
 
-                $scho->school_code = $maxschool + 1;
+                $scho->school_code = $scho->school_id;
                 $scho->save();
             } else {
                 $scho = $existingSchool;
                 if (empty($scho->school_code)) {
-                    $scho->school_code = $maxschool + 1;
+                    $scho->school_code = $scho->school_id;
                     $scho->save();
                 }
             }
+            $maxUserSchoolId = UserSchool::max('user_school_id');
+            $newUserSchoolId = $maxUserSchoolId + 1;
             $userschool = new UserSchool;
+            $userschool->user_school_id = $newUserSchoolId;
             $userschool->school_code = $scho->school_code;
             $userschool->user_id = $usermanages->user_id;
-            $userschool->department_id = $department_id;
             $userschool->save();
         }
-
-
+        $maxUserDepartmentId = DB::table('users_department')->max('user_department_id');
+        $newUserDepartmentId = $maxUserDepartmentId + 1;
         DB::table('users_department')->insert([
+            'user_department_id' => $newUserDepartmentId,
             'user_id' =>    $usermanages->user_id,
             'department_id' => $department_id,
         ]);
@@ -333,6 +352,20 @@ class DepartUsersController extends Controller
             'email' => 'required|email|unique:users',
             'gender' => 'required',
             'mobile' => 'required',
+        ], [
+            'username.required' => 'กรุณากรอก username',
+            'username.unique' => 'มี username ซ้ำในระบบกรุณาเปลี่ยน',
+            'firstname.required' => 'กรุณากรอก ชื่อจริง',
+            'password.required' => 'กรุณากรอก password',
+            'password.min' => 'password น้อยเกินไป ต้องมากกว่า 3 ตัวอักษร',
+            'password.max' => 'password เยอะเกินไป ไม่เกิน 20 ตัวอักษร',
+            'citizen_id.required' => 'กรุณากรอกเลขบัตรประชาชน หรือ passport',
+            'citizen_id.unique' => 'มีเลขบัตรประชาชน หรือ passport ซ้ำในระบบ',
+            'email.required' => 'กรุณากรอก email',
+            'email.email' => 'กรุณาบกรอกรูปแบบ email เช่น email@gmail.com',
+            'email.unique' => 'มี email ซ้ำในระบบกรุณาเปลี่ยน',
+            'gender.required' => 'กรุณาเลือก เพศ ',
+            'mobile.required' => 'กรุณากรอกเบอร์โทร',
         ]);
 
         $usermanages = new Users();
@@ -375,7 +408,7 @@ class DepartUsersController extends Controller
         $usermanages->pos_name = 'นักเรียน';
         $usermanages->sector_id = 0;
         $usermanages->office_id = 0;
-        $usermanages->user_type = 2;
+        $usermanages->user_type = null;
 
         $usermanages->district_id = null;
         $usermanages->subdistrict_id = null;
@@ -386,13 +419,20 @@ class DepartUsersController extends Controller
 
         $usermanages->province_id = $school->provinces_id;
         $usermanages->save();
+
+
+        $maxUserSchoolId = UserSchool::max('user_school_id');
+        $newUserSchoolId = $maxUserSchoolId + 1;
         $userschool = new UserSchool;
+        $userschool->user_school_id = $newUserSchoolId;
         $userschool->school_id = $school_code;
         $userschool->user_id = $usermanages->user_id;
         $userschool->save();
 
-
+        $maxUserDepartmentId = DB::table('users_department')->max('user_department_id');
+        $newUserDepartmentId = $maxUserDepartmentId + 1;
         DB::table('users_department')->insert([
+            'user_department_id' => $newUserDepartmentId,
             'user_id' =>    $usermanages->user_id,
             'department_id' => $department_id,
         ]);

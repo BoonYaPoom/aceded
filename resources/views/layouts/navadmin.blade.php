@@ -9,7 +9,7 @@
                                 class="menu-icon fas fa-home "></span>
                             หน้าแรก</a>
 
-                        @if ($data->user_role == 1 || $data->user_role == 8)
+                        @if ($data->user_role == 1 )
                             <a class="nav-link  font-weight-bold {{ Str::startsWith(request()->url(), route('Reportview')) || request()->is('report', 'report/*')
                                 ? ' active text-info'
                                 : '' }}"
@@ -20,7 +20,7 @@
                                 : '' }}"
                                 href="{{ route('UserManage') }}"><span class="menu-icon fas fa-users-cog  "></span>
                                 จัดการผู้ใช้</a>
-                                <a class="nav-link  font-weight-bold {{ Str::startsWith(request()->url(), route('requestSchool')) || request()->is('rad', 'rad/*')
+                            <a class="nav-link  font-weight-bold {{ Str::startsWith(request()->url(), route('requestSchool')) || request()->is('rad', 'rad/*')
                                     ? ' active text-info'
                                     : '' }}"
                                     href="{{ route('requestSchool') }}"><span class="menu-icon fas fa-users-cog  "></span>

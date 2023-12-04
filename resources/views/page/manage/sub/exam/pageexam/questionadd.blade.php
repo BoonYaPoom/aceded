@@ -18,7 +18,7 @@
     @endif
 
 
-  
+    <div class="card-header bg-muted"> <i>เพิ่มคลังข้อสอบ</i></div>
                 <div class="card-body">
                     <!-- .table-responsive -->
 
@@ -134,7 +134,7 @@
                                                 });
                                             </script>
                                             <td class="align-middle">
-                                                <a href="{{ route('edit_question', [$depart,'question_id' => $item]) }}"><i
+                                                <a href="{{ route('edit_question', [$depart,$subs,'question_id' => $item]) }}"><i
                                                         class="far fa-edit fa-lg text-success" data-toggle="tooltip"
                                                         title="แก้ไข"></i></a>
                                                 <a href="{{ route('delete_question', [$depart,'question_id' => $item]) }}"

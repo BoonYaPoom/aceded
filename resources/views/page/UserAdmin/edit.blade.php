@@ -59,11 +59,20 @@
                                         <option value="0" disabled>เลือกประเภทผู้ใช้งาน</option>
                                         @foreach ($role as $roles)
                                             @if ($roles->role_status == 1)
-                                                @if ($roles->user_role_id > 1)
-                                                    <option value="{{ $roles->user_role_id }}" 
-                                                        {{ $roles->user_role_id == $usermanages->user_role ? 'checked' : '' }}>{{ $roles->role_name }}
+                                                  @if ($data->user_role == 1)
+                                                  <option value="{{ $roles->user_role_id }}"
+                                                    {{ $roles->user_role_id == $usermanages->user_role ? 'selected' : '' }}>
+                                                    {{ $roles->role_name }}
+                                                </option>
+                                                @else
+                                                    @if ($roles->user_role_id > 1)
+                                                    <option value="{{ $roles->user_role_id }}"
+                                                        {{ $roles->user_role_id == $usermanages->user_role ? 'selected' : '' }}>
+                                                        {{ $roles->role_name }}
                                                     </option>
+                                                    @endif
                                                 @endif
+                                             
                                             @endif
                                         @endforeach
                                     </select>

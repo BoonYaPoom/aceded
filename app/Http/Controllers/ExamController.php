@@ -40,7 +40,10 @@ class ExamController extends Controller
   public function storeexam(Request $request, $department_id, $subject_id)
   {
     try {
+      $maxExamId = Exam::max('exam_id');
+      $newExamId = $maxExamId + 1;
       $exams = new Exam;
+      $exams->exam_id = $newExamId;
       $exams->exam_th = $request->exam_th;
       $exams->exam_en = $request->exam_en;
       $exams->exam_type = 3;
@@ -213,8 +216,10 @@ class ExamController extends Controller
         ->with('error', 'ข้อมูลไม่ถูกต้อง');
     }
 
-
+    $maxquestionId = Question::max('question_id');
+    $newquestionId = $maxquestionId + 1;
     $ques = new Question;
+    $ques->question_id = $newquestionId;
     $ques->question_type = $request->question_type;
     $ques->question_status = $request->input('question_status', 0);
 
@@ -245,67 +250,79 @@ class ExamController extends Controller
         }
         $question = $de_th->saveHTML();
 
-        $decodedquestion = html_entity_decode($question, ENT_QUOTES, 'UTF-8');
+        $decodedTextquestion = html_entity_decode($question, ENT_QUOTES, 'UTF-8');
       }
 
 
-      $ques->question = $decodedquestion;
+      $ques->question = $decodedTextquestion;
     }
-    if ($ques->question_type == 4 || $ques->question_type == 5) {
+    if ($ques->question_type == 4) {
 
-     
-        $questions = [];
-        for ($i = 1; $i <= 10; $i++) {
-          $question = "q$i";
-          if ($request->$question) {
-            $questions[] = $request->$question;
-          }
+      $questions = [];
+      for ($i = 1; $i <= 10; $i++) {
+        $question = "q$i";
+        if ($request->$question) {
+          $questions[] = $request->$question;
         }
+      }
 
 
-        $ques->choice1 .= !empty($questions) ?  implode(',', $questions) : '';
-      
+      $ques->choice1 .= !empty($questions) ?  implode(',', $questions) : '';
 
- 
-        $coluques = [];
-        for ($i = 1; $i <= 10; $i++) {
-          $coluquesKey  = "c$i";
-          if ($request->$coluquesKey) {
-            $coluques[] = $request->$coluquesKey;
-          }
+
+
+      $coluques = [];
+      for ($i = 1; $i <= 10; $i++) {
+        $coluquesKey  = "c$i";
+        if ($request->$coluquesKey) {
+          $coluques[] = $request->$coluquesKey;
         }
+      }
 
-        // ต่อข้อมูลตัวเลือกใหม่ไปยัง choice2
-        $ques->choice2 .= !empty($coluques) ?  implode(',', $coluques) : '';
-      
+      // ต่อข้อมูลตัวเลือกใหม่ไปยัง choice2
+      $ques->choice2 .= !empty($coluques) ?  implode(',', $coluques) : '';
 
-    
-        $quesanss = [];
 
-        for ($i = 1; $i <= 10; $i++) {
-          $quesansKey = "ans$i";
-          if ($request->$quesansKey) {
-            $quesanss[] = $request->$quesansKey;
-          }
+
+      $quesanss = [];
+
+      for ($i = 1; $i <= 10; $i++) {
+        $quesansKey = "ans$i";
+        if ($request->$quesansKey) {
+          $quesanss[] = $request->$quesansKey;
         }
+      }
 
-        $ques->answer = json_encode(explode(',', implode(',', $quesanss)));
+      $ques->answer = json_encode(explode(',', implode(',', $quesanss)));
 
-      
+      $ques->numchoice = 2;
+    }
+    if ($ques->question_type == 5) {
+      $nonNullChoicesCount = 0;
+      $nonNullChoicesIndices = [];
+      for ($i = 1; $i <= 8; $i++) {
+        $choiceKey = "choice$i";
+        $choiceValue = $request->input($choiceKey);
+        $ques->$choiceKey = $choiceValue;
+
+        if ($choiceValue !== null) {
+          $nonNullChoicesCount++;
+          $nonNullChoicesIndices[] = $i;
+        }
+        shuffle($nonNullChoicesIndices);
+
+        $nonNullChoicesAsString = array_map('strval', $nonNullChoicesIndices);
+        
+      }
+
+
+      $ques->answer = json_encode($nonNullChoicesAsString);
+      $ques->numchoice = $nonNullChoicesCount;
     }
     if ($ques->question_type == 1) {
 
 
-      $queskos = [];
-      for ($i = 1; $i <= 10; $i++) {
-        $queskook = "o$i";
-        if ($request->$queskook) {
-          $queskos[] = $request->$queskook;
-        }
-      }
 
-      // ต่อข้อมูลตัวเลือกใหม่ไปยัง choice4
-      $ques->choice4 .= !empty($queskos) ?  implode(',', $queskos) : '';
 
       if ($request->has('choice1')) {
         $choice1 = $request->choice1;
@@ -553,6 +570,8 @@ class ExamController extends Controller
       }
       $checkanswer = request('checkanswer');
       $ques->answer = json_encode($checkanswer);
+
+      $ques->numchoice = $request->numchoice;
     }
 
     if ($request->has('explain')) {
@@ -586,7 +605,7 @@ class ExamController extends Controller
     }
 
     $ques->score = $request->score;
-    $ques->numchoice = $request->numchoice;
+
 
 
     $ques->lesson_id = $request->lesson_id;
@@ -597,7 +616,7 @@ class ExamController extends Controller
 
     return redirect()->route('pagequess', [$department_id, 'subject_id' => $subject_id])->with('message', 'surveyreport บันทึกข้อมูลสำเร็จ');
   }
-  public function edit($department_id, $question_id)
+  public function edit($department_id, $subject_id, $question_id)
   {
     $ques  = Question::findOrFail($question_id);
     $typequs = QuestionType::all();
@@ -610,7 +629,7 @@ class ExamController extends Controller
     return view('page.manage.sub.exam.pageexam.edit', compact('typequs', 'lossen', 'ques', 'depart', 'subs'));
   }
 
-  public function update(Request $request, $department_id, $question_id)
+  public function update(Request $request, $department_id, $subject_id, $question_id)
   {
 
     $ques = Question::findOrFail($question_id);
@@ -652,57 +671,66 @@ class ExamController extends Controller
       $ques->question = $decodedTextquestion;
     }
     if ($ques->question_type == 5) {
-      $queskos = [];
-      for ($i = 1; $i <= 10; $i++) {
-        $queskook = "o$i";
-        if ($request->$queskook) {
-          $queskos[] = $request->$queskook;
+      $ques->numchoice = null;
+      $nonNullChoicesCount = 0;
+      $nonNullChoicesIndices = [];
+      for ($i = 1; $i <= 8; $i++) {
+        $choiceKey = "choice$i";
+        $choiceValue = $request->input($choiceKey);
+        $ques->$choiceKey = $choiceValue;
+
+        if ($choiceValue !== null) {
+          $nonNullChoicesCount++;
+          $nonNullChoicesIndices[] = $i;
         }
+        shuffle($nonNullChoicesIndices);
+
+        $nonNullChoicesAsString = array_map('strval', $nonNullChoicesIndices);
+        
       }
-      // ต่อข้อมูลตัวเลือกใหม่ไปยัง choice4
-      $ques->choice4 .= !empty($queskos) ?  implode(',', $queskos) : '';
+
+
+      $ques->answer = json_encode($nonNullChoicesAsString);
+      $ques->numchoice = $nonNullChoicesCount;
     }
+
+
     if ($ques->question_type == 4) {
 
-
-
-
-        $questionschoice1 = [];
-        for ($i = 1; $i <= 10; $i++) {
-          $question1 = "q$i";
-          if ($request->$question1) {
-            $questionschoice1[] = $request->$question1;
-          }
+      $questionschoice1 = [];
+      for ($i = 1; $i <= 10; $i++) {
+        $question1 = "q$i";
+        if ($request->$question1) {
+          $questionschoice1[] = $request->$question1;
         }
+      }
 
-        $ques->choice1 = implode(',', $questionschoice1);
-      
-     
-        $coluques = [];
-        for ($i = 1; $i <= 10; $i++) {
-          $coluquesKey  = "c$i";
-          if ($request->$coluquesKey) {
-            $coluques[] = $request->$coluquesKey;
-          }
+      $ques->choice1 = implode(',', $questionschoice1);
+
+
+      $coluques = [];
+      for ($i = 1; $i <= 10; $i++) {
+        $coluquesKey  = "c$i";
+        if ($request->$coluquesKey) {
+          $coluques[] = $request->$coluquesKey;
         }
+      }
 
 
-        $ques->choice2 = implode(',', $coluques);
-      
+      $ques->choice2 = implode(',', $coluques);
 
-        $quesanss = [];
+      $answers = [];
 
-        for ($i = 1; $i <= 10; $i++) {
-          $quesansKey = "ans$i";
-          if ($request->$quesansKey) {
-            $quesanss[] = $request->$quesansKey;
-          }
+      for ($i = 1; $i <= 10; $i++) {
+        $quesansKey = "ans$i";
+        $checkanswer = request($quesansKey);
+
+        if ($checkanswer !== "0") {
+          $answers[] = $checkanswer;
         }
-        
-        $ques->answer = explode(',', implode(',', $quesanss));
+      }
 
-
-      
+      $ques->answer = json_encode($answers);
     }
     if ($ques->question_type == 1) {
 
@@ -962,6 +990,7 @@ class ExamController extends Controller
       }
       $checkanswer = request('checkanswer');
       $ques->answer = json_encode($checkanswer);
+      $ques->numchoice = $request->numchoice;
     }
 
     if ($request->has('explain')) {
@@ -997,7 +1026,7 @@ class ExamController extends Controller
     }
 
     $ques->score = $request->score;
-    $ques->numchoice = $request->numchoice;
+
 
     $ques->ordering = null;
     $ques->lesson_id = $request->lesson_id;
@@ -1005,7 +1034,7 @@ class ExamController extends Controller
     $ques->save();
 
 
-    return redirect()->route('pagequess', [$department_id, 'subject_id' => $ques->subject_id])->with('message', 'surveyreport บันทึกข้อมูลสำเร็จ');
+    return redirect()->route('pagequess', [$department_id, $subject_id])->with('message', 'surveyreport บันทึกข้อมูลสำเร็จ');
   }
 
   public function destroy($question_id)

@@ -116,7 +116,7 @@ class GenaralController extends Controller
 
         if ($request->hasFile('detail')) {
 
-            $filename = 'logo' . '.' . $request->detail->getClientOriginalExtension();
+            $filename = 'logo'.  $department_id . '.' . $request->detail->getClientOriginalExtension();
             $uploadDirectory = public_path('upload/LOGO/');
             if (!file_exists($uploadDirectory)) {
                 mkdir($uploadDirectory, 0755, true);

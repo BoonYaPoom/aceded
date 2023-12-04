@@ -199,7 +199,7 @@
                                 <label for="mobile" class="col-md-2">เบอร์โทรศัพท์มือถือ</label>
                                 <div class="col-md-9 mb-3">
                                     <input type="text" class="form-control number" id="mobile" name="mobile"
-                                        value="" placeholder="เบอร์โทรศัพท์มือถือ">
+                                        value="" placeholder="เบอร์โทรศัพท์มือถือ" maxlength="10">
                                 </div>
                             </div>
                             <!-- /form row -->

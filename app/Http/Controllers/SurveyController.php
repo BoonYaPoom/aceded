@@ -35,7 +35,11 @@ class SurveyController extends Controller
 
 
 
+      $maxSurveyId = Survey::max('survey_id');
+      $newSurveyId = $maxSurveyId + 1;
+
       $sur = new Survey;
+      $sur->survey_id = $newSurveyId;
       $sur->survey_th = $request->survey_th;
       $sur->survey_en = 0;
       
@@ -231,7 +235,12 @@ class SurveyController extends Controller
          'survey_th' => 'required',
          'detail_th' => 'required'
       ]);
+
+      $maxSurveyId = Survey::max('survey_id');
+      $newSurveyId = $maxSurveyId + 1;
+
       $sur = new Survey;
+      $sur->survey_id = $newSurveyId;
       $sur->survey_th = $request->survey_th;
       $sur->survey_en = $request->survey_en;
       

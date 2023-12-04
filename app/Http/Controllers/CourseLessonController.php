@@ -69,7 +69,11 @@ class CourseLessonController extends Controller
                 ->with('error', 'ข้อมูลไม่ถูกต้อง');
         }
         try {
+            
+            $maxCourseLessonId = CourseLesson::max('lesson_id');
+            $newCourseLessonId = $maxCourseLessonId + 1;
             $lessons = new CourseLesson;
+            $lessons->lesson_id = $newCourseLessonId;
             $lessons->lesson_number = $request->lesson_number;
             $lessons->lesson_th = $request->lesson_th;
             $lessons->lesson_en = $request->lesson_en;
@@ -473,7 +477,10 @@ class CourseLessonController extends Controller
 
     public function smailstore(Request $request,$department_id, $subject_id, $lesson_id)
     {
+        $maxCourseLessonId = CourseLesson::max('lesson_id');
+        $newCourseLessonId = $maxCourseLessonId + 1;
         $lessons = new CourseLesson;
+        $lessons->lesson_id = $newCourseLessonId;
         $lessons->lesson_number = $request->lesson_number;
         $lessons->lesson_th = $request->lesson_th;
         $lessons->lesson_en = $request->lesson_en;
@@ -539,7 +546,10 @@ class CourseLessonController extends Controller
     public function smailsmailstore(Request $request, $department_id,$subject_id, $lesson_id)
     {
         $lesson = CourseLesson::findOrFail($lesson_id);
+        $maxCourseLessonId = CourseLesson::max('lesson_id');
+        $newCourseLessonId = $maxCourseLessonId + 1;
         $lessons = new CourseLesson;
+        $lessons->lesson_id = $newCourseLessonId;
         $lessons->lesson_number = $request->lesson_number;
         $lessons->lesson_th = $request->lesson_th;
         $lessons->lesson_en = $request->lesson_en;

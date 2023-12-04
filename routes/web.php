@@ -420,8 +420,8 @@ Route::group(['middleware' => 'IsLoggedIn'], function () {
                         Route::get('{department_id}/{subject_id}/pagequess', [ExamController::class, 'pagequess'])->name('pagequess');
                         Route::get('{department_id}/{subject_id}/questionform', [ExamController::class, 'create'])->name('questionform');
                         Route::get('{department_id}/{subject_id}/questionadd', [ExamController::class, 'questionadd'])->name('questionadd');
-                        Route::get('{department_id}/edit_question/{question_id}', [ExamController::class, 'edit'])->name('edit_question');
-                        Route::put('{department_id}/update_question/{question_id}', [ExamController::class, 'update'])->name('update_question');
+                        Route::get('{department_id}/{subject_id}/edit_question/{question_id}', [ExamController::class, 'edit'])->name('edit_question');
+                        Route::put('{department_id}/{subject_id}/update_question/{question_id}', [ExamController::class, 'update'])->name('update_question');
                         Route::post('{department_id}/{subject_id}/add_questionform', [ExamController::class, 'store'])->name('add_questionform');
                     });
                     Route::get('/booktable', [BookController::class, 'table'])->name('book.table');
