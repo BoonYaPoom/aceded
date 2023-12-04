@@ -101,9 +101,10 @@ class CourseSubjectController extends Controller
             $subs->save();
         }
 
+
+
+        if($request->teacher){
         $selectedTeachers = $request->input('teacher', []);
-
-
         $Users4 = \App\Models\Users::all()->where('user_role', 3);
         foreach ($Users4 as $teacherId) {
             $teach = new CourseTeacher;
@@ -116,7 +117,7 @@ class CourseSubjectController extends Controller
             $teach->save();
         }
 
-
+    }
         $exam1 = new Exam;
         $exam1->exam_th = 'แบบทดสอบก่อนเรียน';
         $exam1->exam_en = 'Pretest';

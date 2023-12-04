@@ -96,7 +96,7 @@ class ExamController extends Controller
 
     return redirect()->route('exampage', [$department_id, 'subject_id' => $subject_id])->with('message', 'Exam add successfully');
   }
-  public function edit_examform($department_id,$subject_id, $exam_id)
+  public function edit_examform($department_id, $subject_id, $exam_id)
   {
     $exams  = Exam::findOrFail($exam_id);
     $subject_id = $exams->subject_id;
@@ -107,9 +107,9 @@ class ExamController extends Controller
     $subs = CourseSubject::findOrFail($subject_id);
     $department_id =   $subs->department_id;
     $depart = Department::findOrFail($department_id);
-    return view('page.manage.sub.exam.edit', compact('exams','subs', 'ques', 'typequs', 'lossen', 'depart'));
+    return view('page.manage.sub.exam.edit', compact('exams', 'subs', 'ques', 'typequs', 'lossen', 'depart'));
   }
-  public function update_examform(Request $request, $department_id,$subject_id, $exam_id)
+  public function update_examform(Request $request, $department_id, $subject_id, $exam_id)
   {
     $exams  = Exam::findOrFail($exam_id);
     $exams->exam_th = $request->exam_th;
@@ -244,40 +244,72 @@ class ExamController extends Controller
           }
         }
         $question = $de_th->saveHTML();
-     
-        $decodedTextquestion = html_entity_decode($question, ENT_QUOTES, 'UTF-8');
+
+        $decodedquestion = html_entity_decode($question, ENT_QUOTES, 'UTF-8');
       }
 
 
-      $ques->question = $decodedTextquestion;
+      $ques->question = $decodedquestion;
     }
     if ($ques->question_type == 4 || $ques->question_type == 5) {
-      $questions = [];
-      for ($i = 1; $i <= 10; $i++) {
-        $question = "q$i";
-        if ($request->$question) {
-          $questions[] = $request->$question;
+
+     
+        $questions = [];
+        for ($i = 1; $i <= 10; $i++) {
+          $question = "q$i";
+          if ($request->$question) {
+            $questions[] = $request->$question;
+          }
         }
-      }
 
-      $ques->choice1 .= !empty($questions) ?  implode(',', $questions) : '';
-      $coluques = [];
-      for ($i = 1; $i <= 10; $i++) {
-        $coluquesKey  = "c$i";
-        if ($request->$coluquesKey) {
-          $coluques[] = $request->$coluquesKey;
-        }
-      }
 
-      // ต่อข้อมูลตัวเลือกใหม่ไปยัง choice2
-      $ques->choice2 .= !empty($coluques) ?  implode(',', $coluques) : '';
-    }
-
-    if ($ques->question_type == 1 ) {
+        $ques->choice1 .= !empty($questions) ?  implode(',', $questions) : '';
       
+
+ 
+        $coluques = [];
+        for ($i = 1; $i <= 10; $i++) {
+          $coluquesKey  = "c$i";
+          if ($request->$coluquesKey) {
+            $coluques[] = $request->$coluquesKey;
+          }
+        }
+
+        // ต่อข้อมูลตัวเลือกใหม่ไปยัง choice2
+        $ques->choice2 .= !empty($coluques) ?  implode(',', $coluques) : '';
+      
+
+    
+        $quesanss = [];
+
+        for ($i = 1; $i <= 10; $i++) {
+          $quesansKey = "ans$i";
+          if ($request->$quesansKey) {
+            $quesanss[] = $request->$quesansKey;
+          }
+        }
+
+        $ques->answer = json_encode(explode(',', implode(',', $quesanss)));
+
+      
+    }
+    if ($ques->question_type == 1) {
+
+
+      $queskos = [];
+      for ($i = 1; $i <= 10; $i++) {
+        $queskook = "o$i";
+        if ($request->$queskook) {
+          $queskos[] = $request->$queskook;
+        }
+      }
+
+      // ต่อข้อมูลตัวเลือกใหม่ไปยัง choice4
+      $ques->choice4 .= !empty($queskos) ?  implode(',', $queskos) : '';
+
       if ($request->has('choice1')) {
         $choice1 = $request->choice1;
-        $decodedTextchoice1='';
+        $decodedTextchoice1 = '';
         if (!empty($choice1)) {
           $choice_1 = new DOMDocument();
           $choice_1->encoding = 'UTF-8'; // กำหนด encoding เป็น UTF-8
@@ -301,14 +333,14 @@ class ExamController extends Controller
           $choice1 = $choice_1->saveHTML();
           $decodedTextchoice1 = html_entity_decode($choice1, ENT_QUOTES, 'UTF-8');
         }
-  
+
         $ques->choice1 = $decodedTextchoice1;
       }
-  
-  
+
+
       if ($request->has('choice2')) {
         $choice2 = $request->choice2;
-        $decodedTextchoice2 ='';
+        $decodedTextchoice2 = '';
         if (!empty($choice2)) {
           $choice_2 = new DOMDocument();
           $choice_2->encoding = 'UTF-8'; // กำหนด encoding เป็น UTF-8
@@ -331,15 +363,14 @@ class ExamController extends Controller
           }
           $choice2 = $choice_2->saveHTML();
           $decodedTextchoice2 = html_entity_decode($choice2, ENT_QUOTES, 'UTF-8');
-          
         }
-  
+
         $ques->choice2 = $decodedTextchoice2;
       }
-  
+
       if ($request->has('choice3')) {
         $choice3 = $request->choice3;
-        $decodedTextchoice3 ='';
+        $decodedTextchoice3 = '';
         if (!empty($choice3)) {
           $choice_3 = new DOMDocument();
           $choice_3->encoding = 'UTF-8'; // กำหนด encoding เป็น UTF-8
@@ -362,27 +393,16 @@ class ExamController extends Controller
           }
           $choice3 = $choice_3->saveHTML();
           $decodedTextchoice3 = html_entity_decode($choice3, ENT_QUOTES, 'UTF-8');
-          
         }
-  
+
         $ques->choice3 = $decodedTextchoice3;
       }
-  
-      $quesanss = [];
-      for ($i = 1; $i <= 10; $i++) {
-        $quesansKey = "ans$i";
-        if ($request->$quesansKey) {
-          $quesanss[] = $request->$quesansKey;
-        }
-      }
-  
-      // ต่อข้อมูลตัวเลือกใหม่ไปยัง choice3
-      $ques->choice3 .= !empty($quesanss) ? implode(',', $quesanss) : '';
-  
-  
+
+
+
       if ($request->has('choice4')) {
         $choice4 = $request->choice4;
-        $decodedTextchoice4 ='';
+        $decodedTextchoice4 = '';
         if (!empty($choice4)) {
           $choice_4 = new DOMDocument();
 
@@ -406,28 +426,16 @@ class ExamController extends Controller
           }
           $choice4 = $choice_4->saveHTML();
           $decodedTextchoice4 = html_entity_decode($choice4, ENT_QUOTES, 'UTF-8');
-          
         }
-  
+
         $ques->choice4 = $decodedTextchoice4;
       }
-  
-  
-      $queskos = [];
-      for ($i = 1; $i <= 10; $i++) {
-        $queskook = "o$i";
-        if ($request->$queskook) {
-          $queskos[] = $request->$queskook;
-        }
-      }
-  
-      // ต่อข้อมูลตัวเลือกใหม่ไปยัง choice4
-      $ques->choice4 .= !empty($queskos) ?  implode(',', $queskos) : '';
-  
-  
+
+
+
       if ($request->has('choice5')) {
         $choice5 = $request->choice5;
-        $decodedTextchoice5 ='';
+        $decodedTextchoice5 = '';
         if (!empty($choice5)) {
           $choice_5 = new DOMDocument();
           $choice_5->encoding = 'UTF-8'; // กำหนด encoding เป็น UTF-8
@@ -450,109 +458,106 @@ class ExamController extends Controller
           }
           $choice5 = $choice_5->saveHTML();
           $decodedTextchoice5 = html_entity_decode($choice5, ENT_QUOTES, 'UTF-8');
-          
         }
-  
+
         $ques->choice5 = $decodedTextchoice5;
       }
-
-    if ($request->has('choice6')) {
-      $choice6 = $request->choice6;
-      $decodedTextchoice6 ='';
-      if (!empty($choice6)) {
-        $choice_6 = new DOMDocument();
-        $choice_6->encoding = 'UTF-8'; // กำหนด encoding เป็น UTF-8
-        $choice6 = mb_convert_encoding($choice6, 'HTML-ENTITIES', 'UTF-8');
-        $choice6 = preg_replace('/<figure\b[^>]*>(.*?)<\/figure>/is', '$1', $choice6);
-        $choice_6->loadHTML($choice6, LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
-        $images_choice_6 = $choice_6->getElementsByTagName('img');
-        if (!file_exists(public_path('/upload/Que/ck/qu6/'))) {
-          mkdir(public_path('/upload/Que/ck/qu6/'), 0755, true);
-        }
-        foreach ($images_choice_6 as $key6 => $img6) {
-          if (strpos($img6->getAttribute('src'), 'data:image/') === 0) {
-            $data6 = base64_decode(explode(',', explode(';', $img6->getAttribute('src'))[1])[1]);
-            $image_name6 = '/upload/Que/ck/qu6/' . time() . $key6 . '.png'; // ใส่ .png เพื่อให้เป็นนามสกุลไฟล์ถูกต้อง
-            file_put_contents(public_path() . $image_name6, $data6);
-            $img6->removeAttribute('src');
-            $newImageUrl6 = asset($image_name6);
-            $img6->setAttribute('src', $newImageUrl6);
+      if ($request->has('choice6')) {
+        $choice6 = $request->choice6;
+        $decodedTextchoice6 = '';
+        if (!empty($choice6)) {
+          $choice_6 = new DOMDocument();
+          $choice_6->encoding = 'UTF-8'; // กำหนด encoding เป็น UTF-8
+          $choice6 = mb_convert_encoding($choice6, 'HTML-ENTITIES', 'UTF-8');
+          $choice6 = preg_replace('/<figure\b[^>]*>(.*?)<\/figure>/is', '$1', $choice6);
+          $choice_6->loadHTML($choice6, LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
+          $images_choice_6 = $choice_6->getElementsByTagName('img');
+          if (!file_exists(public_path('/upload/Que/ck/qu6/'))) {
+            mkdir(public_path('/upload/Que/ck/qu6/'), 0755, true);
           }
+          foreach ($images_choice_6 as $key6 => $img6) {
+            if (strpos($img6->getAttribute('src'), 'data:image/') === 0) {
+              $data6 = base64_decode(explode(',', explode(';', $img6->getAttribute('src'))[1])[1]);
+              $image_name6 = '/upload/Que/ck/qu6/' . time() . $key6 . '.png'; // ใส่ .png เพื่อให้เป็นนามสกุลไฟล์ถูกต้อง
+              file_put_contents(public_path() . $image_name6, $data6);
+              $img6->removeAttribute('src');
+              $newImageUrl6 = asset($image_name6);
+              $img6->setAttribute('src', $newImageUrl6);
+            }
+          }
+          $choice6 = $choice_6->saveHTML();
+          $decodedTextchoice6 = html_entity_decode($choice6, ENT_QUOTES, 'UTF-8');
         }
-        $choice6 = $choice_6->saveHTML();
-        $decodedTextchoice6 = html_entity_decode($choice6, ENT_QUOTES, 'UTF-8');
-        
+
+        $ques->choice6 = $decodedTextchoice6;
       }
 
-      $ques->choice6 = $decodedTextchoice6;
-    }
-
-    if ($request->has('choice7')) {
-      $choice7 = $request->choice7;
-      $decodedTextchoice7 ='';
-      if (!empty($choice7)) {
-        $choice_7 = new DOMDocument();
-        $choice_7->encoding = 'UTF-8'; // กำหนด encoding เป็น UTF-8
-        $choice7 = mb_convert_encoding($choice7, 'HTML-ENTITIES', 'UTF-8');
-        $choice7 = preg_replace('/<figure\b[^>]*>(.*?)<\/figure>/is', '$1', $choice7);
-        $choice_7->loadHTML($choice7, LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
-        $images_choice_7 = $choice_7->getElementsByTagName('img');
-        if (!file_exists(public_path('/upload/Que/ck/qu7/'))) {
-          mkdir(public_path('/upload/Que/ck/qu7/'), 0755, true);
-        }
-        foreach ($images_choice_7 as $key7 => $img7) {
-          if (strpos($img7->getAttribute('src'), 'data:image/') === 0) {
-            $data7 = base64_decode(explode(',', explode(';', $img7->getAttribute('src'))[1])[1]);
-            $image_name7 = '/upload/Que/ck/qu7/' . time() . $key7 . '.png'; // ใส่ .png เพื่อให้เป็นนามสกุลไฟล์ถูกต้อง
-            file_put_contents(public_path() . $image_name7, $data7);
-            $img7->removeAttribute('src');
-            $newImageUrl7 = asset($image_name7);
-            $img7->setAttribute('src', $newImageUrl7);
+      if ($request->has('choice7')) {
+        $choice7 = $request->choice7;
+        $decodedTextchoice7 = '';
+        if (!empty($choice7)) {
+          $choice_7 = new DOMDocument();
+          $choice_7->encoding = 'UTF-8'; // กำหนด encoding เป็น UTF-8
+          $choice7 = mb_convert_encoding($choice7, 'HTML-ENTITIES', 'UTF-8');
+          $choice7 = preg_replace('/<figure\b[^>]*>(.*?)<\/figure>/is', '$1', $choice7);
+          $choice_7->loadHTML($choice7, LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
+          $images_choice_7 = $choice_7->getElementsByTagName('img');
+          if (!file_exists(public_path('/upload/Que/ck/qu7/'))) {
+            mkdir(public_path('/upload/Que/ck/qu7/'), 0755, true);
           }
+          foreach ($images_choice_7 as $key7 => $img7) {
+            if (strpos($img7->getAttribute('src'), 'data:image/') === 0) {
+              $data7 = base64_decode(explode(',', explode(';', $img7->getAttribute('src'))[1])[1]);
+              $image_name7 = '/upload/Que/ck/qu7/' . time() . $key7 . '.png'; // ใส่ .png เพื่อให้เป็นนามสกุลไฟล์ถูกต้อง
+              file_put_contents(public_path() . $image_name7, $data7);
+              $img7->removeAttribute('src');
+              $newImageUrl7 = asset($image_name7);
+              $img7->setAttribute('src', $newImageUrl7);
+            }
+          }
+          $choice7 = $choice_7->saveHTML();
+          $decodedTextchoice7 = html_entity_decode($choice7, ENT_QUOTES, 'UTF-8');
         }
-        $choice7 = $choice_7->saveHTML();
-        $decodedTextchoice7 = html_entity_decode($choice7, ENT_QUOTES, 'UTF-8');
-        
-        
+
+        $ques->choice7 = $decodedTextchoice7;
       }
 
-      $ques->choice7 = $decodedTextchoice7;
-    }
-
-    if ($request->has('choice8')) {
-      $choice8 = $request->choice8;
-      $decodedTextchoice8 ='';
-      if (!empty($choice8)) {
-        $choice_8 = new DOMDocument();
-        $choice_8->encoding = 'UTF-8'; // กำหนด encoding เป็น UTF-8
-        $choice8 = mb_convert_encoding($choice8, 'HTML-ENTITIES', 'UTF-8');
-        $choice8 = preg_replace('/<figure\b[^>]*>(.*?)<\/figure>/is', '$1', $choice8);
-        $choice_8->loadHTML($choice8, LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
-        $images_choice_8 = $choice_8->getElementsByTagName('img');
-        if (!file_exists(public_path('/upload/Que/ck/qu8/'))) {
-          mkdir(public_path('/upload/Que/ck/qu8/'), 0755, true);
-        }
-        foreach ($images_choice_8 as $key8 => $img8) {
-          if (strpos($img8->getAttribute('src'), 'data:image/') === 0) {
-            $data8 = base64_decode(explode(',', explode(';', $img8->getAttribute('src'))[1])[1]);
-            $image_name8 = '/upload/Que/ck/qu8/' . time() . $key8 . '.png'; // ใส่ .png เพื่อให้เป็นนามสกุลไฟล์ถูกต้อง
-            file_put_contents(public_path() . $image_name8, $data8);
-            $img8->removeAttribute('src');
-            $newImageUrl8 = asset($image_name);
-            $img8->setAttribute('src', $newImageUrl8);
+      if ($request->has('choice8')) {
+        $choice8 = $request->choice8;
+        $decodedTextchoice8 = '';
+        if (!empty($choice8)) {
+          $choice_8 = new DOMDocument();
+          $choice_8->encoding = 'UTF-8'; // กำหนด encoding เป็น UTF-8
+          $choice8 = mb_convert_encoding($choice8, 'HTML-ENTITIES', 'UTF-8');
+          $choice8 = preg_replace('/<figure\b[^>]*>(.*?)<\/figure>/is', '$1', $choice8);
+          $choice_8->loadHTML($choice8, LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
+          $images_choice_8 = $choice_8->getElementsByTagName('img');
+          if (!file_exists(public_path('/upload/Que/ck/qu8/'))) {
+            mkdir(public_path('/upload/Que/ck/qu8/'), 0755, true);
           }
+          foreach ($images_choice_8 as $key8 => $img8) {
+            if (strpos($img8->getAttribute('src'), 'data:image/') === 0) {
+              $data8 = base64_decode(explode(',', explode(';', $img8->getAttribute('src'))[1])[1]);
+              $image_name8 = '/upload/Que/ck/qu8/' . time() . $key8 . '.png'; // ใส่ .png เพื่อให้เป็นนามสกุลไฟล์ถูกต้อง
+              file_put_contents(public_path() . $image_name8, $data8);
+              $img8->removeAttribute('src');
+              $newImageUrl8 = asset($image_name);
+              $img8->setAttribute('src', $newImageUrl8);
+            }
+          }
+          $choice8 = $choice_8->saveHTML();
+          $decodedTextchoice8 = html_entity_decode($choice8, ENT_QUOTES, 'UTF-8');
         }
-        $choice8 = $choice_8->saveHTML();
-        $decodedTextchoice8 = html_entity_decode($choice8, ENT_QUOTES, 'UTF-8');
-      }
 
-      $ques->choice8 = $decodedTextchoice8;
+        $ques->choice8 = $decodedTextchoice8;
+      }
+      $checkanswer = request('checkanswer');
+      $ques->answer = json_encode($checkanswer);
     }
-  }
 
     if ($request->has('explain')) {
       $explain = $request->explain;
-      $decodedTextexplain ='' ;
+      $decodedTextexplain = '';
       if (!empty($explain)) {
         $choice_explain = new DOMDocument();
         $choice_explain->encoding = 'UTF-8'; // กำหนด encoding เป็น UTF-8
@@ -575,16 +580,15 @@ class ExamController extends Controller
         }
         $explain = $choice_explain->saveHTML();
         $decodedTextexplain = html_entity_decode($explain, ENT_QUOTES, 'UTF-8');
-        
       }
 
       $ques->explain = $decodedTextexplain;
     }
+
     $ques->score = $request->score;
     $ques->numchoice = $request->numchoice;
 
-    $checkanswer = request('checkanswer');
-    $ques->answer = json_encode($checkanswer);
+
     $ques->lesson_id = $request->lesson_id;
     $ques->subject_id = $subject_id;
     $ques->explainquestion = '';
@@ -603,7 +607,7 @@ class ExamController extends Controller
     $subs = CourseSubject::findOrFail($subject_id);
     $department_id =   $subs->department_id;
     $depart = Department::findOrFail($department_id);
-    return view('page.manage.sub.exam.pageexam.edit', compact('typequs', 'lossen', 'ques', 'depart','subs'));
+    return view('page.manage.sub.exam.pageexam.edit', compact('typequs', 'lossen', 'ques', 'depart', 'subs'));
   }
 
   public function update(Request $request, $department_id, $question_id)
@@ -620,7 +624,7 @@ class ExamController extends Controller
     }
     if ($request->has('question')) {
       $question = $request->question;
-      $decodedTextquestion ='' ;
+      $decodedTextquestion = '';
       if (!empty($question)) {
         $de_th = new DOMDocument();
         $de_th->encoding = 'UTF-8'; // กำหนด encoding เป็น UTF-8
@@ -640,38 +644,73 @@ class ExamController extends Controller
           }
         }
         $question = $de_th->saveHTML();
+
         $decodedTextquestion = html_entity_decode($question, ENT_QUOTES, 'UTF-8');
       }
 
-      $ques->question = $question;
+
+      $ques->question = $decodedTextquestion;
     }
-    if ($ques->question_type == 4 || $ques->question_type == 5) {
-      $questions = [];
+    if ($ques->question_type == 5) {
+      $queskos = [];
       for ($i = 1; $i <= 10; $i++) {
-        $question = "q$i";
-        if ($request->$question) {
-          $questions[] = $request->$question;
+        $queskook = "o$i";
+        if ($request->$queskook) {
+          $queskos[] = $request->$queskook;
         }
       }
-
-      $ques->choice1 .= !empty($questions) ?  implode(',', $questions) : '';
-      $coluques = [];
-      for ($i = 1; $i <= 10; $i++) {
-        $coluquesKey  = "c$i";
-        if ($request->$coluquesKey) {
-          $coluques[] = $request->$coluquesKey;
-        }
-      }
-
-      // ต่อข้อมูลตัวเลือกใหม่ไปยัง choice2
-      $ques->choice2 .= !empty($coluques) ?  implode(',', $coluques) : '';
+      // ต่อข้อมูลตัวเลือกใหม่ไปยัง choice4
+      $ques->choice4 .= !empty($queskos) ?  implode(',', $queskos) : '';
     }
+    if ($ques->question_type == 4) {
 
-    if ($ques->question_type == 1 ) {
+
+
+
+        $questionschoice1 = [];
+        for ($i = 1; $i <= 10; $i++) {
+          $question1 = "q$i";
+          if ($request->$question1) {
+            $questionschoice1[] = $request->$question1;
+          }
+        }
+
+        $ques->choice1 = implode(',', $questionschoice1);
       
+     
+        $coluques = [];
+        for ($i = 1; $i <= 10; $i++) {
+          $coluquesKey  = "c$i";
+          if ($request->$coluquesKey) {
+            $coluques[] = $request->$coluquesKey;
+          }
+        }
+
+
+        $ques->choice2 = implode(',', $coluques);
+      
+
+        $quesanss = [];
+
+        for ($i = 1; $i <= 10; $i++) {
+          $quesansKey = "ans$i";
+          if ($request->$quesansKey) {
+            $quesanss[] = $request->$quesansKey;
+          }
+        }
+        
+        $ques->answer = explode(',', implode(',', $quesanss));
+
+
+      
+    }
+    if ($ques->question_type == 1) {
+
+
+
       if ($request->has('choice1')) {
         $choice1 = $request->choice1;
-        $decodedTextchoice1='';
+        $decodedTextchoice1 = '';
         if (!empty($choice1)) {
           $choice_1 = new DOMDocument();
           $choice_1->encoding = 'UTF-8'; // กำหนด encoding เป็น UTF-8
@@ -696,14 +735,14 @@ class ExamController extends Controller
 
           $decodedTextchoice1 = html_entity_decode($choice1, ENT_QUOTES, 'UTF-8');
         }
-  
+
         $ques->choice1 = $decodedTextchoice1;
       }
-  
-  
+
+
       if ($request->has('choice2')) {
         $choice2 = $request->choice2;
-        $decodedTextchoice2 ='';
+        $decodedTextchoice2 = '';
         if (!empty($choice2)) {
           $choice_2 = new DOMDocument();
           $choice_2->encoding = 'UTF-8'; // กำหนด encoding เป็น UTF-8
@@ -728,13 +767,13 @@ class ExamController extends Controller
 
           $decodedTextchoice2 = html_entity_decode($choice2, ENT_QUOTES, 'UTF-8');
         }
-  
+
         $ques->choice2 = $decodedTextchoice2;
       }
-  
+
       if ($request->has('choice3')) {
         $choice3 = $request->choice3;
-        $decodedTextchoice3 ='';
+        $decodedTextchoice3 = '';
         if (!empty($choice3)) {
           $choice_3 = new DOMDocument();
           $choice_3->encoding = 'UTF-8'; // กำหนด encoding เป็น UTF-8
@@ -759,25 +798,15 @@ class ExamController extends Controller
 
           $decodedTextchoice3 = html_entity_decode($choice3, ENT_QUOTES, 'UTF-8');
         }
-  
+
         $ques->choice3 = $decodedTextchoice3;
       }
-  
-      $quesanss = [];
-      for ($i = 1; $i <= 10; $i++) {
-        $quesansKey = "ans$i";
-        if ($request->$quesansKey) {
-          $quesanss[] = $request->$quesansKey;
-        }
-      }
-  
-      // ต่อข้อมูลตัวเลือกใหม่ไปยัง choice3
-      $ques->choice3 .= !empty($quesanss) ? implode(',', $quesanss) : '';
-  
-  
+
+
+
       if ($request->has('choice4')) {
         $choice4 = $request->choice4;
-        $decodedTextchoice4 ='';
+        $decodedTextchoice4 = '';
         if (!empty($choice4)) {
           $choice_4 = new DOMDocument();
           $choice_4->encoding = 'UTF-8'; // กำหนด encoding เป็น UTF-8
@@ -799,29 +828,19 @@ class ExamController extends Controller
             }
           }
           $choice4 = $choice_4->saveHTML();
-      
+
           $decodedTextchoice4 = html_entity_decode($choice4, ENT_QUOTES, 'UTF-8');
         }
-  
+
         $ques->choice4 = $decodedTextchoice4;
       }
-  
-  
-      $queskos = [];
-      for ($i = 1; $i <= 10; $i++) {
-        $queskook = "o$i";
-        if ($request->$queskook) {
-          $queskos[] = $request->$queskook;
-        }
-      }
-  
-      // ต่อข้อมูลตัวเลือกใหม่ไปยัง choice4
-      $ques->choice4 .= !empty($queskos) ?  implode(',', $queskos) : '';
-  
-  
+
+
+
+
       if ($request->has('choice5')) {
         $choice5 = $request->choice5;
-        $decodedTextchoice5 ='';
+        $decodedTextchoice5 = '';
         if (!empty($choice5)) {
           $choice_5 = new DOMDocument();
           $choice_5->encoding = 'UTF-8'; // กำหนด encoding เป็น UTF-8
@@ -846,106 +865,108 @@ class ExamController extends Controller
 
           $decodedTextchoice5 = html_entity_decode($choice5, ENT_QUOTES, 'UTF-8');
         }
-  
+
         $ques->choice5 = $decodedTextchoice5;
       }
 
-    if ($request->has('choice6')) {
-      $choice6 = $request->choice6;
-      $decodedTextchoice6 ='';
-      if (!empty($choice6)) {
-        $choice_6 = new DOMDocument();
-        $choice_6->encoding = 'UTF-8'; // กำหนด encoding เป็น UTF-8
-        $choice6 = mb_convert_encoding($choice6, 'HTML-ENTITIES', 'UTF-8');
-        $choice6 = preg_replace('/<figure\b[^>]*>(.*?)<\/figure>/is', '$1', $choice6);
-        $choice_6->loadHTML($choice6, LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
-        $images_choice_6 = $choice_6->getElementsByTagName('img');
-        if (!file_exists(public_path('/upload/Que/ck/qu6/'))) {
-          mkdir(public_path('/upload/Que/ck/qu6/'), 0755, true);
-        }
-        foreach ($images_choice_6 as $key6 => $img6) {
-          if (strpos($img6->getAttribute('src'), 'data:image/') === 0) {
-            $data6 = base64_decode(explode(',', explode(';', $img6->getAttribute('src'))[1])[1]);
-            $image_name6 = '/upload/Que/ck/qu6/' . time() . $key6 . '.png'; // ใส่ .png เพื่อให้เป็นนามสกุลไฟล์ถูกต้อง
-            file_put_contents(public_path() . $image_name6, $data6);
-            $img6->removeAttribute('src');
-            $newImageUrl6 = asset($image_name6);
-            $img6->setAttribute('src', $newImageUrl6);
+      if ($request->has('choice6')) {
+        $choice6 = $request->choice6;
+        $decodedTextchoice6 = '';
+        if (!empty($choice6)) {
+          $choice_6 = new DOMDocument();
+          $choice_6->encoding = 'UTF-8'; // กำหนด encoding เป็น UTF-8
+          $choice6 = mb_convert_encoding($choice6, 'HTML-ENTITIES', 'UTF-8');
+          $choice6 = preg_replace('/<figure\b[^>]*>(.*?)<\/figure>/is', '$1', $choice6);
+          $choice_6->loadHTML($choice6, LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
+          $images_choice_6 = $choice_6->getElementsByTagName('img');
+          if (!file_exists(public_path('/upload/Que/ck/qu6/'))) {
+            mkdir(public_path('/upload/Que/ck/qu6/'), 0755, true);
           }
-        }
-        $choice6 = $choice_6->saveHTML();
+          foreach ($images_choice_6 as $key6 => $img6) {
+            if (strpos($img6->getAttribute('src'), 'data:image/') === 0) {
+              $data6 = base64_decode(explode(',', explode(';', $img6->getAttribute('src'))[1])[1]);
+              $image_name6 = '/upload/Que/ck/qu6/' . time() . $key6 . '.png'; // ใส่ .png เพื่อให้เป็นนามสกุลไฟล์ถูกต้อง
+              file_put_contents(public_path() . $image_name6, $data6);
+              $img6->removeAttribute('src');
+              $newImageUrl6 = asset($image_name6);
+              $img6->setAttribute('src', $newImageUrl6);
+            }
+          }
+          $choice6 = $choice_6->saveHTML();
 
-        $decodedTextchoice6 = html_entity_decode($choice6, ENT_QUOTES, 'UTF-8');
+          $decodedTextchoice6 = html_entity_decode($choice6, ENT_QUOTES, 'UTF-8');
+        }
+
+        $ques->choice6 = $decodedTextchoice6;
       }
 
-      $ques->choice6 = $decodedTextchoice6;
-    }
-
-    if ($request->has('choice7')) {
-      $choice7 = $request->choice7;
-      $decodedTextchoice7 ='';
-      if (!empty($choice7)) {
-        $choice_7 = new DOMDocument();
-        $choice_7->encoding = 'UTF-8'; // กำหนด encoding เป็น UTF-8
-        $choice7 = mb_convert_encoding($choice7, 'HTML-ENTITIES', 'UTF-8');
-        $choice7 = preg_replace('/<figure\b[^>]*>(.*?)<\/figure>/is', '$1', $choice7);
-        $choice_7->loadHTML($choice7, LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
-        $images_choice_7 = $choice_7->getElementsByTagName('img');
-        if (!file_exists(public_path('/upload/Que/ck/qu7/'))) {
-          mkdir(public_path('/upload/Que/ck/qu7/'), 0755, true);
-        }
-        foreach ($images_choice_7 as $key7 => $img7) {
-          if (strpos($img7->getAttribute('src'), 'data:image/') === 0) {
-            $data7 = base64_decode(explode(',', explode(';', $img7->getAttribute('src'))[1])[1]);
-            $image_name7 = '/upload/Que/ck/qu7/' . time() . $key7 . '.png'; // ใส่ .png เพื่อให้เป็นนามสกุลไฟล์ถูกต้อง
-            file_put_contents(public_path() . $image_name7, $data7);
-            $img7->removeAttribute('src');
-            $newImageUrl7 = asset($image_name7);
-            $img7->setAttribute('src', $newImageUrl7);
+      if ($request->has('choice7')) {
+        $choice7 = $request->choice7;
+        $decodedTextchoice7 = '';
+        if (!empty($choice7)) {
+          $choice_7 = new DOMDocument();
+          $choice_7->encoding = 'UTF-8'; // กำหนด encoding เป็น UTF-8
+          $choice7 = mb_convert_encoding($choice7, 'HTML-ENTITIES', 'UTF-8');
+          $choice7 = preg_replace('/<figure\b[^>]*>(.*?)<\/figure>/is', '$1', $choice7);
+          $choice_7->loadHTML($choice7, LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
+          $images_choice_7 = $choice_7->getElementsByTagName('img');
+          if (!file_exists(public_path('/upload/Que/ck/qu7/'))) {
+            mkdir(public_path('/upload/Que/ck/qu7/'), 0755, true);
           }
-        }
-        $choice7 = $choice_7->saveHTML();
+          foreach ($images_choice_7 as $key7 => $img7) {
+            if (strpos($img7->getAttribute('src'), 'data:image/') === 0) {
+              $data7 = base64_decode(explode(',', explode(';', $img7->getAttribute('src'))[1])[1]);
+              $image_name7 = '/upload/Que/ck/qu7/' . time() . $key7 . '.png'; // ใส่ .png เพื่อให้เป็นนามสกุลไฟล์ถูกต้อง
+              file_put_contents(public_path() . $image_name7, $data7);
+              $img7->removeAttribute('src');
+              $newImageUrl7 = asset($image_name7);
+              $img7->setAttribute('src', $newImageUrl7);
+            }
+          }
+          $choice7 = $choice_7->saveHTML();
 
-        $decodedTextchoice7 = html_entity_decode($choice7, ENT_QUOTES, 'UTF-8');
+          $decodedTextchoice7 = html_entity_decode($choice7, ENT_QUOTES, 'UTF-8');
+        }
+
+        $ques->choice7 = $decodedTextchoice7;
       }
 
-      $ques->choice7 = $decodedTextchoice7;
-    }
-
-    if ($request->has('choice8')) {
-      $choice8 = $request->choice8;
-      $decodedTextchoice8 ='';
-      if (!empty($choice8)) {
-        $choice_8 = new DOMDocument();
-        $choice_8->encoding = 'UTF-8'; // กำหนด encoding เป็น UTF-8
-        $choice8 = mb_convert_encoding($choice8, 'HTML-ENTITIES', 'UTF-8');
-        $choice8 = preg_replace('/<figure\b[^>]*>(.*?)<\/figure>/is', '$1', $choice8);
-        $choice_8->loadHTML($choice8, LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
-        $images_choice_8 = $choice_8->getElementsByTagName('img');
-        if (!file_exists(public_path('/upload/Que/ck/qu8/'))) {
-          mkdir(public_path('/upload/Que/ck/qu8/'), 0755, true);
-        }
-        foreach ($images_choice_8 as $key8 => $img8) {
-          if (strpos($img8->getAttribute('src'), 'data:image/') === 0) {
-            $data8 = base64_decode(explode(',', explode(';', $img8->getAttribute('src'))[1])[1]);
-            $image_name8 = '/upload/Que/ck/' . time() . $key8 . '.png'; // ใส่ .png เพื่อให้เป็นนามสกุลไฟล์ถูกต้อง
-            file_put_contents(public_path() . $image_name8, $data8);
-            $img8->removeAttribute('src');
-            $newImageUrl8 = asset($image_name);
-            $img8->setAttribute('src', $newImageUrl8);
+      if ($request->has('choice8')) {
+        $choice8 = $request->choice8;
+        $decodedTextchoice8 = '';
+        if (!empty($choice8)) {
+          $choice_8 = new DOMDocument();
+          $choice_8->encoding = 'UTF-8'; // กำหนด encoding เป็น UTF-8
+          $choice8 = mb_convert_encoding($choice8, 'HTML-ENTITIES', 'UTF-8');
+          $choice8 = preg_replace('/<figure\b[^>]*>(.*?)<\/figure>/is', '$1', $choice8);
+          $choice_8->loadHTML($choice8, LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
+          $images_choice_8 = $choice_8->getElementsByTagName('img');
+          if (!file_exists(public_path('/upload/Que/ck/qu8/'))) {
+            mkdir(public_path('/upload/Que/ck/qu8/'), 0755, true);
           }
+          foreach ($images_choice_8 as $key8 => $img8) {
+            if (strpos($img8->getAttribute('src'), 'data:image/') === 0) {
+              $data8 = base64_decode(explode(',', explode(';', $img8->getAttribute('src'))[1])[1]);
+              $image_name8 = '/upload/Que/ck/' . time() . $key8 . '.png'; // ใส่ .png เพื่อให้เป็นนามสกุลไฟล์ถูกต้อง
+              file_put_contents(public_path() . $image_name8, $data8);
+              $img8->removeAttribute('src');
+              $newImageUrl8 = asset($image_name);
+              $img8->setAttribute('src', $newImageUrl8);
+            }
+          }
+          $choice8 = $choice_8->saveHTML();
+          $decodedTextchoice8 = html_entity_decode($choice8, ENT_QUOTES, 'UTF-8');
         }
-        $choice8 = $choice_8->saveHTML();
-        $decodedTextchoice8 = html_entity_decode($choice8, ENT_QUOTES, 'UTF-8');
-      }
 
-      $ques->choice8 = $decodedTextchoice8;
+        $ques->choice8 = $decodedTextchoice8;
+      }
+      $checkanswer = request('checkanswer');
+      $ques->answer = json_encode($checkanswer);
     }
-  }
 
     if ($request->has('explain')) {
       $explain = $request->explain;
-      $decodedTextexplain ='' ;
+      $decodedTextexplain = '';
       if (!empty($explain)) {
         $choice_explain = new DOMDocument();
         $choice_explain->encoding = 'UTF-8'; // กำหนด encoding เป็น UTF-8
@@ -977,9 +998,6 @@ class ExamController extends Controller
 
     $ques->score = $request->score;
     $ques->numchoice = $request->numchoice;
-
-    $checkanswer = request('checkanswer');
-    $ques->answer = json_encode($checkanswer);
 
     $ques->ordering = null;
     $ques->lesson_id = $request->lesson_id;

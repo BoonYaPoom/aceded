@@ -193,7 +193,7 @@
                         <div id="data4"
                             style="{{ $ques->question_type == 4 ? 'display: block;' : 'display: none;' }}">
                             @php
-                                $choice3 = explode(',', $ques->choice3);
+                                $choice3 = explode(',', $ques->answer);
                             @endphp
                             @php
                                 $choice1 = explode(',', $ques->choice1);
