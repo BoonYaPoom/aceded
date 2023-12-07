@@ -25,8 +25,8 @@ return new class extends Migration
             $table->string('web_type', 1)->nullable()->collation('utf8_general_ci');
             $table->string('web_option', 400)->nullable()->collation('utf8_general_ci');
             $table->string('cover', 400)->nullable()->collation('utf8_general_ci');
-            $table->string('startdate', 300)->collation('utf8_general_ci')->nullable();
-            $table->string('enddate', 300)->collation('utf8_general_ci')->nullable();
+            $table->date('startdate')->collation('utf8_general_ci')->nullable();
+            $table->date('enddate')->collation('utf8_general_ci')->nullable();
             $table->string('recommended', 1)->collation('utf8_general_ci');
             $table->integer('category_id');
             $table->integer('sort')->nullable();
