@@ -90,10 +90,10 @@
                         <div class="row">
                             <div class="col-md-6">
                                 <div class="form-group">
-                                    <label class="control-label" for="checkscore">เกณฑ์คะแนน</label>
+                                    <label class="control-label" for="checkscore">เกณฑ์การประเมินผล</label>
                                     <select id="checkscore" name="checkscore" class="form-control  " data-toggle="select2"
-                                        data-placeholder="เกณฑ์คะแนน" data-allow-clear="false">
-                                        <option value="0"> กำหนดคะแนน</option>
+                                        data-placeholder="เกณฑ์การประเมินผล" data-allow-clear="false">
+                                        <option value="0"> กำหนดเกณฑ์การประเมินผล</option>
                                         @for ($score = 1; $score <= 100; $score++)
                                         @if ($score == $subs->checkscore)
                                                 <option value="{{ $score }}" selected>{{ $score }}</option>

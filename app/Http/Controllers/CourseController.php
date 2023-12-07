@@ -47,7 +47,7 @@ class CourseController extends Controller
         $validator = Validator::make($request->all(), [
             'course_code' => 'required',
             'course_th' => 'required',
-            'templete_certificate' =>'required'
+            'templete_certificate' => 'required'
 
         ]);
 
@@ -386,55 +386,78 @@ class CourseController extends Controller
         $cour->signature_position = $request->signature_position;
         $cour->cetificate_status =  $request->input('cetificate_status', 0);;
         $cour->cetificate_request = 0;
+
         $cour->paymentstatus = $request->input('paymentstatus', 0);
-        $cour->price = $request->price;
-
-        $cour->discount = $request->discount;
-        $cour->discount_type = $request->discount_type;
-        $cour->bank = $request->bank;
-        $cour->compcode = $request->compcode;
-        $cour->taxid = $request->taxid;
-        $cour->suffixcode = $request->suffixcode;
-
-        set_time_limit(0);
-        libxml_use_internal_errors(true);
-        if (!file_exists(public_path('/uplade'))) {
-            mkdir(public_path('/uplade'), 0755, true);
-        }
-        if ($request->has('paymentdetail')) {
-            $paymentdetail = $request->paymentdetail;
-            $decodedTextpaymentdetail = '';
-            if (!empty($paymentdetail)) {
-                $des_th = new DOMDocument();
-                $des_th->encoding = 'UTF-8'; // กำหนด encoding เป็น UTF-8
-                $paymentdetail = mb_convert_encoding($paymentdetail, 'HTML-ENTITIES', 'UTF-8');
-                $paymentdetail = preg_replace('/<figure\b[^>]*>(.*?)<\/figure>/is', '$1', $paymentdetail);
-                $des_th->loadHTML($paymentdetail, LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
-                $images_des_th = $des_th->getElementsByTagName('img');
-
-                foreach ($images_des_th as $key => $img) {
-                    if (strpos($img->getAttribute('src'), 'data:image/') === 0) {
-                        $data = base64_decode(explode(',', explode(';', $img->getAttribute('src'))[1])[1]);
-                        $image_name = '/uplade/' . time() . $key . '.png'; // ใส่ .png เพื่อให้เป็นนามสกุลไฟล์ถูกต้อง
-                        file_put_contents(public_path() . $image_name, $data);
-                        $img->removeAttribute('src');
-                        $newImageUrl = asset($image_name);
-                        $img->setAttribute('src', $newImageUrl);
-                    }
-                }
-                $paymentdetail = $des_th->saveHTML();
-                $decodedTextpaymentdetail= html_entity_decode($paymentdetail, ENT_QUOTES, 'UTF-8');
+        if ($cour->paymentstatus == 0) {
+            $cour->payinslip = 0;
+            $cour->creditcard = 0;
+            $cour->promptpay = 0;
+            $cour->paymentdetail = null;
+            $cour->discount = null;
+            $cour->discount_code = null;
+            $cour->discount_type = null;
+            $cour->bank = null;
+            $cour->compcode = null;
+            $cour->price = null;
+            $cour->accountbook =  null;
+            $cour->accountname =  null;
+            $cour->taxid = null;
+            $cour->suffixcode = null;
+            $cour->paymentdate = $request->paymentdate;
+        } else {
+            $cour->payinslip = $request->input('payinslip', 0);
+            $cour->creditcard = $request->input('creditcard', 0);
+            $cour->promptpay = $request->input('promptpay', 0);
+            set_time_limit(0);
+            libxml_use_internal_errors(true);
+            if (!file_exists(public_path('/uplade'))) {
+                mkdir(public_path('/uplade'), 0755, true);
             }
+            if ($request->has('paymentdetail')) {
+                $paymentdetail = $request->paymentdetail;
+                $decodedTextpaymentdetail = '';
+                if (!empty($paymentdetail)) {
+                    $des_th = new DOMDocument();
+                    $des_th->encoding = 'UTF-8'; // กำหนด encoding เป็น UTF-8
+                    $paymentdetail = mb_convert_encoding($paymentdetail, 'HTML-ENTITIES', 'UTF-8');
+                    $paymentdetail = preg_replace('/<figure\b[^>]*>(.*?)<\/figure>/is', '$1', $paymentdetail);
+                    $des_th->loadHTML($paymentdetail, LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
+                    $images_des_th = $des_th->getElementsByTagName('img');
 
-            $cour->paymentdetail = $decodedTextpaymentdetail;
+                    foreach ($images_des_th as $key => $img) {
+                        if (strpos($img->getAttribute('src'), 'data:image/') === 0) {
+                            $data = base64_decode(explode(',', explode(';', $img->getAttribute('src'))[1])[1]);
+                            $image_name = '/uplade/' . time() . $key . '.png'; // ใส่ .png เพื่อให้เป็นนามสกุลไฟล์ถูกต้อง
+                            file_put_contents(public_path() . $image_name, $data);
+                            $img->removeAttribute('src');
+                            $newImageUrl = asset($image_name);
+                            $img->setAttribute('src', $newImageUrl);
+                        }
+                    }
+                    $paymentdetail = $des_th->saveHTML();
+                    $decodedTextpaymentdetail = html_entity_decode($paymentdetail, ENT_QUOTES, 'UTF-8');
+                }
+
+                $cour->paymentdetail = $decodedTextpaymentdetail;
+            }
+            $cour->discount = $request->discount;
+
+            $cour->discount_type = $request->discount_type;
+            $cour->discount_code = $request->discount_code;
+            $cour->bank = $request->bank;
+            $cour->compcode = $request->compcode;
+            $cour->price = $request->price;
+            $cour->taxid = $request->taxid;
+            $cour->suffixcode = $request->suffixcode;
+            $cour->paymentdate = $request->paymentdate;
+            $cour->accountbook =  $request->accountbook;
+            $cour->accountname =  $request->accountname;
         }
-        $cour->paymentdate = $request->paymentdate;
-        $cour->payinslip = $request->input('payinslip', 0);
-        $cour->creditcard = $request->input('creditcard', 0);
-        $cour->promptpay = $request->input('promptpay', 0);
-        $cour->discount_code = $request->discount_code;
-        $cour->accountbook =  $request->accountbook;
-        $cour->accountname =  $request->accountname;
+
+
+
+
+ 
 
         $cour->save();
 
@@ -588,7 +611,7 @@ class CourseController extends Controller
                     }
                 }
                 $description_th = $des_th->saveHTML();
-                $decodedTextdescription_th= html_entity_decode($description_th, ENT_QUOTES, 'UTF-8');
+                $decodedTextdescription_th = html_entity_decode($description_th, ENT_QUOTES, 'UTF-8');
             }
 
             $cour->description_th = $decodedTextdescription_th;
@@ -620,7 +643,6 @@ class CourseController extends Controller
             }
 
             $cour->description_en = $decodedTextdescription_en;
-   
         }
         if ($request->has('objectives_th')) {
             $objectives_th = $request->objectives_th;
