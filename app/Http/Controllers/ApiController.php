@@ -17,7 +17,7 @@ class ApiController extends Controller
     }
     public function apiUser(Request $request)
     {
-        $pageNumber = ($request->start / $request->length) + 1;
+        $pageNumber = ($request->length != 0) ? ($request->start / $request->length) + 1 : 1;
         $pageLength = $request->length;
         $skip = ($pageNumber - 1) * $pageLength;
 
