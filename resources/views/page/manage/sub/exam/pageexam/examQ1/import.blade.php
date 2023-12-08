@@ -19,7 +19,7 @@
 
 
 
-                <div class="card-header bg-muted"> <i>เพิ่มคลังข้อสอบแบบ excel</i></div><!-- /.card-header -->
+                <div class="card-header bg-muted"> <i>เพิ่มคลังแบบทดสอบแบบ excel</i></div><!-- /.card-header -->
                 <!-- .card-body -->
                 <div class="card-body">
                     <form id="uploadForm" enctype="multipart/form-data">

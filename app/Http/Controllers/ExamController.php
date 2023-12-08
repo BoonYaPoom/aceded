@@ -35,7 +35,7 @@ class ExamController extends Controller
     $lossen = CourseLesson::where('subject_id', $subject_id)->get();
     $department_id =   $subs->department_id;
     $depart = Department::findOrFail($department_id);
-    return view('page.manage.sub.exam.create', compact('subs', 'ques', 'typequs', 'lossen', 'depart'));
+    return view('page.manage.sub.exam.dataexam.exam2.create', compact('subs', 'ques', 'typequs', 'lossen', 'depart'));
   }
   public function storeexam(Request $request, $department_id, $subject_id)
   {
@@ -90,6 +90,7 @@ class ExamController extends Controller
       $exams->save();
 
       DB::commit();
+      return redirect()->route('exampage', [$department_id, 'subject_id' => $subject_id])->with('message', 'Exam add successfully');
     } catch (\Exception $e) {
 
       DB::rollBack();
@@ -97,7 +98,7 @@ class ExamController extends Controller
       return response()->view('error.error-500', [], 500);
     }
 
-    return redirect()->route('exampage', [$department_id, 'subject_id' => $subject_id])->with('message', 'Exam add successfully');
+  
   }
   public function edit_examform($department_id, $subject_id, $exam_id)
   {
@@ -110,7 +111,7 @@ class ExamController extends Controller
     $subs = CourseSubject::findOrFail($subject_id);
     $department_id =   $subs->department_id;
     $depart = Department::findOrFail($department_id);
-    return view('page.manage.sub.exam.edit', compact('exams', 'subs', 'ques', 'typequs', 'lossen', 'depart'));
+    return view('page.manage.sub.exam.dataexam.exam2.edit', compact('exams', 'subs', 'ques', 'typequs', 'lossen', 'depart'));
   }
   public function update_examform(Request $request, $department_id, $subject_id, $exam_id)
   {
@@ -175,7 +176,7 @@ class ExamController extends Controller
 
     $department_id =   $subs->department_id;
     $depart = Department::findOrFail($department_id);
-    return view('page.manage.sub.exam.pageexam.questionadd', compact('subs', 'ques', 'typequs', 'lossen', 'depart'));
+    return view('page.manage.sub.exam.pageexam.examQ1.questionadd', compact('subs', 'ques', 'typequs', 'lossen', 'depart'));
   }
   public function questionadd($department_id, $subject_id)
   {
@@ -184,7 +185,7 @@ class ExamController extends Controller
 
     $department_id =   $subs->department_id;
     $depart = Department::findOrFail($department_id);
-    return view('page.manage.sub.exam.pageexam.import', compact('subs', 'ques', 'depart'));
+    return view('page.manage.sub.exam.pageexam.examQ1.import', compact('subs', 'ques', 'depart'));
   }
   public function create($department_id, $subject_id)
   {
@@ -195,7 +196,7 @@ class ExamController extends Controller
 
     $department_id =   $subs->department_id;
     $depart = Department::findOrFail($department_id);
-    return view('page.manage.sub.exam.pageexam.create', compact('subs', 'subject_id', 'typequs', 'lossen', 'depart'));
+    return view('page.manage.sub.exam.pageexam.examQ1.create', compact('subs', 'subject_id', 'typequs', 'lossen', 'depart'));
   }
 
 
@@ -222,7 +223,7 @@ class ExamController extends Controller
     $ques->question_id = $newquestionId;
     $ques->question_type = $request->question_type;
     $ques->question_status = $request->input('question_status', 0);
-
+    $ques->exam_type = 0 ;
     libxml_use_internal_errors(true);
     if (!file_exists(public_path('/upload/Que/ck/'))) {
       mkdir(public_path('/upload/Que/ck/'), 0755, true);
@@ -626,7 +627,7 @@ class ExamController extends Controller
     $subs = CourseSubject::findOrFail($subject_id);
     $department_id =   $subs->department_id;
     $depart = Department::findOrFail($department_id);
-    return view('page.manage.sub.exam.pageexam.edit', compact('typequs', 'lossen', 'ques', 'depart', 'subs'));
+    return view('page.manage.sub.exam.pageexam.examQ1.edit', compact('typequs', 'lossen', 'ques', 'depart', 'subs'));
   }
 
   public function update(Request $request, $department_id, $subject_id, $question_id)

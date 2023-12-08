@@ -14,6 +14,7 @@ use Illuminate\Http\Request;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Exports\UsersExport;
 use App\Imports\CouseImport;
+use App\Imports\QuestionsImport2Class;
 use App\Imports\QuestionsImportClass;
 use App\Imports\SchoolDpimportClass;
 use App\Imports\UserAlldepartClass;
@@ -109,7 +110,7 @@ class ExcelController extends Controller
                             $explainquestion = null;
                             $lessonId = 0;
                             $question_level = 0;
-
+                            $exam_type = 0;
                             $newQuestion = new Question([
                                 'question_id' => $lastQuestionId + 1,
                                 'question' => $row[1],
@@ -118,7 +119,7 @@ class ExcelController extends Controller
                                 'choice3' => isset($row[4]) ? $row[4] : null,
                                 'choice4' => isset($row[5]) ? $row[5] : null,
                                 'choice5' => isset($row[6]) ? $row[6] : null,
-                                'answer' => '["'.strval($row[7]).'"]',
+                                'answer' => '["' . strval($row[7]) . '"]',
                                 'explain' => $row[8],
                                 'choice6' => $Choice6,
                                 'choice7' => $Choice7,
@@ -132,6 +133,86 @@ class ExcelController extends Controller
                                 'lesson_id' => $lessonId,
                                 'subject_id' => $subject_id,
                                 'question_level' => $question_level,
+                                'exam_type' => $exam_type,
+                            ]);
+
+                            $newQuestion->save();
+                        }
+                    }
+
+
+                    return response()->json(['message' => 'Import successfully'], 200);
+                } else {
+                    return response()->json(['error' => 'No data found in the imported file'], 400);
+                }
+            } catch (\Exception $e) {
+                return response()->json(['error' => 'Error importing data: ' . $e->getMessage()], 500);
+            }
+        } else {
+            return response()->json(['error' => 'No file uploaded'], 400);
+        }
+    }
+    public function Questionimport2(Request $request, $department_id, $subject_id)
+    {
+        $questionsImport = new QuestionsImport2Class($subject_id);
+
+        if ($request->hasFile('fileexcel')) {
+            try {
+                $importedData = [];
+                $importedData = Excel::toArray($questionsImport, $request->file('fileexcel'));
+                if (count($importedData) > 0 && count($importedData[0]) > 0) {
+                    // มีข้อมูลที่นำเข้า
+                    foreach ($importedData[0] as $row) {
+                        // เช็คว่าข้อมูลในแต่ละคอลัมน์ของ $row ถูกต้องหรือไม่
+                        if ($row[0] == 'ข้อที่') {
+                            continue;
+                        }
+                        // ข้อมูลถูกต้อง
+                        if ($row[0] >= 1) {
+                            // บันทึกข้อมูลเฉพาะเมื่อ $row[0] มากกว่า 2
+                            $lastQuestionId = Question::max('question_id');
+                            $questionType = 1;
+                            $questionStatus = 1;
+                            $score = 1;
+                            $numChoice = count(array_filter([
+                                $row[2] !== '' ? $row[2] : null,
+                                $row[3] !== '' ? $row[3] : null,
+                                $row[4] !== '' ? $row[4] : null,
+                                $row[5] !== '' ? $row[5] : null,
+                                $row[6] !== '' ? $row[6] : null,
+                            ]));
+
+                            $Choice6 = null;
+                            $Choice7 = null;
+                            $Choice8 = null;
+                            $ordering = null;
+                            $explainquestion = null;
+                            $lessonId = 0;
+                            $question_level = 0;
+                            $exam_type = 5;
+                            $newQuestion = new Question([
+                                'question_id' => $lastQuestionId + 1,
+                                'question' => $row[1],
+                                'choice1' => isset($row[2]) ? $row[2] : null,
+                                'choice2' => isset($row[3]) ? $row[3] : null,
+                                'choice3' => isset($row[4]) ? $row[4] : null,
+                                'choice4' => isset($row[5]) ? $row[5] : null,
+                                'choice5' => isset($row[6]) ? $row[6] : null,
+                                'answer' => '["' . strval($row[7]) . '"]',
+                                'explain' => $row[8],
+                                'choice6' => $Choice6,
+                                'choice7' => $Choice7,
+                                'choice8' => $Choice8,
+                                'question_type' => $questionType,
+                                'question_status' => $questionStatus,
+                                'score' => $score,
+                                'numchoice' => $numChoice,
+                                'ordering' => $ordering,
+                                'explainquestion' => $explainquestion,
+                                'lesson_id' => $lessonId,
+                                'subject_id' => $subject_id,
+                                'question_level' => $question_level,
+                                'exam_type' => $exam_type,
                             ]);
 
                             $newQuestion->save();
@@ -563,7 +644,7 @@ class ExcelController extends Controller
     }
 
 
-    public function UsersDepartAllImport(Request $request,$school_code, $department_id)
+    public function UsersDepartAllImport(Request $request, $school_code, $department_id)
     {
         $UserAlldepartClass = new UserAlldepartClass($department_id);
 

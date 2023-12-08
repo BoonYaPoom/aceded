@@ -16,7 +16,7 @@
             toastr.success("{{ Session::get('message') }}");
         </script>
     @endif
-    <form action="{{ route('update_question', [$depart,$subs, 'question_id' => $ques]) }}" method="post"
+    <form action="{{ route('update_question3', [$depart,$subs, 'question_id' => $ques]) }}" method="post"
         enctype="multipart/form-data">
         @csrf
         @method('PUT')
@@ -77,10 +77,10 @@
 
                         <!-- .form-group -->
                         <div class="form-group">
-                            <label class="control-label" for="lesson_id">หมวดข้อสอบ</label> <select id="lesson_id"
-                                name="lesson_id" class="form-control" data-toggle="select2" data-placeholder="หมวดข้อสอบ"
+                            <label class="control-label" for="lesson_id">หมวดแบบฝึกหัด</label> <select id="lesson_id"
+                                name="lesson_id" class="form-control" data-toggle="select2" data-placeholder="หมวดแบบฝึกหัด"
                                 data-allow-clear="false">
-                                <option value="0" selected>ข้อสอบ </option>
+                                <option value="0" selected>แบบฝึกหัด </option>
 
                                 @foreach ($lossen as $lession)
                                     <option value="{{ $lession->lesson_id }}"
