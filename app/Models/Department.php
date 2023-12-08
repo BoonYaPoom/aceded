@@ -71,4 +71,8 @@ class Department extends Model
       {
           return $this->hasMany(School::class, 'department_id');
       }
+      public function ExtenderDe()
+      {
+          return $this->hasMany(UserExtender::class,'department');
+      }
 }

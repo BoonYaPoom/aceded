@@ -194,9 +194,10 @@ class DepartUsersController extends Controller
     public function createUser($department_id)
     {
         $depart = Department::findOrFail($department_id);
+        $extenders = $depart->ExtenderDe()->get();
         $role = UserRole::all();
-
-        return view('layouts.department.item.data.UserAdmin.add.add_umsform', compact('depart', 'role'));
+      
+        return view('layouts.department.item.data.UserAdmin.add.add_umsform', compact('depart', 'role','extenders'));
     }
 
     public function storeUser(Request $request, $department_id)
