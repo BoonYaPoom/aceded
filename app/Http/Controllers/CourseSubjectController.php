@@ -225,17 +225,16 @@ class CourseSubjectController extends Controller
             $sur1->save();
 
             DB::commit();
+            return redirect()->route('suppage', ['department_id' => $department_id])->with('message', 'CourseSub บันทึกข้อมูลสำเร็จ');
+    
         } catch (\Exception $e) {
 
             DB::rollBack();
 
             return response()->view('error.error-500', [], 500);
         }
-        return redirect()->route('suppage', ['department_id' => $department_id])->with('message', 'CourseSub บันทึกข้อมูลสำเร็จ');
+        
     }
-
-
-
 
     public function edit($department_id, $subject_id)
     {

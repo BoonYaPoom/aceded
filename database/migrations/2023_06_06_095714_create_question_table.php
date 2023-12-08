@@ -35,6 +35,7 @@ return new class extends Migration
             $table->integer('subject_id');
             $table->string('explainquestion', 400)->nullable()->collation('utf8_general_ci');
             $table->string('question_level', 1)->nullable()->collation('utf8_general_ci');
+            $table->string('exam_type', 1)->nullable()->collation('utf8_general_ci');
         });
     }
 

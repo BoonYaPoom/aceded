@@ -16,13 +16,13 @@
             toastr.success("{{ Session::get('message') }}");
         </script>
     @endif
-    <form action="{{ route('add_questionform', [$depart,'subject_id' => $subject_id]) }}" method="post" enctype="multipart/form-data">
+    <form action="{{ route('add_questionform3', [$depart,'subject_id' => $subject_id]) }}" method="post" enctype="multipart/form-data">
         @csrf
 
                     <!-- .card-header -->
                     <div class="card-header bg-muted"> <a
-                            href="{{ route('pagequess', [$depart,$subject_id]) }}"
-                            style="text-decoration: underline;">จัดการข้อสอบ</a></div>
+                            href="{{ route('pagequess3', [$depart,$subject_id]) }}"
+                            style="text-decoration: underline;">จัดการคลังแบบฝึกหัด</a></div>
                     <!-- /.card-header -->
                     <!-- .nav-scroller -->
 
@@ -76,10 +76,10 @@
 
                         <!-- .form-group -->
                         <div class="form-group">
-                            <label class="control-label" for="lesson_id">หมวดข้อสอบ</label> <select id="lesson_id"
-                                name="lesson_id" class="form-control" data-toggle="select2" data-placeholder="หมวดข้อสอบ"
+                            <label class="control-label" for="lesson_id">หมวดแบบฝึกหัด</label> <select id="lesson_id"
+                                name="lesson_id" class="form-control" data-toggle="select2" data-placeholder="หมวดแบบฝึกหัด"
                                 data-allow-clear="false">
-                                <option value="0" selected  >ข้อสอบ </option>
+                                <option value="0" selected  >แบบฝึกหัด </option>
 
                                 @foreach ($lossen as $lession)
                                     <option value="{{ $lession->lesson_id }}" >{{ $lession->lesson_th }} </option>
