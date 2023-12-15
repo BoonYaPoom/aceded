@@ -226,7 +226,7 @@ class SubmitController extends Controller
         $inva->message  = 'คุณได้รับสิทธิ์ ในการเป็น Admin สถานศึกษารหัสผ่าน username ='. $mit->school_code . ' ' . 'password ='. $mit->school_code;
         $inva->activity_date  = now();
         $inva->status  = 1;
-        $inva->activity_type  = null;
+        $inva->activity_type  = 7;
         $inva->from_id  = 0;
         $inva->save();
 
@@ -247,7 +247,7 @@ class SubmitController extends Controller
         $inva->message  = 'คุณไม่ได้รับสิทธิ์ในการเป็น admin สถานศึกษา';
         $inva->activity_date  = now();
         $inva->status  = 1;
-        $inva->activity_type  = null;
+        $inva->activity_type  = 7;
         $inva->from_id  = 0;
         $inva->save();
 

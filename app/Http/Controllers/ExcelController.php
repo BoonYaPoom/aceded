@@ -378,9 +378,7 @@ class ExcelController extends Controller
                             $uiduserdepartment_id = UserDepartment::max('user_department_id') ?? 0;
                             $user_role = 5;
                             $prefix = null;
-                            $gender = null;
                             $per_id = null;
-
                             $permission = null;
                             $ldap = 0;
                             $userstatus = 1;
@@ -428,7 +426,7 @@ class ExcelController extends Controller
                                 'email' => $row[6],
                                 'citizen_id' =>   $row[7],
                                 'prefix' =>  $prefix,
-                                'gender' => $gender,
+                                'gender' => $row[8] ?? null,
                                 'user_role' => $user_role,
                                 'per_id' => $per_id,
                                 'department_id' => $department_id,
@@ -476,6 +474,26 @@ class ExcelController extends Controller
                                 'department_id' => $department_id,
 
                             ]);
+                            if ($department_id == 1) {
+                                $UserDepartment2 =  new UserDepartment([
+
+                                    'user_department_id' =>  $uiduserdepartment_id + 2,
+                                    'user_id' =>     $user_idplus + 1,
+                                    'department_id' => 2,
+
+                                ]);
+                                $UserDepartment2->save();
+                            } elseif ($department_id == 2) {
+                                $UserDepartment3 =  new UserDepartment([
+
+                                    'user_department_id' =>  $uiduserdepartment_id + 2,
+                                    'user_id' =>     $user_idplus + 1,
+                                    'department_id' => 3,
+
+                                ]);
+                                $UserDepartment3->save();
+                            }
+
                             $UserDepartment->save();
                             $newUsers->save();
                         }
@@ -577,7 +595,6 @@ class ExcelController extends Controller
                                 'user_position' =>  $user_position,
                                 'workplace' =>  $workplace,
                                 'telephone' =>  $telephone,
-
                                 'socialnetwork' =>  $socialnetwork,
                                 'experience' =>  $experience,
                                 'recommened' => $recommened,

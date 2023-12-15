@@ -23,7 +23,7 @@ class ApiController extends Controller
 
 
         $query = DB::table('users');
-        $recordTotal = $recordsFiltered = 1000;
+        $recordTotal = $recordsFiltered = $query->count();
         $usersapi = $query->take($pageLength)->skip($skip)->get();
 
 

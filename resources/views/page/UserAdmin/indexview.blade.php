@@ -95,7 +95,7 @@
                                         <input type="file" class="form-control" id="uploaduser" name="fileexcel"
                                             accept=".xlsx" required>
                                         <small class="form-text text-muted"><a
-                                                href="https://1drv.ms/x/s!Aneojfnh1p7QgepezApvu9n8MZCmBg?e=8RLia9"
+                                                 href="{{asset('uploads/ข้อสอบ.xlsx')}}"
                                                 target="_blank"> ไฟล์ตัวอย่าง
                                                 (.xlsx)</a>
                                         </small>

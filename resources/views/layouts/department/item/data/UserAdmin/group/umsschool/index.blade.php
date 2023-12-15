@@ -3,30 +3,30 @@
     <!-- .page-inner -->
 
     @if (Session::has('message'))
-    <script>
-        toastr.options = {
-            "progressBar": true,
-            "positionClass": 'toast-top-full-width',
-            "extendedTimeOut ": 0,
-            "timeOut": 3000,
-            "fadeOut": 250,
-            "fadeIn": 250,
-            "positionClass": 'toast-top-right',
+        <script>
+            toastr.options = {
+                "progressBar": true,
+                "positionClass": 'toast-top-full-width',
+                "extendedTimeOut ": 0,
+                "timeOut": 3000,
+                "fadeOut": 250,
+                "fadeIn": 250,
+                "positionClass": 'toast-top-right',
 
 
-        }
-        toastr.success("{{ Session::get('message') }}");
-    </script>
-@endif
+            }
+            toastr.success("{{ Session::get('message') }}");
+        </script>
+    @endif
     <div class="page-inner">
         <!-- .page-section -->
         <div class="page-section">
             <!-- .card -->
             <div class="card card-fluid">
                 <!-- .card-header -->
-                <div class="card-header bg-muted"><a
-                        href="{{ route('DPUserManage', [$depart]) }}">ผู้ใช้งาน</a> / <a
-                        href="{{ route('umsschooldepartment', [$depart]) }}">จัดการสถานศึกษาของ ระดับ {{$depart->name_th}}</a>
+                <div class="card-header bg-muted"><a href="{{ route('DPUserManage', [$depart]) }}">ผู้ใช้งาน</a> / <a
+                        href="{{ route('umsschooldepartment', [$depart]) }}">จัดการสถานศึกษาของ ระดับ
+                        {{ $depart->name_th }}</a>
                 </div>
                 <!-- .card-body -->
                 <div class="card-body">
@@ -56,7 +56,6 @@
                                         </select>
 
                                     </label>
-
                                 @endif
                             </div>
 
@@ -92,18 +91,18 @@
                                         <td>{{ $scho->school_name }}</td>
                                         <td>{{ $proviUser }}</td>
                                         <td class="text-center"><a
-                                                href="{{ route('umsschooluserDepart', ['department_id' => $depart, 'school_code' => $scho->school_code]) }}">
+                                                href="{{ route('umsschooluserDepart', ['department_id' => $depart, 'school_code' => $scho->school_code ?? 'default_value']) }}">
                                                 <i class="fas fa-users"></i>
 
                                             </a></td>
 
                                         <td class="text-center"><a
-                                                href="{{ route('umsschooluserDepart', ['department_id' => $depart, 'school_code' => $scho->school_code]) }}"><i
+                                                href="{{ route('umsschooluserDepart', ['department_id' => $depart, 'school_code' => $scho->school_code ?? 'default_value']) }}"><i
                                                     class="fas fa-user-plus"></i></a></td>
 
                                         <td class="text-center">
                                             @if ($data->user_role == 1 || $data->user_role == 7 || $data->user_role == 8)
-                                                <a href="{{ route('editschoolDepart', ['department_id' => $depart, 'school_id' => $scho->school_id]) }}"
+                                                <a href="{{ route('editschoolDepart', ['department_id' => $depart, 'school_id' => $scho->school_id ]) }}"
                                                     data-toggle="tooltip" title="แก้ไข"><i
                                                         class="far fa-edit fa-lg text-success mr-3"></i></a>
                                                 <a href="{{ route('deleteschoolDepart', ['school_id' => $scho->school_id]) }}"
@@ -111,7 +110,7 @@
                                                     data-toggle="tooltip" title="ลบ">
                                                     <i class="fas fa-trash-alt fa-lg text-warning "></i></a>
                                             @else
-                                                <a href="{{ route('editschoolDepart', [ $depart,'school_id' => $scho->school_id]) }}"
+                                                <a href="{{ route('editschoolDepart', [$depart, 'school_id' => $scho->school_id]) }}"
                                                     data-toggle="tooltip" title="แก้ไข"><i
                                                         class="far fa-edit fa-lg text-success mr-3"></i></a>
                                             @endif
