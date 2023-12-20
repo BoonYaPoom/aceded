@@ -26,7 +26,6 @@ use App\Http\Controllers\DepartReportController;
 use App\Http\Controllers\DepartUsersController;
 use App\Http\Controllers\EditManageUserController;
 use App\Http\Controllers\EditProfileController;
-use App\Http\Controllers\Exam2Controller;
 use App\Http\Controllers\ExamController;
 use App\Http\Controllers\ExcelController;
 use App\Http\Controllers\GenaralController;
@@ -40,7 +39,6 @@ use App\Http\Controllers\NavController;
 use App\Http\Controllers\PDFcreateController;
 use App\Http\Controllers\PersonController;
 use App\Http\Controllers\ProviDepartUserController;
-use App\Http\Controllers\Question2Controller;
 use App\Http\Controllers\ReportAllController;
 use App\Http\Controllers\ReportJsonController;
 use App\Http\Controllers\RolemanageController;
@@ -411,7 +409,6 @@ Route::group(['middleware' => 'IsLoggedIn'], function () {
                     Route::prefix('exam')->group(function () {
                         Route::get('{department_id}/{subject_id}/{exam_id}/examreport', [ScoreController::class, 'examlogpage'])->name('examlogpage');
                         Route::post('{department_id}/{subject_id}/Questionimport', [ExcelController::class, 'Questionimport'])->name('Questionimport');
-                        Route::post('{department_id}/{subject_id}/Questionimport2', [ExcelController::class, 'Questionimport2'])->name('Questionimport2');
 
                         Route::get('{department_id}/{subject_id}/add_examform', [ExamController::class, 'createexam'])->name('add_examform');
                         Route::post('{department_id}/{subject_id}/store_examform', [ExamController::class, 'storeexam'])->name('store_examform');
@@ -426,22 +423,6 @@ Route::group(['middleware' => 'IsLoggedIn'], function () {
                         Route::get('{department_id}/{subject_id}/edit_question/{question_id}', [ExamController::class, 'edit'])->name('edit_question');
                         Route::put('{department_id}/{subject_id}/update_question/{question_id}', [ExamController::class, 'update'])->name('update_question');
                         Route::post('{department_id}/{subject_id}/add_questionform', [ExamController::class, 'store'])->name('add_questionform');
-
-
-
-                        Route::get('{department_id}/{subject_id}/add_examform3', [Exam2Controller::class, 'createexam'])->name('add_examform3');
-                        Route::post('{department_id}/{subject_id}/store_examform3', [Exam2Controller::class, 'storeexam'])->name('store_examform3');
-                        Route::get('{department_id}/{subject_id}/edit_examform3/{exam_id}', [Exam2Controller::class, 'edit_examform'])->name('edit_examform3');
-                        Route::put('{department_id}/{subject_id}/update_examform3/{exam_id}', [Exam2Controller::class, 'update_examform'])->name('update_examform3');
-
-                        Route::get('{department_id}/{subject_id}/pagequess3', [Question2Controller::class, 'pagequess'])->name('pagequess3');
-                        Route::get('{department_id}/{subject_id}/questionform3', [Question2Controller::class, 'create'])->name('questionform3');
-                        Route::get('{department_id}/{subject_id}/questionadd3', [Question2Controller::class, 'questionadd'])->name('questionadd3');
-                        Route::get('{department_id}/{subject_id}/edit_question3/{question_id}', [Question2Controller::class, 'edit'])->name('edit_question3');
-                        Route::put('{department_id}/{subject_id}/update_question3/{question_id}', [Question2Controller::class, 'update'])->name('update_question3');
-                        Route::post('{department_id}/{subject_id}/add_questionform3', [Question2Controller::class, 'store'])->name('add_questionform3');
-
-                   
                     });
                     Route::get('/booktable', [BookController::class, 'table'])->name('book.table');
                 });
@@ -662,7 +643,7 @@ Route::group(['middleware' => 'IsLoggedIn'], function () {
                 Route::get('/changeStatusLearner', [CourseClassAddController::class, 'changeStatusLearner'])->name('changeStatusLearners');
                 Route::get('/destroySelectedUsers/{learner_id}', [CourseClassAddController::class, 'destroy'])->name('destroySelectedUsers');
 
-                Route::get('/courseform_destroy/{course_id}', [CourseController::class, 'destroy'])->name('courseform_destroy');
+                Route::get('{department_id}/courseform_destroy/{course_id}', [CourseController::class, 'destroy'])->name('courseform_destroy');
                 Route::get('/changeStatusCourse', [CourseController::class, 'changeStatus'])->name('changeStatusCourse');
                 Route::get('{department_id}/delete_groupform/{group_id}', [CourseGroupController::class, 'destroy'])->name('deletecour');
                 Route::get('/changeStatusGroup', [CourseGroupController::class, 'changeStatus'])->name('changeStatusGroup');

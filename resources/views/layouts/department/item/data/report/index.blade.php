@@ -88,7 +88,7 @@
                             <div
                                 class="list-group-item justify-content-between align-items-center 
                             {{ Str::startsWith(request()->url(), route('Departtable', ['department_id' => $depart->department_id])) || request()->is('table', 'table/*') ? ' bg-muted' : '' }}">
-                                <span><i class="fas fa-chart-bar text-teal mr-2"></i> <a href="{{ route('Departtable', ['department_id' => $depart->department_id]) }}"
+                                <span><i class="fas fa-chart-bar text-teal mr-2"></i> <a href="{{ route('table', ['department_id' => $depart->department_id]) }}"
                                         class="small">รายงานเชิงตาราง</a></span>
                             </div>
                         </div>

@@ -101,7 +101,7 @@
                     </div><!-- /.card-body -->
                 </div><!-- /.card -->
             </div><!-- /grid column -->
-            <div class="col-12 col-lg-12 col-xl-6">
+            {{-- <div class="col-12 col-lg-12 col-xl-6">
                 <!-- .card -->
                 <div class="card card-fluid">
                     <!-- .card-body -->
@@ -113,7 +113,7 @@
                         </div>
                     </div><!-- /.card-body -->
                 </div><!-- /.card -->
-            </div><!-- /grid column -->
+            </div><!-- /grid column --> --}}
         </div><!-- .page-title-bar -->
 
         @php
@@ -158,7 +158,7 @@
                     text: 'จำนวนผู้เรียนทั้งหมด'
                 },
                 subtitle: {
-                    text: 'รวมทุกหลักสูตร 10 อันดับแรก'
+                    text: 'รายงานจำนวนผู้เรียนทั้งหมด'
                 },
                 xAxis: {
                     type: 'category'

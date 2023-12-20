@@ -28,7 +28,7 @@
                             สื่อเสริม</a>
                         <a class="nav-link {{ Str::startsWith(request()->url(), route('exampage', [$depart, $subs->subject_id])) || request()->is('exam', 'exam/*') ? ' active text-info' : '' }} "
                             href="{{ route('exampage', [$depart, $subs->subject_id]) }}"><i class="fas fa-list-alt"></i>
-                            แบบฝึกหัด/แบบทดสอบ</a>
+                            ข้อสอบ</a>
                         <a class="nav-link {{ Str::startsWith(request()->url(), route('activitypage', [$depart, $subs->subject_id])) ||
                         request()->is('activity', 'activity/*')
                             ? ' active text-info'

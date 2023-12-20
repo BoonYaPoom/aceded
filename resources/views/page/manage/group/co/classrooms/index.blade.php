@@ -29,7 +29,7 @@
                     <div class="nav nav-tabs bg-muted h3">
                         <a class="nav-link active text-info" href="{{ route('class_page', [$depart,'course_id' => $cour]) }}"><i
                                 class="fas fa-users"></i>
-                            ผู้เรียน {{$depart->name_th}}  </a>
+                            ผู้เรียน รายวิชาเพิ่มเติม การป้องกันการทุจริต ระดับปฐมวัย </a>
                     </div><!-- /.nav -->
                 </div><!-- /.nav-scroller -->
               

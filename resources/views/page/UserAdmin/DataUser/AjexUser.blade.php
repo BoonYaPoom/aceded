@@ -30,7 +30,7 @@
 
 
                         var Admina =
-                            ' <a data-toggle="modal" data-target="" title="กำหนดสิทธิ์"><i class="fas fa-user-shield text-bg-muted "></i></a>';
+                            ' <a data-toggle="modal" data-target="" title="กำหนดสิทธิ์"><i class="fas fa-user-shield text-bg-success "></i></a>';
                         var switcherHtml =
                             '<label class="switcher-control switcher-control-success switcher-control-lg">' +
                             '<input type="checkbox" class="switcher-input switcher-edit" ' + (

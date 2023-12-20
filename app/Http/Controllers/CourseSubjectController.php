@@ -110,9 +110,9 @@ class CourseSubjectController extends Controller
                 $selectedTeachers = $request->input('teacher', []);
                 $Users4 = \App\Models\Users::all()->where('user_role', 3);
                 $maxCourseTeacherId = CourseTeacher::max('teacher_id');
-          
-    
-           
+
+
+
                 foreach ($Users4 as $teacherId) {
                     $newCourseTeacherId = $maxCourseTeacherId + 1;
                     $teach = new CourseTeacher;
@@ -157,9 +157,10 @@ class CourseSubjectController extends Controller
             // ... กำหนดค่าอื่นๆที่ต้องการในตาราง 'exam'
             $exam1->save();
 
+            // สร้างข้อมูลอัตโนมัติในตาราง 'exam' โดยมี examtype เป็น 2
             $newExamId++;
             $exam2 = new Exam;
-            $exam2->exam_id = $newExamId ;
+            $exam2->exam_id = $newExamId;
             $exam2->exam_th = 'แบบทดสอบหลังเรียน';
             $exam2->exam_en = 'Posttest';
             $exam2->exam_type = 2;
@@ -185,6 +186,7 @@ class CourseSubjectController extends Controller
             $exam2->subject_id = $subs->subject_id;
             // ... กำหนดค่าอื่นๆที่ต้องการในตาราง 'exam'
             $exam2->save();
+
 
 
             $maxSurveyId = Survey::max('survey_id');
@@ -226,15 +228,16 @@ class CourseSubjectController extends Controller
 
             DB::commit();
             return redirect()->route('suppage', ['department_id' => $department_id])->with('message', 'CourseSub บันทึกข้อมูลสำเร็จ');
-    
         } catch (\Exception $e) {
 
             DB::rollBack();
 
             return response()->view('error.error-500', [], 500);
         }
-        
     }
+
+
+
 
     public function edit($department_id, $subject_id)
     {

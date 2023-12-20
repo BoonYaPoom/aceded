@@ -17,7 +17,7 @@
         </script>
     @endif
 
-    <form action="{{ route('store_examform3', [$depart, 'subject_id' => $subs]) }}" method="post"
+    <form action="{{ route('store_examform', [$depart, 'subject_id' => $subs]) }}" method="post"
         enctype="multipart/form-data">
         @csrf
         <div class="card-body">
@@ -273,39 +273,10 @@
             </div>
 
         </div>
-        @include('page.manage.sub.exam.dataexam.exam3.Model.modelExam')
+        @include('page.manage.sub.exam.Model.modelExam')
 
 
-        <script>
-            $(function() {
-                $("#checkall").click(function() {
-                    $('.custom-control-input').prop('checked', $(this).prop('checked'));
-                });
-
-                $('#examselectdata').click(function(e) {
-                    e.preventDefault();
-                    var all_qusr = [];
-
-                    $("input:checkbox[name='exam_data[]']:checked").each(function() {
-                        all_qusr.push($(this).val());
-                    });
-
-                    var all_less = [];
-                    $('select[name^="randomdata"]').each(function(index) {
-                        var selectedValue = $(this).val();
-                        var selectId = $(this).attr('id');
-                        var data = {
-                            [selectId]: selectedValue
-                        };
-                        all_less.push(data);
-                    });
-
-                    console.log(all_qusr);
-                    console.log(all_less);
-                });
-            });
-        </script>
-
+     
         <script>
             var limittimeCheckbox = document.getElementById('limittime');
             var sethourInput = document.getElementById('sethour');

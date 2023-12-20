@@ -33,9 +33,9 @@
                                         @endforeach
                                     </select>
                                     @error('user_role')
-                                        <div class="col-md-9 mb-3">
-                                            <span class="badge badge-warning">{{ $message }}</span>
-                                        </div>
+                                    <div class="col-md-9 mb-3">
+                                        <span class="badge badge-warning">{{ $message }}</span>
+                                    </div>
                                     @enderror
                                 </div>
                             </div>
@@ -55,9 +55,9 @@
                             </div>
                             <!-- /form row -->
                             @error('username')
-                                <div class="col-md-9 mb-3">
-                                    <span class="badge badge-warning">{{ $message }}</span>
-                                </div>
+                            <div class="col-md-9 mb-3">
+                                <span class="badge badge-warning">{{ $message }}</span>
+                            </div>
                             @enderror
                             <!-- form row -->
                             <div class="form-row">
@@ -70,9 +70,9 @@
                                 </div>
                             </div>
                             @error('password')
-                                <div class="col-md-9 mb-3">
-                                    <span class="badge badge-warning">{{ $message }}</span>
-                                </div>
+                            <div class="col-md-9 mb-3">
+                                <span class="badge badge-warning">{{ $message }}</span>
+                            </div>
                             @enderror
                             <!-- /form row -->
                             <div class="form-row ">
@@ -262,11 +262,9 @@
                                 <div class="col-md-9 mb-3">
                                     <input type="text" class="form-control number" id="mobile" name="mobile"
                                         value="" placeholder="เบอร์โทรศัพท์มือถือ" maxlength="10">
-                                    <small class="form-text text-muted">เบอร์โทรศัพท์มือถือ 10 หลัก</small>
                                 </div>
-
                             </div>
-
+                            <small class="form-text text-muted">เบอร์โทรศัพท์มือถือ 10 หลัก</small>
                             <!-- /form row -->
 
                             <!-- form row -->
@@ -360,32 +358,98 @@
                                     }
                                 });
                             </script>
-
-                            <div class="form-row " id="user_role">
-                                <label for="user_role" class="col-md-2">ระดับชั้นเรียน <span
-                                        class="badge badge-warning">Required</span> </label>
+                            <!-- form row -->
+                            <div class="form-row " id="set_pos_name">
+                                <label for="pos_name" class="col-md-2">ตำแหน่ง</label>
                                 <div class="col-md-9 mb-3">
-                                    <select id="user_role" name="user_role" class="form-control form-control-sm"
-                                        data-toggle="select2" data-allow-clear="false">
-
-                                        <option value="0"selected disabled>เลือกหน่วยงาน</option>
-                                        @foreach ($extenders as $exte)
-                                            @if ($exte->status == 1)
-                                                @if ($exte->department_lv == 0)
-                                                    <option value="{{ $exte->extender_id }}">{{ $exte->content_name }}
-                                                    </option>
-                                                @endif
-                                            @endif
-                                        @endforeach
-                                    </select>
-                                    @error('user_role')
-                                        <div class="col-md-9 mb-3">
-                                            <span class="badge badge-warning">{{ $message }}</span>
-                                        </div>
-                                    @enderror
+                                    <input type="text" class="form-control " id="pos_name" name="pos_name"
+                                        value="" placeholder="ตำแหน่ง">
+                                    <!-- <select id="pos_namexx" name="pos_namexx" class="form-control form-control-sm" data-toggle="select2" data-allow-clear="false">
+                                                                                                        </select> -->
                                 </div>
                             </div>
+                            <!--/form row -->
+                            <div class="form-row " id="user_affiliation">
+                                <label for="user_affiliation" class="col-md-2">สังกัด</label>
+                                <div class="col-md-9 mb-3">
+                                    <input type="text" class="form-control " id="user_affiliation"
+                                        name="user_affiliation" value="" placeholder="สังกัด">
 
+                                </div>
+                            </div>
+                            <!-- form row -->
+                            <div class="form-row d-none " id="set_pos_level">
+                                <label for="mobile" class="col-md-2">ระดับตำแหน่ง</label>
+                                <div class="col-md-9 mb-3">
+                                    <select id="pos_level" name="pos_level" class="form-control form-control-sm"
+                                        data-toggle="select2" data-allow-clear="false">
+                                        <option value="0">โปรดเลือกระดับตำแหน่ง</option>
+                                        <option value="1"> ปฏิบัติงาน </option>
+                                        <option value="2"> ชำนาญงาน </option>
+                                        <option value="3"> อาวุโส </option>
+                                        <option value="4"> ทักษะพิเศษ </option>
+                                        <option value="5"> ปฏิบัติการ </option>
+                                        <option value="6"> ชำนาญการ </option>
+                                        <option value="7"> ชำนาญการพิเศษ </option>
+                                        <option value="8"> เชี่ยวชาญ </option>
+                                        <option value="9"> ทรงคุณวุฒิ </option>
+                                        <option value="10"> อำนวยการต้น </option>
+                                        <option value="11"> อำนวยการสูง </option>
+                                        <option value="12"> บริหารต้น </option>
+                                        <option value="13"> บริหารสูง </option>
+                                    </select>
+                                </div>
+                            </div>
+                            <!-- /form row -->
+
+                            <!-- form row -->
+                            <div class="form-row d-none " id="set_sector_id">
+                                <label for="sector_id" class="col-md-2">ส่วนกลาง / ต่างจังหวัด</label>
+                                <div class="col-md-9 mb-3">
+                                    <select id="sector_id" name="sector_id" class="form-control form-control-sm"
+                                        data-toggle="select2" data-allow-clear="false">
+                                        <option value="0">โปรดเลือกส่วนกลาง/ต่างจังหวัด</option>
+                                        <option value="1"> ภาค1 </option>
+                                        <option value="2"> ภาค2 </option>
+                                        <option value="3"> ภาค3 </option>
+                                        <option value="4"> ภาค4 </option>
+                                        <option value="5"> ภาค5 </option>
+                                        <option value="6"> ภาค6 </option>
+                                        <option value="7"> ภาค7 </option>
+                                        <option value="8"> ภาค8 </option>
+                                        <option value="9"> ภาค9 </option>
+                                        <option value="10"> ส่วนกลาง </option>
+                                    </select>
+                                </div>
+                            </div>
+                            <!-- /form row -->
+
+                            <!-- form row -->
+                            <div class="form-row d-none " id="set_office_id">
+                                <label for="office_id" class="col-md-2">สำนักงาน</label>
+                                <div class="col-md-9 mb-3">
+                                    <select id="office_id" name="office_id" class="form-control form-control-sm"
+                                        data-toggle="select2" data-allow-clear="false">
+                                        <option value="0">โปรดเลือกสำนักงาน</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <!-- /form row -->
+
+                            <!-- form row -->
+                            <div class="form-row d-none">
+                                <label for="editflag" class="col-md-2">อนุญาตแก้ไขข้อมูลส่วนตัว</label>
+                                <div class="col-md-9 mb-3">
+                                    <label class="switcher-control switcher-control-success switcher-control-lg">
+                                        <input type="checkbox" class="switcher-input switcher-edit" value="1"
+                                            id="2d9ccf81cb655e2b71796f3083674343__users__editflag__user_id____1690788225"
+                                            name="editflag">
+                                        <span class="switcher-indicator"></span> <span class="switcher-label-on">ON</span>
+                                        <span class="switcher-label-off text-red">OFF</span>
+                                    </label>
+                                </div>
+                            </div>
+                            <!-- /form row -->
                         </div>
                         <div class="card-body">
                             <div class="form-actions">

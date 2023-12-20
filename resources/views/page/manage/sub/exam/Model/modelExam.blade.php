@@ -36,6 +36,33 @@
                                         <th class="align-middle" style="width:35%">หมวดหมู่</th>
                                     </tr>
                                 </thead>
+                                <script>
+                                    $(function() {
+
+
+                                        $('#examselectdata').click(function(e) {
+                                            e.preventDefault();
+                                            var all_qusr = [];
+
+                                            $("input:checkbox[name='exam_data[]']:checked").each(function() {
+                                                all_qusr.push($(this).val());
+                                            });
+
+                                            var all_less = [];
+                                            $('select[name^="randomdata"]').each(function(index) {
+                                                var selectedValue = $(this).val();
+                                                var selectId = $(this).attr('id');
+                                                var data = {
+                                                    [selectId]: selectedValue
+                                                };
+                                                all_less.push(data);
+                                            });
+
+                                            console.log(all_qusr);
+                                            console.log(all_less);
+                                        });
+                                    });
+                                </script>
 
                                 <tbody id="dataexam0" class="dataexam">
 
@@ -188,7 +215,7 @@
                             <script>
                                 $(document).ready(function() {
                                     var table = $('#exam0').DataTable({
-                            
+
                                         lengthChange: false,
                                         responsive: true,
                                         info: false,
@@ -201,14 +228,18 @@
                                                 first: "หน้าแรก",
                                                 last: "หน้าสุดท้าย",
                                                 previous: "ก่อนหน้า",
-                            
+
                                                 next: "ถัดไป"
                                             }
                                         },
-                            
+
                                     });
-                            
-                            
+                                    $("#checkall").click(function() {
+                                        var isChecked = $(this).prop('checked');
+                                        // ทำการตรวจสอบทุกรายการที่แสดงใน DataTables และกำหนดสถานะ checked
+                                        table.rows().nodes().to$().find('.custom-control-input').prop('checked', isChecked);
+                                    });
+
                                 });
                             </script>
                             <script>

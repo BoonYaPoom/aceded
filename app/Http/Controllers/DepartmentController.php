@@ -171,7 +171,6 @@ class DepartmentController extends Controller
     {
         #$depart = Department::where('name_short_en', $name_short_en)->firstOrFail();
         $depart  = Department::findOrFail($department_id);
-        $genaral  = $depart->GenDe()->where('department_id', $department_id)->get();
         $departmentLink = '';
 
         if ($from === 'lms') {
@@ -183,7 +182,7 @@ class DepartmentController extends Controller
         } elseif ($from === 'ums') {
             $departmentLink = route('departmentumspage');
         }
-        return view('layouts.department.edit', compact('depart', 'from', 'departmentLink','genaral'));
+        return view('layouts.department.edit', compact('depart', 'from', 'departmentLink'));
     }
     public function homede($department_id)
     {

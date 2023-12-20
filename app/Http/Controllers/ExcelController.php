@@ -110,7 +110,7 @@ class ExcelController extends Controller
                             $explainquestion = null;
                             $lessonId = 0;
                             $question_level = 0;
-                            $exam_type = 0;
+                          
                             $newQuestion = new Question([
                                 'question_id' => $lastQuestionId + 1,
                                 'question' => $row[1],
@@ -133,7 +133,7 @@ class ExcelController extends Controller
                                 'lesson_id' => $lessonId,
                                 'subject_id' => $subject_id,
                                 'question_level' => $question_level,
-                                'exam_type' => $exam_type,
+                         
                             ]);
 
                             $newQuestion->save();
@@ -189,7 +189,7 @@ class ExcelController extends Controller
                             $explainquestion = null;
                             $lessonId = 0;
                             $question_level = 0;
-                            $exam_type = 5;
+                       
                             $newQuestion = new Question([
                                 'question_id' => $lastQuestionId + 1,
                                 'question' => $row[1],
@@ -212,7 +212,7 @@ class ExcelController extends Controller
                                 'lesson_id' => $lessonId,
                                 'subject_id' => $subject_id,
                                 'question_level' => $question_level,
-                                'exam_type' => $exam_type,
+                          
                             ]);
 
                             $newQuestion->save();

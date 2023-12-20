@@ -131,7 +131,9 @@ try {
 <div class="wrapper fadeInDown">
     <div id="formContent">
         <!-- Tabs Titles -->
-
+        <h2 class="inactive underlineHover">
+            <a class="navbar-brand" href="{{ route('homelogin') }}">Sign In</a>
+        </h2>
 
         <h2 class="active">
             <a class="navbar-brand" href="{{ route('homeRegis') }}">Request</a>

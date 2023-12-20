@@ -18,12 +18,10 @@
     @endif
 
 
-    <div class="card-header bg-muted"> <i>คลังแบบทดสอบ</i></div>
+    <div class="card-header bg-muted"> <i>เพิ่มคลังข้อสอบ</i></div>
                 <div class="card-body">
                     <!-- .table-responsive -->
-                    <fieldset>
-                        <legend style="font-size: 20px;">คลังแบบทดสอบ</legend>
-                 
+
                     <div class="form-row mb-3">
                         <div class="col-md-9">
 
@@ -79,7 +77,6 @@
                                     $rowNumber = 0;
                                 @endphp
                                 @foreach ($ques->sortBy('question_id') as $item)
-                                @if ($item->exam_type == 0)
                                     @php
                                         $rowNumber++;
                                     @endphp
@@ -148,7 +145,6 @@
                                             </td>
                                         </tr><!-- /tr -->
                                     @endif
-                                    @endif
                                 @endforeach
                             </tbody><!-- /tbody -->
                             <script>
@@ -198,7 +194,6 @@
             
                         <!-- /floating action -->
                     </header><!-- /.page-title-bar -->
-                </fieldset>
                 </div><!-- /.card-body -->
          
 

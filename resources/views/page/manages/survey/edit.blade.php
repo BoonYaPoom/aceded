@@ -35,7 +35,9 @@
                             <textarea class="editor" data-placeholder="รายละเอียด" data-height="200" name="detail_th"
                                 value="{{ $sur->detail_th }}">{{ $sur->detail_th }}</textarea>
                         </div><!-- /.form-group -->
-            
+                        @error('detail_th')
+                            <span class="badge badge-danger">{{ $message }}</span>
+                        @enderror
                         <!-- .form-group -->
                         <div class="form-group d-none">
                             <label for="detail_en">รายละเอียด (อังกฤษ)</label>

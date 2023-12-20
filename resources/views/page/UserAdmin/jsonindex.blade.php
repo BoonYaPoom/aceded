@@ -296,19 +296,34 @@
                             <!-- tbody -->
                             <tbody>
                                 <!-- tr -->
-
-
+                                @php
+                                    $r = 0;
+                                @endphp
                                 @foreach ($usermanages->sortBy('user_id') as $item)
-                                @php
-                                    $user_roleadmin = $item->user_role == 1;
-                                @endphp
-                                @php
-                                    $statususerss = $item->userstatus == 0;
-                                @endphp
-                                @include('page.UserAdmin.DataUser.userAll')
-                                @include('page.UserAdmin.group.ModelUser.modelRole')
-                                @include('page.UserAdmin.group.ModelUser.modelPass')
-                            @endforeach
+                                    @php
+                                        $r++;
+                                    @endphp
+                                    @php
+                                        $user_roleadmin = $item->user_role == 1;
+                                    @endphp
+                                    @php
+                                        $statususerss = $item->userstatus == 0;
+                                    @endphp
+
+                                    @php
+                                        $clientPermissionModal = 'clientPermissionModal-' . $item->user_id;
+                                        $name_short_en = \App\Models\Department::where('department_id', $item->department_id)
+                                            ->pluck('name_en')
+                                            ->first();
+                                        $proviUser = \App\Models\Provinces::where('id', $item->province_id)
+                                            ->pluck('name_in_thai')
+                                            ->first();
+                                    @endphp
+                                    @include('page.UserAdmin.DataUser.userAll')
+                                    @include('page.UserAdmin.group.ModelUser.modelRole')
+                                    @include('page.UserAdmin.group.ModelUser.modelPass')
+                                @endforeach
+
                             </tbody><!-- /tbody -->
                         </table><!-- /.table -->
                     </div><!-- /.table-responsive -->

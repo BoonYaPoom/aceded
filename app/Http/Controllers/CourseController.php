@@ -216,7 +216,7 @@ class CourseController extends Controller
         }
 
         if ($cour->templete_certificate == 1) {
-            if (File::exists(public_path('uploads/cer03_0.png'))) {
+            if (File::exists(public_path('uploads/cer/CER1.png'))) {
                 // ตรวจสอบว่าไดเรกทอรีปลายทางสำหรับการบันทึกใหม่มีอยู่หรือไม่
                 $uploadDirectory = public_path('upload/Course/cert_custom/');
                 if (!File::exists($uploadDirectory)) {
@@ -225,14 +225,14 @@ class CourseController extends Controller
 
                 // กําหนดชื่อไฟล์ใหม่และคัดลอกไฟล์รูปภาพ
                 $newImageName = 'cert_custom' . $cour->course_id . '.png'; // ตั้งชื่อใหม่ตามต้องการ
-                File::copy(public_path('uploads/cer03_0.png'), $uploadDirectory . $newImageName);
+                File::copy(public_path('uploads/cer/CER1.png'), $uploadDirectory . $newImageName);
 
                 // บันทึกชื่อไฟล์ใหม่ในฐานข้อมูล
                 $cour->cert_custom = 'upload/Course/cert_custom/' . $newImageName;
                 $cour->save();
             }
         } elseif ($cour->templete_certificate == 2) {
-            if (File::exists(public_path('uploads/CER_11_0_0.jpg'))) {
+            if (File::exists(public_path('uploads/cer/CER2.png'))) {
                 // ตรวจสอบว่าไดเรกทอรีปลายทางสำหรับการบันทึกใหม่มีอยู่หรือไม่
                 $uploadDirectory = public_path('upload/Course/cert_custom/');
                 if (!File::exists($uploadDirectory)) {
@@ -240,15 +240,15 @@ class CourseController extends Controller
                 }
 
                 // กําหนดชื่อไฟล์ใหม่และคัดลอกไฟล์รูปภาพ
-                $newImageName = 'cert_custom' . $cour->course_id . '.jpg'; // ตั้งชื่อใหม่ตามต้องการ
-                File::copy(public_path('uploads/CER_11_0_0.jpg'), $uploadDirectory . $newImageName);
+                $newImageName = 'cert_custom' . $cour->course_id . '.png'; // ตั้งชื่อใหม่ตามต้องการ
+                File::copy(public_path('uploads/cer/CER2.jpg'), $uploadDirectory . $newImageName);
 
                 // บันทึกชื่อไฟล์ใหม่ในฐานข้อมูล
                 $cour->cert_custom = 'upload/Course/cert_custom/' . $newImageName;
                 $cour->save();
             }
         } elseif ($cour->templete_certificate == 3) {
-            if (File::exists(public_path('uploads/CER_3_0_0.jpg'))) {
+            if (File::exists(public_path('uploads/cer/CER3.png'))) {
                 // ตรวจสอบว่าไดเรกทอรีปลายทางสำหรับการบันทึกใหม่มีอยู่หรือไม่
                 $uploadDirectory = public_path('upload/Course/cert_custom/');
                 if (!File::exists($uploadDirectory)) {
@@ -256,8 +256,56 @@ class CourseController extends Controller
                 }
 
                 // กําหนดชื่อไฟล์ใหม่และคัดลอกไฟล์รูปภาพ
-                $newImageName = 'cert_custom' . $cour->course_id . '.jpg'; // ตั้งชื่อใหม่ตามต้องการ
-                File::copy(public_path('uploads/CER_3_0_0.jpg'), $uploadDirectory . $newImageName);
+                $newImageName = 'cert_custom' . $cour->course_id . '.png'; // ตั้งชื่อใหม่ตามต้องการ
+                File::copy(public_path('uploads/cer/CER3.png'), $uploadDirectory . $newImageName);
+
+                // บันทึกชื่อไฟล์ใหม่ในฐานข้อมูล
+                $cour->cert_custom = 'upload/Course/cert_custom/' . $newImageName;
+                $cour->save();
+            }
+        } elseif ($cour->templete_certificate == 4) {
+            if (File::exists(public_path('uploads/cer/CER4.png'))) {
+                // ตรวจสอบว่าไดเรกทอรีปลายทางสำหรับการบันทึกใหม่มีอยู่หรือไม่
+                $uploadDirectory = public_path('upload/Course/cert_custom/');
+                if (!File::exists($uploadDirectory)) {
+                    File::makeDirectory($uploadDirectory, 0755, true);
+                }
+
+                // กําหนดชื่อไฟล์ใหม่และคัดลอกไฟล์รูปภาพ
+                $newImageName = 'cert_custom' . $cour->course_id . '.png'; // ตั้งชื่อใหม่ตามต้องการ
+                File::copy(public_path('uploads/cer/CER4.png'), $uploadDirectory . $newImageName);
+
+                // บันทึกชื่อไฟล์ใหม่ในฐานข้อมูล
+                $cour->cert_custom = 'upload/Course/cert_custom/' . $newImageName;
+                $cour->save();
+            }
+        } elseif ($cour->templete_certificate == 5) {
+            if (File::exists(public_path('uploads/cer/CER5.png'))) {
+                // ตรวจสอบว่าไดเรกทอรีปลายทางสำหรับการบันทึกใหม่มีอยู่หรือไม่
+                $uploadDirectory = public_path('upload/Course/cert_custom/');
+                if (!File::exists($uploadDirectory)) {
+                    File::makeDirectory($uploadDirectory, 0755, true);
+                }
+
+                // กําหนดชื่อไฟล์ใหม่และคัดลอกไฟล์รูปภาพ
+                $newImageName = 'cert_custom' . $cour->course_id . '.png'; // ตั้งชื่อใหม่ตามต้องการ
+                File::copy(public_path('uploads/cer/CER5.png'), $uploadDirectory . $newImageName);
+
+                // บันทึกชื่อไฟล์ใหม่ในฐานข้อมูล
+                $cour->cert_custom = 'upload/Course/cert_custom/' . $newImageName;
+                $cour->save();
+            }
+        } elseif ($cour->templete_certificate == 6) {
+            if (File::exists(public_path('uploads/cer/CER6.png'))) {
+                // ตรวจสอบว่าไดเรกทอรีปลายทางสำหรับการบันทึกใหม่มีอยู่หรือไม่
+                $uploadDirectory = public_path('upload/Course/cert_custom/');
+                if (!File::exists($uploadDirectory)) {
+                    File::makeDirectory($uploadDirectory, 0755, true);
+                }
+
+                // กําหนดชื่อไฟล์ใหม่และคัดลอกไฟล์รูปภาพ
+                $newImageName = 'cert_custom' . $cour->course_id . '.png'; // ตั้งชื่อใหม่ตามต้องการ
+                File::copy(public_path('uploads/cer/CER6.png'), $uploadDirectory . $newImageName);
 
                 // บันทึกชื่อไฟล์ใหม่ในฐานข้อมูล
                 $cour->cert_custom = 'upload/Course/cert_custom/' . $newImageName;
@@ -273,7 +321,7 @@ class CourseController extends Controller
 
                 file_put_contents(public_path('upload/Course/cert_custom/' . $image_cert_custom), file_get_contents($request->cert_custom));
                 $cour->cert_custom = 'upload/Course/cert_custom/' .   'cert_custom' . $cour->course_id . '.' . $request->cert_custom->getClientOriginalExtension();
-                $cour->templete_certificate == 0;
+                $cour->templete_certificate == null;
                 $cour->save();
             }
         } else {
@@ -489,7 +537,7 @@ class CourseController extends Controller
         }
 
         if ($cour->templete_certificate == 1) {
-            if (File::exists(public_path('uploads/cer02_0.png'))) {
+            if (File::exists(public_path('uploads/cer/CER1.png'))) {
                 // ตรวจสอบว่าไดเรกทอรีปลายทางสำหรับการบันทึกใหม่มีอยู่หรือไม่
                 $uploadDirectory = public_path('upload/Course/cert_custom/');
                 if (!File::exists($uploadDirectory)) {
@@ -498,14 +546,14 @@ class CourseController extends Controller
 
                 // กําหนดชื่อไฟล์ใหม่และคัดลอกไฟล์รูปภาพ
                 $newImageName = 'cert_custom' . $cour->course_id . '.png'; // ตั้งชื่อใหม่ตามต้องการ
-                File::copy(public_path('uploads/cer02_0.png'), $uploadDirectory . $newImageName);
+                File::copy(public_path('uploads/cer/CER1.png'), $uploadDirectory . $newImageName);
 
                 // บันทึกชื่อไฟล์ใหม่ในฐานข้อมูล
                 $cour->cert_custom = 'upload/Course/cert_custom/' . $newImageName;
                 $cour->save();
             }
         } elseif ($cour->templete_certificate == 2) {
-            if (File::exists(public_path('uploads/CER_11_0_0.jpg'))) {
+            if (File::exists(public_path('uploads/cer/CER2.png'))) {
                 // ตรวจสอบว่าไดเรกทอรีปลายทางสำหรับการบันทึกใหม่มีอยู่หรือไม่
                 $uploadDirectory = public_path('upload/Course/cert_custom/');
                 if (!File::exists($uploadDirectory)) {
@@ -513,15 +561,15 @@ class CourseController extends Controller
                 }
 
                 // กําหนดชื่อไฟล์ใหม่และคัดลอกไฟล์รูปภาพ
-                $newImageName = 'cert_custom' . $cour->course_id . '.jpg'; // ตั้งชื่อใหม่ตามต้องการ
-                File::copy(public_path('uploads/CER_11_0_0.jpg'), $uploadDirectory . $newImageName);
+                $newImageName = 'cert_custom' . $cour->course_id . '.png'; // ตั้งชื่อใหม่ตามต้องการ
+                File::copy(public_path('uploads/cer/CER2.png'), $uploadDirectory . $newImageName);
 
                 // บันทึกชื่อไฟล์ใหม่ในฐานข้อมูล
                 $cour->cert_custom = 'upload/Course/cert_custom/' . $newImageName;
                 $cour->save();
             }
         } elseif ($cour->templete_certificate == 3) {
-            if (File::exists(public_path('uploads/CER_3_0_0.jpg'))) {
+            if (File::exists(public_path('uploads/cer/CER3.png'))) {
                 // ตรวจสอบว่าไดเรกทอรีปลายทางสำหรับการบันทึกใหม่มีอยู่หรือไม่
                 $uploadDirectory = public_path('upload/Course/cert_custom/');
                 if (!File::exists($uploadDirectory)) {
@@ -529,15 +577,63 @@ class CourseController extends Controller
                 }
 
                 // กําหนดชื่อไฟล์ใหม่และคัดลอกไฟล์รูปภาพ
-                $newImageName = 'cert_custom' . $cour->course_id . '.jpg'; // ตั้งชื่อใหม่ตามต้องการ
-                File::copy(public_path('uploads/CER_3_0_0.jpg'), $uploadDirectory . $newImageName);
+                $newImageName = 'cert_custom' . $cour->course_id . '.png'; // ตั้งชื่อใหม่ตามต้องการ
+                File::copy(public_path('uploads/cer/CER3.png'), $uploadDirectory . $newImageName);
+
+                // บันทึกชื่อไฟล์ใหม่ในฐานข้อมูล
+                $cour->cert_custom = 'upload/Course/cert_custom/' . $newImageName;
+                $cour->save();
+            }
+        } elseif ($cour->templete_certificate == 4) {
+            if (File::exists(public_path('uploads/cer/CER4.png'))) {
+                // ตรวจสอบว่าไดเรกทอรีปลายทางสำหรับการบันทึกใหม่มีอยู่หรือไม่
+                $uploadDirectory = public_path('upload/Course/cert_custom/');
+                if (!File::exists($uploadDirectory)) {
+                    File::makeDirectory($uploadDirectory, 0755, true);
+                }
+
+                // กําหนดชื่อไฟล์ใหม่และคัดลอกไฟล์รูปภาพ
+                $newImageName = 'cert_custom' . $cour->course_id . '.png'; // ตั้งชื่อใหม่ตามต้องการ
+                File::copy(public_path('uploads/cer/CER4.png'), $uploadDirectory . $newImageName);
+
+                // บันทึกชื่อไฟล์ใหม่ในฐานข้อมูล
+                $cour->cert_custom = 'upload/Course/cert_custom/' . $newImageName;
+                $cour->save();
+            }
+        } elseif ($cour->templete_certificate == 5) {
+            if (File::exists(public_path('uploads/cer/CER5.png'))) {
+                // ตรวจสอบว่าไดเรกทอรีปลายทางสำหรับการบันทึกใหม่มีอยู่หรือไม่
+                $uploadDirectory = public_path('upload/Course/cert_custom/');
+                if (!File::exists($uploadDirectory)) {
+                    File::makeDirectory($uploadDirectory, 0755, true);
+                }
+
+                // กําหนดชื่อไฟล์ใหม่และคัดลอกไฟล์รูปภาพ
+                $newImageName = 'cert_custom' . $cour->course_id . '.png'; // ตั้งชื่อใหม่ตามต้องการ
+                File::copy(public_path('uploads/cer/CER5.png'), $uploadDirectory . $newImageName);
+
+                // บันทึกชื่อไฟล์ใหม่ในฐานข้อมูล
+                $cour->cert_custom = 'upload/Course/cert_custom/' . $newImageName;
+                $cour->save();
+            }
+        } elseif ($cour->templete_certificate == 6) {
+            if (File::exists(public_path('uploads/cer/CER6.png'))) {
+                // ตรวจสอบว่าไดเรกทอรีปลายทางสำหรับการบันทึกใหม่มีอยู่หรือไม่
+                $uploadDirectory = public_path('upload/Course/cert_custom/');
+                if (!File::exists($uploadDirectory)) {
+                    File::makeDirectory($uploadDirectory, 0755, true);
+                }
+
+                // กําหนดชื่อไฟล์ใหม่และคัดลอกไฟล์รูปภาพ
+                $newImageName = 'cert_custom' . $cour->course_id . '.png'; // ตั้งชื่อใหม่ตามต้องการ
+                File::copy(public_path('uploads/cer/CER6.png'), $uploadDirectory . $newImageName);
 
                 // บันทึกชื่อไฟล์ใหม่ในฐานข้อมูล
                 $cour->cert_custom = 'upload/Course/cert_custom/' . $newImageName;
                 $cour->save();
             }
         } elseif ($request->hasFile('cert_custom')) {
-            $image_cert_custom = 'cert_custom' . $cour->course_id . '.' . $request->cert_custom->getClientOriginalExtension();
+            $image_cert_custom = 'cert_custom' . $cour->course_id . '.' . '.png';
             $uploadDirectory = public_path('upload/Course/cert_custom/');
             if (!file_exists($uploadDirectory)) {
                 mkdir($uploadDirectory, 0755, true);
@@ -545,7 +641,7 @@ class CourseController extends Controller
             if (file_exists($uploadDirectory)) {
 
                 file_put_contents(public_path('upload/Course/cert_custom/' . $image_cert_custom), file_get_contents($request->cert_custom));
-                $cour->cert_custom = 'upload/Course/cert_custom/' .   'cert_custom' . $cour->course_id . '.' . $request->cert_custom->getClientOriginalExtension();
+                $cour->cert_custom = 'upload/Course/cert_custom/' .   'cert_custom' . $cour->course_id . '.' . '.png';
                 $cour->templete_certificate == 0;
                 $cour->save();
             }

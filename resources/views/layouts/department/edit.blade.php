@@ -68,9 +68,8 @@
                             <input type="file" class="form-control" name="name_short_th" placeholder="ภาพปก"
                                 accept=" image/jpeg, image/png">
                         </div><!-- /.form-group -->
-                   
+
                         <!-- .form-actions -->
-                        
                         <div class="form-group">
                             <label for="department_status">สถานะ </label> <label
                                 class="switcher-control switcher-control-success switcher-control-lg"><input type="checkbox"

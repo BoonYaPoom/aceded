@@ -38,7 +38,7 @@
                         </div><!-- /.form-group -->
                         <div class="form-group">
                             <label for="cover">ภาพปก </label> <input type="file" class="form-control" id="cover"
-                                name="cover" placeholder="ภาพปก" accept=" image/jpeg, image/png">
+                                name="cover" placeholder="ภาพปก" accept="image/*">
                         </div><!-- /.form-group -->
                         <!-- .form-group -->
                         <div class="form-group">

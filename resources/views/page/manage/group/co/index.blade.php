@@ -105,7 +105,7 @@
                                             <a href="{{ route('editcor', [$depart,'course_id' => $item]) }}"
                                                 data-toggle="tooltip" title="แก้ไข"><i
                                                     class="far fa-edit fa-lg text-success "></i></a>
-                                            <a href="{{ route('courseform_destroy', ['course_id' => $item]) }}"
+                                            <a href="{{ route('courseform_destroy', [$depart,'course_id' => $item]) }}"
                                                 rel="รายวิชาเพิ่มเติม การป้องกันการทุจริต ระดับปฐมวัย"
                                                 onclick="deleteRecord(event)" class="switcher-delete" data-toggle="tooltip"
                                                 title="ลบข้อมูล"><i class="fas fa-trash-alt fa-lg text-warning "></i></a>

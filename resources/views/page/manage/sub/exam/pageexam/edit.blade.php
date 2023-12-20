@@ -16,7 +16,7 @@
             toastr.success("{{ Session::get('message') }}");
         </script>
     @endif
-    <form action="{{ route('update_question3', [$depart,$subs, 'question_id' => $ques]) }}" method="post"
+    <form action="{{ route('update_question', [$depart,$subs, 'question_id' => $ques]) }}" method="post"
         enctype="multipart/form-data">
         @csrf
         @method('PUT')
@@ -77,10 +77,10 @@
 
                         <!-- .form-group -->
                         <div class="form-group">
-                            <label class="control-label" for="lesson_id">หมวดแบบฝึกหัด</label> <select id="lesson_id"
-                                name="lesson_id" class="form-control" data-toggle="select2" data-placeholder="หมวดแบบฝึกหัด"
+                            <label class="control-label" for="lesson_id">หมวดข้อสอบ</label> <select id="lesson_id"
+                                name="lesson_id" class="form-control" data-toggle="select2" data-placeholder="หมวดข้อสอบ"
                                 data-allow-clear="false">
-                                <option value="0" selected>แบบฝึกหัด </option>
+                                <option value="0" selected>ข้อสอบ </option>
 
                                 @foreach ($lossen as $lession)
                                     <option value="{{ $lession->lesson_id }}"
@@ -98,9 +98,9 @@
                                 class="form-control" data-toggle="select2" data-placeholder="คะแนน"
                                 data-allow-clear="false">
                                 @for ($i = 1; $i <= 10; $i++)
-                                    <option value="{{ $i }}" {{ $i == 1 ? 'selected' : '' }}>
-                                        {{ $i }}</option>
-                                @endfor
+                                <option value="{{ $i }}" {{ $i == $ques->score  ? 'selected' : '' }}>
+                                    {{ $i }}</option>
+                            @endfor
                             </select>
                         </div><!-- /.form-group -->
 
@@ -149,7 +149,7 @@
                                         </label>
                                     </div>
                                     <textarea class="editor" data-placeholder="ตัวเลือกที่ {{ $i }}" data-height="120"
-                                        name="choice{{ $i }}" id="choice{{ $i }}">
+                                        name="CHOICE{{ $i }}" id="CHOICE{{ $i }}">
                                     <figure><figcaption></figcaption></figure>
                                     {{ $ques['choice' . $i] ?? '' }}
                     

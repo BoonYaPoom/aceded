@@ -42,8 +42,7 @@
                             @method('PUT')
 
                             <label for="detail">โลโก้ ( ขนาด 585px * 350px )</label> <input type="file" class="form-control" id="detail"
-                                name="detail" placeholder="โลโก้" accept=" image/jpeg, image/png">
-                                <small class="form-text text-muted">{{$item->detail}}</small>
+                                name="detail" placeholder="โลโก้" accept="image/*">
                             @error('detail')
                                 <span class="badge badge-warning">{{ $message }}</span>
                             @enderror

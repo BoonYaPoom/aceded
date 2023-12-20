@@ -88,9 +88,6 @@
 
                             @foreach ($month as $im => $m)
                                 @php
-                                if ($year == 23) {
-                              
-                                }
                                     $register = empty($result[$im]['register']) ? 0 : $result[$im]['register'];
                                     $prefix = md5('moc' . date('Ymd'));
                                     $idm = $monthsa = $im;

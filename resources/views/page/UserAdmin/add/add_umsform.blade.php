@@ -31,20 +31,14 @@
                                 <label for="user_role" class="col-md-2">เลือกประเภทผู้ใช้งาน <span
                                         class="badge badge-warning">Required</span></label>
                                 <div class="col-md-9 mb-3">
-
                                     <select id="user_role" name="user_role" class="form-control form-control-md"
                                         data-toggle="select2" data-allow-clear="false">
                                         <option value="0"selected disabled>เลือกประเภทผู้ใช้งาน</option>
                                         @foreach ($role as $roles)
                                             @if ($roles->role_status == 1)
-                                                @if ($data->user_role == 1)
+                                                @if ($roles->user_role_id > 1)
                                                     <option value="{{ $roles->user_role_id }}">{{ $roles->role_name }}
                                                     </option>
-                                                @else
-                                                    @if ($roles->user_role_id > 1)
-                                                        <option value="{{ $roles->user_role_id }}">{{ $roles->role_name }}
-                                                        </option>
-                                                    @endif
                                                 @endif
                                             @endif
                                         @endforeach
@@ -355,11 +349,11 @@
                             @enderror
                             <script type="text/javascript">
                                 var path = "{{ route('autocompleteSearch') }}";
-
+                            
                                 $("#search").autocomplete({
-                                    source: function(request, response) {
+                                    source: function (request, response) {
                                         var selectedProvince = $("#province_id").val();
-
+                            
                                         $.ajax({
                                             url: path,
                                             type: 'GET',
@@ -368,24 +362,24 @@
                                                 search: request.term,
                                                 province: selectedProvince // Pass the selected province code
                                             },
-                                            success: function(data) {
+                                            success: function (data) {
                                                 response(data);
                                             }
                                         });
                                     },
-                                    select: function(event, ui) {
+                                    select: function (event, ui) {
                                         $('#search').addClass("form-control form-control-sm");
                                         // Log the ui.item to the console
                                         console.log(ui.item);
                                         // Set the input value to the selected item's label
                                         $('#search').val(ui.item.label);
-
+                            
                                         return false;
                                     }
                                 });
-
+                            
                                 // Add change event handler for province selection
-                                $("#province_id").change(function() {
+                                $("#province_id").change(function () {
                                     // Trigger the autocomplete search again when the province changes
                                     $("#search").autocomplete("search", $("#search").val());
                                 });
@@ -397,7 +391,7 @@
                                     <input type="text" class="form-control " id="pos_name" name="pos_name"
                                         value="" placeholder="ตำแหน่ง">
                                     <!-- <select id="pos_namexx" name="pos_namexx" class="form-control form-control-sm" data-toggle="select2" data-allow-clear="false">
-                                                                                                                        </select> -->
+                                                                                                            </select> -->
                                 </div>
                             </div>
                             @error('pos_name')

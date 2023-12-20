@@ -24,12 +24,11 @@
                                  <thead>
                                      <tr class="bg-infohead">
                                          <th class="align-middle" style="width:10%">
-
                                              <div class="custom-control custom-checkbox"> <input type="checkbox"
                                                      class="custom-control-input" name="checkall" value="1"
                                                      id="checkall"><label class="custom-control-label" for="checkall">
-                                                     เลือกทั้งหมด</label></div>
-
+                                                     เลือกทั้งหมด</label>
+                                             </div>
                                          </th>
                                          <th class="align-middle" style="width:45%">ข้อสอบ</th>
                                          <th class="align-middle" style="width:10%">คะแนน</th>
@@ -37,6 +36,37 @@
                                          <th class="align-middle" style="width:35%">หมวดหมู่</th>
                                      </tr>
                                  </thead>
+                                 <script>
+                                     $(function() {
+
+
+                                         $('#examselectdata').click(function(e) {
+                                             e.preventDefault();
+                                             var all_qusr = [];
+
+                                             $("input:checkbox[name='exam_data[]']:checked").each(function() {
+                                                 all_qusr.push($(this).val());
+                                             });
+
+                                             var all_less = [];
+                                             $('select[name^="randomdata"]').each(function(index) {
+                                                 var selectedValue = $(this).val();
+                                                 var selectId = $(this).attr('id');
+
+                                                 // เพิ่มเงื่อนไขเช็ค selectedValue ไม่เป็น 0 ก่อนเพิ่มข้อมูลลงใน all_less
+                                                 if (selectedValue !== '0') {
+                                                     var data = {
+                                                         [selectId]: selectedValue
+                                                     };
+                                                     all_less.push(data);
+                                                 }
+                                             });
+
+                                             console.log(all_qusr);
+                                             console.log(all_less);
+                                         });
+                                     });
+                                 </script>
                                  <tbody id="dataexam0" class="dataexam">
 
                                      @php
@@ -193,57 +223,61 @@
                                  </tbody>
                              </table>
                              <script>
-                                $(document).ready(function() {
-                                    var table = $('#exam0').DataTable({
-                            
-                                        lengthChange: false,
-                                        responsive: true,
-                                        info: false,
-                                        pageLength: 20,
-                                        language: {
-                                            info: "ลำดับที่ _START_ ถึง _END_ จากทั้งหมด _TOTAL_ รายการ",
-                                            infoEmpty: "ไม่พบรายการ",
-                                            infoFiltered: "(ค้นหาจากทั้งหมด _MAX_ รายการ)",
-                                            paginate: {
-                                                first: "หน้าแรก",
-                                                last: "หน้าสุดท้าย",
-                                                previous: "ก่อนหน้า",
-                            
-                                                next: "ถัดไป"
-                                            }
-                                        },
-                            
-                                    });
-                            
-                            
-                                });
-                            </script>
-                            <script>
-                                $(document).ready(function() {
-                                    var table = $('#exam1').DataTable({
+                                 $(document).ready(function() {
+                                     var table = $('#exam0').DataTable({
 
-                                        lengthChange: false,
-                                        responsive: true,
-                                        info: false,
-                                        pageLength: 20,
-                                        language: {
-                                            info: "ลำดับที่ _START_ ถึง _END_ จากทั้งหมด _TOTAL_ รายการ",
-                                            infoEmpty: "ไม่พบรายการ",
-                                            infoFiltered: "(ค้นหาจากทั้งหมด _MAX_ รายการ)",
-                                            paginate: {
-                                                first: "หน้าแรก",
-                                                last: "หน้าสุดท้าย",
-                                                previous: "ก่อนหน้า",
+                                         lengthChange: false,
+                                         responsive: true,
+                                         info: false,
+                                         pageLength: 20,
+                                         language: {
+                                             info: "ลำดับที่ _START_ ถึง _END_ จากทั้งหมด _TOTAL_ รายการ",
+                                             infoEmpty: "ไม่พบรายการ",
+                                             infoFiltered: "(ค้นหาจากทั้งหมด _MAX_ รายการ)",
+                                             paginate: {
+                                                 first: "หน้าแรก",
+                                                 last: "หน้าสุดท้าย",
+                                                 previous: "ก่อนหน้า",
 
-                                                next: "ถัดไป"
-                                            }
-                                        },
+                                                 next: "ถัดไป"
+                                             }
+                                         },
 
-                                    });
+                                     });
+                                     $("#checkall").click(function() {
+                                         var isChecked = $(this).prop('checked');
+                                         // ทำการตรวจสอบทุกรายการที่แสดงใน DataTables และกำหนดสถานะ checked
+                                         table.rows().nodes().to$().find('.custom-control-input').prop('checked', isChecked);
+                                     });
+
+                                 });
+                             </script>
+                             <script>
+                                 $(document).ready(function() {
+                                     var table = $('#exam1').DataTable({
+
+                                         lengthChange: false,
+                                         responsive: true,
+                                         info: false,
+                                         pageLength: 20,
+                                         language: {
+                                             info: "ลำดับที่ _START_ ถึง _END_ จากทั้งหมด _TOTAL_ รายการ",
+                                             infoEmpty: "ไม่พบรายการ",
+                                             infoFiltered: "(ค้นหาจากทั้งหมด _MAX_ รายการ)",
+                                             paginate: {
+                                                 first: "หน้าแรก",
+                                                 last: "หน้าสุดท้าย",
+                                                 previous: "ก่อนหน้า",
+
+                                                 next: "ถัดไป"
+                                             }
+                                         },
+
+                                     });
 
 
-                                });
-                            </script>
+                                 });
+                             </script>
                          </div>
                      </div>
                  </div><!-- /.form-group -->

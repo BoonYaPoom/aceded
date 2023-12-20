@@ -16,11 +16,15 @@ return new class extends Migration
             $table->collation = 'utf8_general_ci';
             $table->increments('certificate_file_id')->start(100000)->nocache();
             $table->integer('user_id')->nullable();
+            $table->integer('certificate_no');
+            $table->integer('learner_id');
+            $table->integer('course_id');
             $table->string('file_name',800)->collation('utf8_general_ci')->nullable();
             $table->string('certificate_file_path',800)->collation('utf8_general_ci')->nullable();
             $table->dateTime('certificate_file_date')->nullable();
             $table->dateTime('certificate_file_enddate')->nullable();
             $table->string('certificate_file_role_status',1)->collation('utf8_general_ci')->nullable();
+
         });
     }
 

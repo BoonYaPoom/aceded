@@ -118,7 +118,7 @@
                                         <input type="file" class="form-control" id="uploaduser" name="fileexcel"
                                             accept=".xlsx" required>
                                         <small class="form-text text-muted"><a
-                                                href="{{asset('uploads/ข้อสอบ.xlsx')}}"
+                                             href="{{asset('uploads/userimport.xlsx')}}"
                                                 target="_blank"> ไฟล์ตัวอย่าง
                                                 (.xlsx)</a>
                                         </small>
@@ -254,7 +254,12 @@
                                 </tr>
                             </thead>
                             <!-- /thead -->
+
+
+
                             @include('layouts.department.item.data.UserAdmin.DataUser.scripUser')
+
+
                         </table><!-- /.table -->
                     </div><!-- /.table-responsive -->
 
