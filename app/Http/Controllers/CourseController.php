@@ -321,7 +321,7 @@ class CourseController extends Controller
 
                 file_put_contents(public_path('upload/Course/cert_custom/' . $image_cert_custom), file_get_contents($request->cert_custom));
                 $cour->cert_custom = 'upload/Course/cert_custom/' .   'cert_custom' . $cour->course_id . '.' . $request->cert_custom->getClientOriginalExtension();
-                $cour->templete_certificate == null;
+                $cour->templete_certificate == 0;
                 $cour->save();
             }
         } else {

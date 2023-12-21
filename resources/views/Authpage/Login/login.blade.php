@@ -135,9 +135,9 @@ try {
               <a class="navbar-brand" href="{{ route('homelogin') }}">Sign In</a>
           </h2>
 
-         <h2 class="inactive underlineHover">
+         {{-- <h2 class="inactive underlineHover">
               <a class="navbar-brand" href="{{ route('homeRegis') }}">Request </a>
-          </h2>
+          </h2> --}}
 
           <!-- Icon -->
           <div class="fadeIn first">

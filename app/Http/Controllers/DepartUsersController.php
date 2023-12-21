@@ -293,7 +293,7 @@ class DepartUsersController extends Controller
                 $maxschoolId = School::max('school_id');
                 $newschoolId = $maxschoolId + 1;
                 $scho = new School;
-                $scho->school_name = $newschoolId;
+                $scho->school_id = $newschoolId;
                 $scho->school_name = $request->school;
                 $scho->provinces_code = $request->province_id;
                 $scho->subdistrict_code = null;

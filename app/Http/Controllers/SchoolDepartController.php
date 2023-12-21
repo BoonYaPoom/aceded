@@ -45,7 +45,7 @@ class SchoolDepartController extends Controller
             if ($data->user_role == 1 || $data->user_role == 8) {
                 $school = School::where('department_id', $department_id)->get();
             } elseif ($data->user_role == 6 || $data->user_role == 7) {
-                $school = School::where('provinces_id', $provinceId)
+                $school = School::where('provinces_code', $provinceId)
                     ->where('department_id', $department_id)->get();
             }
         }

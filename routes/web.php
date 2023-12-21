@@ -28,6 +28,7 @@ use App\Http\Controllers\EditManageUserController;
 use App\Http\Controllers\EditProfileController;
 use App\Http\Controllers\ExamController;
 use App\Http\Controllers\ExcelController;
+use App\Http\Controllers\ExtenderController;
 use App\Http\Controllers\GenaralController;
 use App\Http\Controllers\HighlightController;
 use App\Http\Controllers\LdapController;
@@ -109,7 +110,7 @@ Route::group(['middleware' => ['web', 'App\Http\Middleware\ClearOptimizeCacheMid
 
 Route::group(['middleware' => 'IsLoggedIn'], function () {
     Route::middleware(['CheckUserLogin'])->group(function () {
-
+        
         // ...
         Route::get('/edit-profile', [EditProfileController::class, 'edit'])->name('edit-profile');
         Route::put('/update-profile', [EditProfileController::class, 'update'])->name('update-profile');
@@ -125,7 +126,7 @@ Route::group(['middleware' => 'IsLoggedIn'], function () {
             });
         });
         Route::get('/', [NavController::class, 'home'])->name('adminhome');
-
+       
         Route::get('/department', [NavController::class, 'homedepartment'])->name('adminhomedepartment');
         Route::prefix('admin')->group(function () {
             Route::get('/changeStatusDepart', [DepartmentController::class, 'changeStatus'])->name('changeStatusDepart');
@@ -471,7 +472,17 @@ Route::group(['middleware' => 'IsLoggedIn'], function () {
 
                     Route::get('{department_id}/DPSchoolcreateUser_umsschoolform/{school_code}', [DepartUsersController::class, 'DPSchoolcreateUser'])->name('DPSchoolcreateUser');
                     Route::post('{department_id}/{school_code}/DPSchoolstoreUser_umsschoolform', [DepartUsersController::class, 'DPSchoolstoreUser'])->name('DPSchoolstoreUser');
+
+
+
+                    Route::get('{department_id}/{extender_id}/umsschoolDP_add/', [ExtenderController::class, 'adduser'])->name('umsschoolDP_add');
+                    Route::get('{department_id}/umsSchoolDP', [ExtenderController::class, 'testumsschool'])->name('testumsschool');
+                    Route::get('{department_id}/getExtender', [ExtenderController::class, 'getExtender'])->name('getExtender');
+
                 });
+
+
+                
                 Route::get('{department_id}/homeDepart', [DepartReportController::class, 'DepartReportview'])->name('DepartReportview');
                 Route::prefix('homeDepart')->group(function () {
 
@@ -592,6 +603,11 @@ Route::group(['middleware' => 'IsLoggedIn'], function () {
                 Route::get('/detaildata/{submit_id}', [SubmitController::class, 'detaildata'])->name('detaildata');
                 Route::put('admin/rad/storeAdminreq/{submit_id}', [SubmitController::class, 'storeAdminreq'])->name('storeAdminreq');
                 Route::put('admin/rad/storeAdminreq2/{submit_id}', [SubmitController::class, 'storeAdminreq2'])->name('storeAdminreq2');
+        
+        
+        
+        
+        
             });
             Route::prefix('info')->group(function () {
                 Route::post('UsersDepartAllImport/{department_id}', [ExcelController::class, 'UsersDepartAllImport'])->name('UsersDepartAllImport');

@@ -488,7 +488,7 @@ class ExcelController extends Controller
 
                                     'user_department_id' =>  $uiduserdepartment_id + 2,
                                     'user_id' =>     $user_idplus + 1,
-                                    'department_id' => 3,
+                                    'department_id' => 1,
 
                                 ]);
                                 $UserDepartment3->save();
