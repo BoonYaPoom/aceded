@@ -48,12 +48,10 @@
                                     var table = $('#datatable').DataTable({
                                         ajax: {
                                             url: '{{ route('getExtender', [$depart]) }}',
-
+                                            type: 'GET',
                                         },
                                         serverSide: true,
-                                        lengthChange: false,
-                                        responsive: true,
-                                        info: false,
+
                                         columns: [{
                                                 data: 'num'
                                             },
@@ -64,9 +62,9 @@
                                                 data: 'parentExtender'
                                             },
                                             {
-                                                data: 'count',
+                                                data: null,
                                                 render: function(data, type, row) {
-                                                    var link = '<i class="fas fa-users"></i> (' + data + ')';
+                                                    var link = '<i class="fas fa-users"></i> (' + data.count + ')';
                                                     return link;
                                                 }
                                             },
@@ -80,7 +78,7 @@
 
                                                     var edituser =
                                                         "{{ route('umsschoolDP_add', ['department_id' => ':depart', 'extender_id' => ':extender_id']) }}";
-                                                             edituser = edituser.replace(':depart', depart).replace(':extender_id',
+                                                    edituser = edituser.replace(':depart', depart).replace(':extender_id',
                                                         extender_id);
                                                     var update = '<a href="' + edituser +
                                                         '"><i class="fas fa-user-plus"></i></a>';
@@ -92,9 +90,20 @@
                                         order: [
                                             [0, 'asc']
                                         ],
+                                        deferRender: true,
+                                        lengthChange: false,
+                                        responsive: true,
+                                        info: false,
+                                        paging: true,
+                                        pageLength: 10,
+                                        scrollY: false,
+                                        processing: true,
                                         language: {
                                             infoEmpty: "ไม่พบรายการ",
                                             infoFiltered: "(ค้นหาจากทั้งหมด _MAX_ รายการ)",
+                                            processing: "<span class='fa-stack fa-lg'>\n\
+                                                        <i class='fa fa-spinner fa-spin fa-stack-2x fa-fw'></i>\n\
+                                                   </span>&emsp;กรุณารอสักครู่",
                                             paginate: {
                                                 first: "หน้าแรก",
                                                 last: "หน้าสุดท้าย",

@@ -140,7 +140,7 @@ class SchoolController extends Controller
         $school->district_id = null;
         $school->department_id = $request->department_id;
         $school->save();
-        return redirect()->route('schoolManage')->with('message', 'personTypes บันทึกข้อมูลสำเร็จ');
+        return redirect()->route('schoolManage')->with('message', 'school บันทึกข้อมูลสำเร็จ');
     }
     public function edit($school_id)
     {
@@ -157,7 +157,7 @@ class SchoolController extends Controller
 
         $school->department_id = $request->department_id;
         $school->save();
-        return redirect()->route('schoolManage')->with('message', 'personTypes บันทึกข้อมูลสำเร็จ');
+        return redirect()->route('schoolManage')->with('message', 'school บันทึกข้อมูลสำเร็จ');
     }
     public function delete($school_id)
     {

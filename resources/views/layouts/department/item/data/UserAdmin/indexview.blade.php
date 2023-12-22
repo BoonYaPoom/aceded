@@ -62,17 +62,10 @@
                         onclick="$('#clientUploadModal').modal('toggle');"><i class="fas fa-user-plus"></i>
                         นำเข้าผู้ใช้งาน</button>
 
-
-                    @if ($data->user_role == 1)
-                        <a class="ml-1 btn btn-info btn-md " style="color:#fff"
-                            href="{{ route('umsschooldepartment', [$depart]) }}"><i class="fas fa-users"></i>
-                            จัดการสถานศึกษา</a>
-                    @else
                         <a class="ml-1 btn btn-info btn-md " style="color:#fff"
                             href="{{ route('testumsschool', [$depart]) }}"><i class="fas fa-users"></i>
                             จัดการสถานศึกษา</a>
-                    @endif
-
+             
 
 
                     {{-- <div class="col-md-6 mb-3">
@@ -123,8 +116,8 @@
                                     <div class="container">
                                         <input type="file" class="form-control" id="uploaduser" name="fileexcel"
                                             accept=".xlsx" required>
-                                        <small class="form-text text-muted"><a
-                                                href="{{ asset('uploads/userimport.xlsx') }}" target="_blank"> ไฟล์ตัวอย่าง
+                                        <small class="form-text text-muted"><a href="{{ asset('uploads/userimport.xlsx') }}"
+                                                target="_blank"> ไฟล์ตัวอย่าง
                                                 (.xlsx)</a>
                                         </small>
                                     </div>

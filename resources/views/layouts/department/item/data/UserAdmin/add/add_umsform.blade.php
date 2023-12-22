@@ -318,46 +318,7 @@
                                     </select>
                                 </div>
                             </div>
-                            <!-- /form row -->
-                            <div class="form-row">
-                                <label for="school" class="col-md-2">โรงเรียน / มหาลัย <span
-                                        class="badge badge-warning">Required</span></label>
-                                <div class="col-md-9 mb-3">
-                                    <input type="text" class="form-control inputuname " id="search" name="school"
-                                        placeholder="school" value="" required=""><small
-                                        class="form-text text-muted">โรงเรียน / มหาลัย </small>
-                                </div>
-                            </div>
-                            <script type="text/javascript">
-                                var path = "{{ route('DPautocompleteSearch', ['department_id' => $depart]) }}";
-
-                                $("#search").autocomplete({
-                                    source: function(request, response) {
-                                        $.ajax({
-                                            url: path,
-                                            type: 'GET',
-                                            dataType: "json",
-                                            data: {
-                                                search: request.term
-                                            },
-                                            success: function(data) {
-                                                response(data);
-                                            }
-                                        });
-                                    },
-                                    select: function(event, ui) {
-                                        $('#search').addClass("form-control");
-
-                                        // Log the ui.item to the console
-                                        console.log(ui.item);
-
-                                        // Set the input value to the selected item's label
-                                        $('#search').val(ui.item.label);
-
-                                        return false;
-                                    }
-                                });
-                            </script>
+                      
                             <!-- form row -->
                             <div class="form-row " id="set_pos_name">
                                 <label for="pos_name" class="col-md-2">ตำแหน่ง</label>

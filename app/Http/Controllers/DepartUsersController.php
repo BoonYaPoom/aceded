@@ -282,42 +282,6 @@ class DepartUsersController extends Controller
         $usermanages->save();
 
 
-        if (!empty($request->school)) {
-            $existingSchool = School::where('school_name', $request->school)
-                ->where('provinces_code', $request->province_id)
-                ->where('subdistrict_code', null)
-                ->where('district_code', null)
-                ->first();
-
-            if (!$existingSchool) {
-                $maxschoolId = School::max('school_id');
-                $newschoolId = $maxschoolId + 1;
-                $scho = new School;
-                $scho->school_id = $newschoolId;
-                $scho->school_name = $request->school;
-                $scho->provinces_code = $request->province_id;
-                $scho->subdistrict_code = null;
-                $scho->district_code = null;
-
-                $scho->save();
-
-                $scho->school_code = $scho->school_id;
-                $scho->save();
-            } else {
-                $scho = $existingSchool;
-                if (empty($scho->school_code)) {
-                    $scho->school_code = $scho->school_id;
-                    $scho->save();
-                }
-            }
-            $maxUserSchoolId = UserSchool::max('user_school_id');
-            $newUserSchoolId = $maxUserSchoolId + 1;
-            $userschool = new UserSchool;
-            $userschool->user_school_id = $newUserSchoolId;
-            $userschool->school_code = $scho->school_code;
-            $userschool->user_id = $usermanages->user_id;
-            $userschool->save();
-        }
         $maxUserDepartmentId = DB::table('users_department')->max('user_department_id');
         $newUserDepartmentId = $maxUserDepartmentId + 1;
         DB::table('users_department')->insert([
@@ -421,13 +385,7 @@ class DepartUsersController extends Controller
         $usermanages->save();
 
 
-        $maxUserSchoolId = UserSchool::max('user_school_id');
-        $newUserSchoolId = $maxUserSchoolId + 1;
-        $userschool = new UserSchool;
-        $userschool->user_school_id = $newUserSchoolId;
-        $userschool->school_id = $school_code;
-        $userschool->user_id = $usermanages->user_id;
-        $userschool->save();
+     
 
         $maxUserDepartmentId = DB::table('users_department')->max('user_department_id');
         $newUserDepartmentId = $maxUserDepartmentId + 1;

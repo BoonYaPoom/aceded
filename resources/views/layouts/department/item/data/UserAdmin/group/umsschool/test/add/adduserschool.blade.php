@@ -24,7 +24,7 @@
                 <!-- .card-header -->
                 <div class="card-header bg-muted"><a
                         href="{{ route('DPUserManage', ['department_id' => $depart->department_id]) }}">ผู้ใช้งาน</a>/ <a
-                        href="{{ route('umsschooldepartment', ['department_id' => $depart->department_id]) }}">จัดการสถานศึกษาของ ระดับ {{$depart->name_th}}</a>/
+                        href="{{ route('umsschooldepartment', ['department_id' => $depart->department_id]) }}">จัดการสถานศึกษาของ {{$extender->name}} ระดับ {{$depart->name_th}}</a>
                    </div>
                 <!-- .card-body -->
                 <div class="card-body">
@@ -46,11 +46,11 @@
 
                             <div class="dataTables_filter">
                                 <div class="d-flex justify-content-between align-items-center">
-                                    <div>
+                                    {{-- <div>
                                         <button type="button" class="btn btn-success btn-md" onclick="$('#clientUploadModal').modal('toggle');">
                                             <i class="fas fa-user-plus"></i> นำเข้าผู้ใช้งาน
                                         </button>
-                                    </div>
+                                    </div> --}}
                                     <div>
                                         <label>ค้นหา
                                             <input type="search" id="myInput" class="form-control" placeholder="" aria-controls="datatable">
@@ -83,8 +83,10 @@
                     </div><!-- /.table-responsive -->
                     <hr>
                     <!-- .table-responsive -->
+
+               
                     <form method="POST"
-                        action="">
+                      action="{{ route('saveExtender_umsform', ['department_id' => $depart, 'extender_id' => $extender->extender_id]) }}">
                         @csrf
 
                         <div class="table-responsive">
