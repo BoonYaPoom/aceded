@@ -192,6 +192,53 @@
 
 
     @include('layouts.footer')
+
+    
+<div id="loadingSpinner" style="display: none;">
+    <div class="spinner"></div>
+</div>
+<style>
+    #loadingSpinner {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 100vh;
+        /* Adjust the height as needed */
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: rgba(255, 255, 255, 0.7);
+        /* Semi-transparent white background */
+        z-index: 9999;
+        /* Make sure it's above other elements */
+    }
+
+    .spinner {
+        width: 40px;
+        /* Adjust the size as needed */
+        height: 40px;
+        /* Adjust the size as needed */
+        border-radius: 50%;
+        border: 4px solid rgba(0, 0, 0, 0.1);
+        /* Light border color */
+        border-top: 4px solid #3498db;
+        /* Spinner color */
+        animation: spin 1s linear infinite;
+        /* Rotation animation */
+    }
+
+    @keyframes spin {
+        0% {
+            transform: rotate(0deg);
+        }
+
+        100% {
+            transform: rotate(360deg);
+        }
+    }
+</style>
 </body>
 
 </html>

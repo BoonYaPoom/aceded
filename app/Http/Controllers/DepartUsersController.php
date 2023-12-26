@@ -34,6 +34,7 @@ class DepartUsersController extends Controller
             // ดึงข้อมูลผู้ใช้จากฐานข้อมูล
             $data = Users::where('user_id', Session::get('loginId'))->first();
             $provicValue = $data->province_id;
+            $organization = $data->organization;
             $userDepart = UserDepartment::where('department_id', $department_id);
             $userIds = $userDepart->pluck('user_id');
             // ดึงผู้ใช้ที่มีค่า provic เท่ากันกับ $provicValue
@@ -47,10 +48,10 @@ class DepartUsersController extends Controller
                 }
             } elseif ($data->user_role == 7 || $data->user_role == 6 || $data->user_role == 3) {
                 // ถ้า data->role เป็น 0 แสดงผู้ใช้ที่มีค่า province_id เท่ากับ $provicValue
-                $usermanages = $depart->UserDe()->where('department_id', $department_id)
-                    ->where('province_id', $provicValue);
-                $users = Users::whereIn('user_id', $userIds)
-                    ->where('province_id', $provicValue);
+                // $usermanages = $depart->UserDe()->where('department_id', $department_id)
+                // ->where('organization', $organization);
+                $usermanages = Users::whereIn('user_id', $userIds)
+                    ->where('organization', $organization);
                 if ($user_role !== null) {
                     $usermanages->where('user_role', $user_role);
                 }

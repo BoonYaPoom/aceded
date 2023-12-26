@@ -17,11 +17,11 @@ class SchoolDpimportClass implements ToModel
      * @param Collection $collection
      */
     private $department_id;
-    private $school_id;
-    public function __construct($department_id, $school_id)
+    private $extender_id;
+    public function __construct($department_id, $extender_id)
     {
         $this->department_id = $department_id;
-        $this->school_id = $school_id;
+        $this->extender_id = $extender_id;
     }
 
     public function model(array $row)
@@ -29,10 +29,10 @@ class SchoolDpimportClass implements ToModel
 
         // ใช้ $this->subjectId เพื่อเข้าถึงค่า subject_id ที่ถูกส่งเข้ามา
         $department_id = $this->department_id;
-        $school_id = $this->school_id;
+        $extender_id = $this->extender_id;
 
         if ($row[0] >= 2) {
-            return DB::transaction(function () use ($row, $department_id, $school_id) {
+            return DB::transaction(function () use ($row, $department_id, $extender_id) {
                 $uidUserSchool = UserSchool::max('user_school_id');
                 $uidplus = Users::max('uid');
                 $role = 5;
@@ -125,16 +125,9 @@ class SchoolDpimportClass implements ToModel
                     'subdistrict_id' =>  $subdistrict_id,
                     'recoverpassword' =>  $recoverpassword,
                     'employeecode' =>  $employeecode,
-                    'organization' =>  $organization,
+                    'organization' =>  $extender_id,
                 ]);
-                $newUserSchool =  new UserSchool([
-
-                    'user_school_id' =>  $uidUserSchool + 1,
-                    'school_id' =>   $school_id,
-                    'user_id' =>   $uidplus + 1,
-                    'department_id' => $department_id,
-
-                ]);
+             
                 $newUserDepartment =  new UserDepartment([
 
                     'user_department_id' =>  $uidUserSchool + 1,
@@ -144,7 +137,6 @@ class SchoolDpimportClass implements ToModel
                 ]);
                 return [
                     'user' => $newUsers,
-                    'userSchool' => $newUserSchool,
                     'UserDepartment' => $newUserDepartment,
                 ];
             });

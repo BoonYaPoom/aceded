@@ -376,7 +376,7 @@ class ExcelController extends Controller
                         if ($row[0] >= 1) {
                             $user_idplus = Users::max('user_id') ?? 0;
                             $uiduserdepartment_id = UserDepartment::max('user_department_id') ?? 0;
-                            $user_role = 5;
+                            $user_role = 4;
                             $prefix = null;
                             $per_id = null;
                             $permission = null;
@@ -511,9 +511,9 @@ class ExcelController extends Controller
             return response()->json(['error' => 'No file uploaded'], 400);
         }
     }
-    public function UsersDepartSchoolImport(Request $request, $department_id, $school_code)
+    public function UsersDepartSchoolImport(Request $request, $department_id,  $extender_id)
     {
-        $UserDepartimport = new SchoolDpimportClass($department_id, $school_code);
+        $UserDepartimport = new SchoolDpimportClass($department_id, $extender_id);
 
         if ($request->hasFile('fileexcel')) {
             try {
@@ -528,11 +528,9 @@ class ExcelController extends Controller
                         // ข้อมูลถูกต้อง
                         if ($row[0] >= 1) {
                             $user_idplus = Users::max('user_id') ?? 0;
-                            $uidUserSchool = UserSchool::max('user_school_id') ?? 0;
                             $uiduserdepartment_id = UserDepartment::max('user_department_id') ?? 0;
-                            $user_role = 5;
+                            $user_role = 4;
                             $prefix = null;
-                            $gender = null;
                             $per_id = null;
 
                             $permission = null;
@@ -570,7 +568,6 @@ class ExcelController extends Controller
                             $subdistrict_id = 0;
                             $recoverpassword = null;
                             $employeecode = null;
-                            $organization = null;
 
                             $newUsers = new Users([
                                 'user_id' =>  $user_idplus + 1,
@@ -581,8 +578,8 @@ class ExcelController extends Controller
                                 'mobile' => $row[5],
                                 'email' => $row[6],
                                 'citizen_id' =>   $row[7],
+                                'gender' => $row[8] ?? null,
                                 'prefix' =>  $prefix,
-                                'gender' => $gender,
                                 'user_role' => $user_role,
                                 'per_id' => $per_id,
                                 'department_id' => $department_id,
@@ -619,22 +616,15 @@ class ExcelController extends Controller
                                 'subdistrict_id' =>  $subdistrict_id,
                                 'recoverpassword' =>  $recoverpassword,
                                 'employeecode' =>  $employeecode,
-                                'organization' =>  $organization,
+                                'organization' =>  $extender_id,
+                                'user_affiliation' =>  $row[9],
+                                'user_type_card' =>  0,
+                                'birthday' => null,
                             ]);
 
 
 
                             $newUsers->save();
-
-                            $userschool =  new UserSchool([
-
-                                'user_school_id' =>  $uidUserSchool + 1,
-                                'school_code' =>   $school_code,
-                                'user_id' =>   $user_idplus + 1,
-                                'department_id' => $department_id,
-
-                            ]);
-                            $userschool->save();
 
                             $UserDepartment =  new UserDepartment([
 
@@ -680,7 +670,7 @@ class ExcelController extends Controller
                             $user_idplus = Users::max('user_id') ?? 0;
                             $uidUserSchool = UserSchool::max('user_school_id') ?? 0;
                             $uiduserdepartment_id = UserDepartment::max('user_department_id') ?? 0;
-                            $user_role = 3;
+                            $user_role = 4;
                             $prefix = null;
                             $per_id = null;
 
@@ -732,7 +722,6 @@ class ExcelController extends Controller
                                 'citizen_id' =>   $row[7],
                                 'gender' => $row[8],
                                 'prefix' =>  $prefix,
-
                                 'user_role' => $user_role,
                                 'per_id' => $per_id,
                                 'department_id' => $department_id,
@@ -745,7 +734,6 @@ class ExcelController extends Controller
                                 'user_position' =>  $user_position,
                                 'workplace' =>  $workplace,
                                 'telephone' =>  $telephone,
-
                                 'socialnetwork' =>  $socialnetwork,
                                 'experience' =>  $experience,
                                 'recommened' => $recommened,
@@ -771,6 +759,9 @@ class ExcelController extends Controller
                                 'recoverpassword' =>  $recoverpassword,
                                 'employeecode' =>  $employeecode,
                                 'organization' =>  $organization,
+  
+                                'user_type_card' =>  0,
+                                'birthday' => null,
                             ]);
 
                             $newUsers->save();

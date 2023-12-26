@@ -10,7 +10,7 @@
                 <div class="card-header bg-muted"><a href="{{ route('departmentwmspage') }}"
                         style="text-decoration: underline;">จัดการเว็บ</a> / <a href="{{ route('requestSchool') }}"
                         style="text-decoration: underline;"> คำขอสมัคร Admin</a> /<i> ตรวจสอบข้อมูลขอการเป็น Admin ของ
-                        {{ $school }} จังหวัด {{ $proviUser }} </i></div>
+                        {{ $school->name }} </i></div>
                 <div class="col-lg">
                     <h6 class="card-header"> ตรวจสอบข้อมูล </h6>
                     <div class="card-body">
@@ -19,13 +19,14 @@
                         <div class="form-row">
                             <label for="username" class="col-md-2">ชื่อสถานศึกษา :</label>
                             <div class="col-md-4 mb-3">
-                                <label for="username" class="col-md-12">{{ $school }}</label>
+                                <label for="username" class="col-md-12">{{ $school->name }}</label>
                             </div>
 
 
-                            <label for="username" class="col-md-2">จังหวัด :</label>
+                            <label for="username" class="col-md-2">สังกัด :</label>
                             <div class="col-md-4 mb-3">
-                                <label for="username" class="col-md-12">{{ $proviUser }} </label>
+                
+                                <label for="username" class="col-md-12">{{ $extenderData->name }} </label>
                             </div>
 
                         </div>

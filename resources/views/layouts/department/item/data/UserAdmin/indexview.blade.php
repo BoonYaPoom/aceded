@@ -62,10 +62,10 @@
                         onclick="$('#clientUploadModal').modal('toggle');"><i class="fas fa-user-plus"></i>
                         นำเข้าผู้ใช้งาน</button>
 
-                        <a class="ml-1 btn btn-info btn-md " style="color:#fff"
-                            href="{{ route('testumsschool', [$depart]) }}"><i class="fas fa-users"></i>
-                            จัดการสถานศึกษา</a>
-             
+                    <a class="ml-1 btn btn-info btn-md " style="color:#fff"
+                        href="{{ route('testumsschool', [$depart]) }}"><i class="fas fa-users"></i>
+                        จัดการสถานศึกษา</a>
+
 
 
                     {{-- <div class="col-md-6 mb-3">
@@ -128,16 +128,20 @@
                                             class="fas fa-user-plus"></i> นำเข้าผู้ใช้งาน</button>
                                     <button type="button" class="btn btn-light" data-dismiss="modal">ยกเลิก</button>
                                 </div><!-- /.modal-footer -->
+                              
                             </div><!-- /.modal-content -->
                         </div><!-- /.modal-dialog -->
                     </form>
 
                 </div>
+
+            
                 <div>
                     <script>
                         $(document).ready(function() {
                             $('#uploadForm').on('submit', function(e) {
                                 e.preventDefault();
+                                $('#loadingSpinner').show();
 
                                 var formData = new FormData(this);
 
@@ -150,6 +154,7 @@
                                     contentType: false,
                                     processData: false,
                                     success: function(response) {
+                                        $('#loadingSpinner').hide();
                                         console.log(response);
                                         if (response.message) {
                                             Swal.fire({
@@ -177,6 +182,7 @@
                                         }
                                     },
                                     error: function(xhr, status, error) {
+                                        $('#loadingSpinner').hide();
                                         console.log(xhr.responseJSON.error);
                                         Swal.fire({
                                             title: 'Error!',

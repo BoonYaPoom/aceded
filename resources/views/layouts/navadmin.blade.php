@@ -20,11 +20,12 @@
                                 : '' }}"
                                 href="{{ route('UserManage') }}"><span class="menu-icon fas fa-users-cog  "></span>
                                 จัดการผู้ใช้</a>
-                            <a class="nav-link  font-weight-bold {{ Str::startsWith(request()->url(), route('requestSchool')) || request()->is('rad', 'rad/*')
+                            <a class="nav-link  font-weight-bold {{ Str::startsWith(request()->url(), route('pageRequest')) || request()->is('req', 'req/*')
                                     ? ' active text-info'
                                     : '' }}"
-                                    href="{{ route('requestSchool') }}"><span class="menu-icon fas fa-users-cog  "></span>
-                                    คำขอสมัคร Admin </a>
+                                    href="{{ route('pageRequest') }}"><span class="menu-icon fas fa-users-cog  "></span>
+                                    คำขอถึง Admin </a>
+             
                         @endif
                         <!-- End Account Sidebar Toggle Button -->
                         </li>

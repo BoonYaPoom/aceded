@@ -129,9 +129,7 @@
                                             lengthChange: false,
                                             responsive: true,
                                             info: false,
-
                                             language: {
-
                                                 infoEmpty: "ไม่พบรายการ",
                                                 infoFiltered: "(ค้นหาจากทั้งหมด _MAX_ รายการ)",
                                                 paginate: {

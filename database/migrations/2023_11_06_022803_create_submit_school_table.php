@@ -16,8 +16,8 @@ return new class extends Migration
             $table->collation = 'utf8_general_ci';
             $table->increments('submit_id')->start(10)->nocache();
             $table->integer('user_id')->nullable();
-            $table->integer('school_code')->nullable();
-            $table->integer('provines_code')->nullable();
+            $table->integer('extender_id')->nullable();
+            $table->integer('department_id')->nullable();
             $table->string('firstname',800)->collation('utf8_general_ci')->nullable();
             $table->string('lastname',800)->collation('utf8_general_ci')->nullable();
             $table->string('telephone',100)->collation('utf8_general_ci')->nullable();

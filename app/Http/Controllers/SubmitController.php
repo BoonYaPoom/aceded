@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\ActivityInvite;
 use App\Models\Department;
+use App\Models\Extender2;
 use App\Models\Provinces;
 use App\Models\School;
 use App\Models\SubmitSchool;
@@ -25,7 +26,7 @@ class SubmitController extends Controller
 
         $mit = SubmitSchool::all();
 
-        return view("layouts.department.item.data.request.index", compact("mit", 'school'));
+        return view("layouts.department.item.data.request.adminRequest.index", compact("mit", 'school'));
     }
     public function requestSchooldataJson()
     {
@@ -36,32 +37,33 @@ class SubmitController extends Controller
 
         $thaiEndDate = [];
         foreach ($mit as  $value) {
-            $school = School::where('school_code', $value->school_code)
-                ->pluck('school_name')
-                ->first();
-            $proviUser = Provinces::where('code', $value->provines_code)
-                ->pluck('name_in_thai')
+            $school = Extender2::where('extender_id', $value->extender_id)
+                ->pluck('name')
                 ->first();
             $mobile = $value->telephone;
+            $exten = Extender2::where('extender_id', $value->extender_id)
+
+                ->first();
             $fullname =  $value->firstname . ' ' . $value->lastname;
             $part1 = substr($mobile, 0, 3);
             $part2 = substr($mobile, 3, 3);
             $part3 = substr($mobile, 6, 4);
             $fullMobile = $part1 . '-' . $part2 . '-' . $part3;
+            $extenderData = Extender2::where('extender_id', $exten->item_parent_id)->first();
+            $thaiStartDate = Carbon::parse($value->startdate)->locale('th')->addYears(543)->isoFormat('LL');
 
-            $thaiStartDate = Carbon::parse($value->startdate)->locale('th')->isoFormat('LL');
-            if ($value->enddate !== null) {
-                $thaiEndDate = Carbon::parse($value->enddate)->locale('th')->isoFormat('LL');
-            }
+            $thaiEndDate = Carbon::parse($value->enddate)->locale('th')->addYears(543)->isoFormat('LL');
+            $thaiEndDate = $value->enddate !== null ? $thaiEndDate : '';
+
 
             $mitdata[] = [
                 "num" => $i++,
                 "submit_id" => $value->submit_id,
                 "school" => $school,
-                "proviUser" => $proviUser,
                 "fullname" =>  $fullname,
                 "telephone" =>  $fullMobile,
                 "email" => $value->email,
+                'proviUser' => $extenderData->name,
                 "citizen_id" => $value->citizen_id,
                 "pos_name" => $value->pos_name,
                 "submit_path" => $value->submit_path,
@@ -79,14 +81,34 @@ class SubmitController extends Controller
     {
 
         $request->validate([
-            'citizen_id' => 'unique:users',
+            'citizen_id' => 'required|unique:submit_school',
+            'firstname' => 'required|unique:submit_school',
+            'lastname' => 'required',
+            'email' => 'required|email',
+            'telephone' => 'required',
+            'pos_name' => 'required',
+            'submit_path' => 'required|mimes:pdf'
         ], [
             'citizen_id.unique' => 'เลขบัตรนี้เคยขอรหัส admin ไปแล้ว',
+            'citizen_id.required' => 'กรุณากรอกเลขบัตร ของคุณ',
+            'firstname.unique' => 'ชื่อนี้เคยขอไปแล้ว admin ไปแล้ว',
+            'lastname.required' => 'กรุณากรอกนามสกุล ของคุณ',
+            'email.required' => 'กรุณากรอก email ของคุณ',
+            'email.email' => 'กรุณากรอกรูปแบบ email',
+            'telephone.required' => 'กรุณากรอก เบอร์โทรของคุณ',
+            'pos_name.required' => 'กรุณากรอก ตำแหน่งของคุณ',
+            'submit_path.required' => 'กรุณาแนบไฟล์',
+            'submit_path.mimes' => 'PDF เท่านั้น',
         ]);
 
         $mit = new SubmitSchool;
-        $mit->school_code = $request->school_code;
-        $mit->provines_code = $request->provines_code;
+        $mit->department_id = $request->department_id;
+
+        if ($request->extender_1_id) {
+            $mit->extender_id = $request->extender_1_id;
+        } else {
+            $mit->extender_id = $request->extender_id;
+        }
         $mit->user_id = $uid;
         $mit->submit_status = 0;
         $mit->firstname = $request->firstname;
@@ -115,14 +137,11 @@ class SubmitController extends Controller
     {
         $mit =  SubmitSchool::findOrFail($submit_id);
         $thaiEndDate = [];
-        $school = School::where('school_code', $mit->school_code)
-            ->pluck('school_name')
-            ->first();
-        $proviUser = Provinces::where('code', $mit->provines_code)
-            ->pluck('name_in_thai')
-            ->first();
-        $mobile = $mit->telephone;
+        $school = Extender2::where('extender_id', $mit->extender_id)
 
+            ->first();
+        $extenderData = Extender2::where('extender_id', $school->item_parent_id)->first();
+        $mobile = $mit->telephone;
         $part1 = substr($mobile, 0, 3);
         $part2 = substr($mobile, 3, 3);
         $part3 = substr($mobile, 6, 4);
@@ -136,7 +155,7 @@ class SubmitController extends Controller
             ->first();
 
 
-        return view("layouts.department.item.data.request.detail", compact("mit", 'school','citizen_id', 'proviUser', 'fullMobile', 'thaiStartDate', 'thaiEndDate'));
+        return view("layouts.department.item.data.request.adminRequest.detail", compact("mit", 'school', 'citizen_id', 'extenderData', 'fullMobile', 'thaiStartDate', 'thaiEndDate'));
     }
 
     public function storeAdminreq(Request $request, $submit_id)
@@ -147,19 +166,18 @@ class SubmitController extends Controller
         $mit->submit_status = 1;
         $mit->enddate = now();
         $mit->save();
-        $school = School::where('school_code', $mit->school_code)
-        ->pluck('school_name')
-        ->first();
-        $proviUser = Provinces::where('code', $mit->provines_code)
-        ->pluck('name_in_thai')
-        ->first();
+        $school = Extender2::where('extender_id', $mit->extender_id)
+            ->first();
+        $extenderData = Extender2::where('extender_id', $school->item_parent_id)->first();
 
-
+        $maxUserId = Users::max('user_id');
+        $newUserId = $maxUserId + 1;
         $usermanages = new Users();
-        $usermanages->username =  $mit->school_code;
-        $usermanages->firstname = $school;
-        $usermanages->lastname = $proviUser;
-        $usermanages->password = Hash::make($mit->school_code);
+        $usermanages->user_id = $newUserId;
+        $usermanages->username = str_pad($mit->extender_id, 5, '0', STR_PAD_RIGHT);
+        $usermanages->firstname = $school->name;
+        $usermanages->lastname = $extenderData->name;
+        $usermanages->password = Hash::make(str_pad($mit->extender_id, 5, '0', STR_PAD_RIGHT));
         $usermanages->citizen_id = $mit->citizen_id;
         $usermanages->prefix  = '';
         $usermanages->gender = 1;
@@ -198,32 +216,48 @@ class SubmitController extends Controller
         $usermanages->office_id = 0;
         $usermanages->birthday = null;
         $usermanages->user_affiliation = null;
-        $usermanages->user_type = 1 ;
+        $usermanages->user_type = 1;
         $usermanages->province_id = $mit->province_id;
         $usermanages->user_type_card =  1;
         $usermanages->district_id = null;
         $usermanages->subdistrict_id = null;
-
+        $usermanages->birthday = null;
+        $usermanages->user_affiliation = 0;
+        $usermanages->organization =  $mit->extender_id;
+        $usermanages->user_type_card =  0;
         $usermanages->save();
-
-
-        $userschool = new UserSchool;
-        $userschool->school_code = $mit->school_code;
-        $userschool->user_id = $usermanages->user_id;
-        $userschool->save();
-
-        $department_data = Department::all();
-        foreach ($department_data as $departmentId) {
-            DB::table('users_department')->insert([
-                'user_id' =>    $usermanages->user_id,
-                'department_id' => $departmentId->department_id,
-            ]);
+        if (in_array($mit->department_id, [1, 2, 3, 4])) {
+            $department_data = Department::whereIn('department_id', [1, 2, 3, 4])->get();
+            $maxUserDepartmentId = DB::table('users_department')->max('user_department_id');
+            foreach ($department_data as $departmentId) {
+                $deuser = $maxUserDepartmentId + 1;
+                DB::table('users_department')->insert([
+                    'user_department_id' => $deuser + 1,
+                    'user_id' =>    $usermanages->user_id,
+                    'department_id' => $departmentId->department_id,
+                ]);
+                $maxUserDepartmentId = $deuser;
+            }
+        } elseif ($mit->department_id == 5) {
+            $department_data = Department::where('department_id', 5)->get();
+            $maxUserDepartmentId = DB::table('users_department')->max('user_department_id');
+            foreach ($department_data as $departmentId) {
+                $deuser = $maxUserDepartmentId + 1;
+                DB::table('users_department')->insert([
+                    'user_department_id' => $deuser + 1,
+                    'user_id' =>    $usermanages->user_id,
+                    'department_id' => $departmentId->department_id,
+                ]);
+                $maxUserDepartmentId = $deuser;
+            }
         }
+
+
 
         $inva = new ActivityInvite;
         $inva->activity_id  = 0;
         $inva->user_id  = $submit_id->user_id;
-        $inva->message  = 'คุณได้รับสิทธิ์ ในการเป็น Admin สถานศึกษารหัสผ่าน username ='. $mit->school_code . ' ' . 'password ='. $mit->school_code;
+        $inva->message  = 'คุณได้รับสิทธิ์ ในการเป็น Admin สถานศึกษารหัสผ่าน username =' .  $usermanages->username . ' ' . 'password =' .  $usermanages->password;
         $inva->activity_date  = now();
         $inva->status  = 1;
         $inva->activity_type  = 7;
@@ -232,7 +266,7 @@ class SubmitController extends Controller
 
         return redirect()->route('detaildata', $submit_id)->with('message', 'แก้ไขโปรไฟล์สำเร็จ');
     }
-    public function storeAdminreq2( $submit_id)
+    public function storeAdminreq2($submit_id)
     {
 
 

@@ -10,6 +10,7 @@ use App\Models\Subdistricts;
 use App\Models\Users;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use LdapRecord\Container;
 
@@ -42,8 +43,13 @@ class CustomAuthController extends Controller
         $school = School::all();
         $provinces = Provinces::all();
         $uid = $request->query('uid');
-
-        return view('Authpage.Regis.home', compact('provinces','school','uid'));
+        $depart = DB::table('department')->get();
+        $extender = DB::table('users_extender')->where('status', 1)->get();
+        $extender_1 = DB::table('users_extender2')->where('item_group_id', 1)->get();
+        $extender2 = DB::table('users_extender2')->get();
+        $extender2Json = json_encode($extender2);
+        $extender_1Json = json_encode($extender_1);
+        return view('Authpage.Regis.home', compact('provinces', 'school', 'uid', 'extender', 'depart', 'extender','extender_1Json', 'extender2', 'extender2Json'));
     }
     public function registerUser(Request $request)
     {
@@ -135,23 +141,22 @@ class CustomAuthController extends Controller
             'password' => 'required|min:3|max:20'
         ]);
 
-            $user = Users::where('username', '=', $request->username)->first();
+        $user = Users::where('username', '=', $request->username)->first();
 
-            if ($user) {
-                if (Hash::check($request->password, $user->password)) {
-                    if ($user->user_role == 1 || $user->user_role == 6 && $user->userstatus == 1 || $user->user_role == 7 && $user->userstatus == 1 || $user->user_role == 8 && $user->userstatus == 1|| $user->user_role == 3 && $user->userstatus == 1) {
-                        $request->session()->put('loginId', $user->user_id);
-                        return redirect()->route('departmentwmspage')->with('message', 'ผู้ใช้เข้าสู่ระบบ');
-                    } else {
-                        return back()->with('fail', 'ผู้ใช้ไม่มีสิทธิ์ในการเข้าสู่ระบบ');
-                    }
+        if ($user) {
+            if (Hash::check($request->password, $user->password)) {
+                if ($user->user_role == 1 || $user->user_role == 6 && $user->userstatus == 1 || $user->user_role == 7 && $user->userstatus == 1 || $user->user_role == 8 && $user->userstatus == 1 || $user->user_role == 3 && $user->userstatus == 1) {
+                    $request->session()->put('loginId', $user->user_id);
+                    return redirect()->route('departmentwmspage')->with('message', 'ผู้ใช้เข้าสู่ระบบ');
                 } else {
-                    return back()->with('fail', 'รหัสผ่านไม่ถูกต้อง');
+                    return back()->with('fail', 'ผู้ใช้ไม่มีสิทธิ์ในการเข้าสู่ระบบ');
                 }
             } else {
-                return back()->with('fail', 'ไม่พบผู้ใช้ในระบบ');
+                return back()->with('fail', 'รหัสผ่านไม่ถูกต้อง');
             }
-
+        } else {
+            return back()->with('fail', 'ไม่พบผู้ใช้ในระบบ');
+        }
     }
 
     public function loginLdapUser(Request $request)

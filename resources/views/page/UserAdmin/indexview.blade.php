@@ -65,10 +65,10 @@
                             class="fas fa-users"></i>
                         กลุ่มผู้ใช้งาน</a>
 
-
+                    {{-- 
                     <a class="ml-1 btn btn-info btn-md " style="color:#fff" href="{{ route('schoolManage') }}"><i
                             class="fas fa-users"></i>
-                        จัดการสถานศึกษา</a>
+                        จัดการสถานศึกษา</a> --}}
 
 
                 </div>
@@ -94,8 +94,7 @@
                                     <div class="container">
                                         <input type="file" class="form-control" id="uploaduser" name="fileexcel"
                                             accept=".xlsx" required>
-                                        <small class="form-text text-muted"><a
-                                              href="{{asset('uploads/userimport.xlsx')}}"
+                                        <small class="form-text text-muted"><a href="{{ asset('uploads/userimport.xlsx') }}"
                                                 target="_blank"> ไฟล์ตัวอย่าง
                                                 (.xlsx)</a>
                                         </small>
@@ -107,6 +106,7 @@
                                             class="fas fa-user-plus"></i> นำเข้าผู้ใช้งาน</button>
                                     <button type="button" class="btn btn-light" data-dismiss="modal">ยกเลิก</button>
                                 </div><!-- /.modal-footer -->
+                              
                             </div><!-- /.modal-content -->
                         </div><!-- /.modal-dialog -->
                     </form>
@@ -117,6 +117,7 @@
                         $(document).ready(function() {
                             $('#uploadForm').on('submit', function(e) {
                                 e.preventDefault();
+                                $('#loadingSpinner').show();
 
                                 var formData = new FormData(this);
 
@@ -129,6 +130,7 @@
                                     contentType: false,
                                     processData: false,
                                     success: function(response) {
+                                        $('#loadingSpinner').hide();
                                         console.log(response);
                                         if (response.message) {
                                             Swal.fire({
@@ -156,6 +158,7 @@
                                         }
                                     },
                                     error: function(xhr, status, error) {
+                                        $('#loadingSpinner').hide();
                                         console.log(xhr.responseJSON.error);
                                         Swal.fire({
                                             title: 'Error!',
@@ -198,7 +201,7 @@
                                             <option value="0"selected>ทั้งหมด</option>
                                             @php
                                                 $Provinces = \App\Models\Provinces::all();
-    
+
                                             @endphp
                                             @foreach ($Provinces as $provin)
                                                 <option value="{{ $provin->code }}"> {{ $provin->name_in_thai }}
@@ -206,9 +209,9 @@
                                             @endforeach
                                         </select>
                                     </label>
-    
+
                                 </div>
-                               
+
 
                             </div>
 
@@ -226,7 +229,7 @@
                                 </tr>
                             </thead>
                             <!-- /thead -->
-            
+
                         </table><!-- /.table -->
                     </div><!-- /.table-responsive -->
 

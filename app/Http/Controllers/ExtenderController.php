@@ -44,7 +44,7 @@ class ExtenderController extends Controller
         $userDepart = DB::table('users_department')->where('department_id', $department_id)->pluck('user_id');
         $usersnotnull = collect(); // Initialize an empty collection
 
-        // Check if $userDepart is not empty before querying the users
+
         if ($userDepart->isNotEmpty()) {
             $usersnotnull = DB::table('users')
                 ->whereIn('user_id', $userDepart)
@@ -166,7 +166,12 @@ class ExtenderController extends Controller
                 }
                 return '-';
             })
-      
+            ->filter(function ($query) use ($request) {
+                if ($request->has('myInput') && !empty($request->myInput)) {
+                    $query->where('name', 'like', '%' . $request->myInput . '%');
+                    // Add more conditions with orWhere if needed
+                }
+            })
             ->toJson();
     }
 }

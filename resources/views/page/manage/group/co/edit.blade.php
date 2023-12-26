@@ -28,7 +28,7 @@
             <div class="card card-fluid">
                 <!-- .card-header -->
                 <div class="card-header bg-muted">
-                    <a href="{{ route('learn', ['department_id' => $courses->first()->department_id]) }}" style="text-decoration: underline;">จัดการหลักสูตร</a> / <a href="{{ route('courgroup', ['department_id' => $courses->first()->department_id]) }}" style="text-decoration: underline;">
+                    <a href="{{ route('learn', ['department_id' => $depart]) }}" style="text-decoration: underline;">จัดการหลักสูตร</a> / <a href="{{ route('courgroup', ['department_id' => $depart]) }}" style="text-decoration: underline;">
                         หมวดหมู่</a> / <a href="{{ route('courpag', [$depart, 'group_id' => $cour->group_id]) }}" style="text-decoration: underline;">
 
                         {{ $courses->group_th }}
@@ -778,9 +778,9 @@
                         </div><!-- /grid column -->
                         <!-- grid column -->
                         <!-- /grid row -->
-                        <div class="form-group">
+                        {{-- <div class="form-group">
                             <label for="cert_custom">เลือกรูปแบบใบประกาศนียบัตร </label>
-                        </div><!-- /.form-group -->
+                        </div><!-- /.form-group --> --}}
                     </fieldset><!-- /.fieldset -->
                     <fieldset>
                         <legend>ข้อมูลใบประกาศนียบัตร</legend> <!-- .form-group -->
@@ -799,8 +799,9 @@
                             </div><!-- /grid column -->
                         </div><!-- /grid row -->
                         <div class="form-group">
-                            <label for="signature">ลายเซ็นต์ </label> <input type="file" class="form-control" id="signature" name="signature" placeholder="ลายเซ็นต์" accept="image/*">
+                            <label for="signature">ลายเซ็นต์  <small class="form-text text-muted">ขนาดความสูง 60px (เท่านั้น) .png (เท่านั้น)</small> </label> <input type="file" class="form-control" id="signature" name="signature" placeholder="ลายเซ็นต์" accept="image/*">
                         </div><!-- /.form-group -->
+                        <small class="form-text text-muted">{{ $cour->signature}}</small> 
                     </fieldset><!-- /.fieldset -->
                 </div><!-- /.card-body -->
             </div><!-- /.card -->

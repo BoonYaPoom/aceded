@@ -16,7 +16,7 @@
 
 
     <tbody>
-        @foreach ($usersnull as $unull)
+        @foreach ($usersnull->sortBy('user_id') as $unull)
                 
                 <tr>
                     <td width="5%">

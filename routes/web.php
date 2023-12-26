@@ -10,6 +10,7 @@ use App\Http\Controllers\BookCategoryController;
 use App\Http\Controllers\BookController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\CategoryTopicController;
+use App\Http\Controllers\ClaimUserController;
 use App\Http\Controllers\CourseClassAddController;
 use App\Http\Controllers\CourseClassController;
 use App\Http\Controllers\CourseController;
@@ -591,24 +592,19 @@ Route::group(['middleware' => 'IsLoggedIn'], function () {
                 Route::get('/T0103', [ReportJsonController::class, 't0103'])->name('t0103json');
             });
             Route::get('/getSchools', [SchoolController::class, 'getSchools'])->name('getSchools');
-          
-            Route::get('/rad', [SubmitController::class, 'requestSchool'])->name('requestSchool');
-            Route::prefix('rad')->group(function () {
-                
-                Route::get('/requestup', [SchoolDepartUserController::class, 'requestSchool'])->name('requestup');
-                
+            
+            Route::get('/req', [NavController::class, 'pageRequest'])->name('pageRequest');
+            Route::prefix('req')->group(function () {
+                Route::get('/amreq', [SubmitController::class, 'requestSchool'])->name('requestSchool');
+                Route::get('/requestup', [SchoolDepartUserController::class, 'requestSchool'])->name('requestup');             
                 Route::post('/uploadPdf', [SchoolDepartUserController::class, 'uploadPdf'])->name('uploadPdf');
-              
-
                 Route::get('/requestSchooldataJson', [SubmitController::class, 'requestSchooldataJson'])->name('requestSchooldataJson');
                 Route::get('/detaildata/{submit_id}', [SubmitController::class, 'detaildata'])->name('detaildata');
                 Route::put('admin/rad/storeAdminreq/{submit_id}', [SubmitController::class, 'storeAdminreq'])->name('storeAdminreq');
                 Route::put('admin/rad/storeAdminreq2/{submit_id}', [SubmitController::class, 'storeAdminreq2'])->name('storeAdminreq2');
-        
-        
-        
-        
-        
+
+
+                Route::get('/cau', [ClaimUserController::class, 'Certanddepart'])->name('Certanddepart');
             });
             Route::prefix('info')->group(function () {
                 Route::post('UsersDepartAllImport/{department_id}', [ExcelController::class, 'UsersDepartAllImport'])->name('UsersDepartAllImport');
@@ -617,7 +613,7 @@ Route::group(['middleware' => 'IsLoggedIn'], function () {
                 Route::post('UsersImport', [ExcelController::class, 'UsersImport'])->name('UsersImport');
                 Route::get('exportLeact', [ExcelController::class, 'exportLeact'])->name('exportLeact');
                 Route::get('/autocomplete-search/{department_id}', [DepartUsersController::class, 'autoschool'])->name('DPautocompleteSearch');
-                Route::post('UsersDepartSchoolImport/{department_id}/{school_id}', [ExcelController::class, 'UsersDepartSchoolImport'])->name('UsersDepartSchoolImport');
+                Route::post('UsersDepartSchoolImport/{department_id}/{extender_id}', [ExcelController::class, 'UsersDepartSchoolImport'])->name('UsersDepartSchoolImport');
                 Route::get('/changeStatus', [HighlightController::class, 'changeStatus'])->name('changeStatus');
                 Route::post('/storeban', [HighlightController::class, 'store'])->name('storeban');
                 Route::get('/dls', [DepartmentController::class, 'departmentdlspage'])->name('departmentdlspage');

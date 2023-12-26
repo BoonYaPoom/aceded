@@ -131,9 +131,9 @@ try {
 <div class="wrapper fadeInDown">
     <div id="formContent">
         <!-- Tabs Titles -->
-        <h2 class="inactive underlineHover">
+        {{-- <h2 class="inactive underlineHover">
             <a class="navbar-brand" href="{{ route('homelogin') }}">Sign In</a>
-        </h2>
+        </h2> --}}
 
         <h2 class="active">
             <a class="navbar-brand" href="{{ route('homeRegis') }}">Request</a>
@@ -141,61 +141,120 @@ try {
         <div class="fadeIn first">
             <h3>ขอรหัสเป็น Admin สถานศึกษา</h3>
 
-            <img src="{{ asset('upload/LOGO/logo.png') }}" id="icon" alt="User Icon" />
+            <img src="{{ asset('LOGO/logo.png') }}" style="width: 40%; " id="icon" alt="User Icon" />
 
         </div>
 
         <br>
         <!-- Login Form -->
-        <form action="{{ route('storeregisRequest',$uid) }}"  method="POST" enctype="multipart/form-data" accept-charset="utf-8">
+
+        <form action="{{ route('storeregisRequest', $uid) }}" method="POST" enctype="multipart/form-data"
+            accept-charset="utf-8">
             @csrf
             <div class="form-group row">
                 <div class="col-sm-4" align="right">
-                    <label class="control-label fadeIn first"><span class="required">*</span> จังหวัด
+                    <label class="control-label fadeIn first"><span class="required">*</span> หน่วยงาน
                     </label>
                 </div>
                 <div class="col-sm-7" align="left">
-                    <select class="form-control w-100 fadeIn first" name="provines_code" id="provines_code" required="">
-                        <option value="" selected disabled>-- เลือกจังหวัด --</option>
-                        @foreach ($provinces->sortBy('id') as $pro)
-                            <option value="{{ $pro->code }}">{{ $pro->name_in_thai }}</option>
+                    <select class="form-control w-100 fadeIn first" name="department_id" id="department_id"
+                        required="">
+                        <option value="" selected disabled>-- เลือกหน่วยงาน --</option>
+                        @foreach ($depart->sortBy('department_id') as $de)
+                            @if ($de->department_id < 6)
+                                <option value="{{ $de->department_id }}">{{ $de->name_th }}</option>
+                            @endif
                         @endforeach
                     </select>
                 </div>
             </div>
 
-            <div class="form-group row">
+            <div class="form-group row" id='sch'>
                 <div class="col-sm-4" align="right">
                     <label class="control-label fadeIn first"><span class="required">*</span> สถานศึกษา
                     </label>
                 </div>
                 <div class="col-sm-7" align="left">
-                    <select class="form-control w-100 fadeIn first" name="school_code" id="school_code" required="">
+                    <select class="form-control w-100 fadeIn first" name="extender_id" id="extender_id" required="">
+                        <option value="" selected disabled>-- เลือกสถานศึกษา --</option>
+                    </select>
+
+                </div>
+
+            </div>
+            <div class="form-group row" id='sch1' style="display: none;">
+                <div class="col-sm-4" align="right">
+                    <label class="control-label fadeIn first"><span class="required">*</span> สถานศึกษาย่อย
+                    </label>
+                </div>
+                <div class="col-sm-7" align="left">
+                    <select class="form-control w-100 fadeIn first" name="extender_1_id" id="extender_1_id"
+                        required="">
                         <option value="" selected disabled>-- เลือกสถานศึกษา --</option>
                     </select>
                 </div>
 
             </div>
             <script>
-                document.getElementById('provines_code').addEventListener('change', function() {
-                    // รหัสจังหวัดที่เลือก
-                    var selectedProvinceCode = this.value;
+                document.addEventListener('DOMContentLoaded', function() {
+                    var sch1Div = document.getElementById('sch1');
+                    document.getElementById('department_id').addEventListener('change', function() {
+                        var selectedDepartmentCode = this.value;
+                        var schoolSelect = document.getElementById('extender_id');
 
-                    // เลือกรายการ "เลือกสถานศึกษา"
-                    var schoolSelect = document.getElementById('school_code');
-
-                    // ล้างรายการเดิม
-                    schoolSelect.innerHTML = '<option value="" selected disabled>-- เลือกสถานศึกษา --</option>';
-
-                    // เลือกรายการโรงเรียนที่มีรหัสจังหวัดที่ตรงกัน
-                    @foreach ($school as $schoolItem)
-                        if ("{{ $schoolItem->provinces_code }}" === selectedProvinceCode) {
-                            var option = document.createElement('option');
-                            option.value = "{{ $schoolItem->school_code }}";
-                            option.textContent = "{{ $schoolItem->school_name }}";
-                            schoolSelect.appendChild(option);
+                        schoolSelect.innerHTML = '<option value="" selected disabled>-- เลือกสถานศึกษา --</option>';
+                        var extender2 = {!! $extender2Json !!};
+                        if (selectedDepartmentCode == '5') {
+                            extender2.forEach(function(exten) {
+                                if (exten.item_group_id == 2) {
+                                    var option = document.createElement('option');
+                                    option.value = exten.extender_id;
+                                    option.textContent = exten.name;
+                                    schoolSelect.appendChild(option);
+                                    sch1Div.style.display = 'none';
+                                }
+                            });
+                        } else {
+                            extender2.forEach(function(exten) {
+                                if (exten.item_group_id == 1 && exten.item_parent_id == null) {
+                                    var option = document.createElement('option');
+                                    option.value = exten.extender_id;
+                                    option.textContent = exten.name;
+                                    schoolSelect.appendChild(option);
+                                    sch1Div.style.display = '';
+                                }
+                            });
                         }
-                    @endforeach
+
+                    });
+                    document.getElementById('extender_id').addEventListener('change', function() {
+                        var selectedextender_idCode = this.value;
+                        var schoolSelect1 = document.getElementById('extender_1_id');
+                        schoolSelect1.innerHTML =
+                            '<option value="" selected disabled>-- เลือกสถานศึกษา --</option>';
+                        var extender_1 = {!! $extender_1Json !!};
+                        var foundMatch = false;
+                        extender_1.forEach(function(exten1) {
+                            if (exten1.item_group_id == 1 && exten1.item_parent_id ==
+                                selectedextender_idCode) {
+                                var option1 = document.createElement('option');
+                                option1.value = exten1.extender_id;
+                                option1.textContent = exten1.name;
+                                schoolSelect1.appendChild(option1);
+                                foundMatch = true;
+                            }
+
+                        });
+                        if (!foundMatch) {
+                            var option1 = document.createElement('option');
+                            option1.value = 'default_value'; // Provide a suitable default value
+                            option1.textContent = 'Default School Name'; // Provide a suitable default name
+                            schoolSelect1.appendChild(option1);
+                        }
+                        sch1Div.style.display = foundMatch ? '' : 'none';
+                    });
+
+
                 });
             </script>
             <div class="form-group row">
@@ -205,7 +264,11 @@ try {
                 <div class="col-sm-4" align="left">
                     <input type="text" name="citizen_id" value="" id="citizen_id"
                         class="form-control fadeIn second" maxlength="20" required="">
-                    <div id="errorDub" class="required" style="display:none; font-size: 14px;padding-top: 4px"></div>
+                    <div id="errorDub" class="required" style="display:none; font-size: 14px;padding-top: 4px">
+                    </div>
+                    @error('citizen_id')
+                        <span class="badge badge-warning">{{ $message }}</span>
+                    @enderror
                 </div>
             </div>
 
@@ -216,6 +279,9 @@ try {
                 <div class="col-sm-4" align="left">
                     <input type="text" name="firstname" maxlength="150" autocomplete="off" value=""
                         id="firstname" class="form-control fadeIn second" required="">
+                    @error('firstname')
+                        <span class="badge badge-warning">{{ $message }}</span>
+                    @enderror
                 </div>
             </div>
             <div class="form-group row">
@@ -225,6 +291,9 @@ try {
                 <div class="col-sm-4" align="left">
                     <input type="text" name="lastname" maxlength="150" autocomplete="off" value=""
                         id="lastname" class="form-control fadeIn third" required="">
+                    @error('lastname')
+                        <span class="badge badge-warning">{{ $message }}</span>
+                    @enderror
                 </div>
             </div>
 
@@ -235,6 +304,9 @@ try {
                 <div class="col-sm-4" align="left">
                     <input type="text" name="telephone" maxlength="10" autocomplete="off" value=""
                         id="telephone" class="form-control fadeIn fourth" required="">
+                    @error('telephone')
+                        <span class="badge badge-warning">{{ $message }}</span>
+                    @enderror
                 </div>
             </div>
             <div class="form-group row">
@@ -242,25 +314,37 @@ try {
                     <label class="control-label fadeIn fourth"><span class="required">*</span> email</label>
                 </div>
                 <div class="col-sm-4" align="left">
-                    <input type="text" name="email"  autocomplete="off" value=""
-                        id="email" class="form-control fadeIn fourth" required="">
+                    <input type="text" name="email" autocomplete="off" value="" id="email"
+                        class="form-control fadeIn fourth" required="">
+                    @error('email')
+                        <span class="badge badge-warning">{{ $message }}</span>
+                    @enderror
                 </div>
             </div>
             <div class="form-group row">
                 <div class="col-sm-4" align="right">
                     <label class="control-label fadeIn fourth"><span class="required">*</span> ตำแหน่ง</label>
+                    @error('pos_name')
+                        <span class="badge badge-warning">{{ $message }}</span>
+                    @enderror
                 </div>
                 <div class="col-sm-4" align="left">
-                    <select class="form-control w-100 fadeIn fourth" name="pos_name" id="pos_name">
-                        <option value="" selected disabled>-- เลือกตำแหน่ง --</option>
-                    </select>
+
+                    <input type="text" name="pos_name" maxlength="150" autocomplete="off" value=""
+                        id="pos_name" class="form-control fadeIn third" required="">
                 </div>
+                  @error('pos_name')
+                        <span class="badge badge-warning">{{ $message }}</span>
+                    @enderror
             </div>
 
             <h3 class="fadeIn fourth">แนบเอกสารขอสมัคร
                 <input type="file" name="submit_path" id="submit_path" class="inputfile fadeIn fourth"
                     accept=".pdf" onchange="showFileName()" />
                 <label for="submit_path">Choose a file <i class="fa fa-file fadeIn fourth"></i></label>
+                  @error('submit_path')
+                        <span class="badge badge-warning">{{ $message }}</span>
+                    @enderror
             </h3>
 
             <h5 id="submit_name"></h5>

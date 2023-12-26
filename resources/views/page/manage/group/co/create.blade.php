@@ -27,7 +27,7 @@
             <div class="card card-fluid">
                 <!-- .card-header -->
                 <div class="card-header bg-muted">
-                    <a href="{{ route('learn', ['department_id' => $courses->department_id]) }}" style="text-decoration: underline;">จัดการหลักสูตร</a> / <a href="{{ route('courgroup', ['department_id' => $courses->department_id]) }}" style="text-decoration: underline;">หมวดหมู่</a> / <a href="{{ route('courpag', [$depart, 'group_id' => $courses->group_id]) }}" style="text-decoration: underline;">{{ $courses->group_th }}</a> <i></i>
+                    <a href="{{ route('learn', ['department_id' => $depart]) }}" style="text-decoration: underline;">จัดการหลักสูตร</a> / <a href="{{ route('courgroup', ['department_id' => $courses->department_id]) }}" style="text-decoration: underline;">หมวดหมู่</a> / <a href="{{ route('courpag', [$depart, 'group_id' => $courses->group_id]) }}" style="text-decoration: underline;">{{ $courses->group_th }}</a> <i></i>
                 </div><!-- /.card-header -->
                 <!-- .card-body -->
                 <div class="card-body">
@@ -751,7 +751,7 @@
                         </div><!-- /grid column -->
                     </div><!-- /grid row -->
                     <div class="form-group">
-                        <label for="signature">ลายเซ็นต์ </label> <input type="file" class="form-control" id="signature" name="signature" placeholder="ลายเซ็นต์" accept="image/*">
+                        <label for="signature">ลายเซ็นต์  <small class="form-text text-muted">ขนาดความสูง 60px (เท่านั้น) .png (เท่านั้น)</small></label> <input type="file" class="form-control" id="signature" name="signature" placeholder="ลายเซ็นต์" accept="image/*">
                     </div><!-- /.form-group -->
                 </fieldset><!-- /.fieldset -->
             </div><!-- /.card-body -->

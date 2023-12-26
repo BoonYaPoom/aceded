@@ -1,21 +1,21 @@
 @extends('layouts.department.layout.departmenthome')
 @section('contentdepartment')
-@if (Session::has('message'))
-<script>
-    toastr.options = {
-        "progressBar": true,
-        "positionClass": 'toast-top-full-width',
-        "extendedTimeOut ": 0,
-        "timeOut": 3000,
-        "fadeOut": 250,
-        "fadeIn": 250,
-        "positionClass": 'toast-top-right',
+    @if (Session::has('message'))
+        <script>
+            toastr.options = {
+                "progressBar": true,
+                "positionClass": 'toast-top-full-width',
+                "extendedTimeOut ": 0,
+                "timeOut": 3000,
+                "fadeOut": 250,
+                "fadeIn": 250,
+                "positionClass": 'toast-top-right',
 
 
-    }
-    toastr.success("{{ Session::get('message') }}");
-</script>
-@endif
+            }
+            toastr.success("{{ Session::get('message') }}");
+        </script>
+    @endif
     <div class="page-inner">
         <!-- .page-section -->
         <div class="page-section">
@@ -24,8 +24,9 @@
                 <!-- .card-header -->
                 <div class="card-header bg-muted"><a
                         href="{{ route('DPUserManage', ['department_id' => $depart->department_id]) }}">ผู้ใช้งาน</a>/ <a
-                        href="{{ route('umsschooldepartment', ['department_id' => $depart->department_id]) }}">จัดการสถานศึกษาของ {{$extender->name}} ระดับ {{$depart->name_th}}</a>
-                   </div>
+                        href="{{ route('umsschooldepartment', ['department_id' => $depart->department_id]) }}">จัดการสถานศึกษาของ
+                        {{ $extender->name }} ระดับ {{ $depart->name_th }}</a>
+                </div>
                 <!-- .card-body -->
                 <div class="card-body">
                     <div class="form-actions ">
@@ -46,25 +47,28 @@
 
                             <div class="dataTables_filter">
                                 <div class="d-flex justify-content-between align-items-center">
-                                    {{-- <div>
-                                        <button type="button" class="btn btn-success btn-md" onclick="$('#clientUploadModal').modal('toggle');">
+                                    <div>
+                                        <button type="button" class="btn btn-success btn-md"
+                                            onclick="$('#clientUploadModal').modal('toggle');">
                                             <i class="fas fa-user-plus"></i> นำเข้าผู้ใช้งาน
                                         </button>
-                                    </div> --}}
+                                    </div>
                                     <div>
                                         <label>ค้นหา
-                                            <input type="search" id="myInput" class="form-control" placeholder="" aria-controls="datatable">
+                                            <input type="search" id="myInput" class="form-control" placeholder=""
+                                                aria-controls="datatable">
                                         </label>
                                     </div>
                                 </div>
                             </div>
-                            
+
                             <!-- thead -->
                             <thead>
                                 <tr class="bg-infohead">
                                     <th width="5%">ลำดับ </th>
                                     <th width="20%">รหัสผู้ใช้</th>
                                     <th>ชื่อ สกุล</th>
+                                    <th width="20%">ระดับ </th>
                                     <th width="20%">กลุ่มผู้ใช้งาน </th>
 
                                 </tr>
@@ -84,9 +88,9 @@
                     <hr>
                     <!-- .table-responsive -->
 
-               
+
                     <form method="POST"
-                      action="{{ route('saveExtender_umsform', ['department_id' => $depart, 'extender_id' => $extender->extender_id]) }}">
+                        action="{{ route('saveExtender_umsform', ['department_id' => $depart, 'extender_id' => $extender->extender_id]) }}">
                         @csrf
 
                         <div class="table-responsive">
@@ -136,8 +140,8 @@
                         <div class="container">
                             <input type="file" class="form-control" id="uploaduser" name="fileexcel" accept=".xlsx"
                                 required>
-                            <small class="form-text text-muted"><a
-                                    href="https://1drv.ms/x/s!Aneojfnh1p7QgepezApvu9n8MZCmBg?e=8RLia9" target="_blank">
+                            <small class="form-text text-muted"><a href="{{ asset('uplade/testuserschool.xlsx') }}"
+                                    target="_blank">
                                     ไฟล์ตัวอย่าง
                                     (.xlsx)</a>
                             </small>
@@ -152,18 +156,18 @@
                 </div><!-- /.modal-content -->
             </div><!-- /.modal-dialog -->
         </form>
-
     </div>
     <div>
-        {{-- <script>
+        <script>
             $(document).ready(function() {
                 $('#uploadForm').on('submit', function(e) {
                     e.preventDefault();
+                    $('#loadingSpinner').show();
 
                     var formData = new FormData(this);
 
                     $.ajax({
-                        url: '{{ route('UsersDepartSchoolImport', ['department_id' => $depart , 'school_id' => $school->school_id]) }}',
+                        url: '{{ route('UsersDepartSchoolImport', ['department_id' => $depart->department_id, 'extender_id' => $extender->extender_id]) }}',
                         type: 'POST',
                         data: formData,
                         dataType: 'json',
@@ -171,6 +175,8 @@
                         contentType: false,
                         processData: false,
                         success: function(response) {
+
+                            $('#loadingSpinner').hide();
                             console.log(response);
                             if (response.message) {
                                 Swal.fire({
@@ -198,6 +204,7 @@
                             }
                         },
                         error: function(xhr, status, error) {
+                            $('#loadingSpinner').hide();
                             console.log(xhr.responseJSON.error);
                             Swal.fire({
                                 title: 'Error!',
@@ -209,7 +216,7 @@
                     });
                 });
             });
-        </script> --}}
+        </script>
         <script>
             $(function() {
                 $("#checkall").click(function() {

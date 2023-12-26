@@ -68,4 +68,9 @@ class NavController extends Controller
         return view('page.manage.sub.activitys.index', compact('subs', 'depart'));
     }
 
+    public function pageRequest()
+    {
+        set_time_limit(0);
+        return view('layouts.department.item.data.request.index');
+    }
 }

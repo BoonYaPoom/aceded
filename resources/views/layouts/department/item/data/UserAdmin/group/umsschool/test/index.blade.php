@@ -49,6 +49,9 @@
                                         ajax: {
                                             url: '{{ route('getExtender', [$depart]) }}',
                                             type: 'GET',
+                                            data: function(d) {
+                                                d.myInput = $('#myInput').val();
+                                            },
                                         },
                                         serverSide: true,
 
@@ -102,8 +105,8 @@
                                             infoEmpty: "ไม่พบรายการ",
                                             infoFiltered: "(ค้นหาจากทั้งหมด _MAX_ รายการ)",
                                             processing: "<span class='fa-stack fa-lg'>\n\
-                                                        <i class='fa fa-spinner fa-spin fa-stack-2x fa-fw'></i>\n\
-                                                   </span>&emsp;กรุณารอสักครู่",
+                                                                                                                                                                        <i class='fa fa-spinner fa-spin fa-stack-2x fa-fw'></i>\n\
+                                                                                                                                                                   </span>&emsp;กรุณารอสักครู่",
                                             paginate: {
                                                 first: "หน้าแรก",
                                                 last: "หน้าสุดท้าย",
@@ -112,6 +115,11 @@
                                             }
                                         }
                                     });
+                                    $('#myInput').on('keyup', function() {
+                                        table.search(this.value).draw();
+                                    });
+
+
                                 });
                             </script>
                         </table>
