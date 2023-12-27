@@ -99,6 +99,36 @@
                                     <td class="text-right">{{ $register }}</td>
                                 </tr>
                             @endforeach
+                            
+                            {{-- @if ($year == 2023)
+                                @foreach ($month as $im => $m)
+                                    @php
+                                        $register = empty($result[$im]['register']) ? 0 : $result[$im]['register'];
+                                        $prefix = md5('moc' . date('Ymd'));
+                                        $idm = $monthsa = $im;
+
+                                    @endphp
+                                    <tr>
+                                        <td align="center">{{ $im }}</td>
+                                        <td>{{ $m }}</td>
+                                        <td class="text-right">{{ $register }}</td>
+                                    </tr>
+                                @endforeach
+                            @elseif($year == 2024)
+                                @foreach ($month as $im => $m)
+                                    @php
+                                        $register = empty($result[$im]['register']) ? 0 : $result[$im]['register'];
+                                        $prefix = md5('moc' . date('Ymd'));
+                                        $idm = $monthsa = $im;
+
+                                    @endphp
+                                    <tr>
+                                        <td align="center">{{ $im }}</td>
+                                        <td>{{ $m }}</td>
+                                        <td class="text-right">{{ $register }}</td>
+                                    </tr>
+                                @endforeach
+                            @endif --}}
                             </tbody><!-- /tbody -->
                     </table><!-- /.table -->
                 </div><!-- /.table-responsive -->

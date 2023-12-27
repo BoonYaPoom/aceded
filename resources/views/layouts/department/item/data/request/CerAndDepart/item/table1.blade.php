@@ -1,13 +1,13 @@
 <div class="table-responsive">
     <!-- .table -->
-    <table id="datatable1" class="table w3-hoverable">
+    <table id="datatable" class="table w3-hoverable">
         <!-- thead -->
         <thead>
             <tr class="bg-infohead">
                 <th class="align-middle" style="width:10%"> ลำดับ </th>
                 <th class="align-middle" style="width:50%"> ชื่อ </th>
-                <th class="align-middle" style="width:10%"> ย่อย </th>
-                <th class="align-middle" style="width:10%"> กระทำ </th>
+                <th class="align-middle" style="width:10%"> ข้อมูลการย้าย </th>
+                <th class="align-middle" style="width:5%"> กระทำ </th>
             </tr>
         </thead><!-- /thead -->
         <!-- tbody -->
@@ -17,34 +17,61 @@
                 $displayedIds = [];
                 $i = 1;
             @endphp
-            @foreach ($claimuser->sortBy('claim_id') as $c)
-        
-                @if (!in_array($c->claim_user_id, $displayedIds))
-                    <tr>
-                        <td>{{ $i++ }}</td>
-                        <td>{{ $c->claim_user_id }}</td>
-                        <td><i class="fa fas fa-plus-circle text-success pointer" style="cursor:pointer" id="icon1"
-                                onclick="$('#clientUploadModal-{{ $c->claim_user_id }}').modal('show');"></i>
-                        </td>
-                        <td>
-                            <a href=""><i class="fas fa-edit fa-lg text-success" data-toggle="tooltip"
-                                    title="เพิ่มแบบฝึกหัด"></i></a>
-                        </td>
-                    </tr>
-                    @php
-                        $displayedIds[] = $c->claim_user_id;
-                    @endphp
-                @endif
+            @foreach ($claimuser as $c)
+                @php
+                    $users2 = \App\Models\Users::find($c->claim_user_id);
+                @endphp
+                <tr>
+                    <td>{{ $i++ }}</td>
+                    <td>{{ $users2->firstname }} {{ $users2->lastname }}</td>
+                    <td><i class="fa fas fa-plus-circle text-success pointer" style="cursor:pointer" id="icon1"
+                            onclick="showModal('{{ $c->claim_user_id }}')"></i>
+                        @include('layouts.department.item.data.request.CerAndDepart.item.modeleditDpart', [
+                            'claimUserId' => $c->claim_user_id,
+                        ])
+                    </td>
+                    <td>
+                        <a href="{{route('updateuserdeyes',$c->claim_user_id)}}"
+                            onclick="updateceryes(event)"><i class="fas fa-check fa-lg text-success"
+                                data-toggle="tooltip" title="อนุมัติผ่าน"></i></a>
+                        <a href="{{route('updateuserdeno',$c->claim_user_id)}}" onclick="updatecerno(event)"><i
+                                class="fas fa-times fa-lg text-danger" data-toggle="tooltip"
+                                title="อนุมัติไม่ผ่าน"></i></a>
+                    </td>
+                </tr>
             @endforeach
+
+
 
         </tbody><!-- /tbody -->
     </table><!-- /.table -->
-                @foreach ($claimuser->sortBy('claim_id') as $c)
-      @include('layouts.department.item.data.request.CerAndDepart.item.modeleditDpart')
-           @endforeach
-</div><!-- /.table-responsive -->
 
-            {{-- <script>
+</div><!-- /.table-responsive -->
+<script>
+    $(document).ready(function() {
+        var table = $('#datatable').DataTable({
+
+            lengthChange: false,
+            responsive: true,
+            info: true,
+            pageLength: 10,
+            language: {
+                info: "ลำดับที่ _START_ ถึง _END_ จากทั้งหมด _TOTAL_ รายการ",
+                infoEmpty: "ไม่พบรายการ",
+                infoFiltered: "(ค้นหาจากทั้งหมด _MAX_ รายการ)",
+                paginate: {
+                    first: "หน้าแรก",
+                    last: "หน้าสุดท้าย",
+                    previous: "ก่อนหน้า",
+
+                    next: "ถัดไป"
+                }
+            },
+
+        });
+    });
+</script>
+{{-- <script>
                 function togglerows(id) {
                     $(".rows_" + id).toggle();
                     var obj1 = document.getElementById("icon1_" + id);

@@ -29,15 +29,12 @@
                     <div class="nav nav-tabs bg-muted h3">
                         <a class="nav-link active text-info" href="{{ route('class_page', [$depart,'course_id' => $cour]) }}"><i
                                 class="fas fa-users"></i>
-                            ผู้เรียน รายวิชาเพิ่มเติม การป้องกันการทุจริต ระดับปฐมวัย </a>
+                            ผู้เรียน รายวิชาเพิ่มเติม การป้องกันการทุจริต {{$depart->name_th}} </a>
                     </div><!-- /.nav -->
                 </div><!-- /.nav-scroller -->
               
-                    @if($cour->learn_format  ==  0)
+
                     @include('page.manage.group.co.classrooms.classroom0.classroom0')
-                    @elseif($cour->learn_format  == 1)
-                    @include('page.manage.group.co.classrooms.classroom1.classroom1')
-                    @endif
 
 
             

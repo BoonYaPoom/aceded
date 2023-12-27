@@ -76,6 +76,7 @@
                                         
                                     @endphp
                                     @if ($monthsa == $m)
+                                    @if($learns->congratulation == 0)
                                         <tr>
                                             <td><a href="#">{{ $n++ }}</a></td>
 
@@ -209,6 +210,7 @@
                                             </td>
                                         </tr><!-- /tr -->
                                     @endif
+                                     @endif
                                 @endforeach
 
                             </tbody><!-- /tbody -->

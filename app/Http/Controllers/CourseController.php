@@ -66,9 +66,8 @@ class CourseController extends Controller
         $codes = $departmentId . str_pad($code, 3, '0', STR_PAD_LEFT);
         $cour = new Course;
         $cour->course_code =  $codes;
-        $cour->course_th = $request->course_th;
-        $cour->course_en = $request->course_en;
-
+        $cour->course_th = $request->input('course_th');
+        $cour->course_en = $request->input('course_en');
         $cour->group_id = (int)$group_id;
         $cour->levels = 0;
         $selectedsubject = $request->input('subject', []);
@@ -144,7 +143,7 @@ class CourseController extends Controller
             mkdir(public_path('/uplade'), 0755, true);
         }
         if ($request->has('paymentdetail')) {
-            $paymentdetail = $request->paymentdetail;
+            $paymentdetail = $request->input('paymentdetail');    
             $decodedTextpaymentdetail = '';
             if (!empty($paymentdetail)) {
                 $des_th = new DOMDocument();
@@ -406,8 +405,8 @@ class CourseController extends Controller
     {
         $cour = Course::findOrFail($course_id);
 
-        $cour->course_th = $request->course_th;
-        $cour->course_en = $request->course_en;
+        $cour->course_th = $request->input('course_th');
+        $cour->course_en = $request->input('course_en');
         $selectedsubject = $request->input('subject', []);
         $subjData = array_map('strval', $selectedsubject);
         $subj = json_encode($subjData);
@@ -462,7 +461,7 @@ class CourseController extends Controller
                 mkdir(public_path('/uplade'), 0755, true);
             }
             if ($request->has('paymentdetail')) {
-                $paymentdetail = $request->paymentdetail;
+                $paymentdetail =$request->input('paymentdetail');    
                 $decodedTextpaymentdetail = '';
                 if (!empty($paymentdetail)) {
                     $des_th = new DOMDocument();
@@ -505,7 +504,7 @@ class CourseController extends Controller
 
 
 
- 
+
 
         $cour->save();
 

@@ -14,6 +14,7 @@ use App\Models\Users;
 use App\Models\UserSchool;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class ReportAllController extends Controller
 {
@@ -27,10 +28,12 @@ class ReportAllController extends Controller
     public function ReportA()
     {
 
-        $userper = Users::all();
-        $count1 = Users::where('user_role', 1)->count();
-        $count3 = Users::where('user_role', 3)->count();
-        $count4 = Users::where('user_role', 4)->count();
+
+        $userper = DB::table('users')->get();
+        $count1 = DB::table('users')->where('user_role', 1)->count();
+
+        $count3 = DB::table('users')->where('user_role', 3)->count();
+        $count4 = DB::table('users')->where('user_role', 4)->count();
         $user_role1 = Users::where('user_role', 1)->first();
         $user_role3 = Users::where('user_role', 3)->first();
         $user_role4 = Users::where('user_role', 4)->first();
@@ -47,14 +50,11 @@ class ReportAllController extends Controller
 
     public function ReportB()
     {
-
-
         $logs = Log::all();
-
-        $userper = Users::all();
-        $count1 = Users::where('user_role', 1)->count();
-        $count3 = Users::where('user_role', 3)->count();
-        $count4 = Users::where('user_role', 4)->count();
+        $userper = DB::table('users')->get();
+        $count1 = DB::table('users')->where('user_role', 1)->count();
+        $count3 = DB::table('users')->where('user_role', 3)->count();
+        $count4 = DB::table('users')->where('user_role', 4)->count();
         $jsonContent = file_get_contents('javascript/json/_data.json');
         $mms = json_decode($jsonContent, true);
         $monthdata = $mms['month'];
@@ -270,16 +270,34 @@ class ReportAllController extends Controller
     }
     public function t0120()
     {
-        $logs = Log::all();
+        $logs2023 = DB::table('logs')
+        ->whereYear('logdate', '=', 2023) // เลือกเฉพาะปี 2023
+            ->select(DB::raw('COUNT(DISTINCT user_id) as count'))
+            ->value('count');
+        $logs2022 = DB::table('logs')
+            ->whereYear('logdate', '=', 2022) // เลือกเฉพาะปี 2023
+            ->select(DB::raw('COUNT(DISTINCT user_id) as count'))
+            ->value('count');
+        $logs2024 = DB::table('logs')
+        ->whereYear('logdate', '=', 2024) // เลือกเฉพาะปี 2023
+        ->select(DB::raw('COUNT(DISTINCT user_id) as count'))
+        ->value('count');
+        $currentYear = Carbon::now()->addYears(543)->year;
+        $oneYearsAgo = Carbon::now()->subYears(1)->addYears(543)->year;
+        $currentYear2 = Carbon::now()->addYears(544)->year;
         $userper = Users::all();
+        $countLog1 = 0;
         $jsonContent = file_get_contents('javascript/json/_data.json');
         $mms = json_decode($jsonContent, true);
         $monthdata = $mms['month'];
         $month = $monthdata['th'];
-        $currentYear = Carbon::now()->addYears(543)->year;
-        $oneYearsAgo = Carbon::now()->subYears(1)->addYears(543)->year;
+      
         $pro = Provinces::all();
-        return view('page.report.tables.datatest.t0120', compact('pro', 'userper', 'month', 'oneYearsAgo', 'currentYear', 'logs'));
+
+
+
+
+        return view('page.report.tables.datatest.t0120', compact('pro', 'userper', 'month', 'oneYearsAgo','currentYear','logs2022','logs2024', 'logs2023', 'currentYear2'));
     }
     public function t0121()
     {

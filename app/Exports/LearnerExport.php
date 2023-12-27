@@ -42,19 +42,19 @@ class LearnerExport implements FromCollection, WithHeadings
         foreach ($learners as $l => $learns) {
 
             $dataLearn = $learns->registerdate;
-            $congrateLearn = $learns->congratulationdate;
+            $congrateLearn = $learns->realcongratulationdate;
             $congrate = $learns->congratulation;
             $monthsa = \ltrim(\Carbon\Carbon::parse($dataLearn)->format('m'), '0');
             $newDateTime = \Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $learns->registerdate)->format('d/m/Y H:i:s');
             $users = \App\Models\Users::find($learns->user_id);
 
             if ($users) {
-                $UserSchool = \App\Models\UserSchool::with('schouser')
-                    ->where('user_id', $users->user_id)
+                $UserSchool = \App\Models\Extender2::where('extender_id', $users->organization)
                     ->first();
 
+
                 if ($UserSchool) {
-                    $schoolName = optional($UserSchool->schouser)->school_name;
+                    $schoolName = $UserSchool->name;
                 } else {
                     $schoolName = [];
                 }

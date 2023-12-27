@@ -33,6 +33,47 @@
                     </fieldset>
                     <br>
                 </div><!-- /.card-body -->
+
+                <script>
+                    function updateceryes(ev) {
+                        ev.preventDefault();
+                        var urlToredirect = ev.currentTarget.getAttribute('href');
+                        swal({
+                                title: "คุณต้องการอนุมัติ หรือไม่?",
+                                text: "คุณจะไม่สามารถย้อนกลับได้!",
+                                icon: "success",
+                                buttons: true,
+                                dangerMode: true,
+                            })
+                            .then((confirm) => {
+                                if (confirm) {
+                                    window.location.href = urlToredirect;
+                                } else {
+                                    swal("คุญได้ยกเลิกอนุมัติแก้ไข !");
+                                }
+
+                            });
+                    }
+                    function updatecerno(ev) {
+                        ev.preventDefault();
+                        var urlToredirect = ev.currentTarget.getAttribute('href');
+                        swal({
+                                title: "คุณต้องการไม่อนุมัติ หรือไม่?",
+                                text: "คุณจะไม่สามารถย้อนกลับได้!",
+                                icon: "warning",
+                                buttons: true,
+                                dangerMode: true,
+                            })
+                            .then((confirm) => {
+                                if (confirm) {
+                                    window.location.href = urlToredirect;
+                                } else {
+                                    swal("คุญได้ยกเลิกอนุมัติแก้ไข !");
+                                }
+
+                            });
+                    }
+                </script>
             </div>
         </div>
 

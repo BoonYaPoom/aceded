@@ -603,9 +603,18 @@ Route::group(['middleware' => 'IsLoggedIn'], function () {
                 Route::put('admin/rad/storeAdminreq/{submit_id}', [SubmitController::class, 'storeAdminreq'])->name('storeAdminreq');
                 Route::put('admin/rad/storeAdminreq2/{submit_id}', [SubmitController::class, 'storeAdminreq2'])->name('storeAdminreq2');
 
-
+                Route::get('/get-department-name/{departmentId}', [ClaimUserController::class, 'getDepartmentName'])->name('getDepartmentName');
+                Route::get('/get-claim-data/{claimUserId}', [ClaimUserController::class, 'getClaimData'])->name('getClaimData');
                 Route::get('/cau', [ClaimUserController::class, 'Certanddepart'])->name('Certanddepart');
+                Route::get('/updateceryes/{certificate_file_id}', [ClaimUserController::class, 'updateyes'])->name('updateceryes');
+                Route::get('/updatecerno/{certificate_file_id}', [ClaimUserController::class, 'updateno'])->name('updatecerno');
+
+                Route::get('/updateuserdeyes/{claim_user_id}', [ClaimUserController::class, 'updateuserdeyes'])->name('updateuserdeyes');
+                Route::get('/updateuserdeno/{claim_user_id}', [ClaimUserController::class, 'updateuserdeno'])->name('updateuserdeno');
             });
+
+            
+            
             Route::prefix('info')->group(function () {
                 Route::post('UsersDepartAllImport/{department_id}', [ExcelController::class, 'UsersDepartAllImport'])->name('UsersDepartAllImport');
                 Route::post('UsersDepartImport/{department_id}', [ExcelController::class, 'UsersDepartImport'])->name('UsersDepartImport');
