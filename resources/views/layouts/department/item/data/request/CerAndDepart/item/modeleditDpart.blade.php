@@ -20,8 +20,7 @@
 
                         <thead>
                             <tr class="bg-infohead">
-                                <th class="align-middle" style="width: 10%"><input type="checkbox" name="checkall"
-                                        id="checkall" value="1">เลือก</th>
+                                <th class="align-middle" style="width: 10%">ลำดับ</th>
                                 <th class="align-middle" style="width: 40%">ชื่อหน่วยงาน</th>
                                 <th class="align-middle" style="width: 40%">สถานะ</th>
 
@@ -49,8 +48,8 @@
                                             html += '<tr>';
                                             html += '<td>' + (num++) + '</td>';
                                             html += '<td>' + data.claimData[i].department_name + '</td>';
-                                            html += '<td>' + (data.claimData[i].claim_status == 0 ? 'ไม่ได้รับสิทธิ์' : (data.claimData[i]
-                                                .claim_status == 1 ? 'ได้รับสิทธิ์' : 'Unknown Status')) + '</td>';
+                                            html += '<td>' + (data.claimData[i].claim_status == 0 ? 'ไม่ต้องการ' : (data.claimData[i]
+                                                .claim_status == 1 ? 'ขอรับสิทธิ์' : 'Unknown Status')) + '</td>';
 
                                             html += '</tr>';
                                         }

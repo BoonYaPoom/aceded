@@ -31,9 +31,9 @@
                 <div class="card card-fluid">
                     <!-- .card-header -->
                     <div class="card-header bg-muted">
-                        <a href="{{ route('learn', ['department_id' => $courses->first()->department_id]) }}"
+                        <a href="{{ route('learn', ['department_id' => $depart]) }}"
                             style="text-decoration: underline;">จัดการหลักสูตร</a> / <a
-                            href="{{ route('courgroup', ['department_id' => $courses->first()->department_id]) }}"
+                            href="{{ route('courgroup', ['department_id' => $depart]) }}"
                             style="text-decoration: underline;">หมวดหมู่</a> / <a
                             href="{{ route('courpag', [$depart,'group_id' => $cour->group_id]) }}"
                             style="text-decoration: underline;">
