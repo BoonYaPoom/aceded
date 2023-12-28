@@ -14,15 +14,27 @@ class ClaimUserController extends Controller
         set_time_limit(0);
 
         $claimuser = DB::table('department_claim')
-            ->select('claim_user_id') // เลือกเฉพาะคอลัมน์ claim_user_id
+            ->select('claim_user_id', 'claim_status') // เลือกเฉพาะคอลัมน์ claim_user_id
+            ->where(function ($query) {
+                $query->where('claim_status', 1)
+               ;
+            })
+            ->where('claim_status', '<', 2)
             ->distinct()
             ->get();
+        $claimData= ' ';
         foreach ($claimuser as $user) {
-            $claimData = DB::table('department_claim')
-                ->where('claim_user_id', $user->claim_user_id)
-                ->get();
+
+            if($claimData){
+                $claimData = DB::table('department_claim')
+                    ->where('claim_user_id', $user->claim_user_id)
+                    ->get();
+            }elseif ($claimData === null) {
+
+                $claimData = null;
+            }
         }
-        $cert_file = DB::table('certificate_file')->where('certificate_file_role_status',2)->get();
+        $cert_file = DB::table('certificate_file')->where('certificate_file_role_status', 2)->get();
         return view(
             'layouts.department.item.data.request.CerAndDepart.index',
             compact('claimuser', 'cert_file', 'claimData')
@@ -56,7 +68,6 @@ class ClaimUserController extends Controller
             ->delete();
         $maxUserDepartmentId = DB::table('users_department')->max('user_department_id');
         foreach ($users as $departmentId) {
-            dd($departmentId->claim_status);
             if ($departmentId->claim_status == 1) {
                 $newUserDepartmentId = $maxUserDepartmentId + 1;
                 DB::table('users_department')->insert([
@@ -67,6 +78,7 @@ class ClaimUserController extends Controller
                 $maxUserDepartmentId = $newUserDepartmentId;
             }
         }
+
 
         return redirect()->back()->with('message', 'การบันทึกเสร็จสมบูรณ์');
     }
