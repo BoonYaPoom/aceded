@@ -31,7 +31,6 @@ class ReportAllController extends Controller
 
         $userper = DB::table('users')->get();
         $count1 = DB::table('users')->where('user_role', 1)->count();
-
         $count3 = DB::table('users')->where('user_role', 3)->count();
         $count4 = DB::table('users')->where('user_role', 4)->count();
         $user_role1 = Users::where('user_role', 1)->first();
@@ -43,7 +42,6 @@ class ReportAllController extends Controller
         $month = $monthdata['th'];
         $perType = PersonType::all();
         $learners =  CourseLearner::all();
-
 
         return view('page.report.reporta', compact('userper', 'count1', 'count3', 'count4', 'user_role1', 'user_role3', 'user_role4', 'month', 'perType', 'learners'));
     }
@@ -86,7 +84,6 @@ class ReportAllController extends Controller
         $monthdata = $mms['month'];
         $month = $monthdata['th'];
         $perType = PersonType::all();
-
         $learners =  CourseLearner::all();
         return view('page.report.tables.t0101', compact('month', 'learners', 'perType', 'userper'));
     }

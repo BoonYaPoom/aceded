@@ -63,6 +63,26 @@ class ExtenderController extends Controller
         );
     }
 
+
+
+    public function addextender($department_id,)
+    {
+
+        $depart = Department::findOrFail($department_id);
+        $extendernull = DB::table('users_extender2')->where('item_parent_id', null)->get();
+        $extender = DB::table('users_extender')->where('status', 1)->get();
+        $extender_1 = DB::table('users_extender2')->where('item_group_id', 1)->get();
+        $extender2 = DB::table('users_extender2')->get();
+        $extender2Json = json_encode($extender2);
+        $extender_1Json = json_encode($extender_1);
+
+        return view(
+            'layouts.department.item.data.UserAdmin.group.umsschool.test.create.add',
+            compact('extender', 'depart', 'extender', 'extender_1Json', 'extender2', 'extender2Json', 'extendernull')
+        );
+    }
+
+
     public function saveExtender(Request $request, $department_id, $extender_id)
 
     {

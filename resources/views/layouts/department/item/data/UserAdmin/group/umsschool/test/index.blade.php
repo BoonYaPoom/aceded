@@ -128,4 +128,11 @@
             </div>
         </div>
     </div>
+        <header class="page-title-bar">
+            <!-- floating action -->
+            <button type="button" class=" btn btn-success btn-floated btn-addums"
+                onclick="window.location='{{ route('addextender', ['department_id' => $depart->department_id]) }}'"
+                data-toggle="tooltip" title="เพิ่ม"><span class="fas fa-plus"></span></button>
+            <!-- /floating action -->
+        </header><!-- /.page-title-bar -->
 @endsection
