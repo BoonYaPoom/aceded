@@ -41,7 +41,7 @@ class DepartUsersController extends Controller
             if ($data->user_role == 1 || $data->user_role == 8) {
                 // ถ้า data->role เป็น 1 แสดงผู้ใช้ทั้งหมด
                 // นำ user_id ที่ได้ไปหาข้อมูลจากตาราง User
-                $usermanages = Users::whereIn('user_id', $userIds);
+                $usermanages = Users::whereIn('user_id', $userIds)->select('user_id', 'username', 'email', 'mobile', 'userstatus', 'province_id', 'user_role', 'firstname', 'lastname');
 
                 if ($user_role !== null) {
                     $usermanages->where('user_role', $user_role);
@@ -51,7 +51,7 @@ class DepartUsersController extends Controller
                 // $usermanages = $depart->UserDe()->where('department_id', $department_id)
                 // ->where('organization', $organization);
                 $usermanages = Users::whereIn('user_id', $userIds)
-                    ->where('organization', $organization);
+                    ->where('organization', $organization)->select('user_id', 'username', 'email', 'mobile', 'userstatus', 'province_id', 'user_role', 'firstname', 'lastname');
                 if ($user_role !== null) {
                     $usermanages->where('user_role', $user_role);
                 }
@@ -112,7 +112,7 @@ class DepartUsersController extends Controller
             ->filter(function ($userdata) use ($request) {
 
                 if ($request->has('myInput') && !empty($request->myInput)) {
-                    $userdata->where('firstname', 'like', '%' . $request->myInput . '%');
+                    $userdata->where('firstname', 'like', '%' . $request->myInput . '%')->orWhere('lastname', 'like', '%' . $request->myInput . '%');
                 }
             })
             ->filterColumn('name_in_thai', function ($userdata) use ($request) {

@@ -292,7 +292,7 @@ class ExcelController extends Controller
 
                             $newUsers = new Users([
                                 'user_id' =>  $user_idplus + 1,
-                                'username' => $row[1],
+                                'username' => trim($row[1]),
                                 'password' => Hash::make($row[2]),
                                 'firstname' => $row[3],
                                 'lastname' => $row[4],
@@ -418,7 +418,7 @@ class ExcelController extends Controller
 
                             $newUsers = new Users([
                                 'user_id' =>  $user_idplus + 1,
-                                'username' => $row[1],
+                                'username' => trim($row[1]),
                                 'password' => Hash::make($row[2]),
                                 'firstname' => $row[3],
                                 'lastname' => $row[4],
@@ -514,7 +514,6 @@ class ExcelController extends Controller
     public function UsersDepartSchoolImport(Request $request, $department_id,  $extender_id)
     {
         $UserDepartimport = new SchoolDpimportClass($department_id, $extender_id);
-
         if ($request->hasFile('fileexcel')) {
             try {
                 $importedDataUser = Excel::toArray($UserDepartimport, $request->file('fileexcel'));
@@ -532,7 +531,6 @@ class ExcelController extends Controller
                             $user_role = 4;
                             $prefix = null;
                             $per_id = null;
-
                             $permission = null;
                             $ldap = 0;
                             $userstatus = 1;
@@ -542,7 +540,6 @@ class ExcelController extends Controller
                             $user_position = '';
                             $workplace = '';
                             $telephone = '';
-
                             $socialnetwork = '';
                             $experience = null;
                             $recommened = null;
@@ -561,17 +558,15 @@ class ExcelController extends Controller
                             $pos_name = '';
                             $sector_id = 0;
                             $office_id = 0;
-
                             $user_type = null;
                             $province_id = 0;
                             $district_id = 0;
                             $subdistrict_id = 0;
                             $recoverpassword = null;
                             $employeecode = null;
-
                             $newUsers = new Users([
                                 'user_id' =>  $user_idplus + 1,
-                                'username' => $row[1],
+                                'username' => trim($row[1]),
                                 'password' => Hash::make($row[2]),
                                 'firstname' => $row[3],
                                 'lastname' => $row[4],
@@ -617,15 +612,11 @@ class ExcelController extends Controller
                                 'recoverpassword' =>  $recoverpassword,
                                 'employeecode' =>  $employeecode,
                                 'organization' =>  $extender_id,
-                                'user_affiliation' =>  $row[9],
+                                'user_affiliation' =>  $row[9] ?? null,
                                 'user_type_card' =>  0,
                                 'birthday' => null,
                             ]);
-
-
-
                             $newUsers->save();
-
                             $UserDepartment =  new UserDepartment([
 
                                 'user_department_id' =>  $uiduserdepartment_id + 1,
@@ -636,8 +627,6 @@ class ExcelController extends Controller
                             $UserDepartment->save();
                         }
                     }
-
-
                     return response()->json(['message' => 'Import successfully'], 200);
                 } else {
                     return response()->json(['error' => 'No data found in the imported file'], 400);
@@ -650,11 +639,9 @@ class ExcelController extends Controller
         }
     }
 
-
     public function UsersDepartAllImport(Request $request, $school_code, $department_id)
     {
         $UserAlldepartClass = new UserAlldepartClass($department_id);
-
         if ($request->hasFile('fileexcel')) {
             try {
                 $importedDataUserAll = Excel::toArray($UserAlldepartClass, $request->file('fileexcel'));
@@ -673,7 +660,6 @@ class ExcelController extends Controller
                             $user_role = 4;
                             $prefix = null;
                             $per_id = null;
-
                             $permission = null;
                             $ldap = 0;
                             $userstatus = 1;
@@ -683,7 +669,6 @@ class ExcelController extends Controller
                             $user_position = '';
                             $workplace = '';
                             $telephone = '';
-
                             $socialnetwork = '';
                             $experience = null;
                             $recommened = null;
@@ -702,7 +687,6 @@ class ExcelController extends Controller
                             $pos_name = '';
                             $sector_id = 0;
                             $office_id = 0;
-
                             $user_type = null;
                             $province_id = 0;
                             $district_id = 0;
@@ -710,10 +694,9 @@ class ExcelController extends Controller
                             $recoverpassword = null;
                             $employeecode = null;
                             $organization = null;
-
                             $newUsers = new Users([
                                 'user_id' =>  $user_idplus + 1,
-                                'username' => $row[1],
+                                'username' => trim($row[1]),
                                 'password' => Hash::make($row[2]),
                                 'firstname' => $row[3],
                                 'lastname' => $row[4],
@@ -763,9 +746,7 @@ class ExcelController extends Controller
                                 'user_type_card' =>  0,
                                 'birthday' => null,
                             ]);
-
                             $newUsers->save();
-
                             $userschool =  new UserSchool([
 
                                 'user_school_id' =>  $uidUserSchool + 1,
@@ -775,7 +756,6 @@ class ExcelController extends Controller
 
                             ]);
                             $userschool->save();
-
                             $UserDepartment =  new UserDepartment([
                                 'user_department_id' =>  $uiduserdepartment_id + 1,
                                 'user_id' =>     $user_idplus + 1,
@@ -784,7 +764,6 @@ class ExcelController extends Controller
                             $UserDepartment->save();
                         }
                     }
-
 
                     return response()->json(['message' => 'Import successfully'], 200);
                 } else {

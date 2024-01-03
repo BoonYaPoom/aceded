@@ -33,9 +33,8 @@ class ExtenderController extends Controller
     {
         set_time_limit(0);
         $depart = Department::findOrFail($department_id);
-        $extender = DB::table('users_extender2')->get();
-        $query = Extender2::query();
-        return view('layouts.department.item.data.UserAdmin.group.umsschool.test.index', compact('extender', 'depart'));
+
+        return view('layouts.department.item.data.UserAdmin.group.umsschool.test.index', compact('depart'));
     }
     public function adduser($department_id, $extender_id)
     {
@@ -80,6 +79,20 @@ class ExtenderController extends Controller
             'layouts.department.item.data.UserAdmin.group.umsschool.test.create.add',
             compact('extender', 'depart', 'extender', 'extender_1Json', 'extender2', 'extender2Json', 'extendernull')
         );
+    }
+
+    public function addextendersubmit(Request $request, $department_id)
+    {
+        $depart = Department::findOrFail($department_id);
+        $maxUserextendertId = DB::table('users_extender2')->max('extender_id');
+        DB::table('users_extender2')->insert([
+            'extender_id' =>  $maxUserextendertId + 1,
+            'name' => $request->school_name,
+            'item_group_id' => 1,
+            'item_parent_id' => $request->extender_id,
+        ]);
+
+        return redirect()->route('testumsschool', $depart)->with('message', 'การบันทึก');
     }
 
 

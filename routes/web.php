@@ -482,7 +482,9 @@ Route::group(['middleware' => 'IsLoggedIn'], function () {
                     Route::post('{department_id}/{extender_id}/saveExtender_umsform', [ExtenderController::class, 'saveExtender'])->name('saveExtender_umsform');
                     
                         Route::get('{department_id}/addextender', [ExtenderController::class, 'addextender'])->name('addextender');
-              
+                    
+                    Route::post('{department_id}/addextendersubmit', [ExtenderController::class, 'addextendersubmit'])->name('addextendersubmit');
+                
                 });
 
 

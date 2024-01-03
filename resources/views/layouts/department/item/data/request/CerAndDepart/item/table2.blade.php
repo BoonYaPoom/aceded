@@ -18,25 +18,25 @@
             @endphp
             @foreach ($cert_file as $cer)
                 @php
-                    $users = \App\Models\Users::find($cer->user_id);
+                    $users = \App\Models\Users::where('user_id', $cer->user_id)->first();
                 @endphp
-                    <tr>
-                        <td>{{ $c++ }}</td>
-                        <td>{{ $users->firstname }} {{ $users->lastname }}</td>
-                        <td><img src="{{ 'https://aced-lb.nacc.go.th/' . $cer->certificate_file_path }}" width="100"
-                                height="100" alt=""
-                                onclick="$('#previewimage').prop('src',$(this).prop('src'));$('#modal01').css('display','block');">
-                        </td>
-                        <td>ขอแก้ไข</td>
-                        <td>
-                            <a href="{{ route('updateceryes', $cer->certificate_file_id) }}"
-                                onclick="updateceryes(event)"><i class="fas fa-check fa-lg text-success"
-                                    data-toggle="tooltip" title="อนุมัติผ่าน"></i></a>
-                            <a href="{{ route('updatecerno', $cer->certificate_file_id) }}"
-                                onclick="updatecerno(event)"><i class="fas fa-times fa-lg text-danger"
-                                    data-toggle="tooltip" title="อนุมัติไม่ผ่าน"></i></a>
-                        </td>
-                    </tr>
+                <tr>
+                    <td>{{ $c++ }}</td>
+                    <td>{{ $users->firstname }} {{ $users->lastname }}</td>
+                    <td><img src="{{ 'https://aced-lb.nacc.go.th/' . $cer->certificate_file_path }}" width="100"
+                            height="100" alt=""
+                            onclick="$('#previewimage').prop('src',$(this).prop('src'));$('#modal01').css('display','block');">
+                    </td>
+                    <td>ขอแก้ไข</td>
+                    <td>
+                        <a href="{{ route('updateceryes', $cer->certificate_file_id) }}"
+                            onclick="updateceryes(event)"><i class="fas fa-check fa-lg text-success"
+                                data-toggle="tooltip" title="อนุมัติผ่าน"></i></a>
+                        <a href="{{ route('updatecerno', $cer->certificate_file_id) }}" onclick="updatecerno(event)"><i
+                                class="fas fa-times fa-lg text-danger" data-toggle="tooltip"
+                                title="อนุมัติไม่ผ่าน"></i></a>
+                    </td>
+                </tr>
             @endforeach
         </tbody><!-- /tbody -->
     </table><!-- /.table -->

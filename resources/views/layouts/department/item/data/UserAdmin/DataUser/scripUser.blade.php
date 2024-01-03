@@ -60,13 +60,16 @@
                         // กำหนด route และ id
                         var logusers =
                             "{{ route('logusersDP', ['department_id' => ':depart', 'user_id' => ':user_id']) }}";
-                        logusers = logusers.replace(':depart', depart).replace(':user_id', user_id);
+                        logusers = logusers.replace(':depart', depart).replace(':user_id',
+                            user_id);
                         var deleteuser =
                             "{{ route('deleteUser', ['department_id' => ':depart', 'user_id' => ':user_id']) }}";
-                        deleteuser = deleteuser.replace(':depart', depart).replace(':user_id', user_id);
+                        deleteuser = deleteuser.replace(':depart', depart).replace(':user_id',
+                            user_id);
                         var edituser =
                             "{{ route('DPeditUser', ['department_id' => ':depart', 'user_id' => ':user_id']) }}";
-                        edituser = edituser.replace(':depart', depart).replace(':user_id', user_id);
+                        edituser = edituser.replace(':depart', depart).replace(':user_id',
+                            user_id);
 
                         // สร้างตัวแปรเก็บhtml stype
                         var linkedituser = '<a href="' + edituser +
@@ -108,6 +111,7 @@
             deferRender: true,
             lengthChange: false,
             responsive: true,
+            processing: true,
             info: false,
             paging: true,
             pageLength: 50,
@@ -117,6 +121,9 @@
                 info: "ลำดับที่ _START_ ถึง _END_ จากทั้งหมด _TOTAL_ รายการ",
                 infoEmpty: "ไม่พบรายการ",
                 infoFiltered: "(ค้นหาจากทั้งหมด _MAX_ รายการ)",
+                processing: "<span class='fa-stack fa-lg'>\n\
+                                                                                                                                                                        <i class='fa fa-spinner fa-spin fa-stack-2x fa-fw'></i>\n\
+                                                                                                                                                                   </span>&emsp;กรุณารอสักครู่",
                 paginate: {
                     first: "หน้าแรก",
                     last: "หน้าสุดท้าย",
@@ -128,7 +135,10 @@
 
         });
         $('#myInput').on('keyup', function() {
-            table.search(this.value).draw();
+            let char_num = $('#myInput').val().length;
+            if (char_num >= 3) {
+                table.search(this.value).draw();
+            }
         });
         $('#drop2').on('change', function() {
             var selectedDrop2Id = $(this).val();

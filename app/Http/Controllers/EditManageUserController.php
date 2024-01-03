@@ -148,7 +148,7 @@ class EditManageUserController extends Controller
             ->filter(function ($userdata) use ($request) {
 
                 if ($request->has('myInput') && !empty($request->myInput)) {
-                    $userdata->where('firstname', 'like', '%' . $request->myInput . '%');
+                    $userdata->where('firstname', 'like', '%' . $request->myInput . '%')->orWhere('lastname', 'like', '%' . $request->myInput . '%');
                 }
             })
             ->filterColumn('name_in_thai', function ($userdata) use ($request) {
@@ -268,7 +268,7 @@ class EditManageUserController extends Controller
         $school = School::all();
         $provinces = Provinces::all();
         $role = UserRole::all();
-        return view('page.UserAdmin.add.add_umsform', compact('role','school','provinces'));
+        return view('page.UserAdmin.add.add_umsform', compact('role', 'school', 'provinces'));
     }
 
 
@@ -292,19 +292,19 @@ class EditManageUserController extends Controller
     public function autoschool(Request $request)
     {
         $provinceCode = $request->get('province');
-    
+
         $query = School::select("school_name as value", "school_id")
             ->where('school_name', 'LIKE', '%' . $request->get('search') . '%');
-    
+
         if (!empty($provinceCode)) {
             $query->where('provinces_code', $provinceCode);
         }
-    
+
         $data = $query->get();
-    
+
         return response()->json($data);
     }
-    
+
 
     // ใน Controller
     public function showByuser_role(Request $request, $user_role)
@@ -407,16 +407,16 @@ class EditManageUserController extends Controller
         $maxUserDepartmentId = DB::table('users_department')->max('user_department_id');
         $department_data = $request->department_data;
         if (!empty($department_data)) {
-        foreach ($department_data as $departmentId) {
-            $newUserDepartmentId = $maxUserDepartmentId + 1;
-            DB::table('users_department')->insert([
-                'user_department_id' => $newUserDepartmentId,
-                'user_id' =>    $usermanages->user_id,
-                'department_id' => $departmentId,
-            ]);
-            $maxUserDepartmentId = $newUserDepartmentId;
+            foreach ($department_data as $departmentId) {
+                $newUserDepartmentId = $maxUserDepartmentId + 1;
+                DB::table('users_department')->insert([
+                    'user_department_id' => $newUserDepartmentId,
+                    'user_id' =>    $usermanages->user_id,
+                    'department_id' => $departmentId,
+                ]);
+                $maxUserDepartmentId = $newUserDepartmentId;
+            }
         }
-    }
 
 
         return redirect()->route('UserManage')->with('message', 'แก้ไขโปรไฟล์สำเร็จ');

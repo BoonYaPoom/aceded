@@ -24,7 +24,7 @@
                 <!-- .card-header -->
                 <div class="card-header bg-muted"><a
                         href="{{ route('DPUserManage', ['department_id' => $depart->department_id]) }}">ผู้ใช้งาน</a>/ <a
-                        href="{{ route('umsschooldepartment', ['department_id' => $depart->department_id]) }}">จัดการสถานศึกษาของ
+                        href="{{ route('testumsschool', ['department_id' => $depart->department_id]) }}">จัดการสถานศึกษาของ
                         {{ $extender->name }} ระดับ {{ $depart->name_th }}</a>
                 </div>
                 <!-- .card-body -->

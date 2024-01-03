@@ -1,8 +1,7 @@
 @extends('layouts.department.layout.departmenthome')
 @section('contentdepartment')
-    <form action="{{ route('storeschoolDepart', $depart) }}" method="post" enctype="multipart/form-data">
+    <form action="{{ route('addextendersubmit', $depart) }}" method="post" enctype="multipart/form-data">
         @csrf
-
         <!-- .page-inner -->
         <div class="page-inner">
             <!-- .form -->
@@ -19,55 +18,45 @@
                     <!-- .card-body -->
                     <div class="card-body">
                         <!-- .form-group -->
-                        <div class="form-group">
+
+
+                        <div class="form-group" id='sch'>
+                            <label for="extender_id" class="col-md-1">สังกัด </label>
+                            <span class="badge badge-warning">Required</span></label>
+                            <select class="form-control " name="extender_id" id="extender_id" required="">
+                                <option value="" selected disabled>-- เลือกสถานศึกษา --</option>
+                                @foreach ($extendernull as $extr)
+                                    <option value="{{ $extr->extender_id }}">{{ $extr->name }}
+                                    </option>
+                                @endforeach
+
+                            </select>
+                        </div>
+                        <div class="form-group" id="testsch" style="display: none;">
                             <label for="school_name" class="col-md-1">สถานศึกษา </label>
                             <label for="school_name"> <span class="badge badge-warning">Required</span></label>
                             <input type="text" class="form-control" id="school_name" name="school_name"
                                 placeholder="สถานศึกษา" required="" value="">
                         </div><!-- /.form-group -->
+                        <script>
+                            document.addEventListener('DOMContentLoaded', function() {
+                                var sch1Div = $('#testsch');
+                                var extenderSelect = $('#extender_id');
 
-                        {{-- 
-                        <div class="form-group" id='sch'>
-                            <label for="extender_id" class="col-md-1">สังกัด </label>
-                            <span class="badge badge-warning">Required</span></label>
-                            <select name="extender_id" id="extender_id" class="form-control form-control-sm"
-                                data-toggle="select2" required="">
-                                <option value="" selected disabled>-- เลือกสังกัด --</option>
-                                @foreach ($extendernull as $extr)
-                                    @if ($extr->item_group_id < 3)
-                                        <option value="{{ $extr->extender_id }}">{{ $extr->name }}
-                                        </option>
-                                    @endif
-                                @endforeach
+                                extenderSelect.select2();
 
-                            </select>
-                        </div>
-                        <div class="form-group" id='sch1' style="display: none;">
-                            <label for="extender_1_id" class="col-md-1">สังกัดย่อย </label>
-                            <span class="badge badge-warning">Required</span></label>
-                            <select name="extender_1_id" id="extender_1_id" class="form-control form-control-sm"
-                                data-toggle="select2" required="">
-                                <option value="" selected disabled>-- เลือกสังกัดย่อย --</option>
+                                extenderSelect.on('change', function() {
+                                    var selectedExtenderId = $(this).val();
 
-
-                            </select>
-                        </div> --}}
-
-                        <div class="form-group" id='sch'>
-                            <label for="extender_id" class="col-md-1">สังกัดย่อย </label>
-                            <span class="badge badge-warning">Required</span></label>
-                            <select class="form-control " name="extender_id" id="extender_id" required="">
-                                <option value="" selected disabled>-- เลือกสถานศึกษา --</option>
-                                @foreach ($extendernull as $extr)
-                                    @if ($extr->item_group_id < 3)
-                                        <option value="{{ $extr->extender_id }}">{{ $extr->name }}
-                                        </option>
-                                    @endif
-                                @endforeach
-
-                            </select>
-                        </div>
-                        <div class="form-group" id='sch1' style="display: none;">
+                                    if (selectedExtenderId) {
+                                              sch1Div.show();
+                                    } else {           
+                                           sch1Div.hide();
+                                    }
+                                });
+                            });
+                        </script>
+                        {{-- <div class="form-group" id='sch1' style="display: none;">
                             <label for="extender_1_id" class="col-md-1">สังกัดย่อย </label>
                             <span class="badge badge-warning">Required</span></label>
                             <select name="extender_1_id" id="extender_1_id" class="form-control form-control-sm"
@@ -100,8 +89,7 @@
                                     sch1Div.css('display', foundMatch ? '' : 'none');
                                 });
                             });
-                        </script>
-
+                        </script> --}}
 
                     </div><!-- /.card-body -->
                 </div><!-- /.card -->
