@@ -49,40 +49,13 @@ class UsersExport implements
                 'username' => $item->username,
                 'fullname' => $fullname,
                 'mobile' => $fullMobile,
-                'proviUser' => $proviUser,
                 'user_affiliation' => $item->user_affiliation,
+                'proviUser' => $proviUser,
                 'createdate' => $createdate,
                 'status' => $item->userstatus,
             ];
         });
-        // foreach ($users as $item) {
-        //     $proviUser = Provinces::where('id', $item->province_id)
-        //         ->pluck('name_in_thai')
-        //         ->first();
-        //     $username = $item->username;
-        //     $status = $item->userstatus;
-        //     $firstname = $item->firstname;
-        //     $lastname = $item->lastname;
-        //     $fullname =  $firstname . '' . '-' . '' . $lastname;
-        //     $mobile = $item->mobile;
-        //     $user_affiliation = $item->user_affiliation;
-        //     $createdate = $item->createdate;
-        //     $part1 = substr($mobile, 0, 3);
-        //     $part2 = substr($mobile, 3, 3);
-        //     $part3 = substr($mobile, 6, 4);
-        //     $fullMobile = $part1 . '-' . $part2 . '-' . $part3;
-        //     $datauser = [
-
-        //         'i' => $i++,
-        //         'username' => $username,
-        //         'fullname' => $fullname,
-        //         'mobile' => $fullMobile,
-        //         'proviUser' => $proviUser,
-        //         'user_affiliation' => $user_affiliation,
-        //         'createdate' => $createdate,
-        //         'status' => $status,
-        //     ];
-        // }
+    
         return $datauser;
     }
 

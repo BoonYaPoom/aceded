@@ -35,7 +35,7 @@ class UserDepartExport implements
 
         $usermanages = $depart->UserDe()->where('department_id', $this->department_id)->get();
 
-        $users = Users::select('user_id', 'username', DB::raw("firstname || ' - ' || lastname as full_name"), 'mobile', 'email', 'userstatus')
+        $users = Users::select('user_id', 'username', DB::raw("firstname || ' - ' || lastname as full_name"), 'mobile','email', 'user_affiliation', 'userstatus')
             ->whereIn('user_id', $usermanages->pluck('user_id'))
             ->get()
             ->map(function ($item, $index) {
@@ -56,6 +56,7 @@ class UserDepartExport implements
             'ชื่อ-นามสกุล',
             'เบอร์',
             'email',
+            'หน่วยงาน',
             'สถานะ',
             'กระทำ',
             // เพิ่มหัวตารางอื่น ๆ ตามต้องการ

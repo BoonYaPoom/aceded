@@ -25,7 +25,6 @@ class DepartUsersController extends Controller
         return view('layouts.department.item.data.UserAdmin.indexview', compact('depart'));
     }
 
-
     public function DPUserManagejson(Request $request, $department_id, $user_role = null)
     {
         $depart = Department::findOrFail($department_id);
@@ -128,7 +127,6 @@ class DepartUsersController extends Controller
     public function DPeditUser($department_id, $user_id)
     {
         $usermanages = Users::findOrFail($user_id);
-
         $role = UserRole::all();
         $depart = Department::findOrFail($department_id);
         return view('layouts.department.item.data.UserAdmin.edit', ['usermanages' => $usermanages, 'depart' => $depart, 'role' => $role]);

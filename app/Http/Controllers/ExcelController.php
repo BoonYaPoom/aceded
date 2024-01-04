@@ -339,6 +339,7 @@ class ExcelController extends Controller
                                 'recoverpassword' =>  $recoverpassword,
                                 'employeecode' =>  $employeecode,
                                 'organization' =>  $organization,
+                                'user_affiliation' =>  $row[9] ?? null,
                             ]);
 
 
@@ -465,6 +466,7 @@ class ExcelController extends Controller
                                 'recoverpassword' =>  $recoverpassword,
                                 'employeecode' =>  $employeecode,
                                 'organization' =>  $organization,
+                                'user_affiliation' =>  $row[9] ?? null,
                             ]);
 
                             $UserDepartment =  new UserDepartment([
@@ -618,7 +620,6 @@ class ExcelController extends Controller
                             ]);
                             $newUsers->save();
                             $UserDepartment =  new UserDepartment([
-
                                 'user_department_id' =>  $uiduserdepartment_id + 1,
                                 'user_id' =>     $user_idplus + 1,
                                 'department_id' => $department_id,
@@ -742,7 +743,7 @@ class ExcelController extends Controller
                                 'recoverpassword' =>  $recoverpassword,
                                 'employeecode' =>  $employeecode,
                                 'organization' =>  $organization,
-  
+                                'user_affiliation' =>  $row[9] ?? null,
                                 'user_type_card' =>  0,
                                 'birthday' => null,
                             ]);

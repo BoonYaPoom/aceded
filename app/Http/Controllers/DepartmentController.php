@@ -36,12 +36,10 @@ class DepartmentController extends Controller
     }
     public function departmentwmspage()
     {
-        $users = Users::all();
-            
-        $department  = Department::all();
 
+        $department  = Department::all();
         $from = 'wms';
-        return view('layouts.department.item.departmentwms', compact('department', 'from', 'users'));
+        return view('layouts.department.item.departmentwms', compact('department', 'from'));
     }
     public function departmentums()
     {

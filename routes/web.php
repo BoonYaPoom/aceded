@@ -97,7 +97,6 @@ Route::group(['middleware' => ['web', 'App\Http\Middleware\ClearOptimizeCacheMid
         Route::get('/aced', [DepartmentController::class, 'aced'])->name('aced');
         Route::get('/login', [CustomAuthController::class, 'login'])->name('homelogin');
         Route::get('/regis', [CustomAuthController::class, 'regis'])->name('homeregis');
-
         // เส้นทางอื่นๆที่ต้องใช้ middleware เช่นเดียวกัน
     });
 
