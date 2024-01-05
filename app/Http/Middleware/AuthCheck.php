@@ -16,7 +16,7 @@ class AuthCheck
     public function handle(Request $request, Closure $next): Response
     {
         if(!Session()->has('loginId')){
-            return redirect()->route('homelogin')->with('fail','Something weong');
+            return redirect()->route('homelogin');
         }
         return $next($request);
     }
