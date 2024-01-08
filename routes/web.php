@@ -41,6 +41,7 @@ use App\Http\Controllers\NavController;
 use App\Http\Controllers\PDFcreateController;
 use App\Http\Controllers\PersonController;
 use App\Http\Controllers\ProviDepartUserController;
+use App\Http\Controllers\ReportAController;
 use App\Http\Controllers\ReportAllController;
 use App\Http\Controllers\ReportJsonController;
 use App\Http\Controllers\RolemanageController;
@@ -110,7 +111,7 @@ Route::group(['middleware' => ['web', 'App\Http\Middleware\ClearOptimizeCacheMid
 
 Route::group(['middleware' => 'IsLoggedIn'], function () {
     Route::middleware(['CheckUserLogin'])->group(function () {
-        
+
         // ...
         Route::get('/edit-profile', [EditProfileController::class, 'edit'])->name('edit-profile');
         Route::put('/update-profile', [EditProfileController::class, 'update'])->name('update-profile');
@@ -126,7 +127,7 @@ Route::group(['middleware' => 'IsLoggedIn'], function () {
             });
         });
         Route::get('/', [NavController::class, 'home'])->name('adminhome');
-       
+
         Route::get('/department', [NavController::class, 'homedepartment'])->name('adminhomedepartment');
         Route::prefix('admin')->group(function () {
             Route::get('/changeStatusDepart', [DepartmentController::class, 'changeStatus'])->name('changeStatusDepart');
@@ -313,8 +314,6 @@ Route::group(['middleware' => 'IsLoggedIn'], function () {
                     Route::get('{department_id}/{course_id}/congratuation/{m}', [CourseClassController::class, 'congratuation'])->name('congratuation_page');
                     Route::get('{department_id}/teacherinfo', [CourseClassController::class, 'teacherinfo'])->name('teacherinfo');
                     Route::post('{department_id}/store_teacherinfo', [CourseClassController::class, 'Teacherinfoupdate'])->name('Teacherinfoupdate');
-               
-               
                 });
 
                 Route::prefix('lms')->group(function () {
@@ -336,38 +335,37 @@ Route::group(['middleware' => 'IsLoggedIn'], function () {
 
                 Route::prefix('lms')->group(function () {
                     Route::get('{department_id}/navless/{subject_id}', [CourseLessonController::class, 'navless'])->name('navless');
-                    
+
                     Route::get('lsn/{department_id}/{subject_id}', [CourseLessonController::class, 'lessonpage'])->name('lessonpage');
-                    Route::prefix('lsn')->group(function () { 
-                    Route::get('{department_id}/{subject_id}/lessonform', [CourseLessonController::class, 'create'])->name('add_lessonform');
-                    Route::post('{department_id}/{subject_id}/add_lessonform', [CourseLessonController::class, 'store'])->name('storeless');
-                    Route::get('{department_id}/{subject_id}/edit_lessonform/{lesson_id}', [CourseLessonController::class, 'edit'])->name('edit_lessonform');
-                    Route::put('{department_id}/update_lessonform/{lesson_id}', [CourseLessonController::class, 'update'])->name('update_lessonform');
+                    Route::prefix('lsn')->group(function () {
+                        Route::get('{department_id}/{subject_id}/lessonform', [CourseLessonController::class, 'create'])->name('add_lessonform');
+                        Route::post('{department_id}/{subject_id}/add_lessonform', [CourseLessonController::class, 'store'])->name('storeless');
+                        Route::get('{department_id}/{subject_id}/edit_lessonform/{lesson_id}', [CourseLessonController::class, 'edit'])->name('edit_lessonform');
+                        Route::put('{department_id}/update_lessonform/{lesson_id}', [CourseLessonController::class, 'update'])->name('update_lessonform');
 
-                    Route::get('{department_id}/addsub_lessonsmallform/{subject_id}/{lesson_id}', [CourseLessonController::class, 'smallcreate'])->name('smallcreate');
-                    Route::post('{department_id}/add_lessonsmallform/{subject_id}/{lesson_id}', [CourseLessonController::class, 'smailstore'])->name('smailstore');
-                    Route::get('{department_id}/addsub_lessonsmailsmailform/{subject_id}/{lesson_id}', [CourseLessonController::class, 'smallsmallcreate'])->name('smallsmallcreate');
+                        Route::get('{department_id}/addsub_lessonsmallform/{subject_id}/{lesson_id}', [CourseLessonController::class, 'smallcreate'])->name('smallcreate');
+                        Route::post('{department_id}/add_lessonsmallform/{subject_id}/{lesson_id}', [CourseLessonController::class, 'smailstore'])->name('smailstore');
+                        Route::get('{department_id}/addsub_lessonsmailsmailform/{subject_id}/{lesson_id}', [CourseLessonController::class, 'smallsmallcreate'])->name('smallsmallcreate');
 
-                    Route::post('{department_id}/add_lessonsmailsmailform/{subject_id}/{lesson_id}', [CourseLessonController::class, 'smailsmailstore'])->name('smailsmailstore');
-                    Route::put('{department_id}/uploadfile/{lesson_id}', [CourseLessonController::class, 'uploadfile'])->name('uploadfile');
+                        Route::post('{department_id}/add_lessonsmailsmailform/{subject_id}/{lesson_id}', [CourseLessonController::class, 'smailsmailstore'])->name('smailsmailstore');
+                        Route::put('{department_id}/uploadfile/{lesson_id}', [CourseLessonController::class, 'uploadfile'])->name('uploadfile');
 
-                    Route::get('{department_id}/{subject_id}/{lesson_id}/supplymentary', [CourseSupplymentaryController::class, 'supplyLess'])->name('Supply_lessonform');
-                    Route::get('{department_id}/{subject_id}/{lesson_id}/add_supplymentaryLessform', [CourseSupplymentaryController::class, 'createLess'])->name('add_supplyLessform');
-                    Route::post('{department_id}/{subject_id}/{lesson_id}/store_supplymentaryLessform', [CourseSupplymentaryController::class, 'storeLess'])->name('store_supplyLessform');
+                        Route::get('{department_id}/{subject_id}/{lesson_id}/supplymentary', [CourseSupplymentaryController::class, 'supplyLess'])->name('Supply_lessonform');
+                        Route::get('{department_id}/{subject_id}/{lesson_id}/add_supplymentaryLessform', [CourseSupplymentaryController::class, 'createLess'])->name('add_supplyLessform');
+                        Route::post('{department_id}/{subject_id}/{lesson_id}/store_supplymentaryLessform', [CourseSupplymentaryController::class, 'storeLess'])->name('store_supplyLessform');
 
-                    Route::get('{department_id}/{subject_id}/{lesson_id}/edit_supplymentaryLessform/{supplymentary_id}', [CourseSupplymentaryController::class, 'editLess'])->name('edit_supplyLessform');
-                    Route::put('{department_id}/{subject_id}/{lesson_id}/update_supplymentaryLessform/{supplymentary_id}', [CourseSupplymentaryController::class, 'updateLess'])->name('update_supplyLessform');
-               
-                });
+                        Route::get('{department_id}/{subject_id}/{lesson_id}/edit_supplymentaryLessform/{supplymentary_id}', [CourseSupplymentaryController::class, 'editLess'])->name('edit_supplyLessform');
+                        Route::put('{department_id}/{subject_id}/{lesson_id}/update_supplymentaryLessform/{supplymentary_id}', [CourseSupplymentaryController::class, 'updateLess'])->name('update_supplyLessform');
+                    });
 
-                Route::get('spm/{department_id}/{subject_id}', [CourseSupplymentaryController::class, 'supplypage'])->name('supplypage');
-                
-                Route::prefix('spm')->group(function () {           
-                    Route::get('{department_id}/{subject_id}/add_supplymentaryform', [CourseSupplymentaryController::class, 'create'])->name('add_supplyform');
-                    Route::post('{department_id}/{subject_id}/store_supplymentaryform', [CourseSupplymentaryController::class, 'store'])->name('store_supplyform');
-                    Route::get('{department_id}/{subject_id}/edit_supplymentaryform/{supplymentary_id}', [CourseSupplymentaryController::class, 'edit'])->name('edit_supplyform');
-                    Route::put('{department_id}/{subject_id}/update_supplymentaryform/{supplymentary_id}', [CourseSupplymentaryController::class, 'update'])->name('update_supplyform');
-                });
+                    Route::get('spm/{department_id}/{subject_id}', [CourseSupplymentaryController::class, 'supplypage'])->name('supplypage');
+
+                    Route::prefix('spm')->group(function () {
+                        Route::get('{department_id}/{subject_id}/add_supplymentaryform', [CourseSupplymentaryController::class, 'create'])->name('add_supplyform');
+                        Route::post('{department_id}/{subject_id}/store_supplymentaryform', [CourseSupplymentaryController::class, 'store'])->name('store_supplyform');
+                        Route::get('{department_id}/{subject_id}/edit_supplymentaryform/{supplymentary_id}', [CourseSupplymentaryController::class, 'edit'])->name('edit_supplyform');
+                        Route::put('{department_id}/{subject_id}/update_supplymentaryform/{supplymentary_id}', [CourseSupplymentaryController::class, 'update'])->name('update_supplyform');
+                    });
 
 
                     Route::get('{department_id}/{subject_id}/activity', [NavController::class, 'activitypage'])->name('activitypage');
@@ -406,7 +404,7 @@ Route::group(['middleware' => 'IsLoggedIn'], function () {
                     Route::get('{department_id}/{subject_id}/teacher_add{user_id}', [CourseTeacherController::class, 'create'])->name('teacher_add');
 
                     Route::get('/exam/{department_id}/{subject_id}', [ExamController::class, 'exampage'])->name('exampage');
-               
+
                     Route::prefix('exam')->group(function () {
                         Route::get('{department_id}/{subject_id}/{exam_id}/examreport', [ScoreController::class, 'examlogpage'])->name('examlogpage');
                         Route::post('{department_id}/{subject_id}/Questionimport', [ExcelController::class, 'Questionimport'])->name('Questionimport');
@@ -479,15 +477,14 @@ Route::group(['middleware' => 'IsLoggedIn'], function () {
                     Route::get('{department_id}/umsSchoolDP', [ExtenderController::class, 'testumsschool'])->name('testumsschool');
                     Route::get('{department_id}/getExtender', [ExtenderController::class, 'getExtender'])->name('getExtender');
                     Route::post('{department_id}/{extender_id}/saveExtender_umsform', [ExtenderController::class, 'saveExtender'])->name('saveExtender_umsform');
-                    
-                        Route::get('{department_id}/addextender', [ExtenderController::class, 'addextender'])->name('addextender');
-                    
+
+                    Route::get('{department_id}/addextender', [ExtenderController::class, 'addextender'])->name('addextender');
+
                     Route::post('{department_id}/addextendersubmit', [ExtenderController::class, 'addextendersubmit'])->name('addextendersubmit');
-                
                 });
 
 
-                
+
                 Route::get('{department_id}/homeDepart', [DepartReportController::class, 'DepartReportview'])->name('DepartReportview');
                 Route::prefix('homeDepart')->group(function () {
 
@@ -506,6 +503,7 @@ Route::group(['middleware' => 'IsLoggedIn'], function () {
                     Route::get('{department_id}/home/T0115', [DepartReportController::class, 'LogFileUserAuth'])->name('DepartLogFileUserAuth');
                 });
             });
+
 
             Route::get('/ums/{user_role?}', [EditManageUserController::class, 'UserManage'])->name('UserManage')->where('user_role', '[0-9]+');
             Route::get('/UserManagejson/{user_role?}', [EditManageUserController::class, 'UserManagejson'])->name('UserManagejson')->where('user_role', '[0-9]+');
@@ -561,6 +559,10 @@ Route::group(['middleware' => 'IsLoggedIn'], function () {
                 Route::post('{school_code}/saveSelectedSchool_umsschoolform', [SchoolController::class, 'saveSelectedSchool'])->name('saveSelectedSchool');
             });
 
+            Route::get('/rpl', [ReportAController::class, 'Reportview'])->name('DepartReportview');
+            Route::prefix('rpl')->group(function () {
+                Route::get('/A0100', [ReportAController::class, 'ReportA'])->name('A0100');
+            });
 
 
             Route::prefix('report')->group(function () {
@@ -591,15 +593,19 @@ Route::group(['middleware' => 'IsLoggedIn'], function () {
                 Route::get('/home/T0125', [ReportAllController::class, 't0125'])->name('t0125');
                 Route::post('/get-user-data', [ReportAllController::class, 'getUserData'])->name('get-Uata');
             });
+
+
+
+
             Route::prefix('datareport')->group(function () {
                 Route::get('/T0103', [ReportJsonController::class, 't0103'])->name('t0103json');
             });
             Route::get('/getSchools', [SchoolController::class, 'getSchools'])->name('getSchools');
-            
+
             Route::get('/req', [NavController::class, 'pageRequest'])->name('pageRequest');
             Route::prefix('req')->group(function () {
                 Route::get('/amreq', [SubmitController::class, 'requestSchool'])->name('requestSchool');
-                Route::get('/requestup', [SchoolDepartUserController::class, 'requestSchool'])->name('requestup');             
+                Route::get('/requestup', [SchoolDepartUserController::class, 'requestSchool'])->name('requestup');
                 Route::post('/uploadPdf', [SchoolDepartUserController::class, 'uploadPdf'])->name('uploadPdf');
                 Route::get('/requestSchooldataJson', [SubmitController::class, 'requestSchooldataJson'])->name('requestSchooldataJson');
                 Route::get('/detaildata/{submit_id}', [SubmitController::class, 'detaildata'])->name('detaildata');
@@ -616,8 +622,8 @@ Route::group(['middleware' => 'IsLoggedIn'], function () {
                 Route::get('/updateuserdeno/{claim_user_id}', [ClaimUserController::class, 'updateuserdeno'])->name('updateuserdeno');
             });
 
-            
-            
+
+
             Route::prefix('info')->group(function () {
                 Route::post('UsersDepartAllImport/{department_id}', [ExcelController::class, 'UsersDepartAllImport'])->name('UsersDepartAllImport');
                 Route::post('UsersDepartImport/{department_id}', [ExcelController::class, 'UsersDepartImport'])->name('UsersDepartImport');
@@ -688,7 +694,6 @@ Route::group(['middleware' => 'IsLoggedIn'], function () {
                 Route::get('/changeStatuCategoryTopic', [CategoryTopicController::class, 'changeStatuCategoryTopic'])->name('changeStatuCategoryTopic');
                 Route::get('/schooldepart_delete/{school_id}', [SchoolDepartController::class, 'delete'])->name('deleteschoolDepart');
                 Route::get('/department_delete/{department_id}', [DepartmentController::class, 'destroy'])->name('deleteDepart');
-            
             });
         });
     });

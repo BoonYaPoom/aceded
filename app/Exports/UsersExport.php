@@ -4,6 +4,7 @@
 namespace App\Exports;
 
 use App\Models\Department;
+use App\Models\Extender2;
 use App\Models\Provinces;
 use App\Models\UserDepartment;
 use Maatwebsite\Excel\Concerns\WithHeadings;
@@ -28,12 +29,12 @@ class UsersExport implements
      */
     public function collection()
     {
-        $users = DB::table('users')->select('user_id', 'username', 'firstname', 'lastname', 'createdate', 'province_id', 'mobile', 'user_affiliation', 'userstatus')
+        $users = DB::table('users')->select('user_id', 'username', 'firstname', 'lastname', 'createdate', 'province_id', 'mobile', 'organization', 'user_affiliation', 'userstatus')
             ->get();
         $i = 1;
         $datauser = $users->map(function ($item) use (&$i) {
-            $proviUser = Provinces::where('id', $item->province_id)->value('name_in_thai');
-
+            $proviUser = Provinces::where('id', $item->province_id)->value('name_in_thai') ?? '-';
+            $extender2 = Extender2::where('extender_id', $item->organization)->value('name') ?? '-';
             $firstname = $item->firstname;
             $lastname = $item->lastname;
             $fullname =  $firstname . '' . '-' . '' . $lastname;
@@ -49,7 +50,8 @@ class UsersExport implements
                 'username' => $item->username,
                 'fullname' => $fullname,
                 'mobile' => $fullMobile,
-                'user_affiliation' => $item->user_affiliation,
+                'extender2' => $extender2,
+                'user_affiliation' => $item->user_affiliation ?? '-',
                 'proviUser' => $proviUser,
                 'createdate' => $createdate,
                 'status' => $item->userstatus,
@@ -66,6 +68,7 @@ class UsersExport implements
             'รหัสผู้ใช้',
             'ชื่อ-นามสกุล',
             'เบอร์',
+            'ระดับ',
             'หน่วยงาน',
             'จังหวัด',
             'วันที่สร้าง',
@@ -85,12 +88,12 @@ class UsersExport implements
                 ];
 
                 // กำหนดการจัดวางเฉพาะคอลัมน์ที่คุณต้องการ
-                $event->sheet->getStyle('A1:I1')->applyFromArray($alignment);
+                $event->sheet->getStyle('A1:J1')->applyFromArray($alignment);
 
                 // ต่อไปเพิ่มคอลัมน์อื่น ๆ ตามต้องการ
 
                 // กำหนดความหนาของตัวหนังสือในทุกคอลัมน์
-                $event->sheet->getStyle('A1:I1')->applyFromArray([
+                $event->sheet->getStyle('A1:J1')->applyFromArray([
                     'font' => [
                         'bold' => true,
                     ],

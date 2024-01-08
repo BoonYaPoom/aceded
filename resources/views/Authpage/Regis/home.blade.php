@@ -52,7 +52,7 @@
         }
 
         .bg-infohead {
-            background-color: #F04A23;
+            background-color: #3063A0;
             color: rgba(255, 255, 255, 0.8);
         }
 
@@ -346,7 +346,7 @@ try {
                         <span class="badge badge-warning">{{ $message }}</span>
                     @enderror
             </h3>
-
+                <a  href="{{ asset('uplade/แบบฟอร์มการขอ-เปลี่ยนสิทธิ์ฯ.pdf') }}"  target="_blank" for="submit_path" class="btn btn-info">ดาวโหลด เอกสารขอเป็น Admin <i class="fa fa-file fadeIn fourth"></i></a>
             <h5 id="submit_name"></h5>
             <script>
                 function showFileName() {

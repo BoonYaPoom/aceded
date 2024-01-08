@@ -204,7 +204,7 @@
                         <table id="datatable" class="table w3-hoverable">
                             <div class="d-flex justify-content-between align-items-center">
                                 <div class="dt-buttons btn-group">
-                                    @if ($data->user_role == 1)
+                                    @if ($data->user_role == 1 || $data->user_role == 8)
                                         <button class="btn btn-secondary buttons-excel buttons-html5" tabindex="0"
                                             aria-controls="datatable" type="button"
                                             onclick="window.location='{{ route('UsersExport', ['department_id' => $depart]) }}'">
