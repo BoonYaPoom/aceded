@@ -50,7 +50,7 @@ class DepartUsersController extends Controller
                 // $usermanages = $depart->UserDe()->where('department_id', $department_id)
                 // ->where('organization', $organization);
                 $usermanages = Users::whereIn('user_id', $userIds)
-                    ->where('organization', $organization)->select('user_id', 'username', 'email', 'mobile', 'userstatus', 'province_id', 'user_role', 'firstname', 'lastname');
+                    ->where('organization', $organization)->where('province_id', $provicValue)->select('user_id', 'username', 'email', 'mobile', 'userstatus', 'province_id', 'user_role', 'firstname', 'lastname');
                 if ($user_role !== null) {
                     $usermanages->where('user_role', $user_role);
                 }

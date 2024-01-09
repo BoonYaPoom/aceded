@@ -29,25 +29,13 @@
                                     <input type="search" id="myInput" class="form-control" placeholder=""
                                         aria-controls="datatable">
                                 </label>
-
-                                @if ($data->user_role == 1 || $data->user_role == 8)
-                                    <label>จังหวัด
-                                        <select id="drop2" name="drop2" class="form-control form-control-sm"
-                                            data-allow-clear="false">
-                                            <option value="0"selected>ทั้งหมด</option>
-                                            @php
-                                                $Provinces = \App\Models\Provinces::all();
-                                            @endphp
-                                            @foreach ($Provinces as $provin)
-                                                <option value="{{ $provin->name_in_thai }}"> {{ $provin->name_in_thai }}
-                                                </option>
-                                            @endforeach
-                                        </select>
-
-                                    </label>
-                                @endif
-
+                                   <label> จังหวัด
+                                    <input type="search" id="myInput" class="form-control" placeholder=""
+                                        aria-controls="datatable">
+                                </label>
+                               
                             </div>
+                                 
                             <thead>
                                 <tr class="bg-infohead">
                                     <th width="5%">ลำดับ</th>
@@ -60,17 +48,8 @@
                             </thead>
                             <tbody>
 
-
                             </tbody>
-                            <tbody>
-
-                                <tr>
-                                    <td colspan="5" class="text-center" style="font-size: 18px;">* คลิกเพื่อแสดงจำนวน
-                                        <i class="fas fa-users"></i> (-) *
-                                    </td>
-                                </tr>
-                            </tbody>
-                            <script>
+                            {{-- <script>
                                 $(document).ready(function() {
                                     var table = $('#datatable').DataTable({
                                         ajax: {
@@ -78,8 +57,6 @@
                                             type: 'GET',
                                             data: function(d) {
                                                 d.myInput = $('#myInput').val();
-                                                d.drop2 = $('#drop2').val();
-
                                             },
                                         },
                                         serverSide: true,
@@ -94,11 +71,9 @@
                                                 data: 'parentExtender'
                                             },
                                             {
-                                                data: 'EXTENDER_ID',
+                                                data: null,
                                                 render: function(data, type, row) {
-                                                    var link = '<a onclick="getUserCount(' + data + ')" data-extenderid="' +
-                                                        data + '">' +
-                                                        '<i class="fas fa-users"></i> (-)</a>';
+                                                    var link = '<i class="fas fa-users"></i> (' + data.count + ')';
                                                     return link;
                                                 }
                                             },
@@ -136,8 +111,8 @@
                                             infoEmpty: "ไม่พบรายการ",
                                             infoFiltered: "(ค้นหาจากทั้งหมด _MAX_ รายการ)",
                                             processing: "<span class='fa-stack fa-lg'>\n\
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                <i class='fa fa-spinner fa-spin fa-stack-2x fa-fw'></i>\n\
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           </span>&emsp;กรุณารอสักครู่",
+                                                                                                                                                                                                    <i class='fa fa-spinner fa-spin fa-stack-2x fa-fw'></i>\n\
+                                                                                                                                                                                               </span>&emsp;กรุณารอสักครู่",
                                             paginate: {
                                                 first: "หน้าแรก",
                                                 last: "หน้าสุดท้าย",
@@ -149,39 +124,10 @@
                                     $('#myInput').on('keyup', function() {
                                         table.search(this.value).draw();
                                     });
-                                    $('#drop2').on('change', function() {
-                                        var selectedDrop2Id = $(this).val();
-                                        console.log(selectedDrop2Id);
-                                        if (selectedDrop2Id == 0) {
-                                            table.column(1).search('').draw();
-                                        } else {
-                                            table.column(1).search(selectedDrop2Id).draw();
-                                        }
-                                    });
+
 
                                 });
-
-                                function handleClick(id) {
-                                    console.log('ID: ', id);
-                                }
-
-                                function getUserCount(extenderId) {
-                                    $.ajax({
-                                        url: '{{ route('getUserCount', $depart) }}',
-                                        type: 'GET',
-                                        data: {
-                                            extender_id: extenderId
-                                        },
-                                        success: function(response) {
-                                            $('a[data-extenderid="' + extenderId + '"]').html('<i class="fas fa-users"></i> (' +
-                                                response.count + ')');
-                                        },
-                                        error: function(error) {
-                                            console.error('เกิดข้อผิดพลาดในการดึงข้อมูล:', error);
-                                        }
-                                    });
-                                }
-                            </script>
+                            </script> --}}
                         </table>
                     </div>
                 </div>

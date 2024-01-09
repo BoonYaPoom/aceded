@@ -25,15 +25,10 @@
                             <a class="nav-link  font-weight-bold d-none" href=""><span
                                     class="menu-icon fas fa-users  "></span> กิจกรรม</a>
                         @endif
+
+
+
                         {{-- 
-                        <a class="nav-link  font-weight-bold {{ Str::startsWith(request()->url(), route('DepartReportview', ['department_id' => $depart->department_id])) ||
-                        request()->is('homeDepart', 'homeDepart/*')
-                            ? ' active text-info'
-                            : '' }}"
-                            href="{{ route('DepartD0100', ['department_id' => $depart->department_id]) }}">
-                            <span class="menu-icon fas fa-chart-bar  "></span> รายงาน</a>
-
-
                         <a class="nav-link  font-weight-bold {{ Str::startsWith(request()->url(), route('ManageExam', ['department_id' => $depart->department_id])) ||
                         request()->is('mne', 'mne/*')
                             ? ' active text-info'
@@ -48,6 +43,14 @@
                             href="{{ route('learn', ['department_id' => $depart->department_id]) }}"><span
                                 class="menu-icon fas fa-chalkboard-teacher  "></span>
                             จัดการเรียนรู้</a>
+                        <a class="nav-link  font-weight-bold {{ Str::startsWith(
+                            request()->url(),
+                            route('DepartReportviewDp', ['department_id' => $depart->department_id]),
+                        ) || request()->is('rplDP', 'rplDP/*')
+                            ? ' active text-info'
+                            : '' }}"
+                            href="{{ route('A0100DP', ['department_id' => $depart->department_id]) }}">
+                            <span class="menu-icon fas fa-chart-bar  "></span> รายงาน</a>
                         <a class="nav-link  font-weight-bold {{ Str::startsWith(request()->url(), route('DPUserManage', ['department_id' => $depart->department_id])) ? ' active text-info' : '' }}"
                             href="{{ route('DPUserManage', ['department_id' => $depart->department_id]) }}"><span
                                 class="menu-icon fas fa-users-cog  "></span>

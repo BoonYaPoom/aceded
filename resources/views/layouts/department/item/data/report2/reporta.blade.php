@@ -1,6 +1,6 @@
-@extends('page.report2.index')
-@section('reports2')
-    @include('page.report.item.itemA.rolecount')
+@extends('layouts.department.item.data.report2.index')
+@section('reports22')
+    @include('layouts.department.item.data.report2.count.rolecount')
     <div class="form-row">
 
         <!-- form column -->

@@ -1,14 +1,14 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Report;
 
+use App\Http\Controllers\Controller;
 use App\Models\CourseLearner;
 use App\Models\PersonType;
 use App\Models\Users;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-
 class ReportAController extends Controller
 {
     public function Reportview()
@@ -43,8 +43,8 @@ class ReportAController extends Controller
             ->where('course_learner.congratulation', '=', 1)
             ->select(
                 DB::raw('EXTRACT(YEAR FROM course_learner.registerdate)  + 543  as year'),
+                DB::raw('COUNT(DISTINCT course_learner.user_id) as user_count'),
                 DB::raw('COUNT(DISTINCT course_learner.user_id) as user_count')
-
             )
             ->groupBy(DB::raw('EXTRACT(YEAR FROM course_learner.registerdate)'))
             ->get();
@@ -97,7 +97,7 @@ class ReportAController extends Controller
         $chartDataCon = [];
         $chartDataCon2 = [];
 
-      
+
 
         foreach ($dateAllWithId as $monthWithId) {
 
@@ -141,7 +141,7 @@ class ReportAController extends Controller
             }
         }
 
-     
-        return view('page.report2.reporta', compact('chartDataCon', 'chartDataCon2', 'dateAllWithId', 'monthscon', 'monthsconno', 'count1', 'count3', 'count4', 'user_role4', 'user_role1', 'user_role3', 'learn', 'con', 'conno'));
+
+        return view('page.report2.reporta', compact('chartDataCon', 'dateAll', 'chartDataCon2', 'dateAllWithId', 'monthscon', 'monthsconno', 'count1', 'count3', 'count4', 'user_role4', 'user_role1', 'user_role3', 'learn', 'con', 'conno'));
     }
 }

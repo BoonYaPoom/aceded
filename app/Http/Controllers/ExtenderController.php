@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Department;
 use App\Models\Extender2;
+use App\Models\Provinces;
 use App\Models\School;
 use App\Models\UserDepartment;
 use App\Models\Users;
@@ -16,18 +17,9 @@ class ExtenderController extends Controller
 {
     public function testumsschooldepartment($department_id)
     {
+        $depart = Department::findOrFail($department_id);
 
-        if (Session::has('loginId')) {
-            $school = [];
-            $data = Users::where('user_id', Session::get('loginId'))->first();
-            $depart = Department::findOrFail($department_id);
-            $users  = $depart->UserDe()->where('department_id', $department_id);
-            $extender = DB::table('user_extender2')->get();
-            if ($data->user_role == 1 || $data->user_role == 8) {
-            } elseif ($data->user_role == 6 || $data->user_role == 7) {
-            }
-        }
-        return view('layouts.department.item.data.UserAdmin.group.umsschool.test.dep', compact('depart', 'users', 'school', 'userschool'));
+        return view('layouts.department.item.data.UserAdmin.group.umsschool.test.dep', compact('depart'));
     }
     public function testumsschool($department_id)
     {
@@ -119,39 +111,56 @@ class ExtenderController extends Controller
     {
         set_time_limit(0);
         if (Session::has('loginId')) {
-            $data = Users::where('user_id', Session::get('loginId'))->first();
+            $data = DB::table('users')->where('user_id', Session::get('loginId'))->first();
             $orgs = $data->organization;
-            $query = Extender2::query();
-            if ($data->user_role == 1 || $data->user_role == 8) {
+            $query = DB::table('users_extender2');
+            if ($data->user_role == 1 || $data->user_role == 8 || $data->user_role == 7) {
                 switch ($department_id) {
                     case 1:
                     case 2:
                     case 3:
-                        $query->where('item_group_id', 1);
+                        $query->join('provinces', function ($join) {
+                            $join->on('users_extender2.name', 'like', DB::raw(" '%' || provinces.name_in_thai || '%' "));
+                        })
+                            ->where('users_extender2.item_lv', 4)
+                            ->where('users_extender2.item_group_id', 1)
+                            ->select('provinces.*', 'users_extender2.*')
+                            ->get();
                         break;
                     case 4:
                     case 5:
-                        $query->where('item_group_id', 2);
+                        $query->join('provinces', function ($join) {
+                            $join->on('users_extender2.name', 'like', DB::raw(" '%' || provinces.name_in_thai || '%' "));
+                        })
+                            ->where('users_extender2.item_group_id', 2)
+                            ->select('provinces.*', 'users_extender2.*')
+                            ->get();
                         break;
                     case 6:
-                        $query->whereIn('item_group_id', [3, 4]);
+                        $query->join('provinces', function ($join) {
+                            $join->on('users_extender2.name', 'like', DB::raw(" '%' || provinces.name_in_thai || '%' "));
+                        })
+                            ->where('users_extender2.item_lv', 3)
+                            ->whereIn('users_extender2.item_group_id', [3, 4])
+                            ->select('provinces.*', 'users_extender2.*')
+                            ->get();
                         break;
                     default:
                         break;
                 }
-            } elseif ($data->user_role == 6 || $data->user_role == 7) {
+            } elseif ($data->user_role == 6 || $data->user_role == 3) {
                 switch ($department_id) {
                     case 1:
                     case 2:
                     case 3:
-                        $query->where('item_group_id', 1)->where('extender_id', $orgs);
+                        $query->where('extender_id', $orgs);
                         break;
                     case 4:
                     case 5:
-                        $query->where('item_group_id', 2)->where('extender_id', $orgs);
+                        $query->where('extender_id', $orgs);
                         break;
                     case 6:
-                        $query->whereIn('item_group_id', [3, 4])->where('extender_id', $orgs);
+                        $query->where('extender_id', $orgs);
 
                         break;
                     default:
@@ -159,10 +168,8 @@ class ExtenderController extends Controller
                 }
             }
         } else {
-
-            $query = Extender2::query();
+            $query = DB::table('users_extender2')->get();
         }
-
         $i = 1;
 
         $perPage = $request->input('length', 10);
@@ -181,30 +188,147 @@ class ExtenderController extends Controller
             ->addColumn('NAME', function ($extender) {
                 return $extender->name;
             })
-            ->addColumn('count', function ($extender) use ($department_id) {
-
-                $userDepart = DB::table('users_department')->where('department_id', $department_id)->pluck('user_id');
-
-                $UserSchoolcount = Users::whereIn('user_id', $userDepart)
-                    ->where('organization', $extender->extender_id)
-                    ->count();
-
-                return $UserSchoolcount;
+            ->addColumn('NAME', function ($extender) {
+                return $extender->name;
             })
+            // ->addColumn('count', function ($extender) use ($department_id) {
+            //     $userDepart = DB::table('users_department')->where('department_id', $department_id)->pluck('user_id');
+            //     $UserSchoolcount =
+            //         DB::table('users')->whereIn('user_id', $userDepart)
+            //         ->where('organization', $extender->extender_id)
+            //         ->count();
+
+            //     return $UserSchoolcount;
+            // })
             ->addColumn('parentExtender', function ($extender) {
 
-                $parentExtender = Extender2::where('extender_id', $extender->item_parent_id)->first();
+                $parentExtender =
+                    DB::table('users_extender2')->where('extender_id', $extender->item_parent_id)->first();
                 if ($parentExtender) {
                     return $parentExtender->name;
                 }
                 return '-';
             })
-            ->filter(function ($query) use ($request) {
+            ->filter(function ($extender) use ($request) {
                 if ($request->has('myInput') && !empty($request->myInput)) {
-                    $query->where('name', 'like', '%' . $request->myInput . '%');
-                    // Add more conditions with orWhere if needed
+                $extender->where('name', 'like', '%' . $request->myInput . '%');
+                }
+            })
+            ->filterColumn('name_in_thai', function ($extender) use ($request) {
+
+                if ($request->drop2 != '0') {
+                $extender->where('name', 'like', '%' . $request->drop2 . '%');
                 }
             })
             ->toJson();
+    }
+    public function getUserCount(Request $request, $department_id)
+    {
+        $depart = Department::findOrFail($department_id);
+        $extenderId = $request->input('extender_id');
+
+        $userDepart = DB::table('users_department')->where('department_id', $department_id)->pluck('user_id');
+        $userCount = DB::table('users')
+            ->whereIn('user_id', $userDepart)
+            ->where('organization', $extenderId)
+            ->count();
+
+        return response()->json(['count' => $userCount]);
+    }
+
+
+    public function testumsschool2($department_id)
+    {
+        set_time_limit(0);
+        $depart = Department::findOrFail($department_id);
+        $query = DB::table('users_extender2')
+            ->join('provinces', 'provinces.name_in_thai', '=', 'users_extender2.name')
+            ->orWhere('users_extender2.name', 'LIKE', '%ชลบุรี%')
+            ->select('users_extender2.*')
+            ->get();
+
+        $provincesWithMatchingExtender = DB::table('users_extender2')
+            ->join('provinces', function ($join) {
+                $join->on('users_extender2.name', 'like', DB::raw(" '%' || provinces.name_in_thai || '%' "));
+            })
+            ->where('users_extender2.item_lv', 4)
+            ->where('users_extender2.item_group_id', 1)
+            ->select('provinces.*', 'users_extender2.*')
+            ->get();
+
+        dd($provincesWithMatchingExtender);
+        return view('layouts.department.item.data.UserAdmin.group.umsschool.test2.index', compact('depart'));
+    }
+
+
+    public function getExtender3(Request $request, $department_id)
+    {
+        set_time_limit(0);
+        if (Session::has('loginId')) {
+            $data = DB::table('users')->where('user_id', Session::get('loginId'))->first();
+            $orgs = $data->organization;
+            $query = DB::table('users_extender2');
+            if ($data->user_role == 1 || $data->user_role == 8 || $data->user_role == 7) {
+                switch ($department_id) {
+                    case 1:
+                    case 2:
+                    case 3:
+
+                        $query->join('provinces', function ($join) {
+                            $join->on('users_extender2.name', 'like', DB::raw(" '%' || provinces.name_in_thai || '%' "));
+                        })
+                            ->where('users_extender2.item_lv', 4)
+                            ->where('users_extender2.item_group_id', 1)
+                            ->select('provinces.*', 'users_extender2.*')
+                            ->get();
+                        break;
+                    case 4:
+                    case 5:
+                        $query->join('provinces', function ($join) {
+                            $join->on('users_extender2.name', 'like', DB::raw(" '%' || provinces.name_in_thai || '%' "));
+                        })
+                            ->where('users_extender2.item_group_id', 2)
+                            ->select('provinces.*', 'users_extender2.*')
+                            ->get();
+                        break;
+                    case 6:
+                        $query->join('provinces', function ($join) {
+                            $join->on('users_extender2.name', 'like', DB::raw(" '%' || provinces.name_in_thai || '%' "));
+                        })
+                            ->where('users_extender2.item_lv', 3)
+                            ->whereIn('users_extender2.item_group_id', [3, 4])
+                            ->select('provinces.*', 'users_extender2.*')
+                            ->get();
+                        break;
+                    default:
+                        break;
+                }
+            } elseif ($data->user_role == 6 || $data->user_role == 3) {
+                switch ($department_id) {
+                    case 1:
+                    case 2:
+                    case 3:
+                        $query->where('extender_id', $orgs);
+                        break;
+                    case 4:
+                    case 5:
+                        $query->where('extender_id', $orgs);
+                        break;
+                    case 6:
+                        $query->where('extender_id', $orgs);
+
+                        break;
+                    default:
+                        break;
+                }
+            }
+        } else {
+            $query = DB::table('users_extender2')->get();
+        }
+        $i = 1;
+
+        $perPage = $request->input('length', 10);
+        // คำนวณหน้าปัจจุบัน
+        $currentPage = $request->input('start', 0) / $perPage + 1;
     }
 }

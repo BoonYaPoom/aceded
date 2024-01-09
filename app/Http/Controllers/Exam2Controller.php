@@ -21,7 +21,6 @@ class Exam2Controller extends Controller
     {
       $subs  = CourseSubject::findOrFail($subject_id);
       $exams = $subs->eam()->where('subject_id', $subject_id)->get();
-  
       $department_id =   $subs->department_id;
       $depart = Department::findOrFail($department_id);
       return view('page.manage.sub.exam.index', compact('subs', 'exams', 'depart'));
@@ -31,7 +30,6 @@ class Exam2Controller extends Controller
       $subs  = CourseSubject::findOrFail($subject_id);
       $ques = $subs->QuestiSub()->where('subject_id', $subject_id)->get();
       $typequs = QuestionType::all();
-  
       $lossen = CourseLesson::where('subject_id', $subject_id)->get();
       $department_id =   $subs->department_id;
       $depart = Department::findOrFail($department_id);

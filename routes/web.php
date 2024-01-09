@@ -41,8 +41,9 @@ use App\Http\Controllers\NavController;
 use App\Http\Controllers\PDFcreateController;
 use App\Http\Controllers\PersonController;
 use App\Http\Controllers\ProviDepartUserController;
-use App\Http\Controllers\ReportAController;
+use App\Http\Controllers\Report\ReportAController;
 use App\Http\Controllers\ReportAllController;
+use App\Http\Controllers\ReportDepartment\ReportADPController;
 use App\Http\Controllers\ReportJsonController;
 use App\Http\Controllers\RolemanageController;
 use App\Http\Controllers\SchoolController;
@@ -481,9 +482,10 @@ Route::group(['middleware' => 'IsLoggedIn'], function () {
                     Route::get('{department_id}/addextender', [ExtenderController::class, 'addextender'])->name('addextender');
 
                     Route::post('{department_id}/addextendersubmit', [ExtenderController::class, 'addextendersubmit'])->name('addextendersubmit');
+
+                    Route::get('{department_id}/umsSchoolDP2', [ExtenderController::class, 'testumsschool2'])->name('testumsschool2');
+                    Route::get('{department_id}/getUserCount', [ExtenderController::class, 'getUserCount'])->name('getUserCount');
                 });
-
-
 
                 Route::get('{department_id}/homeDepart', [DepartReportController::class, 'DepartReportview'])->name('DepartReportview');
                 Route::prefix('homeDepart')->group(function () {
@@ -502,8 +504,11 @@ Route::group(['middleware' => 'IsLoggedIn'], function () {
                     Route::get('{department_id}/home/T0114', [DepartReportController::class, 'BackupFullUserAuth'])->name('DepartBackupFullUserAuth');
                     Route::get('{department_id}/home/T0115', [DepartReportController::class, 'LogFileUserAuth'])->name('DepartLogFileUserAuth');
                 });
+                Route::get('rplDP/{department_id}', [ReportADPController::class, 'Reportview'])->name('DepartReportviewDp');
+                Route::prefix('rplDP')->group(function () {
+                    Route::get('{department_id}/A0100DP', [ReportADPController::class, 'ReportA'])->name('A0100DP');
+                });
             });
-
 
             Route::get('/ums/{user_role?}', [EditManageUserController::class, 'UserManage'])->name('UserManage')->where('user_role', '[0-9]+');
             Route::get('/UserManagejson/{user_role?}', [EditManageUserController::class, 'UserManagejson'])->name('UserManagejson')->where('user_role', '[0-9]+');
@@ -563,8 +568,7 @@ Route::group(['middleware' => 'IsLoggedIn'], function () {
             Route::prefix('rpl')->group(function () {
                 Route::get('/A0100', [ReportAController::class, 'ReportA'])->name('A0100');
             });
-
-
+       
             Route::prefix('report')->group(function () {
                 Route::get('/home', [ReportAllController::class, 'Reportview'])->name('Reportview');
                 Route::get('/home/D0100', [ReportAllController::class, 'ReportA'])->name('D0100');
