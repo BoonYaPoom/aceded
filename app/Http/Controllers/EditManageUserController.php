@@ -25,16 +25,9 @@ class EditManageUserController extends Controller
 
     public function UserManage(Request $request, $user_role = null)
     {
-        $usermanages = Cache::remember('usermanages', 60, function () use ($user_role) {
-            $query = Users::query();
 
-            if ($user_role !== null) {
-                $query->where('user_role', $user_role);
-            }
-            return $query->get();
-        });
 
-        return view('page.UserAdmin.indexview', compact('usermanages'));
+        return view('page.UserAdmin.indexview');
     }
 
 
@@ -56,11 +49,8 @@ class EditManageUserController extends Controller
                 ->first();
             $id = $item->user_id;
             $username = $item->username;
-
             $email = $item->email;
             $status = $item->userstatus;
-
-
             $user_role = $item->user_role;
             $firstname = $item->firstname;
             $lastname = $item->lastname;
@@ -165,9 +155,16 @@ class EditManageUserController extends Controller
     public function edit($user_id)
     {
         $usermanages = Users::findOrFail($user_id);
-
         $role = UserRole::all();
-        return view('page.UserAdmin.edit', ['usermanages' => $usermanages, 'role' => $role]);
+        $extender_1 = DB::table('users_extender')->where('department', 6)->where('department_lv', 0)->where('status', 1)->get();
+        $extender_2 = DB::table('users_extender')->where('department', 6)->where('department_lv', 1)->where('status', 1)->get();
+        $extender_3 = DB::table('users_extender')->where('department', 6)->where('department_lv', 2)->where('status', 1)->get();
+        $extender1 = DB::table('users_extender2')->where('item_lv', 1)->get();
+        $extender2 = DB::table('users_extender2')->where('item_lv', 2)->get();
+        $extender3 = DB::table('users_extender2')->where('item_lv', 3)->get();
+        $extender4 = DB::table('users_extender2')->where('item_lv', 4)->get();
+        $extender5 = DB::table('users_extender2')->where('item_lv', 5)->get();
+        return view('page.UserAdmin.edit', compact('usermanages', 'role', 'extender1', 'extender2', 'extender3', 'extender4', 'extender5', 'extender_1', 'extender_2', 'extender_3'));
     }
 
 
@@ -203,14 +200,62 @@ class EditManageUserController extends Controller
         $usermanages->user_role = $request->user_role;
         $usermanages->modifieddate = now();
         $usermanages->birthday = $request->birthday;
-        $usermanages->user_affiliation = $request->user_affiliation;
+
         $usermanages->province_id = $request->province_id;
         $usermanages->department_id = $request->department_id;
         $usermanages->mobile = $request->mobile;
 
         $usermanages->pos_name = $request->pos_name;
 
-        // บันทึกการเปลี่ยนแปลง
+        if (
+            $request->departmentselect == 1 ||
+            $request->departmentselect == 2
+        ) {
+            $usermanages->user_affiliation = $request->user_affiliation;
+            if ($request->has('extender_id5')) {
+                $usermanages->organization = $request->extender_id5;
+            } elseif ($request->has('extender_id4')) {
+                $usermanages->organization = $request->extender_id4;
+            } elseif ($request->has('extender_id3')) {
+                $usermanages->organization = $request->extender_id3;
+            } elseif ($request->has('extender_id2')) {
+                $usermanages->organization = $request->extender_id2;
+            } elseif ($request->has('extender_id')) {
+                $usermanages->organization = $request->extender_id;
+            }
+        } elseif ($request->departmentselect == 3) {
+
+
+            $usermanages->organization = 0;
+            if ($request->extender_id5) {
+                $user_affiliation = DB::table('users_extender')
+                    ->where('extender_id', $request->extender_id5)
+                    ->first();
+                $usermanages->user_affiliation = $user_affiliation->content_name;
+            } elseif ($request->extender_id4) {
+                $user_affiliation1 = DB::table('users_extender')
+                    ->where('extender_id', $request->extender_id4)
+                    ->first();
+                $usermanages->user_affiliation = $user_affiliation1->content_name;
+            } elseif ($request->extender_id3) {
+                $user_affiliation2 = DB::table('users_extender')
+                    ->where('extender_id', $request->extender_id3)
+                    ->first();
+                $usermanages->user_affiliation = $user_affiliation2->content_name;
+            } elseif ($request->extender_id2) {
+                $user_affiliation3 = DB::table('users_extender')
+                    ->where('extender_id', $request->extender_id2)
+                    ->first();
+         
+                $usermanages->user_affiliation = $user_affiliation3->content_name;
+            } elseif ($request->extender_id) {
+                $user_affiliation4 = DB::table('users_extender')
+                    ->where('extender_id', $request->extender_id)
+                    ->first();
+                $usermanages->user_affiliation = $user_affiliation4->content_name;
+   
+            }
+        }
         $usermanages->save();
 
         $department_data = $request->department_data;
@@ -268,7 +313,15 @@ class EditManageUserController extends Controller
         $school = School::all();
         $provinces = Provinces::all();
         $role = UserRole::all();
-        return view('page.UserAdmin.add.add_umsform', compact('role', 'school', 'provinces'));
+        $extender_1 = DB::table('users_extender')->where('department', 6)->where('department_lv', 0)->where('status', 1)->get();
+        $extender_2 = DB::table('users_extender')->where('department', 6)->where('department_lv', 1)->where('status', 1)->get();
+        $extender_3 = DB::table('users_extender')->where('department', 6)->where('department_lv', 2)->where('status', 1)->get();
+        $extender1 = DB::table('users_extender2')->where('item_lv', 1)->get();
+        $extender2 = DB::table('users_extender2')->where('item_lv', 2)->get();
+        $extender3 = DB::table('users_extender2')->where('item_lv', 3)->get();
+        $extender4 = DB::table('users_extender2')->where('item_lv', 4)->get();
+        $extender5 = DB::table('users_extender2')->where('item_lv', 5)->get();
+        return view('page.UserAdmin.add.add_umsform', compact('role', 'school', 'provinces', 'extender1', 'extender2', 'extender3', 'extender4', 'extender5', 'extender_1', 'extender_2', 'extender_3'));
     }
 
 
@@ -392,7 +445,7 @@ class EditManageUserController extends Controller
         $usermanages->sector_id = 0;
         $usermanages->office_id = 0;
         $usermanages->birthday = $request->birthday;
-        $usermanages->user_affiliation = $request->user_affiliation;
+
         $usermanages->user_type = null;
         $usermanages->province_id = $request->province_id;
         $usermanages->user_type_card =  $request->input('user_type_card', 0);
@@ -400,6 +453,54 @@ class EditManageUserController extends Controller
 
         $usermanages->district_id = null;
         $usermanages->subdistrict_id = null;
+
+        if (
+            $request->departmentselect == 1 ||
+            $request->departmentselect == 2
+        ) {
+            $usermanages->user_affiliation = $request->user_affiliation;
+            if ($request->has('extender_id5')) {
+                $usermanages->organization = $request->extender_id5;
+            } elseif ($request->has('extender_id4')) {
+                $usermanages->organization = $request->extender_id4;
+            } elseif ($request->has('extender_id3')) {
+                $usermanages->organization = $request->extender_id3;
+            } elseif ($request->has('extender_id2')) {
+                $usermanages->organization = $request->extender_id2;
+            } elseif ($request->has('extender_id')) {
+                $usermanages->organization = $request->extender_id;
+            }
+        } elseif ($request->departmentselect == 3) {
+
+            $usermanages->organization = 0;
+            if ($request->has('extender_id5')) {
+                $user_affiliation = DB::table('users_extender')
+                    ->where('extender_id', $request->has('extender_id5'))
+                    ->first();
+                $usermanages->user_affiliation = $user_affiliation->content_name;
+            } elseif ($request->has('extender_id4')) {
+                $user_affiliation = DB::table('users_extender')
+                    ->where('extender_id', $request->has('extender_id4'))
+                    ->first();
+                $usermanages->user_affiliation = $user_affiliation->content_name;
+            } elseif ($request->has('extender_id3')) {
+                $user_affiliation = DB::table('users_extender')
+                    ->where('extender_id', $request->has('extender_id3'))
+                    ->first();
+                $usermanages->user_affiliation = $user_affiliation->content_name;
+            } elseif ($request->has('extender_id2')) {
+                $user_affiliation = DB::table('users_extender')
+                    ->where('extender_id', $request->has('extender_id2'))
+                    ->first();
+                $usermanages->user_affiliation = $user_affiliation->content_name;
+            } elseif ($request->has('extender_id')) {
+                $user_affiliation = DB::table('users_extender')
+                    ->where('extender_id', $request->has('extender_id'))
+                    ->first();
+                $usermanages->user_affiliation = $user_affiliation->content_name;
+            }
+        }
+
 
         $usermanages->save();
 

@@ -36,50 +36,50 @@
                                 <!-- /.media-body -->
                             </div>
                             <!-- form row -->
-                         
+
 
                             <!-- /form row -->
                             <div class="form-row " id="department_id">
                                 <label for="department_id" class="col-md-2">เลือกหน่วยงาน </label>
                                 <div class="col-md-9 mb-3">
-                                    <button type="button" class="ml-1 btn btn-success btn-md" style="background-color: #F04A23;"
-                                    onclick="$('#clientUploadModal').modal('toggle');">
-                                    <i class="fas fa-user-plus"></i> เลือกหน่วยงาน</button>
-                                 
+                                    <button type="button" class="ml-1 btn btn-success btn-md"
+                                        style="background-color: #F04A23;"
+                                        onclick="$('#clientUploadModal').modal('toggle');">
+                                        <i class="fas fa-user-plus"></i> เลือกหน่วยงาน</button>
+
                                 </div>
                             </div>
                             @include('page.UserAdmin.modeleditDpart')
 
                             <div class="form-row " id="user_role">
                                 <label for="user_role" class="col-md-2">เลือกประเภทผู้ใช้งาน <span
-                                    class="badge badge-warning">Required</span></label>
+                                        class="badge badge-warning">Required</span></label>
                                 <div class="col-md-9 mb-3">
                                     <select id="user_role" name="user_role" class="form-control form-control-md"
                                         data-toggle="select2" data-allow-clear="false">
                                         <option value="0" disabled>เลือกประเภทผู้ใช้งาน</option>
                                         @foreach ($role as $roles)
                                             @if ($roles->role_status == 1)
-                                                  @if ($data->user_role == 1)
-                                                  <option value="{{ $roles->user_role_id }}"
-                                                    {{ $roles->user_role_id == $usermanages->user_role ? 'selected' : '' }}>
-                                                    {{ $roles->role_name }}
-                                                </option>
-                                                @else
-                                                    @if ($roles->user_role_id > 1)
+                                                @if ($data->user_role == 1)
                                                     <option value="{{ $roles->user_role_id }}"
                                                         {{ $roles->user_role_id == $usermanages->user_role ? 'selected' : '' }}>
                                                         {{ $roles->role_name }}
                                                     </option>
+                                                @else
+                                                    @if ($roles->user_role_id > 1)
+                                                        <option value="{{ $roles->user_role_id }}"
+                                                            {{ $roles->user_role_id == $usermanages->user_role ? 'selected' : '' }}>
+                                                            {{ $roles->role_name }}
+                                                        </option>
                                                     @endif
                                                 @endif
-                                             
                                             @endif
                                         @endforeach
                                     </select>
                                 </div>
                             </div>
                             @error('user_role')
-                                    <div class="col-md-9 mb-3">
+                                <div class="col-md-9 mb-3">
                                     <span class="badge badge-warning">{{ $message }}</span>
                                 </div>
                             @enderror
@@ -113,8 +113,7 @@
                                 <label for="firstname" class="col-md-2">เลขประจำตัวประชาชน</label>
                                 <div class="col-md-9 mb-3">
                                     <input type="text" class="form-control " id="citizen_id" name="citizen_id"
-                                       placeholder="เลขประจำตัวประชาชน"
-                                        value="{{ $usermanages->citizen_id }}" disabled>
+                                        placeholder="เลขประจำตัวประชาชน" value="{{ $usermanages->citizen_id }}" disabled>
                                 </div>
                             </div>
                             <!-- /form row -->
@@ -124,7 +123,7 @@
                                 <label for="input04" class="col-md-2">เพศ</label>
                                 <div class="col-md-9 mb-3">
                                     <div class="custom-control custom-control-inline custom-radio">
-                                        <input type="radio" class="custom-control-input is-valid" name="gender"
+                                        <input type="radio" class="custom-control-input " name="gender"
                                             id="male" value="1"
                                             {{ $usermanages->gender == 1 ? 'checked' : '' }}>
                                         <label class="custom-control-label" for="male">ชาย</label>
@@ -280,7 +279,7 @@
                                 </div>
                             </div>
                             <!-- /form row -->
-                      
+
 
                             <div class="form-row " id="set_pos_name">
                                 <label for="pos_name" class="col-md-2">ตำแหน่ง</label>
@@ -291,15 +290,7 @@
                                 </div>
                             </div>
                             <!--/form row -->
-                            <div class="form-row " id="user_affiliation">
-                                <label for="user_affiliation" class="col-md-2">สังกัด</label>
-                                <div class="col-md-9 mb-3">
-                                    <input type="text" class="form-control " id="user_affiliation"
-                                        name="user_affiliation" value="{{ $usermanages->user_affiliation }}"
-                                        placeholder="สังกัด">
 
-                                </div>
-                            </div>
 
                             <!-- form row -->
                             <div class="form-row d-none d-none" id="set_pos_level">
@@ -312,62 +303,213 @@
                                     </select>
                                 </div>
                             </div>
-                            <!-- /form row -->
 
-                            <!-- form row -->
-                            <div class="form-row d-none d-none" id="set_sector_id">
-                                <label for="sector_id" class="col-md-2">ส่วนกลาง / ต่างจังหวัด</label>
+                            <div class="form-row">
+                                <label for="reviewser" class="col-md-2">หน่วยงาน</label>
                                 <div class="col-md-9 mb-3">
-                                    <select id="sector_id" name="sector_id" class="form-control form-control-sm"
-                                        data-toggle="select2" data-allow-clear="false">
-                                        <option value="0">โปรดเลือกส่วนกลาง/ต่างจังหวัด</option>
-                                        @for ($i = 1; $i <= 9; $i++)
-                                            <option value="{{ $i }}"> ภาค{{ $i }} </option>
-                                        @endfor
-                                        <option value="10"> ส่วนกลาง </option>
-                                    </select>
+                                    <fieldset>
+                                        <div class="custom-control custom-control-inline custom-radio">
+                                            <input type="radio" class="custom-control-input" name="reviewser"
+                                                id="reviewser1" value="1" checked>
+                                            <label class="custom-control-label" for="reviewser1">ข้อมูล</label>
+                                        </div>
+                                        <div class="custom-control custom-control-inline custom-radio">
+                                            <input type="radio" class="custom-control-input" name="reviewser"
+                                                id="reviewser2" value="2">
+                                            <label class="custom-control-label" for="reviewser2">แก้ไข</label>
+                                        </div>
+                                    </fieldset>
                                 </div>
                             </div>
-                            <!-- /form row -->
 
-                            <!-- form row -->
-                            <div class="form-row d-none d-none" id="set_office_id">
-                                <label for="office_id" class="col-md-2">สำนักงาน</label>
-                                <div class="col-md-9 mb-3">
-                                    <select id="office_id" name="office_id" class="form-control form-control-sm"
-                                        data-toggle="select2" data-allow-clear="false">
-                                        <option value="0">โปรดเลือกสำนักงาน</option>
-                                        <option value="8"> สำนักงานการสอบสวน 4 </option>
-                                        <option value="45"> สำนักงานอัยการพิเศษฝ่ายคุ้มครองผู้บริโภค </option>
-                                        <option value="46"> สำนักงานอัยการพิเศษฝ่ายคุ้มครองสิทธิ </option>
-                                        <option value="47"> สำนักงานอัยการพิเศษฝ่ายคุ้มครองสิทธิประชาชนระหว่างประเทศ
-                                        </option>
-                                        <option value="49"> สำนักงานอัยการพิเศษฝ่ายช่วยเหลือทางกฎหมาย 1 </option>
-                                        <option value="50"> สำนักงานอัยการพิเศษฝ่ายช่วยเหลือทางกฎหมาย 4 (มีนบุรี)
-                                        </option>
-                                        <option value="51"> สำนักงานอัยการพิเศษฝ่ายบริหารจัดการความรู้ (KM) </option>
-                                        <option value="53"> สำนักงานอัยการพิเศษฝ่ายพัฒนากฎหมาย </option>
-                                        <option value="54"> สำนักงานอัยการพิเศษฝ่ายสารสนเทศ </option>
-                                    </select>
+                            <script>
+                                $(document).ready(function() {
+                                    var ser1 = $('#sers1');
+                                    var ser2 = $('#sers2');
+
+                                    $('input[name="reviewser"]').on('change', function() {
+                                        var reviewsersec = $(this).val();
+
+                                        if (reviewsersec == 1) {
+                                            ser2.show();
+                                            ser1.hide();
+                                        } else if (reviewsersec == 2) {
+                                            ser1.show();
+                                            ser2.hide();
+                                        }
+                                    });
+
+                                    // Trigger change event initially
+                                    $('input[name="reviewser"]:checked').trigger('change');
+                                });
+                            </script>
+                            <div id="sers2">
+                                @php
+                                    $organization = DB::table('users_extender2')
+                                        ->where('extender_id', $usermanages->organization)
+                                        ->first();
+
+                                    if ($organization) {
+                                        $parent = DB::table('users_extender2')
+                                            ->where('extender_id', $organization->item_parent_id)
+                                            ->first();
+
+                                        if ($parent) {
+                                            $parent_i = $parent->name;
+
+                                            $parent2 = DB::table('users_extender2')
+                                                ->where('extender_id', $parent->item_parent_id)
+                                                ->first();
+
+                                            if ($parent2) {
+                                                $parent_i2 = $parent2->name;
+
+                                                $parent3 = DB::table('users_extender2')
+                                                    ->where('extender_id', $parent2->item_parent_id)
+                                                    ->first();
+
+                                                if ($parent3) {
+                                                    $parent_i3 = $parent3->name;
+
+                                                    $parent4 = DB::table('users_extender2')
+                                                        ->where('extender_id', $parent3->item_parent_id)
+                                                        ->first();
+
+                                                    if ($parent4) {
+                                                        $parent_i4 = $parent4->name;
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    } elseif($organization == 0) {
+                                        // ไม่พบข้อมูลที่ตรงกับ extender_id ที่กำหนด
+                                    }
+
+                                @endphp
+                                <div class="form-row">
+                                    <label for="seraas" class="col-md-2">สังกัด / หน่วยงาน</label>
+                                    <div class="col-md-9 mb-3">
+                                        <input type="text" class="form-control " id="seraas" name="seraas"
+                                            value="{{ $organization->name }}" disabled placeholder="หน่วยงาน"
+                                            style="font-size: 22px;">
+                                    </div>
+                                </div>
+                                <div class="form-row">
+                                    <label for="seraas" class="col-md-2"></label>
+                                    <div class="col-md-9 mb-3">
+                                        <input type="text" class="form-control " id="seraas" name="seraas"
+                                            value="{{ isset($parent_i) ? $parent_i : '' }}" disabled
+                                            placeholder="หน่วยงาน" style="font-size: 22px;">
+                                    </div>
+                                </div>
+                                <div class="form-row">
+                                    <label for="seraas" class="col-md-2"></label>
+                                    <div class="col-md-9 mb-3">
+                                        <input type="text" class="form-control " id="seraas" name="seraas"
+                                            value="{{ isset($parent_i2) ? $parent_i2 : '' }}" disabled
+                                            placeholder="หน่วยงาน" style="font-size: 22px;">
+                                    </div>
+                                </div>
+
+                                <div class="form-row">
+                                    <label for="seraas" class="col-md-2"></label>
+                                    <div class="col-md-9 mb-3">
+                                        <input type="text" class="form-control " id="seraas" name="seraas"
+                                            value="{{ isset($parent_i3) ? $parent_i3 : '' }}" disabled
+                                            placeholder="หน่วยงาน" style="font-size: 22px;">
+                                    </div>
+                                </div>
+                                <div class="form-row">
+                                    <label for="seraas" class="col-md-2"></label>
+                                    <div class="col-md-9 mb-3">
+                                        <input type="text" class="form-control " id="seraas" name="seraas"
+                                            value="{{ isset($parent_i4) ? $parent_i4 : '' }}" disabled
+                                            placeholder="หน่วยงาน" style="font-size: 22px;">
+                                    </div>
                                 </div>
                             </div>
-                            <!-- /form row -->
 
-                            <!-- form row -->
-                            <div class="form-row d-none">
-                                <label for="editflag" class="col-md-2">อนุญาตแก้ไขข้อมูลส่วนตัว</label>
-                                <div class="col-md-9 mb-3">
-                                    <label class="switcher-control switcher-control-success switcher-control-lg">
-                                        <input type="checkbox" class="switcher-input switcher-edit" checked
-                                            value="1"
-                                            id="8cd306b95d82314da5402c4bd7fc299b__users__editflag__user_id__2__1684987166"
-                                            name="editflag">
-                                        <span class="switcher-indicator"></span> <span class="switcher-label-on">ON</span>
-                                        <span class="switcher-label-off text-red">OFF</span>
-                                    </label>
+                            <div id="sers1" style="display: none;">
+                                <div class="form-row" id='departse'>
+                                    <label for="departmentselect" class="col-md-2">รูปแบบสังกัด <span
+                                            class="badge badge-warning">Required</span></label>
+                                    <div class="col-md-9 mb-3">
+                                        <select id="departmentselect" name="departmentselect" class="form-control "
+                                            data-toggle="select2" data-allow-clear="false">
+                                            <option value="" selected disabled>-- เลือกรูปแบบสังกัด --</option>
+                                            <option value="1">
+                                                โรงเรียน
+                                            </option>
+                                            <option value="2">
+                                                อุดมศึกษา สถาบัน
+                                            </option>
+                                            <option value="3">
+                                                ข้าราชการ
+                                            </option>
+                                        </select>
+                                    </div>
                                 </div>
+
+                                <div class="form-row" id='sch1' style="display: none;">
+                                    <label for="extender_id" class="col-md-2">สังกัด </label>
+                                    <div class="col-md-9 mb-3">
+                                        <select id="extender_id" name="extender_id" class="form-control "
+                                            data-toggle="select2" data-allow-clear="false">
+                                            <option value="" selected disabled>-- เลือกสังกัด --</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="form-row" id="sch2" style="display: none;">
+                                    <label for="extender_id2" class="col-md-2">หน่วยงาน </label>
+                                    <div class="col-md-9 mb-3">
+                                        <select id="extender_id2" name="extender_id2" class="form-control "
+                                            data-toggle="select2" data-allow-clear="false">
+                                            <option value="" selected disabled>-- เลือกหน่วยงาน --</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="form-row" id="sch3" style="display: none;">
+                                    <label for="extender_id3" class="col-md-2">หน่วยงานย่อย </label>
+                                    <div class="col-md-9 mb-3">
+                                        <select id="extender_id3" name="extender_id3" class="form-control "
+                                            data-toggle="select2" data-allow-clear="false">
+                                            <option value="" selected disabled>-- เลือกหน่วยงานย่อย --</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-row" id="sch4" style="display: none;">
+                                    <label for="extender_id4" class="col-md-2"> </label>
+                                    <div class="col-md-9 mb-3">
+                                        <select id="extender_id4" name="extender_id4" class="form-control "
+                                            data-toggle="select2" data-allow-clear="false">
+                                            <option value="" selected disabled>-- เลือกหน่วยงานย่อย --</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-row" id="sch5" style="display: none;">
+                                        <label for="extender_id5" class="col-md-2"> </label>
+                                        <div class="col-md-9 mb-3">
+                                            <select id="extender_id5" name="extender_id5" class="form-control "
+                                                data-toggle="select2" data-allow-clear="false">
+                                                <option value="" selected disabled>-- เลือกหน่วยงานย่อย --</option>
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    @include('page.UserAdmin.edit.addjs')
+                                   
+                                </div>
+                                 {{-- <div class="form-row " id="user_affiliation">
+                                        <label for="user_affiliation" class="col-md-2">ระดับ</label>
+                                        <div class="col-md-9 mb-3">
+                                            <input type="text" class="form-control " id="user_affiliation"
+                                                name="user_affiliation" value="{{ $usermanages->user_affiliation }}"
+                                                placeholder="สังกัด" style="font-size: 22px;">
+
+                                        </div>
+                                    </div> --}}
                             </div>
-                            <!-- /form row -->
                         </div>
                         <div class="card-body">
                             <div class="form-actions">

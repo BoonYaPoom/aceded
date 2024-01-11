@@ -150,19 +150,10 @@
                                 document.addEventListener("DOMContentLoaded", function() {
                                     const select = document.getElementById("citizen_id_select");
                                     const input = document.getElementById("citizen_id_input");
-
-                                    // Store the initial input field value
                                     const initialValue = input.value;
-
-                                    // Add an event listener to the select element
                                     select.addEventListener("change", function() {
-                                        // Get the selected option's value
                                         const selectedValue = this.value;
-
-                                        // Set the input field's value to the selected option's value
                                         input.value = selectedValue;
-
-                                        // If the selected option is not "อื่นๆ," append the initial value
                                         if (selectedValue !== "0") {
                                             input.value += initialValue;
                                         }
@@ -318,8 +309,7 @@
                                     </select>
                                 </div>
                             </div>
-                            <!-- /form row -->
-                            <!-- form row -->
+
                             <div class="form-row d-none " id="set_subdistrict_id">
                                 <label for="subdistrict_id" class="col-md-2">แขวง/ตำบล </label>
                                 <div class="col-md-9 mb-3">
@@ -336,7 +326,7 @@
                                     <input type="text" class="form-control " id="pos_name" name="pos_name"
                                         value="" placeholder="ตำแหน่ง">
                                     <!-- <select id="pos_namexx" name="pos_namexx" class="form-control form-control-sm" data-toggle="select2" data-allow-clear="false">
-                                                                                                            </select> -->
+                                                                                                                                                                                                                                                                                                                                                    </select> -->
                                 </div>
                             </div>
                             @error('pos_name')
@@ -346,20 +336,86 @@
                             @enderror
                             <!--/form row -->
                             <div class="form-row " id="user_affiliation">
-                                <label for="user_affiliation" class="col-md-2">สังกัด</label>
+                                <label for="user_affiliation" class="col-md-2">ระดับ</label>
                                 <div class="col-md-9 mb-3">
                                     <input type="text" class="form-control " id="user_affiliation"
-                                        name="user_affiliation" value="" placeholder="สังกัด">
+                                        name="user_affiliation" value="" placeholder="ระดับ">
 
                                 </div>
                             </div>
-                        </div>
-                        <div class="card-body">
-                            <div class="form-actions">
-                                <button type="submit" class="btn btn-primary-theme ml-auto btn-lg"><i
-                                        class="far fa-save"></i> บันทึก</button>
+                            <div class="form-row" id='departse'>
+                                <label for="departmentselect" class="col-md-2">รูปแบบสังกัด <span
+                                        class="badge badge-warning">Required</span></label>
+                                <div class="col-md-9 mb-3">
+                                    <select id="departmentselect" name="departmentselect" class="form-control "
+                                        data-toggle="select2" data-allow-clear="false">
+                                        <option value="" selected disabled>-- เลือกรูปแบบสังกัด --</option>
+                                        <option value="1">โรงเรียน
+                                        </option>
+                                        <option value="2">อุดมศึกษา สถาบัน
+                                        </option>
+                                        <option value="3">ข้าราชการ
+                                        </option>
+                                    </select>
+                                </div>
                             </div>
-                        </div>
+
+                            <div class="form-row" id='sch1' style="display: none;">
+                                <label for="extender_id" class="col-md-2">สังกัด <span
+                                        class="badge badge-warning">Required</span></label>
+                                <div class="col-md-9 mb-3">
+                                    <select id="extender_id" name="extender_id" class="form-control "
+                                        data-toggle="select2" data-allow-clear="false">
+                                        <option value="" selected disabled>-- เลือกสังกัด --</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="form-row" id="sch2" style="display: none;">
+                                <label for="extender_id2" class="col-md-2">หน่วยงาน </label>
+                                <div class="col-md-9 mb-3">
+                                    <select id="extender_id2" name="extender_id2" class="form-control "
+                                        data-toggle="select2" data-allow-clear="false">
+                                        <option value="" selected disabled>-- เลือกหน่วยงาน --</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="form-row" id="sch3" style="display: none;">
+                                <label for="extender_id3" class="col-md-2">หน่วยงานย่อย </label>
+                                <div class="col-md-9 mb-3">
+                                    <select id="extender_id3" name="extender_id3" class="form-control "
+                                        data-toggle="select2" data-allow-clear="false">
+                                        <option value="" selected disabled>-- เลือกหน่วยงานย่อย --</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-row" id="sch4" style="display: none;">
+                                <label for="extender_id4" class="col-md-2"> </label>
+                                <div class="col-md-9 mb-3">
+                                    <select id="extender_id4" name="extender_id4" class="form-control "
+                                        data-toggle="select2" data-allow-clear="false">
+                                        <option value="" selected disabled>-- เลือกหน่วยงานย่อย --</option>
+                                    </select>
+                                </div>
+                                <div class="form-row" id="sch5" style="display: none;">
+                                    <label for="extender_id5" class="col-md-2"> </label>
+                                    <div class="col-md-9 mb-3">
+                                        <select id="extender_id5" name="extender_id5" class="form-control "
+                                            data-toggle="select2" data-allow-clear="false">
+                                            <option value="" selected disabled>-- เลือกหน่วยงานย่อย --</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                @include('page.UserAdmin.add.addjs')
+
+                            </div>
+                            <div class="card-body">
+                                <div class="form-actions">
+                                    <button type="submit" class="btn btn-primary-theme ml-auto btn-lg"><i
+                                            class="far fa-save"></i> บันทึก</button>
+                                </div>
+                            </div>
     </form>
     </div>
     </div>

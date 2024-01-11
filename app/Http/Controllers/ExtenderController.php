@@ -188,8 +188,9 @@ class ExtenderController extends Controller
             ->addColumn('NAME', function ($extender) {
                 return $extender->name;
             })
-            ->addColumn('NAME', function ($extender) {
-                return $extender->name;
+
+            ->addColumn('name_in_thai', function ($extender) {
+                return $extender->name_in_thai;
             })
             // ->addColumn('count', function ($extender) use ($department_id) {
             //     $userDepart = DB::table('users_department')->where('department_id', $department_id)->pluck('user_id');

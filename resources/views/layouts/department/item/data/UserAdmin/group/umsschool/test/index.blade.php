@@ -53,6 +53,7 @@
                                     <th width="5%">ลำดับ</th>
                                     <th>สถานศึกษา</th>
                                     <th width="20%">หน่วยงาน</th>
+                                    <th width="20%">จังหวัด</th>
                                     <th width="15%">จำนวน</th>
 
                                     <th width="10%" class="text-center">เพิ่มสมาชิก</th>
@@ -65,7 +66,7 @@
                             <tbody>
 
                                 <tr>
-                                    <td colspan="5" class="text-center" style="font-size: 18px;">* คลิกเพื่อแสดงจำนวน
+                                    <td colspan="6" class="text-center" style="font-size: 18px;">* คลิกเพื่อแสดงจำนวน
                                         <i class="fas fa-users"></i> (-) *
                                     </td>
                                 </tr>
@@ -92,6 +93,9 @@
                                             },
                                             {
                                                 data: 'parentExtender'
+                                            },
+                                            {
+                                                data: 'name_in_thai'
                                             },
                                             {
                                                 data: 'EXTENDER_ID',
@@ -153,9 +157,9 @@
                                         var selectedDrop2Id = $(this).val();
                                         console.log(selectedDrop2Id);
                                         if (selectedDrop2Id == 0) {
-                                            table.column(1).search('').draw();
+                                            table.column(3).search('').draw();
                                         } else {
-                                            table.column(1).search(selectedDrop2Id).draw();
+                                            table.column(3).search(selectedDrop2Id).draw();
                                         }
                                     });
 
