@@ -25,7 +25,8 @@
           var extender_2 = {!! $extender_2 !!};
           var extender_3 = {!! $extender_3 !!};
           var organization = {!! $usermanages->organization !!};
-     
+
+          var user_affiliation = $('#user_affiliation');
           extender_id1.select2();
           $('#departmentselect').on('change', function() {
               var selectedepartment = $(this).val();
@@ -45,7 +46,7 @@
                           .text(exten1.name));
                       foundMatch = true;
                   }
-
+                  user_affiliation.show();
                   sch1Div.show();
                   sch2Div.hide();
                   sch3Div.hide();
@@ -88,6 +89,7 @@
                               foundMatch2 = true;
                           }
                       });
+                      user_affiliation.show();
                       sch2Div.show();
                       sch3Div.hide();
                       sch4Div.hide();
@@ -129,6 +131,7 @@
                               foundMatch3 = true;
                           }
                       });
+                      user_affiliation.show();
                       sch3Div.show();
                       sch4Div.hide();
                       sch5Div.hide();
@@ -167,6 +170,7 @@
                               foundMatch4 = true;
                           }
                       });
+                      user_affiliation.show();
                       sch4Div.show();
                       sch4Div.hide();
                       sch5Div.hide();
@@ -193,6 +197,7 @@
                               foundMatch5 = true;
                           }
                       });
+                      user_affiliation.show();
                       sch5Div.show();
                   }
                   if (!foundMatch5) {

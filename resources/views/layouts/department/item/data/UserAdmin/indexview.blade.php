@@ -61,11 +61,15 @@
                     <button type="button" class="ml-1 btn btn-success btn-md"
                         onclick="$('#clientUploadModal').modal('toggle');"><i class="fas fa-user-plus"></i>
                         นำเข้าผู้ใช้งาน</button>
-
-                    <a class="ml-1 btn btn-info btn-md " style="color:#fff"
-                        href="{{ route('testumsschool', [$depart]) }}"><i class="fas fa-users"></i>
-                        จัดการสถานศึกษา</a>
-
+                    @if (
+                        $depart->department_id == 1 ||
+                            $depart->department_id == 2 ||
+                            $depart->department_id == 3 ||
+                            $depart->department_id == 4)
+                        <a class="ml-1 btn btn-info btn-md " style="color:#fff"
+                            href="{{ route('testumsschool', [$depart]) }}"><i class="fas fa-users"></i>
+                            จัดการสถานศึกษา</a>
+                    @endif
 
 
                     {{-- <div class="col-md-6 mb-3">
@@ -116,8 +120,9 @@
                                     <div class="container">
                                         <input type="file" class="form-control" id="uploaduser" name="fileexcel"
                                             accept=".xlsx" required>
-                                        <small class="form-text text-muted"><a href="{{ asset('uplade/testuserschool.xlsx') }}"
-                                                target="_blank"> ไฟล์ตัวอย่าง
+                                        <small class="form-text text-muted"><a
+                                                href="{{ asset('uplade/testuserschool.xlsx') }}" target="_blank">
+                                                ไฟล์ตัวอย่าง
                                                 (.xlsx)</a>
                                         </small>
                                     </div>
@@ -128,14 +133,14 @@
                                             class="fas fa-user-plus"></i> นำเข้าผู้ใช้งาน</button>
                                     <button type="button" class="btn btn-light" data-dismiss="modal">ยกเลิก</button>
                                 </div><!-- /.modal-footer -->
-                              
+
                             </div><!-- /.modal-content -->
                         </div><!-- /.modal-dialog -->
                     </form>
 
                 </div>
 
-            
+
                 <div>
                     <script>
                         $(document).ready(function() {

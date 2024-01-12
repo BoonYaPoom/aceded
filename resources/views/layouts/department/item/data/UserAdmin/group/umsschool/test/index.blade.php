@@ -61,7 +61,6 @@
                             </thead>
                             <tbody>
 
-
                             </tbody>
                             <tbody>
 
@@ -140,8 +139,8 @@
                                             infoEmpty: "ไม่พบรายการ",
                                             infoFiltered: "(ค้นหาจากทั้งหมด _MAX_ รายการ)",
                                             processing: "<span class='fa-stack fa-lg'>\n\
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                <i class='fa fa-spinner fa-spin fa-stack-2x fa-fw'></i>\n\
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           </span>&emsp;กรุณารอสักครู่",
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                <i class='fa fa-spinner fa-spin fa-stack-2x fa-fw'></i>\n\
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           </span>&emsp;กรุณารอสักครู่",
                                             paginate: {
                                                 first: "หน้าแรก",
                                                 last: "หน้าสุดท้าย",
@@ -192,7 +191,16 @@
             </div>
         </div>
     </div>
-    @if ($data->user_role == 1 || $data->user_role == 8)
+
+    @if (
+        ($data->user_role == 1 && $depart->department_id == 1) ||
+            $depart->department_id == 2 ||
+            $depart->department_id == 3 ||
+            $depart->department_id == 4 ||
+            ($data->user_role == 8 && $depart->department_id == 1) ||
+            $depart->department_id == 2 ||
+            $depart->department_id == 3 ||
+            $depart->department_id == 4)
         <header class="page-title-bar">
             <button type="button" class=" btn btn-success btn-floated btn-addums"
                 onclick="window.location='{{ route('addextender', ['department_id' => $depart->department_id]) }}'"

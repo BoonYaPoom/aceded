@@ -345,6 +345,21 @@
                             </script>
                             <div id="sers2">
                                 @php
+
+                                    $user_affiliation = DB::table('users_extender')
+                                        ->where('content_name', 'like', '%' . $usermanages->user_affiliation . '%')
+                                        ->first();
+                                    if ($user_affiliation) {
+                                        $af1 = DB::table('users_extender')
+                                            ->where('extender_id', $user_affiliation->id_ref)
+                                            ->first();
+                                        if ($af1) {
+                                            $af2 = DB::table('users_extender')
+                                                ->where('extender_id', $af1->id_ref)
+                                                ->first();
+                                        }
+                                    }
+
                                     $organization = DB::table('users_extender2')
                                         ->where('extender_id', $usermanages->organization)
                                         ->first();
@@ -381,50 +396,78 @@
                                                 }
                                             }
                                         }
-                                    } elseif($organization == 0) {
-                                        // ไม่พบข้อมูลที่ตรงกับ extender_id ที่กำหนด
                                     }
 
                                 @endphp
                                 <div class="form-row">
                                     <label for="seraas" class="col-md-2">สังกัด / หน่วยงาน</label>
                                     <div class="col-md-9 mb-3">
-                                        <input type="text" class="form-control " id="seraas" name="seraas"
-                                            value="{{ $organization->name }}" disabled placeholder="หน่วยงาน"
-                                            style="font-size: 22px;">
-                                    </div>
-                                </div>
-                                <div class="form-row">
-                                    <label for="seraas" class="col-md-2"></label>
-                                    <div class="col-md-9 mb-3">
-                                        <input type="text" class="form-control " id="seraas" name="seraas"
-                                            value="{{ isset($parent_i) ? $parent_i : '' }}" disabled
-                                            placeholder="หน่วยงาน" style="font-size: 22px;">
-                                    </div>
-                                </div>
-                                <div class="form-row">
-                                    <label for="seraas" class="col-md-2"></label>
-                                    <div class="col-md-9 mb-3">
-                                        <input type="text" class="form-control " id="seraas" name="seraas"
-                                            value="{{ isset($parent_i2) ? $parent_i2 : '' }}" disabled
-                                            placeholder="หน่วยงาน" style="font-size: 22px;">
+                                        @if ($organization > 0)
+                                            <input type="text" class="form-control " id="seraas" name="seraas"
+                                                value=" {{ $organization->name }}" disabled placeholder="หน่วยงาน"
+                                                style="font-size: 22px;">
+                                        @elseif ($organization == 0)
+                                            <input type="text" class="form-control " id="seraas" name="seraas"
+                                                value="{{ $user_affiliation->content_name }}" disabled
+                                                placeholder="หน่วยงาน" style="font-size: 22px;">
+                                        @endif
                                     </div>
                                 </div>
 
                                 <div class="form-row">
                                     <label for="seraas" class="col-md-2"></label>
                                     <div class="col-md-9 mb-3">
-                                        <input type="text" class="form-control " id="seraas" name="seraas"
-                                            value="{{ isset($parent_i3) ? $parent_i3 : '' }}" disabled
-                                            placeholder="หน่วยงาน" style="font-size: 22px;">
+
+                                        @if ($organization > 0)
+                                            <input type="text" class="form-control " id="seraas" name="seraas"
+                                                value="{{ isset($parent_i) ? $parent_i : '' }}" disabled
+                                                placeholder="หน่วยงาน" style="font-size: 22px;">
+                                        @elseif ($organization == 0)
+                                            <input type="text" class="form-control " id="seraas" name="seraas"
+                                                value="{{ isset($af1->content_name) ? $af1->content_name : '' }}"
+                                                disabled placeholder="หน่วยงาน" style="font-size: 22px;">
+                                        @endif
                                     </div>
                                 </div>
                                 <div class="form-row">
                                     <label for="seraas" class="col-md-2"></label>
                                     <div class="col-md-9 mb-3">
-                                        <input type="text" class="form-control " id="seraas" name="seraas"
-                                            value="{{ isset($parent_i4) ? $parent_i4 : '' }}" disabled
-                                            placeholder="หน่วยงาน" style="font-size: 22px;">
+
+
+                                        @if ($organization > 0)
+                                            <input type="text" class="form-control " id="seraas" name="seraas"
+                                                value="{{ isset($parent_i2) ? $parent_i2 : '' }}" disabled
+                                                placeholder="หน่วยงาน" style="font-size: 22px;">
+                                        @elseif ($organization == 0)
+                                            <input type="text" class="form-control " id="seraas" name="seraas"
+                                                value="{{ isset($af2->content_name) ? $af2->content_name : '' }}"
+                                                disabled placeholder="หน่วยงาน" style="font-size: 22px;">
+                                        @endif
+                                    </div>
+                                </div>
+
+                                <div class="form-row">
+                                    <label for="seraas" class="col-md-2"></label>
+                                    <div class="col-md-9 mb-3">
+
+                                        @if ($organization > 0)
+                                            <input type="text" class="form-control " id="seraas" name="seraas"
+                                                value="{{ isset($parent_i3) ? $parent_i3 : '' }}" disabled
+                                                placeholder="หน่วยงาน" style="font-size: 22px;">
+                                        @elseif ($organization == 0)
+                                        @endif
+                                    </div>
+                                </div>
+                                <div class="form-row">
+                                    <label for="seraas" class="col-md-2"></label>
+                                    <div class="col-md-9 mb-3">
+
+                                        @if ($organization > 0)
+                                            <input type="text" class="form-control " id="seraas" name="seraas"
+                                                value="{{ isset($parent_i3) ? $parent_i3 : '' }}" disabled
+                                                placeholder="หน่วยงาน" style="font-size: 22px;">
+                                        @elseif ($organization == 0)
+                                        @endif
                                     </div>
                                 </div>
                             </div>
@@ -498,17 +541,17 @@
                                     </div>
 
                                     @include('page.UserAdmin.edit.addjs')
-                                   
-                                </div>
-                                 {{-- <div class="form-row " id="user_affiliation">
-                                        <label for="user_affiliation" class="col-md-2">ระดับ</label>
-                                        <div class="col-md-9 mb-3">
-                                            <input type="text" class="form-control " id="user_affiliation"
-                                                name="user_affiliation" value="{{ $usermanages->user_affiliation }}"
-                                                placeholder="สังกัด" style="font-size: 22px;">
 
-                                        </div>
-                                    </div> --}}
+                                </div>
+                                <div class="form-row " id="user_affiliation" style="display: none;">
+                                    <label for="user_affiliation" class="col-md-2">ระดับ</label>
+                                    <div class="col-md-9 mb-3">
+                                        <input type="text" class="form-control " id="user_affiliation"
+                                            name="user_affiliation" value="{{ $usermanages->user_affiliation }}"
+                                            placeholder="สังกัด" style="font-size: 22px;">
+
+                                    </div>
+                                </div>
                             </div>
                         </div>
                         <div class="card-body">
