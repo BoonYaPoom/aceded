@@ -66,6 +66,7 @@ return new class extends Migration
             $table->string('signature', 200)->nullable()->collation('utf8_general_ci');
             $table->integer('hours')->nullable();
             $table->integer('days')->nullable();
+            $table->string('cert_subject', 400)->nullable()->collation('utf8_general_ci');
             $table->string('cert_custom', 200)->nullable()->collation('utf8_general_ci');
             $table->string('signature_name', 200)->nullable()->collation('utf8_general_ci');
             $table->string('signature_position', 200)->nullable()->collation('utf8_general_ci');

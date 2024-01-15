@@ -87,7 +87,8 @@ class SubmitController extends Controller
             'email' => 'required|email',
             'telephone' => 'required',
             'pos_name' => 'required',
-            'submit_path' => 'required|mimes:pdf'
+            'submit_path' => 'required|mimes:pdf',
+            'extender_id' =>    'unique:submit_school'
         ], [
             'citizen_id.unique' => 'เลขบัตรนี้เคยขอรหัส admin ไปแล้ว',
             'citizen_id.required' => 'กรุณากรอกเลขบัตร ของคุณ',
@@ -99,16 +100,24 @@ class SubmitController extends Controller
             'pos_name.required' => 'กรุณากรอก ตำแหน่งของคุณ',
             'submit_path.required' => 'กรุณาแนบไฟล์',
             'submit_path.mimes' => 'PDF เท่านั้น',
+            'extender_id.unique' => 'โรงเรียนนี้มีรหัสแอดมินไปแล้ว ไปแล้ว',
         ]);
 
         $mit = new SubmitSchool;
-        $mit->department_id = $request->department_id;
+        $mit->department_id = $request->departmentselect;
 
-        if ($request->extender_1_id) {
-            $mit->extender_id = $request->extender_1_id;
-        } else {
+        if ($request->extender_id5) {
+            $mit->extender_id = $request->extender_id5;
+        } elseif ($request->extender_id4) {
+            $mit->extender_id = $request->extender_id4;
+        } elseif ($request->extender_id3) {
+            $mit->extender_id = $request->extender_id3;
+        } elseif ($request->extender_id3) {
+            $mit->extender_id = $request->extender_id2;
+        } elseif ($request->extender_id2) {
             $mit->extender_id = $request->extender_id;
         }
+    
         $mit->user_id = $uid;
         $mit->submit_status = 0;
         $mit->firstname = $request->firstname;
@@ -150,7 +159,8 @@ class SubmitController extends Controller
         if ($mit->enddate !== null) {
             $thaiEndDate = Carbon::parse($mit->enddate)->locale('th')->isoFormat('LL');
         }
-        $citizen_id = Users::where('citizen_id', $mit->citizen_id)
+        $citizen_id = Users::where('organization', $mit->extender_id)
+            ->where('user_role', 6)
             ->pluck('username')
             ->first();
 
@@ -256,7 +266,7 @@ class SubmitController extends Controller
 
         $inva = new ActivityInvite;
         $inva->activity_id  = 0;
-        $inva->user_id  = $submit_id->user_id;
+        $inva->user_id  = $usermanages->user_id;
         $inva->message  = 'คุณได้รับสิทธิ์ ในการเป็น Admin สถานศึกษารหัสผ่าน username =' .  $usermanages->username . ' ' . 'password =' .  $usermanages->password;
         $inva->activity_date  = now();
         $inva->status  = 1;

@@ -20,77 +20,81 @@
                         <!-- .form-group -->
 
 
+                        <div class="form-group">
+                            <label for="provin" class="col-md-1">จังหวัด </label>
+                            <span class="badge badge-warning">Required</span></label>
+                            <select class="form-control " name="provin" id="provin" required="">
+                                <option value="0" selected disabled>-- เลือกจังหวัด --</option>
+                                @foreach ($provin as $pro)
+                                    <option value="{{ $pro->name_in_thai }}">{{ $pro->name_in_thai }}
+                                    </option>
+                                @endforeach
+                            </select>
+                        </div>
                         <div class="form-group" id='sch'>
                             <label for="extender_id" class="col-md-1">สังกัด </label>
                             <span class="badge badge-warning">Required</span></label>
                             <select class="form-control " name="extender_id" id="extender_id" required="">
                                 <option value="" selected disabled>-- เลือกสถานศึกษา --</option>
-                                @foreach ($extendernull as $extr)
-                                    <option value="{{ $extr->extender_id }}">{{ $extr->name }}
+                                @foreach ($extender1 as $extr1)
+                                    <option value="{{ $extr1->extender_id }}">{{ $extr1->name }}
                                     </option>
                                 @endforeach
 
                             </select>
                         </div>
-                        <div class="form-group" id="testsch" style="display: none;">
+                        <div class="form-group" id='sch2' style="display: none;">
+                            <label for="extender_id2" class="col-md-1">สังกัดย่อย </label>
+                            <span class="badge badge-warning">Required</span></label>
+                            <select class="form-control " name="extender_id2" id="extender_id2" required="">
+                                <option value="" selected disabled>-- เลือกสถานศึกษา --</option>
+                            </select>
+                        </div>
+                        <div class="form-group" id="textsch1" style="display: none;">
                             <label for="school_name" class="col-md-1">สถานศึกษา </label>
                             <label for="school_name"> <span class="badge badge-warning">Required</span></label>
                             <input type="text" class="form-control" id="school_name" name="school_name"
                                 placeholder="สถานศึกษา" required="" value="">
                         </div><!-- /.form-group -->
                         <script>
-                            document.addEventListener('DOMContentLoaded', function() {
-                                var sch1Div = $('#testsch');
-                                var extenderSelect = $('#extender_id');
+                            $(document).ready(function() {
+                                var sch2Div = $('#sch2');
+                                var extender2 = {!! $extender2 !!};
+                                var extender_id2 = $('#extender_id2');
+                                // var sch3Div = $('#sch3');
+                                // var extender3 = {!! $extender3 !!};
+                                // var extender_id3 = $('#extender_id3');
+                                // var sch4Div = $('#sch4');
+                                // var extender_id4 = $('#extender_id4');
+                                // var extender4 = {!! $extender4 !!};
+                                // var sch5Div = $('#sch5');
+                                // var extender_id5 = $('#extender_id5');
+                                // var extender5 = {!! $extender5 !!};
 
-                                extenderSelect.select2();
-
-                                extenderSelect.on('change', function() {
+                                var provin = $('#provin');
+                                $('#extender_id').select2();
+                                provin.select2();
+                                $('#extender_id').on('change', function() {
+                      
                                     var selectedExtenderId = $(this).val();
-
-                                    if (selectedExtenderId) {
-                                              sch1Div.show();
-                                    } else {           
-                                           sch1Div.hide();
-                                    }
+                                    console.log(selectedExtenderId);
+                                    
+                                    var foundMatch = false;
+                                    extender_id2.select2();
+                                    extender_id2.empty();
+                                    extender_id2.append('<option value="" selected disabled>-- เลือกสังกัด --</option>');
+                                    $.each(extender2, function(index, exten2) {
+                                        if (exten2.item_parent_id == selectedExtenderId) {
+                                            extender_id2.append($('<option></option>')
+                                                .attr('value', exten2.extender_id)
+                                                .text(exten2.name));
+                                            foundMatch = true;
+                                        }
+                                        sch2Div.show();
+                                    });
                                 });
                             });
                         </script>
-                        {{-- <div class="form-group" id='sch1' style="display: none;">
-                            <label for="extender_1_id" class="col-md-1">สังกัดย่อย </label>
-                            <span class="badge badge-warning">Required</span></label>
-                            <select name="extender_1_id" id="extender_1_id" class="form-control form-control-sm"
-                                data-toggle="select2" required="">
-                                <option value="" selected disabled>-- เลือกสังกัดย่อย --</option>
-                            </select>
-                        </div>
-                        <script>
-                            document.addEventListener('DOMContentLoaded', function() {
-                                var sch1Div = $('#sch1');
-                                $('#extender_id').select2();
-                                $('#extender_id').on('change', function() {
-                                    var selectedextender_idCode = $(this).val();
-                                    var schoolSelect1 = $('#extender_1_id');
-                                    schoolSelect1.empty().append(
-                                        '<option value="" selected disabled>-- เลือกสถานศึกษา --</option>');
-                                    var extender_1 = {!! $extender_1Json !!};
-                                    var foundMatch = false;
-
-                                    extender_1.forEach(function(exten1) {
-                                        if (exten1.item_parent_id == selectedextender_idCode) {
-                                            schoolSelect1.append('<option value="' + exten1.extender_id + '">' + exten1
-                                                .name + '</option>');
-                                            foundMatch = true;
-                                        }
-                                    });
-                                    if (!foundMatch) {
-                                        schoolSelect1.append('<option value="default_value">Default School Name</option>');
-                                    }
-                                    sch1Div.css('display', foundMatch ? '' : 'none');
-                                });
-                            });
-                        </script> --}}
-
                     </div><!-- /.card-body -->
                 </div><!-- /.card -->
 

@@ -42,6 +42,7 @@ use App\Http\Controllers\PDFcreateController;
 use App\Http\Controllers\PersonController;
 use App\Http\Controllers\ProviDepartUserController;
 use App\Http\Controllers\Report\ReportAController;
+use App\Http\Controllers\Report\ReportBController;
 use App\Http\Controllers\ReportAllController;
 use App\Http\Controllers\ReportDepartment\ReportADPController;
 use App\Http\Controllers\ReportJsonController;
@@ -567,6 +568,7 @@ Route::group(['middleware' => 'IsLoggedIn'], function () {
             Route::get('/rpl', [ReportAController::class, 'Reportview'])->name('DepartReportview');
             Route::prefix('rpl')->group(function () {
                 Route::get('/A0100', [ReportAController::class, 'ReportA'])->name('A0100');
+                Route::get('/B0100', [ReportBController::class, 'ReportB'])->name('B0100');
             });
        
             Route::prefix('report')->group(function () {

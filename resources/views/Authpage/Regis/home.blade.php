@@ -73,60 +73,8 @@
 
 
     <link rel="stylesheet" href="{{ asset('/stylesheets/logincss/register.css') }}">
-
+    <script src="{{ asset('/javascript/vendor/jquery/jquery.min.js') }}"></script>
 </head>
-{{-- @php
-
-try {
-  $connonName = 'mysql';
-  DB::connection()->getPdo($connonName);
-  echo "เชื่อมต่อฐานข้อมูล MySQL สำเร็จ!";
-} catch (\Exception $e) {
-  die("ไม่สามารถเชื่อมต่อฐานข้อมูล MySQL: " . $e->getMessage());
-}
-@endphp  --}}
-{{-- @php
-    use Illuminate\Support\Facades\DB;
-
-    try {
-        $connectionName = 'oracle';
-        $dbName = DB::connection($connectionName)->select('SELECT ora_database_name FROM dual')[0]->ora_database_name;
-        echo "Connected successfully to Oracle database named: $dbName";
-    } catch (\Exception $e) {
-        echo 'Connection failed: ' . $e->getMessage();
-    }
-@endphp  --}}
-{{-- @php
-try {
-  $ldap_host = env('LDAP_HOST');
-  $ldap_port = env('LDAP_PORT');
-  $ldap_connection = ldap_connect($ldap_host, $ldap_port);
-
-  if ($ldap_connection) {
-      $username = 'boonyarit_soo'; // Replace with the username you want to check
-      $base_dn = "ou=users,dc=nacc,dc=go,dc=th"; // Update with your LDAP base DN
-
-      // Set LDAP options using values from the environment variables
-      ldap_set_option($ldap_connection, LDAP_OPT_PROTOCOL_VERSION, env('LDAP_PROTOCOL_VERSION'));
-      ldap_set_option($ldap_connection, LDAP_OPT_REFERRALS, env('LDAP_REFERRALS'));
-
-      $bind = ldap_bind($ldap_connection, "cn=$username,$base_dn", 'f3*Z29$Q%It^');
-
-      if ($bind) {
-          echo "Username $username exists in LDAP.";
-      } else {
-          echo "Username $username does not exist in LDAP.";
-      }
-
-      ldap_close($ldap_connection);
-  } else {
-      echo 'LDAP connection failed';
-  }
-} catch (\Exception $e) {
-  echo 'Connection failed: ' . $e->getMessage();
-}
-@endphp --}}
-
 
 <div class="wrapper fadeInDown">
     <div id="formContent">
@@ -157,7 +105,7 @@ try {
                     </label>
                 </div>
                 <div class="col-sm-7" align="left">
-                    <select class="form-control w-100 fadeIn first" name="department_id" id="department_id"
+                    <select class="form-control w-100 fadeIn first" name="departmentselect" id="departmentselect"
                         required="">
                         <option value="" selected disabled>-- เลือกหน่วยงาน --</option>
                         @foreach ($depart->sortBy('department_id') as $de)
@@ -169,97 +117,67 @@ try {
                 </div>
             </div>
 
-            <div class="form-group row" id='sch'>
-                <div class="col-sm-4" align="right">
-                    <label class="control-label fadeIn first"><span class="required">*</span> สถานศึกษา
-                    </label>
-                </div>
-                <div class="col-sm-7" align="left">
-                    <select class="form-control w-100 fadeIn first" name="extender_id" id="extender_id" required="">
-                        <option value="" selected disabled>-- เลือกสถานศึกษา --</option>
-                    </select>
-
-                </div>
-
-            </div>
             <div class="form-group row" id='sch1' style="display: none;">
                 <div class="col-sm-4" align="right">
-                    <label class="control-label fadeIn first"><span class="required">*</span> สถานศึกษาย่อย
+                    <label class="control-label fadeIn first"><span class="required">*</span> สังกัด
                     </label>
                 </div>
                 <div class="col-sm-7" align="left">
-                    <select class="form-control w-100 fadeIn first" name="extender_1_id" id="extender_1_id"
-                        required="">
-                        <option value="" selected disabled>-- เลือกสถานศึกษา --</option>
+                    <select id="extender_id" name="extender_id" class="form-control w-100 fadeIn first">
+                        <option value="" selected disabled>-- เลือกสังกัด --</option>
                     </select>
                 </div>
-
             </div>
-            <script>
-                document.addEventListener('DOMContentLoaded', function() {
-                    var sch1Div = document.getElementById('sch1');
-                    document.getElementById('department_id').addEventListener('change', function() {
-                        var selectedDepartmentCode = this.value;
-                        var schoolSelect = document.getElementById('extender_id');
 
-                        schoolSelect.innerHTML = '<option value="" selected disabled>-- เลือกสถานศึกษา --</option>';
-                        var extender2 = {!! $extender2Json !!};
-                        if (selectedDepartmentCode == '5') {
-                            extender2.forEach(function(exten) {
-                                if (exten.item_group_id == 2) {
-                                    var option = document.createElement('option');
-                                    option.value = exten.extender_id;
-                                    option.textContent = exten.name;
-                                    schoolSelect.appendChild(option);
-                                    sch1Div.style.display = 'none';
-                                }
-                            });
-                        } else {
-                            extender2.forEach(function(exten) {
-                                if (exten.item_group_id == 1 && exten.item_parent_id == null) {
-                                    var option = document.createElement('option');
-                                    option.value = exten.extender_id;
-                                    option.textContent = exten.name;
-                                    schoolSelect.appendChild(option);
-                                    sch1Div.style.display = '';
-                                }
-                            });
-                        }
+            <div class="form-group row" id="sch2" style="display: none;">
 
-                    });
-                    document.getElementById('extender_id').addEventListener('change', function() {
-                        var selectedextender_idCode = this.value;
-                        var schoolSelect1 = document.getElementById('extender_1_id');
-                        schoolSelect1.innerHTML =
-                            '<option value="" selected disabled>-- เลือกสถานศึกษา --</option>';
-                        var extender_1 = {!! $extender_1Json !!};
-                        var foundMatch = false;
-                        extender_1.forEach(function(exten1) {
-                            if (exten1.item_group_id == 1 && exten1.item_parent_id ==
-                                selectedextender_idCode) {
-                                var option1 = document.createElement('option');
-                                option1.value = exten1.extender_id;
-                                option1.textContent = exten1.name;
-                                schoolSelect1.appendChild(option1);
-                                foundMatch = true;
-                            }
+                <div class="col-sm-4" align="right">
+                    <label class="control-label fadeIn first"><span class="required">*</span> หน่วยงาน
+                    </label>
+                </div>
+                <div class="col-sm-7" align="left">
+                    <select id="extender_id2" name="extender_id2" class="form-control w-100 fadeIn first">
+                        <option value="" selected disabled>-- เลือกหน่วยงาน --</option>
+                    </select>
+                </div>
+            </div>
 
-                        });
-                        if (!foundMatch) {
-                            var option1 = document.createElement('option');
-                            option1.value = 'default_value'; // Provide a suitable default value
-                            option1.textContent = 'Default School Name'; // Provide a suitable default name
-                            schoolSelect1.appendChild(option1);
-                        }
-                        sch1Div.style.display = foundMatch ? '' : 'none';
-                    });
+            <div class="form-group row" id="sch3" style="display: none;">
+                <div class="col-sm-4" align="right">
+                    <label class="control-label fadeIn first"><span class="required">*</span> หน่วยงานย่อย
+                    </label>
+                </div>
+                <div class="col-sm-7" align="left">
+                    <select id="extender_id3" name="extender_id3" class="form-control w-100 fadeIn first">
+                        <option value="" selected disabled>-- เลือกหน่วยงานย่อย --</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group row" id="sch4" style="display: none;">
+                <div class="col-sm-4" align="right">
+                    <label class="control-label fadeIn first"><span class="required">*</span>
+                    </label>
+                </div>
+                <div class="col-sm-7" align="left">
+                    <select id="extender_id4" name="extender_id4" class="form-control w-100 fadeIn first">
+                        <option value="" selected disabled>-- เลือกหน่วยงานย่อย --</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group row" id="sch5" style="display: none;">
+                <label for="extender_id5" class="col-md-2"> </label>
+                <div class="col-md-9 mb-3">
+                    <select id="extender_id5" name="extender_id5" class="form-control w-100 fadeIn first">
+                        <option value="" selected disabled>-- เลือกหน่วยงานย่อย --</option>
+                    </select>
+                </div>
+            </div>
+            @include('Authpage.Regis.jsregis')
 
-
-                });
-            </script>
             <div class="form-group row">
                 <div class="col-sm-4" align="right">
-                    <label class="control-label fadeIn second"><span class="required">*</span> รหัสบัตรประชาชน</label>
+                    <label class="control-label fadeIn second"><span class="required">*</span>
+                        รหัสบัตรประชาชน</label>
                 </div>
                 <div class="col-sm-4" align="left">
                     <input type="text" name="citizen_id" value="" id="citizen_id"
@@ -333,20 +251,21 @@ try {
                     <input type="text" name="pos_name" maxlength="150" autocomplete="off" value=""
                         id="pos_name" class="form-control fadeIn third" required="">
                 </div>
-                  @error('pos_name')
-                        <span class="badge badge-warning">{{ $message }}</span>
-                    @enderror
+                @error('pos_name')
+                    <span class="badge badge-warning">{{ $message }}</span>
+                @enderror
             </div>
 
             <h3 class="fadeIn fourth">แนบเอกสารขอสมัคร
                 <input type="file" name="submit_path" id="submit_path" class="inputfile fadeIn fourth"
                     accept=".pdf" onchange="showFileName()" />
                 <label for="submit_path">Choose a file <i class="fa fa-file fadeIn fourth"></i></label>
-                  @error('submit_path')
-                        <span class="badge badge-warning">{{ $message }}</span>
-                    @enderror
+                @error('submit_path')
+                    <span class="badge badge-warning">{{ $message }}</span>
+                @enderror
             </h3>
-                <a  href="{{ asset('uplade/แบบฟอร์มการขอ-เปลี่ยนสิทธิ์ฯ.pdf') }}"  target="_blank" for="submit_path" class="btn btn-info">ดาวโหลด เอกสารขอเป็น Admin <i class="fa fa-file fadeIn fourth"></i></a>
+            <a href="{{ asset('uplade/แบบฟอร์มการขอ-เปลี่ยนสิทธิ์ฯ.pdf') }}" target="_blank" for="submit_path"
+                class="btn btn-info">ดาวโหลด เอกสารขอเป็น Admin <i class="fa fa-file fadeIn fourth"></i></a>
             <h5 id="submit_name"></h5>
             <script>
                 function showFileName() {

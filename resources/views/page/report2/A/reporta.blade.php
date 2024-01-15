@@ -7,18 +7,26 @@
         <div class="col-md-1"><span class="mt-1 ">ปี</span></div>
         <div class="col-md-3">
             <div class=""><select id="selectyear" name="selectyear" class="form-control" data-toggle="select2"
-                    data-placeholder="ปี" data-allow-clear="false" onchange="$('#formreport').submit();">
+                    data-placeholder="ปี" data-allow-clear="false">
                     <option value="2566"> 2566 </option>
                     <option value="2567" selected> 2567 </option>
                     <option value="2568"> 2568 </option>
-                 
+
+                </select>
+            </div>
+        </div>
+        <!-- form column -->
+        <div class="col-md-1"><span class="mt-1 ">จังหวัด</span></div>
+        <div class="col-md-3">
+            <div class=""><select id="provin" name="provin" class="form-control" data-toggle="select2"
+                    data-placeholder="ปี" data-allow-clear="false">
+                    @foreach ($provin as $pro)
+                        <option value="{{ $pro->name_in_thai }}"> {{ $pro->name_in_thai }} </option>
+                    @endforeach
                 </select>
             </div>
         </div>
 
-        <div class="col-md-1 text-right"><button type="button" class="btn btn-light btn-icon d-xl-none"
-                data-toggle="sidebar"><i class="fa fa-angle-double-left fa-lg"></i></button></div>
-        <!-- /form column -->
 
     </div><!-- /form row -->
 
@@ -67,5 +75,5 @@
         </div><!-- /grid row -->
     </div><!-- /.section-block -->
 
-    @include('page.report2.graphA')
+    @include('page.report2.A.graphA')
 @endsection

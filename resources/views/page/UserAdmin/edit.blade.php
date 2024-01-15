@@ -8,7 +8,7 @@
         <div class="page-inner">
             <div class="page-section">
                 <div class="card card-fluid">
-                    <div class="card-header bg-muted"><a href="{{ route('UserManage') }}">ผู้ใช้งาน</a> / ข้อมูลส่วนตัว</div>
+                    <div class="card-header bg-muted"><a href="{{ route('UserManage') }}">ผู้ใช้งาน</a> / ข้อมูลส่วนตัว ของ {{ $usermanages->firstname }} {{ $usermanages->lastname }}</div>
                     <div class="col-lg">
                         <h6 class="card-header"> ข้อมูลส่วนตัว </h6>
                         <div class="card-body">
@@ -402,11 +402,11 @@
                                 <div class="form-row">
                                     <label for="seraas" class="col-md-2">สังกัด / หน่วยงาน</label>
                                     <div class="col-md-9 mb-3">
-                                        @if ($organization > 0)
+                                        @if ($usermanages->organization > 0)
                                             <input type="text" class="form-control " id="seraas" name="seraas"
                                                 value=" {{ $organization->name }}" disabled placeholder="หน่วยงาน"
                                                 style="font-size: 22px;">
-                                        @elseif ($organization == 0)
+                                        @elseif ($usermanages->organization == 0)
                                             <input type="text" class="form-control " id="seraas" name="seraas"
                                                 value="{{ $user_affiliation->content_name }}" disabled
                                                 placeholder="หน่วยงาน" style="font-size: 22px;">
@@ -418,11 +418,11 @@
                                     <label for="seraas" class="col-md-2"></label>
                                     <div class="col-md-9 mb-3">
 
-                                        @if ($organization > 0)
+                                        @if ($usermanages->organization > 0)
                                             <input type="text" class="form-control " id="seraas" name="seraas"
                                                 value="{{ isset($parent_i) ? $parent_i : '' }}" disabled
                                                 placeholder="หน่วยงาน" style="font-size: 22px;">
-                                        @elseif ($organization == 0)
+                                        @elseif ($usermanages->organization == 0)
                                             <input type="text" class="form-control " id="seraas" name="seraas"
                                                 value="{{ isset($af1->content_name) ? $af1->content_name : '' }}"
                                                 disabled placeholder="หน่วยงาน" style="font-size: 22px;">
@@ -434,11 +434,11 @@
                                     <div class="col-md-9 mb-3">
 
 
-                                        @if ($organization > 0)
+                                        @if ($usermanages->organization > 0)
                                             <input type="text" class="form-control " id="seraas" name="seraas"
                                                 value="{{ isset($parent_i2) ? $parent_i2 : '' }}" disabled
                                                 placeholder="หน่วยงาน" style="font-size: 22px;">
-                                        @elseif ($organization == 0)
+                                        @elseif ($usermanages->organization == 0)
                                             <input type="text" class="form-control " id="seraas" name="seraas"
                                                 value="{{ isset($af2->content_name) ? $af2->content_name : '' }}"
                                                 disabled placeholder="หน่วยงาน" style="font-size: 22px;">
@@ -450,11 +450,11 @@
                                     <label for="seraas" class="col-md-2"></label>
                                     <div class="col-md-9 mb-3">
 
-                                        @if ($organization > 0)
+                                        @if ($usermanages->organization > 0)
                                             <input type="text" class="form-control " id="seraas" name="seraas"
                                                 value="{{ isset($parent_i3) ? $parent_i3 : '' }}" disabled
                                                 placeholder="หน่วยงาน" style="font-size: 22px;">
-                                        @elseif ($organization == 0)
+                                        @elseif ($usermanages->organization == 0)
                                         @endif
                                     </div>
                                 </div>
@@ -462,11 +462,11 @@
                                     <label for="seraas" class="col-md-2"></label>
                                     <div class="col-md-9 mb-3">
 
-                                        @if ($organization > 0)
+                                        @if ($usermanages->organization > 0)
                                             <input type="text" class="form-control " id="seraas" name="seraas"
                                                 value="{{ isset($parent_i3) ? $parent_i3 : '' }}" disabled
                                                 placeholder="หน่วยงาน" style="font-size: 22px;">
-                                        @elseif ($organization == 0)
+                                        @elseif ($usermanages->organization == 0)
                                         @endif
                                     </div>
                                 </div>

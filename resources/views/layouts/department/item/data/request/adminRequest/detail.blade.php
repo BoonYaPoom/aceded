@@ -80,6 +80,9 @@
                                 @endif
 
                                 @if ($mit->submit_status == 1)
+                                        @php
+                                        
+                                        @endphp
                                     <label for="username" class="col-md-2">รหัส :</label>
                                     <div class="col-md-4 mb-3">
                                         <label for="username" class="col-md-12">Username : {{ $citizen_id }}</label>

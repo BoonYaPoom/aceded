@@ -137,13 +137,15 @@ class CourseController extends Controller
         $cour->taxid = $request->taxid;
         $cour->suffixcode = $request->suffixcode;
 
+        $cour->cert_subject = $request->cert_subject;
+
         set_time_limit(0);
         libxml_use_internal_errors(true);
         if (!file_exists(public_path('/uplade'))) {
             mkdir(public_path('/uplade'), 0755, true);
         }
         if ($request->has('paymentdetail')) {
-            $paymentdetail = $request->input('paymentdetail');    
+            $paymentdetail = $request->input('paymentdetail');
             $decodedTextpaymentdetail = '';
             if (!empty($paymentdetail)) {
                 $des_th = new DOMDocument();
@@ -310,6 +312,22 @@ class CourseController extends Controller
                 $cour->cert_custom = 'upload/Course/cert_custom/' . $newImageName;
                 $cour->save();
             }
+        } elseif ($cour->templete_certificate == 7) {
+            if (File::exists(public_path('uploads/cer/CER7.png'))) {
+                // ตรวจสอบว่าไดเรกทอรีปลายทางสำหรับการบันทึกใหม่มีอยู่หรือไม่
+                $uploadDirectory = public_path('upload/Course/cert_custom/');
+                if (!File::exists($uploadDirectory)) {
+                    File::makeDirectory($uploadDirectory, 0755, true);
+                }
+
+                // กําหนดชื่อไฟล์ใหม่และคัดลอกไฟล์รูปภาพ
+                $newImageName = 'cert_custom' . $cour->course_id . '.png'; // ตั้งชื่อใหม่ตามต้องการ
+                File::copy(public_path('uploads/cer/CER7.png'), $uploadDirectory . $newImageName);
+
+                // บันทึกชื่อไฟล์ใหม่ในฐานข้อมูล
+                $cour->cert_custom = 'upload/Course/cert_custom/' . $newImageName;
+                $cour->save();
+            }
         } elseif ($request->hasFile('cert_custom')) {
             $image_cert_custom = 'cert_custom' . $cour->course_id . '.' . $request->cert_custom->getClientOriginalExtension();
             $uploadDirectory = public_path('upload/Course/cert_custom/');
@@ -433,6 +451,7 @@ class CourseController extends Controller
         $cour->signature_position = $request->signature_position;
         $cour->cetificate_status =  $request->input('cetificate_status', 0);;
         $cour->cetificate_request = 0;
+        $cour->cert_subject = $request->cert_subject;
 
         $cour->paymentstatus = $request->input('paymentstatus', 0);
         if ($cour->paymentstatus == 0) {
@@ -461,7 +480,7 @@ class CourseController extends Controller
                 mkdir(public_path('/uplade'), 0755, true);
             }
             if ($request->has('paymentdetail')) {
-                $paymentdetail =$request->input('paymentdetail');    
+                $paymentdetail = $request->input('paymentdetail');
                 $decodedTextpaymentdetail = '';
                 if (!empty($paymentdetail)) {
                     $des_th = new DOMDocument();
@@ -631,7 +650,23 @@ class CourseController extends Controller
                 $cour->cert_custom = 'upload/Course/cert_custom/' . $newImageName;
                 $cour->save();
             }
-        } elseif ($request->hasFile('cert_custom')) {
+        } elseif ($cour->templete_certificate == 7) {
+            if (File::exists(public_path('uploads/cer/CER7.png'))) {
+                // ตรวจสอบว่าไดเรกทอรีปลายทางสำหรับการบันทึกใหม่มีอยู่หรือไม่
+                $uploadDirectory = public_path('upload/Course/cert_custom/');
+                if (!File::exists($uploadDirectory)) {
+                    File::makeDirectory($uploadDirectory, 0755, true);
+                }
+
+                // กําหนดชื่อไฟล์ใหม่และคัดลอกไฟล์รูปภาพ
+                $newImageName = 'cert_custom' . $cour->course_id . '.png'; // ตั้งชื่อใหม่ตามต้องการ
+                File::copy(public_path('uploads/cer/CER7.png'), $uploadDirectory . $newImageName);
+
+                // บันทึกชื่อไฟล์ใหม่ในฐานข้อมูล
+                $cour->cert_custom = 'upload/Course/cert_custom/' . $newImageName;
+                $cour->save();
+            }
+        }  elseif ($request->hasFile('cert_custom')) {
             $image_cert_custom = 'cert_custom' . $cour->course_id . '.' . '.png';
             $uploadDirectory = public_path('upload/Course/cert_custom/');
             if (!file_exists($uploadDirectory)) {

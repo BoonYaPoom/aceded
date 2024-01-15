@@ -631,26 +631,7 @@
                         <!-- grid row -->
                         <div class="row">
                             <!-- grid column -->
-                                              {{-- <div class="col-xl-4 col-lg-4 col-sm-6">
-                                <!-- .card -->
-                                <div class="card card-figure">
-                                    <!-- .card-figure -->
-                                    <figure class="figure">
-                                        <img class="img-fluser_id" src="{{ asset($cour->cert_custom) }}" alt="ใบประกาศนียบัตร 1 " style="cursor:zoom-in" onclick="$('#previewimage').prop('src',$(this).prop('src'));$('#modal01').css('display','block');">
-                                        <!-- .figure-caption -->
-                                        <figcaption class="figure-caption">
-                                            <br><br>
-                                            <h6 class="figure-title custom-class"> ใบประกาศนียบัตร ที่ใช้ในระบบ </h6>
-                                        </figcaption><!-- /.figure-caption -->
-                                        <style>
-                                            .custom-class {
-                                                font-size: 1.5em;
-                                                text-align: center;
-                                            }
-                                        </style>
-                                    </figure><!-- /.card-figure -->
-                                </div><!-- /.card -->
-                            </div><!-- /grid column --> --}}
+                                         
                             <!-- grid column -->
                                          <div class="col-xl-4 col-lg-4 col-sm-6">
                                 <!-- .card -->
@@ -748,6 +729,23 @@
                                     </figure><!-- /.card-figure -->
                                 </div><!-- /.card -->
                             </div><!-- /grid column -->
+                             <div class="col-xl-4 col-lg-4 col-sm-6">
+                                <!-- .card -->
+                                <div class="card card-figure">
+                                    <!-- .card-figure -->
+                                    <figure class="figure">
+                                        <img class="img-fluser_id" src="{{ asset('uploads/cer/CER7.png') }}" alt="ใบประกาศนียบัตร 7 " style="cursor:zoom-in" onclick="$('#previewimage').prop('src',$(this).prop('src'));$('#modal01').css('display','block');">
+                                        <!-- .figure-caption -->
+                                        <figcaption class="figure-caption">
+                                            <h6 class="figure-title">ใบประกาศนียบัตร 7</h6>
+                                            <p class="text-muted mb-0 ">
+                                            <div class="custom-control custom-radio text-center"><input type="radio" class="custom-control-input" name="templete_certificate" id="certificate7" value="7" {{ $cour->templete_certificate == 7 ? 'checked' : '' }}> <label class="custom-control-label" for="certificate7"></label></div>
+                                            </p>
+                                        </figcaption><!-- /.figure-caption -->
+                                    </figure><!-- /.card-figure -->
+                                </div><!-- /.card -->
+                            </div><!-- /grid column -->
+                               
                             <!-- grid column -->
                         </div><!-- /grid row -->
 
@@ -783,9 +781,13 @@
                         </div><!-- /.form-group --> --}}
                     </fieldset><!-- /.fieldset -->
                     <fieldset>
-                        <legend>ข้อมูลใบประกาศนียบัตร</legend> <!-- .form-group -->
-                        <div class="row ">
-                            <!-- grid column -->
+                        <legend>ข้อมูลใบประกาศนียบัตร</legend>
+                         <div class="form-group">
+                                <label for="cert_subject">ชื่อหลักสูตร </label>  
+                                <small class="form-text text-muted">ถ้าไม่ระบุ จะดึงชื่อหลักสูตรมาแสดงบนใบประกาศ</small>
+                                <input type="text" class="form-control" id="cert_subject" name="cert_subject" placeholder="ชื่อหลักสูตร" value="{{$cour->cert_subject}}">
+                            </div><!-- /.form-group -->
+                        <div class="row ">              
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label class="control-label" for="days">ชื่อ-นามสกุล</label> <input type="text" class="form-control" name="signature_name" id="signature_name" placeholder="ชื่อ-นามสกุล" value="{{ $cour->signature_name }}" />

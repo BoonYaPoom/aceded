@@ -44,12 +44,12 @@ class CustomAuthController extends Controller
         $provinces = Provinces::all();
         $uid = $request->query('uid');
         $depart = DB::table('department')->get();
-        $extender = DB::table('users_extender')->where('status', 1)->get();
-        $extender_1 = DB::table('users_extender2')->where('item_group_id', 1)->get();
-        $extender2 = DB::table('users_extender2')->get();
-        $extender2Json = json_encode($extender2);
-        $extender_1Json = json_encode($extender_1);
-        return view('Authpage.Regis.home', compact('provinces', 'school', 'uid', 'extender', 'depart', 'extender','extender_1Json', 'extender2', 'extender2Json'));
+        $extender1 = DB::table('users_extender2')->where('item_lv', 1)->get();
+        $extender2 = DB::table('users_extender2')->where('item_lv', 2)->get();
+        $extender3 = DB::table('users_extender2')->where('item_lv', 3)->get();
+        $extender4 = DB::table('users_extender2')->where('item_lv', 4)->get();
+        $extender5 = DB::table('users_extender2')->where('item_lv', 5)->get();
+        return view('Authpage.Regis.home', compact('provinces', 'school', 'uid', 'depart','extender1', 'extender2','extender3','extender4', 'extender5'));
     }
     public function registerUser(Request $request)
     {

@@ -56,31 +56,36 @@ class ExtenderController extends Controller
 
 
 
-    public function addextender($department_id,)
+    public function addextender($department_id)
     {
 
         $depart = Department::findOrFail($department_id);
-        $extendernull = DB::table('users_extender2')->where('item_parent_id', null)->get();
-        $extender = DB::table('users_extender')->where('status', 1)->get();
-        $extender_1 = DB::table('users_extender2')->where('item_group_id', 1)->get();
-        $extender2 = DB::table('users_extender2')->get();
-        $extender2Json = json_encode($extender2);
-        $extender_1Json = json_encode($extender_1);
 
+        $provin = DB::table('provinces')->get();
+        $extender1 = DB::table('users_extender2')->where('item_group_id', 1)->where('item_lv', 1)->get();
+        $extender2 = DB::table('users_extender2')->where('item_group_id', 1)->where('item_lv', 2)->get();
+        $extender3 = DB::table('users_extender2')->where('item_group_id', 1)->where('item_lv', 3)->get();
+        $extender4 = DB::table('users_extender2')->where('item_group_id', 1)->where('item_lv', 4)->get();
+        $extender5 = DB::table('users_extender2')->where('item_group_id', 1)->where('item_lv', 5)->get();
         return view(
             'layouts.department.item.data.UserAdmin.group.umsschool.test.create.add',
-            compact('extender', 'depart', 'extender', 'extender_1Json', 'extender2', 'extender2Json', 'extendernull')
+            compact('depart', 'extender1', 'extender2', 'extender3', 'extender4', 'extender5', 'provin')
         );
     }
 
     public function addextendersubmit(Request $request, $department_id)
     {
         $depart = Department::findOrFail($department_id);
+        $request->validate([
+            'provin' => 'required',
+            'school_name' => 'required',
+        ]);
         $maxUserextendertId = DB::table('users_extender2')->max('extender_id');
         DB::table('users_extender2')->insert([
             'extender_id' =>  $maxUserextendertId + 1,
-            'name' => $request->school_name,
+            'name' => $request->school_name . ' ' . '(' . $request->provin . ')',
             'item_group_id' => 1,
+            'item_lv' => 4,
             'item_parent_id' => $request->extender_id,
         ]);
 
@@ -119,15 +124,16 @@ class ExtenderController extends Controller
                     case 1:
                     case 2:
                     case 3:
+                    case 4:
                         $query->join('provinces', function ($join) {
                             $join->on('users_extender2.name', 'like', DB::raw(" '%' || provinces.name_in_thai || '%' "));
                         })
-                            ->where('users_extender2.item_lv', 4)
+                            ->whereIn('users_extender2.item_lv', [2, 3, 4])
                             ->where('users_extender2.item_group_id', 1)
                             ->select('provinces.*', 'users_extender2.*')
                             ->get();
                         break;
-                    case 4:
+
                     case 5:
                         $query->join('provinces', function ($join) {
                             $join->on('users_extender2.name', 'like', DB::raw(" '%' || provinces.name_in_thai || '%' "));
@@ -153,9 +159,10 @@ class ExtenderController extends Controller
                     case 1:
                     case 2:
                     case 3:
+                    case 4:
                         $query->where('extender_id', $orgs);
                         break;
-                    case 4:
+
                     case 5:
                         $query->where('extender_id', $orgs);
                         break;
@@ -212,13 +219,13 @@ class ExtenderController extends Controller
             })
             ->filter(function ($extender) use ($request) {
                 if ($request->has('myInput') && !empty($request->myInput)) {
-                $extender->where('name', 'like', '%' . $request->myInput . '%');
+                    $extender->where('name', 'like', '%' . $request->myInput . '%');
                 }
             })
             ->filterColumn('name_in_thai', function ($extender) use ($request) {
 
                 if ($request->drop2 != '0') {
-                $extender->where('name', 'like', '%' . $request->drop2 . '%');
+                    $extender->where('name', 'like', '%' . $request->drop2 . '%');
                 }
             })
             ->toJson();
@@ -274,16 +281,16 @@ class ExtenderController extends Controller
                     case 1:
                     case 2:
                     case 3:
-
+                    case 4:
                         $query->join('provinces', function ($join) {
                             $join->on('users_extender2.name', 'like', DB::raw(" '%' || provinces.name_in_thai || '%' "));
                         })
-                            ->where('users_extender2.item_lv', 4)
+                            ->where('users_extender2.item_lv', [2, 3, 4])
                             ->where('users_extender2.item_group_id', 1)
                             ->select('provinces.*', 'users_extender2.*')
                             ->get();
                         break;
-                    case 4:
+
                     case 5:
                         $query->join('provinces', function ($join) {
                             $join->on('users_extender2.name', 'like', DB::raw(" '%' || provinces.name_in_thai || '%' "));

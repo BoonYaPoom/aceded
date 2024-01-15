@@ -16,25 +16,28 @@
             var chartDataRe = {!! json_encode($learn) !!};
             var chartDataCon = {!! json_encode($chartDataCon) !!};
 
-      var dateAll = {!! json_encode($dateAll) !!};
+            var dateAll = {!! json_encode($dateAll) !!};
             var dateAllWithId = {!! json_encode($dateAllWithId) !!};
             var modifiedDateAll = dateAllWithId.map(function(element) {
                 return element.id;
             });
-
-
+    
 
             var chartDataCon3 = {!! json_encode($chartDataCon2) !!};
 
             $(document).ready(function() {
-                $('#selectyear').on('change', function() {
+                $('#selectyear, #provin').on('change', function() {
+
+                    var pro = $('#provin').val();
+
                     var selectedYear = $('#selectyear').val();
-                    var selectedYearchartDataRe = chartDataRe.find(data => data.year == selectedYear);
-                    var selectedYearDataCon = chartDataCon2.find(data => data.year == selectedYear);
-                    var selectedYearDataConno = chartDataConno.find(data => data.year == selectedYear);
+                    
+                    var selectedYearchartDataRe = chartDataRe.find(data => data.year == selectedYear && data.province_name == pro);
+                    var selectedYearDataCon = chartDataCon2.find(data => data.year == selectedYear && data.province_name == pro);
+                    var selectedYearDataConno = chartDataConno.find(data => data.year == selectedYear && data.province_name == pro);
                     var seriesData = modifiedDateAll.map(function(monthId) {
                         var chartData = chartDataCon[monthId];
-                        if (chartData && chartData.year == selectedYear) {
+                        if (chartData && chartData.year == selectedYear ) {
                             return {
                                 name: 'ผู้สำเร็จการเรียน', // Adjust the name as needed
                                 y: parseInt(chartData.user_count),
@@ -49,9 +52,11 @@
 
                     var seriesData2 = modifiedDateAll.map(function(monthId2) {
                         var chartData2 = chartDataCon3[monthId2];
+                      
                         if (chartData2 && chartData2.year == selectedYear) {
+                            
                             return {
-                                name: 'ผู้กำลังเรียน', // Adjust the name as needed
+                                name: 'ผู้กำลังเรียน', 
                                 y: parseInt(chartData2.user_count),
                             };
                         } else {
@@ -61,61 +66,66 @@
                             };
                         }
                     });
+                    console.log(selectedYear);
+                       console.log('Selected Province:', pro);
+                    updateChart(selectedYear, pro, selectedYearDataCon, selectedYearDataConno,
+                        selectedYearchartDataRe, seriesData2, seriesData);
+                });
 
-                    if (selectedYear) {
-
-                        Highcharts.chart("chartcongratulation", {
-                            chart: {
-                                style: {
-                                    fontFamily: 'prompt'
-                                },
-                                plotBackgroundColor: null,
-                                plotBorderWidth: null,
-                                plotShadow: false,
-                                type: 'pie'
+                function updateChart(selectedYear, pro, selectedYearDataCon, selectedYearDataConno,
+                    selectedYearchartDataRe, seriesData2, seriesData) {
+                    Highcharts.chart("chartcongratulation", {
+                        chart: {
+                            style: {
+                                fontFamily: 'prompt'
                             },
-                            title: {
-                                text: 'ผู้สำเร็จการเรียน  ปี ' + selectedYear
-                            },
-                            subtitle: {
-                                text: 'รายงานจำนวนผู้สำเร็จการเรียนจำแนกกลุ่มผู้ใช้งาน'
-                            },
-                            tooltip: {
-                                pointFormat: '{series.name}: <b>{point.y}</b>'
-                            },
-                            plotOptions: {
-                                pie: {
-                                    allowPointSelect: true,
-                                    cursor: 'pointer',
-                                    dataLabels: {
-                                        enabled: true,
-                                        format: '<b>{point.name}</b>: {point.percentage:.1f} %',
-                                        style: {
-                                            color: (Highcharts.theme && Highcharts.theme
-                                                    .contrastTextColor) ||
-                                                'black'
-                                        }
+                            plotBackgroundColor: null,
+                            plotBorderWidth: null,
+                            plotShadow: false,
+                            type: 'pie'
+                        },
+                        title: {
+                            text: 'ผู้สำเร็จการเรียน  ปี ' + selectedYear + ' ของ จังหวัด ' + pro
+                        },
+                        subtitle: {
+                            text: 'รายงานจำนวนผู้สำเร็จการเรียนจำแนกกลุ่มผู้ใช้งาน'
+                        },
+                        tooltip: {
+                            pointFormat: '{series.name}: <b>{point.y}</b>'
+                        },
+                        plotOptions: {
+                            pie: {
+                                allowPointSelect: true,
+                                cursor: 'pointer',
+                                dataLabels: {
+                                    enabled: true,
+                                    format: '<b>{point.name}</b>: {point.percentage:.1f} %',
+                                    style: {
+                                        color: (Highcharts.theme && Highcharts.theme
+                                                .contrastTextColor) ||
+                                            'black'
                                     }
                                 }
-                            },
-                            series: [{
-                                name: 'จำนวน',
-                                data: [{
-                                        name: 'เรียนอยู่',
-                                        y: selectedYearDataConno ? parseInt(
-                                            selectedYearDataConno
-                                            .user_count) : 0,
-                                    },
-                                    {
-                                        name: 'เรียบจบแล้ว',
-                                        y: selectedYearDataCon ? parseInt(
-                                            selectedYearDataCon
-                                            .user_count) : 0,
-                                    },
-                                ],
-                            }],
-                        });
-                    }
+                            }
+                        },
+                        series: [{
+                            name: 'จำนวน',
+                            data: [{
+                                    name: 'เรียนอยู่',
+                                    y: selectedYearDataConno ? parseInt(
+                                        selectedYearDataConno
+                                        .user_count) : 0,
+                                },
+                                {
+                                    name: 'เรียบจบแล้ว',
+                                    y: selectedYearDataCon ? parseInt(
+                                        selectedYearDataCon
+                                        .user_count) : 0,
+                                },
+                            ],
+                        }],
+                    });
+
                     Highcharts.chart("chartregister", {
                         chart: {
                             style: {
@@ -127,7 +137,7 @@
                             type: 'pie'
                         },
                         title: {
-                            text: 'ผู้สมัครเรียน  ปี ' + selectedYear
+                            text: 'ผู้สมัครเรียน  ปี ' + selectedYear + ' ของ จังหวัด ' + pro
                         },
                         subtitle: {
                             text: 'รายงานจำนวนผู้สมัครเรียนจำแนกกลุ่มผู้ใช้งาน'
@@ -174,7 +184,7 @@
                             }
                         },
                         title: {
-                            text: 'สรุปข้อมูลประจำ  ปี ' + selectedYear
+                            text: 'สรุปข้อมูลประจำ  ปี ' + selectedYear 
                         },
                         subtitle: {
                             text: 'รายงานจำนวนผู้เรียนทั้งหมดจำแนกรายเดือน'
@@ -201,15 +211,17 @@
                                 }
                             }
                         },
-                        series: [ {
+                        series: [{
                             name: 'ผู้กำลังเรียน',
                             data: seriesData2
-                        },{
+                        }, {
                             name: 'ผู้สำเร็จการเรียน',
                             data: seriesData
                         }],
                     });
-                });
+                }
                 $('#selectyear').trigger('change');
+                $('#provin').trigger('change');
+
             });
         </script>
