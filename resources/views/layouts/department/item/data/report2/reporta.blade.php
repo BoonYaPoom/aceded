@@ -11,7 +11,7 @@
                     <option value="2566"> 2566 </option>
                     <option value="2567" selected> 2567 </option>
                     <option value="2568"> 2568 </option>
-                 
+
                 </select>
             </div>
         </div>
@@ -66,6 +66,5 @@
             </div><!-- /grid column -->
         </div><!-- /grid row -->
     </div><!-- /.section-block -->
-
-    @include('page.report2.graphA')
+    @include('layouts.department.item.data.report2.graphA')
 @endsection

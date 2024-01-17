@@ -262,11 +262,9 @@ class SubmitController extends Controller
             }
         }
 
-
-
         $inva = new ActivityInvite;
         $inva->activity_id  = 0;
-        $inva->user_id  = $usermanages->user_id;
+        $inva->user_id  = $mit->user_id;
         $inva->message  = 'คุณได้รับสิทธิ์ ในการเป็น Admin สถานศึกษารหัสผ่าน username =' .  $usermanages->username . ' ' . 'password =' .  $usermanages->password;
         $inva->activity_date  = now();
         $inva->status  = 1;
@@ -274,7 +272,7 @@ class SubmitController extends Controller
         $inva->from_id  = 0;
         $inva->save();
 
-        return redirect()->route('detaildata', $submit_id)->with('message', 'แก้ไขโปรไฟล์สำเร็จ');
+        return redirect()->route('detaildata', $submit_id)->with('message', 'ยืนยันรับสิทธิ์สำเร็จ');
     }
     public function storeAdminreq2($submit_id)
     {

@@ -279,13 +279,16 @@
                     }
                 }
             </script>
+            <style>
+                p {
+                    font-size: 12px;
+                    color: red;        
+                }
+            </style>
 
 
-
-
-
-            <input type="submit" class="fadeIn fourth" value="Log In">
-
+            <input type="submit" class="fadeIn fourth" value="Submit">
+            <p>!!!------------เมื่อกรอกข้อมูลและส่งข้อมูลเรียบร้อยแล้ว ให้รอเช็คข้อความในกล่องข้อมูลบนหน้าเว็ป เพื่อเช็คสิทธิ์------------!!!</p>
         </form>
 
         @if (Session::has('message'))

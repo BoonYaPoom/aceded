@@ -66,10 +66,10 @@ class ExtenderController extends Controller
         $extender2 = DB::table('users_extender2')->where('item_group_id', 1)->where('item_lv', 2)->get();
         $extender3 = DB::table('users_extender2')->where('item_group_id', 1)->where('item_lv', 3)->get();
         $extender4 = DB::table('users_extender2')->where('item_group_id', 1)->where('item_lv', 4)->get();
-        $extender5 = DB::table('users_extender2')->where('item_group_id', 1)->where('item_lv', 5)->get();
+
         return view(
             'layouts.department.item.data.UserAdmin.group.umsschool.test.create.add',
-            compact('depart', 'extender1', 'extender2', 'extender3', 'extender4', 'extender5', 'provin')
+            compact('depart', 'extender1', 'extender2', 'extender3', 'extender4', 'provin')
         );
     }
 
@@ -78,16 +78,35 @@ class ExtenderController extends Controller
         $depart = Department::findOrFail($department_id);
         $request->validate([
             'provin' => 'required',
-            'school_name' => 'required',
         ]);
+        $name = '';
+        $item_lv = 0;
+        $item_parent_id = 0;
+        if ($request->school_lv4) {
+            $name = $request->school_lv4 . ' (' . $request->provin . ')';
+            $item_lv = 4;
+            $item_parent_id = $request->extender_id3;
+        } elseif ($request->school_lv3) {
+            $name = $request->school_lv3 . ' (' . $request->provin . ')';
+            $item_lv = 3;
+            $item_parent_id = $request->extender_id2;
+        } elseif ($request->school_lv2) {
+            $name = $request->school_lv2 . ' (' . $request->provin . ')';
+            $item_lv = 2;
+            $item_parent_id = $request->extender_id;
+        }
+
+
         $maxUserextendertId = DB::table('users_extender2')->max('extender_id');
         DB::table('users_extender2')->insert([
             'extender_id' =>  $maxUserextendertId + 1,
-            'name' => $request->school_name . ' ' . '(' . $request->provin . ')',
+            'name' => $name,
             'item_group_id' => 1,
-            'item_lv' => 4,
-            'item_parent_id' => $request->extender_id,
+            'item_lv' => $item_lv,
+            'item_parent_id' => $item_parent_id,
         ]);
+
+
 
         return redirect()->route('testumsschool', $depart)->with('message', 'การบันทึก');
     }
@@ -160,14 +179,20 @@ class ExtenderController extends Controller
                     case 2:
                     case 3:
                     case 4:
-                        $query->where('extender_id', $orgs);
+                        $query->where('extender_id', $orgs)->join('provinces', function ($join) {
+                            $join->on('users_extender2.name', 'like', DB::raw(" '%' || provinces.name_in_thai || '%' "));
+                        });
                         break;
 
                     case 5:
-                        $query->where('extender_id', $orgs);
+                        $query->where('extender_id', $orgs)->join('provinces', function ($join) {
+                            $join->on('users_extender2.name', 'like', DB::raw(" '%' || provinces.name_in_thai || '%' "));
+                        });
                         break;
                     case 6:
-                        $query->where('extender_id', $orgs);
+                        $query->where('extender_id', $orgs)->join('provinces', function ($join) {
+                            $join->on('users_extender2.name', 'like', DB::raw(" '%' || provinces.name_in_thai || '%' "));
+                        });
 
                         break;
                     default:

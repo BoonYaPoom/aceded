@@ -81,7 +81,17 @@ class EditManageUserController extends Controller
     }
     public function UserManagejson(Request $request, $user_role = null)
     {
-        $usermanages = Users::query();
+        $usermanages =  DB::table('users')->select(
+            'user_id',
+            'username',
+            'email',
+            'mobile',
+            'userstatus',
+            'province_id',
+            'user_role',
+            'firstname',
+            'lastname'
+        );;
         if ($user_role !== null) {
             $usermanages->where('user_role', $user_role);
         }
@@ -91,7 +101,7 @@ class EditManageUserController extends Controller
         $currentPage = $request->input('start', 0) / $perPage + 1;
 
 
-        return DataTables::eloquent($usermanages)
+        return DataTables::of($usermanages)
             ->addColumn('num', function () use (&$i, $currentPage, $perPage) {
                 return $i++ + ($currentPage - 1) * $perPage;
             })
@@ -246,14 +256,13 @@ class EditManageUserController extends Controller
                 $user_affiliation3 = DB::table('users_extender')
                     ->where('extender_id', $request->extender_id2)
                     ->first();
-         
+
                 $usermanages->user_affiliation = $user_affiliation3->content_name;
             } elseif ($request->extender_id) {
                 $user_affiliation4 = DB::table('users_extender')
                     ->where('extender_id', $request->extender_id)
                     ->first();
                 $usermanages->user_affiliation = $user_affiliation4->content_name;
-   
             }
         }
         $usermanages->save();
@@ -476,28 +485,28 @@ class EditManageUserController extends Controller
             $usermanages->organization = 0;
             if ($request->extender_id5) {
                 $user_affiliation = DB::table('users_extender')
-                ->where('extender_id', $request->extender_id5)
+                    ->where('extender_id', $request->extender_id5)
                     ->first();
                 $usermanages->user_affiliation = $user_affiliation->content_name;
             } elseif ($request->extender_id4) {
                 $user_affiliation1 = DB::table('users_extender')
-                ->where('extender_id', $request->extender_id4)
+                    ->where('extender_id', $request->extender_id4)
                     ->first();
                 $usermanages->user_affiliation = $user_affiliation1->content_name;
             } elseif ($request->extender_id3) {
                 $user_affiliation2 = DB::table('users_extender')
-                ->where('extender_id', $request->extender_id3)
+                    ->where('extender_id', $request->extender_id3)
                     ->first();
                 $usermanages->user_affiliation = $user_affiliation2->content_name;
             } elseif ($request->extender_id2) {
                 $user_affiliation3 = DB::table('users_extender')
-                ->where('extender_id', $request->extender_id2)
+                    ->where('extender_id', $request->extender_id2)
                     ->first();
 
                 $usermanages->user_affiliation = $user_affiliation3->content_name;
             } elseif ($request->extender_id) {
                 $user_affiliation4 = DB::table('users_extender')
-                ->where('extender_id', $request->extender_id)
+                    ->where('extender_id', $request->extender_id)
                     ->first();
                 $usermanages->user_affiliation = $user_affiliation4->content_name;
             }

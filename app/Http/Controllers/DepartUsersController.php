@@ -40,7 +40,22 @@ class DepartUsersController extends Controller
             if ($data->user_role == 1 || $data->user_role == 8) {
                 // ถ้า data->role เป็น 1 แสดงผู้ใช้ทั้งหมด
                 // นำ user_id ที่ได้ไปหาข้อมูลจากตาราง User
-                $usermanages = Users::whereIn('user_id', $userIds)->select('user_id', 'username', 'email', 'mobile', 'userstatus', 'province_id', 'user_role', 'firstname', 'lastname');
+                $usermanages =
+                    DB::table('users')
+                    ->join('users_department', 'users.user_id', '=', 'users_department.user_id')
+                    ->where('users_department.department_id', '=', $department_id)
+                    ->select(
+                        'users.user_id',
+                        'users.username',
+                        'users.email',
+                        'users.mobile',
+                        'users.userstatus',
+                        'users.province_id',
+                        'users.user_role',
+                        'users.firstname',
+                        'users.lastname'
+                    );
+
 
                 if ($user_role !== null) {
                     $usermanages->where('user_role', $user_role);
@@ -49,8 +64,21 @@ class DepartUsersController extends Controller
                 // ถ้า data->role เป็น 0 แสดงผู้ใช้ที่มีค่า province_id เท่ากับ $provicValue
                 // $usermanages = $depart->UserDe()->where('department_id', $department_id)
                 // ->where('organization', $organization);
-                $usermanages = Users::whereIn('user_id', $userIds)
-                    ->where('organization', $organization)->where('province_id', $provicValue)->select('user_id', 'username', 'email', 'mobile', 'userstatus', 'province_id', 'user_role', 'firstname', 'lastname');
+                $usermanages =
+                    DB::table('users')
+                    ->join('users_department', 'users.user_id', '=', 'users_department.user_id')
+                    ->where('users_department.department_id', '=', $department_id)
+                    ->where('users.organization', $organization)->where('users.province_id', $provicValue)->select(
+                        'users.user_id',
+                        'users.username',
+                        'users.email',
+                        'users.mobile',
+                        'users.userstatus',
+                        'users.province_id',
+                        'users.user_role',
+                        'users.firstname',
+                        'users.lastname'
+                    );
                 if ($user_role !== null) {
                     $usermanages->where('user_role', $user_role);
                 }
@@ -64,7 +92,7 @@ class DepartUsersController extends Controller
         $currentPage = $request->input('start', 0) / $perPage + 1;
 
 
-        return DataTables::eloquent($usermanages)
+        return DataTables::of($usermanages)
             ->addColumn('num', function () use (&$i, $currentPage, $perPage) {
                 return $i++ + ($currentPage - 1) * $perPage;
             })
@@ -384,7 +412,7 @@ class DepartUsersController extends Controller
         $usermanages->save();
 
 
-     
+
 
         $maxUserDepartmentId = DB::table('users_department')->max('user_department_id');
         $newUserDepartmentId = $maxUserDepartmentId + 1;

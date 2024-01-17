@@ -192,7 +192,7 @@
         </div>
     </div>
 
-    {{-- @if (
+    @if (
         ($data->user_role == 1 && $depart->department_id == 1) ||
             $depart->department_id == 2 ||
             $depart->department_id == 3 ||
@@ -206,5 +206,5 @@
                 onclick="window.location='{{ route('addextender', ['department_id' => $depart->department_id]) }}'"
                 data-toggle="tooltip" title="เพิ่ม"><span class="fas fa-plus"></span></button>
         </header>
-    @endif --}}
+    @endif
 @endsection
