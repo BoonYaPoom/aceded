@@ -36,13 +36,14 @@
                             href="{{ route('ManageExam', ['department_id' => $depart->department_id]) }}"><span
                                 class="menu-icon fas fa-align-justify  "></span> จัดการข้อสอบ</a> --}}
 
-
-                        <a class="nav-link  font-weight-bold {{ Str::startsWith(request()->url(), route('departmentLearnpage')) || request()->is('lms', 'lms/*')
-                            ? ' active text-info'
-                            : '' }}"
-                            href="{{ route('learn', ['department_id' => $depart->department_id]) }}"><span
-                                class="menu-icon fas fa-chalkboard-teacher  "></span>
-                            จัดการเรียนรู้</a>
+                        @if (($data->department_id == $depart->department_id && $data->user_role == 8) || $data->user_role == 1)
+                            <a class="nav-link  font-weight-bold {{ Str::startsWith(request()->url(), route('departmentLearnpage')) || request()->is('lms', 'lms/*')
+                                ? ' active text-info'
+                                : '' }}"
+                                href="{{ route('learn', ['department_id' => $depart->department_id]) }}"><span
+                                    class="menu-icon fas fa-chalkboard-teacher  "></span>
+                                จัดการเรียนรู้</a>
+                        @endif
                         <a class="nav-link  font-weight-bold {{ Str::startsWith(
                             request()->url(),
                             route('DepartReportviewDp', ['department_id' => $depart->department_id]),
@@ -51,11 +52,12 @@
                             : '' }}"
                             href="{{ route('A0100DP', ['department_id' => $depart->department_id]) }}">
                             <span class="menu-icon fas fa-chart-bar  "></span> รายงาน</a>
-                        <a class="nav-link  font-weight-bold {{ Str::startsWith(request()->url(), route('DPUserManage', ['department_id' => $depart->department_id])) ? ' active text-info' : '' }}"
-                            href="{{ route('DPUserManage', ['department_id' => $depart->department_id]) }}"><span
-                                class="menu-icon fas fa-users-cog  "></span>
-                            จัดการผู้ใช้</a>
-
+                        @if ($data->user_role == 6 || $data->user_role == 1 || $data->user_role == 8 || $data->user_role == 7)
+                            <a class="nav-link  font-weight-bold {{ Str::startsWith(request()->url(), route('DPUserManage', ['department_id' => $depart->department_id])) ? ' active text-info' : '' }}"
+                                href="{{ route('DPUserManage', ['department_id' => $depart->department_id]) }}"><span
+                                    class="menu-icon fas fa-users-cog  "></span>
+                                จัดการผู้ใช้</a>
+                        @endif
                         <!-- End Account Sidebar Toggle Button -->
                         </li>
                     </div>

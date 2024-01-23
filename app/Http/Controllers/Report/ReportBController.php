@@ -29,6 +29,11 @@ class ReportBController extends Controller
             ->orderBy('user_count', 'desc')
             ->get();
 
+        $enss = DB::table('users')
+            ->join('users_extender2.extender_id', '=', 'users.orgenazation')
+            ->join('course_learner', 'users.user_id', '=', 'course_learner.user_id');
+
+
 
         return view('page.report2.B.reportb', compact('learn'));
     }

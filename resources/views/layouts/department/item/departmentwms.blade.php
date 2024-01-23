@@ -64,11 +64,11 @@
                                         <tr>
                                             @if ($userdepart && ($data->user_role == 3 || $data->user_role == 6 || $data->user_role == 7))
                                                 <td><a
-                                                        href="{{ route('learn', ['department_id' => $depart->department_id]) }}">
+                                                        href="{{ route('A0100DP', ['department_id' => $depart->department_id]) }}">
                                                         {{ $depart->name_short_en }}</a>
                                                 </td>
                                                 <td><a
-                                                        href="{{ route('learn', ['department_id' => $depart->department_id]) }}">
+                                                        href="{{ route('A0100DP', ['department_id' => $depart->department_id]) }}">
                                                         {{ $depart->name_th }}</a>
                                                 </td>
                                             @elseif($data->user_role == 1 || $data->user_role == 8)

@@ -42,7 +42,7 @@
                   sch4Div.hide();
                   sch5Div.hide();
               });
-
+              
               extender_id1.on('change', function() {
                   var selectedExtenderId = $(this).val();
                   console.log(selectedExtenderId);
@@ -50,7 +50,7 @@
                   extender_id2.empty();
                   extender_id2.append(
                       '<option value="" selected disabled>-- เลือกหน่วยงาน --</option>');
-                  if (selectedExtenderId) {
+                  if (selectedExtenderId  ) {
                       $.each(extender2, function(index, exten2) {
                           if (selectedExtenderId === exten2.item_parent_id) {
                               extender_id2.append($('<option></option>')
@@ -63,7 +63,7 @@
                       sch3Div.hide();
                       sch4Div.hide();
                       sch5Div.hide();
-                  }
+                  } 
                   if (!foundMatch2) {
                       sch2Div.hide();
                       sch3Div.hide();
@@ -90,7 +90,7 @@
                       sch3Div.show();
                       sch4Div.hide();
                       sch5Div.hide();
-                  }
+                  } 
                   if (!foundMatch3) {
                       sch3Div.hide();
                       sch4Div.hide();
@@ -104,7 +104,7 @@
                   extender_id4.empty();
                   extender_id4.append(
                       '<option value="" selected disabled>-- เลือกหน่วยงานย่อย --</option>');
-                  if (selectedExtenderId4) {
+                  if (selectedExtenderId4 ) {
                       $.each(extender4, function(index, exten4) {
                           if (selectedExtenderId4 === exten4.item_parent_id) {
                               extender_id4.append($('<option></option>')

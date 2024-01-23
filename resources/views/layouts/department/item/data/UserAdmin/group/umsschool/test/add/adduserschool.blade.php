@@ -170,6 +170,9 @@
                         url: '{{ route('UsersDepartSchoolImport', ['department_id' => $depart->department_id, 'extender_id' => $extender->extender_id]) }}',
                         type: 'POST',
                         data: formData,
+                        headers: {
+                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                        },
                         dataType: 'json',
                         cache: false,
                         contentType: false,
@@ -192,12 +195,14 @@
                                             'hide');
                                         location.reload();
                                     }
-
                                 });
                             } else {
+                                const duplicateFields = response.error.split('\n').filter(
+                                    field => field.trim() !== '');
                                 Swal.fire({
-                                    title: 'Error!',
-                                    text: 'Import failed: ' + response.error,
+                                    title: 'ผิดพลาด!',
+                                    html: 'ผิดพลาด:<br>' + duplicateFields.join(
+                                        '<br>'),
                                     icon: 'error',
                                     confirmButtonText: 'OK'
                                 });
@@ -206,12 +211,38 @@
                         error: function(xhr, status, error) {
                             $('#loadingSpinner').hide();
                             console.log(xhr.responseJSON.error);
-                            Swal.fire({
-                                title: 'Error!',
-                                text: 'Import failed: ' + xhr.responseJSON.error,
-                                icon: 'error',
-                                confirmButtonText: 'OK'
-                            });
+
+                            if (xhr.responseJSON.error.includes('ผิดพลาด')) {
+                                // Duplicate data error
+                                const duplicateFields = xhr.responseJSON.error.split('\n').filter(
+                                    field => field.trim() !== '');
+
+                                Swal.fire({
+                                    title: 'ผิดพลาด!',
+                                    html: 'ผิดพลาด:<br>' + duplicateFields.join(
+                                        '<br>'),
+                                    icon: 'error',
+                                    confirmButtonText: 'OK'
+                                }).then(function(result) {
+                                    if (result.isConfirmed) {
+                                        // รีเซ็ตแบบฟอร์มเมื่อกด OK
+                                        $('#uploadForm')[0].reset();
+                                        $('#clientUploadModal').modal(
+                                            'hide');
+                                        location.reload();
+                                    }
+
+                                });
+                            } else {
+                                // Other non-duplicate data errors
+                                Swal.fire({
+                                    title: 'ผิดพลาด!',
+                                    text: 'การนำเข้าข้อมูลล้มเหลว: ' + xhr.responseJSON
+                                        .error,
+                                    icon: 'error',
+                                    confirmButtonText: 'OK'
+                                });
+                            }
                         }
                     });
                 });

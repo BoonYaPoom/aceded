@@ -60,7 +60,29 @@ class DepartUsersController extends Controller
                 if ($user_role !== null) {
                     $usermanages->where('user_role', $user_role);
                 }
-            } elseif ($data->user_role == 7 || $data->user_role == 6 || $data->user_role == 3) {
+            } elseif ($data->user_role == 7) {
+                // ถ้า data->role เป็น 0 แสดงผู้ใช้ที่มีค่า province_id เท่ากับ $provicValue
+                // $usermanages = $depart->UserDe()->where('department_id', $department_id)
+                // ->where('organization', $organization);
+                $usermanages =
+                DB::table('users')
+                    ->join('users_department', 'users.user_id', '=', 'users_department.user_id')
+                    ->where('users_department.department_id', '=', $department_id)
+                    ->where('users.province_id', $provicValue)->select(
+                        'users.user_id',
+                        'users.username',
+                        'users.email',
+                        'users.mobile',
+                        'users.userstatus',
+                        'users.province_id',
+                        'users.user_role',
+                        'users.firstname',
+                        'users.lastname'
+                    );
+                if ($user_role !== null) {
+                    $usermanages->where('user_role', $user_role);
+                }
+            } elseif ( $data->user_role == 6 || $data->user_role == 3) {
                 // ถ้า data->role เป็น 0 แสดงผู้ใช้ที่มีค่า province_id เท่ากับ $provicValue
                 // $usermanages = $depart->UserDe()->where('department_id', $department_id)
                 // ->where('organization', $organization);
@@ -68,7 +90,7 @@ class DepartUsersController extends Controller
                     DB::table('users')
                     ->join('users_department', 'users.user_id', '=', 'users_department.user_id')
                     ->where('users_department.department_id', '=', $department_id)
-                    ->where('users.organization', $organization)->where('users.province_id', $provicValue)->select(
+                    ->where('users.organization', $organization)->select(
                         'users.user_id',
                         'users.username',
                         'users.email',
@@ -126,7 +148,7 @@ class DepartUsersController extends Controller
             })
 
             ->addColumn('name_in_thai', function ($userdata) {
-                $name_in_thai = Provinces::where('code', $userdata->province_id)
+                $name_in_thai = Provinces::where('id', $userdata->province_id)
                     ->pluck('name_in_thai')
                     ->first();
 

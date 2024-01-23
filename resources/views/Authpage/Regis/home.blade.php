@@ -123,12 +123,14 @@
                     </label>
                 </div>
                 <div class="col-sm-7" align="left">
-                    <select id="extender_id" name="extender_id" class="form-control w-100 fadeIn first">
+                    <select id="extender_id" name="extender_id" class="form-control w-100 fadeIn first" required="">
                         <option value="" selected disabled>-- เลือกสังกัด --</option>
                     </select>
                 </div>
             </div>
-
+ @error('extender_id5')
+                <span class="badge badge-warning">{{ $message }}</span>
+            @enderror
             <div class="form-group row" id="sch2" style="display: none;">
 
                 <div class="col-sm-4" align="right">
@@ -141,7 +143,7 @@
                     </select>
                 </div>
             </div>
-
+           
             <div class="form-group row" id="sch3" style="display: none;">
                 <div class="col-sm-4" align="right">
                     <label class="control-label fadeIn first"><span class="required">*</span> หน่วยงานย่อย
@@ -153,6 +155,7 @@
                     </select>
                 </div>
             </div>
+
             <div class="form-group row" id="sch4" style="display: none;">
                 <div class="col-sm-4" align="right">
                     <label class="control-label fadeIn first"><span class="required">*</span>
@@ -282,13 +285,14 @@
             <style>
                 p {
                     font-size: 12px;
-                    color: red;        
+                    color: red;
                 }
             </style>
 
 
             <input type="submit" class="fadeIn fourth" value="Submit">
-            <p>!!!------------เมื่อกรอกข้อมูลและส่งข้อมูลเรียบร้อยแล้ว ให้รอเช็คข้อความในกล่องข้อมูลบนหน้าเว็ป เพื่อเช็คสิทธิ์------------!!!</p>
+            <p>!!!------------เมื่อกรอกข้อมูลและส่งข้อมูลเรียบร้อยแล้ว ให้รอเช็คข้อความในกล่องข้อมูลบนหน้าเว็ป
+                เพื่อเช็คสิทธิ์------------!!!</p>
         </form>
 
         @if (Session::has('message'))

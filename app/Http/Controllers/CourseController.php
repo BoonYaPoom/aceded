@@ -48,7 +48,7 @@ class CourseController extends Controller
             'course_code' => 'required',
             'course_th' => 'required',
             'templete_certificate' => 'required'
-
+            
         ]);
 
         if ($validator->fails()) {

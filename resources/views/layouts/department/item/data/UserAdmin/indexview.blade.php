@@ -57,10 +57,11 @@
                             table.ajax.url('{{ route('DPUserManagejson', ['department_id' => $depart]) }}/' + user_roleValue).load();
                         }
                     </script>
-
-                    <button type="button" class="ml-1 btn btn-success btn-md"
-                        onclick="$('#clientUploadModal').modal('toggle');"><i class="fas fa-user-plus"></i>
-                        นำเข้าผู้ใช้งาน</button>
+                    @if ($data->user_role == 1 || $data->user_role == 8)
+                        <button type="button" class="ml-1 btn btn-success btn-md"
+                            onclick="$('#clientUploadModal').modal('toggle');"><i class="fas fa-user-plus"></i>
+                            นำเข้าผู้ใช้งาน</button>
+                    @endif
                     @if (
                         $depart->department_id == 1 ||
                             $depart->department_id == 2 ||
@@ -178,9 +179,12 @@
 
                                             });
                                         } else {
+                                            const duplicateFields = response.error.split('\n').filter(
+                                                field => field.trim() !== '');
                                             Swal.fire({
-                                                title: 'Error!',
-                                                text: 'Import failed: ' + response.error,
+                                                title: 'ผิดพลาด!',
+                                                html: 'ผิดพลาด:<br>' + duplicateFields.join(
+                                                    '<br>'),
                                                 icon: 'error',
                                                 confirmButtonText: 'OK'
                                             });
@@ -189,12 +193,38 @@
                                     error: function(xhr, status, error) {
                                         $('#loadingSpinner').hide();
                                         console.log(xhr.responseJSON.error);
-                                        Swal.fire({
-                                            title: 'Error!',
-                                            text: 'Import failed: ' + xhr.responseJSON.error,
-                                            icon: 'error',
-                                            confirmButtonText: 'OK'
-                                        });
+
+                                        if (xhr.responseJSON.error.includes('ผิดพลาด')) {
+                                            // Duplicate data error
+                                            const duplicateFields = xhr.responseJSON.error.split('\n').filter(
+                                                field => field.trim() !== '');
+
+                                            Swal.fire({
+                                                title: 'ผิดพลาด!',
+                                                html: 'ผิดพลาด:<br>' + duplicateFields.join(
+                                                    '<br>'),
+                                                icon: 'error',
+                                                confirmButtonText: 'OK'
+                                            }).then(function(result) {
+                                                if (result.isConfirmed) {
+                                                    // รีเซ็ตแบบฟอร์มเมื่อกด OK
+                                                    $('#uploadForm')[0].reset();
+                                                    $('#clientUploadModal').modal(
+                                                        'hide');
+                                                    location.reload();
+                                                }
+
+                                            });
+                                        } else {
+                                            // Other non-duplicate data errors
+                                            Swal.fire({
+                                                title: 'ผิดพลาด!',
+                                                text: 'การนำเข้าข้อมูลล้มเหลว: ' + xhr.responseJSON
+                                                    .error,
+                                                icon: 'error',
+                                                confirmButtonText: 'OK'
+                                            });
+                                        }
                                     }
                                 });
                             });
@@ -278,12 +308,14 @@
 
         </div><!-- /.page-section -->
         <!-- .page-title-bar -->
-        <header class="page-title-bar">
+        @if ($data->user_role == 1 || $data->user_role == 8)
+            <header class="page-title-bar">
 
-            <button type="button" class="btn btn-success btn-floated btn-addums"
-                onclick="window.location='{{ route('DPcreateUser', ['department_id' => $depart->department_id]) }}'"
-                id="add_umsform" data-toggle="tooltip" title="เพิ่ม"><span class="fas fa-plus"></span></button>
+                <button type="button" class="btn btn-success btn-floated btn-addums"
+                    onclick="window.location='{{ route('DPcreateUser', ['department_id' => $depart->department_id]) }}'"
+                    id="add_umsform" data-toggle="tooltip" title="เพิ่ม"><span class="fas fa-plus"></span></button>
 
-        </header>
+            </header>
+        @endif
     </div><!-- /.page-inner -->
 @endsection

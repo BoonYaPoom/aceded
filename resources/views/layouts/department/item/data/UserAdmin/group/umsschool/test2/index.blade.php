@@ -29,31 +29,31 @@
                                     <input type="search" id="myInput" class="form-control" placeholder=""
                                         aria-controls="datatable">
                                 </label>
-                                   <label> จังหวัด
+                                <label> จังหวัด
                                     <input type="search" id="myInput" class="form-control" placeholder=""
                                         aria-controls="datatable">
                                 </label>
-                               
+
                             </div>
-                                 
+
                             <thead>
                                 <tr class="bg-infohead">
                                     <th width="5%">ลำดับ</th>
                                     <th>สถานศึกษา</th>
                                     <th width="20%">หน่วยงาน</th>
+                                    <th width="20%">จังหวัด</th>
                                     <th width="15%">จำนวน</th>
-
                                     <th width="10%" class="text-center">เพิ่มสมาชิก</th>
                                 </tr>
                             </thead>
                             <tbody>
 
                             </tbody>
-                            {{-- <script>
+                            <script>
                                 $(document).ready(function() {
                                     var table = $('#datatable').DataTable({
                                         ajax: {
-                                            url: '{{ route('getExtender', [$depart]) }}',
+                                            url: '{{ route('getExtender3', [$depart]) }}',
                                             type: 'GET',
                                             data: function(d) {
                                                 d.myInput = $('#myInput').val();
@@ -69,6 +69,9 @@
                                             },
                                             {
                                                 data: 'parentExtender'
+                                            },
+                                            {
+                                                data: 'NAME_IN_THAI'
                                             },
                                             {
                                                 data: null,
@@ -111,8 +114,8 @@
                                             infoEmpty: "ไม่พบรายการ",
                                             infoFiltered: "(ค้นหาจากทั้งหมด _MAX_ รายการ)",
                                             processing: "<span class='fa-stack fa-lg'>\n\
-                                                                                                                                                                                                    <i class='fa fa-spinner fa-spin fa-stack-2x fa-fw'></i>\n\
-                                                                                                                                                                                               </span>&emsp;กรุณารอสักครู่",
+                                                                                                                                                                                                                                <i class='fa fa-spinner fa-spin fa-stack-2x fa-fw'></i>\n\
+                                                                                                                                                                                                                           </span>&emsp;กรุณารอสักครู่",
                                             paginate: {
                                                 first: "หน้าแรก",
                                                 last: "หน้าสุดท้าย",
@@ -127,7 +130,7 @@
 
 
                                 });
-                            </script> --}}
+                            </script>
                         </table>
                     </div>
                 </div>

@@ -88,7 +88,11 @@ class SubmitController extends Controller
             'telephone' => 'required',
             'pos_name' => 'required',
             'submit_path' => 'required|mimes:pdf',
-            'extender_id' =>    'unique:submit_school'
+            'extender_id' =>   'unique:submit_school','extender_id5' => 'required_without_all:extender_id4,extender_id3,extender_id2,extender_id1|unique:submit_school',
+            'extender_id4' => 'required_without_all:extender_id5,extender_id3,extender_id2,extender_id1',
+            'extender_id3' => 'required_without_all:extender_id5,extender_id4,extender_id2,extender_id1',
+            'extender_id2' => 'required_without_all:extender_id5,extender_id4,extender_id3,extender_id1',
+            'extender_id1' => 'required_without_all:extender_id5,extender_id4,extender_id3,extender_id2',
         ], [
             'citizen_id.unique' => 'เลขบัตรนี้เคยขอรหัส admin ไปแล้ว',
             'citizen_id.required' => 'กรุณากรอกเลขบัตร ของคุณ',
@@ -101,6 +105,7 @@ class SubmitController extends Controller
             'submit_path.required' => 'กรุณาแนบไฟล์',
             'submit_path.mimes' => 'PDF เท่านั้น',
             'extender_id.unique' => 'โรงเรียนนี้มีรหัสแอดมินไปแล้ว ไปแล้ว',
+            'extender_id5.required_without_all' => 'กรุณาเลือกอย่างน้อยหนึ่งรายการ',
         ]);
 
         $mit = new SubmitSchool;
@@ -265,7 +270,7 @@ class SubmitController extends Controller
         $inva = new ActivityInvite;
         $inva->activity_id  = 0;
         $inva->user_id  = $mit->user_id;
-        $inva->message  = 'คุณได้รับสิทธิ์ ในการเป็น Admin สถานศึกษารหัสผ่าน username =' .  $usermanages->username . ' ' . 'password =' .  $usermanages->password;
+        $inva->message  = 'คุณได้รับสิทธิ์ ในการเป็น Admin สถานศึกษารหัสผ่าน username =' . "\n" .  $usermanages->username . "\n" . 'password =' .  $usermanages->username;
         $inva->activity_date  = now();
         $inva->status  = 1;
         $inva->activity_type  = 7;

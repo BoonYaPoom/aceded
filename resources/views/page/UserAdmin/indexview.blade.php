@@ -94,8 +94,9 @@
                                     <div class="container">
                                         <input type="file" class="form-control" id="uploaduser" name="fileexcel"
                                             accept=".xlsx" required>
-                                        <small class="form-text text-muted"><a href="{{ asset('uplade/testuserschool.xlsx') }}"
-                                                target="_blank"> ไฟล์ตัวอย่าง
+                                        <small class="form-text text-muted"><a
+                                                href="{{ asset('uplade/testuserschool.xlsx') }}" target="_blank">
+                                                ไฟล์ตัวอย่าง
                                                 (.xlsx)</a>
                                         </small>
                                     </div>
@@ -106,7 +107,7 @@
                                             class="fas fa-user-plus"></i> นำเข้าผู้ใช้งาน</button>
                                     <button type="button" class="btn btn-light" data-dismiss="modal">ยกเลิก</button>
                                 </div><!-- /.modal-footer -->
-                              
+
                             </div><!-- /.modal-content -->
                         </div><!-- /.modal-dialog -->
                     </form>
@@ -124,6 +125,9 @@
                                 $.ajax({
                                     url: '{{ route('UsersImport') }}',
                                     type: 'POST',
+                                    headers: {
+                                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                                    },
                                     data: formData,
                                     dataType: 'json',
                                     cache: false,
@@ -136,7 +140,7 @@
                                             Swal.fire({
                                                 title: 'User Successful',
                                                 text: 'ข้อมูล User ถูกบันทึกเรียบร้อย',
-                                                icon: 'success',
+                                                icon: 'สำเร็จ',
                                                 confirmButtonText: 'OK'
                                             }).then(function(result) {
                                                 if (result.isConfirmed) {
@@ -149,9 +153,12 @@
 
                                             });
                                         } else {
+                                            const duplicateFields = response.error.split('\n').filter(
+                                                field => field.trim() !== '');
                                             Swal.fire({
-                                                title: 'Error!',
-                                                text: 'Import failed: ' + response.error,
+                                                title: 'ผิดพลาด!',
+                                                html: 'ข้อมูลซ้ำพบใน:<br>' + duplicateFields.join(
+                                                    '<br>'),
                                                 icon: 'error',
                                                 confirmButtonText: 'OK'
                                             });
@@ -160,14 +167,38 @@
                                     error: function(xhr, status, error) {
                                         $('#loadingSpinner').hide();
                                         console.log(xhr.responseJSON.error);
-                                        Swal.fire({
-                                            title: 'Error!',
-                                            text: 'Import failed: ' + xhr.responseJSON.error,
-                                            icon: 'error',
-                                            confirmButtonText: 'OK'
-                                        });
-                                    }
+                                        if (xhr.responseJSON.error.includes('ข้อมูลซ้ำพบใน')) {
 
+                                            const duplicateFields = xhr.responseJSON.error.split('\n').filter(
+                                                field => field.trim() !== '');
+
+                                            Swal.fire({
+                                                title: 'ผิดพลาด!',
+                                                html: 'ข้อมูลซ้ำพบใน:<br>' + duplicateFields.join(
+                                                    '<br>'),
+                                                icon: 'error',
+                                                confirmButtonText: 'OK'
+                                            }).then(function(result) {
+                                                if (result.isConfirmed) {
+                                                    // รีเซ็ตแบบฟอร์มเมื่อกด OK
+                                                    $('#uploadForm')[0].reset();
+                                                    $('#clientUploadModal').modal(
+                                                        'hide');
+                                                    location.reload();
+                                                }
+
+                                            });
+                                        } else {
+                                            // Other non-duplicate data errors
+                                            Swal.fire({
+                                                title: 'ผิดพลาด!',
+                                                text: 'การนำเข้าข้อมูลล้มเหลว: ' + xhr.responseJSON
+                                                    .error,
+                                                icon: 'error',
+                                                confirmButtonText: 'OK'
+                                            });
+                                        }
+                                    }
                                 });
                                 $('#filterButton').on('click', function() {
                                     var userRole = $('#user_role').val();

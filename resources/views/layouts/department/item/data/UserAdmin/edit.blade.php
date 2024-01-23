@@ -103,7 +103,9 @@
                                         value="{{ $usermanages->citizen_id }}" disabled>
                                 </div>
                             </div>
-              
+                            <!-- /form row -->
+
+                            <!-- form row -->
                             <div class="form-row">
                                 <label for="input04" class="col-md-2">เพศ</label>
                                 <div class="col-md-9 mb-3">

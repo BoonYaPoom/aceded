@@ -79,10 +79,10 @@
                             </div>
                             <div
                                 class="list-group-item justify-content-between align-items-center 
-                            {{ Str::startsWith(request()->url(), route('B0100')) || request()->is('B0100', 'B0100/*')
+                            {{ Str::startsWith(request()->url(), route('dashboard')) || request()->is('dashboard', 'dashboard/*')
                                 ? ' bg-muted'
                                 : '' }}">
-                                <span><i class="fas fa-chart-bar text-teal mr-2"></i> <a href="{{ route('B0100') }}"
+                                <span><i class="fas fa-chart-bar text-teal mr-2"></i> <a href="{{ route('dashboard') }}"
                                         class="small">รายงานเสรุปเชิงกราฟฟิค (Dashboard)</a></span>
                             </div>
                             <div

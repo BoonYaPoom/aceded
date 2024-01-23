@@ -62,14 +62,14 @@
                             <tbody>
 
                             </tbody>
-                            <tbody>
+                            {{-- <tbody>
 
                                 <tr>
                                     <td colspan="6" class="text-center" style="font-size: 18px;">* คลิกเพื่อแสดงจำนวน
                                         <i class="fas fa-users"></i> (-) *
                                     </td>
                                 </tr>
-                            </tbody>
+                            </tbody> --}}
                             <script>
                                 $(document).ready(function() {
                                     var table = $('#datatable').DataTable({
@@ -97,11 +97,15 @@
                                                 data: 'name_in_thai'
                                             },
                                             {
-                                                data: 'EXTENDER_ID',
+                                                data: null,
                                                 render: function(data, type, row) {
                                                     var link = '<a onclick="getUserCount(' + data + ')" data-extenderid="' +
                                                         data + '">' +
-                                                        '<i class="fas fa-users"></i> (-)</a>';
+                                                        '<i class="fas fa-users"></i> (' + data.count + ')</a>';
+                                                    // var link2 = '<a onclick="getUserCount(' + data +
+                                                    //     ')" data-extenderid="' +
+                                                    //     data + '">' +
+                                                    //     '<i class="fas fa-users"></i> (' + data.count + ')</a>';
                                                     return link;
                                                 }
                                             },
@@ -109,7 +113,7 @@
                                                 data: null,
                                                 className: "text-center",
                                                 render: function(data, type, row) {
-
+                                                    var user_dataLogin = {!! json_encode($data->user_role) !!};
                                                     var extender_id = data.EXTENDER_ID;
                                                     var depart = {!! json_encode($depart->department_id) !!};
 
@@ -119,7 +123,12 @@
                                                         extender_id);
                                                     var update = '<a href="' + edituser +
                                                         '"><i class="fas fa-user-plus"></i></a>';
-                                                    return update;
+                                            
+                                                    if (user_dataLogin == 1 || user_dataLogin == 6 || user_dataLogin == 8) {
+                                                        return update  ;
+                                                    }else{
+                                                          return '';
+                                                    }
                                                 },
 
                                             },
@@ -139,8 +148,8 @@
                                             infoEmpty: "ไม่พบรายการ",
                                             infoFiltered: "(ค้นหาจากทั้งหมด _MAX_ รายการ)",
                                             processing: "<span class='fa-stack fa-lg'>\n\
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                <i class='fa fa-spinner fa-spin fa-stack-2x fa-fw'></i>\n\
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           </span>&emsp;กรุณารอสักครู่",
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    <i class='fa fa-spinner fa-spin fa-stack-2x fa-fw'></i>\n\
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               </span>&emsp;กรุณารอสักครู่",
                                             paginate: {
                                                 first: "หน้าแรก",
                                                 last: "หน้าสุดท้าย",
@@ -164,26 +173,26 @@
 
                                 });
 
-                                function handleClick(id) {
-                                    console.log('ID: ', id);
-                                }
+                                // function handleClick(id) {
+                                //     console.log('ID: ', id);
+                                // }
 
-                                function getUserCount(extenderId) {
-                                    $.ajax({
-                                        url: '{{ route('getUserCount', $depart) }}',
-                                        type: 'GET',
-                                        data: {
-                                            extender_id: extenderId
-                                        },
-                                        success: function(response) {
-                                            $('a[data-extenderid="' + extenderId + '"]').html('<i class="fas fa-users"></i> (' +
-                                                response.count + ')');
-                                        },
-                                        error: function(error) {
-                                            console.error('เกิดข้อผิดพลาดในการดึงข้อมูล:', error);
-                                        }
-                                    });
-                                }
+                                // function getUserCount(extenderId) {
+                                //     $.ajax({
+                                //         url: '{{ route('getUserCount', $depart) }}',
+                                //         type: 'GET',
+                                //         data: {
+                                //             extender_id: extenderId
+                                //         },
+                                //         success: function(response) {
+                                //             $('a[data-extenderid="' + extenderId + '"]').html('<i class="fas fa-users"></i> (' +
+                                //                 response.count + ')');
+                                //         },
+                                //         error: function(error) {
+                                //             console.error('เกิดข้อผิดพลาดในการดึงข้อมูล:', error);
+                                //         }
+                                //     });
+                                // }
                             </script>
                         </table>
                     </div>
@@ -192,19 +201,11 @@
         </div>
     </div>
 
-    @if (
-        ($data->user_role == 1 && $depart->department_id == 1) ||
-            $depart->department_id == 2 ||
-            $depart->department_id == 3 ||
-            $depart->department_id == 4 ||
-            ($data->user_role == 8 && $depart->department_id == 1) ||
-            $depart->department_id == 2 ||
-            $depart->department_id == 3 ||
-            $depart->department_id == 4)
+    {{-- @if (($data->user_role == 1 && $depart->department_id == 1) || $depart->department_id == 2 || $depart->department_id == 3 || $depart->department_id == 4 || ($data->user_role == 8 && $depart->department_id == 1) || $depart->department_id == 2 || $depart->department_id == 3 || $depart->department_id == 4)
         <header class="page-title-bar">
             <button type="button" class=" btn btn-success btn-floated btn-addums"
                 onclick="window.location='{{ route('addextender', ['department_id' => $depart->department_id]) }}'"
                 data-toggle="tooltip" title="เพิ่ม"><span class="fas fa-plus"></span></button>
         </header>
-    @endif
+    @endif --}}
 @endsection

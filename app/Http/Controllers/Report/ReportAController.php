@@ -83,13 +83,12 @@ class ReportAController extends Controller
             ->where('course_learner.learner_status', '=', 1)
             ->where('course_learner.congratulation', '=', 0)
             ->select(
-   
+
                 DB::raw('EXTRACT(YEAR FROM course_learner.registerdate)  + 543  as year'),
                 DB::raw('TO_CHAR(course_learner.registerdate, \'MM\') as month'),
                 DB::raw('COUNT(DISTINCT course_learner.user_id) as user_count')
             )
             ->groupBy(
-
                 DB::raw('TO_CHAR(course_learner.registerdate, \'MM\')')
             )
             ->groupBy(DB::raw('EXTRACT(YEAR FROM course_learner.registerdate)'))
@@ -100,13 +99,11 @@ class ReportAController extends Controller
             ->where('course_learner.learner_status', '=', 1)
             ->where('course_learner.congratulation', '=', 1)
             ->select(
-
                 DB::raw('EXTRACT(YEAR FROM course_learner.registerdate)  + 543  as year'),
                 DB::raw('TO_CHAR(course_learner.registerdate, \'MM\') as month'),
                 DB::raw('COUNT(DISTINCT course_learner.user_id) as user_count')
             )
             ->groupBy(
-
                 DB::raw('TO_CHAR(course_learner.registerdate, \'MM\')')
             )
             ->groupBy(DB::raw('EXTRACT(YEAR FROM course_learner.registerdate)'))

@@ -84,8 +84,6 @@ class CourseLessonController extends Controller
             if (!file_exists(public_path('/uplade/lesson'))) {
                 mkdir(public_path('/uplade/lesson'), 0755, true);
             }
-    
-        
             if ($request->has('resultlesson')) {
                 $resultlesson = $request->resultlesson;
                 $decodedTextresultlesson = '';

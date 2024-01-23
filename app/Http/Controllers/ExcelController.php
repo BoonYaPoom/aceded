@@ -22,10 +22,14 @@ use App\Imports\UserDepartimport;
 use App\Imports\UsersImportClass;
 use App\Models\CourseLesson;
 use App\Models\CourseSubject;
+use App\Models\Log;
 use App\Models\Question;
 use App\Models\UserDepartment;
 use App\Models\Users;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Log as FacadesLog;
+use Illuminate\Support\Facades\Validator;
 
 class ExcelController extends Controller
 {
@@ -110,7 +114,7 @@ class ExcelController extends Controller
                             $explainquestion = null;
                             $lessonId = 0;
                             $question_level = 0;
-                          
+
                             $newQuestion = new Question([
                                 'question_id' => $lastQuestionId + 1,
                                 'question' => $row[1],
@@ -133,7 +137,7 @@ class ExcelController extends Controller
                                 'lesson_id' => $lessonId,
                                 'subject_id' => $subject_id,
                                 'question_level' => $question_level,
-                         
+
                             ]);
 
                             $newQuestion->save();
@@ -189,7 +193,7 @@ class ExcelController extends Controller
                             $explainquestion = null;
                             $lessonId = 0;
                             $question_level = 0;
-                       
+
                             $newQuestion = new Question([
                                 'question_id' => $lastQuestionId + 1,
                                 'question' => $row[1],
@@ -212,7 +216,7 @@ class ExcelController extends Controller
                                 'lesson_id' => $lessonId,
                                 'subject_id' => $subject_id,
                                 'question_level' => $question_level,
-                          
+
                             ]);
 
                             $newQuestion->save();
@@ -236,127 +240,151 @@ class ExcelController extends Controller
         $UsersImports = new UsersImportClass();
 
         if ($request->hasFile('fileexcel')) {
-            try {
-                $importedDataUser = Excel::toArray($UsersImports, $request->file('fileexcel'));
-                if (count($importedDataUser) > 0 && count($importedDataUser[0]) > 0) {
-                    // มีข้อมูลที่นำเข้า
-                    foreach ($importedDataUser[0] as $row) {
-                        // เช็คว่าข้อมูลในแต่ละคอลัมน์ของ $row ถูกต้องหรือไม่
-                        if ($row[0] == 'ลำดับ') {
-                            continue;
+
+            $importedDataUser = Excel::toArray($UsersImports, $request->file('fileexcel'));
+            if (count($importedDataUser) > 0 && count($importedDataUser[0]) > 0) {
+                // มีข้อมูลที่นำเข้า
+
+                foreach ($importedDataUser[0] as $rowsss) {
+                    if ($rowsss[0] == 'ลำดับ') {
+                        continue;
+                    }
+                    if ($rowsss[0] >= 1) {
+                        if (empty(trim($rowsss[7]))) {
+                            $duplicateFields[] = 'รหัสประจำตัวประชาชนไม่สามารถเป็นค่าว่างได้';
                         }
-                        // ข้อมูลถูกต้อง
-                        if ($row[0] >= 1) {
-                            $user_idplus = Users::max('user_id') ?? 0;
-                            $user_role = 5;
-                            $prefix = null;
-                            $gender = null;
-                            $per_id = null;
-                            $department_id = 0;
-                            $permission = null;
-                            $ldap = 0;
-                            $userstatus = 1;
-                            $createdate = now();
-                            $createby = 2;
-                            $avatar = '';
-                            $user_position = '';
-                            $workplace = '';
-                            $telephone = '';
+                        if (DB::table('users')
+                            ->where('username', trim($rowsss[1]))->exists()
+                        ) {
+                            $duplicateFields[] = 'ชื่อผู้ใช้ซ้ำ: ' . trim($rowsss[1]);
+                        }
 
-                            $socialnetwork = '';
-                            $experience = null;
-                            $recommened = null;
-                            $templete = null;
-                            $nickname = '';
-                            $introduce = '';
-                            $bgcustom = '';
-                            $pay = '';
-                            $education = '';
-                            $teach = '';
-                            $modern = '';
-                            $other = '';
-                            $profiles = null;
-                            $editflag = null;
-                            $pos_level = 0;
-                            $pos_name = '';
-                            $sector_id = 0;
-                            $office_id = 0;
-
-                            $user_type = null;
-                            $province_id = 0;
-                            $district_id = 0;
-                            $subdistrict_id = 0;
-                            $recoverpassword = null;
-                            $employeecode = null;
-                            $organization = null;
-
-                            $newUsers = new Users([
-                                'user_id' =>  $user_idplus + 1,
-                                'username' => trim($row[1]),
-                                'password' => Hash::make($row[2]),
-                                'firstname' => $row[3],
-                                'lastname' => $row[4],
-                                'mobile' => $row[5],
-                                'email' => $row[6],
-                                'citizen_id' =>   $row[7],
-                                'prefix' =>  $prefix,
-                                'gender' => $gender,
-                                'user_role' => $user_role,
-                                'per_id' => $per_id,
-                                'department_id' => $department_id,
-                                'permission' => $permission,
-                                'ldap' => $ldap,
-                                'userstatus' => $userstatus,
-                                'createdate' => $createdate,
-                                'createby' => $createby,
-                                'avatar' => $avatar,
-                                'user_position' =>  $user_position,
-                                'workplace' =>  $workplace,
-                                'telephone' =>  $telephone,
-
-                                'socialnetwork' =>  $socialnetwork,
-                                'experience' =>  $experience,
-                                'recommened' => $recommened,
-                                'templete' => $templete,
-                                'nickname' =>  $nickname,
-                                'introduce' => $introduce,
-                                'bgcustom' =>  $bgcustom,
-                                'pay' =>  $pay,
-                                'education' => $education,
-                                'teach' => $teach,
-                                'modern' => $modern,
-                                'other' => $other,
-                                'profiles' =>  $profiles,
-                                'editflag' => $editflag,
-                                'pos_level' => $pos_level,
-                                'pos_name' => $pos_name,
-                                'sector_id' =>  $sector_id,
-                                'office_id' => $office_id,
-                                'user_type' => $user_type,
-                                'province_id' => $province_id,
-                                'district_id' => $district_id,
-                                'subdistrict_id' =>  $subdistrict_id,
-                                'recoverpassword' =>  $recoverpassword,
-                                'employeecode' =>  $employeecode,
-                                'organization' =>  $organization,
-                                'user_affiliation' =>  $row[9] ?? null,
-                            ]);
-
-
-                            $newUsers->save();
+                        if (DB::table('users')
+                            ->where('citizen_id', trim($rowsss[7]))->exists()
+                        ) {
+                            $duplicateFields[] = 'รหัสประจำตัวประชาชนซ้ำ: ' . trim($rowsss[7]);
                         }
                     }
-
-
-                    return response()->json(['message' => 'Import successfully'], 200);
-                } else {
-                    return response()->json(['error' => 'No data found in the imported file'], 400);
+                    if (!empty($duplicateFields)) {
+                        return response()->json(['error' => implode("\n", $duplicateFields)], 200);
+                    }
                 }
-            } catch (\Exception $e) {
-                return response()->json(['error' => 'Error importing data: ' . $e->getMessage()], 500);
+                foreach ($importedDataUser[0] as $row) {
+                    $duplicateFields = [];
+
+                    if ($row[0] == 'ลำดับ') {
+                        continue;
+                    }
+
+                    if ($row[0] >= 1) {
+                        $user_idplus = Users::max('user_id') ?? 0;
+                        $user_role = 5;
+                        $prefix = null;
+                        $gender = null;
+                        $per_id = null;
+                        $department_id = 0;
+                        $permission = null;
+                        $ldap = 0;
+                        $userstatus = 1;
+                        $createdate = now();
+                        $createby = 2;
+                        $avatar = '';
+                        $user_position = '';
+                        $workplace = '';
+                        $telephone = '';
+
+                        $socialnetwork = '';
+                        $experience = null;
+                        $recommened = null;
+                        $templete = null;
+                        $nickname = '';
+                        $introduce = '';
+                        $bgcustom = '';
+                        $pay = '';
+                        $education = '';
+                        $teach = '';
+                        $modern = '';
+                        $other = '';
+                        $profiles = null;
+                        $editflag = null;
+                        $pos_level = 0;
+                        $pos_name = '';
+                        $sector_id = 0;
+                        $office_id = 0;
+
+                        $user_type = null;
+                        $province_id = 0;
+                        $district_id = 0;
+                        $subdistrict_id = 0;
+                        $recoverpassword = null;
+                        $employeecode = null;
+                        $organization = null;
+
+                 
+                                $newUsers = new Users([
+                                    'user_id' =>  $user_idplus + 1,
+                                    'username' => trim($row[1]),
+                                    'password' => Hash::make($row[2]),
+                                    'firstname' => $row[3],
+                                    'lastname' => $row[4],
+                                    'mobile' => $row[5],
+                                    'email' => $row[6],
+                                    'citizen_id' =>   trim($row[7]),
+                                    'prefix' =>  $prefix,
+                                    'gender' => $gender,
+                                    'user_role' => $user_role,
+                                    'per_id' => $per_id,
+                                    'department_id' => $department_id,
+                                    'permission' => $permission,
+                                    'ldap' => $ldap,
+                                    'userstatus' => $userstatus,
+                                    'createdate' => $createdate,
+                                    'createby' => $createby,
+                                    'avatar' => $avatar,
+                                    'user_position' =>  $user_position,
+                                    'workplace' =>  $workplace,
+                                    'telephone' =>  $telephone,
+
+                                    'socialnetwork' =>  $socialnetwork,
+                                    'experience' =>  $experience,
+                                    'recommened' => $recommened,
+                                    'templete' => $templete,
+                                    'nickname' =>  $nickname,
+                                    'introduce' => $introduce,
+                                    'bgcustom' =>  $bgcustom,
+                                    'pay' =>  $pay,
+                                    'education' => $education,
+                                    'teach' => $teach,
+                                    'modern' => $modern,
+                                    'other' => $other,
+                                    'profiles' =>  $profiles,
+                                    'editflag' => $editflag,
+                                    'pos_level' => $pos_level,
+                                    'pos_name' => $pos_name,
+                                    'sector_id' =>  $sector_id,
+                                    'office_id' => $office_id,
+                                    'user_type' => $user_type,
+                                    'province_id' => $province_id,
+                                    'district_id' => $district_id,
+                                    'subdistrict_id' =>  $subdistrict_id,
+                                    'recoverpassword' =>  $recoverpassword,
+                                    'employeecode' =>  $employeecode,
+                                    'organization' =>  $organization,
+                                    'user_affiliation' =>  $row[9] ?? null,
+                                ]);
+
+                                $newUsers->save();
+                            
+                        
+                    }
+                }
+
+                return response()->json(['message' => 'Import successfully'], 200);
+            } else {
+                return response()->json(['error' => 'No data found in the imported file']);
             }
         } else {
-            return response()->json(['error' => 'No file uploaded'], 400);
+            return response()->json(['error' => 'No file uploaded']);
         }
     }
     public function UsersDepartImport(Request $request, $department_id)
@@ -364,279 +392,329 @@ class ExcelController extends Controller
         $UserDepartimport = new UserDepartimport($department_id);
 
         if ($request->hasFile('fileexcel')) {
-            try {
-                $importedDataUser = Excel::toArray($UserDepartimport, $request->file('fileexcel'));
-                if (count($importedDataUser) > 0 && count($importedDataUser[0]) > 0) {
-                    // มีข้อมูลที่นำเข้า
-                    foreach ($importedDataUser[0] as $row) {
-                        // เช็คว่าข้อมูลในแต่ละคอลัมน์ของ $row ถูกต้องหรือไม่
-                        if ($row[0] == 'ลำดับ') {
-                            continue;
+
+            $importedDataUser = Excel::toArray($UserDepartimport, $request->file('fileexcel'));
+            if (count($importedDataUser) > 0 && count($importedDataUser[0]) > 0) {
+                // มีข้อมูลที่นำเข้า
+                $duplicateFields = [];
+
+                foreach ($importedDataUser[0] as $rowsss) {
+                    if ($rowsss[0] == 'ลำดับ') {
+                        continue;
+                    }
+                    if ($rowsss[0] >= 1) {
+                        if (DB::table('users')
+                            ->where('username', trim($rowsss[1]))->exists()
+                        ) {
+                            $duplicateFields[] = 'ชื่อผู้ใช้ซ้ำ: ' . trim($rowsss[1]);
                         }
-                        // ข้อมูลถูกต้อง
-                        if ($row[0] >= 1) {
-                            $user_idplus = Users::max('user_id') ?? 0;
-                            $uiduserdepartment_id = UserDepartment::max('user_department_id') ?? 0;
-                            $user_role = 4;
-                            $prefix = null;
-                            $per_id = null;
-                            $permission = null;
-                            $ldap = 0;
-                            $userstatus = 1;
-                            $createdate = now();
-                            $createby = 2;
-                            $avatar = '';
-                            $user_position = '';
-                            $workplace = '';
-                            $telephone = '';
 
-                            $socialnetwork = '';
-                            $experience = null;
-                            $recommened = null;
-                            $templete = null;
-                            $nickname = '';
-                            $introduce = '';
-                            $bgcustom = '';
-                            $pay = '';
-                            $education = '';
-                            $teach = '';
-                            $modern = '';
-                            $other = '';
-                            $profiles = null;
-                            $editflag = null;
-                            $pos_level = 0;
-                            $pos_name = '';
-                            $sector_id = 0;
-                            $office_id = 0;
-
-                            $user_type = null;
-                            $province_id = 0;
-                            $district_id = 0;
-                            $subdistrict_id = 0;
-                            $recoverpassword = null;
-                            $employeecode = null;
-                            $organization = null;
-
-                            $newUsers = new Users([
-                                'user_id' =>  $user_idplus + 1,
-                                'username' => trim($row[1]),
-                                'password' => Hash::make($row[2]),
-                                'firstname' => $row[3],
-                                'lastname' => $row[4],
-                                'mobile' => $row[5],
-                                'email' => $row[6],
-                                'citizen_id' =>   $row[7],
-                                'prefix' =>  $prefix,
-                                'gender' => $row[8] ?? null,
-                                'user_role' => $user_role,
-                                'per_id' => $per_id,
-                                'department_id' => $department_id,
-                                'permission' => $permission,
-                                'ldap' => $ldap,
-                                'userstatus' => $userstatus,
-                                'createdate' => $createdate,
-                                'createby' => $createby,
-                                'avatar' => $avatar,
-                                'user_position' =>  $user_position,
-                                'workplace' =>  $workplace,
-                                'telephone' =>  $telephone,
-
-                                'socialnetwork' =>  $socialnetwork,
-                                'experience' =>  $experience,
-                                'recommened' => $recommened,
-                                'templete' => $templete,
-                                'nickname' =>  $nickname,
-                                'introduce' => $introduce,
-                                'bgcustom' =>  $bgcustom,
-                                'pay' =>  $pay,
-                                'education' => $education,
-                                'teach' => $teach,
-                                'modern' => $modern,
-                                'other' => $other,
-                                'profiles' =>  $profiles,
-                                'editflag' => $editflag,
-                                'pos_level' => $pos_level,
-                                'pos_name' => $pos_name,
-                                'sector_id' =>  $sector_id,
-                                'office_id' => $office_id,
-                                'user_type' => $user_type,
-                                'province_id' => $province_id,
-                                'district_id' => $district_id,
-                                'subdistrict_id' =>  $subdistrict_id,
-                                'recoverpassword' =>  $recoverpassword,
-                                'employeecode' =>  $employeecode,
-                                'organization' =>  $organization,
-                                'user_affiliation' =>  $row[9] ?? null,
-                            ]);
-
-                            $UserDepartment =  new UserDepartment([
-
-                                'user_department_id' =>  $uiduserdepartment_id + 1,
-                                'user_id' =>     $user_idplus + 1,
-                                'department_id' => $department_id,
-
-                            ]);
-                            if ($department_id == 1) {
-                                $UserDepartment2 =  new UserDepartment([
-
-                                    'user_department_id' =>  $uiduserdepartment_id + 2,
-                                    'user_id' =>     $user_idplus + 1,
-                                    'department_id' => 2,
-
-                                ]);
-                                $UserDepartment2->save();
-                            } elseif ($department_id == 2) {
-                                $UserDepartment3 =  new UserDepartment([
-
-                                    'user_department_id' =>  $uiduserdepartment_id + 2,
-                                    'user_id' =>     $user_idplus + 1,
-                                    'department_id' => 1,
-
-                                ]);
-                                $UserDepartment3->save();
-                            }
-
-                            $UserDepartment->save();
-                            $newUsers->save();
+                        if (DB::table('users')
+                            ->where('citizen_id', trim($rowsss[7]))->exists()
+                        ) {
+                            $duplicateFields[] = 'รหัสประจำตัวประชาชนซ้ำ: ' . trim($rowsss[7]);
                         }
                     }
-
-
-                    return response()->json(['message' => 'Import successfully'], 200);
-                } else {
-                    return response()->json(['error' => 'No data found in the imported file'], 400);
+                    if (!empty($duplicateFields)) {
+                        return response()->json(['error' => implode("\n", $duplicateFields)], 200);
+                    }
                 }
-            } catch (\Exception $e) {
-                return response()->json(['error' => 'Error importing data: ' . $e->getMessage()], 500);
+                foreach ($importedDataUser[0] as $row) {
+                    if ($row[0] == 'ลำดับ') {
+                        continue;
+                    }
+
+                    if ($row[0] >= 1) {
+                        $user_idplus = Users::max('user_id') ?? 0;
+                        $uiduserdepartment_id = UserDepartment::max('user_department_id') ?? 0;
+                        $user_role = 4;
+                        $prefix = null;
+                        $per_id = null;
+                        $permission = null;
+                        $ldap = 0;
+                        $userstatus = 1;
+                        $createdate = now();
+                        $createby = 2;
+                        $avatar = '';
+                        $user_position = '';
+                        $workplace = '';
+                        $telephone = '';
+
+                        $socialnetwork = '';
+                        $experience = null;
+                        $recommened = null;
+                        $templete = null;
+                        $nickname = '';
+                        $introduce = '';
+                        $bgcustom = '';
+                        $pay = '';
+                        $education = '';
+                        $teach = '';
+                        $modern = '';
+                        $other = '';
+                        $profiles = null;
+                        $editflag = null;
+                        $pos_level = 0;
+                        $pos_name = '';
+                        $sector_id = 0;
+                        $office_id = 0;
+
+                        $user_type = null;
+                        $province_id = 0;
+                        $district_id = 0;
+                        $subdistrict_id = 0;
+                        $recoverpassword = null;
+                        $employeecode = null;
+                        $organization = null;
+
+                       
+                                $newUsers = new Users([
+                                    'user_id' =>  $user_idplus + 1,
+                                    'username' => trim($row[1]),
+                                    'password' => Hash::make($row[2]),
+                                    'firstname' => $row[3],
+                                    'lastname' => $row[4],
+                                    'mobile' => $row[5],
+                                    'email' => $row[6],
+                                    'citizen_id' =>   trim($row[7]),
+                                    'prefix' =>  $prefix,
+                                    'gender' => $row[8] ?? null,
+                                    'user_role' => $user_role,
+                                    'per_id' => $per_id,
+                                    'department_id' => $department_id,
+                                    'permission' => $permission,
+                                    'ldap' => $ldap,
+                                    'userstatus' => $userstatus,
+                                    'createdate' => $createdate,
+                                    'createby' => $createby,
+                                    'avatar' => $avatar,
+                                    'user_position' =>  $user_position,
+                                    'workplace' =>  $workplace,
+                                    'telephone' =>  $telephone,
+
+                                    'socialnetwork' =>  $socialnetwork,
+                                    'experience' =>  $experience,
+                                    'recommened' => $recommened,
+                                    'templete' => $templete,
+                                    'nickname' =>  $nickname,
+                                    'introduce' => $introduce,
+                                    'bgcustom' =>  $bgcustom,
+                                    'pay' =>  $pay,
+                                    'education' => $education,
+                                    'teach' => $teach,
+                                    'modern' => $modern,
+                                    'other' => $other,
+                                    'profiles' =>  $profiles,
+                                    'editflag' => $editflag,
+                                    'pos_level' => $pos_level,
+                                    'pos_name' => $pos_name,
+                                    'sector_id' =>  $sector_id,
+                                    'office_id' => $office_id,
+                                    'user_type' => $user_type,
+                                    'province_id' => $province_id,
+                                    'district_id' => $district_id,
+                                    'subdistrict_id' =>  $subdistrict_id,
+                                    'recoverpassword' =>  $recoverpassword,
+                                    'employeecode' =>  $employeecode,
+                                    'organization' =>  $organization,
+                                    'user_affiliation' =>  $row[9] ?? null,
+                                ]);
+
+                                $UserDepartment =  new UserDepartment([
+                                    'user_department_id' =>  $uiduserdepartment_id + 1,
+                                    'user_id' =>     $user_idplus + 1,
+                                    'department_id' => $department_id,
+
+                                ]);
+                                if ($department_id == 1) {
+                                    $UserDepartment2 =  new UserDepartment([
+
+                                        'user_department_id' =>  $uiduserdepartment_id + 2,
+                                        'user_id' =>     $user_idplus + 1,
+                                        'department_id' => 2,
+
+                                    ]);
+                                    $UserDepartment2->save();
+                                } elseif ($department_id == 2) {
+                                    $UserDepartment3 =  new UserDepartment([
+
+                                        'user_department_id' =>  $uiduserdepartment_id + 2,
+                                        'user_id' =>     $user_idplus + 1,
+                                        'department_id' => 1,
+
+                                    ]);
+                                    $UserDepartment3->save();
+                                }
+
+                                $UserDepartment->save();
+                                $newUsers->save();
+                        
+                    }
+                }
+
+                if (!empty($validationErrors)) {
+                    return response()->json(['error' => implode("\n", $validationErrors)], 200);
+                }
+
+                return response()->json(['message' => 'Import successfully'], 200);
+            } else {
+                return response()->json(['error' => 'No data found in the imported file']);
             }
         } else {
-            return response()->json(['error' => 'No file uploaded'], 400);
+            return response()->json(['error' => 'No file uploaded']);
         }
     }
     public function UsersDepartSchoolImport(Request $request, $department_id,  $extender_id)
     {
-        $UserDepartimport = new SchoolDpimportClass($department_id, $extender_id);
-        if ($request->hasFile('fileexcel')) {
-            try {
-                $importedDataUser = Excel::toArray($UserDepartimport, $request->file('fileexcel'));
-                if (count($importedDataUser) > 0 && count($importedDataUser[0]) > 0) {
-                    // มีข้อมูลที่นำเข้า
-                    foreach ($importedDataUser[0] as $row) {
-                        // เช็คว่าข้อมูลในแต่ละคอลัมน์ของ $row ถูกต้องหรือไม่
-                        if ($row[0] == 'ลำดับ') {
-                            continue;
-                        }
-                        // ข้อมูลถูกต้อง
-                        if ($row[0] >= 1) {
-                            $user_idplus = Users::max('user_id') ?? 0;
-                            $uiduserdepartment_id = UserDepartment::max('user_department_id') ?? 0;
-                            $user_role = 4;
-                            $prefix = null;
-                            $per_id = null;
-                            $permission = null;
-                            $ldap = 0;
-                            $userstatus = 1;
-                            $createdate = now();
-                            $createby = 2;
-                            $avatar = '';
-                            $user_position = '';
-                            $workplace = '';
-                            $telephone = '';
-                            $socialnetwork = '';
-                            $experience = null;
-                            $recommened = null;
-                            $templete = null;
-                            $nickname = '';
-                            $introduce = '';
-                            $bgcustom = '';
-                            $pay = '';
-                            $education = '';
-                            $teach = '';
-                            $modern = '';
-                            $other = '';
-                            $profiles = null;
-                            $editflag = null;
-                            $pos_level = 0;
-                            $pos_name = '';
-                            $sector_id = 0;
-                            $office_id = 0;
-                            $user_type = null;
-                            $province_id = 0;
-                            $district_id = 0;
-                            $subdistrict_id = 0;
-                            $recoverpassword = null;
-                            $employeecode = null;
-                            $newUsers = new Users([
-                                'user_id' =>  $user_idplus + 1,
-                                'username' => trim($row[1]),
-                                'password' => Hash::make($row[2]),
-                                'firstname' => $row[3],
-                                'lastname' => $row[4],
-                                'mobile' => $row[5],
-                                'email' => $row[6],
-                                'citizen_id' =>   $row[7],
-                                'gender' => $row[8] ?? null,
-                                'prefix' =>  $prefix,
-                                'user_role' => $user_role,
-                                'per_id' => $per_id,
-                                'department_id' => $department_id,
-                                'permission' => $permission,
-                                'ldap' => $ldap,
-                                'userstatus' => $userstatus,
-                                'createdate' => $createdate,
-                                'createby' => $createby,
-                                'avatar' => $avatar,
-                                'user_position' =>  $user_position,
-                                'workplace' =>  $workplace,
-                                'telephone' =>  $telephone,
-                                'socialnetwork' =>  $socialnetwork,
-                                'experience' =>  $experience,
-                                'recommened' => $recommened,
-                                'templete' => $templete,
-                                'nickname' =>  $nickname,
-                                'introduce' => $introduce,
-                                'bgcustom' =>  $bgcustom,
-                                'pay' =>  $pay,
-                                'education' => $education,
-                                'teach' => $teach,
-                                'modern' => $modern,
-                                'other' => $other,
-                                'profiles' =>  $profiles,
-                                'editflag' => $editflag,
-                                'pos_level' => $pos_level,
-                                'pos_name' => $pos_name,
-                                'sector_id' =>  $sector_id,
-                                'office_id' => $office_id,
-                                'user_type' => $user_type,
-                                'province_id' => $province_id,
-                                'district_id' => $district_id,
-                                'subdistrict_id' =>  $subdistrict_id,
-                                'recoverpassword' =>  $recoverpassword,
-                                'employeecode' =>  $employeecode,
-                                'organization' =>  $extender_id,
-                                'user_affiliation' =>  $row[9] ?? null,
-                                'user_type_card' =>  0,
-                                'birthday' => null,
-                            ]);
-                            $newUsers->save();
-                            $UserDepartment =  new UserDepartment([
-                                'user_department_id' =>  $uiduserdepartment_id + 1,
-                                'user_id' =>     $user_idplus + 1,
-                                'department_id' => $department_id,
 
-                            ]);
-                            $UserDepartment->save();
+        if ($request->hasFile('fileexcel')) {
+            $UserDepartimport = new SchoolDpimportClass($department_id, $extender_id);
+            $importedDataUser = Excel::toArray($UserDepartimport, $request->file('fileexcel'));
+            if (count($importedDataUser) > 0 && count($importedDataUser[0]) > 0) {
+                // มีข้อมูลที่นำเข้า
+                $duplicateFields = [];
+
+                foreach ($importedDataUser[0] as $rowsss) {
+                    if ($rowsss[0] == 'ลำดับ') {
+                        continue;
+                    }
+                    if ($rowsss[0] >= 1) {
+                        if (empty(trim($rowsss[7]))) {
+                            $duplicateFields[] = 'รหัสประจำตัวประชาชนไม่สามารถเป็นค่าว่างได้';
+                        }
+                        if (DB::table('users')
+                            ->where('username', trim($rowsss[1]))->exists()
+                        ) {
+                            $duplicateFields[] = 'ชื่อผู้ใช้ซ้ำ: ' . trim($rowsss[1]);
+                        }
+
+                        if (DB::table('users')
+                            ->where('citizen_id', trim($rowsss[7]))->exists()
+                        ) {
+                            $duplicateFields[] = 'รหัสประจำตัวประชาชนซ้ำ: ' . trim($rowsss[7]);
                         }
                     }
-                    return response()->json(['message' => 'Import successfully'], 200);
-                } else {
-                    return response()->json(['error' => 'No data found in the imported file'], 400);
+                    if (!empty($duplicateFields)) {
+                        return response()->json(['error' => implode("\n", $duplicateFields)], 200);
+                    }
                 }
-            } catch (\Exception $e) {
-                return response()->json(['error' => 'Error importing data: ' . $e->getMessage()], 500);
+
+                foreach ($importedDataUser[0] as $row) {
+
+                    if ($row[0] == 'ลำดับ') {
+                        continue;
+                    }
+                    if ($row[0] >= 1) {
+                        $user_idplus = DB::table('users')->max('user_id') ?? 0;
+                        $uiduserdepartment_id = DB::table('users_department')->max('user_department_id') ?? 0;
+                        $user_role = 4;
+                        $prefix = null;
+                        $per_id = null;
+                        $permission = null;
+                        $ldap = 0;
+                        $userstatus = 1;
+                        $createdate = now();
+                        $createby = 2;
+                        $avatar = '';
+                        $user_position = '';
+                        $workplace = '';
+                        $telephone = '';
+                        $socialnetwork = '';
+                        $experience = null;
+                        $recommened = null;
+                        $templete = null;
+                        $nickname = '';
+                        $introduce = '';
+                        $bgcustom = '';
+                        $pay = '';
+                        $education = '';
+                        $teach = '';
+                        $modern = '';
+                        $other = '';
+                        $profiles = null;
+                        $editflag = null;
+                        $pos_level = 0;
+                        $pos_name = '';
+                        $sector_id = 0;
+                        $office_id = 0;
+                        $user_type = null;
+                        $province_id = 0;
+                        $district_id = 0;
+                        $subdistrict_id = 0;
+                        $recoverpassword = null;
+                        $employeecode = null;
+
+
+
+                        $newUsers = new Users([
+                            'user_id' =>  $user_idplus + 1,
+                            'username' => trim($row[1]),
+                            'password' => Hash::make($row[2]),
+                            'firstname' => $row[3],
+                            'lastname' => $row[4],
+                            'mobile' => $row[5],
+                            'email' => $row[6],
+                            'citizen_id' =>   trim($row[7]),
+                            'gender' => $row[8] ?? null,
+                            'prefix' =>  $prefix,
+                            'user_role' => $user_role,
+                            'per_id' => $per_id,
+                            'department_id' => $department_id,
+                            'permission' => $permission,
+                            'ldap' => $ldap,
+                            'userstatus' => $userstatus,
+                            'createdate' => $createdate,
+                            'createby' => $createby,
+                            'avatar' => $avatar,
+                            'user_position' =>  $user_position,
+                            'workplace' =>  $workplace,
+                            'telephone' =>  $telephone,
+                            'socialnetwork' =>  $socialnetwork,
+                            'experience' =>  $experience,
+                            'recommened' => $recommened,
+                            'templete' => $templete,
+                            'nickname' =>  $nickname,
+                            'introduce' => $introduce,
+                            'bgcustom' =>  $bgcustom,
+                            'pay' =>  $pay,
+                            'education' => $education,
+                            'teach' => $teach,
+                            'modern' => $modern,
+                            'other' => $other,
+                            'profiles' =>  $profiles,
+                            'editflag' => $editflag,
+                            'pos_level' => $pos_level,
+                            'pos_name' => $pos_name,
+                            'sector_id' =>  $sector_id,
+                            'office_id' => $office_id,
+                            'user_type' => $user_type,
+                            'province_id' => $province_id,
+                            'district_id' => $district_id,
+                            'subdistrict_id' =>  $subdistrict_id,
+                            'recoverpassword' =>  $recoverpassword,
+                            'employeecode' =>  $employeecode,
+                            'organization' =>  $extender_id,
+                            'user_affiliation' =>  $row[9] ?? null,
+                            'user_type_card' =>  0,
+                            'birthday' => null,
+                        ]);
+                        $newUsers->save();
+
+                        $UserDepartment =  new UserDepartment([
+                            'user_department_id' =>  $uiduserdepartment_id + 1,
+                            'user_id' =>     $user_idplus + 1,
+                            'department_id' => $department_id,
+                        ]);
+                        $UserDepartment->save();
+                    }
+                }
+
+                return response()->json(['message' => 'Import successfully'], 200);
+            } else {
+                return response()->json(['error' => 'No data found in the imported file']);
             }
         } else {
-            return response()->json(['error' => 'No file uploaded'], 400);
+            return response()->json(['error' => 'No file uploaded']);
         }
     }
 
@@ -648,12 +726,38 @@ class ExcelController extends Controller
                 $importedDataUserAll = Excel::toArray($UserAlldepartClass, $request->file('fileexcel'));
                 if (count($importedDataUserAll) > 0 && count($importedDataUserAll[0]) > 0) {
                     // มีข้อมูลที่นำเข้า
+                    $duplicateFields = [];
+
+                    foreach ($importedDataUserAll[0] as $rowsss) {
+                        if ($rowsss[0] == 'ลำดับ') {
+                            continue;
+                        }
+                        if ($rowsss[0] >= 1) {
+                            if (empty(trim($rowsss[7]))) {
+                                $duplicateFields[] = 'รหัสประจำตัวประชาชนไม่สามารถเป็นค่าว่างได้';
+                            }
+                            if (DB::table('users')
+                                ->where('username', trim($rowsss[1]))->exists()
+                            ) {
+                                $duplicateFields[] = 'ชื่อผู้ใช้ซ้ำ: ' . trim($rowsss[1]);
+                            }
+
+                            if (DB::table('users')
+                                ->where('citizen_id', trim($rowsss[7]))->exists()
+                            ) {
+                                $duplicateFields[] = 'รหัสประจำตัวประชาชนซ้ำ: ' . trim($rowsss[7]);
+                            }
+                        }
+                        if (!empty($duplicateFields)) {
+                            return response()->json(['error' => implode("\n", $duplicateFields)], 200);
+                        }
+                    }
                     foreach ($importedDataUserAll[0] as $row) {
                         // เช็คว่าข้อมูลในแต่ละคอลัมน์ของ $row ถูกต้องหรือไม่
                         if ($row[0] == 'ลำดับ') {
                             continue;
                         }
-                        // ข้อมูลถูกต้อง
+
                         if ($row[0] >= 1) {
                             $user_idplus = Users::max('user_id') ?? 0;
                             $uidUserSchool = UserSchool::max('user_school_id') ?? 0;
@@ -695,90 +799,92 @@ class ExcelController extends Controller
                             $recoverpassword = null;
                             $employeecode = null;
                             $organization = null;
-                            $newUsers = new Users([
-                                'user_id' =>  $user_idplus + 1,
-                                'username' => trim($row[1]),
-                                'password' => Hash::make($row[2]),
-                                'firstname' => $row[3],
-                                'lastname' => $row[4],
-                                'mobile' => $row[5],
-                                'email' => $row[6],
-                                'citizen_id' =>   $row[7],
-                                'gender' => $row[8],
-                                'prefix' =>  $prefix,
-                                'user_role' => $user_role,
-                                'per_id' => $per_id,
-                                'department_id' => $department_id,
-                                'permission' => $permission,
-                                'ldap' => $ldap,
-                                'userstatus' => $userstatus,
-                                'createdate' => $createdate,
-                                'createby' => $createby,
-                                'avatar' => $avatar,
-                                'user_position' =>  $user_position,
-                                'workplace' =>  $workplace,
-                                'telephone' =>  $telephone,
-                                'socialnetwork' =>  $socialnetwork,
-                                'experience' =>  $experience,
-                                'recommened' => $recommened,
-                                'templete' => $templete,
-                                'nickname' =>  $nickname,
-                                'introduce' => $introduce,
-                                'bgcustom' =>  $bgcustom,
-                                'pay' =>  $pay,
-                                'education' => $education,
-                                'teach' => $teach,
-                                'modern' => $modern,
-                                'other' => $other,
-                                'profiles' =>  $profiles,
-                                'editflag' => $editflag,
-                                'pos_level' => $pos_level,
-                                'pos_name' => $pos_name,
-                                'sector_id' =>  $sector_id,
-                                'office_id' => $office_id,
-                                'user_type' => $user_type,
-                                'province_id' => $province_id,
-                                'district_id' => $district_id,
-                                'subdistrict_id' =>  $subdistrict_id,
-                                'recoverpassword' =>  $recoverpassword,
-                                'employeecode' =>  $employeecode,
-                                'organization' =>  $organization,
-                                'user_affiliation' =>  $row[9] ?? null,
-                                'user_type_card' =>  0,
-                                'birthday' => null,
-                            ]);
-                            $newUsers->save();
-                            $userschool =  new UserSchool([
 
-                                'user_school_id' =>  $uidUserSchool + 1,
-                                'school_code' =>   $school_code,
-                                'user_id' =>   $user_idplus + 1,
-                                'department_id' => $department_id,
+                         
+                                    $newUsers = new Users([
+                                        'user_id' =>  $user_idplus + 1,
+                                        'username' => trim($row[1]),
+                                        'password' => Hash::make($row[2]),
+                                        'firstname' => $row[3],
+                                        'lastname' => $row[4],
+                                        'mobile' => $row[5],
+                                        'email' => $row[6],
+                                        'citizen_id' =>   trim($row[7]),
+                                        'gender' => $row[8],
+                                        'prefix' =>  $prefix,
+                                        'user_role' => $user_role,
+                                        'per_id' => $per_id,
+                                        'department_id' => $department_id,
+                                        'permission' => $permission,
+                                        'ldap' => $ldap,
+                                        'userstatus' => $userstatus,
+                                        'createdate' => $createdate,
+                                        'createby' => $createby,
+                                        'avatar' => $avatar,
+                                        'user_position' =>  $user_position,
+                                        'workplace' =>  $workplace,
+                                        'telephone' =>  $telephone,
+                                        'socialnetwork' =>  $socialnetwork,
+                                        'experience' =>  $experience,
+                                        'recommened' => $recommened,
+                                        'templete' => $templete,
+                                        'nickname' =>  $nickname,
+                                        'introduce' => $introduce,
+                                        'bgcustom' =>  $bgcustom,
+                                        'pay' =>  $pay,
+                                        'education' => $education,
+                                        'teach' => $teach,
+                                        'modern' => $modern,
+                                        'other' => $other,
+                                        'profiles' =>  $profiles,
+                                        'editflag' => $editflag,
+                                        'pos_level' => $pos_level,
+                                        'pos_name' => $pos_name,
+                                        'sector_id' =>  $sector_id,
+                                        'office_id' => $office_id,
+                                        'user_type' => $user_type,
+                                        'province_id' => $province_id,
+                                        'district_id' => $district_id,
+                                        'subdistrict_id' =>  $subdistrict_id,
+                                        'recoverpassword' =>  $recoverpassword,
+                                        'employeecode' =>  $employeecode,
+                                        'organization' =>  $organization,
+                                        'user_affiliation' =>  $row[9] ?? null,
+                                        'user_type_card' =>  0,
+                                        'birthday' => null,
+                                    ]);
+                                    $newUsers->save();
+                                    $userschool =  new UserSchool([
 
-                            ]);
-                            $userschool->save();
-                            $UserDepartment =  new UserDepartment([
-                                'user_department_id' =>  $uiduserdepartment_id + 1,
-                                'user_id' =>     $user_idplus + 1,
-                                'department_id' => $department_id,
-                            ]);
-                            $UserDepartment->save();
+                                        'user_school_id' =>  $uidUserSchool + 1,
+                                        'school_code' =>   $school_code,
+                                        'user_id' =>   $user_idplus + 1,
+                                        'department_id' => $department_id,
+
+                                    ]);
+                                    $userschool->save();
+                                    $UserDepartment =  new UserDepartment([
+                                        'user_department_id' =>  $uiduserdepartment_id + 1,
+                                        'user_id' =>     $user_idplus + 1,
+                                        'department_id' => $department_id,
+                                    ]);
+                                    $UserDepartment->save();
+                                
+                            }
                         }
-                    }
+                    
 
+                   
                     return response()->json(['message' => 'Import successfully'], 200);
                 } else {
-                    return response()->json(['error' => 'No data found in the imported file'], 400);
+                    return response()->json(['error' => 'No data found in the imported file']);
                 }
             } catch (\Exception $e) {
                 return response()->json(['error' => 'Error importing data: ' . $e->getMessage()], 500);
             }
         } else {
-            return response()->json(['error' => 'No file uploaded'], 400);
+            return response()->json(['error' => 'No file uploaded']);
         }
     }
-    public function exportLeact()
-    {
-        return Excel::download(new LearnerExport, 'learners.xlsx');
-    }
+ 
 }

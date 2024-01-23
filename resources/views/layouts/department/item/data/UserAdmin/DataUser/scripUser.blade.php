@@ -50,6 +50,7 @@
                 },
                 {
                     data: null,
+                    className: 'text-center',
                     render: function(data, type, row) {
                         var userRole = data.user_role;
                         var user_id = data.id;
@@ -76,7 +77,7 @@
                             '" data-toggle="tooltip" title="แก้ไข"><i class="far fa-edit text-success mr-1"></i></a>';
 
                         var linkdeleteuser = '<a href="' + deleteuser +
-                            '" onclick="deleteRecord(event)" rel="" class="switcher-delete" data-toggle="tooltip" title="ลบข้อมูล"><i class="fas fa-trash-alt fa-lg text-warning "></i></a>';
+                            '" onclick="deleteRecord(event)" rel="" class="switcher-delete" data-toggle="tooltip" title="ลบข้อมูล"><i class="fas fa-trash-alt text-warning "></i></a>';
 
                         var linklogusers = '<a href="' + logusers +
                             '" data-toggle="tooltip" title="ดูประวัติการใช้งาน"><i class="fas fa-history text-info"></i></a>';
@@ -93,14 +94,16 @@
 
                         var Admina =
                             ' <a data-toggle="modal" data-target="" title="กำหนดสิทธิ์"><i class="fas fa-user-shield text-bg-muted "></i></a>';
-
+                        var users =
+                            ' <i class="fas fa-user text-primary"></i>';
                         // ตรวจสอบเงื่อนไข
-                        if (row.user_role == 1 || row.user_role == 8) {
+                        if (row.user_role == 1 || row.user_role == 8 || row.user_role == 7) {
                             return Admina + (user_dataLogin == 1 || user_dataLogin == 8 ?
-                                linkedituser : '');
+                                linkedituser + linklogusers + linkdeleteuser : '');
                         } else {
-                            return linkedituser + linklogusers +
-                                linkdeleteuser;
+                            return users + (user_dataLogin == 1 || user_dataLogin == 8 ||
+                                user_dataLogin == 6 ?
+                                linkedituser + linkdeleteuser: '');
                         }
                     },
                 },

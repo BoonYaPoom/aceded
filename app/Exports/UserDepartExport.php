@@ -34,15 +34,28 @@ class UserDepartExport implements
     public function collection()
     {
 
-        $userDepart = UserDepartment::where('department_id', $this->department_id);
-        $userIds = $userDepart->pluck('user_id');
-
-        $users = DB::table('users')->whereIn('user_id', $userIds)->select('user_id', 'username', 'firstname', 'lastname', 'createdate', 'province_id', 'mobile', 'organization', 'user_affiliation', 'userstatus')
+        $users = DB::table('users')
+        ->join('users_department', 'users.user_id', '=', 'users_department.user_id')
+        ->where('users_department.department_id', '=', $this->department_id)
+        ->select(
+            'users.user_id',
+            'users.username',
+            'users.firstname',
+            'users.lastname',
+            'users.createdate',
+            'users.province_id',
+            'users.mobile',
+            'users.organization',
+            'users.user_affiliation',
+            'users.userstatus'
+        )
         ->get();
+
+
         $i = 1;
         $datauser = $users->map(function ($item) use (&$i) {
-            $proviUser = Provinces::where('id', $item->province_id)->value('name_in_thai') ?? '-';
-            $extender2 = Extender2::where('extender_id', $item->organization)->value('name') ?? '-';
+            $proviUser = DB::table('provinces')->where('id', $item->province_id)->value('name_in_thai') ?? '-';
+            $extender2 = DB::table('users_extender2')->where('extender_id', $item->organization)->value('name') ?? '-';
             $firstname = $item->firstname;
             $lastname = $item->lastname;
             $fullname =  $firstname . '' . '-' . '' . $lastname;
@@ -52,8 +65,14 @@ class UserDepartExport implements
             $part2 = substr($mobile, 3, 3);
             $part3 = substr($mobile, 6, 4);
             $fullMobile = $part1 . '-' . $part2 . '-' . $part3;
-            $createdate = Carbon::createFromFormat('Y-m-d H:i:s', $item->createdate)->format('d/m/') . (Carbon::parse($item->createdate)->year + 543);
-            return [
+            $createdate = Carbon::createFromFormat('Y-m-d H:i:s', $item->createdate);
+
+            $formattedDate = $createdate->format('d/m/') . ($createdate->year + 543);
+
+            $formattedTime = ltrim($createdate->format('g.i'), '0')  . ' ' . 'น.';
+
+            $TimeDAta =  $formattedDate . ' '  . ' ' . $formattedTime;
+               return [
                 'i' => $i + 1,
                 'username' => $item->username,
                 'fullname' => $fullname,
@@ -61,7 +80,7 @@ class UserDepartExport implements
                 'extender2' => $extender2,
                 'user_affiliation' => $item->user_affiliation ?? '-',
                 'proviUser' => $proviUser,
-                'createdate' => $createdate,
+                'createdate' => $TimeDAta,
                 'status' => $item->userstatus,
             ];
         });

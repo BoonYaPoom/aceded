@@ -76,7 +76,7 @@ use LdapRecord\Laravel\Facades\Ldap;
 
 
 
-
+Route::post('/import-excel',[ExcelController::class, 'imporssst'])->name('imporssst');
 Route::get('/upload-image', [PDFcreateController::class, 'upload_image'])->name('upload_image');
 // Clear application cache:
 Route::get('/generatePdfT0101', [PDFcreateController::class, 'generatePdfT0101'])->name('generatePdfT0101');
@@ -478,6 +478,7 @@ Route::group(['middleware' => 'IsLoggedIn'], function () {
                     Route::get('{department_id}/{extender_id}/umsschoolDP_add/', [ExtenderController::class, 'adduser'])->name('umsschoolDP_add');
                     Route::get('{department_id}/umsSchoolDP', [ExtenderController::class, 'testumsschool'])->name('testumsschool');
                     Route::get('{department_id}/getExtender', [ExtenderController::class, 'getExtender'])->name('getExtender');
+                    Route::get('{department_id}/getExtender3', [ExtenderController::class, 'getExtender3'])->name('getExtender3');
                     Route::post('{department_id}/{extender_id}/saveExtender_umsform', [ExtenderController::class, 'saveExtender'])->name('saveExtender_umsform');
 
                     Route::get('{department_id}/addextender', [ExtenderController::class, 'addextender'])->name('addextender');
@@ -570,7 +571,7 @@ Route::group(['middleware' => 'IsLoggedIn'], function () {
                 Route::get('/A0100', [ReportAController::class, 'ReportA'])->name('A0100');
                 Route::get('/B0100', [ReportBController::class, 'ReportB'])->name('B0100');
             });
-       
+
             Route::prefix('report')->group(function () {
                 Route::get('/home', [ReportAllController::class, 'Reportview'])->name('Reportview');
                 Route::get('/home/D0100', [ReportAllController::class, 'ReportA'])->name('D0100');

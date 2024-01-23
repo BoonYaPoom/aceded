@@ -82,7 +82,7 @@
                                     <label class="control-label" for="days">จำนวนวันที่เรียน</label> <select
                                         id="days" name="days" days="form-control  " data-toggle="select2"
                                         data-placeholder="จำนวนวัน" data-allow-clear="false">
-                                        <option value="0">เลือกจำนวนวัน</option>
+                                        <option value="0" disabled>เลือกจำนวนวัน</option>
                                         @for ($i = 1; $i <= 365; $i++)
                                             <option value="{{ $i }}" {{ $i == 30 ? 'selected' : '' }}>
                                                 {{ $i }} </option>

@@ -12,7 +12,7 @@
             }
 
             #section-to-print {
-   
+
                 left: 0;
                 top: 0;
             }
@@ -64,6 +64,24 @@
                 <div class="card-body">
                     <button type="button" class="dropdown-toggle" id="sidebarToggle" aria-label="Toggle Sidebar">
                         <span class="menu-icon fas fa-bars  "></span> รายงาน
+                        @php
+
+                            $provinceId = $data->province_id;
+                            $organization = $data->organization;
+                            $provinceData = DB::table('provinces')
+                                ->where('id', $provinceId)
+                                ->first();
+                            $organ = DB::table('users_extender2')
+                                ->where('extender_id', $organization)
+                                ->first();
+                        @endphp
+                        @if ($data->user_role == 6)
+                          ของ โรงเรียน  {{ $organ->name ?? null }}
+                        @elseif ($data->user_role == 7)
+                            ของ จังหวัด {{ $provinceData->name_in_thai ?? null }}
+                        @else
+                        @endif
+
                     </button>
                     <div class="dropdown-content" id="sidebarDropdown">
                         <div class="card-body pb-1 ">
@@ -72,9 +90,9 @@
                         <div class="list-group list-group-bordered list-group-reflow">
                             <div
                                 class="list-group-item justify-content-between align-items-center 
-                            {{ Str::startsWith(request()->url(), route('A0100DP',$depart)) || request()->is('A0100DP', 'A0100DP/*') ? ' bg-muted' : '' }} ">
-                                <span><i class="fas fa-chart-bar text-teal mr-2"></i> <a href="{{ route('A0100DP',$depart) }}"
-                                        class="small">ภาพรวมระบบ</a></span>
+                            {{ Str::startsWith(request()->url(), route('A0100DP', $depart)) || request()->is('A0100DP', 'A0100DP/*') ? ' bg-muted' : '' }} ">
+                                <span><i class="fas fa-chart-bar text-teal mr-2"></i> <a
+                                        href="{{ route('A0100DP', $depart) }}" class="small">ภาพรวมระบบ</a></span>
                             </div>
                             {{-- <div
                                 class="list-group-item justify-content-between align-items-center 

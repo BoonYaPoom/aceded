@@ -31,6 +31,9 @@
                     <!-- .card-body -->
                     <div class="card-body">
                         <div id="graphlearner" style="min-width: 310px; height: 450px; margin: 0 auto">
+
+
+
                         </div>
                     </div><!-- /.card-body -->
                 </div><!-- /.card -->
@@ -100,7 +103,7 @@
 
 
 
-    @include('page.report2.B.graphB')
+
 
     </div><!-- /.page-inner -->
 @endsection
