@@ -13,6 +13,8 @@ use App\Models\UserSchool;
 use Illuminate\Http\Request;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Exports\UsersExport;
+use App\Exports\UsersSchoolImportss;
+use App\Exports\UsersZoneImportss;
 use App\Imports\CouseImport;
 use App\Imports\QuestionsImport2Class;
 use App\Imports\QuestionsImportClass;
@@ -59,6 +61,15 @@ class ExcelController extends Controller
     {
         return Excel::download(new UserprovicExport($department_id, $provicValue), 'Administrator Management Users Province.xlsx');
     }
+    
+    public function exportUsersSchool($department_id)
+    {
+        return Excel::download(new UsersSchoolImportss($department_id), 'Administrator Management Users School.xlsx');
+    }
+    public function exportUsersZone($department_id)
+    {
+        return Excel::download(new UsersZoneImportss($department_id), 'Administrator Management Users Zone.xlsx');
+    }
     public function exportSubject()
     {
         return Excel::download(new SubjectExport, 'Administrator Management System.xlsx');
@@ -70,8 +81,6 @@ class ExcelController extends Controller
 
     public function importall(Request $request)
     {
-
-
         // ใช้คำสั่ง Excel::import เพื่อนำเข้าข้อมูล CSV
         Excel::import(new CouseImport, $request->file('csv'));
 

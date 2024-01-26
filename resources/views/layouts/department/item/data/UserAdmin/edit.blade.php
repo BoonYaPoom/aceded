@@ -219,7 +219,7 @@
                                         @endphp
                                         @foreach ($Provinces as $provin)
                                             <option
-                                                value="{{ $provin->code }}"{{ $usermanages->province_id == $provin->id ? 'selected' : '0' }}>
+                                                value="{{ $provin->id }}"{{ $usermanages->province_id == $provin->id ? 'selected' : '0' }}>
                                                 {{ $provin->name_in_thai }} </option>
                                         @endforeach
                                     </select>

@@ -44,22 +44,36 @@
                                     class="menu-icon fas fa-chalkboard-teacher  "></span>
                                 จัดการเรียนรู้</a>
                         @endif
-                        <a class="nav-link  font-weight-bold {{ Str::startsWith(
-                            request()->url(),
-                            route('DepartReportviewDp', ['department_id' => $depart->department_id]),
-                        ) || request()->is('rplDP', 'rplDP/*')
-                            ? ' active text-info'
-                            : '' }}"
-                            href="{{ route('A0100DP', ['department_id' => $depart->department_id]) }}">
-                            <span class="menu-icon fas fa-chart-bar  "></span> รายงาน</a>
-                        @if ($data->user_role == 6 || $data->user_role == 1 || $data->user_role == 8 || $data->user_role == 7)
-                            <a class="nav-link  font-weight-bold {{ Str::startsWith(request()->url(), route('DPUserManage', ['department_id' => $depart->department_id])) ? ' active text-info' : '' }}"
-                                href="{{ route('DPUserManage', ['department_id' => $depart->department_id]) }}"><span
-                                    class="menu-icon fas fa-users-cog  "></span>
-                                จัดการผู้ใช้</a>
-                        @endif
-                        <!-- End Account Sidebar Toggle Button -->
-                        </li>
+                        @if (
+                            $data->user_role == 6 ||
+                                $data->user_role == 1 ||
+                                $data->user_role == 8 ||
+                
+                                $data->user_role == 7)
+                            <a class="nav-link  font-weight-bold {{ Str::startsWith(
+                                request()->url(),
+                                
+                                route('DepartReportviewDp', ['department_id' => $depart->department_id]),
+                            ) || request()->is('rplDP', 'rplDP/*')
+                                ? ' active text-info'
+                                : '' }}"
+                          
+                                href="{{ route('A0100DP', ['department_id' => $depart->department_id]) }}">
+                                <span class="menu-icon fas fa-chart-bar  "></span> รายงาน</a>
+                                      @endif
+                            @if (
+                                $data->user_role == 6 ||
+                                    $data->user_role == 1 ||
+                                    $data->user_role == 8 ||
+                                    $data->user_role == 9 ||
+                                    $data->user_role == 7)
+                                <a class="nav-link  font-weight-bold {{ Str::startsWith(request()->url(), route('DPUserManage', ['department_id' => $depart->department_id])) ? ' active text-info' : '' }}"
+                                    href="{{ route('DPUserManage', ['department_id' => $depart->department_id]) }}"><span
+                                        class="menu-icon fas fa-users-cog  "></span>
+                                    จัดการผู้ใช้</a>
+                            @endif
+                            <!-- End Account Sidebar Toggle Button -->
+                            </li>
                     </div>
                 </div>
             </nav>

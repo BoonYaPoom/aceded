@@ -135,7 +135,7 @@ class EditManageUserController extends Controller
             })
 
             ->addColumn('name_in_thai', function ($userdata) {
-                $name_in_thai = Provinces::where('code', $userdata->province_id)
+                $name_in_thai = Provinces::where('id', $userdata->province_id)
                     ->pluck('name_in_thai')
                     ->first();
 
@@ -148,7 +148,7 @@ class EditManageUserController extends Controller
             ->filter(function ($userdata) use ($request) {
 
                 if ($request->has('myInput') && !empty($request->myInput)) {
-                    $userdata->where('firstname', 'like', '%' . $request->myInput . '%')->orWhere('lastname', 'like', '%' . $request->myInput . '%');
+                $userdata->where('username', 'like', '%' . $request->myInput . '%')->orwhere('firstname', 'like', '%' . $request->myInput . '%')->orWhere('lastname', 'like', '%' . $request->myInput . '%');
                 }
             })
             ->filterColumn('name_in_thai', function ($userdata) use ($request) {

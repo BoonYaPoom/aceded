@@ -74,8 +74,8 @@ use LdapRecord\Laravel\Facades\Ldap;
 */
 
 
-
-
+Route::get('/exportUsersZone/{department_id}', [ExcelController::class, 'exportUsersZone'])->name('exportUsersZone');
+Route::get('/exportUsersSchool/{department_id}', [ExcelController::class, 'exportUsersSchool'])->name('exportUsersSchool');
 Route::post('/import-excel',[ExcelController::class, 'imporssst'])->name('imporssst');
 Route::get('/upload-image', [PDFcreateController::class, 'upload_image'])->name('upload_image');
 // Clear application cache:

@@ -59,10 +59,10 @@
                                     @endphp
                                     @if (
                                         ($userdepart &&
-                                            ($data->user_role == 3 || $data->user_role == 6 || $data->user_role == 7 || $data->user_role == 8)) ||
+                                            ($data->user_role == 3 || $data->user_role == 6 || $data->user_role == 7 || $data->user_role == 8 || $data->user_role == 9)) ||
                                             $data->user_role == 1)
                                         <tr>
-                                            @if ($userdepart && ($data->user_role == 3 || $data->user_role == 6 || $data->user_role == 7))
+                                            @if ($userdepart && ($data->user_role == 3 || $data->user_role == 6 || $data->user_role == 7 || $data->user_role == 9))
                                                 <td><a
                                                         href="{{ route('A0100DP', ['department_id' => $depart->department_id]) }}">
                                                         {{ $depart->name_short_en }}</a>

@@ -65,7 +65,7 @@ class DepartUsersController extends Controller
                 // $usermanages = $depart->UserDe()->where('department_id', $department_id)
                 // ->where('organization', $organization);
                 $usermanages =
-                DB::table('users')
+                    DB::table('users')
                     ->join('users_department', 'users.user_id', '=', 'users_department.user_id')
                     ->where('users_department.department_id', '=', $department_id)
                     ->where('users.province_id', $provicValue)->select(
@@ -82,7 +82,7 @@ class DepartUsersController extends Controller
                 if ($user_role !== null) {
                     $usermanages->where('user_role', $user_role);
                 }
-            } elseif ( $data->user_role == 6 || $data->user_role == 3) {
+            } elseif ($data->user_role == 6 || $data->user_role == 3) {
                 // ถ้า data->role เป็น 0 แสดงผู้ใช้ที่มีค่า province_id เท่ากับ $provicValue
                 // $usermanages = $depart->UserDe()->where('department_id', $department_id)
                 // ->where('organization', $organization);
@@ -101,6 +101,30 @@ class DepartUsersController extends Controller
                         'users.firstname',
                         'users.lastname'
                     );
+                if ($user_role !== null) {
+                    $usermanages->where('user_role', $user_role);
+                }
+            } elseif ($data->user_role == 9) {
+
+                $zones = DB::table('user_admin_zone')->where('user_id', $data->user_id)->pluck('province_id')->toArray();
+
+                $usermanages =
+                    DB::table('users')
+                    ->join('users_department', 'users.user_id', '=', 'users_department.user_id')
+                    ->where('users_department.department_id', '=', $department_id)
+                    ->whereIn('users.province_id',  $zones)->select(
+                        'users.user_id',
+                        'users.username',
+                        'users.email',
+                        'users.mobile',
+                        'users.userstatus',
+                        'users.province_id',
+                        'users.user_role',
+                        'users.firstname',
+                        'users.lastname'
+                    );
+
+
                 if ($user_role !== null) {
                     $usermanages->where('user_role', $user_role);
                 }
@@ -161,7 +185,7 @@ class DepartUsersController extends Controller
             ->filter(function ($userdata) use ($request) {
 
                 if ($request->has('myInput') && !empty($request->myInput)) {
-                    $userdata->where('firstname', 'like', '%' . $request->myInput . '%')->orWhere('lastname', 'like', '%' . $request->myInput . '%');
+                $userdata->where('username', 'like', '%' . $request->myInput . '%')->orwhere('firstname', 'like', '%' . $request->myInput . '%')->orWhere('lastname', 'like', '%' . $request->myInput . '%');
                 }
             })
             ->filterColumn('name_in_thai', function ($userdata) use ($request) {

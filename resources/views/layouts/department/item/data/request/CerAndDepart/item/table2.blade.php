@@ -23,7 +23,7 @@
                 <tr>
                     <td>{{ $c++ }}</td>
                     <td>{{ $users->firstname }} {{ $users->lastname }}</td>
-                    <td><img src="{{ 'https://aced-lb.nacc.go.th/' . $cer->certificate_file_path }}" width="100"
+                    <td><img onerror="this.onerror=null;this.src={{'https://aced-fn2.nacc.go.th/' . $cer->certificate_file_path}};" src="{{ 'https://aced.nacc.go.th/' . $cer->certificate_file_path }}" width="100"
                             height="100" alt=""
                             onclick="$('#previewimage').prop('src',$(this).prop('src'));$('#modal01').css('display','block');">
                     </td>

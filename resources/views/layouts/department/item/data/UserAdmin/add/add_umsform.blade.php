@@ -288,7 +288,7 @@
                                             $Provinces = \App\Models\Provinces::all();
                                         @endphp
                                         @foreach ($Provinces as $provin)
-                                            <option value="{{ $provin->code }}"> {{ $provin->name_in_thai }} </option>
+                                            <option value="{{ $provin->id }}"> {{ $provin->name_in_thai }} </option>
                                         @endforeach
                                     </select>
                                 </div>

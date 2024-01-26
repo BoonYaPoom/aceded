@@ -245,12 +245,25 @@
                                             onclick="window.location='{{ route('UsersExport', ['department_id' => $depart]) }}'">
                                             <span>Excel</span>
                                         </button>
-                                    @else
+                                    @elseif ($data->user_role == 7)
                                         <button class="btn btn-secondary buttons-excel buttons-html5" tabindex="0"
                                             aria-controls="datatable" type="button"
                                             onclick="window.location='{{ route('exportUsersPro', ['department_id' => $depart, 'provicValue' => $provicValue]) }}'">
                                             <span>Excel</span>
                                         </button>
+                                    @elseif ($data->user_role == 6)
+                                        <button class="btn btn-secondary buttons-excel buttons-html5" tabindex="0"
+                                            aria-controls="datatable" type="button"
+                                            onclick="window.location='{{ route('exportUsersSchool', ['department_id' => $depart, 'provicValue' => $provicValue]) }}'">
+                                            <span>Excel</span>
+                                        </button>
+                                    @elseif ($data->user_role == 9)
+                                        <button class="btn btn-secondary buttons-excel buttons-html5" tabindex="0"
+                                            aria-controls="datatable" type="button"
+                                            onclick="window.location='{{ route('exportUsersZone', ['department_id' => $depart]) }}'">
+                                            <span>Excel</span>
+                                        </button>
+                                    
                                     @endif
 
                                 </div>

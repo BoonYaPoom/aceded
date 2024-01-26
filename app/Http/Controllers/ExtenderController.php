@@ -209,7 +209,26 @@ class ExtenderController extends Controller
                     default:
                         break;
                 }
-            }
+            } elseif ($data->user_role == 9) {
+                 $zones = DB::table('user_admin_zone')->where('user_id', $data->user_id)->pluck('province_id')->toArray();
+                  
+                switch ($department_id) {
+                    case 1:
+                    case 2:
+                    case 3:
+                    case 4:
+                        $query->join('provinces', 'users_extender2.school_province', '=', 'provinces.id')->whereIn('users_extender2.school_province',  $zones)->select('provinces.*', 'users_extender2.*');
+                        break;
+                    case 5:
+                        $query->join('provinces', 'users_extender2.school_province', '=', 'provinces.id')->whereIn('users_extender2.school_province',  $zones)->select('provinces.*', 'users_extender2.*');
+                        break;
+                    case 6:
+                        $query->join('provinces', 'users_extender2.school_province', '=', 'provinces.id')->whereIn('users_extender2.school_province',  $zones)->select('provinces.*', 'users_extender2.*');
+                        break;
+                    default:
+                        break;
+                }
+            } 
         } else {
             $query = DB::table('users_extender2')->get();
         }
