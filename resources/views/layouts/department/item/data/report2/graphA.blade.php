@@ -16,15 +16,16 @@
             var chartDataRe = {!! json_encode($learn) !!};
 
             var dateAllWithId = {!! json_encode($dateAllWithId) !!};
-    
-            console.log(dateAllWithId);
+            var monthsconno = {!! json_encode($monthsconno) !!};
+            var monthscon = {!! json_encode($monthscon) !!};
+
             $(document).ready(function() {
                 $('#selectyear').on('change', function() {
                     var selectedYear = $('#selectyear').val();
                     var selectedYearchartDataRe = chartDataRe.find(data => data.year == selectedYear);
                     var selectedYearDataCon = chartDataCon2.find(data => data.year == selectedYear);
                     var selectedYearDataConno = chartDataConno.find(data => data.year == selectedYear);
-                   
+
 
                     if (selectedYear) {
 
@@ -129,6 +130,19 @@
 
 
 
+                    function getNumberOfStudents(monthId) {
+
+                        const matchingmonthscon = monthsconno.find(data => data.month == monthId && data.year ==
+                            selectedYear);
+                        return matchingmonthscon ? parseInt(matchingmonthscon.user_count) : 0;
+                    }
+
+
+                    function getNumberOfCompletedStudents(monthId) {
+                        const matchingMonthData = monthscon.find(data => data.month == monthId && data.year ==
+                            selectedYear);
+                        return matchingMonthData ? parseInt(matchingMonthData.user_count) : 0;
+                    }
 
                     Highcharts.chart("chartyearregister", {
                         chart: {
@@ -149,7 +163,7 @@
                             }
                         },
                         xAxis: {
-                            categories: '12',
+                            categories: dateAllWithId.map(monthObj => monthObj.month),
                         },
                         legend: {
                             layout: 'vertical',
@@ -165,13 +179,15 @@
                                 }
                             }
                         },
-                        // series: [ {
-                        //     name: 'ผู้กำลังเรียน',
-                        //     data: 
-                        // },{
-                        //     name: 'ผู้สำเร็จการเรียน',
-                        //     data: 
-                        // }],
+                        series: [{
+                            name: 'ผู้กำลังเรียน',
+                            data: dateAllWithId.map(monthObj => getNumberOfStudents(monthObj
+                                .id)),
+                        }, {
+                            name: 'ผู้สำเร็จการเรียน',
+                            data: dateAllWithId.map(monthObj => getNumberOfCompletedStudents(
+                                monthObj.id)),
+                        }],
                     });
                 });
                 $('#selectyear').trigger('change');

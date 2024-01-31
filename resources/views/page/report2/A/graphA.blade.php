@@ -14,16 +14,14 @@
             var chartDataCon2 = {!! json_encode($con) !!};
             var chartDataConno = {!! json_encode($conno) !!};
             var chartDataRe = {!! json_encode($learn) !!};
-            var chartDataCon = {!! json_encode($chartDataCon) !!};
-
+            var monthsconno = {!! json_encode($monthsconno) !!};
+            var monthscon = {!! json_encode($monthscon) !!};
             var dateAll = {!! json_encode($dateAll) !!};
             var dateAllWithId = {!! json_encode($dateAllWithId) !!};
             var modifiedDateAll = dateAllWithId.map(function(element) {
                 return element.id;
             });
-    
 
-            var chartDataCon3 = {!! json_encode($chartDataCon2) !!};
 
             $(document).ready(function() {
                 $('#selectyear, #provin').on('change', function() {
@@ -31,49 +29,36 @@
                     var pro = $('#provin').val();
 
                     var selectedYear = $('#selectyear').val();
-                    
-                    var selectedYearchartDataRe = chartDataRe.find(data => data.year == selectedYear && data.province_name == pro);
-                    var selectedYearDataCon = chartDataCon2.find(data => data.year == selectedYear && data.province_name == pro);
-                    var selectedYearDataConno = chartDataConno.find(data => data.year == selectedYear && data.province_name == pro);
-                    var seriesData = modifiedDateAll.map(function(monthId) {
-                        var chartData = chartDataCon[monthId];
-                        if (chartData && chartData.year == selectedYear ) {
-                            return {
-                                name: 'ผู้สำเร็จการเรียน', // Adjust the name as needed
-                                y: parseInt(chartData.user_count),
-                            };
-                        } else {
-                            return {
-                                name: '',
-                                y: 0,
-                            };
-                        }
-                    });
 
-                    var seriesData2 = modifiedDateAll.map(function(monthId2) {
-                        var chartData2 = chartDataCon3[monthId2];
-                      
-                        if (chartData2 && chartData2.year == selectedYear) {
-                            
-                            return {
-                                name: 'ผู้กำลังเรียน', 
-                                y: parseInt(chartData2.user_count),
-                            };
-                        } else {
-                            return {
-                                name: '',
-                                y: 0,
-                            };
-                        }
-                    });
+                    var selectedYearchartDataRe = chartDataRe.find(data => data.year == selectedYear && data
+                        .province_name == pro);
+                    var selectedYearDataCon = chartDataCon2.find(data => data.year == selectedYear && data
+                        .province_name == pro);
+                    var selectedYearDataConno = chartDataConno.find(data => data.year == selectedYear && data
+                        .province_name == pro);
+
                     console.log(selectedYear);
-                       console.log('Selected Province:', pro);
+                    console.log('Selected Province:', pro);
+
+                    function getNumberOfStudents(monthId) {
+                        const matchingmonthscon = monthsconno.find(data => data.month == monthId && data.year ==
+                            selectedYear && data.province_name == pro);
+                        return matchingmonthscon ? parseInt(matchingmonthscon.user_count) : 0;
+                    }
+
+                    function getNumberOfCompletedStudents(monthId) {
+                        const matchingMonthData = monthscon.find(data => data.month == monthId && data.year ==
+                            selectedYear && data.province_name == pro);
+                            console.log(matchingMonthData);
+                        return matchingMonthData ? parseInt(matchingMonthData.user_count) : 0;
+                    }
+
                     updateChart(selectedYear, pro, selectedYearDataCon, selectedYearDataConno,
-                        selectedYearchartDataRe, seriesData2, seriesData);
+                        selectedYearchartDataRe, getNumberOfStudents, getNumberOfCompletedStudents);
                 });
 
                 function updateChart(selectedYear, pro, selectedYearDataCon, selectedYearDataConno,
-                    selectedYearchartDataRe, seriesData2, seriesData) {
+                    selectedYearchartDataRe, getNumberOfStudents, getNumberOfCompletedStudents) {
                     Highcharts.chart("chartcongratulation", {
                         chart: {
                             style: {
@@ -175,7 +160,6 @@
 
 
 
-
                     Highcharts.chart("chartyearregister", {
                         chart: {
                             type: 'line',
@@ -184,7 +168,7 @@
                             }
                         },
                         title: {
-                            text: 'สรุปข้อมูลประจำ  ปี ' + selectedYear 
+                            text: 'สรุปข้อมูลประจำ  ปี ' + selectedYear
                         },
                         subtitle: {
                             text: 'รายงานจำนวนผู้เรียนทั้งหมดจำแนกรายเดือน'
@@ -195,7 +179,7 @@
                             }
                         },
                         xAxis: {
-                            categories: dateAll
+                            categories: dateAllWithId.map(monthObj => monthObj.month),
                         },
                         legend: {
                             layout: 'vertical',
@@ -213,10 +197,12 @@
                         },
                         series: [{
                             name: 'ผู้กำลังเรียน',
-                            data: seriesData2
+                            data: dateAllWithId.map(monthObj => getNumberOfStudents(monthObj
+                                .id)),
                         }, {
                             name: 'ผู้สำเร็จการเรียน',
-                            data: seriesData
+                            data: dateAllWithId.map(monthObj => getNumberOfCompletedStudents(
+                                monthObj.id)),
                         }],
                     });
                 }

@@ -60,7 +60,21 @@ class UserprovicExport implements
             $i = 1;
             $datauser = $users->map(function ($item) use (&$i) {
                 $proviUser = DB::table('provinces')->where('id', $item->province_id)->value('name_in_thai') ?? '-';
-                $extender2 = DB::table('users_extender2')->where('extender_id', $item->organization)->value('name') ?? '-';
+
+                if ($this->department_id > 5) {
+                    if ($item->organization > 0) {
+                        $extender2 = DB::table('users_extender2')->where('extender_id', $item->organization)->value('name') ?? '-';
+                        $aff = $item->user_affiliation;
+                    } elseif ($item->organization == 0) {
+                        $extender2 = $item->user_affiliation;
+                        $aff = '-';
+                    }
+                } else  {
+
+                    $extender2 = DB::table('users_extender2')->where('extender_id', $item->organization)->value('name') ?? '-';
+                    $aff = $item->user_affiliation;
+                }
+
                 $firstname = $item->firstname;
                 $lastname = $item->lastname;
                 $fullname =  $firstname . '' . '-' . '' . $lastname;
@@ -81,8 +95,8 @@ class UserprovicExport implements
                     'username' => $item->username,
                     'fullname' => $fullname,
                     'mobile' => $fullMobile,
+                    'user_affiliation' =>  $aff,
                     'extender2' => $extender2,
-                    'user_affiliation' => $item->user_affiliation ?? '-',
                     'proviUser' => $proviUser,
                     'createdate' => $TimeDAta,
                     'status' => $item->userstatus,
@@ -110,7 +124,7 @@ class UserprovicExport implements
             'จังหวัด',
             'วันที่สร้าง',
             'สถานะ',
-            'กระทำ',
+       
             // เพิ่มหัวตารางอื่น ๆ ตามต้องการ
         ];
     }

@@ -30,12 +30,13 @@ class ReportAController extends Controller
         $user_role4 = DB::table('users')->where('user_role', 4)->first();
         $learn = DB::table('users')
             ->join('course_learner', 'users.user_id', '=', 'course_learner.user_id')
-            ->where('course_learner.learner_status', '=', 1)
             ->join('provinces', 'users.province_id', '=', 'provinces.id')
+            ->where('course_learner.learner_status', '=', 1)
+            ->where('users.user_role', 4)
             ->select(
                 'provinces.name_in_thai as province_name',
                 DB::raw('EXTRACT(YEAR FROM course_learner.registerdate)  + 543  as year'),
-                DB::raw('COUNT(DISTINCT course_learner.user_id)  as user_count')
+                DB::raw('COUNT(DISTINCT course_learner.user_id) as user_count')
             )
             ->groupBy(
                 'provinces.id',
@@ -49,10 +50,10 @@ class ReportAController extends Controller
             ->join('provinces', 'users.province_id', '=', 'provinces.id')
             ->where('course_learner.learner_status', '=', 1)
             ->where('course_learner.congratulation', '=', 1)
+            ->where('users.user_role', 4)
             ->select(
                 'provinces.name_in_thai as province_name',
                 DB::raw('EXTRACT(YEAR FROM course_learner.registerdate)  + 543  as year'),
-                DB::raw('COUNT(DISTINCT course_learner.user_id) as user_count'),
                 DB::raw('COUNT(DISTINCT course_learner.user_id) as user_count')
             )
             ->groupBy(
@@ -61,49 +62,56 @@ class ReportAController extends Controller
                 DB::raw('EXTRACT(YEAR FROM course_learner.registerdate)')
             )
             ->get();
-        $conno = DB::table('users')
+
+        $combinedResult = $learn->merge($con);
+        $conno = $learn->map(function ($item) use ($con) {
+            $matchingItem = $con->firstWhere(function ($conItem) use ($item) {
+                return $conItem->year == $item->year && $conItem->province_name == $item->province_name;
+            });
+
+            return [
+                'year' => $item->year,
+                'province_name' => $item->province_name,
+                'user_count' => abs(
+                    $item->user_count - ($matchingItem ? $matchingItem->user_count : 0)
+                ),
+            ];
+        });
+
+
+      
+        $monthsconno = DB::table('users')
             ->join('course_learner', 'users.user_id', '=', 'course_learner.user_id')
             ->join('provinces', 'users.province_id', '=', 'provinces.id')
             ->where('course_learner.learner_status', '=', 1)
             ->where('course_learner.congratulation', '=', 0)
             ->select(
-                'provinces.name_in_thai as province_name',
-                DB::raw('EXTRACT(YEAR FROM course_learner.registerdate)  + 543  as year'),
-                DB::raw('COUNT(DISTINCT course_learner.user_id) as user_count')
-            )
-            ->groupBy(
-                'provinces.id',
-                'provinces.name_in_thai',
-                DB::raw('EXTRACT(YEAR FROM course_learner.registerdate)')
-            )
-            ->get();
-        $monthsconno = DB::table('users')
-            ->join('course_learner', 'users.user_id', '=', 'course_learner.user_id')
-
-            ->where('course_learner.learner_status', '=', 1)
-            ->where('course_learner.congratulation', '=', 0)
-            ->select(
-
+            'provinces.name_in_thai as province_name',
                 DB::raw('EXTRACT(YEAR FROM course_learner.registerdate)  + 543  as year'),
                 DB::raw('TO_CHAR(course_learner.registerdate, \'MM\') as month'),
                 DB::raw('COUNT(DISTINCT course_learner.user_id) as user_count')
             )
             ->groupBy(
+            'provinces.id',
+            'provinces.name_in_thai',
                 DB::raw('TO_CHAR(course_learner.registerdate, \'MM\')')
             )
             ->groupBy(DB::raw('EXTRACT(YEAR FROM course_learner.registerdate)'))
             ->get();
         $monthscon = DB::table('users')
             ->join('course_learner', 'users.user_id', '=', 'course_learner.user_id')
-
+            ->join('provinces', 'users.province_id', '=', 'provinces.id')
             ->where('course_learner.learner_status', '=', 1)
             ->where('course_learner.congratulation', '=', 1)
             ->select(
+            'provinces.name_in_thai as province_name',
                 DB::raw('EXTRACT(YEAR FROM course_learner.registerdate)  + 543  as year'),
                 DB::raw('TO_CHAR(course_learner.registerdate, \'MM\') as month'),
                 DB::raw('COUNT(DISTINCT course_learner.user_id) as user_count')
             )
             ->groupBy(
+            'provinces.id',
+            'provinces.name_in_thai',
                 DB::raw('TO_CHAR(course_learner.registerdate, \'MM\')')
             )
             ->groupBy(DB::raw('EXTRACT(YEAR FROM course_learner.registerdate)'))
@@ -120,56 +128,8 @@ class ReportAController extends Controller
             ];
         }, $dateAll, array_keys($dateAll));
 
-        $chartDataCon = [];
-        $chartDataCon2 = [];
 
-
-
-        foreach ($dateAllWithId as $monthWithId) {
-
-            $monthId = $monthWithId['id'];
-            $matchingMonth = null;
-            $matchingMonth2 = null;
-            foreach ($monthscon as $monthData) {
-                if ($monthData->month == $monthId) {
-                    $matchingMonth = $monthData;
-                    break;
-                }
-            }
-            $chartDataCon[$monthId] = [
-                'year' => $matchingMonth ? $matchingMonth->year : null,
-                'user_count' => $matchingMonth ? $matchingMonth->user_count : 0,
-           
-            ];
-            foreach ($monthsconno as $monthData2) {
-                if ($monthData2->month == $monthId) {
-                    $matchingMonth2 = $monthData2;
-                    break;
-                }
-            }
-            $chartDataCon2[$monthId] = [
-                'year' => $matchingMonth2 ? $matchingMonth2->year : null,
-                'user_count' => $matchingMonth2 ? $matchingMonth2->user_count : 0,
-        
-            ];
-        }
-
-        for ($monthNumber = 1; $monthNumber <= 12; $monthNumber++) {
-            if (!isset($chartDataCon[$monthNumber])) {
-                $chartDataCon[$monthNumber] = [
-                    'year' => null,
-                    'user_count' => 0,
-                ];
-            }
-            if (!isset($chartDataCon2[$monthNumber])) {
-                $chartDataCon2[$monthNumber] = [
-                    'year' => null,
-                    'user_count' => 0,
-                ];
-            }
-        }
-
-
-        return view('page.report2.A.reporta', compact('provin', 'chartDataCon', 'dateAll', 'chartDataCon2', 'dateAllWithId', 'monthscon', 'monthsconno', 'count1', 'count3', 'count4', 'user_role4', 'user_role1', 'user_role3', 'learn', 'con', 'conno'));
+        return view('page.report2.A.reporta',
+        compact('dateAll', 'provin', 'dateAllWithId', 'monthscon', 'monthsconno', 'count1', 'count3', 'count4', 'learn', 'con', 'conno'));
     }
 }

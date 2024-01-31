@@ -7,14 +7,14 @@
             <!-- form column -->
             <div class="col-md-1"><span class="mt-1 ">ปี</span></div>
             <div class="col-md-3">
-                <div class=""><select id="selectyear" name="selectyear" class="form-control" data-toggle="select2"
-                        data-placeholder="ปี" data-allow-clear="false" onchange="$('#formreport').submit();">
-                        <option value="2566"> 2566 </option>
-                        <option value="2567" selected> 2567 </option>
-                        <option value="2568"> 2568 </option>
+                  <div class=""><select id="selectyear" name="selectyear" class="form-control" data-toggle="select2"
+                    data-placeholder="ปี" data-allow-clear="false">
+                    <option value="2566"> 2566 </option>
+                    <option value="2567" selected> 2567 </option>
+                    <option value="2568"> 2568 </option>
 
-                    </select>
-                </div>
+                </select>
+            </div>
             </div>
 
             <div class="col-md-1 text-right"><button type="button" class="btn btn-light btn-icon d-xl-none"
@@ -105,5 +105,6 @@
 
 
 
+    @include('page.report2.B.graphB')
     </div><!-- /.page-inner -->
 @endsection

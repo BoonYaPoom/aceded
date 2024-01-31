@@ -8,7 +8,7 @@ use App\Models\Extender2;
 use App\Models\Provinces;
 use App\Models\UserDepartment;
 use Maatwebsite\Excel\Concerns\WithHeadings;
-
+use Illuminate\Support\Str;
 use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Concerns\ShouldAutoSize;
 use Maatwebsite\Excel\Concerns\WithEvents;
@@ -34,7 +34,20 @@ class UsersExport implements
         $i = 1;
         $datauser = $users->map(function ($item) use (&$i) {
             $proviUser = DB::table('provinces')->where('id', $item->province_id)->value('name_in_thai') ?? '-';
-            $extender2 = DB::table('users_extender2')->where('extender_id', $item->organization)->value('name') ?? '-';
+
+            if ($item->organization > 0) {
+                $extender2 = DB::table('users_extender2')->where('extender_id', $item->organization)->value('name') ?? '-';
+                $aff = $item->user_affiliation;
+            } elseif ($item->organization == 0) {
+                if (Str::contains($item->user_affiliation, 'ระดับ')) {
+                    $extender2 = DB::table('users_extender2')->where('extender_id', $item->organization)->value('name') ?? '-';
+                    $aff = $item->user_affiliation;
+                } else {
+                    $extender2 = $item->user_affiliation;
+                    $aff = '-';
+                }
+            }
+
             $firstname = $item->firstname;
             $lastname = $item->lastname;
             $fullname =  $firstname . '' . '-' . '' . $lastname;
@@ -56,14 +69,14 @@ class UsersExport implements
                 'username' => $item->username,
                 'fullname' => $fullname,
                 'mobile' => $fullMobile,
+                'user_affiliation' => $aff,
                 'extender2' => $extender2,
-                'user_affiliation' => $item->user_affiliation ?? '-',
                 'proviUser' => $proviUser,
                 'createdate' => $TimeDAta,
                 'status' => $item->userstatus,
             ];
         });
-    
+
         return $datauser;
     }
 
@@ -79,7 +92,7 @@ class UsersExport implements
             'จังหวัด',
             'วันที่สร้าง',
             'สถานะ',
-            'กระทำ',
+
             // เพิ่มหัวตารางอื่น ๆ ตามต้องการ
         ];
     }

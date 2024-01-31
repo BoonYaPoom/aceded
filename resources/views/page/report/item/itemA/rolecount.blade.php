@@ -5,9 +5,8 @@
             <div class="col">
                 <!-- .metric -->
 
-                <a @if ($user_role1) href="{{ route('UserManage', ['user_role' => $user_role1->user_role]) }}"
-                @else
-                href="" @endif
+                <a
+                href=""
                     class="metric metric-bordered align-items-center">
                     <h2 class="metric-label"> ผู้ดูแลระบบ </h2>
                     <p class="metric-value h3">
@@ -20,9 +19,8 @@
             <!-- metric column -->
             <div class="col">
                 <!-- .metric -->
-                <a @if ($user_role3) href="{{ route('UserManage', ['user_role' => $user_role3->user_role]) }}"
-                @else
-                href="" @endif
+                <a 
+                href="" 
                     class="metric metric-bordered align-items-center">
                     <h2 class="metric-label"> ผู้สอน </h2>
                     <p class="metric-value h3">
@@ -34,9 +32,8 @@
             <!-- metric column -->
             <div class="col">
                 <!-- .metric -->
-                <a @if ($user_role4) href="{{ route('UserManage', ['user_role' => $user_role4->user_role]) }}"
-                @else
-                href="" @endif
+                <a 
+                href=""
                     class="metric metric-bordered align-items-center">
                     <h2 class="metric-label"> ผู้เรียน </h2>
                     <p class="metric-value h3">
