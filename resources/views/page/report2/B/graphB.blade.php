@@ -4,29 +4,65 @@
 
               var selectedYear = $('#selectyear').val();
 
+              //graphlearner
               var learn = {!! json_encode($learn) !!};
-              var selectedYearDataCon = learn.find(data => data.year == selectedYear);
-              var filteredData = learn.filter(function(data) {
-                  return data.year == selectedYear;
-              });
-
+              var filteredData = learn.filter((data) => data.year == selectedYear);
               // เรียงลำดับข้อมูลตาม user_count จากมากไปน้อย
-              filteredData.sort(function(a, b) {
-                  return b.user_count - a.user_count;
-              });
+              filteredData.sort((a, b) => b.user_count - a.user_count);
 
               // ดึงค่าที่มากที่สุด 10 ตัว
               var top10UserCount = filteredData.slice(0, 10);
-
-
               var data = top10UserCount.map(item => ({
-                      name: item.province_name,
-                      y: item ? parseInt(
-                          item
-                          .user_count) : 0,
-                  })
+                  name: item.province_name,
+                  y: item ? parseInt(
+                      item
+                      .user_count) : 0,
+              }));
 
-              );
+              //courserating
+              var organ = {!! json_encode($organization) !!};
+              var filteredOrgan = organ.filter((data) => data.year == selectedYear);
+              filteredOrgan.sort((a, b) => b.user_count - a.user_count);
+              var top10Organ = filteredOrgan.slice(0, 10);
+              var OrganData = top10Organ.map(item => ({
+                  name: item.exten_name,
+                  y: item ? parseInt(
+                      item
+                      .user_count) : 0,
+              }));
+
+              //courselogin
+              var aff = {!! json_encode($aff) !!}
+              var fileAff = aff.filter((data) => data.year == selectedYear)
+              fileAff.sort((a, b) => b.user_count - a.user_count)
+              var top10Aff = fileAff.slice(0, 10)
+              var AffData = top10Aff.map(item => ({
+                  name: item.aff_name,
+                  y: item ? parseInt(
+                      item
+                      .user_count) : 0,
+              }))
+
+
+              //   var organi4 = {!! json_encode($organi4) !!}
+              //   var fileorgani4 = organi4.filter((data) => data.year == selectedYear)
+              //   fileorgani4.sort((a, b) => b.user_count - a.user_count)
+              //   var top10organi4 = fileorgani4.slice(0, 10)
+              //   var organi4Data = top10organi4.map(item => ({
+              //       name: item.aff_name,
+              //       y: item ? parseInt(
+              //           item
+              //           .user_count) : 0,
+              //   }))
+
+
+              console.log(data);
+              console.log(OrganData);
+              console.log(AffData);
+              //   console.log(organi4Data);
+
+
+
               Highcharts.chart("graphlearner", {
                   chart: {
                       type: 'column'
@@ -71,23 +107,23 @@
                   }]
               });
 
-
-              Highcharts.chart("coursemulti", {
+              
+                    Highcharts.chart("courserating", {
                   chart: {
                       type: 'column'
                   },
                   title: {
-                      text: 'จำนวนสื่อ Multimedia ทั้งหมด'
+                      text: 'หลักสูตรการศึกษาระดับอุดมศึกษาผู้เข้าเรียนรายสถาบันระดับอุดมศึกษา 10 อันดับแรก'
                   },
                   subtitle: {
-                      text: 'จำนวนสื่อ Multimedia ทั้งหมด'
+                      text: 'หลักสูตรการศึกษาระดับอุดมศึกษาผู้เข้าเรียนรายสถาบันระดับอุดมศึกษา 10 อันดับแรก'
                   },
                   xAxis: {
                       type: 'category'
                   },
                   yAxis: {
                       title: {
-                          text: 'จำนวนสื่อ Multimedia ทั้งหมด'
+                          text: 'หลักสูตรการศึกษาระดับอุดมศึกษาผู้เข้าเรียนรายสถาบันระดับอุดมศึกษา 10 อันดับแรก'
                       }
                   },
                   legend: {
@@ -107,185 +143,40 @@
                   },
                   tooltip: {
                       headerFormat: '<span style="font-size:12px">{series.name}</span><br>',
-                      pointFormat: '<span>{point.name}</span> : <b>{point.y}</b> รายการ<br/>'
+                      pointFormat: '<span>{point.name}</span> : <b>{point.y}</b> คน<br/>'
                   },
-
                   series: [{
-
+                      name: 'รวมทุกหลักสูตรรายจังหวัด 10 อันดับแรก',
+                      colorByPoint: true,
+                      data: OrganData,
                   }]
-              });
-
-              Highcharts.chart("courserating", {
-                  chart: {
-                      type: 'column'
-                  },
-                  title: {
-                      text: 'หลักสูตร/บทเรียนยอดนิยม(Rating)'
-                  },
-                  subtitle: {
-                      text: 'หลักสูตร/บทเรียนยอดนิยม(Rating)'
-                  },
-                  xAxis: {
-                      type: 'category'
-                  },
-                  yAxis: {
-                      title: {
-                          text: 'หลักสูตร/บทเรียนยอดนิยม(Rating)'
-                      }
-                  },
-                  legend: {
-                      enabled: false
-                  },
-                  plotOptions: {
-                      lang: {
-                          thousandsSep: ','
-                      },
-                      series: {
-                          borderWidth: 0,
-                          dataLabels: {
-                              enabled: true,
-                              data: '{point.y}'
-                          }
-                      }
-                  },
-                  tooltip: {
-                      headerFormat: '<span style="font-size:12px">{series.name}</span><br>',
-                      pointFormat: '<span>{point.name}</span> : <b>{point.y}</b> คน<br/>'
-                  },
-
-                  // series: [{
-                  //     name: 'จำนวน Rating',
-                  //     colorByPoint: true,
-                  //     data: chartDataFav.map(item => ({
-                  //         name: item.choice,
-                  //         y: item.count
-                  //     }))
-                  // }]
-              });
-
-              Highcharts.chart("coursedoc", {
-                  chart: {
-                      type: 'column'
-                  },
-                  title: {
-                      text: 'จำนวนเอกสาร, ebook /หลักสูตร'
-                  },
-                  subtitle: {
-                      text: 'จำนวนเอกสาร, ebook /หลักสูตร'
-                  },
-                  xAxis: {
-                      categories: '1',
-                      crosshair: true
-                  },
-                  yAxis: {
-                      title: {
-                          text: 'จำนวนเอกสาร, ebook /หลักสูตร'
-                      }
-                  },
-                  legend: {
-                      enabled: true
-                  },
-                  plotOptions: {
-                      lang: {
-                          thousandsSep: ','
-                      },
-                      series: {
-                          borderWidth: 0,
-                          dataLabels: {
-                              enabled: true,
-                              data: '{point.y}'
-                          }
-                      }
-                  },
-                  tooltip: {
-                      headerFormat: '<span style="font-size:12px">{series.name}</span><br>',
-                      pointFormat: '<span>{point.name}</span> : <b>{point.y}</b> รายการ<br/>'
-                  },
-                  // series: [{
-                  //     name: 'ebook',
-                  //     data: chartDataBook0.map(item => item.count)
-                  // }, {
-                  //     name: 'เอกสาร',
-                  //     data: chartDataBook1.map(item => item.count)
-                  // }]
-
 
               });
-
-              Highcharts.chart("coursesearch", {
-                  chart: {
-                      type: 'column'
-                  },
-                  title: {
-                      text: 'คำค้นหาหลักสูตร/บทเรียนที่มีการค้นหาสูง 20 อันดับ'
-                  },
-                  subtitle: {
-                      text: 'คำค้นหาหลักสูตร/บทเรียนที่มีการค้นหาสูง 20 อันดับ'
-                  },
-                  xAxis: {
-                      type: 'category'
-                  },
-                  yAxis: {
-                      title: {
-                          text: 'คำค้นหาหลักสูตร/บทเรียนที่มีการค้นหาสูง 20 อันดับ'
-                      }
-                  },
-                  legend: {
-                      enabled: false
-                  },
-                  plotOptions: {
-                      lang: {
-                          thousandsSep: ','
-                      },
-                      series: {
-                          borderWidth: 0,
-                          dataLabels: {
-                              enabled: true,
-                              data: '{point.y}'
-                          }
-                      }
-                  },
-                  tooltip: {
-                      headerFormat: '<span style="font-size:12px">{series.name}</span><br>',
-                      pointFormat: '<span>{point.name}</span> : <b>{point.y}</b> คน<br/>'
-                  },
-                  // series: [{
-                  //     name: 'จำนวนค้นหา',
-                  //     colorByPoint: true,
-                  //     data: chartSearch.map(item => ({
-                  //         name: item.choice,
-                  //         y: item.count
-                  //     }))
-                  // }]
-              });
-
+              
               Highcharts.chart("courselogin", {
                   chart: {
                       type: 'column'
                   },
                   title: {
-                      text: 'สถิติช่วงเวลาการเข้าระบบ (Login)แยกตามอุปกรณ์'
+                      text: 'สถิติผู้เข้าเรียนหลักสูตรเจ้าหน้าที่รัฐระดับกระทรวง 10 อันดับแรก'
                   },
                   subtitle: {
-                      text: 'สถิติช่วงเวลาการเข้าระบบ (Login)แยกตามอุปกรณ์'
+                      text: 'สถิติผู้เข้าเรียนหลักสูตรเจ้าหน้าที่รัฐระดับกระทรวง 10 อันดับแรก'
                   },
                   xAxis: {
-                      categories: '1',
-                      crosshair: true
+                      type: 'category'
                   },
                   yAxis: {
                       title: {
-                          text: 'สถิติช่วงเวลาการเข้าระบบ (Login)แยกตามอุปกรณ์'
+                          text: 'สถิติผู้เข้าเรียนหลักสูตรเจ้าหน้าที่รัฐระดับกระทรวง 10 อันดับแรก'
                       }
                   },
                   legend: {
-                      enabled: false,
-
+                      enabled: false
                   },
                   plotOptions: {
                       lang: {
-                          thousandsSep: ',',
-
+                          thousandsSep: ','
                       },
                       series: {
                           borderWidth: 0,
@@ -297,11 +188,17 @@
                   },
                   tooltip: {
                       headerFormat: '<span style="font-size:12px">{series.name}</span><br>',
-                      pointFormat: '<span>{point.name}</span> : <b>{point.y}</b> ครั้ง<br/>'
+                      pointFormat: '<span>{point.name}</span> : <b>{point.y}</b> คน<br/>'
                   },
-
+                  series: [{
+                      name: 'สถิติผู้เข้าเรียนหลักสูตรเจ้าหน้าที่รัฐระดับกระทรวง 10 อันดับแรก',
+                      colorByPoint: true,
+                      data: AffData,
+                  }]
 
               });
+
+
           });
           $('#selectyear').trigger('change');
 

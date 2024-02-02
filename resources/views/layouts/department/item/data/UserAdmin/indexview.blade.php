@@ -282,7 +282,7 @@
 
                                             @endphp
                                             @foreach ($Provinces as $provin)
-                                                <option value="{{ $provin->code }}"> {{ $provin->name_in_thai }}
+                                                <option value="{{ $provin->id }}"> {{ $provin->name_in_thai }}
                                                 </option>
                                             @endforeach
                                         </select>

@@ -272,16 +272,17 @@ class EditManageUserController extends Controller
             DB::table('users_department')
                 ->where('user_id', $user_id)
                 ->delete();
-
+            $randomNumber = rand(10, 99);
+            $Usertimestamp =  now()->timestamp .  $randomNumber;
             $maxUserDepartmentId = DB::table('users_department')->max('user_department_id');
             foreach ($department_data as $departmentId) {
-                $newUserDepartmentId = $maxUserDepartmentId + 1;
+                $newUserDepartmentId = $Usertimestamp;
                 DB::table('users_department')->insert([
                     'user_department_id' => $newUserDepartmentId,
                     'user_id' =>  $user_id,
                     'department_id' => $departmentId,
                 ]);
-                $maxUserDepartmentId = $newUserDepartmentId;
+                $Usertimestamp = $newUserDepartmentId;
             }
         }
 
@@ -409,10 +410,13 @@ class EditManageUserController extends Controller
             'mobile.required' => 'กรุณากรอกเบอร์โทร',
             'user_role.required' => 'กรุณาเลือกประเภทผู้ใช้งาน',
         ]);
+      
         $maxUserId = Users::max('user_id');
+        $randomNumber = rand(10, 99);
+        $Usertimestamp =  now()->timestamp .  $randomNumber;
         $newUserId = $maxUserId + 1;
         $usermanages = new Users();
-        $usermanages->user_id = $newUserId;
+        $usermanages->user_id = $Usertimestamp;
         $usermanages->username = $request->username;
         $usermanages->firstname = $request->firstname;
         $usermanages->lastname = $request->lastname;
@@ -515,18 +519,18 @@ class EditManageUserController extends Controller
 
         $usermanages->save();
 
-
+  
         $maxUserDepartmentId = DB::table('users_department')->max('user_department_id');
         $department_data = $request->department_data;
         if (!empty($department_data)) {
             foreach ($department_data as $departmentId) {
                 $newUserDepartmentId = $maxUserDepartmentId + 1;
                 DB::table('users_department')->insert([
-                    'user_department_id' => $newUserDepartmentId,
+                    'user_department_id' => $Usertimestamp,
                     'user_id' =>    $usermanages->user_id,
                     'department_id' => $departmentId,
                 ]);
-                $maxUserDepartmentId = $newUserDepartmentId;
+                $Usertimestamp = $newUserDepartmentId;
             }
         }
 

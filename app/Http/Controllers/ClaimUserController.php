@@ -16,20 +16,19 @@ class ClaimUserController extends Controller
         $claimuser = DB::table('department_claim')
             ->select('claim_user_id', 'claim_status') // เลือกเฉพาะคอลัมน์ claim_user_id
             ->where(function ($query) {
-                $query->where('claim_status', 1)
-               ;
+                $query->where('claim_status', 1);
             })
             ->where('claim_status', '<', 2)
             ->distinct()
             ->get();
-        $claimData= ' ';
+        $claimData = ' ';
         foreach ($claimuser as $user) {
 
-            if($claimData){
+            if ($claimData) {
                 $claimData = DB::table('department_claim')
                     ->where('claim_user_id', $user->claim_user_id)
                     ->get();
-            }elseif ($claimData === null) {
+            } elseif ($claimData === null) {
 
                 $claimData = null;
             }
@@ -46,8 +45,11 @@ class ClaimUserController extends Controller
         // ดึงข้อมูลจากตาราง 'department_claim' ที่มี claim_user_id เท่ากับ $claimUserId
 
         $claimData = DB::table('department_claim')->where('claim_user_id', $claimUserId)
+            ->where('department_claim.claim_user_id', '>', 0)
+            ->where('department_claim.claim_status', '<', 2)
             ->leftJoin('department', 'department_claim.claim_department_id', '=', 'department.department_id')
             ->select('department_claim.*', 'department.name_th as department_name')
+
             ->get();
 
         // ส่งข้อมูลไปยัง view ที่คุณจะใช้แสดงข้อมูลใน Modal
@@ -66,6 +68,7 @@ class ClaimUserController extends Controller
         DB::table('users_department')
             ->where('user_id', $claim_user_id)
             ->delete();
+
         $maxUserDepartmentId = DB::table('users_department')->max('user_department_id');
         foreach ($users as $departmentId) {
             if ($departmentId->claim_status == 1) {

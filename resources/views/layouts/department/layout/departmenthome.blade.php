@@ -107,10 +107,7 @@
     <script src="{{ asset('/javascript/vendor/select2/js/select2.min.js') }}"></script>
     <script src="{{ asset('/javascript/vendor/nouislider/wNumb.js') }}"></script>
     <script src="{{ asset('/javascript/vendor/select2/js/select2-demo.js') }}"></script>
-
     <script src="{{ asset('/javascript/vendor/masonry-layout/masonry.pkgd.min.js') }}"></script>
-
-
     <script src="{{ asset('/javascript/vendor/nouislider/nouislider.min.js') }}"></script>
     <script type="text/javascript"
         src="{{ asset('/javascript/vendor/bootstrap-colorpicker/js/bootstrap-colorpicker.min.js') }}"></script>
@@ -121,8 +118,6 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
     <script src="{{ asset('/javascript/vendor/flatpickr/flatpickr.min.js') }}"></script>
     <!-- BEGIN PLUGINS JS -->
-
-
     <script src="{{ asset('/javascript/vendor/datatables/jquery.dataTables.min.js') }}"></script>
     <script src="{{ asset('/javascript/vendor/datatables/extensions/buttons/dataTables.buttons.min.js') }}"></script>
     <script src="{{ asset('/javascript/vendor/datatables/extensions/buttons/buttons.bootstrap4.min.js') }}"></script>

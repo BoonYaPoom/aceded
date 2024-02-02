@@ -29,7 +29,7 @@
                             <h6 class="dropdown-header d-none d-md-block d-lg-none"> {{ $data->firstname }} </h6>
                             <a class="dropdown-item" href="{{ route('edit-profile') }}">
                                 <span class="dropdown-icon oi oi-person"></span> Profile</a>
-                            <a class="dropdown-item" href="{{ url('https://aced-lb.nacc.go.th')}}"><span class="dropdown-icon fas fa-share"></span>
+                            <a class="dropdown-item" href="{{ url('https://aced.nacc.go.th')}}"><span class="dropdown-icon fas fa-share"></span>
                                 Fontend</a>
                             <a class="dropdown-item" href="{{ route('logout') }}"><span
                                     class="dropdown-icon oi oi-account-logout"></span> Logout</a>
@@ -104,8 +104,8 @@
                                 <a href="/" class="menu-link "><span class="menu-icon fas fa fa-users"></span>
                                     <span class="menu-text">กิจกรรม</span></a>
                             </li> -->
-                            <li class="menu-item {{ Str::startsWith(request()->url(), route('Reportview')) || request()->is('report', 'report/*') ? ' has-active text-info' : '' }}">
-                                <a href="{{ route('Reportview') }}" class="menu-link"><span class="menu-icon fas fa-chart-bar"></span>
+                            <li class="menu-item {{ Str::startsWith(request()->url(), route('A0100')) || request()->is('rpl', 'rpl/*') ? ' has-active text-info' : '' }}">
+                                <a href="{{ route('A0100') }}" class="menu-link"><span class="menu-icon fas fa-chart-bar"></span>
                                     <span class="menu-text"> รายงาน</span></a>
                             </li>
                       

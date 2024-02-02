@@ -49,12 +49,14 @@
                         </td>
                     </tr>
                     <!-- tr -->
-                    @foreach ($exams->sortBy('exam_id') as $index => $examtem)
-                        @php
-                            $examsNum = $index + 2;
+                    
+                    @php
+                         $i = 2;
                         @endphp
+                    @foreach ($exams->sortBy('exam_id') as $index => $examtem)
+          
                         <tr>
-                            <td><a href="#">{{ $examsNum }}</a></td>
+                            <td><a href="#">{{ $i++ }}</a></td>
                             <td><a>{{ $examtem->exam_th }}</a></td>
 
                             <td class="align-middle"> <label

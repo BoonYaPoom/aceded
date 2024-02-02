@@ -43,6 +43,19 @@ use App\Http\Controllers\PersonController;
 use App\Http\Controllers\ProviDepartUserController;
 use App\Http\Controllers\Report\ReportAController;
 use App\Http\Controllers\Report\ReportBController;
+use App\Http\Controllers\Report\ReportCController;
+use App\Http\Controllers\Report\Table\T0101Controller;
+use App\Http\Controllers\Report\Table\T0103Controller;
+use App\Http\Controllers\Report\Table\T0116Controller;
+use App\Http\Controllers\Report\Table\T0117Controller;
+use App\Http\Controllers\Report\Table\T0118Controller;
+use App\Http\Controllers\Report\Table\T0119Controller;
+use App\Http\Controllers\Report\Table\T0120Controller;
+use App\Http\Controllers\Report\Table\T0121Controller;
+use App\Http\Controllers\Report\Table\T0122Controller;
+use App\Http\Controllers\Report\Table\T0123Controller;
+use App\Http\Controllers\Report\Table\T0124Controller;
+use App\Http\Controllers\Report\Table\T0125Controller;
 use App\Http\Controllers\ReportAllController;
 use App\Http\Controllers\ReportDepartment\ReportADPController;
 use App\Http\Controllers\ReportJsonController;
@@ -76,7 +89,7 @@ use LdapRecord\Laravel\Facades\Ldap;
 
 Route::get('/exportUsersZone/{department_id}', [ExcelController::class, 'exportUsersZone'])->name('exportUsersZone');
 Route::get('/exportUsersSchool/{department_id}', [ExcelController::class, 'exportUsersSchool'])->name('exportUsersSchool');
-Route::post('/import-excel',[ExcelController::class, 'imporssst'])->name('imporssst');
+Route::post('/import-excel', [ExcelController::class, 'imporssst'])->name('imporssst');
 Route::get('/upload-image', [PDFcreateController::class, 'upload_image'])->name('upload_image');
 // Clear application cache:
 Route::get('/generatePdfT0101', [PDFcreateController::class, 'generatePdfT0101'])->name('generatePdfT0101');
@@ -570,39 +583,22 @@ Route::group(['middleware' => 'IsLoggedIn'], function () {
             Route::prefix('rpl')->group(function () {
                 Route::get('/A0100', [ReportAController::class, 'ReportA'])->name('A0100');
                 Route::get('/B0100', [ReportBController::class, 'ReportB'])->name('B0100');
+                Route::get('/Table', [ReportCController::class, 'ReportC'])->name('table');
+                Route::prefix('Table')->group(function () {
+                    Route::get('/T0101', [T0101Controller::class, 'T0101'])->name('T0101');
+                    Route::get('/T0103', [T0103Controller::class, 'T0103'])->name('T0103');
+                    Route::get('/T0116', [T0116Controller::class, 'T0116'])->name('T0116');
+                    Route::get('/T0117', [T0117Controller::class, 'T0117'])->name('T0117');
+                    Route::get('/T0118', [T0118Controller::class, 'T0118'])->name('T0118');
+                    Route::get('/T0119', [T0119Controller::class, 'T0119'])->name('T0119');
+                    Route::get('/T0120', [T0120Controller::class, 'T0120'])->name('T0120');
+                    Route::get('/T0121', [T0121Controller::class, 'T0121'])->name('T0121');
+                    Route::get('/T0122', [T0122Controller::class, 'T0122'])->name('T0122');
+                    Route::get('/T0123', [T0123Controller::class, 'T0123'])->name('T0123');
+                    Route::get('/T0124', [T0124Controller::class, 'T0124'])->name('T0124');
+                    Route::get('/T0125', [T0125Controller::class, 'T0125'])->name('T0125');
+                });
             });
-
-            Route::prefix('report')->group(function () {
-                Route::get('/home', [ReportAllController::class, 'Reportview'])->name('Reportview');
-                Route::get('/home/D0100', [ReportAllController::class, 'ReportA'])->name('D0100');
-                Route::get('/home/dashboard', [ReportAllController::class, 'ReportB'])->name('dashboard');
-                Route::get('/home/table', [ReportAllController::class, 'ReportC'])->name('table');
-
-                Route::get('/home/T0101', [ReportAllController::class, 'ReportUserAuth'])->name('ReportUserAuth');
-                Route::get('/home/T0108', [ReportAllController::class, 'trainUserAuth'])->name('trainUserAuth');
-                Route::get('/home/T0103', [ReportAllController::class, 'bookUserAuth'])->name('bookUserAuth');
-                Route::get('/home/T0104', [ReportAllController::class, 'LoginUserAuth'])->name('LoginUserAuth');
-                Route::get('/home/T0110', [ReportAllController::class, 'BackUserAuth'])->name('BackUserAuth');
-                Route::get('/home/T0111', [ReportAllController::class, 'reportMUserAuth'])->name('reportMUserAuth');
-                Route::get('/home/T0112', [ReportAllController::class, 'reportYeaAuth'])->name('reportYeaAuth');
-                Route::get('/home/T0113', [ReportAllController::class, 'reportQuarterlyAuth'])->name('reportQuarterlyAuth');
-                Route::get('/home/T0114', [ReportAllController::class, 'BackupFullUserAuth'])->name('BackupFullUserAuth');
-                Route::get('/home/T0115', [ReportAllController::class, 'LogFileUserAuth'])->name('LogFileUserAuth');
-                Route::get('/home/T0116', [ReportAllController::class, 't0116'])->name('t0116');
-                Route::get('/home/T0117', [ReportAllController::class, 't0117'])->name('t0117');
-                Route::get('/home/T0118', [ReportAllController::class, 't0118'])->name('t0118');
-                Route::get('/home/T0119', [ReportAllController::class, 't0119'])->name('t0119');
-                Route::get('/home/T0120', [ReportAllController::class, 't0120'])->name('t0120');
-                Route::get('/home/T0121', [ReportAllController::class, 't0121'])->name('t0121');
-                Route::get('/home/T0122', [ReportAllController::class, 't0122'])->name('t0122');
-                Route::get('/home/T0123', [ReportAllController::class, 't0123'])->name('t0123');
-                Route::get('/home/T0124', [ReportAllController::class, 't0124'])->name('t0124');
-                Route::get('/home/T0125', [ReportAllController::class, 't0125'])->name('t0125');
-                Route::post('/get-user-data', [ReportAllController::class, 'getUserData'])->name('get-Uata');
-            });
-
-
-
 
             Route::prefix('datareport')->group(function () {
                 Route::get('/T0103', [ReportJsonController::class, 't0103'])->name('t0103json');

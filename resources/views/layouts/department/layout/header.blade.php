@@ -29,7 +29,7 @@
                             <h6 class="dropdown-header d-none d-md-block d-lg-none"> {{ $data->firstname }} </h6>
                             <a class="dropdown-item" href="{{ route('edit-profile') }}">
                                 <span class="dropdown-icon oi oi-person"></span> Profile</a>
-                            <a class="dropdown-item" href="{{ url('https://aced-lb.nacc.go.th/' . $depart->name_short_en )}}"><span class="dropdown-icon fas fa-share"></span>
+                            <a class="dropdown-item" href="{{ url('https://aced.nacc.go.th/' . $depart->name_short_en . '/?clang=th')}}"><span class="dropdown-icon fas fa-share"></span>
                                 Fontend</a>
                             <a class="dropdown-item" href="{{ route('logout') }}"><span
                                     class="dropdown-icon oi oi-account-logout"></span> Logout</a>

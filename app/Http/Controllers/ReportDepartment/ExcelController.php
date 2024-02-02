@@ -262,10 +262,6 @@ class ExcelController extends Controller
                         if (empty(trim($rowsss[7]))) {
                             $duplicateFields[] = 'รหัสประจำตัวประชาชนไม่สามารถเป็นค่าว่างได้';
                         }
-                        $trimmedName = trim($rowsss[1]);
-                        if (in_array($trimmedName, $duplicateFields)) {
-                            $duplicateFields[] = 'ชื่อผู้ใช้ที่ซ้ำในไฟล์: ' . $trimmedName;
-                        } 
                         if (DB::table('users')
                             ->where('username', trim($rowsss[1]))->exists()
                         ) {
@@ -415,10 +411,6 @@ class ExcelController extends Controller
                     if ($rowsss[0] == 'ลำดับ') {
                         continue;
                     }
-                    $trimmedName = trim($rowsss[1]);
-                    if (in_array($trimmedName, $duplicateFields)) {
-                        $duplicateFields[] = 'ชื่อผู้ใช้ที่ซ้ำในไฟล์: ' . $trimmedName;
-                    } 
                     if ($rowsss[0] >= 1) {
                         if (DB::table('users')
                             ->where('username', trim($rowsss[1]))->exists()
@@ -600,10 +592,6 @@ class ExcelController extends Controller
                         if (empty(trim($rowsss[7]))) {
                             $duplicateFields[] = 'รหัสประจำตัวประชาชนไม่สามารถเป็นค่าว่างได้';
                         }
-                        $trimmedName = trim($rowsss[1]);
-                        if (in_array($trimmedName, $duplicateFields)) {
-                            $duplicateFields[] = 'ชื่อผู้ใช้ที่ซ้ำในไฟล์: ' . $trimmedName;
-                        } 
                         if (DB::table('users')
                             ->where('username', trim($rowsss[1]))->exists()
                         ) {
@@ -758,10 +746,6 @@ class ExcelController extends Controller
                             if (empty(trim($rowsss[7]))) {
                                 $duplicateFields[] = 'รหัสประจำตัวประชาชนไม่สามารถเป็นค่าว่างได้';
                             }
-                            $trimmedName = trim($rowsss[1]);
-                            if (in_array($trimmedName, $duplicateFields)) {
-                                $duplicateFields[] = 'ชื่อผู้ใช้ที่ซ้ำในไฟล์: ' . $trimmedName;
-                            } 
                             if (DB::table('users')
                                 ->where('username', trim($rowsss[1]))->exists()
                             ) {

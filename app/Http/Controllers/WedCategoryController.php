@@ -173,6 +173,7 @@ class WedCategoryController extends Controller
             $wed->category_option = null;
             $wed->department_id = (int)$department_id;
             $wed->recommended = 1;
+
             $wed->save();
 
             if ($request->hasFile('cover')) {
@@ -290,8 +291,7 @@ class WedCategoryController extends Controller
         $wed->category_th = $request->category_th;
         $wed->category_en = $request->category_en;
 
-        $wed->category_update = now();
-
+   
         $wed->save();
 
         if (Session::has('loginId')) {
@@ -370,7 +370,8 @@ class WedCategoryController extends Controller
 
         $wed->category_update = now();
 
-        $wed->save();
+
+        $wed->save();;
 
         if (Session::has('loginId')) {
             $loginId = Session::get('loginId');

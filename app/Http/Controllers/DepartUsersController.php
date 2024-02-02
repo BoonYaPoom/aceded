@@ -301,8 +301,10 @@ class DepartUsersController extends Controller
             'mobile.required' => 'กรุณากรอกเบอร์โทร',
             'user_role.required' => 'กรุณาเลือกประเภทผู้ใช้งาน',
         ]);
-
+        $randomNumber = rand(10, 99);
+        $Usertimestamp =  now()->timestamp .  $randomNumber;
         $usermanages = new Users();
+        $usermanages->user_id = $Usertimestamp;
         $usermanages->username = $request->username;
         $usermanages->firstname = $request->firstname;
         $usermanages->lastname = $request->lastname;
@@ -355,10 +357,11 @@ class DepartUsersController extends Controller
         $usermanages->save();
 
 
+    
         $maxUserDepartmentId = DB::table('users_department')->max('user_department_id');
         $newUserDepartmentId = $maxUserDepartmentId + 1;
         DB::table('users_department')->insert([
-            'user_department_id' => $newUserDepartmentId,
+            'user_department_id' => $Usertimestamp,
             'user_id' =>    $usermanages->user_id,
             'department_id' => $department_id,
         ]);
@@ -405,7 +408,10 @@ class DepartUsersController extends Controller
             'mobile.required' => 'กรุณากรอกเบอร์โทร',
         ]);
 
+        $randomNumber = rand(10, 99);
+        $Usertimestamp =  now()->timestamp .  $randomNumber;
         $usermanages = new Users();
+        $usermanages->user_id = $Usertimestamp;
         $usermanages->username = $request->username;
         $usermanages->firstname = $request->firstname;
         $usermanages->lastname = $request->lastname;
@@ -457,13 +463,10 @@ class DepartUsersController extends Controller
         $usermanages->province_id = $school->provinces_id;
         $usermanages->save();
 
-
-
-
         $maxUserDepartmentId = DB::table('users_department')->max('user_department_id');
         $newUserDepartmentId = $maxUserDepartmentId + 1;
         DB::table('users_department')->insert([
-            'user_department_id' => $newUserDepartmentId,
+            'user_department_id' => $Usertimestamp,
             'user_id' =>    $usermanages->user_id,
             'department_id' => $department_id,
         ]);
