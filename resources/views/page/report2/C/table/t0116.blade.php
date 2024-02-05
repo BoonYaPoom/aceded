@@ -1,35 +1,50 @@
-@extends('page.report.index')
-@section('reports')
+@extends('page.report2.index')
+@section('reports2')
     <!-- .page-inner -->
 
     <div class="page-inner">
+        <div class="form-row">
+            <!-- form column -->
+            <div class="col-md-1"></div>
+            <span class="mt-1">ปี</span>&nbsp;
+            <div class="col-md-3">
+                <div class=""><select id="selectyear" name="selectyear" class="form-control" data-toggle="select2"
+                        data-placeholder="ปี" data-allow-clear="false">
+                        <option value="2566">ปี 2566 </option>
+                        <option value="2567" selected>ปี 2567 </option>
+                        <option value="2568">ปี 2568 </option>
+                    </select></div>
+            </div>
+            <span class="mt-1">หน่วยงาน</span>&nbsp;
+            <div class="col-md-3">
 
-        <form method="post" id="formreport">
-            <div class="form-row">
-                <!-- form column -->
-                <!--    <div class="col-md-1"><span class="mt-1 ">ปี</span></div>
-                                <div class="col-md-3">
-                                    <div class=""><select id="selectyear" name="selectyear" class="form-control" data-toggle="select2"
-                                            data-placeholder="ปี" data-allow-clear="false" onchange="$('#formreport').submit();">
-                                            <option value="2022"> {{ $oneYearsAgo }} </option>
-                                            <option value="2023" selected> {{ $currentYear }} </option>
-                                        </select></div>
-                                </div>-->
-                <div class="col-md-3 ">
-                    <div class="d-none"><select id="selectmonth" name="selectmonth" class="form-control "
-                            data-toggle="select2" data-placeholder="เดือน" data-allow-clear="false"
-                            onchange="$('#formreport').submit();">
-                            <option value="0">เดือน</option>
-                            @foreach ($month as $im => $m)
-                                <option value="{{ $im }}"> {{ $m }} </option>
-                            @endforeach
-                        </select></div>
-                </div>
-                <div class="col-md-1 text-right"><button type="button" class="btn btn-light btn-icon d-xl-none"
-                        data-toggle="sidebar"><i class="fa fa-angle-double-left fa-lg"></i></button></div>
-                <!-- /form column -->
-            </div><!-- /form row -->
-        </form>
+                <div><select id="depa" name="depa" class="form-control" data-toggle="select2"
+                        data-placeholder="หลักสูตร" data-allow-clear="false">
+
+                        @php
+                            $depart = DB::table('department')
+                                ->where('department_status', 1)
+                                ->get();
+                        @endphp
+                        @foreach ($depart->sortBy('department_id') as $de)
+                            <option value="{{ $de->department_id }}" {{ $de->department_id == 1 ? 'selected' : '' }}>
+                                {{ $de->name_th }} </option>
+                        @endforeach
+                    </select></div>
+            </div>
+            <span class="mt-1">จังหวัด</span>&nbsp;
+            <div class="col-md-3 ">
+                <select id="provin" name="provin" class="form-control" data-toggle="select2" data-placeholder="หลักสูตร"
+                    data-allow-clear="false">
+                    @foreach ($provin as $pro)
+                        <option value="{{ $pro->name_in_thai }}"
+                            {{ $pro->name_in_thai == 'กรุงเทพมหานคร' ? 'selected' : '' }}>
+                            {{ $pro->name_in_thai }} </option>
+                    @endforeach
+                </select>
+            </div>
+
+        </div><!-- /form row -->
         <!-- .table-responsive --><br><!-- .card -->
         <div class="card card-fluid">
             <!-- .card-header -->
@@ -37,10 +52,10 @@
                 <div class="d-flex align-items-center">
                     <span class="mr-auto">ข้อมูล Log File ในรูปแบบรายงานทางสถิติ</span>
                     <!-- <a
-                                          href="https://aced.dlex.ai/childhood/admin/export/pdf.html"
-                                          class="btn btn-icon btn-outline-danger"><i class="fa fa-file-pdf"></i></a>&nbsp;<a
-                                          href="https://aced.dlex.ai/childhood/admin/export/excel.html"
-                                          class="btn btn-icon btn-outline-primary"><i class="fa fa-file-excel "></i></a>-->&nbsp;<a
+                                                      href="https://aced.dlex.ai/childhood/admin/export/pdf.html"
+                                                      class="btn btn-icon btn-outline-danger"><i class="fa fa-file-pdf"></i></a>&nbsp;<a
+                                                      href="https://aced.dlex.ai/childhood/admin/export/excel.html"
+                                                      class="btn btn-icon btn-outline-primary"><i class="fa fa-file-excel "></i></a>-->&nbsp;<a
                         href="javascript:window.print();" class="btn btn-icon btn-outline-success"><i
                             class="fa fa-print "></i></a>
                 </div>
@@ -65,87 +80,10 @@
                             </tr>
 
 
-                            <!-- tr --> @php
-                                $n = 1;
-                                $result = []; // สร้างตัวแปรเก็บผลลัพธ์
-                                $uniqueUserIds = [];
-                                $users = null;
-                                $UserSchool = null;
-                                $schoolName = null;
-                            @endphp
-                            @foreach ($learners as $l => $learns)
-                                @php
+                        <tbody id="learend">
+                        </tbody>
 
-                                    $dataLearn = $learns->registerdate;
-                                    $congrateLearn = $learns->realcongratulationdate;
-                                    $congrate = $learns->congratulation;
-                                    $monthsa = \ltrim(\Carbon\Carbon::parse($dataLearn)->format('m'), '0');
-                                    $newDateTime = \Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $learns->registerdate)->format('d/m/Y H:i:s');
-                                    $users = \App\Models\Users::find($learns->user_id);
 
-                                    if ($users) {
-                                        $UserSchool = \App\Models\Extender2::where('extender_id', $users->organization)->first();
-
-                                        if ($UserSchool) {
-                                            $schoolName = $UserSchool->name;
-                                        } else {
-                                            $schoolName = [];
-                                        }
-                                    } else {
-                                        $schoolName = [];
-                                    }
-
-                                    $courses = \App\Models\Course::find($learns->course_id);
-
-                                    if ($courses) {
-                                        // Access properties of the $courses object here
-                                        $course_th = $courses->course_th;
-                                        // ...
-                                    } else {
-                                    }
-
-                                @endphp
-
-                                @if (isset($users) && $users)
-                                    <tr>
-                                        <td align="center">{{ $n++ }}</td>
-
-                                        <td align="center">
-                                            @if (optional($users)->firstname)
-                                                {{ $users->firstname }}
-                                            @else
-                                            @endif
-                                            @if (optional($users)->lastname)
-                                                {{ $users->lastname }}
-                                            @else
-                                            @endif
-                                        </td>
-                                        <td align="center">
-
-                                            @if ($schoolName)
-                                                {{ $schoolName }}
-                                            @else
-                                                -
-                                            @endif
-                                        </td>
-                                        <td align="center">
-                                            @if (optional($courses)->course_th)
-                                                {{ $courses->course_th }}
-                                            @else
-                                                -
-                                            @endif
-                                        </td>
-                                        <td align="center">
-                                            @if ($congrate == 0)
-                                                N/A
-                                            @elseif($congrate == 1)
-                                                P
-                                            @endif
-                                        </td>
-                                    </tr>
-                                @endif
-                            @endforeach
-                            </tbody><!-- /tbody -->
                     </table><!-- /.table -->
                 </div><!-- /.table-responsive -->
             </div><!-- /.card-body -->
@@ -153,4 +91,50 @@
         <!-- .page-title-bar -->
 
     </div><!-- /.page-inner -->
+    <script>
+        $(document).ready(function() {
+            $('#selectyear, #depa, #provin').on('change', function() {
+                var learner = {!! json_encode($learner) !!};
+                var depa = $('#depa').val();
+                var selectedYear = $('#selectyear').val();
+                var provin = $('#provin').val();
+
+                var filteredLearner = learner.filter(function(data) {
+                    return data.year == selectedYear && data.department_id == depa && data
+                        .province_name == provin;
+                });
+
+                displayDataInTable(filteredLearner);
+            });
+            $('#selectyear').trigger('change');
+            $('#depa').trigger('change');
+            $('#provin').trigger('change');
+        });
+
+        function displayDataInTable(data) {
+            $('#learend').empty()
+            if (data && data.length > 0) {
+                // วนลูปเพื่อแสดงข้อมูลใน tbody
+                var i = 1;
+                $.each(data, function(index, item) {
+                    // สร้างแถวใน tbody
+                    var row = $('<tr>');
+                    // เพิ่มข้อมูลลงในแถว
+                    row.append($('<td class="text-center">').text(i++));
+
+                    row.append($('<td >').text(item.firstname + ' ' + item.lastname));
+                    row.append($('<td >').text(item.exten_name));
+                    row.append($('<td >').text(item.course_th));
+                    row.append($('<td class="text-center">').text(item.congratulation == 0 ? 'N' : (item
+                        .congratulation == 1 ? 'N/A' : '')));
+                    // เพิ่มแถวลงใน tbody
+                    $('#learend').append(row);
+                });
+            } else {
+                // ถ้าไม่มีข้อมูล
+                var noDataMessage = $('<tr><td colspan="5" class="text-center">ไม่มีข้อมูลในจังหวัดนี้ </td></tr>');
+                $('#learend').append(noDataMessage);
+            }
+        }
+    </script>
 @endsection

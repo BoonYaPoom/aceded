@@ -14,7 +14,6 @@
     <meta property="og:description" content="">
     <link rel="canonical" href="">
     <link rel="icon" type="image/png" href="{{ asset('LOGO/logo.png') }}">
-
     <meta property="og:url" content="">
     <meta property="og:site_name" content="">
     <script type="application/ld+json">
@@ -91,7 +90,9 @@
         unusedLink.setAttribute('disabled', true);
     </script>
 
-    <script src="{{ asset('/javascript/vendor/jquery/jquery.min.js') }}"></script>
+       <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
     <script src="{{ asset('/javascript/vendor/bootstrap/js/popper.min.js') }}"></script>
     <script src="{{ asset('/javascript/vendor/bootstrap/js/bootstrap.min.js') }}"></script>
     <script src="{{ asset('/javascript/vendor/pace/pace.min.js') }}"></script>
@@ -177,9 +178,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js"
         integrity="sha512-AA1Bzp5Q0K1KanKKmvN/4d3IRKVlv9PYgwFPvm32nPO6QS8yH1HO7LbgB1pgiOxPtfeg5zEn2ba64MUcqJx6CA=="
         crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.css" />
-
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+   
 </head>
 
 <body>

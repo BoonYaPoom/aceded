@@ -8,7 +8,7 @@
 
         <div class="form-row">
             <!-- form column -->
-            <div class="col-md-5"></div>
+            <div class="col-md-1"></div>
             <span class="mt-1">ปี</span>&nbsp;
             <div class="col-md-3">
                 <div class=""><select id="selectyear" name="selectyear" class="form-control" data-toggle="select2"
@@ -35,18 +35,18 @@
                         @endforeach
                     </select></div>
             </div>
+            <span class="mt-1">จังหวัด</span>&nbsp;
             <div class="col-md-3 ">
-                <div class="d-none"><select id="selectmonth" name="selectmonth" class="form-control " data-toggle="select2"
-                        data-placeholder="เดือน" data-allow-clear="false" onchange="$('#formreport').submit();">
-                        <option value="0">เดือน</option>
-                        @foreach ($month as $im => $m)
-                            <option value="{{ $im }}"> {{ $m }} </option>
-                        @endforeach
-                    </select></div>
+                <select id="provin" name="provin" class="form-control" data-toggle="select2" data-placeholder="หลักสูตร"
+                    data-allow-clear="false">
+                    @foreach ($provin as $pro)
+                        <option value="{{ $pro->name_in_thai }}"
+                            {{ $pro->name_in_thai == 'กรุงเทพมหานคร' ? 'selected' : '' }}>
+                            {{ $pro->name_in_thai }} </option>
+                    @endforeach
+                </select>
             </div>
-            <div class="col-md-1 text-right"><button type="button" class="btn btn-light btn-icon d-xl-none"
-                    data-toggle="sidebar"><i class="fa fa-angle-double-left fa-lg"></i></button></div>
-            <!-- /form column -->
+
         </div><!-- /form row -->
 
         <br>
@@ -73,7 +73,7 @@
                             </tr>
                             <tr class="text-center">
                                 <th align="center" width="5%">ลำดับ</th>
-                                <th align="center" width="10%">ชื่อผู้ใช้งาน</th>
+
                                 <th align="center" width="20%">ชื่อ - สกุล</th>
                                 <th align="center" width="20%">สังกัด</th>
                                 <th align="center">หลักสูตร</th>
@@ -83,41 +83,46 @@
                         </thead>
                         <script>
                             $(document).ready(function() {
-                                $('#selectyear, #depa').on('change', function() {
+                                $('#selectyear, #depa, #provin').on('change', function() {
                                     var learner = {!! json_encode($learner) !!};
                                     var depa = $('#depa').val();
                                     var selectedYear = $('#selectyear').val();
-                                    console.log(depa)
-                                    console.log(selectedYear)
+                                    var provin = $('#provin').val();
                                     var filteredLearner = learner.filter(function(data) {
-                                        return data.year == selectedYear && data.department_id == depa;
+                                        return data.year == selectedYear && data.department_id == depa && data
+                                            .province_name == provin;
                                     });
 
                                     displayDataInTable(filteredLearner);
                                 });
                                 $('#selectyear').trigger('change');
                                 $('#depa').trigger('change');
-
+                                $('#provin').trigger('change');
                             });
 
                             function displayDataInTable(data) {
-                                $('#learend').empty();
-                                // วนลูปเพื่อแสดงข้อมูลใน tbody
-                                $.each(data, function(index, item) {
-                                    // สร้างแถวใน tbody
-                                    var row = $('<tr>');
-                                    // เพิ่มข้อมูลลงในแถว
-                                    row.append($('<td class="text-center">').text(index));
-                                    row.append($('<td class="text-center">').text(item.username));
-                                    row.append($('<td >').text(item.firstname + ' ' + item.lastname));
-                                    row.append($('<td >').text(item.exten_name));
-                                    row.append($('<td >').text(item.course_th));
-                                    row.append($('<td class="text-center">').text(item.register_date));
-                                    row.append($('<td class="text-center">').text(item.realcongratulationdate));
-                                    // เพิ่มแถวลงใน tbody
-                                    $('#learend').append(row);
-                                });
+                                $('#learend').empty()
+                                if (data && data.length > 0) {
+                                    // วนลูปเพื่อแสดงข้อมูลใน tbody
+                                    $.each(data, function(index, item) {
+                                        // สร้างแถวใน tbody
+                                        var row = $('<tr>');
+                                        // เพิ่มข้อมูลลงในแถว
+                                        row.append($('<td class="text-center">').text(index));
 
+                                        row.append($('<td >').text(item.firstname + ' ' + item.lastname));
+                                        row.append($('<td >').text(item.exten_name));
+                                        row.append($('<td >').text(item.course_th));
+                                        row.append($('<td class="text-center">').text(item.register_date));
+                                        row.append($('<td class="text-center">').text(item.realcongratulationdate));
+                                        // เพิ่มแถวลงใน tbody
+                                        $('#learend').append(row);
+                                    });
+                                } else {
+                                    // ถ้าไม่มีข้อมูล
+                                    var noDataMessage = $('<tr><td colspan="6" class="text-center">ไม่มีข้อมูลในจังหวัดนี้ </td></tr>');
+                                    $('#learend').append(noDataMessage);
+                                }
                             }
                         </script>
 

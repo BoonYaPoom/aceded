@@ -583,8 +583,8 @@ Route::group(['middleware' => 'IsLoggedIn'], function () {
             Route::prefix('rpl')->group(function () {
                 Route::get('/A0100', [ReportAController::class, 'ReportA'])->name('A0100');
                 Route::get('/B0100', [ReportBController::class, 'ReportB'])->name('B0100');
-                Route::get('/Table', [ReportCController::class, 'ReportC'])->name('table');
-                Route::prefix('Table')->group(function () {
+                Route::get('/TableC', [ReportCController::class, 'ReportC'])->name('table');
+                Route::prefix('TableC')->group(function () {
                     Route::get('/T0101', [T0101Controller::class, 'T0101'])->name('T0101');
                     Route::get('/T0103', [T0103Controller::class, 'T0103'])->name('T0103');
                     Route::get('/T0116', [T0116Controller::class, 'T0116'])->name('T0116');
