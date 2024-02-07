@@ -29,22 +29,56 @@ class UsersExport implements
      */
     public function collection()
     {
-        $users = DB::table('users')->select('user_id', 'username', 'firstname', 'lastname', 'createdate', 'province_id', 'mobile', 'organization', 'user_affiliation', 'userstatus')
+        $users = DB::table('users')->select(
+            'user_id',
+            'username',
+            'firstname',
+            'lastname',
+            'createdate',
+            'province_id',
+            'mobile',
+            'organization',
+            'user_affiliation',
+            'userstatus'
+        )->groupBy(
+            'user_id',
+            'username',
+            'firstname',
+            'lastname',
+            'createdate',
+            'province_id',
+            'mobile',
+            'organization',
+            'user_affiliation',
+            'userstatus'
+        )
             ->get();
         $i = 1;
         $datauser = $users->map(function ($item) use (&$i) {
-            $proviUser = DB::table('provinces')->where('id', $item->province_id)->value('name_in_thai') ?? '-';
+
 
             if ($item->organization > 0) {
-                $extender2 = DB::table('users_extender2')->where('extender_id', $item->organization)->value('name') ?? '-';
-                $aff = $item->user_affiliation;
+                if ($item->province_id > 0) {
+                    $extender2 = DB::table('users_extender2')->where('extender_id', $item->organization)->value('name') ?? '-';
+                    $aff = $item->user_affiliation;
+                    $proviUser = DB::table('provinces')->where('id', $item->province_id)->value('name_in_thai') ?? '-';
+                } elseif ($item->province_id == 0) {
+                    $extender2 = DB::table('users_extender2')->where('extender_id', $item->organization)->value('name') ?? '-';
+                    $aff = $item->user_affiliation;
+                    $proviUser = DB::table('users_extender2')
+                        ->join('provinces', 'users_extender2.school_province', '=', 'provinces.id')
+                        ->where('users_extender2.extender_id', $item->organization)
+                        ->value('name_in_thai') ?? '-';
+                }
             } elseif ($item->organization == 0) {
                 if (Str::contains($item->user_affiliation, 'ระดับ')) {
                     $extender2 = DB::table('users_extender2')->where('extender_id', $item->organization)->value('name') ?? '-';
                     $aff = $item->user_affiliation;
+                    $proviUser = DB::table('provinces')->where('id', $item->province_id)->value('name_in_thai') ?? '-';
                 } else {
                     $extender2 = $item->user_affiliation;
                     $aff = '-';
+                    $proviUser = DB::table('provinces')->where('id', $item->province_id)->value('name_in_thai') ?? '-';
                 }
             }
 

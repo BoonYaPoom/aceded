@@ -579,30 +579,7 @@ Route::group(['middleware' => 'IsLoggedIn'], function () {
                 Route::post('{school_code}/saveSelectedSchool_umsschoolform', [SchoolController::class, 'saveSelectedSchool'])->name('saveSelectedSchool');
             });
 
-            Route::get('/rpl', [ReportAController::class, 'Reportview'])->name('DepartReportview');
-            Route::prefix('rpl')->group(function () {
-                Route::get('/A0100', [ReportAController::class, 'ReportA'])->name('A0100');
-                Route::get('/B0100', [ReportBController::class, 'ReportB'])->name('B0100');
-                Route::get('/TableC', [ReportCController::class, 'ReportC'])->name('table');
-                Route::prefix('TableC')->group(function () {
-                    Route::get('/T0101', [T0101Controller::class, 'T0101'])->name('T0101');
-                    Route::get('/T0103', [T0103Controller::class, 'T0103'])->name('T0103');
-                    Route::get('/T0116', [T0116Controller::class, 'T0116'])->name('T0116');
-                    Route::get('/T0117', [T0117Controller::class, 'T0117'])->name('T0117');
-                    Route::get('/T0118', [T0118Controller::class, 'T0118'])->name('T0118');
-                    Route::get('/T0119', [T0119Controller::class, 'T0119'])->name('T0119');
-                    Route::get('/T0120', [T0120Controller::class, 'T0120'])->name('T0120');
-                    Route::get('/T0121', [T0121Controller::class, 'T0121'])->name('T0121');
-                    Route::get('/T0122', [T0122Controller::class, 'T0122'])->name('T0122');
-                    Route::get('/T0123', [T0123Controller::class, 'T0123'])->name('T0123');
-                    Route::get('/T0124', [T0124Controller::class, 'T0124'])->name('T0124');
-                    Route::get('/T0125', [T0125Controller::class, 'T0125'])->name('T0125');
-                });
-            });
-
-            Route::prefix('datareport')->group(function () {
-                Route::get('/T0103', [ReportJsonController::class, 't0103'])->name('t0103json');
-            });
+        
             Route::get('/getSchools', [SchoolController::class, 'getSchools'])->name('getSchools');
 
             Route::get('/req', [NavController::class, 'pageRequest'])->name('pageRequest');
@@ -623,6 +600,27 @@ Route::group(['middleware' => 'IsLoggedIn'], function () {
 
                 Route::get('/updateuserdeyes/{claim_user_id}', [ClaimUserController::class, 'updateuserdeyes'])->name('updateuserdeyes');
                 Route::get('/updateuserdeno/{claim_user_id}', [ClaimUserController::class, 'updateuserdeno'])->name('updateuserdeno');
+            });
+
+            Route::get('/rpl', [ReportAController::class, 'Reportview'])->name('DepartReportview');
+            Route::prefix('rpl')->group(function () {
+                Route::get('/A0100', [ReportAController::class, 'ReportA'])->name('A0100');
+                Route::get('/B0100', [ReportBController::class, 'ReportB'])->name('B0100');
+                Route::get('/TableC', [ReportCController::class, 'ReportC'])->name('table');
+                Route::prefix('TableC')->group(function () {
+                    Route::get('/T0101', [T0101Controller::class, 'T0101'])->name('T0101');
+                    Route::get('/T0103', [T0103Controller::class, 'T0103'])->name('T0103');
+                    Route::get('/T0116', [T0116Controller::class, 'T0116'])->name('T0116');
+                    Route::get('/T0117', [T0117Controller::class, 'T0117'])->name('T0117');
+                    Route::get('/T0118', [T0118Controller::class, 'T0118'])->name('T0118');
+                    Route::get('/T0119', [T0119Controller::class, 'T0119'])->name('T0119');
+                    Route::get('/T0120', [T0120Controller::class, 'T0120'])->name('T0120');
+                    Route::get('/T0121', [T0121Controller::class, 'T0121'])->name('T0121');
+                    Route::get('/T0122', [T0122Controller::class, 'T0122'])->name('T0122');
+                    Route::get('/T0123', [T0123Controller::class, 'T0123'])->name('T0123');
+                    Route::get('/T0124', [T0124Controller::class, 'T0124'])->name('T0124');
+                    Route::get('/T0125', [T0125Controller::class, 'T0125'])->name('T0125');
+                });
             });
 
 

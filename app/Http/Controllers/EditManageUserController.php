@@ -153,7 +153,7 @@ class EditManageUserController extends Controller
             })
             ->filterColumn('name_in_thai', function ($userdata) use ($request) {
 
-                if ($request->drop2 != '0') {
+                if ($request->drop2 != '0'&& !empty($request->drop2)) {
                     $userdata->where('province_id', $request->drop2);
                 }
             })

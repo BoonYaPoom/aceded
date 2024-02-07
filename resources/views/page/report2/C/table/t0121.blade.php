@@ -58,7 +58,7 @@
                             </tr>
                             <tr class="text-center">
                                 <th align="center" width="5%">ลำดับ</th>
-                                <th align="center" width="7%">เดือน</th>
+                                <th align="center" width="10%">เดือน</th>
                                 <th align="center" width="10%">ระดับ
                                 </th>
                                 <th align="center" width="5%">จำนวนรายการ (คน)
@@ -137,16 +137,16 @@
                     row.append($('<td class="text-center">').text(i++));
                     row.append($('<td >').text(item.month));
                     row.append($('<td >').text(item.id));
+                    row.append($('<td >').text(item.month));
+                    row.append($('<td >').text(item.month));
                     row.append($('<td >').text(item.id));
+                    row.append($('<td >').text(item.month));
                     row.append($('<td >').text(item.id));
+                    row.append($('<td >').text(item.month));
                     row.append($('<td >').text(item.id));
+                    row.append($('<td >').text(item.month));
                     row.append($('<td >').text(item.id));
-                    row.append($('<td >').text(item.id));
-                    row.append($('<td >').text(item.id));
-                    row.append($('<td >').text(item.id));
-                    row.append($('<td >').text(item.id));
-                    row.append($('<td >').text(item.id));
-                    row.append($('<td >').text(item.id));
+                    row.append($('<td >').text(item.month));
                     row.append($('<td >').text(item.id));
                     $('#learend').append(row);
                 });

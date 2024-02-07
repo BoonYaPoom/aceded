@@ -39,6 +39,6 @@ class T0121Controller extends Controller
             ];
         }, $dateAll, array_keys($dateAll));
 
-        return view('page.report2.C.Table.T0121', compact('provin', 'learner', 'dateAllWithId'));
+        return view('page.report2.C.table.t0121', compact('provin', 'learner', 'dateAllWithId'));
     }
 }

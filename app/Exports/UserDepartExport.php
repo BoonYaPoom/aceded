@@ -48,6 +48,17 @@ class UserDepartExport implements
             'users.organization',
             'users.user_affiliation',
             'users.userstatus'
+        )->groupBy(
+            'users.user_id',
+            'users.username',
+            'users.firstname',
+            'users.lastname',
+            'users.createdate',
+            'users.province_id',
+            'users.mobile',
+            'users.organization',
+            'users.user_affiliation',
+            'users.userstatus'
         )
         ->get();
 
@@ -61,14 +72,25 @@ class UserDepartExport implements
                 if ($item->organization > 0) {
                     $extender2 = DB::table('users_extender2')->where('extender_id', $item->organization)->value('name') ?? '-';
                     $aff = $item->user_affiliation;
+                    $proviUser = DB::table('provinces')->where('id', $item->province_id)->value('name_in_thai') ?? '-';
                 } elseif ($item->organization == 0) {
                     $extender2 = $item->user_affiliation;
                     $aff = '-';
+                    $proviUser = DB::table('provinces')->where('id', $item->province_id)->value('name_in_thai') ?? '-';
                 }
             } else {
-
-                $extender2 = DB::table('users_extender2')->where('extender_id', $item->organization)->value('name') ?? '-';
-                $aff = $item->user_affiliation;
+                if ($item->province_id > 0) {
+                    $extender2 = DB::table('users_extender2')->where('extender_id', $item->organization)->value('name') ?? '-';
+                    $aff = $item->user_affiliation;
+                    $proviUser = DB::table('provinces')->where('id', $item->province_id)->value('name_in_thai') ?? '-';
+                } elseif ($item->province_id == 0) {
+                    $extender2 = DB::table('users_extender2')->where('extender_id', $item->organization)->value('name') ?? '-';
+                    $aff = $item->user_affiliation;
+                    $proviUser = DB::table('users_extender2')
+                        ->join('provinces', 'users_extender2.school_province', '=', 'provinces.id')
+                        ->where('users_extender2.extender_id', $item->organization)
+                        ->value('name_in_thai') ?? '-';
+                }
             }
 
 

@@ -1,69 +1,64 @@
-@extends('page.report.index')
-@section('reports')
+@extends('page.report2.index')
+@section('reports2')
     <!-- .page-inner -->
 
     <div class="page-inner">
 
 
-        <form method="post" id="formreport">
-            <div class="form-row">
-                <!-- form column -->
-                <!--   <div class="col-md-1"><span class="mt-1 ">ปี</span></div>
-                                                    <div class="col-md-3">
-                                                        <div class=""><select id="selectyear" name="selectyear" class="form-control" data-toggle="select2"
-                                                                data-placeholder="ปี" data-allow-clear="false" onchange="$('#formreport').submit();">
-                                                                <option value="2022"> </option>
-                                                                <option value="2023" selected> </option>
-                                                            </select></div>
-                                                    </div>-->
-                <!--    <div class="col-md-4 ">
-                                                        <div><select id="selectcourse" name="selectcourse" class="form-control" data-toggle="select2"
-                                                                data-placeholder="หลักสูตร" data-allow-clear="false" onchange="$('#formreport').submit();">
-                                                                <option value="" selected> เลือกหลักสูตร </option>
-                                                                <option value="" selected> </option>
-                                                                <option value="รายวิชาเพิ่มเติม การป้องกันการทุจริต ระดับปฐมวัย"> รายวิชาเพิ่มเติม
-                                                                    การป้องกันการทุจริต ระดับปฐมวัย </option>
-                                                            </select></div>
-                                                    </div>-->
-                <!--  <div class="col-md-4 ">
-                                                        <div><select id="selectuser_id" name="selectuser_id" class="form-control" data-toggle="select2"
-                                                                data-placeholder="ผู้ใช้งานทั้งหมด" data-allow-clear="false"
-                                                                onchange="$('#formreport').submit();">
-                                                                <option value=""> ผู้ใช้งานทั้งหมด </option>
-                                                                <option value="ธนภัทร วงษ์กล่อม"> ธนภัทร วงษ์กล่อม </option>
-                                                                <option value="aced_admin "> aced_admin </option>
-                                                                <option value="ธนภัทร วงษ์กล่อม"> ธนภัทร วงษ์กล่อม </option>
-                                                                <option value="ธนภัทร วงษ์กล่อม"> ธนภัทร วงษ์กล่อม </option>
-                                                                <option value="TCCT1 user"> TCCT1 user </option>
-                                                            </select></div>
-                                                    </div>-->
-                <div class="col-md-3 ">
-                    <div class="d-none"><select id="selectmonth" name="selectmonth" class="form-control "
-                            data-toggle="select2" data-placeholder="เดือน" data-allow-clear="false"
-                            onchange="$('#formreport').submit();">
-                            <option value="0">เดือน</option>
-                            @foreach ($month as $im => $m)
-                                <option value="{{ $im }}"> {{ $m }} </option>
-                            @endforeach
-                        </select></div>
-                </div>
-                <div class="col-md-1 text-right"><button type="button" class="btn btn-light btn-icon d-xl-none"
-                        data-toggle="sidebar"><i class="fa fa-angle-double-left fa-lg"></i></button></div>
-                <!-- /form column -->
-            </div><!-- /form row -->
-        </form>
-        <!-- .table-responsive --><br><!-- .card -->
+
+        <div class="form-row">
+            <!-- form column -->
+            <div class="col-md-1"></div>
+            <span class="mt-1">ปี</span>&nbsp;
+            <div class="col-md-3">
+                <div class=""><select id="selectyear" name="selectyear" class="form-control" data-toggle="select2"
+                        data-placeholder="ปี" data-allow-clear="false">
+                        <option value="2566">ปี 2566 </option>
+                        <option value="2567" selected>ปี 2567 </option>
+                        <option value="2568">ปี 2568 </option>
+                    </select></div>
+            </div>
+            <span class="mt-1">หน่วยงาน</span>&nbsp;
+            <div class="col-md-3">
+
+                <div><select id="depa" name="depa" class="form-control" data-toggle="select2"
+                        data-placeholder="หลักสูตร" data-allow-clear="false">
+
+                        @php
+                            $depart = DB::table('department')
+                                ->where('department_status', 1)
+                                ->get();
+                        @endphp
+                        @foreach ($depart->sortBy('department_id') as $de)
+                            <option value="{{ $de->department_id }}" {{ $de->department_id == 1 ? 'selected' : '' }}>
+                                {{ $de->name_th }} </option>
+                        @endforeach
+                    </select></div>
+            </div>
+            <span class="mt-1">จังหวัด</span>&nbsp;
+            <div class="col-md-3 ">
+                <select id="provin" name="provin" class="form-control" data-toggle="select2" data-placeholder="หลักสูตร"
+                    data-allow-clear="false">
+                    @foreach ($provin as $pro)
+                        <option value="{{ $pro->name_in_thai }}"
+                            {{ $pro->name_in_thai == 'กรุงเทพมหานคร' ? 'selected' : '' }}>
+                            {{ $pro->name_in_thai }} </option>
+                    @endforeach
+                </select>
+            </div>
+
+        </div><!-- /form row -->
+
+        <br>
         <div class="card card-fluid">
             <!-- .card-header -->
             <div class="card-header bg-muted">
                 <div class="d-flex align-items-center">
                     <span class="mr-auto">รายงานข้อมูลรายชื่อผู้เรียนทั้งหมด และแยกตามหลักสูตร</span>
-                    <!--   <a
-                                            href="{{ route('generatePdfT0101') }}"
-                                            class="btn btn-icon btn-outline-danger"><i class="fa fa-file-pdf"></i></a>-->&nbsp;<a
-                                            href="{{route('exportLeact')}}"
-                                            class="btn btn-icon btn-outline-primary"><i class="fa fa-file-excel "></i></a>&nbsp;<a
-                        onclick="window.print()" class="btn btn-icon btn-outline-success"><i class="fa fa-print "></i></a>
+                    {{-- <a href="" class="btn btn-icon btn-outline-danger"><i class="fa fa-file-pdf"></i></a> --}}
+                    &nbsp;<a href="" class="btn btn-icon btn-outline-primary"><i
+                            class="fa fa-file-excel "></i></a>&nbsp;<a onclick="window.print()"
+                        class="btn btn-icon btn-outline-success"><i class="fa fa-print "></i></a>
                 </div>
             </div><!-- /.card-header -->
             <!-- .card-body -->
@@ -78,124 +73,64 @@
                             </tr>
                             <tr class="text-center">
                                 <th align="center" width="5%">ลำดับ</th>
-                                <th align="center" width="10%">ชื่อผู้ใช้งาน</th>
+
                                 <th align="center" width="20%">ชื่อ - สกุล</th>
                                 <th align="center" width="20%">สังกัด</th>
                                 <th align="center">หลักสูตร</th>
                                 <th align="center" width="10%">วันที่ลงทะเบียนเรียน</th>
                                 <th align="center" width="10%">วันที่จบหลักสูตร</th>
                             </tr>
+                        </thead>
+                        <script>
+                            $(document).ready(function() {
+                                $('#selectyear, #depa, #provin').on('change', function() {
+                                    var learner = {!! json_encode($learner) !!};
+                                    var depa = $('#depa').val();
+                                    var selectedYear = $('#selectyear').val();
+                                    var provin = $('#provin').val();
+                                    var filteredLearner = learner.filter(function(data) {
+                                        return data.year == selectedYear && data.department_id == depa && data
+                                            .province_name == provin;
+                                    });
 
+                                    displayDataInTable(filteredLearner);
+                                });
+                                $('#selectyear').trigger('change');
+                                $('#depa').trigger('change');
+                                $('#provin').trigger('change');
+                            });
 
+                            function displayDataInTable(data) {
+                                $('#learend').empty()
+                                if (data && data.length > 0) {
+                                    // วนลูปเพื่อแสดงข้อมูลใน tbody
+                                    $.each(data, function(index, item) {
+                                        // สร้างแถวใน tbody
+                                        var row = $('<tr>');
+                                        // เพิ่มข้อมูลลงในแถว
+                                        row.append($('<td class="text-center">').text(index));
 
-                            <!-- tr --> @php
-                                $n = 1;
-                                $result = []; // สร้างตัวแปรเก็บผลลัพธ์
-                                $uniqueUserIds = [];
-                                $users = null;
-                                $UserSchool = null;
-                                $schoolName = null;
-                            @endphp
-                            @foreach ($learners as $l => $learns)
-                                @php
+                                        row.append($('<td >').text(item.firstname + ' ' + item.lastname));
+                                        row.append($('<td >').text(item.exten_name));
+                                        row.append($('<td >').text(item.course_th));
+                                        row.append($('<td class="text-center">').text(item.register_date));
+                                        row.append($('<td class="text-center">').text(item.realcongratulationdate));
+                                        // เพิ่มแถวลงใน tbody
+                                        $('#learend').append(row);
+                                    });
+                                } else {
+                                    // ถ้าไม่มีข้อมูล
+                                    var noDataMessage = $('<tr><td colspan="6" class="text-center">ไม่มีข้อมูลในจังหวัดนี้ </td></tr>');
+                                    $('#learend').append(noDataMessage);
+                                }
+                            }
+                        </script>
 
-                                    $dataLearn = $learns->registerdate;
-                                    $congrateLearn = $learns->realcongratulationdate;
-                                    $congrate = $learns->congratulation;
-                                    $monthsa = \ltrim(\Carbon\Carbon::parse($dataLearn)->format('m'), '0');
-                                    $newDateTime = \Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $learns->registerdate)->format('d/m/Y H:i:s');
-                                    $users = \App\Models\Users::find($learns->user_id);
-                               
-                                    if ($users) {
-                                        $UserSchool = \App\Models\Extender2::where('extender_id', $users->organization)
-                                            ->first();
+                        <tbody id="learend">
+                        </tbody>
 
-                                        if ($UserSchool) {
-                                            $schoolName = $UserSchool->name;
-                                        } else {
-                                            $schoolName = []; 
-                                        }
-                                    } else {
-                                        $schoolName = [];
-                                    }
-
-                                    $courses = \App\Models\Course::find($learns->course_id);
-
-                                    if ($courses) {
-                                        // Access properties of the $courses object here
-                                        $course_th = $courses->course_th;
-                                        // ...
-                                    } else {
-                                    }
-                                    $carbonDate = \Carbon\Carbon::parse($congrateLearn);
-                                    $thaiDate = $carbonDate->locale('th')->isoFormat('D MMMM');
-                                    $buddhistYear = $carbonDate->addYears(543)->year;
-                                    $thaiYear = $buddhistYear > 0 ? $buddhistYear : '';
-                                    $thaiDateWithYear = $thaiDate . ' ' . $thaiYear;
-
-                                    $carbonDa = \Carbon\Carbon::parse($dataLearn);
-                                    $thaiDa = $carbonDa->locale('th')->isoFormat('D MMMM');
-                                    $buddhistYe = $carbonDa->addYears(543)->year;
-                                    $thai = $buddhistYe > 0 ? $buddhistYe : '';
-                                    $thaiDat = $thaiDa . ' ' . $thai;
-
-                                @endphp
-
-                                @if (isset($users) && $users)
-                                    <tr>
-                                        <td align="center">{{ $n++ }}</td>
-
-                                        <td align="center">
-                                            @if (optional($users)->username)
-                                                {{ $users->username }}
-                                            @else
-                                            @endif
-                                        </td>
-                                        <td align="center">
-                                            @if (optional($users)->firstname)
-                                                {{ $users->firstname }}
-                                            @else
-                                            @endif
-                                            @if (optional($users)->lastname)
-                                                {{ $users->lastname }}
-                                            @else
-                                            @endif
-                                        </td>
-                                        <td align="center">
-
-                                            @if ($schoolName)
-                                                {{ $schoolName }}
-                                            @else
-                                               -
-                                            @endif
-                                        </td>
-
-                                        <td align="center">
-                                            @if (optional($courses)->course_th)
-                                                {{ $courses->course_th }}
-                                            @else
-                                            -
-                                            @endif
-                                        </td>
-                                        <td align="center">
-                                            @if ($thaiDat)
-                                                {{ $thaiDat }}
-                                            @else
-                                            -
-                                            @endif
-                                        </td>
-                                        <td align="center">
-                                            @if ($congrate == 1)
-                                                {{ $thaiDateWithYear }}
-                                            @elseif($congrate == 0)
-                                            -
-                                            @endif
-                                        </td>
-                                    </tr>
-                                @endif
-                            @endforeach
-                            </tbody><!-- /tbody -->
                     </table><!-- /.table -->
+
                 </div><!-- /.table-responsive -->
             </div><!-- /.card-body -->
         </div><!-- /.card -->

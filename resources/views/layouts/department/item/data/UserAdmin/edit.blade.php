@@ -96,11 +96,11 @@
 
                             <!-- form row -->
                             <div class="form-row">
-                                <label for="firstname" class="col-md-2">เลขประจำตัวประชาชน</label>
+                                <label for="citizen_id" class="col-md-2">เลขประจำตัวประชาชน</label>
                                 <div class="col-md-9 mb-3">
                                     <input type="text" class="form-control " id="citizen_id" name="citizen_id"
-                                        minlength="13" maxlength="13" placeholder="เลขประจำตัวประชาชน"
-                                        value="{{ $usermanages->citizen_id }}" disabled>
+                                        placeholder="เลขประจำตัวประชาชน"
+                                     value="{{ $usermanages->citizen_id }}" disabled>
                                 </div>
                             </div>
                             <!-- /form row -->

@@ -106,9 +106,10 @@
                                     // วนลูปเพื่อแสดงข้อมูลใน tbody
                                     $.each(data, function(index, item) {
                                         // สร้างแถวใน tbody
+                                        var i = 1
                                         var row = $('<tr>');
                                         // เพิ่มข้อมูลลงในแถว
-                                        row.append($('<td class="text-center">').text(index));
+                                       row.append($('<td class="text-center">').text(i++));
 
                                         row.append($('<td >').text(item.firstname + ' ' + item.lastname));
                                         row.append($('<td >').text(item.exten_name));

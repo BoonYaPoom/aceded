@@ -56,6 +56,6 @@ class T0118Controller extends Controller
                 'month' => $month,
             ];
         }, $dateAll, array_keys($dateAll));
-        return view('page.report2.C.Table.T0118', compact('month', 'provin', 'learner', 'dateAllWithId', 'dateAll'));
+        return view('page.report2.C.table.t0118', compact('month', 'provin', 'learner', 'dateAllWithId', 'dateAll'));
     }
 }

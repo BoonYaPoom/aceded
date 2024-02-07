@@ -48,6 +48,17 @@ class UsersSchoolImportss implements FromCollection,
                     'users.organization',
                     'users.user_affiliation',
                     'users.userstatus'
+                )->groupBy(
+                'users.user_id',
+                'users.username',
+                'users.firstname',
+                'users.lastname',
+                'users.createdate',
+                'users.province_id',
+                'users.mobile',
+                'users.organization',
+                'users.user_affiliation',
+                'users.userstatus'
                 )
                 ->get();
 
@@ -55,8 +66,6 @@ class UsersSchoolImportss implements FromCollection,
             $i = 1;
             $datauser = $users->map(function ($item) use (&$i) {
                 $proviUser = DB::table('provinces')->where('id', $item->province_id)->value('name_in_thai') ?? '-';
-                $proviUser = DB::table('provinces')->where('id', $item->province_id)->value('name_in_thai') ?? '-';
-
                 if ($this->department_id > 5) {
                     if ($item->organization > 0) {
                         $extender2 = DB::table('users_extender2')->where('extender_id', $item->organization)->value('name') ?? '-';
@@ -66,9 +75,18 @@ class UsersSchoolImportss implements FromCollection,
                         $aff = '-';
                     }
                 } else {
-
-                    $extender2 = DB::table('users_extender2')->where('extender_id', $item->organization)->value('name') ?? '-';
-                    $aff = $item->user_affiliation;
+                    if ($item->province_id > 0) {
+                        $extender2 = DB::table('users_extender2')->where('extender_id', $item->organization)->value('name') ?? '-';
+                        $aff = $item->user_affiliation;
+                        $proviUser = DB::table('provinces')->where('id', $item->province_id)->value('name_in_thai') ?? '-';
+                    } elseif ($item->province_id == 0) {
+                        $extender2 = DB::table('users_extender2')->where('extender_id', $item->organization)->value('name') ?? '-';
+                        $aff = $item->user_affiliation;
+                        $proviUser = DB::table('users_extender2')
+                            ->join('provinces', 'users_extender2.school_province', '=', 'provinces.id')
+                            ->where('users_extender2.extender_id', $item->organization)
+                            ->value('name_in_thai') ?? '-';
+                    }
                 }
 
                 $firstname = $item->firstname;

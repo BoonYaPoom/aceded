@@ -22,7 +22,7 @@ class ReportAController extends Controller
     public function ReportA()
     {
         $provin = DB::table('provinces')->get();
-        $count1 = DB::table('users')->where('user_role', 1)->count();
+        $count1 = DB::table('users')->whereIn('user_role', [1, 6, 7, 8, 9])->count();
         $count3 = DB::table('users')->where('user_role', 3)->count();
         $count4 = DB::table('users')->where('user_role', 4)->count();
         $user_role1 = DB::table('users')->where('user_role', 1)->first();
@@ -79,21 +79,21 @@ class ReportAController extends Controller
         });
 
 
-      
+
         $monthsconno = DB::table('users')
             ->join('course_learner', 'users.user_id', '=', 'course_learner.user_id')
             ->join('provinces', 'users.province_id', '=', 'provinces.id')
             ->where('course_learner.learner_status', '=', 1)
             ->where('course_learner.congratulation', '=', 0)
             ->select(
-            'provinces.name_in_thai as province_name',
+                'provinces.name_in_thai as province_name',
                 DB::raw('EXTRACT(YEAR FROM course_learner.registerdate)  + 543  as year'),
                 DB::raw('TO_CHAR(course_learner.registerdate, \'MM\') as month'),
                 DB::raw('COUNT(DISTINCT course_learner.user_id) as user_count')
             )
             ->groupBy(
-            'provinces.id',
-            'provinces.name_in_thai',
+                'provinces.id',
+                'provinces.name_in_thai',
                 DB::raw('TO_CHAR(course_learner.registerdate, \'MM\')')
             )
             ->groupBy(DB::raw('EXTRACT(YEAR FROM course_learner.registerdate)'))
@@ -104,14 +104,14 @@ class ReportAController extends Controller
             ->where('course_learner.learner_status', '=', 1)
             ->where('course_learner.congratulation', '=', 1)
             ->select(
-            'provinces.name_in_thai as province_name',
+                'provinces.name_in_thai as province_name',
                 DB::raw('EXTRACT(YEAR FROM course_learner.registerdate)  + 543  as year'),
                 DB::raw('TO_CHAR(course_learner.registerdate, \'MM\') as month'),
                 DB::raw('COUNT(DISTINCT course_learner.user_id) as user_count')
             )
             ->groupBy(
-            'provinces.id',
-            'provinces.name_in_thai',
+                'provinces.id',
+                'provinces.name_in_thai',
                 DB::raw('TO_CHAR(course_learner.registerdate, \'MM\')')
             )
             ->groupBy(DB::raw('EXTRACT(YEAR FROM course_learner.registerdate)'))
@@ -129,7 +129,9 @@ class ReportAController extends Controller
         }, $dateAll, array_keys($dateAll));
 
 
-        return view('page.report2.A.reporta',
-        compact('dateAll', 'provin', 'dateAllWithId', 'monthscon', 'monthsconno', 'count1', 'count3', 'count4', 'learn', 'con', 'conno'));
+        return view(
+            'page.report2.A.reporta',
+            compact('dateAll', 'provin', 'dateAllWithId', 'monthscon', 'monthsconno', 'count1', 'count3', 'count4', 'learn', 'con', 'conno')
+        );
     }
 }

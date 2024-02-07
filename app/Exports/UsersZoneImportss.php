@@ -12,31 +12,35 @@ use App\Models\Users;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
-class UsersZoneImportss implements FromCollection,
+
+class UsersZoneImportss implements
+    FromCollection,
     WithHeadings,
     ShouldAutoSize,
     WithEvents
 
 {
     /**
-    * @return \Illuminate\Support\Collection
-    */
+     * @return \Illuminate\Support\Collection
+     */
     protected $department_id;
     public function __construct($department_id)
     {
         $this->department_id = $department_id;
-
     }
     public function collection()
     {
         if (Session::has('loginId')) {
             $data = DB::table('users')->where('user_id', Session::get('loginId'))->first();
             $zones = DB::table('user_admin_zone')->where('user_id', $data->user_id)->pluck('province_id')->toArray();
-
+            $zones = DB::table('user_admin_zone')->where('user_id', $data->user_id)->pluck('province_id')->toArray();
+            $users_extender2 = DB::table('users_extender2')
+                ->whereIn('school_province', $zones)
+                ->pluck('extender_id');
             $users = DB::table('users')
                 ->join('users_department', 'users.user_id', '=', 'users_department.user_id')
                 ->where('users_department.department_id', '=', $this->department_id)
-                ->whereIn('users.province_id',  $zones)
+                ->whereIn('users.organization', $users_extender2)
                 ->select(
                     'users.user_id',
                     'users.username',
@@ -48,6 +52,17 @@ class UsersZoneImportss implements FromCollection,
                     'users.organization',
                     'users.user_affiliation',
                     'users.userstatus'
+                )->groupBy(
+                'users.user_id',
+                'users.username',
+                'users.firstname',
+                'users.lastname',
+                'users.createdate',
+                'users.province_id',
+                'users.mobile',
+                'users.organization',
+                'users.user_affiliation',
+                'users.userstatus'
                 )
                 ->get();
 
@@ -64,9 +79,18 @@ class UsersZoneImportss implements FromCollection,
                         $aff = '-';
                     }
                 } else {
-
-                    $extender2 = DB::table('users_extender2')->where('extender_id', $item->organization)->value('name') ?? '-';
-                    $aff = $item->user_affiliation;
+                    if ($item->province_id > 0) {
+                        $extender2 = DB::table('users_extender2')->where('extender_id', $item->organization)->value('name') ?? '-';
+                        $aff = $item->user_affiliation;
+                        $proviUser = DB::table('provinces')->where('id', $item->province_id)->value('name_in_thai') ?? '-';
+                    } elseif ($item->province_id == 0) {
+                        $extender2 = DB::table('users_extender2')->where('extender_id', $item->organization)->value('name') ?? '-';
+                        $aff = $item->user_affiliation;
+                        $proviUser = DB::table('users_extender2')
+                            ->join('provinces', 'users_extender2.school_province', '=', 'provinces.id')
+                            ->where('users_extender2.extender_id', $item->organization)
+                            ->value('name_in_thai') ?? '-';
+                    }
                 }
 
                 $firstname = $item->firstname;
@@ -91,7 +115,7 @@ class UsersZoneImportss implements FromCollection,
                     'mobile' => $fullMobile,
                     'user_affiliation' => $aff,
                     'extender2' => $extender2,
-                  
+
                     'proviUser' => $proviUser,
                     'createdate' => $TimeDAta,
                     'status' => $item->userstatus,
@@ -146,5 +170,4 @@ class UsersZoneImportss implements FromCollection,
             },
         ];
     }
-
 }

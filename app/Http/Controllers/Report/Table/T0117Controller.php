@@ -41,6 +41,6 @@ class T0117Controller extends Controller
             ->orderBy('department.department_id', 'ASC')
             ->get();
 
-        return view('page.report2.C.Table.T0117', compact('month', 'provin', 'learner'));
+        return view('page.report2.C.table.t0117', compact('month', 'provin', 'learner'));
     }
 }

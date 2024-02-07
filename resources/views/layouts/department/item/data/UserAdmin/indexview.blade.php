@@ -63,10 +63,24 @@
                             นำเข้าผู้ใช้งาน</button>
                     @endif
                     @if (
-                        $depart->department_id == 1 ||
+                        (($depart->department_id == 1 ||
                             $depart->department_id == 2 ||
                             $depart->department_id == 3 ||
-                            $depart->department_id == 4)
+                            $depart->department_id == 4) &&
+                            $data->user_role == 1) ||
+                            $data->user_role == 6 ||
+                            $data->user_role == 7 ||
+                            $data->user_role == 8 ||
+                            $data->user_role == 9)
+                        <a class="ml-1 btn btn-info btn-md " style="color:#fff"
+                            href="{{ route('testumsschool', [$depart]) }}"><i class="fas fa-users"></i>
+                            จัดการสถานศึกษา</a>
+                    @elseif (
+                        ($depart->department_id == 1 ||
+                            $depart->department_id == 2 ||
+                            $depart->department_id == 3 ||
+                            $depart->department_id == 4) &&
+                            $data->user_role == 7)
                         <a class="ml-1 btn btn-info btn-md " style="color:#fff"
                             href="{{ route('testumsschool', [$depart]) }}"><i class="fas fa-users"></i>
                             จัดการสถานศึกษา</a>
@@ -263,7 +277,6 @@
                                             onclick="window.location='{{ route('exportUsersZone', ['department_id' => $depart]) }}'">
                                             <span>Excel</span>
                                         </button>
-                                    
                                     @endif
 
                                 </div>
@@ -273,20 +286,43 @@
                                         <input type="search" id="myInput" class="form-control" placeholder=""
                                             aria-controls="datatable">
                                     </label>
-                                    <label>จังหวัด
-                                        <select id="drop2" name="drop2" class="form-control" data-allow-clear="false"
-                                            aria-controls="datatable">
-                                            <option value="0"selected>ทั้งหมด</option>
-                                            @php
-                                                $Provinces = \App\Models\Provinces::all();
 
-                                            @endphp
-                                            @foreach ($Provinces as $provin)
-                                                <option value="{{ $provin->id }}"> {{ $provin->name_in_thai }}
-                                                </option>
-                                            @endforeach
-                                        </select>
-                                    </label>
+                                    @php
+                                        $Provinces = \App\Models\Provinces::all();
+
+                                        $zones = DB::table('user_admin_zone')
+                                            ->where('user_id', $data->user_id)
+                                            ->pluck('province_id')
+                                            ->toArray();
+                                        $zonesad = DB::table('provinces')
+                                            ->whereIn('id', $zones)
+                                            ->get();
+                                    @endphp
+
+
+                                    @if ($data->user_role == 1 || $data->user_role == 8)
+                                        <label>จังหวัด
+                                            <select id="drop2" name="drop2" class="form-control form-control"
+                                                data-allow-clear="false">
+                                                <option value="0"selected>ทั้งหมด</option>
+                                                @foreach ($Provinces as $provin)
+                                                    <option value="{{ $provin->id }}" style="font-size: 16px;">
+                                                        {{ $provin->name_in_thai }}</option>
+                                                @endforeach
+                                            </select>
+                                        </label>
+                                    @elseif($data->user_role == 9)
+                                        <label>จังหวัด
+                                            <select id="drop2" name="drop2" class="form-control form-control"
+                                                data-allow-clear="false">
+                                                <option value="0"selected>ทั้งหมด</option>
+                                                @foreach ($zonesad as $provin)
+                                                    <option value="{{ $provin->id }}" style="font-size: 16px;">
+                                                        {{ $provin->name_in_thai }}</option>
+                                                @endforeach
+                                            </select>
+                                        </label>
+                                    @endif
                                 </div>
 
 

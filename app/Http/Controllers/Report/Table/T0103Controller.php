@@ -32,6 +32,6 @@ class T0103Controller extends Controller
             )
             ->get();
 
-        return view('page.report2.C.Table.T0103', compact('month', 'provin', 'learner'));
+        return view('page.report2.C.table.t0103', compact('month', 'provin', 'learner'));
     }
 }

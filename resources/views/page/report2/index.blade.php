@@ -87,7 +87,7 @@
                             </div>
                             <div
                                 class="list-group-item justify-content-between align-items-center 
-                            {{ Str::startsWith(request()->url(), route('table')) || request()->is('table', 'table/*') ? ' bg-muted' : '' }}">
+                            {{ Str::startsWith(request()->url(), route('table')) || request()->is('TableC', 'TableC/*') ? ' bg-muted' : '' }}">
                                 <span><i class="fas fa-chart-bar text-teal mr-2"></i> <a href="{{ route('table') }}"
                                         class="small">รายงานเชิงตาราง</a></span>
                             </div>

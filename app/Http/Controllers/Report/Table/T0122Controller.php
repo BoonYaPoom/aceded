@@ -20,6 +20,6 @@ class T0122Controller extends Controller
             ];
         }, $dateAll, array_keys($dateAll));
 
-        return view('page.report2.C.Table.T0122', compact('provin','dateAllWithId'));
+        return view('page.report2.C.table.t0122', compact('provin','dateAllWithId'));
     }
 }

@@ -43,6 +43,6 @@ class T0116Controller extends Controller
                 DB::raw('EXTRACT(YEAR FROM course_learner.registerdate)  + 543  as year'),
             )->distinct()
             ->get();
-        return view('page.report2.C.Table.T0116', compact('month', 'provin', 'learner'));
+        return view('page.report2.C.table.t0116', compact('month', 'provin', 'learner'));
     }
 }

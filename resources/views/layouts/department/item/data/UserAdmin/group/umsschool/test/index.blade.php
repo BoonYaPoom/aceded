@@ -29,21 +29,38 @@
                                     <input type="search" id="myInput" class="form-control" placeholder=""
                                         aria-controls="datatable">
                                 </label>
+                                @php
+                                    $Provinces = \App\Models\Provinces::all();
 
+                                    $zones = DB::table('user_admin_zone')
+                                        ->where('user_id', $data->user_id)
+                                        ->pluck('province_id')
+                                        ->toArray();
+                                    $zonesad = DB::table('provinces')
+                                        ->whereIn('id', $zones)
+                                        ->get();
+                                @endphp
                                 @if ($data->user_role == 1 || $data->user_role == 8)
                                     <label>จังหวัด
-                                        <select id="drop2" name="drop2" class="form-control form-control-sm"
+                                        <select id="drop2" name="drop2" class="form-control form-control"
                                             data-allow-clear="false">
                                             <option value="0"selected>ทั้งหมด</option>
-                                            @php
-                                                $Provinces = \App\Models\Provinces::all();
-                                            @endphp
                                             @foreach ($Provinces as $provin)
-                                                <option value="{{ $provin->name_in_thai }}"> {{ $provin->name_in_thai }}
-                                                </option>
+                                                <option value="{{ $provin->name_in_thai }}" style="font-size: 16px;">
+                                                    {{ $provin->name_in_thai }}</option>
                                             @endforeach
                                         </select>
-
+                                    </label>
+                                @elseif($data->user_role == 9)
+                                    <label>จังหวัด
+                                        <select id="drop2" name="drop2" class="form-control form-control"
+                                            data-allow-clear="false">
+                                            <option value="0"selected>ทั้งหมด</option>
+                                            @foreach ($zonesad as $provin)
+                                                <option value="{{ $provin->name_in_thai }}" style="font-size: 16px;">
+                                                    {{ $provin->name_in_thai }}</option>
+                                            @endforeach
+                                        </select>
                                     </label>
                                 @endif
 
@@ -123,11 +140,11 @@
                                                         extender_id);
                                                     var update = '<a href="' + edituser +
                                                         '"><i class="fas fa-user-plus"></i></a>';
-                                            
+
                                                     if (user_dataLogin == 1 || user_dataLogin == 6 || user_dataLogin == 8) {
-                                                        return update  ;
-                                                    }else{
-                                                          return '';
+                                                        return update;
+                                                    } else {
+                                                        return '';
                                                     }
                                                 },
 
@@ -148,8 +165,8 @@
                                             infoEmpty: "ไม่พบรายการ",
                                             infoFiltered: "(ค้นหาจากทั้งหมด _MAX_ รายการ)",
                                             processing: "<span class='fa-stack fa-lg'>\n\
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    <i class='fa fa-spinner fa-spin fa-stack-2x fa-fw'></i>\n\
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               </span>&emsp;กรุณารอสักครู่",
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    <i class='fa fa-spinner fa-spin fa-stack-2x fa-fw'></i>\n\
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               </span>&emsp;กรุณารอสักครู่",
                                             paginate: {
                                                 first: "หน้าแรก",
                                                 last: "หน้าสุดท้าย",

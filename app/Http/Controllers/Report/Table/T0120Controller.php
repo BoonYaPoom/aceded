@@ -33,6 +33,6 @@ class T0120Controller extends Controller
 
 
 
-        return view('page.report2.C.Table.T0120', compact('provin', 'learner'));
+        return view('page.report2.C.table.t0120', compact('provin', 'learner'));
     }
 }

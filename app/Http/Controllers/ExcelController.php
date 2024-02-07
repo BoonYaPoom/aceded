@@ -24,6 +24,7 @@ use App\Imports\UserDepartimport;
 use App\Imports\UsersImportClass;
 use App\Models\CourseLesson;
 use App\Models\CourseSubject;
+use App\Models\Extender2;
 use App\Models\Log;
 use App\Models\Question;
 use App\Models\UserDepartment;
@@ -629,6 +630,7 @@ class ExcelController extends Controller
                     if ($row[0] >= 1) {
                         $user_idplus = DB::table('users')->max('user_id') ?? 0;
                         $uiduserdepartment_id = DB::table('users_department')->max('user_department_id') ?? 0;
+                        $extende2 = Extender2::findOrFail($extender_id);
                         $user_role = 4;
                         $prefix = null;
                         $per_id = null;
@@ -660,9 +662,9 @@ class ExcelController extends Controller
                         $sector_id = 0;
                         $office_id = 0;
                         $user_type = null;
-                        $province_id = 0;
-                        $district_id = 0;
-                        $subdistrict_id = 0;
+                        $province_id = $extende2->school_province;
+                        $district_id = $extende2->school_district;
+                        $subdistrict_id = $extende2->school_subdistrict;
                         $recoverpassword = null;
                         $employeecode = null;
                         $randomNumber = rand(10, 99);

@@ -110,7 +110,7 @@
 
                             <!-- form row -->
                             <div class="form-row">
-                                <label for="firstname" class="col-md-2">เลขประจำตัวประชาชน</label>
+                                <label for="citizen_id" class="col-md-2">เลขประจำตัวประชาชน</label>
                                 <div class="col-md-9 mb-3">
                                     <input type="text" class="form-control " id="citizen_id" name="citizen_id"
                                         placeholder="เลขประจำตัวประชาชน" value="{{ $usermanages->citizen_id }}" disabled>
@@ -234,7 +234,7 @@
                                         @endphp
                                         @foreach ($Provinces as $provin)
                                             <option
-                                                value="{{ $provin->id }}"{{ $usermanages->province_id == $provin->code ? 'selected' : '0' }}>
+                                                value="{{ $provin->id }}"{{ $usermanages->province_id == $provin->id ? 'selected' : '0' }}>
                                                 {{ $provin->name_in_thai }} </option>
                                         @endforeach
                                     </select>

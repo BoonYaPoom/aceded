@@ -38,10 +38,13 @@ class UserprovicExport implements
             $data =
                 DB::table('users')->where('user_id', Session::get('loginId'))->first();
             $provicValue = $data->province_id;
+            $users_extender2 = DB::table('users_extender2')
+            ->where('school_province', $provicValue)
+                ->pluck('extender_id');
             $users = DB::table('users')
             ->join('users_department', 'users.user_id', '=', 'users_department.user_id')
             ->where('users_department.department_id', '=', $this->department_id)
-                ->where('users.province_id', '=', $provicValue)
+            ->whereIn('users.organization', $users_extender2)
             ->select(
                 'users.user_id',
                 'users.username',
@@ -53,26 +56,48 @@ class UserprovicExport implements
                 'users.organization',
                 'users.user_affiliation',
                 'users.userstatus'
-            )
+                )->groupBy(
+                'users.user_id',
+                'users.username',
+                'users.firstname',
+                'users.lastname',
+                'users.createdate',
+                'users.province_id',
+                'users.mobile',
+                'users.organization',
+                'users.user_affiliation',
+                'users.userstatus'
+                )
             ->get();
 
 
             $i = 1;
             $datauser = $users->map(function ($item) use (&$i) {
-                $proviUser = DB::table('provinces')->where('id', $item->province_id)->value('name_in_thai') ?? '-';
+               
 
                 if ($this->department_id > 5) {
                     if ($item->organization > 0) {
+                        $proviUser = DB::table('provinces')->where('id', $item->province_id)->value('name_in_thai') ?? '-';
                         $extender2 = DB::table('users_extender2')->where('extender_id', $item->organization)->value('name') ?? '-';
                         $aff = $item->user_affiliation;
                     } elseif ($item->organization == 0) {
                         $extender2 = $item->user_affiliation;
                         $aff = '-';
+                        $proviUser = DB::table('provinces')->where('id', $item->province_id)->value('name_in_thai') ?? '-';
                     }
                 } else  {
-
-                    $extender2 = DB::table('users_extender2')->where('extender_id', $item->organization)->value('name') ?? '-';
-                    $aff = $item->user_affiliation;
+                    if ($item->province_id > 0) {
+                        $extender2 = DB::table('users_extender2')->where('extender_id', $item->organization)->value('name') ?? '-';
+                        $aff = $item->user_affiliation;
+                        $proviUser = DB::table('provinces')->where('id', $item->province_id)->value('name_in_thai') ?? '-';
+                    } elseif ($item->province_id == 0) {
+                        $extender2 = DB::table('users_extender2')->where('extender_id', $item->organization)->value('name') ?? '-';
+                        $aff = $item->user_affiliation;
+                        $proviUser = DB::table('users_extender2')
+                        ->join('provinces','users_extender2.school_province', '=', 'provinces.id')
+                        ->where('users_extender2.extender_id', $item->organization)
+                            ->value('name_in_thai') ?? '-';
+                    }
                 }
 
                 $firstname = $item->firstname;

@@ -13,6 +13,22 @@ class PersonController extends Controller
     public function personTypes(){
             $userper = Users::all();
             $pertype = PersonType::all();
+        $users = DB::table('users')
+        ->join('course_learner', 'users.user_id', '=', 'course_learner.user_id')
+        ->join('provinces', 'users.province_id', '=', 'provinces.id')
+        ->select(
+            'provinces.name_in_thai as province_name',
+            DB::raw('EXTRACT(YEAR FROM course_learner.registerdate)  + 543  as year'),
+            DB::raw('TO_CHAR(course_learner.registerdate, \'MM\') as month'),
+            DB::raw('COUNT(DISTINCT course_learner.user_id) as user_count')
+        )
+        ->groupBy(
+            'provinces.id',
+            'provinces.name_in_thai',
+            DB::raw('TO_CHAR(course_learner.registerdate, \'MM\')')
+        )
+        ->groupBy(DB::raw('EXTRACT(YEAR FROM course_learner.registerdate)'))
+        ->get();
      return view('page.UserAdmin.group.umsgroup.index' ,compact('pertype','userper'));
     }
     public function create(){

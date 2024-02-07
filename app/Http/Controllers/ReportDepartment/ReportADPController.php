@@ -38,7 +38,7 @@ class ReportADPController extends Controller
             $count1 = DB::table('users')
                 ->join('users_department', 'users.user_id', '=', 'users_department.user_id')
                 ->where('users_department.department_id', '=', $department_id)
-                ->where('user_role', 1);
+                ->whereIn('user_role', [1, 6, 7, 8, 9]);
             $count3 = DB::table('users')
                 ->join('users_department', 'users.user_id', '=', 'users_department.user_id')
                 ->where('users_department.department_id', '=', $department_id)
@@ -47,7 +47,6 @@ class ReportADPController extends Controller
                 ->join('users_department', 'users.user_id', '=', 'users_department.user_id')
                 ->where('users_department.department_id', '=', $department_id)
                 ->where('user_role', 4);
-
 
             $monthpO = DB::table('users')
                 ->join('course_learner', 'users.user_id', '=', 'course_learner.user_id')
@@ -62,9 +61,6 @@ class ReportADPController extends Controller
                 ->groupBy(DB::raw('LTRIM(TO_CHAR(course_learner.registerdate, \'MM\'), \'0\')'))
                 ->groupBy(DB::raw('EXTRACT(YEAR FROM course_learner.registerdate)'))
                 ->get();
-
-
-
 
             if ($data->user_role == 1 || $data->user_role == 8) {
                 $count1;
@@ -136,9 +132,13 @@ class ReportADPController extends Controller
                     ->groupBy(DB::raw('EXTRACT(YEAR FROM course_learner.registerdate)'))
                     ->get();
             } elseif ($data->user_role == 7) {
-                $count1->where('users.province_id', '=', $provins);
-                $count3->where('users.province_id', '=', $provins);
-                $count4->where('users.province_id', '=', $provins);
+                $users_extender2 = DB::table('users_extender2')
+                    ->where('school_province', $provins)
+                    ->pluck('extender_id');
+                $count1->whereIn('users.organization', $users_extender2);
+                $count3->whereIn('users.organization', $users_extender2);
+                $count4->whereIn('users.organization', $users_extender2);
+   
 
                 $learn = DB::table('users')
                     ->join('course_learner', 'users.user_id', '=', 'course_learner.user_id')
@@ -146,8 +146,7 @@ class ReportADPController extends Controller
                     ->where('users_department.department_id', '=', $department_id)
                     ->where('course_learner.learner_status', '=', 1)
                     ->where('users.user_role', 4)
-                    ->where('users.province_id', '=', $provins)
-                    
+                    ->whereIn('users.organization', $users_extender2)
                     ->select(
                         DB::raw('EXTRACT(YEAR FROM course_learner.registerdate)  + 543  as year'),
                         DB::raw('COUNT(DISTINCT course_learner.user_id)  as user_count')
@@ -162,7 +161,7 @@ class ReportADPController extends Controller
                     ->where('course_learner.learner_status', '=', 1)
                     ->where('course_learner.congratulation', '=', 1)
                     ->where('users.user_role', 4)
-                    ->where('users.province_id', '=', $provins)
+                    ->whereIn('users.organization', $users_extender2)
                     ->select(
                         DB::raw('EXTRACT(YEAR FROM course_learner.registerdate)  + 543  as year'),
                         DB::raw('COUNT(DISTINCT course_learner.user_id)  as user_count')
@@ -184,7 +183,7 @@ class ReportADPController extends Controller
                     ->where('users_department.department_id', '=', $department_id)
                     ->where('course_learner.learner_status', '=', 1)
                     ->where('course_learner.congratulation', '=', 0)
-                    ->where('users.province_id', '=', $provins)
+                    ->whereIn('users.organization', $users_extender2)
                     ->where('users.user_role', 4)
                     ->select(
                         DB::raw('EXTRACT(YEAR FROM course_learner.registerdate)  + 543  as year'),
@@ -201,7 +200,7 @@ class ReportADPController extends Controller
                     ->where('users_department.department_id', '=', $department_id)
                     ->where('course_learner.learner_status', '=', 1)
                     ->where('course_learner.congratulation', '=', 1)
-                    ->where('users.province_id', '=', $provins)
+                    ->whereIn('users.organization', $users_extender2)
                     ->where('users.user_role', 4)
                     ->select(
                         DB::raw('EXTRACT(YEAR FROM course_learner.registerdate)  + 543  as year'),
@@ -287,7 +286,6 @@ class ReportADPController extends Controller
                     ->groupBy(DB::raw('LTRIM(TO_CHAR(course_learner.registerdate, \'MM\'), \'0\')'))
                     ->groupBy(DB::raw('EXTRACT(YEAR FROM course_learner.registerdate)'))
                     ->get();
-
             } elseif ($data->user_role == 9) {
                 $zones = DB::table('user_admin_zone')->where('user_id', $data->user_id)->pluck('province_id')->toArray();
                 $count1->whereIn('users.province_id',  $zones);
