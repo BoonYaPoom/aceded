@@ -38,8 +38,6 @@ class DepartUsersController extends Controller
             $userIds = $userDepart->pluck('user_id');
             // ดึงผู้ใช้ที่มีค่า provic เท่ากันกับ $provicValue
             if ($data->user_role == 1 || $data->user_role == 8) {
-                // ถ้า data->role เป็น 1 แสดงผู้ใช้ทั้งหมด
-                // นำ user_id ที่ได้ไปหาข้อมูลจากตาราง User
                 $usermanages =
                     DB::table('users')
                     ->join('users_department', 'users.user_id', '=', 'users_department.user_id')
@@ -73,33 +71,38 @@ class DepartUsersController extends Controller
                 $users_extender2 = DB::table('users_extender2')
                     ->where('school_province', $provicValue)
                     ->pluck('extender_id');
-                $usermanages =
-                    DB::table('users')
+
+                $usermanages = DB::table('users')
                     ->join('users_department', 'users.user_id', '=', 'users_department.user_id')
-                    ->whereIn('users.organization', $users_extender2)
-                    ->where('users_department.department_id', '=', $department_id)
-                    ->select(
-                        'users.user_id',
-                        'users.username',
-                        'users.email',
-                        'users.mobile',
-                        'users.userstatus',
-                        'users.province_id',
-                        'users.user_role',
-                        'users.firstname',
-                        'users.lastname'
-                    )->groupBy(
-                        'users.user_id',
-                        'users.username',
-                        'users.email',
-                        'users.mobile',
-                        'users.userstatus',
-                        'users.province_id',
-                        'users.user_role',
-                        'users.firstname',
-                        'users.lastname'
-                    );
-                   
+                    ->where('users_department.department_id', '=', $department_id);
+
+                if (in_array($department_id, [1, 2, 3, 5])) {
+                    $usermanages->whereIn('users.organization', $users_extender2);
+                } elseif (in_array($department_id, [6, 7])) {
+                    $usermanages->where('users.province_id', $provicValue);
+                }
+
+                $usermanages = $usermanages->select(
+                    'users.user_id',
+                    'users.username',
+                    'users.email',
+                    'users.mobile',
+                    'users.userstatus',
+                    'users.province_id',
+                    'users.user_role',
+                    'users.firstname',
+                    'users.lastname'
+                )->groupBy(
+                    'users.user_id',
+                    'users.username',
+                    'users.email',
+                    'users.mobile',
+                    'users.userstatus',
+                    'users.province_id',
+                    'users.user_role',
+                    'users.firstname',
+                    'users.lastname'
+                );
 
 
                 if ($user_role !== null) {
@@ -120,31 +123,7 @@ class DepartUsersController extends Controller
                         'users.user_role',
                         'users.firstname',
                         'users.lastname'
-                )->groupBy(
-                    'users.user_id',
-                    'users.username',
-                    'users.email',
-                    'users.mobile',
-                    'users.userstatus',
-                    'users.province_id',
-                    'users.user_role',
-                    'users.firstname',
-                    'users.lastname'
-                );
-                if ($user_role !== null) {
-                    $usermanages->where('user_role', $user_role);
-                }
-            } elseif ($data->user_role == 9) {
-                $zones = DB::table('user_admin_zone')->where('user_id', $data->user_id)->pluck('province_id')->toArray();
-                $users_extender2 = DB::table('users_extender2')
-                    ->whereIn('school_province', $zones)
-                    ->pluck('extender_id');
-                  
-                $usermanages =
-                    DB::table('users')
-                    ->join('users_department', 'users.user_id', '=', 'users_department.user_id')
-                    ->where('users_department.department_id', '=', $department_id)
-                    ->whereIn('users.organization', $users_extender2)->select(
+                    )->groupBy(
                         'users.user_id',
                         'users.username',
                         'users.email',
@@ -153,8 +132,38 @@ class DepartUsersController extends Controller
                         'users.province_id',
                         'users.user_role',
                         'users.firstname',
-                        'users.lastname',
-                        'users.organization'
+                        'users.lastname'
+                    );
+                if ($user_role !== null) {
+                    $usermanages->where('user_role', $user_role);
+                }
+            } elseif ($data->user_role == 9) {
+                $zones = DB::table('user_admin_zone')->where('user_id', $data->user_id)->pluck('province_id')->toArray();
+                $users_extender2 = DB::table('users_extender2')
+                    ->whereIn('school_province', $zones)
+                    ->pluck('extender_id');
+
+                $usermanages = DB::table('users')
+                    ->join('users_department', 'users.user_id', '=', 'users_department.user_id')
+                    ->where('users_department.department_id', '=', $department_id);
+
+                if (in_array($department_id, [1, 2, 3, 5])) {
+                    $usermanages->whereIn('users.organization', $users_extender2);
+                } elseif (in_array($department_id, [6, 7])) {
+                    $usermanages->whereIn('users.province_id', $zones);
+                }
+
+                $usermanages = $usermanages->select(
+                    'users.user_id',
+                    'users.username',
+                    'users.email',
+                    'users.mobile',
+                    'users.userstatus',
+                    'users.province_id',
+                    'users.user_role',
+                    'users.firstname',
+                    'users.lastname',
+                    'users.organization'
                 )->groupBy(
                     'users.user_id',
                     'users.username',
@@ -167,6 +176,10 @@ class DepartUsersController extends Controller
                     'users.lastname',
                     'users.organization'
                 );
+
+
+
+
 
                 if ($user_role !== null) {
                     $usermanages->where('user_role', $user_role);

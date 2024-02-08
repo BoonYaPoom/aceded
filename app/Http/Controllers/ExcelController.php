@@ -254,6 +254,7 @@ class ExcelController extends Controller
             $importedDataUser = Excel::toArray($UsersImports, $request->file('fileexcel'));
             if (count($importedDataUser) > 0 && count($importedDataUser[0]) > 0) {
                 // มีข้อมูลที่นำเข้า
+                $duplicateFields = [];
 
                 foreach ($importedDataUser[0] as $rowsss) {
                     if ($rowsss[0] == 'ลำดับ') {
@@ -265,24 +266,30 @@ class ExcelController extends Controller
                         }
                         $trimmedName = trim($rowsss[1]);
                         if (in_array($trimmedName, $duplicateFields)) {
-                            $duplicateFields[] = 'ชื่อผู้ใช้ที่ซ้ำในไฟล์: ' . $trimmedName;
-                        } 
+                            $duplicateFields[] = 'ชื่อผู้ใช้ที่ซ้ำในไฟล์ xlsx: ' . $trimmedName;
+                        }
+                        $Ceas = trim($rowsss[7]);
+                        if (in_array($Ceas, $duplicateFields)) {
+                            $duplicateFields[] = 'รหัสประจำตัวประชาชนซ้ำ ในไฟล์ xlsx: ' . $Ceas;
+                        }
                         if (DB::table('users')
                             ->where('username', trim($rowsss[1]))->exists()
                         ) {
-                            $duplicateFields[] = 'ชื่อผู้ใช้ซ้ำ: ' . trim($rowsss[1]);
+                            $duplicateFields[] = 'ชื่อผู้ใช้ซ้ำในระบบ: ' . trim($rowsss[1]);
                         }
 
                         if (DB::table('users')
                             ->where('citizen_id', trim($rowsss[7]))->exists()
                         ) {
-                            $duplicateFields[] = 'รหัสประจำตัวประชาชนซ้ำ: ' . trim($rowsss[7]);
+                            $duplicateFields[] = 'รหัสประจำตัวประชาชนซ้ำ ระบบ: ' . trim($rowsss[7]);
                         }
                     }
-                    if (!empty($duplicateFields)) {
-                        return response()->json(['error' => implode("\n", $duplicateFields)], 200);
-                    }
                 }
+
+                if (!empty($duplicateFields)) {
+                    return response()->json(['error' => implode("\n", $duplicateFields)], 200);
+                }
+                $Usertimestamp =  now()->timestamp;
                 foreach ($importedDataUser[0] as $row) {
                     $duplicateFields = [];
 
@@ -334,8 +341,7 @@ class ExcelController extends Controller
                         $employeecode = null;
                         $organization = null;
 
-                        $randomNumber = rand(10, 99);
-                        $Usertimestamp =  now()->timestamp .  $randomNumber;
+                        $Usertimestamp += 1;
 
                         $newUsers = new Users([
                             'user_id' =>  $Usertimestamp,
@@ -416,27 +422,35 @@ class ExcelController extends Controller
                     if ($rowsss[0] == 'ลำดับ') {
                         continue;
                     }
-                    $trimmedName = trim($rowsss[1]);
-                    if (in_array($trimmedName, $duplicateFields)) {
-                        $duplicateFields[] = 'ชื่อผู้ใช้ที่ซ้ำในไฟล์: ' . $trimmedName;
-                    } 
                     if ($rowsss[0] >= 1) {
+                        if (empty(trim($rowsss[7]))) {
+                            $duplicateFields[] = 'รหัสประจำตัวประชาชนไม่สามารถเป็นค่าว่างได้';
+                        }
+                        $trimmedName = trim($rowsss[1]);
+                        if (in_array($trimmedName, $duplicateFields)) {
+                            $duplicateFields[] = 'ชื่อผู้ใช้ที่ซ้ำในไฟล์ xlsx: ' . $trimmedName;
+                        }
+                        $Ceas = trim($rowsss[7]);
+                        if (in_array($Ceas, $duplicateFields)) {
+                            $duplicateFields[] = 'รหัสประจำตัวประชาชนซ้ำ ในไฟล์ xlsx: ' . $Ceas;
+                        }
                         if (DB::table('users')
                             ->where('username', trim($rowsss[1]))->exists()
                         ) {
-                            $duplicateFields[] = 'ชื่อผู้ใช้ซ้ำ: ' . trim($rowsss[1]);
+                            $duplicateFields[] = 'ชื่อผู้ใช้ซ้ำในระบบ: ' . trim($rowsss[1]);
                         }
 
                         if (DB::table('users')
                             ->where('citizen_id', trim($rowsss[7]))->exists()
                         ) {
-                            $duplicateFields[] = 'รหัสประจำตัวประชาชนซ้ำ: ' . trim($rowsss[7]);
+                            $duplicateFields[] = 'รหัสประจำตัวประชาชนซ้ำ ระบบ: ' . trim($rowsss[7]);
                         }
                     }
-                    if (!empty($duplicateFields)) {
-                        return response()->json(['error' => implode("\n", $duplicateFields)], 200);
-                    }
                 }
+                if (!empty($duplicateFields)) {
+                    return response()->json(['error' => implode("\n", $duplicateFields)], 200);
+                }
+                $Usertimestamp =  now()->timestamp;
                 foreach ($importedDataUser[0] as $row) {
                     if ($row[0] == 'ลำดับ') {
                         continue;
@@ -484,9 +498,9 @@ class ExcelController extends Controller
                         $recoverpassword = null;
                         $employeecode = null;
                         $organization = null;
-                        $randomNumber = rand(10, 99);
-                        $Usertimestamp =  now()->timestamp .  $randomNumber;
 
+
+                        $Usertimestamp += 1;
 
                         $newUsers = new Users([
                             'user_id' => $Usertimestamp,
@@ -603,25 +617,30 @@ class ExcelController extends Controller
                         }
                         $trimmedName = trim($rowsss[1]);
                         if (in_array($trimmedName, $duplicateFields)) {
-                            $duplicateFields[] = 'ชื่อผู้ใช้ที่ซ้ำในไฟล์: ' . $trimmedName;
-                        } 
+                            $duplicateFields[] = 'ชื่อผู้ใช้ที่ซ้ำในไฟล์ xlsx: ' . $trimmedName;
+                        }
+                        $Ceas = trim($rowsss[7]);
+                        if (in_array($Ceas, $duplicateFields)) {
+                            $duplicateFields[] = 'รหัสประจำตัวประชาชนซ้ำ ในไฟล์ xlsx: ' . $Ceas;
+                        }
                         if (DB::table('users')
                             ->where('username', trim($rowsss[1]))->exists()
                         ) {
-                            $duplicateFields[] = 'ชื่อผู้ใช้ซ้ำ: ' . trim($rowsss[1]);
+                            $duplicateFields[] = 'ชื่อผู้ใช้ซ้ำในระบบ: ' . trim($rowsss[1]);
                         }
 
                         if (DB::table('users')
                             ->where('citizen_id', trim($rowsss[7]))->exists()
                         ) {
-                            $duplicateFields[] = 'รหัสประจำตัวประชาชนซ้ำ: ' . trim($rowsss[7]);
+                            $duplicateFields[] = 'รหัสประจำตัวประชาชนซ้ำ ระบบ: ' . trim($rowsss[7]);
                         }
                     }
-                    if (!empty($duplicateFields)) {
-                        return response()->json(['error' => implode("\n", $duplicateFields)], 200);
-                    }
                 }
-
+                if (!empty($duplicateFields)) {
+                    return response()->json(['error' => implode("\n", $duplicateFields)], 200);
+                }
+                $Usertimestamp =  now()->timestamp . '00';
+                $insertedCount = 0;
                 foreach ($importedDataUser[0] as $row) {
 
                     if ($row[0] == 'ลำดับ') {
@@ -667,8 +686,8 @@ class ExcelController extends Controller
                         $subdistrict_id = $extende2->school_subdistrict;
                         $recoverpassword = null;
                         $employeecode = null;
-                        $randomNumber = rand(10, 99);
-                        $Usertimestamp =  now()->timestamp .  $randomNumber;
+
+                        $Usertimestamp += 1;
 
                         $newUsers = new Users([
                             'user_id' => $Usertimestamp,
@@ -723,7 +742,7 @@ class ExcelController extends Controller
                             'birthday' => null,
                         ]);
                         $newUsers->save();
-
+                        $insertedCount++;
                         $UserDepartment =  new UserDepartment([
                             'user_department_id' =>  $Usertimestamp,
                             'user_id' =>    $newUsers->user_id,
@@ -731,177 +750,12 @@ class ExcelController extends Controller
                         ]);
                         $UserDepartment->save();
                     }
+                    
                 }
 
-                return response()->json(['message' => 'Import successfully'], 200);
+                return response()->json(['message' => 'Import successfully', 'inserted_count' => $insertedCount], 200);
             } else {
                 return response()->json(['error' => 'No data found in the imported file']);
-            }
-        } else {
-            return response()->json(['error' => 'No file uploaded']);
-        }
-    }
-
-    public function UsersDepartAllImport(Request $request, $school_code, $department_id)
-    {
-        $UserAlldepartClass = new UserAlldepartClass($department_id);
-        if ($request->hasFile('fileexcel')) {
-            try {
-                $importedDataUserAll = Excel::toArray($UserAlldepartClass, $request->file('fileexcel'));
-                if (count($importedDataUserAll) > 0 && count($importedDataUserAll[0]) > 0) {
-                    // มีข้อมูลที่นำเข้า
-                    $duplicateFields = [];
-
-                    foreach ($importedDataUserAll[0] as $rowsss) {
-                        if ($rowsss[0] == 'ลำดับ') {
-                            continue;
-                        }
-                        if ($rowsss[0] >= 1) {
-                            if (empty(trim($rowsss[7]))) {
-                                $duplicateFields[] = 'รหัสประจำตัวประชาชนไม่สามารถเป็นค่าว่างได้';
-                            }
-                            $trimmedName = trim($rowsss[1]);
-                            if (in_array($trimmedName, $duplicateFields)) {
-                                $duplicateFields[] = 'ชื่อผู้ใช้ที่ซ้ำในไฟล์: ' . $trimmedName;
-                            } 
-                            if (DB::table('users')
-                                ->where('username', trim($rowsss[1]))->exists()
-                            ) {
-                                $duplicateFields[] = 'ชื่อผู้ใช้ซ้ำ: ' . trim($rowsss[1]);
-                            }
-
-                            if (DB::table('users')
-                                ->where('citizen_id', trim($rowsss[7]))->exists()
-                            ) {
-                                $duplicateFields[] = 'รหัสประจำตัวประชาชนซ้ำ: ' . trim($rowsss[7]);
-                            }
-                        }
-                        if (!empty($duplicateFields)) {
-                            return response()->json(['error' => implode("\n", $duplicateFields)], 200);
-                        }
-                    }
-                    foreach ($importedDataUserAll[0] as $row) {
-                        // เช็คว่าข้อมูลในแต่ละคอลัมน์ของ $row ถูกต้องหรือไม่
-                        if ($row[0] == 'ลำดับ') {
-                            continue;
-                        }
-
-                        if ($row[0] >= 1) {
-                            $user_idplus = Users::max('user_id') ?? 0;
-                            $uidUserSchool = UserSchool::max('user_school_id') ?? 0;
-                            $uiduserdepartment_id = UserDepartment::max('user_department_id') ?? 0;
-                            $user_role = 4;
-                            $prefix = null;
-                            $per_id = null;
-                            $permission = null;
-                            $ldap = 0;
-                            $userstatus = 1;
-                            $createdate = now();
-                            $createby = 2;
-                            $avatar = '';
-                            $user_position = '';
-                            $workplace = '';
-                            $telephone = '';
-                            $socialnetwork = '';
-                            $experience = null;
-                            $recommened = null;
-                            $templete = null;
-                            $nickname = '';
-                            $introduce = '';
-                            $bgcustom = '';
-                            $pay = '';
-                            $education = '';
-                            $teach = '';
-                            $modern = '';
-                            $other = '';
-                            $profiles = null;
-                            $editflag = null;
-                            $pos_level = 0;
-                            $pos_name = '';
-                            $sector_id = 0;
-                            $office_id = 0;
-                            $user_type = null;
-                            $province_id = 0;
-                            $district_id = 0;
-                            $subdistrict_id = 0;
-                            $recoverpassword = null;
-                            $employeecode = null;
-                            $organization = null;
-                            $randomNumber = rand(10, 99);
-                            $Usertimestamp =  now()->timestamp .  $randomNumber;
-
-                            $newUsers = new Users([
-                                'user_id' => $Usertimestamp,
-                                'username' => trim($row[1]),
-                                'password' => Hash::make($row[2]),
-                                'firstname' => $row[3],
-                                'lastname' => $row[4],
-                                'mobile' => $row[5],
-                                'email' => $row[6],
-                                'citizen_id' =>   trim($row[7]),
-                                'gender' => $row[8],
-                                'prefix' =>  $prefix,
-                                'user_role' => $user_role,
-                                'per_id' => $per_id,
-                                'department_id' => $department_id,
-                                'permission' => $permission,
-                                'ldap' => $ldap,
-                                'userstatus' => $userstatus,
-                                'createdate' => $createdate,
-                                'createby' => $createby,
-                                'avatar' => $avatar,
-                                'user_position' =>  $user_position,
-                                'workplace' =>  $workplace,
-                                'telephone' =>  $telephone,
-                                'socialnetwork' =>  $socialnetwork,
-                                'experience' =>  $experience,
-                                'recommened' => $recommened,
-                                'templete' => $templete,
-                                'nickname' =>  $nickname,
-                                'introduce' => $introduce,
-                                'bgcustom' =>  $bgcustom,
-                                'pay' =>  $pay,
-                                'education' => $education,
-                                'teach' => $teach,
-                                'modern' => $modern,
-                                'other' => $other,
-                                'profiles' =>  $profiles,
-                                'editflag' => $editflag,
-                                'pos_level' => $pos_level,
-                                'pos_name' => $pos_name,
-                                'sector_id' =>  $sector_id,
-                                'office_id' => $office_id,
-                                'user_type' => $user_type,
-                                'province_id' => $province_id,
-                                'district_id' => $district_id,
-                                'subdistrict_id' =>  $subdistrict_id,
-                                'recoverpassword' =>  $recoverpassword,
-                                'employeecode' =>  $employeecode,
-                                'organization' =>  $organization,
-                                'user_affiliation' =>  $row[9] ?? null,
-                                'user_type_card' =>  0,
-                                'birthday' => null,
-                            ]);
-                            $newUsers->save();
-
-
-                            $UserDepartment =  new UserDepartment([
-                                'user_department_id' =>  $Usertimestamp,
-                                'user_id' =>    $newUsers->user_id,
-                                'department_id' => $department_id,
-                            ]);
-                            $UserDepartment->save();
-                        }
-                    }
-
-
-
-                    return response()->json(['message' => 'Import successfully'], 200);
-                } else {
-                    return response()->json(['error' => 'No data found in the imported file']);
-                }
-            } catch (\Exception $e) {
-                return response()->json(['error' => 'Error importing data: ' . $e->getMessage()], 500);
             }
         } else {
             return response()->json(['error' => 'No file uploaded']);

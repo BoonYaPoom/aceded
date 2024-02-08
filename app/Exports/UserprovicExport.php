@@ -39,41 +39,44 @@ class UserprovicExport implements
                 DB::table('users')->where('user_id', Session::get('loginId'))->first();
             $provicValue = $data->province_id;
             $users_extender2 = DB::table('users_extender2')
-            ->where('school_province', $provicValue)
+                ->where('school_province', $provicValue)
                 ->pluck('extender_id');
             $users = DB::table('users')
-            ->join('users_department', 'users.user_id', '=', 'users_department.user_id')
-            ->where('users_department.department_id', '=', $this->department_id)
-            ->whereIn('users.organization', $users_extender2)
-            ->select(
-                'users.user_id',
-                'users.username',
-                'users.firstname',
-                'users.lastname',
-                'users.createdate',
-                'users.province_id',
-                'users.mobile',
-                'users.organization',
-                'users.user_affiliation',
-                'users.userstatus'
-                )->groupBy(
-                'users.user_id',
-                'users.username',
-                'users.firstname',
-                'users.lastname',
-                'users.createdate',
-                'users.province_id',
-                'users.mobile',
-                'users.organization',
-                'users.user_affiliation',
-                'users.userstatus'
-                )
-            ->get();
+                ->join('users_department', 'users.user_id', '=', 'users_department.user_id')
+                ->where('users_department.department_id', '=', $this->department_id);
 
+            if (in_array($this->department_id, [1, 2, 3, 5])) {
+                $users->whereIn('users.organization', $users_extender2);
+            } elseif (in_array($this->department_id, [6, 7])) {
+                $users->where('users.province_id', $provicValue);
+            }
+            $users = $users->select(
+                'users.user_id',
+                'users.username',
+                'users.firstname',
+                'users.lastname',
+                'users.createdate',
+                'users.province_id',
+                'users.mobile',
+                'users.organization',
+                'users.user_affiliation',
+                'users.userstatus'
+            )->groupBy(
+                'users.user_id',
+                'users.username',
+                'users.firstname',
+                'users.lastname',
+                'users.createdate',
+                'users.province_id',
+                'users.mobile',
+                'users.organization',
+                'users.user_affiliation',
+                'users.userstatus'
+            )->get();
 
             $i = 1;
             $datauser = $users->map(function ($item) use (&$i) {
-               
+
 
                 if ($this->department_id > 5) {
                     if ($item->organization > 0) {
@@ -85,7 +88,7 @@ class UserprovicExport implements
                         $aff = '-';
                         $proviUser = DB::table('provinces')->where('id', $item->province_id)->value('name_in_thai') ?? '-';
                     }
-                } else  {
+                } else {
                     if ($item->province_id > 0) {
                         $extender2 = DB::table('users_extender2')->where('extender_id', $item->organization)->value('name') ?? '-';
                         $aff = $item->user_affiliation;
@@ -94,8 +97,8 @@ class UserprovicExport implements
                         $extender2 = DB::table('users_extender2')->where('extender_id', $item->organization)->value('name') ?? '-';
                         $aff = $item->user_affiliation;
                         $proviUser = DB::table('users_extender2')
-                        ->join('provinces','users_extender2.school_province', '=', 'provinces.id')
-                        ->where('users_extender2.extender_id', $item->organization)
+                            ->join('provinces', 'users_extender2.school_province', '=', 'provinces.id')
+                            ->where('users_extender2.extender_id', $item->organization)
                             ->value('name_in_thai') ?? '-';
                     }
                 }
@@ -114,8 +117,8 @@ class UserprovicExport implements
 
                 $formattedTime = ltrim($createdate->format('g.i'), '0')  . ' ' . 'น.';
 
-                $TimeDAta =  $formattedDate. ' '  . ' ' . $formattedTime;
-                  return [
+                $TimeDAta =  $formattedDate . ' '  . ' ' . $formattedTime;
+                return [
                     'i' => $i + 1,
                     'username' => $item->username,
                     'fullname' => $fullname,
@@ -132,7 +135,6 @@ class UserprovicExport implements
         } else {
             $users = collect();
         }
-
     }
 
 
@@ -149,7 +151,7 @@ class UserprovicExport implements
             'จังหวัด',
             'วันที่สร้าง',
             'สถานะ',
-       
+
             // เพิ่มหัวตารางอื่น ๆ ตามต้องการ
         ];
     }

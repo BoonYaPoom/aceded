@@ -135,10 +135,16 @@ class ReportADPController extends Controller
                 $users_extender2 = DB::table('users_extender2')
                     ->where('school_province', $provins)
                     ->pluck('extender_id');
-                $count1->whereIn('users.organization', $users_extender2);
-                $count3->whereIn('users.organization', $users_extender2);
-                $count4->whereIn('users.organization', $users_extender2);
-   
+
+                if (in_array($department_id, [1, 2, 3, 5])) {
+                    $count1->where('users.province_id', $provins);
+                    $count3->where('users.province_id', $provins);
+                    $count4->whereIn('users.organization', $users_extender2);
+                } elseif (in_array($department_id, [6, 7])) {
+                    $count1->where('users.province_id', $provins);
+                    $count3->where('users.province_id', $provins);
+                    $count4->where('users.province_id', $provins);
+                }
 
                 $learn = DB::table('users')
                     ->join('course_learner', 'users.user_id', '=', 'course_learner.user_id')

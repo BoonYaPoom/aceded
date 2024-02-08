@@ -184,7 +184,7 @@
                             if (response.message) {
                                 Swal.fire({
                                     title: 'User Successful',
-                                    text: 'ข้อมูล User ถูกบันทึกเรียบร้อย',
+                                    text: 'ข้อมูล User ถูกบันทึกเรียบร้อย จำนวน ' + response.inserted_count + ' รายการ',
                                     icon: 'success',
                                     confirmButtonText: 'OK'
                                 }).then(function(result) {
