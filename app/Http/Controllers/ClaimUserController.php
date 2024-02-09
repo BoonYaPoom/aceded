@@ -49,9 +49,9 @@ class ClaimUserController extends Controller
             ->where('department_claim.claim_status', '<', 2)
             ->leftJoin('department', 'department_claim.claim_department_id', '=', 'department.department_id')
             ->select(
-                'department_claim.*',
+                'department_claim.claim_status',
                 'department.name_th as department_name'
-            )
+            )->groupBy('department.name_th',  'department_claim.claim_status')
             ->get();
 
         // ส่งข้อมูลไปยัง view ที่คุณจะใช้แสดงข้อมูลใน Modal

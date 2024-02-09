@@ -44,7 +44,7 @@
                                     var html = '';
                                     var num = 1;
                                     for (var i = 0; i < data.claimData.length; i++) {
-                                        if (data.claimData[i].claim_status == 1 || data.claimData[i].claim_status == 0) {
+                             
                                             html += '<tr>';
                                             html += '<td>' + (num++) + '</td>';
                                             html += '<td>' + data.claimData[i].department_name + '</td>';
@@ -52,7 +52,7 @@
                                                 .claim_status == 1 ? 'ขอรับสิทธิ์' : 'Unknown Status')) + '</td>';
 
                                             html += '</tr>';
-                                        }
+                                        
 
                                     }
                                     // นำ HTML ไปแทรกในตาราง
