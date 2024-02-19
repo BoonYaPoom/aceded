@@ -61,7 +61,6 @@
                                     </div>
                                 </div>
                             </div>
-
                             <!-- thead -->
                             <thead>
                                 <tr class="bg-infohead">
@@ -259,12 +258,10 @@
         <script>
             $(document).ready(function() {
                 var table = $('#datatable').DataTable({
-
                     lengthChange: false,
                     responsive: true,
                     info: false,
                     language: {
-
                         infoEmpty: "ไม่พบรายการ",
                         infoFiltered: "(ค้นหาจากทั้งหมด _MAX_ รายการ)",
                         paginate: {
@@ -274,14 +271,10 @@
                             next: "ถัดไป" // ปิดการแสดงหน้าของ DataTables
                         }
                     }
-
                 });
-
                 $('#myInput').on('keyup', function() {
                     table.search(this.value).draw();
                 });
-
-
             });
         </script>
         <script>
@@ -302,9 +295,7 @@
                             next: "ถัดไป" // ปิดการแสดงหน้าของ DataTables
                         }
                     }
-
                 });
-
                 $('#searchNa').on('keyup', function() {
                     table2.columns(2).search(this.value).draw();
                 });

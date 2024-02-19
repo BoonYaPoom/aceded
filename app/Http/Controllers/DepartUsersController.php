@@ -36,7 +36,6 @@ class DepartUsersController extends Controller
             $organization = $data->organization;
             $userDepart = UserDepartment::where('department_id', $department_id);
             $userIds = $userDepart->pluck('user_id');
-            // ดึงผู้ใช้ที่มีค่า provic เท่ากันกับ $provicValue
             if ($data->user_role == 1 || $data->user_role == 8) {
                 $usermanages =
                     DB::table('users')
@@ -51,7 +50,8 @@ class DepartUsersController extends Controller
                         'users.province_id',
                         'users.user_role',
                         'users.firstname',
-                        'users.lastname'
+                        'users.lastname',
+                        'citizen_id'
                     )->groupBy(
                         'users.user_id',
                         'users.username',
@@ -61,7 +61,8 @@ class DepartUsersController extends Controller
                         'users.province_id',
                         'users.user_role',
                         'users.firstname',
-                        'users.lastname'
+                        'users.lastname',
+                        'citizen_id'
                     );
 
                 if ($user_role !== null) {
@@ -91,7 +92,8 @@ class DepartUsersController extends Controller
                     'users.province_id',
                     'users.user_role',
                     'users.firstname',
-                    'users.lastname'
+                    'users.lastname',
+                    'citizen_id'
                 )->groupBy(
                     'users.user_id',
                     'users.username',
@@ -101,7 +103,8 @@ class DepartUsersController extends Controller
                     'users.province_id',
                     'users.user_role',
                     'users.firstname',
-                    'users.lastname'
+                    'users.lastname',
+                    'citizen_id'
                 );
 
 
@@ -122,7 +125,8 @@ class DepartUsersController extends Controller
                         'users.province_id',
                         'users.user_role',
                         'users.firstname',
-                        'users.lastname'
+                        'users.lastname',
+                        'citizen_id'
                     )->groupBy(
                         'users.user_id',
                         'users.username',
@@ -132,7 +136,8 @@ class DepartUsersController extends Controller
                         'users.province_id',
                         'users.user_role',
                         'users.firstname',
-                        'users.lastname'
+                        'users.lastname',
+                        'citizen_id'
                     );
                 if ($user_role !== null) {
                     $usermanages->where('user_role', $user_role);
@@ -163,7 +168,8 @@ class DepartUsersController extends Controller
                     'users.user_role',
                     'users.firstname',
                     'users.lastname',
-                    'users.organization'
+                    'users.organization',
+                    'citizen_id'
                 )->groupBy(
                     'users.user_id',
                     'users.username',
@@ -174,7 +180,8 @@ class DepartUsersController extends Controller
                     'users.user_role',
                     'users.firstname',
                     'users.lastname',
-                    'users.organization'
+                    'users.organization',
+                    'citizen_id'
                 );
 
 
@@ -248,11 +255,11 @@ class DepartUsersController extends Controller
             ->addColumn('user_role', function ($userdata) {
                 return $userdata->user_role;
             })
-
             ->filter(function ($userdata) use ($request) {
 
                 if ($request->has('myInput') && !empty($request->myInput)) {
-                    $userdata->where('username', 'like', '%' . $request->myInput . '%')->orwhere('firstname', 'like', '%' . $request->myInput . '%')->orWhere('lastname', 'like', '%' . $request->myInput . '%');
+                    $userdata->where('username', 'like', '%' . $request->myInput . '%')->orwhere('firstname', 'like', '%' . $request->myInput . '%')->orWhere('lastname', 'like', '%' . $request->myInput . '%')
+                ->orWhere('citizen_id', 'like', '%' . $request->myInput . '%');
                 }
             })
             ->filterColumn('name_in_thai', function ($userdata) use ($request) {

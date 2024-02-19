@@ -9,6 +9,10 @@
                     d.myInput = $('#myInput').val();
                     d.drop2 = $('#drop2').val();
                 },
+                error: function(jqXHR, textStatus, errorThrown) {
+                    console.error('DataTables Error:', errorThrown);
+                    location.reload();
+                }
             },
             columns: [{
                     data: 'num'
@@ -123,18 +127,28 @@
             },
 
         });
-        $('#myInput').on('keyup', function() {
-            table.search(this.value).draw();
-        });
-        $('#drop2').on('change', function() {
-            var selectedDrop2Id = $(this).val();
-            console.log(selectedDrop2Id);
+
+        function performSearch() {
+            var inputValue = $('#myInput').val();
+            var selectedDrop2Id = $('#drop2').val();
+
+            table.search(inputValue);
+
             if (selectedDrop2Id == 0) {
                 table.column(5).search('').draw();
             } else {
                 table.column(5).search(selectedDrop2Id).draw();
             }
+
+            table.ajax.reload();
+        }
+
+        // ผูกตัวจัดการเหตุการณ์
+        $('#myInput, #drop2').on('keyup change', function() {
+            performSearch();
         });
+
+
 
     });
 

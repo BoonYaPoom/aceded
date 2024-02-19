@@ -10,6 +10,10 @@
                     d.myInput = $('#myInput').val();
                     d.drop2 = $('#drop2').val();
                 },
+                error: function(jqXHR, textStatus, errorThrown) {
+                    console.error('DataTables Error:', errorThrown);
+                    location.reload();
+                }
             },
             columns: [{
                     data: 'num'

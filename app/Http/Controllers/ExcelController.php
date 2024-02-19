@@ -7,6 +7,7 @@ use App\Exports\QuestionExport;
 use App\Exports\ReportExport;
 use App\Exports\SubjectExport;
 use App\Exports\UserDepartExport;
+use App\Exports\UserProvicAll;
 use App\Exports\UserprovicExport;
 use App\Models\User;
 use App\Models\UserSchool;
@@ -45,7 +46,11 @@ class ExcelController extends Controller
             'Content-Disposition' => 'attachment; filename="exported_data.xlsx"',
         ]);
     }
-
+    
+    public function exportUserProvicAll($provicValue)
+    {
+        return Excel::download(new UserProvicAll($provicValue), 'Administrator Management Users Province.xlsx');
+    }
     public function ReportExp()
     {
         return Excel::download(new ReportExport(), 'Administrator Management Report.xlsx');

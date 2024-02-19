@@ -99,6 +99,7 @@ Route::get('/exportUsersall', [ExcelController::class, 'exportUsersall'])->name(
 Route::get('/UsersExportDepart/{department_id}', [ExcelController::class, 'exportUsers'])->name('UsersExport');
 Route::get('/exportUsersPro/{department_id}/{provicValue}', [ExcelController::class, 'exportUsersPro'])->name('exportUsersPro');
 
+Route::get('/exportUserProvicAll/{provicValue}', [ExcelController::class, 'exportUserProvicAll'])->name('exportUserProvicAll');
 Route::get('/exportSubject', [ExcelController::class, 'exportSubject'])->name('exportSubject');
 
 Route::get('/QuestionExport/{subject_id}', [ExcelController::class, 'questionExport'])->name('questionExport');

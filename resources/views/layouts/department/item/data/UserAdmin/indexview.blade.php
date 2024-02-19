@@ -278,8 +278,17 @@
                                             <span>Excel</span>
                                         </button>
                                     @endif
-
+                                &nbsp;&nbsp;&nbsp;
+                                    @if ($data->user_role == 7)
+                                        <button class="btn btn-secondary buttons-excel buttons-html5" tabindex="0"
+                                            aria-controls="datatable" type="button"
+                                            onclick="window.location='{{ route('exportUserProvicAll', ['provicValue' => $provicValue]) }}'">
+                                            <span>Excel รายชื่อทั้งจังหวัด</span>
+                                        </button>
+                                    @endif
                                 </div>
+
+
 
                                 <div class="dataTables_filter ">
                                     <label>ค้นหา
@@ -294,9 +303,7 @@
                                             ->where('user_id', $data->user_id)
                                             ->pluck('province_id')
                                             ->toArray();
-                                        $zonesad = DB::table('provinces')
-                                            ->whereIn('id', $zones)
-                                            ->get();
+                                        $zonesad = DB::table('provinces')->whereIn('id', $zones)->get();
                                     @endphp
 
 

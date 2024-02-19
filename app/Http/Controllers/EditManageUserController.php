@@ -90,7 +90,8 @@ class EditManageUserController extends Controller
             'province_id',
             'user_role',
             'firstname',
-            'lastname'
+            'lastname',
+            'citizen_id'
         );;
         if ($user_role !== null) {
             $usermanages->where('user_role', $user_role);
@@ -148,12 +149,15 @@ class EditManageUserController extends Controller
             ->filter(function ($userdata) use ($request) {
 
                 if ($request->has('myInput') && !empty($request->myInput)) {
-                $userdata->where('username', 'like', '%' . $request->myInput . '%')->orwhere('firstname', 'like', '%' . $request->myInput . '%')->orWhere('lastname', 'like', '%' . $request->myInput . '%');
+                    $userdata->where('username', 'like', '%' . $request->myInput . '%')
+                        ->orwhere('firstname', 'like', '%' . $request->myInput . '%')
+                        ->orWhere('lastname', 'like', '%' . $request->myInput . '%')
+                        ->orWhere('citizen_id', 'like', '%' . $request->myInput . '%');
                 }
             })
             ->filterColumn('name_in_thai', function ($userdata) use ($request) {
 
-                if ($request->drop2 != '0'&& !empty($request->drop2)) {
+                if ($request->drop2 != '0' && !empty($request->drop2)) {
                     $userdata->where('province_id', $request->drop2);
                 }
             })
@@ -410,7 +414,7 @@ class EditManageUserController extends Controller
             'mobile.required' => 'กรุณากรอกเบอร์โทร',
             'user_role.required' => 'กรุณาเลือกประเภทผู้ใช้งาน',
         ]);
-      
+
         $maxUserId = Users::max('user_id');
         $randomNumber = rand(10, 99);
         $Usertimestamp =  now()->timestamp .  $randomNumber;
@@ -519,7 +523,7 @@ class EditManageUserController extends Controller
 
         $usermanages->save();
 
-  
+
         $maxUserDepartmentId = DB::table('users_department')->max('user_department_id');
         $department_data = $request->department_data;
         if (!empty($department_data)) {
