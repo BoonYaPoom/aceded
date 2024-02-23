@@ -27,12 +27,12 @@
                     <span class="mr-auto">รายงานสถิติช่วงอายุของผู้เรียนในแต่ละหลักสูตร ( ช่วงที่ 1 อายุไม่เกิน 11 ปี /
                         ช่วงที่ 2 อายุ12 - 17 ปี / ช่วงที่ 3 อายุ 18 - 25 ปี
                         / ช่วงที่ 4 อายุเกิน 25 ปีขึ้นไป )</span>
-                    <!-- <a
-                                                      href="https://aced.dlex.ai/childhood/admin/export/pdf.html"
-                                                      class="btn btn-icon btn-outline-danger"><i class="fa fa-file-pdf"></i></a>&nbsp;<a
-                                                      href="https://aced.dlex.ai/childhood/admin/export/excel.html"
-                                                      class="btn btn-icon btn-outline-primary"><i class="fa fa-file-excel "></i></a>-->&nbsp;<a
-                        href="javascript:window.print();" class="btn btn-icon btn-outline-success"><i
+                    <a href="https://aced.dlex.ai/childhood/admin/export/pdf.html"
+                        class="btn btn-icon btn-outline-danger"><i class="fa fa-file-pdf"></i></a>&nbsp;<a
+                        href="https://aced.dlex.ai/childhood/admin/export/excel.html"
+                        class="btn btn-icon btn-outline-primary"><i class="fa fa-file-excel "></i></a>
+                    &nbsp;
+                    <a href="javascript:window.print();" class="btn btn-icon btn-outline-success"><i
                             class="fa fa-print "></i></a>
                 </div>
             </div><!-- /.card-header -->
@@ -77,7 +77,7 @@
                 var filteredLearner = learner.filter(function(data) {
                     return data.year == selectedYear;
                 });
-     
+
                 displayDataInTable(filteredLearner);
             });
             $('#selectyear').trigger('change');

@@ -39,10 +39,10 @@
                             <span class="badge badge-warning">{{ $message }}</span>
                         @enderror
                         <!-- .form-group -->
-                        <div class="form-group  d-none">
+                        <div class="form-group ">
                             <label for="book_author">ชื่อผู้แต่ง </label>
                             <input type="text" class="form-control" id="book_author" name="book_author"
-                                placeholder="ชื่อผู้แต่ง" value="ACED">
+                                placeholder="ชื่อผู้แต่ง" value="">
                         </div><!-- /.form-group -->
                         <!-- .form-group -->
                         <!-- .form-group -->

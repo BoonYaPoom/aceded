@@ -47,7 +47,12 @@ class BookController extends Controller
         $books = new Book;
         $books->book_type = $request->book_type;
         $books->book_name = $request->book_name;
-        $books->book_author = $request->book_author;
+
+        if ($request->book_author) {
+            $books->book_author = $request->book_author;
+        } else {
+            $books->book_author = 'สำนักงาน ปปช.';
+        }
         $books->detail = '';
 
         $books->book_date = now();
@@ -76,7 +81,7 @@ class BookController extends Controller
                 $de_th->loadHTML($contents, LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
                 libxml_clear_errors(); // Clear any accumulated errors
                 $images_des_th = $de_th->getElementsByTagName('img');
-        
+
                 foreach ($images_des_th as $key => $img) {
                     if (strpos($img->getAttribute('src'), 'data:image/') === 0) {
                         $data = base64_decode(explode(',', explode(';', $img->getAttribute('src'))[1])[1]);
@@ -92,7 +97,6 @@ class BookController extends Controller
             }
 
             $books->contents = $decodedText;
-            
         }
         $books->save();
 
@@ -120,102 +124,102 @@ class BookController extends Controller
         ini_set('max_execution_time', 300);
         ini_set('pcre.backtrack_limit', 5000000);
 
-        
+
         if ($request->hasFile('bookfile')) {
-        // บันทึกไฟล์ PDF และแปลงเป็นรูปภาพ
-        if ($request->book_type == 0) {
-            $file_name = $request->file('bookfile');
-            $file_namess = 'book' . '.' . $request->bookfile->getClientOriginalExtension();
-            $sourceDirectory = public_path('uploads/book');
-            $destinationDirectory = public_path('upload/Book/' . $books->book_id);
-            if (!File::exists($destinationDirectory)) {
-                File::makeDirectory($destinationDirectory, 0777, true, true);
-            }
-            $files = File::allFiles($sourceDirectory);
-            foreach ($files as $file) {
-                // หาชื่อโฟลเดอร์เดิมที่อยู่ในชื่อไฟล์
-                $originalDirectoryName = pathinfo($file->getRelativePathname(), PATHINFO_DIRNAME);
-
-                // สร้างโฟลเดอร์ปลายทางในกรณีที่ยังไม่มี
-                $newDirectoryPath = $destinationDirectory . '/' . $originalDirectoryName;
-                if (!File::exists($newDirectoryPath)) {
-                    File::makeDirectory($newDirectoryPath, 0777, true, true);
+            // บันทึกไฟล์ PDF และแปลงเป็นรูปภาพ
+            if ($request->book_type == 0) {
+                $file_name = $request->file('bookfile');
+                $file_namess = 'book' . '.' . $request->bookfile->getClientOriginalExtension();
+                $sourceDirectory = public_path('uploads/book');
+                $destinationDirectory = public_path('upload/Book/' . $books->book_id);
+                if (!File::exists($destinationDirectory)) {
+                    File::makeDirectory($destinationDirectory, 0777, true, true);
                 }
+                $files = File::allFiles($sourceDirectory);
+                foreach ($files as $file) {
+                    // หาชื่อโฟลเดอร์เดิมที่อยู่ในชื่อไฟล์
+                    $originalDirectoryName = pathinfo($file->getRelativePathname(), PATHINFO_DIRNAME);
 
-                // คัดลอกและบันทึกไฟล์ใหม่
-                $newFileName = $file->getFilename();
-                $fileContents = File::get($file->getPathname());
-                File::put($newDirectoryPath . '/' . $newFileName, $fileContents);
-            }
-            $file_path = public_path('upload/Book/' . $books->book_id) . '/' . $file_namess;
-            $file_name->move(public_path('upload/Book/' . $books->book_id), $file_namess);
+                    // สร้างโฟลเดอร์ปลายทางในกรณีที่ยังไม่มี
+                    $newDirectoryPath = $destinationDirectory . '/' . $originalDirectoryName;
+                    if (!File::exists($newDirectoryPath)) {
+                        File::makeDirectory($newDirectoryPath, 0777, true, true);
+                    }
 
-            // Check if the PDF file exists
-            if (file_exists($file_path)) {
-                // สร้างโฟลเดอร์เพื่อเก็บรูปภาพที่แปลง
-                $outputPath = public_path('upload/Book/' . $books->book_id);
-
-                // Construct the folder name based on the count
-                $folderName = 'page';
-
-
-                $newFolder = $outputPath . '/' . $folderName . '/large';
-                File::makeDirectory($newFolder, $mode = 0777, true, true);
-                $newFolder1 = $outputPath . '/' . $folderName . '/thumb';
-                File::makeDirectory($newFolder1, $mode = 0777, true, true);
-
-                $pdf = new Pdf($file_path);
-
-                $pages = array();
-                $pagesCount = $pdf->getNumberOfPages();
-
-                for ($page = 1; $page <= $pagesCount; $page++) {
-                    $imageFilename = "book-{$page}.png";
-                    $imageFilename1 = "book-thumb-{$page}.png";
-
-                    $pdf->setPage($page)->saveImage($newFolder . '/' . $imageFilename);
-                    $pdf->setPage($page)->saveImage($newFolder1 . '/' . $imageFilename1);
-
-                    // โหลดรูปภาพ
-                    $img = Image::make($newFolder . '/' . $imageFilename);
-
-                    // ปรับขนาดรูปภาพ
-                    $img->resize(600, 849);
-
-
-                    // เซฟรูปภาพที่ปรับขนาดลงในไฟล์เดิม
-                    $img->save($newFolder . '/' . $imageFilename);
-                    $img->save($newFolder1 . '/' . $imageFilename1);
-                    $pages[] = array(
-                        'l' =>  'page/large/' . $imageFilename,
-                        't' => 'page/thumb/' . $imageFilename1
-                    );
-
-                    $pageLCount = count($pages);
-                    $htmlPath = public_path('upload/Book/' . $books->book_id . '/index.html');
-
-                    $htmlContent = view('flipbook.flipbook', ['pages' => $pages, 'pageLCount' => $pageLCount])->render();
-                    file_put_contents($htmlPath, $htmlContent);
+                    // คัดลอกและบันทึกไฟล์ใหม่
+                    $newFileName = $file->getFilename();
+                    $fileContents = File::get($file->getPathname());
+                    File::put($newDirectoryPath . '/' . $newFileName, $fileContents);
                 }
-                $books->bookfile =  'upload/Book/' . $books->book_id . '/' . 'index.html';
-                $books->save();
-            }
-        } elseif ($request->book_type == 1) {
-            if ($request->hasFile('bookfile')) {
-                $image_bookfile = 'book' . '.' . $request->bookfile->getClientOriginalExtension();
-                $uploadDirectory = public_path('upload/Book/' . $books->book_id);
-                if (!file_exists($uploadDirectory)) {
-                    mkdir($uploadDirectory, 0755, true);
-                }
-                if (file_exists($uploadDirectory)) {
+                $file_path = public_path('upload/Book/' . $books->book_id) . '/' . $file_namess;
+                $file_name->move(public_path('upload/Book/' . $books->book_id), $file_namess);
 
-                    file_put_contents(public_path('upload/Book/' . $books->book_id  . '/' . $image_bookfile), file_get_contents($request->bookfile));
+                // Check if the PDF file exists
+                if (file_exists($file_path)) {
+                    // สร้างโฟลเดอร์เพื่อเก็บรูปภาพที่แปลง
+                    $outputPath = public_path('upload/Book/' . $books->book_id);
+
+                    // Construct the folder name based on the count
+                    $folderName = 'page';
+
+
+                    $newFolder = $outputPath . '/' . $folderName . '/large';
+                    File::makeDirectory($newFolder, $mode = 0777, true, true);
+                    $newFolder1 = $outputPath . '/' . $folderName . '/thumb';
+                    File::makeDirectory($newFolder1, $mode = 0777, true, true);
+
+                    $pdf = new Pdf($file_path);
+
+                    $pages = array();
+                    $pagesCount = $pdf->getNumberOfPages();
+
+                    for ($page = 1; $page <= $pagesCount; $page++) {
+                        $imageFilename = "book-{$page}.png";
+                        $imageFilename1 = "book-thumb-{$page}.png";
+
+                        $pdf->setPage($page)->saveImage($newFolder . '/' . $imageFilename);
+                        $pdf->setPage($page)->saveImage($newFolder1 . '/' . $imageFilename1);
+
+                        // โหลดรูปภาพ
+                        $img = Image::make($newFolder . '/' . $imageFilename);
+
+                        // ปรับขนาดรูปภาพ
+                        $img->resize(600, 849);
+
+
+                        // เซฟรูปภาพที่ปรับขนาดลงในไฟล์เดิม
+                        $img->save($newFolder . '/' . $imageFilename);
+                        $img->save($newFolder1 . '/' . $imageFilename1);
+                        $pages[] = array(
+                            'l' =>  'page/large/' . $imageFilename,
+                            't' => 'page/thumb/' . $imageFilename1
+                        );
+
+                        $pageLCount = count($pages);
+                        $htmlPath = public_path('upload/Book/' . $books->book_id . '/index.html');
+
+                        $htmlContent = view('flipbook.flipbook', ['pages' => $pages, 'pageLCount' => $pageLCount])->render();
+                        file_put_contents($htmlPath, $htmlContent);
+                    }
+                    $books->bookfile =  'upload/Book/' . $books->book_id . '/' . 'index.html';
+                    $books->save();
                 }
-                $books->bookfile = 'upload/Book/' . $books->book_id . '/' . $image_bookfile;
-                $books->save();
+            } elseif ($request->book_type == 1) {
+                if ($request->hasFile('bookfile')) {
+                    $image_bookfile = 'book' . '.' . $request->bookfile->getClientOriginalExtension();
+                    $uploadDirectory = public_path('upload/Book/' . $books->book_id);
+                    if (!file_exists($uploadDirectory)) {
+                        mkdir($uploadDirectory, 0755, true);
+                    }
+                    if (file_exists($uploadDirectory)) {
+
+                        file_put_contents(public_path('upload/Book/' . $books->book_id  . '/' . $image_bookfile), file_get_contents($request->bookfile));
+                    }
+                    $books->bookfile = 'upload/Book/' . $books->book_id . '/' . $image_bookfile;
+                    $books->save();
+                }
             }
         }
-    }
 
         return redirect()->route('bookcatpage', [$department_id, 'category_id' => $category_id])->with('message', 'book สร้างเรียบร้อยแล้ว');
     }
@@ -234,26 +238,30 @@ class BookController extends Controller
 
         $books = Book::findOrFail($book_id);
         $books->book_name = $request->book_name;
-        $books->book_author = $request->book_author;
+
+        if ($request->book_author) {
+            $books->book_author = $request->book_author;
+        } 
+        
         libxml_use_internal_errors(true);
         if (!file_exists(public_path('/upload/Book/ck/'))) {
             mkdir(public_path('/upload/Book/ck/'), 0755, true);
         }
-    
-         
+
+
         if ($request->has('contents')) {
             $contents = $request->contents;
             $decodedText = '';
             if (!empty($contents)) {
                 $de_th = new DOMDocument();
-                $de_th->encoding = 'UTF-8'; 
+                $de_th->encoding = 'UTF-8';
                 $contents = mb_convert_encoding($contents, 'HTML-ENTITIES', 'UTF-8');
-                libxml_use_internal_errors(true); 
+                libxml_use_internal_errors(true);
                 $contents = preg_replace('/<figure\b[^>]*>(.*?)<\/figure>/is', '$1', $contents);
                 $de_th->loadHTML($contents, LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
-                libxml_clear_errors(); 
+                libxml_clear_errors();
                 $images_des_th = $de_th->getElementsByTagName('img');
-        
+
                 foreach ($images_des_th as $key => $img) {
                     if (strpos($img->getAttribute('src'), 'data:image/') === 0) {
                         $data = base64_decode(explode(',', explode(';', $img->getAttribute('src'))[1])[1]);
@@ -264,7 +272,7 @@ class BookController extends Controller
                         $img->setAttribute('src', $newImageUrl);
                     }
                 }
-                
+
                 $contents = $de_th->saveHTML();
                 $decodedText = html_entity_decode($contents, ENT_QUOTES, 'UTF-8');
             }
@@ -288,114 +296,110 @@ class BookController extends Controller
                 file_put_contents(public_path('upload/Book/' . $books->book_id . '/' . $image_name), file_get_contents($request->cover));
                 // สร้างและบันทึกชื่อ cover ลงในโมเดล
                 $books->cover = 'upload/Book/' . $books->book_id . '/' . 'cover' . '.' . $request->cover->getClientOriginalExtension();
-           
             }
-        } 
-     
+        }
+
         set_time_limit(0);
         ini_set('max_execution_time', 300);
         ini_set('pcre.backtrack_limit', 5000000);
         ini_set('fastcgi_read_timeout', 400);
 
-     // บันทึกไฟล์ PDF และแปลงเป็นรูปภาพ
-     if ($request->hasFile('bookfile')) {
-     if ($request->book_type == 0) {
-        $file_name = $request->file('bookfile');
-        $file_namess = 'book' . '.' . $request->bookfile->getClientOriginalExtension();
-        $sourceDirectory = public_path('uploads/book');
-        $destinationDirectory = public_path('upload/Book/' . $books->book_id);
-        if (!File::exists($destinationDirectory)) {
-            File::makeDirectory($destinationDirectory, 0777, true, true);
-        }
-            $files = File::allFiles($sourceDirectory);
-            foreach ($files as $file) {
-            // หาชื่อโฟลเดอร์เดิมที่อยู่ในชื่อไฟล์
-            $originalDirectoryName = pathinfo($file->getRelativePathname(), PATHINFO_DIRNAME);
-
-            // สร้างโฟลเดอร์ปลายทางในกรณีที่ยังไม่มี
-            $newDirectoryPath = $destinationDirectory . '/' . $originalDirectoryName;
-            if (!File::exists($newDirectoryPath)) {
-                File::makeDirectory($newDirectoryPath, 0777, true, true);
-            }
-
-            // คัดลอกและบันทึกไฟล์ใหม่
-            $newFileName = $file->getFilename();
-            $fileContents = File::get($file->getPathname());
-            File::put($newDirectoryPath . '/' . $newFileName, $fileContents);
-        }
-        $file_path = public_path('upload/Book/' . $books->book_id) . '/' . $file_namess;
-        $file_name->move(public_path('upload/Book/' . $books->book_id), $file_namess);
-
-        // Check if the PDF file exists
-        if (file_exists($file_path)) {
-            // สร้างโฟลเดอร์เพื่อเก็บรูปภาพที่แปลง
-            $outputPath = public_path('upload/Book/' . $books->book_id);
-
-            // Construct the folder name based on the count
-            $folderName = 'page';
-
-
-            $newFolder = $outputPath . '/' . $folderName . '/large';
-            File::makeDirectory($newFolder, $mode = 0777, true, true);
-            $newFolder1 = $outputPath . '/' . $folderName . '/thumb';
-            File::makeDirectory($newFolder1, $mode = 0777, true, true);
-
-            $pdf = new Pdf($file_path);
-
-            $pages = array();
-            $pagesCount = $pdf->getNumberOfPages();
-
-            for ($page = 1; $page <= $pagesCount; $page++) {
-                $imageFilename = "book-{$page}.png";
-                $imageFilename1 = "book-thumb-{$page}.png";
-
-                $pdf->setPage($page)->saveImage($newFolder . '/' . $imageFilename);
-                $pdf->setPage($page)->saveImage($newFolder1 . '/' . $imageFilename1);
-
-                // โหลดรูปภาพ
-                $img = Image::make($newFolder . '/' . $imageFilename);
-
-                // ปรับขนาดรูปภาพ
-                $img->resize(600, 849);
-     
-
-
-                // เซฟรูปภาพที่ปรับขนาดลงในไฟล์เดิม
-                $img->save($newFolder . '/' . $imageFilename);
-                $img->save($newFolder1 . '/' . $imageFilename1);
-                $pages[] = array(
-                    'l' =>  'page/large/' . $imageFilename,
-                    't' => 'page/thumb/' . $imageFilename1
-                );
-
-                $pageLCount = count($pages);
-                $htmlPath = public_path('upload/Book/' . $books->book_id . '/index.html');
-
-                $htmlContent = view('flipbook.flipbook', ['pages' => $pages, 'pageLCount' => $pageLCount])->render();
-                file_put_contents($htmlPath, $htmlContent);
-            }
-            $books->bookfile =  'upload/Book/' . $books->book_id . '/' . 'index.html';
-           
-        }
-    } elseif ($request->book_type == 1) {
+        // บันทึกไฟล์ PDF และแปลงเป็นรูปภาพ
         if ($request->hasFile('bookfile')) {
-            $image_bookfile = 'book' . '.' . $request->bookfile->getClientOriginalExtension();
-            $uploadDirectory = public_path('upload/Book/' . $books->book_id);
-            
-            if (!file_exists($uploadDirectory)) {
-                mkdir($uploadDirectory, 0755, true);
-            }
-            
-            if (file_exists($uploadDirectory)) {
+            if ($request->book_type == 0) {
+                $file_name = $request->file('bookfile');
+                $file_namess = 'book' . '.' . $request->bookfile->getClientOriginalExtension();
+                $sourceDirectory = public_path('uploads/book');
+                $destinationDirectory = public_path('upload/Book/' . $books->book_id);
+                if (!File::exists($destinationDirectory)) {
+                    File::makeDirectory($destinationDirectory, 0777, true, true);
+                }
+                $files = File::allFiles($sourceDirectory);
+                foreach ($files as $file) {
+                    // หาชื่อโฟลเดอร์เดิมที่อยู่ในชื่อไฟล์
+                    $originalDirectoryName = pathinfo($file->getRelativePathname(), PATHINFO_DIRNAME);
 
-                file_put_contents(public_path('upload/Book/' . $books->book_id  . '/' . $image_bookfile), file_get_contents($request->bookfile));
+                    // สร้างโฟลเดอร์ปลายทางในกรณีที่ยังไม่มี
+                    $newDirectoryPath = $destinationDirectory . '/' . $originalDirectoryName;
+                    if (!File::exists($newDirectoryPath)) {
+                        File::makeDirectory($newDirectoryPath, 0777, true, true);
+                    }
+
+                    // คัดลอกและบันทึกไฟล์ใหม่
+                    $newFileName = $file->getFilename();
+                    $fileContents = File::get($file->getPathname());
+                    File::put($newDirectoryPath . '/' . $newFileName, $fileContents);
+                }
+                $file_path = public_path('upload/Book/' . $books->book_id) . '/' . $file_namess;
+                $file_name->move(public_path('upload/Book/' . $books->book_id), $file_namess);
+
+                // Check if the PDF file exists
+                if (file_exists($file_path)) {
+                    // สร้างโฟลเดอร์เพื่อเก็บรูปภาพที่แปลง
+                    $outputPath = public_path('upload/Book/' . $books->book_id);
+
+                    // Construct the folder name based on the count
+                    $folderName = 'page';
+
+
+                    $newFolder = $outputPath . '/' . $folderName . '/large';
+                    File::makeDirectory($newFolder, $mode = 0777, true, true);
+                    $newFolder1 = $outputPath . '/' . $folderName . '/thumb';
+                    File::makeDirectory($newFolder1, $mode = 0777, true, true);
+
+                    $pdf = new Pdf($file_path);
+
+                    $pages = array();
+                    $pagesCount = $pdf->getNumberOfPages();
+
+                    for ($page = 1; $page <= $pagesCount; $page++) {
+                        $imageFilename = "book-{$page}.png";
+                        $imageFilename1 = "book-thumb-{$page}.png";
+
+                        $pdf->setPage($page)->saveImage($newFolder . '/' . $imageFilename);
+                        $pdf->setPage($page)->saveImage($newFolder1 . '/' . $imageFilename1);
+
+                        // โหลดรูปภาพ
+                        $img = Image::make($newFolder . '/' . $imageFilename);
+
+                        // ปรับขนาดรูปภาพ
+                        $img->resize(600, 849);
+
+
+
+                        // เซฟรูปภาพที่ปรับขนาดลงในไฟล์เดิม
+                        $img->save($newFolder . '/' . $imageFilename);
+                        $img->save($newFolder1 . '/' . $imageFilename1);
+                        $pages[] = array(
+                            'l' =>  'page/large/' . $imageFilename,
+                            't' => 'page/thumb/' . $imageFilename1
+                        );
+
+                        $pageLCount = count($pages);
+                        $htmlPath = public_path('upload/Book/' . $books->book_id . '/index.html');
+
+                        $htmlContent = view('flipbook.flipbook', ['pages' => $pages, 'pageLCount' => $pageLCount])->render();
+                        file_put_contents($htmlPath, $htmlContent);
+                    }
+                    $books->bookfile =  'upload/Book/' . $books->book_id . '/' . 'index.html';
+                }
+            } elseif ($request->book_type == 1) {
+                if ($request->hasFile('bookfile')) {
+                    $image_bookfile = 'book' . '.' . $request->bookfile->getClientOriginalExtension();
+                    $uploadDirectory = public_path('upload/Book/' . $books->book_id);
+
+                    if (!file_exists($uploadDirectory)) {
+                        mkdir($uploadDirectory, 0755, true);
+                    }
+
+                    if (file_exists($uploadDirectory)) {
+
+                        file_put_contents(public_path('upload/Book/' . $books->book_id  . '/' . $image_bookfile), file_get_contents($request->bookfile));
+                    }
+                    $books->bookfile = 'upload/Book/' . $books->book_id . '/' . $image_bookfile;
+                }
             }
-            $books->bookfile = 'upload/Book/' . $books->book_id . '/' . $image_bookfile;
-         
         }
-    }
-    
-}
         $books->save();
 
         return redirect()->route('bookcatpage', [$department_id, 'category_id' => $books->category_id])->with('message', 'book  เปลี่ยนแปลงเรียบร้อยแล้ว');

@@ -25,9 +25,7 @@
                         data-placeholder="หลักสูตร" data-allow-clear="false">
 
                         @php
-                            $depart = DB::table('department')
-                                ->where('department_status', 1)
-                                ->get();
+                            $depart = DB::table('department')->where('department_status', 1)->get();
                         @endphp
                         @foreach ($depart->sortBy('department_id') as $de)
                             <option value="{{ $de->department_id }}" {{ $de->department_id == 1 ? 'selected' : '' }}>
@@ -56,12 +54,26 @@
                 <div class="d-flex align-items-center">
                     <span class="mr-auto">รายงานข้อมูลรายชื่อผู้เรียนทั้งหมด และแยกตามหลักสูตร</span>
                     {{-- <a href="" class="btn btn-icon btn-outline-danger"><i class="fa fa-file-pdf"></i></a> --}}
-                    &nbsp;<a href="" class="btn btn-icon btn-outline-primary"><i
-                            class="fa fa-file-excel "></i></a>&nbsp;<a onclick="window.print()"
-                        class="btn btn-icon btn-outline-success"><i class="fa fa-print "></i></a>
+                    &nbsp;<a href="#" class="btn btn-icon btn-outline-primary download-excel"><i
+                            class="fa fa-file-excel"></i></a>
+                    &nbsp;
+
+                 <a class="btn btn-icon btn-outline-success print-button"><i class="fa fa-print"></i></a>
                 </div>
             </div><!-- /.card-header -->
-            <!-- .card-body -->
+           <script>
+                $(document).ready(function() {
+                    $(".print-button").on("click", function() {
+                        var printableTable = $("#section-to-print").clone();
+                        $("body").append(printableTable);
+                        $("body > *:not(#section-to-print)").hide();
+                        window.print();
+                        printableTable.remove();
+                        $("body > *").show();
+                    });
+                });
+            </script>
+
             <div class="card-body">
                 <div class="table-responsive">
                     <table border="1" style="width:100%" id="section-to-print">
@@ -73,7 +85,6 @@
                             </tr>
                             <tr class="text-center">
                                 <th align="center" width="5%">ลำดับ</th>
-
                                 <th align="center" width="20%">ชื่อ - สกุล</th>
                                 <th align="center" width="20%">สังกัด</th>
                                 <th align="center">หลักสูตร</th>
@@ -92,8 +103,16 @@
                                         return data.year == selectedYear && data.department_id == depa && data
                                             .province_name == provin;
                                     });
-
                                     displayDataInTable(filteredLearner);
+                                    $(".download-excel").on("click", function() {
+                                        var url = "{{ route('exportT0101', [':depa', ':provin', ':selectedYear']) }}"
+                                            .replace(':depa', depa)
+                                            .replace(':provin', provin)
+                                            .replace(':selectedYear', selectedYear)
+                                            ;
+                                        window.location.href = url;
+                                    });
+
                                 });
                                 $('#selectyear').trigger('change');
                                 $('#depa').trigger('change');
@@ -104,12 +123,13 @@
                                 $('#learend').empty()
                                 if (data && data.length > 0) {
                                     // วนลูปเพื่อแสดงข้อมูลใน tbody
+                                    var i = 1
                                     $.each(data, function(index, item) {
                                         // สร้างแถวใน tbody
-                                        var i = 1
+
                                         var row = $('<tr>');
                                         // เพิ่มข้อมูลลงในแถว
-                                       row.append($('<td class="text-center">').text(i++));
+                                        row.append($('<td class="text-center">').text(i++));
 
                                         row.append($('<td >').text(item.firstname + ' ' + item.lastname));
                                         row.append($('<td >').text(item.exten_name));

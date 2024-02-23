@@ -13,7 +13,7 @@
             }
 
             #section-to-print {
-   
+
                 left: 0;
                 top: 0;
             }

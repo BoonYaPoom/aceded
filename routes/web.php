@@ -86,6 +86,12 @@ use LdapRecord\Laravel\Facades\Ldap;
 |
 */
 
+Route::get('/exportT0101/{department_id}/{provin_name}/{year}', [ExcelController::class, 'exportT0101'])->name('exportT0101');
+Route::get('/exportT0103/{year}', [ExcelController::class, 'exportT0103'])->name('exportT0103');
+Route::get('/exportT0116/{department_id}/{provin_name}/{year}', [ExcelController::class, 'exportT0116'])->name('exportT0116');
+
+
+
 
 Route::get('/exportUsersZone/{department_id}', [ExcelController::class, 'exportUsersZone'])->name('exportUsersZone');
 Route::get('/exportUsersSchool/{department_id}', [ExcelController::class, 'exportUsersSchool'])->name('exportUsersSchool');
@@ -580,7 +586,7 @@ Route::group(['middleware' => 'IsLoggedIn'], function () {
                 Route::post('{school_code}/saveSelectedSchool_umsschoolform', [SchoolController::class, 'saveSelectedSchool'])->name('saveSelectedSchool');
             });
 
-        
+
             Route::get('/getSchools', [SchoolController::class, 'getSchools'])->name('getSchools');
 
             Route::get('/req', [NavController::class, 'pageRequest'])->name('pageRequest');

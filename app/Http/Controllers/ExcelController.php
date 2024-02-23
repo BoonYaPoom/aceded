@@ -6,6 +6,9 @@ use App\Exports\LearnerExport;
 use App\Exports\QuestionExport;
 use App\Exports\ReportExport;
 use App\Exports\SubjectExport;
+use App\Exports\t0101;
+use App\Exports\t0103;
+use App\Exports\t0116;
 use App\Exports\UserDepartExport;
 use App\Exports\UserProvicAll;
 use App\Exports\UserprovicExport;
@@ -46,10 +49,24 @@ class ExcelController extends Controller
             'Content-Disposition' => 'attachment; filename="exported_data.xlsx"',
         ]);
     }
-    
     public function exportUserProvicAll($provicValue)
     {
         return Excel::download(new UserProvicAll($provicValue), 'Administrator Management Users Province.xlsx');
+    }
+    public function exportT0101($department_id, $provin_name, $year)
+    {
+
+        return Excel::download(new t0101($department_id, $provin_name, $year), 'T0101 ของจังหวัด' . $provin_name.  ' ปี' . $year . ' .xlsx');
+    }
+    public function exportT0116($department_id, $provin_name, $year)
+    {
+
+        return Excel::download(new t0116($department_id, $provin_name, $year), 'T0116 ของจังหวัด' . $provin_name .  ' ปี' . $year . ' .xlsx');
+    }
+    public function exportT0103($year)
+    {
+
+        return Excel::download(new t0103($year), 't0103 ปี' . $year . ' .xlsx');
     }
     public function ReportExp()
     {

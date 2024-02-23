@@ -23,16 +23,28 @@
             <!-- .card-header -->
             <div class="card-header bg-muted">
                 <div class="d-flex align-items-center">
-                    <span class="mr-auto">รายงานการดาวน์โหลดเอกสาร e-book Multimedia ของผู้เรียน</span> <!--   <a
+                    <span class="mr-auto">รายงานการดาวน์โหลดเอกสาร e-book Multimedia ของผู้เรียน</span>
+                    {{-- <a
                             href="https://aced.dlex.ai/childhood/admin/export/pdf.html"
-                            class="btn btn-icon btn-outline-danger"><i class="fa fa-file-pdf"></i></a>&nbsp;<a
-                            href="https://aced.dlex.ai/childhood/admin/export/excel.html"
-                            class="btn btn-icon btn-outline-primary"><i class="fa fa-file-excel "></i></a>-->&nbsp;<a
-                        href="javascript:window.print();" class="btn btn-icon btn-outline-success"><i
-                            class="fa fa-print "></i></a>
+                            class="btn btn-icon btn-outline-danger"><i class="fa fa-file-pdf"></i></a> --}}
+                    &nbsp;
+                    <a href="#" class="btn btn-icon btn-outline-primary download-excel"><i
+                            class="fa fa-file-excel"></i></a>&nbsp;
+                    <a class="btn btn-icon btn-outline-success print-button"><i class="fa fa-print"></i></a>
                 </div>
             </div>
-            <!-- .card-body -->
+            <script>
+                $(document).ready(function() {
+                    $(".print-button").on("click", function() {
+                        var printableTable = $("#section-to-print").clone();
+                        $("body").append(printableTable);
+                        $("body > *:not(#section-to-print)").hide();
+                        window.print();
+                        printableTable.remove();
+                        $("body > *").show();
+                    });
+                });
+            </script>
             <div class="card-body">
                 <div class="table-responsive">
                     <table border="1" style="width:100%" id="section-to-print">
@@ -54,15 +66,19 @@
                             $(document).ready(function() {
                                 $('#selectyear').on('change', function() {
                                     var learner = {!! json_encode($learner) !!};
-                                    var selectedYear = $('#selectyear').val();                             
+                                    var selectedYear = $('#selectyear').val();
                                     var filteredLearner = learner.filter(function(data) {
                                         return data.year == selectedYear;
                                     });
-
+                                    $(".download-excel").on("click", function() {
+                                        var url = "{{ route('exportT0103', [':selectedYear']) }}"
+                                            .replace(':selectedYear', selectedYear);
+                                        window.location.href = url;
+                                    });
                                     displayDataInTable(filteredLearner);
                                 });
                                 $('#selectyear').trigger('change');
-          
+
                             });
 
                             function displayDataInTable(data) {
