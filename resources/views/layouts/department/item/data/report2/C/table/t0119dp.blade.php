@@ -1,6 +1,6 @@
-@extends('page.report2.index')
-@section('reports2')
-    <!-- .page-inner -->
+@extends('layouts.department.item.data.report2.index')
+@section('reports22')
+
 
     <div class="page-inner">
 
@@ -26,17 +26,17 @@
                     @endforeach
                 </select>
             </div>
-        </div><!-- /form row -->
+        </div>
 
-        <!-- .table-responsive --><br><!-- .card -->
+      <br>
         <div class="card card-fluid">
 
            <div class="card-header bg-muted">
                 <div class="d-flex align-items-center">
                     <span class="mr-auto">รายงานสถิติการเข้าใช้งานรายไตรมาส
                                     (ผู้ใช้งานใหม่)</span>
-                      <a href="#" class="btn btn-icon btn-outline-primary download-excel"><i
-                            class="fa fa-file-excel"></i></a>
+                      {{-- <a href="#" class="btn btn-icon btn-outline-primary download-excel"><i
+                            class="fa fa-file-excel"></i></a> --}}
                         &nbsp;
                             <a class="btn btn-icon btn-outline-success print-button"><i class="fa fa-print"></i></a>
                 </div>
@@ -56,7 +56,7 @@
             <div class="card-body">
                 <div class="table-responsive">
                     <table border="1" style="width:100%" id="section-to-print">
-                        <!-- thead -->
+                  
                         <thead>
                             <tr>
                                 <th class="text-center" colspan="6">รายงานสถิติการเข้าใช้งานรายไตรมาส
@@ -69,12 +69,12 @@
 
                             </tr>
                         <tbody id="learend"></tbody>
-                    </table><!-- /.table -->
-                </div><!-- /.table-responsive -->
-            </div><!-- /.card-body -->
-        </div><!-- /.card -->
-        <!-- .page-title-bar -->
-    </div><!-- /.page-inner -->
+                    </table>
+                </div>
+            </div>
+        </div>
+      
+    </div>
     <script>
         $(document).ready(function() {
             $('#selectyear, #provin').on('change', function() {
@@ -86,12 +86,7 @@
                 var filteredLearner = learner.filter(function(data) {
                     return data.year == selectedYear && data.province_name == provin;
                 });
-                $(".download-excel").on("click", function() {
-                    var url = "{{ route('exportT0119', [':provin', ':selectedYear']) }}"
-                        .replace(':provin', provin)
-                        .replace(':selectedYear', selectedYear);
-                    window.location.href = url;
-                });
+             
                 displayDataInTable(filteredLearner, dateAll);
             });
             $('#provin').trigger('change');

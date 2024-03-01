@@ -9,6 +9,10 @@ use App\Exports\SubjectExport;
 use App\Exports\t0101;
 use App\Exports\t0103;
 use App\Exports\t0116;
+use App\Exports\t0117;
+use App\Exports\t0118;
+use App\Exports\t0119;
+use App\Exports\t0120;
 use App\Exports\UserDepartExport;
 use App\Exports\UserProvicAll;
 use App\Exports\UserprovicExport;
@@ -67,6 +71,27 @@ class ExcelController extends Controller
     {
 
         return Excel::download(new t0103($year), 't0103 ปี' . $year . ' .xlsx');
+    }
+
+    public function exportT0117($year)
+    {
+
+        return Excel::download(new t0117($year), 't0117 ปี' . $year . ' .xlsx');
+    }
+
+    public function exportT0118($provin_name, $year)
+    {
+
+        return Excel::download(new t0118($provin_name, $year), 'T0118 ของจังหวัด' . $provin_name .  ' ปี' . $year . ' .xlsx');
+    }
+    public function exportT0119($provin_name, $year)
+    {
+
+        return Excel::download(new t0119($provin_name, $year), 't0119 ของจังหวัด' . $provin_name .  ' ปี' . $year . ' .xlsx');
+    }
+    public function exportT0120($department_id, $provin_name)
+    {
+        return Excel::download(new t0120($department_id, $provin_name), 't0120 ของจังหวัด' . $provin_name . ' .xlsx');
     }
     public function ReportExp()
     {
@@ -311,7 +336,7 @@ class ExcelController extends Controller
                 if (!empty($duplicateFields)) {
                     return response()->json(['error' => implode("\n", $duplicateFields)], 200);
                 }
-                $Usertimestamp =  now()->timestamp;
+                $Usertimestamp =  now()->timestamp . '00';
                 foreach ($importedDataUser[0] as $row) {
                     $duplicateFields = [];
 
@@ -472,7 +497,7 @@ class ExcelController extends Controller
                 if (!empty($duplicateFields)) {
                     return response()->json(['error' => implode("\n", $duplicateFields)], 200);
                 }
-                $Usertimestamp =  now()->timestamp;
+                $Usertimestamp =  now()->timestamp . '00';
                 foreach ($importedDataUser[0] as $row) {
                     if ($row[0] == 'ลำดับ') {
                         continue;
@@ -653,7 +678,7 @@ class ExcelController extends Controller
 
                 $existingUsernames = [];
                 $duplicateUsernames = [];
-
+  
                 foreach ($Fields as $field) {
                     if (in_array($field['username'], $existingUsernames)) {
                         $duplicateUsernames[] = 'ชื่อผู้ใช้ที่ซ้ำในไฟล์ xlsx: ' .  $field['username'];

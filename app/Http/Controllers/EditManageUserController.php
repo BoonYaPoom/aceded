@@ -276,17 +276,15 @@ class EditManageUserController extends Controller
             DB::table('users_department')
                 ->where('user_id', $user_id)
                 ->delete();
-            $randomNumber = rand(10, 99);
-            $Usertimestamp =  now()->timestamp .  $randomNumber;
-            $maxUserDepartmentId = DB::table('users_department')->max('user_department_id');
+
+            $Usertimestamp =  now()->timestamp . '00';
             foreach ($department_data as $departmentId) {
-                $newUserDepartmentId = $Usertimestamp;
+                $Usertimestamp += 1;
                 DB::table('users_department')->insert([
-                    'user_department_id' => $newUserDepartmentId,
+                    'user_department_id' => $Usertimestamp,
                     'user_id' =>  $user_id,
                     'department_id' => $departmentId,
                 ]);
-                $Usertimestamp = $newUserDepartmentId;
             }
         }
 
@@ -524,17 +522,18 @@ class EditManageUserController extends Controller
         $usermanages->save();
 
 
+       
         $maxUserDepartmentId = DB::table('users_department')->max('user_department_id');
         $department_data = $request->department_data;
         if (!empty($department_data)) {
+            $Usertimestamp =  now()->timestamp . '00';
             foreach ($department_data as $departmentId) {
-                $newUserDepartmentId = $maxUserDepartmentId + 1;
+                $Usertimestamp += 1;
                 DB::table('users_department')->insert([
                     'user_department_id' => $Usertimestamp,
-                    'user_id' =>    $usermanages->user_id,
+                    'user_id' => $usermanages->user_id,
                     'department_id' => $departmentId,
                 ]);
-                $Usertimestamp = $newUserDepartmentId;
             }
         }
 

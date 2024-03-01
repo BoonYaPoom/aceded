@@ -1,5 +1,6 @@
-@extends('page.report2.index')
-@section('reports2')
+@extends('layouts.department.item.data.report2.index')
+@section('reports22')
+
     <!-- .page-inner -->
 
     <div class="page-inner">
@@ -27,8 +28,8 @@
                     <span class="mr-auto">รายงานสถิติช่วงอายุของผู้เรียนในแต่ละหลักสูตร ( ช่วงที่ 1 อายุไม่เกิน 11 ปี /
                         ช่วงที่ 2 อายุ12 - 17 ปี / ช่วงที่ 3 อายุ 18 - 25 ปี
                         / ช่วงที่ 4 อายุเกิน 25 ปีขึ้นไป )</span>
-                        <a href="#" class="btn btn-icon btn-outline-primary download-excel"><i
-                            class="fa fa-file-excel"></i></a>
+                        {{-- <a href="#" class="btn btn-icon btn-outline-primary download-excel"><i
+                            class="fa fa-file-excel"></i></a> --}}
                         &nbsp;
                             <a class="btn btn-icon btn-outline-success print-button"><i class="fa fa-print"></i></a>
                 </div>
@@ -86,11 +87,7 @@
                 var filteredLearner = learner.filter(function(data) {
                     return data.year == selectedYear;
                 });
-                $(".download-excel").on("click", function() {
-                    var url = "{{ route('exportT0117', [':selectedYear']) }}"
-                        .replace(':selectedYear', selectedYear);
-                    window.location.href = url;
-                });
+               
                 displayDataInTable(filteredLearner);
             });
             $('#selectyear').trigger('change');

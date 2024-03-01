@@ -177,7 +177,6 @@
                         contentType: false,
                         processData: false,
                         success: function(response) {
-
                             $('#loadingSpinner').hide();
                             console.log(response);
                             if (response.message) {
@@ -210,12 +209,9 @@
                         error: function(xhr, status, error) {
                             $('#loadingSpinner').hide();
                             console.log(xhr.responseJSON.error);
-
                             if (xhr.responseJSON.error.includes('ผิดพลาด')) {
-                                // Duplicate data error
                                 const duplicateFields = xhr.responseJSON.error.split('\n').filter(
                                     field => field.trim() !== '');
-
                                 Swal.fire({
                                     title: 'ผิดพลาด!',
                                     html: 'ผิดพลาด:<br>' + duplicateFields.join(

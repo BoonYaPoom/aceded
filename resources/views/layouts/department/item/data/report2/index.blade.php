@@ -68,15 +68,11 @@
 
                             $provinceId = $data->province_id;
                             $organization = $data->organization;
-                            $provinceData = DB::table('provinces')
-                                ->where('id', $provinceId)
-                                ->first();
-                            $organ = DB::table('users_extender2')
-                                ->where('extender_id', $organization)
-                                ->first();
+                            $provinceData = DB::table('provinces')->where('id', $provinceId)->first();
+                            $organ = DB::table('users_extender2')->where('extender_id', $organization)->first();
                         @endphp
                         @if ($data->user_role == 6)
-                          ของ โรงเรียน  {{ $organ->name ?? null }}
+                            ของ โรงเรียน {{ $organ->name ?? null }}
                         @elseif ($data->user_role == 7)
                             ของ จังหวัด {{ $provinceData->name_in_thai ?? null }}
                         @else
@@ -101,13 +97,16 @@
                                 : '' }}">
                                 <span><i class="fas fa-chart-bar text-teal mr-2"></i> <a href="{{ route('dashboard') }}"
                                         class="small">รายงานเสรุปเชิงกราฟฟิค (Dashboard)</a></span>
-                            </div>
-                            <div
-                                class="list-group-item justify-content-between align-items-center 
-                            {{ Str::startsWith(request()->url(), route('table')) || request()->is('table', 'table/*') ? ' bg-muted' : '' }}">
-                                <span><i class="fas fa-chart-bar text-teal mr-2"></i> <a href="{{ route('table') }}"
-                                        class="small">รายงานเชิงตาราง</a></span>
                             </div> --}}
+                            @if ($data->user_role == 1 || $data->user_role == 8)
+                                <div
+                                    class="list-group-item justify-content-between align-items-center 
+                            {{ Str::startsWith(request()->url(), route('TableCDP', $depart)) || request()->is('TableCDP', 'TableCDP/*') ? ' bg-muted' : '' }}">
+                                    <span><i class="fas fa-chart-bar text-teal mr-2"></i> <a
+                                            href="{{ route('TableCDP', $depart) }}"
+                                            class="small">รายงานเชิงตาราง</a></span>
+                                </div>
+                            @endif
                         </div>
                     </div>
                 </div>

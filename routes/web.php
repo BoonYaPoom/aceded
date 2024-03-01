@@ -58,6 +58,13 @@ use App\Http\Controllers\Report\Table\T0124Controller;
 use App\Http\Controllers\Report\Table\T0125Controller;
 use App\Http\Controllers\ReportAllController;
 use App\Http\Controllers\ReportDepartment\ReportADPController;
+use App\Http\Controllers\ReportDepartment\Table\T0101DPController;
+use App\Http\Controllers\ReportDepartment\Table\T0103DPController;
+use App\Http\Controllers\ReportDepartment\Table\T0116DPController;
+use App\Http\Controllers\ReportDepartment\Table\T0117DPController;
+use App\Http\Controllers\ReportDepartment\Table\T0118DPController;
+use App\Http\Controllers\ReportDepartment\Table\T0119DPController;
+use App\Http\Controllers\ReportDepartment\Table\T0120DPController;
 use App\Http\Controllers\ReportJsonController;
 use App\Http\Controllers\RolemanageController;
 use App\Http\Controllers\SchoolController;
@@ -89,7 +96,10 @@ use LdapRecord\Laravel\Facades\Ldap;
 Route::get('/exportT0101/{department_id}/{provin_name}/{year}', [ExcelController::class, 'exportT0101'])->name('exportT0101');
 Route::get('/exportT0103/{year}', [ExcelController::class, 'exportT0103'])->name('exportT0103');
 Route::get('/exportT0116/{department_id}/{provin_name}/{year}', [ExcelController::class, 'exportT0116'])->name('exportT0116');
-
+Route::get('/exportT0117/{year}', [ExcelController::class, 'exportT0117'])->name('exportT0117');
+Route::get('/exportT0118/{provin_name}/{year}', [ExcelController::class, 'exportT0118'])->name('exportT0118');
+Route::get('/exportT0119/{provin_name}/{year}', [ExcelController::class, 'exportT0119'])->name('exportT0119');
+Route::get('/exportT0120/{department_id}/{provin_name}', [ExcelController::class, 'exportT0120'])->name('exportT0120');
 
 
 
@@ -509,26 +519,22 @@ Route::group(['middleware' => 'IsLoggedIn'], function () {
                     Route::get('{department_id}/getUserCount', [ExtenderController::class, 'getUserCount'])->name('getUserCount');
                 });
 
-                Route::get('{department_id}/homeDepart', [DepartReportController::class, 'DepartReportview'])->name('DepartReportview');
-                Route::prefix('homeDepart')->group(function () {
+                Route::get('{department_id}/TableCDP', [T0101DPController::class, 'ReportC'])->name('TableCDP');
+                Route::prefix('TableCDP')->group(function () {
 
-                    Route::get('{department_id}/DepartD0100', [DepartReportController::class, 'DepartReportA'])->name('DepartD0100');
+                    Route::get('{department_id}/T0101DP', [T0101DPController::class, 'T0101DP'])->name('T0101DP');
+                    Route::get('{department_id}/T0103DP', [T0103DPController::class, 'T0103DP'])->name('T0103DP');
+                    Route::get('{department_id}/T0116DP', [T0116DPController::class, 'T0116DP'])->name('T0116DP');
+                    Route::get('{department_id}/T0117DP', [T0117DPController::class, 'T0117DP'])->name('T0117DP');
+                    Route::get('{department_id}/T0118DP', [T0118DPController::class, 'T0118DP'])->name('T0118DP');
+                    Route::get('{department_id}/T0119DP', [T0119DPController::class, 'T0119DP'])->name('T0119DP');
+                    Route::get('{department_id}/T0120DP', [T0120DPController::class, 'T0120DP'])->name('T0120DP');
                     Route::get('{department_id}/home/dashboard', [DepartReportController::class, 'ReportB'])->name('Departdashboard');
-                    Route::get('{department_id}/home/table', [DepartReportController::class, 'ReportC'])->name('Departtable');
-                    Route::get('{department_id}/home/T0101', [DepartReportController::class, 'ReportUserAuth'])->name('DepartReportUserAuth');
-                    Route::get('{department_id}/home/T0108', [DepartReportController::class, 'trainUserAuth'])->name('DeparttrainUserAuth');
-                    Route::get('{department_id}/home/T0103', [DepartReportController::class, 'bookUserAuth'])->name('DepartbookUserAuth');
-                    Route::get('{department_id}/home/T0104', [DepartReportController::class, 'LoginUserAuth'])->name('DepartLoginUserAuth');
-                    Route::get('{department_id}/home/T0110', [DepartReportController::class, 'BackUserAuth'])->name('DepartBackUserAuth');
-                    Route::get('{department_id}/home/T0111', [DepartReportController::class, 'reportMUserAuth'])->name('DepartreportMUserAuth');
-                    Route::get('{department_id}/home/T0112', [DepartReportController::class, 'reportYeaAuth'])->name('DepartreportYeaAuth');
-                    Route::get('{department_id}/home/T0113', [DepartReportController::class, 'reportQuarterlyAuth'])->name('DepartreportQuarterlyAuth');
-                    Route::get('{department_id}/home/T0114', [DepartReportController::class, 'BackupFullUserAuth'])->name('DepartBackupFullUserAuth');
-                    Route::get('{department_id}/home/T0115', [DepartReportController::class, 'LogFileUserAuth'])->name('DepartLogFileUserAuth');
                 });
                 Route::get('rplDP/{department_id}', [ReportADPController::class, 'Reportview'])->name('DepartReportviewDp');
                 Route::prefix('rplDP')->group(function () {
                     Route::get('{department_id}/A0100DP', [ReportADPController::class, 'ReportA'])->name('A0100DP');
+                    
                 });
             });
 
