@@ -4,6 +4,14 @@ namespace App\Http\Controllers;
 
 use App\Exports\LearnerExport;
 use App\Exports\QuestionExport;
+use App\Exports\report\AllT0000;
+use App\Exports\report\t0101All;
+use App\Exports\report\t0103All;
+use App\Exports\report\t0116All;
+use App\Exports\report\t0117All;
+use App\Exports\report\t0118All;
+use App\Exports\report\t0119All;
+use App\Exports\report\t0120All;
 use App\Exports\ReportExport;
 use App\Exports\SubjectExport;
 use App\Exports\t0101;
@@ -93,6 +101,46 @@ class ExcelController extends Controller
     {
         return Excel::download(new t0120($department_id, $provin_name), 't0120 ของจังหวัด' . $provin_name . ' .xlsx');
     }
+    public function exportT0101ALL($year)
+    {
+        return Excel::download(new t0101All($year), 'T0101 ' . $year . '.xlsx');
+    }
+    public function exportT0116ALL($year)
+    {
+
+        return Excel::download(new t0116All($year), 'T0116 ' . $year . '.xlsx');
+    }
+    public function exportT0103ALL($year)
+    {
+
+        return Excel::download(new t0103All($year), 't0103 ' . $year . '.xlsx');
+    }
+
+    public function exportT0117ALL($year)
+    {
+
+        return Excel::download(new t0117All($year), 't0117 ' . $year . '.xlsx');
+    }
+
+    public function exportT0118ALL($year)
+    {
+
+        return Excel::download(new t0118All($year), 'T0118 ' . $year . '.xlsx');
+    }
+    public function exportT0119ALL($year)
+    {
+
+        return Excel::download(new t0119All($year), 't0119 ' . $year . '.xlsx');
+    }
+    public function exportT0120ALL()
+    {
+        return Excel::download(new t0120All(), 't0120.xlsx');
+    }
+    public function exportAllT0000()
+    {
+        return Excel::download(new AllT0000(), 'AllT0000.xlsx');
+    }
+    
     public function ReportExp()
     {
         return Excel::download(new ReportExport(), 'Administrator Management Report.xlsx');

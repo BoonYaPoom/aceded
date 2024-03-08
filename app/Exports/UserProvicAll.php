@@ -37,6 +37,7 @@ class UserProvicAll implements
             $provicValue = $data->province_id;
             $users = DB::table('users')
                 ->where('users.province_id', $provicValue)
+                ->whereNotIn('users.user_role', [1, 6, 7, 8, 9])
                 ->select(
                     'users.user_id',
                     'users.username',

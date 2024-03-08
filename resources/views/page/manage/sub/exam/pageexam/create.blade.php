@@ -137,7 +137,6 @@
                         </div>
          
                         <textarea class="editor" data-placeholder="ตัวเลือกที่ {{ $i }}" data-height="150"  name="CHOICE{{ $i }}" id="CHOICE{{ $i }}">
-
                         </textarea>
                         
                     </div><!-- /.form-group -->

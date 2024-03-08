@@ -90,6 +90,7 @@ class WebController extends Controller
                 $de_th = new DOMDocument();
                 $de_th->encoding = 'UTF-8'; // Set encoding to UTF-8
                 $detail_th = mb_convert_encoding($detail_th, 'HTML-ENTITIES', 'UTF-8');
+                $detail_th = preg_replace('/<img\s[^>]*\b0x20\b[^>]*>/', '', $detail_th);
                 $detail_th = preg_replace('/<figure\b[^>]*>(.*?)<\/figure>/is', '$1', $detail_th);
                 $de_th->loadHTML($detail_th, LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
 
@@ -120,6 +121,7 @@ class WebController extends Controller
                 $de_en = new DOMDocument();
                 $de_en->encoding = 'UTF-8'; // Set encoding to UTF-8
                 $detail_en = mb_convert_encoding($detail_en, 'HTML-ENTITIES', 'UTF-8');
+                $detail_en = preg_replace('/<img\s[^>]*\b0x20\b[^>]*>/', '', $detail_en);
                 $detail_en = preg_replace('/<figure\b[^>]*>(.*?)<\/figure>/is', '$1', $detail_en);
                 libxml_use_internal_errors(true); // Enable internal error handling
                 $de_en->loadHTML($detail_en, LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
@@ -270,11 +272,12 @@ class WebController extends Controller
                 $de_th = new DOMDocument();
                 $de_th->encoding = 'UTF-8'; // Set encoding to UTF-8
                 $detail_th = mb_convert_encoding($detail_th, 'HTML-ENTITIES', 'UTF-8');
-                libxml_use_internal_errors(true); // Enable internal error handling
+                $detail_th = preg_replace('/<img\s[^>]*\b0x20\b[^>]*>/', '', $detail_th);
                 $detail_th = preg_replace('/<figure\b[^>]*>(.*?)<\/figure>/is', '$1', $detail_th);
-                libxml_clear_errors(); // Clear any accumulated errors
-                $de_th->loadHTML($detail_th, LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
 
+                libxml_use_internal_errors(true); // Enable internal error handling
+                $de_th->loadHTML($detail_th, LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
+                libxml_clear_errors(); // Clear any accumulated errors
                 $images_des_th = $de_th->getElementsByTagName('img');
 
                 foreach ($images_des_th as $key => $img) {
@@ -303,10 +306,11 @@ class WebController extends Controller
                 $de_en = new DOMDocument();
                 $de_en->encoding = 'UTF-8'; // Set encoding to UTF-8
                 $detail_en = mb_convert_encoding($detail_en, 'HTML-ENTITIES', 'UTF-8');
-                libxml_use_internal_errors(true); // Enable internal error handling
+                $detail_en = preg_replace('/<img\s[^>]*\b0x20\b[^>]*>/', '', $detail_en);
                 $detail_en = preg_replace('/<figure\b[^>]*>(.*?)<\/figure>/is', '$1', $detail_en);
-                libxml_clear_errors(); // Clear any accumulated errors
+                libxml_use_internal_errors(true); // Enable internal error handling
                 $de_en->loadHTML($detail_en, LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
+                libxml_clear_errors(); // Clear any accumulated errors
 
                 $images_de_en = $de_en->getElementsByTagName('img');
 

@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Exports;
+namespace App\Exports\report;
 
+use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use Maatwebsite\Excel\Concerns\Exportable;
 use Maatwebsite\Excel\Concerns\FromCollection;
@@ -10,75 +11,74 @@ use Maatwebsite\Excel\Concerns\WithEvents;
 use Maatwebsite\Excel\Concerns\WithHeadings;
 use Maatwebsite\Excel\Events\AfterSheet;
 
-class t0117  implements
+class t0101All implements
     FromCollection,
     WithHeadings,
     ShouldAutoSize,
-    WithEvents  
+    WithEvents
 {
     /**
      * @return \Illuminate\Support\Collection
      */
+
     protected $year;
 
     public function __construct($year)
     {
-
         $this->year = $year;
     }
     public function collection()
     {
-        $learner
-            = DB::table('users')
+        $learner = DB::table('users')
             ->join('course_learner', 'users.user_id', '=', 'course_learner.user_id')
+            ->join('users_extender2', 'users.organization', '=', 'users_extender2.extender_id')
             ->join('users_department', 'users.user_id', '=', 'users_department.user_id')
             ->join('department', 'users_department.department_id', '=', 'department.department_id')
+            ->join('provinces', 'users.province_id', '=', 'provinces.id')
             ->join('course', 'course_learner.course_id', '=', 'course.course_id')
             ->where('course_learner.learner_status', '=', 1)
             ->where('users.user_role', 4)
             ->where('course_learner.course_id', '>', 0)
-            ->whereIn('department.department_id', [1, 2, 3, 5, 6, 7])
-            ->select(
-                'department.department_id',
-                'course.course_th as course_th',
-                DB::raw('EXTRACT(YEAR FROM course_learner.registerdate)  + 543  as year'),
-                DB::raw('COUNT(DISTINCT course_learner.user_id)  as user_count')
-            )
-            ->groupBy(
-                'department.department_id',
-                'course.course_th',
-                'department.name_th',
-                DB::raw('EXTRACT(YEAR FROM course_learner.registerdate) + 543')
-            )
-            ->orderBy('department.department_id', 'ASC');
+            ->whereNotIn('users.user_role', [1, 6, 7, 8, 9])
 
-        $datauser = $learner->whereRaw('EXTRACT(YEAR FROM course_learner.registerdate)  + 543 = ?', [$this->year])
+            ->select(
+                'users.username',
+                'users.firstname',
+                'users.lastname',
+                'department.department_id as department_id_ace',
+                'users_department.department_id',
+                'department.name_th as department_name',
+                'users_extender2.name as exten_name',
+                'course.course_th as course_th',
+                'provinces.name_in_thai as province_name',
+                DB::raw("TO_CHAR(course_learner.registerdate, 'DD Month YYYY ', 'NLS_DATE_LANGUAGE=THAI') as register_date"),
+                DB::raw("TO_CHAR(course_learner.realcongratulationdate , 'DD Month YYYY ', 'NLS_DATE_LANGUAGE=THAI') as realcongratulationdate"),
+                DB::raw('EXTRACT(YEAR FROM course_learner.registerdate)  + 543  as year'),
+            )->orderBy('department_id_ace');
+
+        $datauser = $learner->whereRaw('EXTRACT(YEAR FROM course_learner.registerdate) + 543 = ?', [$this->year])
             ->distinct()
             ->get();
 
+
         $i = 1;
         $datauserAll = $datauser->map(function ($item) use (&$i) {
-
-            $depas = '';
-            if ($item->department_id == 1 || $item->department_id == 2) {
-                $depas = 'อายุไม่เกิน 11 ปี';
-            } elseif ($item->department_id == 3) {
-                $depas = 'อายุ 12 - 17 ปี';
-            } elseif ($item->department_id == 5) {
-                $depas = 'อายุ 18 - 25 ปี';
-            } elseif ($item->department_id == 6 || $item->department_id == 7) {
-                $depas = 'อายุเกิน 25 ปีขึ้นไป';
-            }
-
-
+            $fullname =  $item->firstname . ' ' . $item->lastname;
+            $exten2 = $item->exten_name;
+            $course_th = $item->course_th;
+            $register_date = $item->register_date;
+            $realcongratulationdate = $item->realcongratulationdate;
+            $department_name = $item->department_name;
             return [
                 'i' => $i++,
-                'course_th' => $item->course_th,
-                'depas' => $depas,
-                'user_count' => $item->user_count,
+                'fullname' => $fullname,
+                'exten2' => $exten2,
+                'department_name' =>  $department_name,
+                'course_th' =>  $course_th,
+                'register_date' => $register_date,
+                'realcongratulationdate' => $realcongratulationdate,
             ];
         });
-
 
         return $datauserAll;
     }
@@ -88,9 +88,12 @@ class t0117  implements
 
         return [
             'ลำดับ',
-            'ชื่อหลักสูตร',
-            'ช่วงอายุ',
-            'จำนวน (คน)',
+            'ชื่อ-นามสกุล',
+            'สังกัด',
+            'ระดับ',
+            'หลักสูตร',
+            'วันที่ลงทะเบียนเรียน',
+            'วันที่จบหลักสูตร',
         ];
     }
     public function registerEvents(): array

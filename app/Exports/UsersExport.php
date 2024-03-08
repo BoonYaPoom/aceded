@@ -29,7 +29,8 @@ class UsersExport implements
      */
     public function collection()
     {
-        $users = DB::table('users')->select(
+        $users = DB::table('users')
+            ->whereNotIn('users.user_role', [1, 6, 7, 8, 9])->select(
             'user_id',
             'username',
             'firstname',
@@ -99,7 +100,7 @@ class UsersExport implements
 
             $TimeDAta =  $formattedDate . ' '  . ' ' . $formattedTime;
             return [
-                'i' => $i + 1,
+                'i' => $i++,
                 'username' => $item->username,
                 'fullname' => $fullname,
                 'mobile' => $fullMobile,

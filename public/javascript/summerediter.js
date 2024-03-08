@@ -17,7 +17,7 @@ $(document).ready(function() {
             ['insert', ['link', 'picture', 'video', 'hr']],
             ['fontsize', ['fontsize']], // เพิ่มแท็บขนาดตัวอักษร
             ['fontname', ['fontname']], // เพิ่มแท็บแบบอักษร
-            ['view', ['fullscreen', 'codeview', 'help']]
+            ['view', ['fullscreen']]
         ],
         fontNames: ['Arial', 'Arial Black', 'Comic Sans MS', 'Courier New', 'Merriweather'],
         // เพิ่ม Plugin video

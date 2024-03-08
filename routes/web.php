@@ -101,7 +101,14 @@ Route::get('/exportT0118/{provin_name}/{year}', [ExcelController::class, 'export
 Route::get('/exportT0119/{provin_name}/{year}', [ExcelController::class, 'exportT0119'])->name('exportT0119');
 Route::get('/exportT0120/{department_id}/{provin_name}', [ExcelController::class, 'exportT0120'])->name('exportT0120');
 
-
+Route::get('/exportT0101ALL/{year}', [ExcelController::class, 'exportT0101ALL'])->name('exportT0101ALL');
+Route::get('/exportT0103ALL/{year}', [ExcelController::class, 'exportT0103ALL'])->name('exportT0103ALL');
+Route::get('/exportT0116ALL/{year}', [ExcelController::class, 'exportT0116ALL'])->name('exportT0116ALL');
+Route::get('/exportT0117ALL/{year}', [ExcelController::class, 'exportT0117ALL'])->name('exportT0117ALL');
+Route::get('/exportT0118ALL/{year}', [ExcelController::class, 'exportT0118ALL'])->name('exportT0118ALL');
+Route::get('/exportT0119ALL/{year}', [ExcelController::class, 'exportT0119ALL'])->name('exportT0119ALL');
+Route::get('/exportT0120ALL', [ExcelController::class, 'exportT0120ALL'])->name('exportT0120ALL');
+Route::get('/exportAllT0000', [ExcelController::class, 'exportAllT0000'])->name('exportAllT0000');
 
 Route::get('/exportUsersZone/{department_id}', [ExcelController::class, 'exportUsersZone'])->name('exportUsersZone');
 Route::get('/exportUsersSchool/{department_id}', [ExcelController::class, 'exportUsersSchool'])->name('exportUsersSchool');

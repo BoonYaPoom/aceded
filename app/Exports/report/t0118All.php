@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Exports;
+namespace App\Exports\report;
 
 use Illuminate\Support\Facades\DB;
 use Maatwebsite\Excel\Concerns\Exportable;
@@ -10,7 +10,7 @@ use Maatwebsite\Excel\Concerns\WithEvents;
 use Maatwebsite\Excel\Concerns\WithHeadings;
 use Maatwebsite\Excel\Events\AfterSheet;
 
-class t0118 implements
+class t0118All implements
     FromCollection,
     WithHeadings,
     ShouldAutoSize,
@@ -20,23 +20,20 @@ class t0118 implements
      * @return \Illuminate\Support\Collection
      */
     protected $year;
-    protected $provin_name;
-    public function __construct($provin_name, $year)
+
+    public function __construct($year)
     {
-        $this->provin_name = $provin_name;
         $this->year = $year;
     }
     public function collection()
     {
         $learner = DB::table('users')
-            ->join('provinces', 'users.province_id', '=', 'provinces.id')
             ->join('logs', 'users.user_id', '=', 'logs.user_id')
-            ->where('provinces.name_in_thai', '=', $this->provin_name)
+            ->where('logs.logid', '=', 1)
+            ->whereNotIn('users.user_role', [1, 6, 7, 8, 9])
             ->select(
-                'provinces.name_in_thai as province_name',
                 DB::raw('EXTRACT(YEAR FROM logs.logdate)  + 543  as year'),
-                DB::raw('TO_CHAR(logs.logdate, \'MM\') as month_id'),
-                DB::raw('COUNT(DISTINCT logs.user_id) as user_count'),
+                DB::raw('COUNT(DISTINCT users.user_id) as user_count'),
                 DB::raw('CASE TO_CHAR(logs.logdate, \'MM\')
                         WHEN \'01\' THEN \'มกราคม\'
                         WHEN \'02\' THEN \'กุมภาพันธ์\'
@@ -54,11 +51,26 @@ class t0118 implements
                     END as month'),
             )
             ->groupBy(
-                'provinces.id',
-                'provinces.name_in_thai',
-                DB::raw('TO_CHAR(logs.logdate, \'MM\')')
+                
+                DB::raw('TO_CHAR(logs.logdate, \'MM\')'),
+                DB::raw('CASE TO_CHAR(logs.logdate, \'MM\')
+                        WHEN \'01\' THEN \'มกราคม\'
+                        WHEN \'02\' THEN \'กุมภาพันธ์\'
+                        WHEN \'03\' THEN \'มีนาคม\'
+                        WHEN \'04\' THEN \'เมษายน\'
+                        WHEN \'05\' THEN \'พฤษภาคม\'
+                        WHEN \'06\' THEN \'มิถุนายน\'
+                        WHEN \'07\' THEN \'กรกฎาคม\'
+                        WHEN \'08\' THEN \'สิงหาคม\'
+                        WHEN \'09\' THEN \'กันยายน\'
+                        WHEN \'10\' THEN \'ตุลาคม\'
+                        WHEN \'11\' THEN \'พฤศจิกายน\'
+                        WHEN \'12\' THEN \'ธันวาคม\'
+                        ELSE \'ไม่ทราบ\'
+                    END'),
+                DB::raw('EXTRACT(YEAR FROM logs.logdate)'),
             )
-            ->groupBy(DB::raw('EXTRACT(YEAR FROM logs.logdate)'))
+
             ->whereRaw('EXTRACT(YEAR FROM logs.logdate)  + 543 = ?', [$this->year])
             ->get();
 

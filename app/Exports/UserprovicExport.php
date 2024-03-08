@@ -43,7 +43,9 @@ class UserprovicExport implements
                 ->pluck('extender_id');
             $users = DB::table('users')
                 ->join('users_department', 'users.user_id', '=', 'users_department.user_id')
-                ->where('users_department.department_id', '=', $this->department_id);
+                ->where('users_department.department_id', '=', $this->department_id)
+                ->whereNotIn('users.user_role', [1, 6, 7, 8, 9]);
+                
 
             if (in_array($this->department_id, [1, 2, 3, 5])) {
                 $users->whereIn('users.organization', $users_extender2);
@@ -82,6 +84,8 @@ class UserprovicExport implements
                     if ($item->organization > 0) {
                         $proviUser = DB::table('provinces')->where('id', $item->province_id)->value('name_in_thai') ?? '-';
                         $extender2 = DB::table('users_extender2')->where('extender_id', $item->organization)->value('name') ?? '-';
+                        $exten = DB::table('users_extender2')->where('extender_id', $item->organization)->first();
+                        
                         $aff = $item->user_affiliation;
                     } elseif ($item->organization == 0) {
                         $extender2 = $item->user_affiliation;
@@ -119,7 +123,7 @@ class UserprovicExport implements
 
                 $TimeDAta =  $formattedDate . ' '  . ' ' . $formattedTime;
                 return [
-                    'i' => $i + 1,
+                    'i' => $i++,
                     'username' => $item->username,
                     'fullname' => $fullname,
                     'mobile' => $fullMobile,

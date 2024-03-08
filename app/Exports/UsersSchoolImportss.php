@@ -37,6 +37,7 @@ class UsersSchoolImportss implements FromCollection,
                 ->join('users_department', 'users.user_id', '=', 'users_department.user_id')
                 ->where('users_department.department_id', '=', $this->department_id)
                 ->where('users.organization', $organization)
+                ->whereNotIn('users.user_role', [1, 6, 7, 8, 9])
                 ->select(
                     'users.user_id',
                     'users.username',
@@ -105,7 +106,7 @@ class UsersSchoolImportss implements FromCollection,
 
                 $TimeDAta =  $formattedDate . ' '  . ' ' . $formattedTime;
                 return [
-                    'i' => $i + 1,
+                    'i' => $i++,
                     'username' => $item->username,
                     'fullname' => $fullname,
                     'mobile' => $fullMobile,

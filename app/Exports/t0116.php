@@ -64,7 +64,7 @@ class t0116 implements
 
         $i = 1;
         $datauserAll = $datauser->map(function ($item) use (&$i) {
-            $fullname =  $item->firstname . '' . $item->lastname;
+            $fullname =  $item->firstname . ' ' . $item->lastname;
             $exten2 = $item->exten_name;
             $course_th = $item->course_th;
             $congratulation = $item->congratulation;
@@ -76,7 +76,7 @@ class t0116 implements
             }
 
             return [
-                'i' => $i + 1,
+                'i' => $i++,
                 'fullname' => $fullname,
                 'exten2' => $exten2,
                 'course_th' =>  $course_th,

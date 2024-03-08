@@ -152,7 +152,6 @@
                                         name="CHOICE{{ $i }}" id="CHOICE{{ $i }}">
                                     <figure><figcaption></figcaption></figure>
                                     {{ $ques['choice' . $i] ?? '' }}
-                    
                                 </textarea>
 
                                 </div><!-- /.form-group -->
@@ -520,9 +519,6 @@
                             </div><!-- /grid row -->
                             <!-- .form-group -->
                         </div>
-
-
-
 
                         <div class="form-group">
                             <label for="explain">คำอธิบาย </label>

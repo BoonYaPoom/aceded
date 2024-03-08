@@ -1,11 +1,9 @@
 @extends('layouts.department.layout.departmenthome')
 @section('contentdepartment')
-    <!-- .page-inner -->
     <div class="page-inner">
-        <!-- .form -->
-        <!-- .page-section -->
+
         <div class="page-section">
-            <!-- .card -->
+
             <div class="card card-fluid">
                 <div class="card-header bg-muted">
                     @if ($category->category_type == 2)
@@ -22,17 +20,15 @@
                             style="text-decoration: underline;">ข่าว</a> / <a
                             href="{{ route('evenpage', ['department_id' => $depart]) }}"
                             style="text-decoration: underline;"><i> {{ $category->category_th }}</i></a> /
-                    @endif 
-                    <a href="{{ route('catpage', [$depart, $category]) }}"
-                        style="text-decoration: underline;"><i>แก้ไข {{ $webs->web_th }}</i> </a>
+                    @endif
+                    <a href="{{ route('catpage', [$depart, $category]) }}" style="text-decoration: underline;"><i>แก้ไข
+                            {{ $webs->web_th }}</i> </a>
                 </div><!-- /.card-header -->
 
                 <form action="{{ route('updatecat', ['department_id' => $depart, 'web_id' => $webs]) }}" method="post"
                     enctype="multipart/form-data">
                     @csrf
                     @method('PUT')
-                    <!-- .card-body -->
-
 
                     <div class="card-body">
 
@@ -40,13 +36,11 @@
                             <label for="cover"><img src="{{ asset($webs->cover) }}" alt="{{ $webs->cover }}"
                                     style="height:350px">
                         </div>
-                        <!-- .form-group -->
+
                         <div class="form-group">
                             <label for="cover">ภาพปก </label> <input type="file" class="form-control" id="cover"
                                 name="cover" placeholder="ภาพปก" accept=" image/jpeg, image/png">
-                        </div><!-- /.form-group -->
-
-                        <!-- .form-group -->
+                        </div>
                         <div class="form-group">
                             <label for="web_th">ชื่อข่าว/กิจกรรม (ไทย) <span
                                     class="badge badge-warning">Required</span></label> <input type="text"
@@ -61,21 +55,24 @@
                             <label for="web_en">ชื่อข่าว/กิจกรรม (อังกฤษ) </label> <input type="text"
                                 class="form-control" id="web_en" name="web_en" placeholder="ชื่อข่าว/กิจกรรม (อังกฤษ)"
                                 value="{{ $webs->web_en }}">
-                        </div><!-- /.form-group -->
-
-                        <!-- .form-group -->
+                        </div>
                         <div class="form-group">
+
                             <label for="detail_th">รายละเอียด (ไทย)</label>
-                            <textarea class="editor" data-placeholder="รายละเอียด (ไทย)" data-height="200" name="detail_th"
-                                value="{{ $webs->detail_th }}">{{ $webs->detail_th }}</textarea>
-                        </div><!-- /.form-group -->
-                        <!-- .form-group -->
+
+                            <textarea class="editor" data-placeholder="รายละเอียด (ไทย)" data-height="200" name="detail_th" id="detail_th">
+{{ $webs->detail_th }}
+                        </textarea>
+                        </div>
+
                         <div class="form-group">
                             <label for="detail_en">รายละเอียด (อังกฤษ)</label>
-                            <textarea class="editor" data-placeholder="รายละเอียด (อังกฤษ)" data-height="200" name="detail_en"
-                                value="{{ $webs->detail_en }}">{{ $webs->detail_en }}</textarea>
-                        </div><!-- /.form-group -->
-                        <!-- .form-group -->
+
+                            <textarea class="editor" data-placeholder="รายละเอียด (อังกฤษ)" data-height="200" name="detail_en" id="detail_en">
+  {{ $webs->detail_en }}
+                        </textarea>
+                        </div>
+
 
                         @if ($category->category_type == 2)
                             <div class="form-row">

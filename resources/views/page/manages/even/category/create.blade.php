@@ -14,16 +14,17 @@
                             href="{{ route('Webpage', ['department_id' => $depart]) }}"
                             style="text-decoration: underline;">กิจกรรม</a> / <a
                             href="{{ route('acteven', ['department_id' => $depart]) }}"
-                            style="text-decoration: underline;">{{ $category->category_th }}</a> 
+                            style="text-decoration: underline;">{{ $category->category_th }}</a>
                     @elseif ($category->category_type == 1)
                         <a href="{{ route('manage', ['department_id' => $depart]) }}"
                             style="text-decoration: underline;">จัดการเว็บ</a> / <a
                             href="{{ route('Webpage', ['department_id' => $depart]) }}"
                             style="text-decoration: underline;">ข่าว</a> / <a
                             href="{{ route('evenpage', ['department_id' => $depart]) }}"
-                            style="text-decoration: underline;"><i> {{ $category->category_th }}</i></a> 
-                    @endif 
-                    / <i> เพิ่ม</i></div><!-- /.card-header -->
+                            style="text-decoration: underline;"><i> {{ $category->category_th }}</i></a>
+                    @endif
+                    / <i> เพิ่ม</i>
+                </div><!-- /.card-header -->
 
 
                 <form action="{{ route('catstore', ['department_id' => $depart, 'category_id' => $category]) }}"
@@ -57,13 +58,16 @@
                         <!-- .form-group -->
                         <div class="form-group">
                             <label for="detail_th">รายละเอียด (ไทย)</label>
-                            <textarea class="editor" data-placeholder="รายละเอียด (ไทย)" data-height="200" name="detail_th"></textarea>
-                        </div><!-- /.form-group -->
+                            <textarea class="editor" data-placeholder="รายละเอียด (ไทย)" data-height="200" name="detail_th" id="detail_th">
 
+                        </textarea>
+                        </div><!-- /.form-group -->
                         <!-- .form-group -->
                         <div class="form-group">
                             <label for="detail_en">รายละเอียด (อังกฤษ)</label>
-                            <textarea class="editor" data-placeholder="รายละเอียด (อังกฤษ)" data-height="200" name="detail_en"></textarea>
+                            <textarea class="editor" data-placeholder="รายละเอียด (อังกฤษ)" data-height="200" name="detail_en" id="detail_en">
+
+                        </textarea>
                         </div><!-- /.form-group -->
                         @if ($category->category_type == 2)
                             <div class="form-row">

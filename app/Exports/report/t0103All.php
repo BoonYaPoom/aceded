@@ -1,6 +1,7 @@
 <?php
 
-namespace App\Exports;
+namespace App\Exports\report;
+
 
 use Illuminate\Support\Facades\DB;
 use Maatwebsite\Excel\Concerns\Exportable;
@@ -10,8 +11,7 @@ use Maatwebsite\Excel\Concerns\WithEvents;
 use Maatwebsite\Excel\Concerns\WithHeadings;
 use Maatwebsite\Excel\Events\AfterSheet;
 
-class t0103 implements
-    FromCollection,
+class t0103All implements  FromCollection,
     WithHeadings,
     ShouldAutoSize,
     WithEvents
@@ -19,20 +19,19 @@ class t0103 implements
     /**
      * @return \Illuminate\Support\Collection
      */
+
     protected $year;
 
     public function __construct($year)
     {
-
         $this->year = $year;
-
     }
     public function collection()
     {
         $learner = DB::table('users')
-        ->join('logs', 'users.user_id', '=', 'logs.user_id')
-        ->join('book', 'logs.idref', '=', 'book.book_id')
-        ->where('logs.logid', '=', 10)
+            ->join('logs', 'users.user_id', '=', 'logs.user_id')
+            ->join('book', 'logs.idref', '=', 'book.book_id')
+            ->where('logs.logid', '=', 10)
             ->select(
                 'logs.idref',
                 'book.book_name',
@@ -44,12 +43,13 @@ class t0103 implements
                 DB::raw('EXTRACT(YEAR FROM logs.logdate)')
             );
         $datauser = $learner->whereRaw('EXTRACT(YEAR FROM logs.logdate)  + 543 = ?', [$this->year])
+            ->orderBy('year', 'ASC')
             ->distinct()
             ->get();
 
         $i = 1;
         $datauserAll = $datauser->map(function ($item) use (&$i) {
-            
+
             return [
                 'i' => $i++,
                 'book_name' => $item->book_name,
@@ -63,7 +63,6 @@ class t0103 implements
 
     public function headings(): array
     {
-
         return [
             'ลำดับ',
             'เอกสาร e-book Multimedia',
