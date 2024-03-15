@@ -6,11 +6,16 @@
         <!-- form column -->
         <div class="col-md-1"><span class="mt-1 ">ปี</span></div>
         <div class="col-md-3">
+            @php
+                use Carbon\Carbon;
+            @endphp
             <div class=""><select id="selectyear" name="selectyear" class="form-control" data-toggle="select2"
                     data-placeholder="ปี" data-allow-clear="false">
-                    <option value="2566"> 2566 </option>
-                    <option value="2567" selected> 2567 </option>
-                    <option value="2568"> 2568 </option>
+                    @for ($i = Carbon::now()->year + 543 - 2; $i <= Carbon::now()->year + 543 + 2; $i++)
+                        <option value="{{ $i }}" {{ $i == Carbon::now()->year + 543 ? 'selected' : '' }}>
+                            {{ $i }}
+                        </option>
+                    @endfor
 
                 </select>
             </div>
@@ -20,6 +25,7 @@
         <div class="col-md-3">
             <div class=""><select id="provin" name="provin" class="form-control" data-toggle="select2"
                     data-placeholder="ปี" data-allow-clear="false">
+                    <option value="0">รวมทั้งหมด </option>
                     @foreach ($provin as $pro)
                         <option value="{{ $pro->name_in_thai }}"> {{ $pro->name_in_thai }} </option>
                     @endforeach
@@ -67,6 +73,17 @@
                     <!-- .card-body -->
                     <div class="card-body">
                         <div id="chartyearregister" style="min-width: 310px; height: 330px; margin: 0 auto">
+
+                        </div>
+                    </div><!-- /.card-body -->
+                </div><!-- /.card -->
+            </div><!-- /grid column -->
+            <div class="col-12 col-lg-12 col-xl-12">
+                <!-- .card -->
+                <div class="card card-fluid">
+                    <!-- .card-body -->
+                    <div class="card-body">
+                        <div id="chartyearregister2" style="min-width: 310px; height: 330px; margin: 0 auto">
 
                         </div>
                     </div><!-- /.card-body -->

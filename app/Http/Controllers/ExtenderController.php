@@ -60,6 +60,8 @@ class ExtenderController extends Controller
         $depart = Department::findOrFail($department_id);
 
         $provin = DB::table('provinces')->get();
+        $districts = DB::table('districts')->get();
+        $subdistricts = DB::table('subdistricts')->get();
         $extender1 = DB::table('users_extender2')->where('item_group_id', 1)->where('item_lv', 1)->get();
         $extender2 = DB::table('users_extender2')->where('item_group_id', 1)->where('item_lv', 2)->get();
         $extender3 = DB::table('users_extender2')->where('item_group_id', 1)->where('item_lv', 3)->get();
@@ -67,29 +69,51 @@ class ExtenderController extends Controller
 
         return view(
             'layouts.department.item.data.UserAdmin.group.umsschool.test.create.add',
-            compact('depart', 'extender1', 'extender2', 'extender3', 'extender4', 'provin')
+            compact('depart', 'extender1', 'extender2', 'extender3', 'extender4', 'provin', 'districts', 'subdistricts')
         );
     }
 
     public function addextendersubmit(Request $request, $department_id)
     {
         $depart = Department::findOrFail($department_id);
-        $request->validate([
-            'provin' => 'required',
-        ]);
+        $request->validate(
+            [
+                'provin' => 'required',
+                'distrits' => 'required',
+                'subdistrits' => 'required',
+                'extender_id' => 'required',
+                'school_lv2' => 'required_without_all:school_lv3,school_lv4',
+                'school_lv3' => 'required_without_all:school_lv2,school_lv4',
+                'school_lv4' => 'required_without_all:school_lv2,school_lv3',
+            ],
+        
+            [
+                'school_lv2.required_without_all' => 'กรุณากรอกชื่อสถานศึกษา',
+                'school_lv3.required_without_all' => '',
+                'school_lv4.required_without_all' => '',
+                'provin.required' => 'กรุณาเลือกจังหวัด',
+                'distrits.required' => 'กรุณาเลือกอำเภอ',
+                'subdistrits.required' => 'กรุณาเลือกตำบล',
+                'extender_id.required' => 'กรุณาเลือกหน่วยงาน',
+            ]
+        );
         $name = '';
         $item_lv = 0;
         $item_parent_id = 0;
+        $provin = $request->provin;
+        $distrits = $request->distrits;
+        $subdistrits = $request->subdistrits;
+        $school_code = $request->school_code;
         if ($request->school_lv4) {
-            $name = $request->school_lv4 . ' (' . $request->provin . ')';
+            $name = $request->school_lv4;
             $item_lv = 4;
             $item_parent_id = $request->extender_id3;
         } elseif ($request->school_lv3) {
-            $name = $request->school_lv3 . ' (' . $request->provin . ')';
+            $name = $request->school_lv3;
             $item_lv = 3;
             $item_parent_id = $request->extender_id2;
         } elseif ($request->school_lv2) {
-            $name = $request->school_lv2 . ' (' . $request->provin . ')';
+            $name = $request->school_lv2;
             $item_lv = 2;
             $item_parent_id = $request->extender_id;
         }
@@ -102,9 +126,11 @@ class ExtenderController extends Controller
             'item_group_id' => 1,
             'item_lv' => $item_lv,
             'item_parent_id' => $item_parent_id,
+            'school_province' => $provin,
+            'school_district' => $distrits,
+            'school_subdistrict' => $subdistrits,
+            'school_code' => $school_code,
         ]);
-
-
 
         return redirect()->route('testumsschool', $depart)->with('message', 'การบันทึก');
     }
@@ -210,8 +236,8 @@ class ExtenderController extends Controller
                         break;
                 }
             } elseif ($data->user_role == 9) {
-                 $zones = DB::table('user_admin_zone')->where('user_id', $data->user_id)->pluck('province_id')->toArray();
-                  
+                $zones = DB::table('user_admin_zone')->where('user_id', $data->user_id)->pluck('province_id')->toArray();
+
                 switch ($department_id) {
                     case 1:
                     case 2:
@@ -228,7 +254,7 @@ class ExtenderController extends Controller
                     default:
                         break;
                 }
-            } 
+            }
         } else {
             $query = DB::table('users_extender2')->get();
         }
@@ -329,7 +355,4 @@ class ExtenderController extends Controller
 
         return view('layouts.department.item.data.UserAdmin.group.umsschool.test2.index', compact('depart'));
     }
-
-
-
 }

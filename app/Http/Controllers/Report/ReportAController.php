@@ -68,7 +68,6 @@ class ReportAController extends Controller
             $matchingItem = $con->firstWhere(function ($conItem) use ($item) {
                 return $conItem->year == $item->year && $conItem->province_name == $item->province_name;
             });
-
             return [
                 'year' => $item->year,
                 'province_name' => $item->province_name,
@@ -117,9 +116,43 @@ class ReportAController extends Controller
             ->groupBy(DB::raw('EXTRACT(YEAR FROM course_learner.registerdate)'))
             ->get();
 
+        $monthsYear = DB::table('users')
+            ->join('provinces', 'users.province_id', '=', 'provinces.id')
+            ->where('users.user_role', '=', 4)
+            ->select(
+                'provinces.name_in_thai as province_name',
+                DB::raw('EXTRACT(YEAR FROM users.createdate)  + 543  as year'),
+                DB::raw('TO_CHAR(users.createdate, \'MM\') as month'),
+                DB::raw('COUNT(DISTINCT users.user_id) as user_count')
+            )
+            ->groupBy(
+                'provinces.id',
+                'provinces.name_in_thai',
+                DB::raw('TO_CHAR(users.createdate, \'MM\')')
+            )
+            ->groupBy(DB::raw('EXTRACT(YEAR FROM users.createdate)'))
+            ->get();
+
+        // dd($monthsYear);
+        $dataMonthWithId = [
+            ['id' => 1, 'month' => 'มกราคม', 'sort' => 4],
+            ['id' => 2, 'month' => 'กุมภาพันธ์', 'sort' => 5],
+            ['id' => 3, 'month' => 'มีนาคม', 'sort' => 6],
+            ['id' => 4, 'month' => 'เมษายน', 'sort' =>7],
+            ['id' => 5, 'month' => 'พฤษภาคม', 'sort' =>8],
+            ['id' => 6, 'month' => 'มิถุนายน', 'sort' =>9],
+            ['id' => 7, 'month' => 'กรกฎาคม', 'sort' =>10],
+            ['id' => 8, 'month' => 'สิงหาคม', 'sort' =>11],
+            ['id' => 9, 'month' => 'กันยายน', 'sort' =>12],
+            ['id' => 10, 'month' => 'ตุลาคม', 'sort' =>1],
+            ['id' => 11, 'month' => 'พฤศจิกายน', 'sort' =>2],
+            ['id' => 12, 'month' => 'ธันวาคม', 'sort' =>3],
+        ];
 
 
-        $dateAll = ['ม.ค.', 'ก.พ.', 'มี.ค.', 'เม.ย.', 'พ.ค.', 'มิ.ย.', 'ก.ค.', 'ส.ค.', 'ก.ย.', 'ต.ค.', 'พ.ย.', 'ธ.ค.'];
+
+
+        $dateAll = ['มกราคม', 'กุมภาพันธ์', 'มีนาคม', 'เมษายน', 'พฤษภาคม', 'มิถุนายน', 'กรกฎาคม', 'สิงหาคม', 'กันยายน', 'ตุลาคม', 'พฤศจิกายน', 'ธันวาคม'];
 
         $dateAllWithId = array_map(function ($month, $index) {
             return [
@@ -131,7 +164,7 @@ class ReportAController extends Controller
 
         return view(
             'page.report2.A.reporta',
-            compact('dateAll', 'provin', 'dateAllWithId', 'monthscon', 'monthsconno', 'count1', 'count3', 'count4', 'learn', 'con', 'conno')
+            compact('monthsYear','dateAll',  'dataMonthWithId', 'provin', 'dateAllWithId', 'monthscon', 'monthsconno', 'count1', 'count3', 'count4', 'learn', 'con', 'conno')
         );
     }
 }

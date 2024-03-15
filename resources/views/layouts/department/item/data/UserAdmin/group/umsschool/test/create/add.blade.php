@@ -19,8 +19,11 @@
                     <div class="card-body">
                         <!-- .form-group -->
 
+                        @include('layouts.department.item.data.UserAdmin.group.umsschool.test.create.select')
+                        @include('layouts.department.item.data.UserAdmin.group.umsschool.test.create.js')
+                        @include('layouts.department.item.data.UserAdmin.group.umsschool.test.create.text')
 
-                        <div class="form-group">
+                        {{-- <div class="form-group">
                             <label for="provin" class="col-md-1">จังหวัด </label>
                             <span class="badge badge-warning">Required</span></label>
                             <select class="form-control " name="provin" id="provin" required="">
@@ -36,7 +39,7 @@
                             <span class="badge badge-warning">Required</span></label>
                             <select class="form-control " name="extender_id" id="extender_id" required="">
                                 <option value="" selected disabled>-- เลือกสถานศึกษา --</option>
-                                @foreach ($extendernull as $extr)
+                                @foreach ($extender1 as $extr)
                                     <option value="{{ $extr->extender_id }}">{{ $extr->name }}
                                     </option>
                                 @endforeach
@@ -66,7 +69,15 @@
                                     }
                                 });
                             });
-                        </script>
+                        </script> --}}
+                        @if ($errors->any())
+                            <div class="col-md-9 mb-3">
+                                @foreach ($errors->all() as $error)
+                                    <span class="badge badge-warning">{{ $error }}</span>
+                                @endforeach
+                            </div>
+                        @endif
+
                     </div><!-- /.card-body -->
                 </div><!-- /.card -->
 

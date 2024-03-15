@@ -100,7 +100,8 @@ class UsersSchoolImportss implements FromCollection,
                 $fullMobile = $part1 . '-' . $part2 . '-' . $part3;
                 $createdate = Carbon::createFromFormat('Y-m-d H:i:s', $item->createdate);
 
-                $formattedDate = $createdate->format('d/m/') . ($createdate->year + 543);
+                $formattedDate = $createdate->format('Y-m-d');
+                //  . ($createdate->year + 543);
 
                 $formattedTime = ltrim($createdate->format('g.i'), '0')  . ' ' . 'น.';
 
@@ -113,8 +114,9 @@ class UsersSchoolImportss implements FromCollection,
                     'user_affiliation' => $aff,
                     'extender2' => $extender2,
                     'proviUser' => $proviUser,
-                    'createdate' => $TimeDAta,
-                    'status' => $item->userstatus,
+                    'createdate' => $formattedDate,
+                    'formattedTime' => $formattedTime,
+                    'status'  => $item->userstatus = 1 ? 'เปิดใช้งาน' : 'ปิดใช้งาน',
                 ];
             });
 
@@ -137,6 +139,7 @@ class UsersSchoolImportss implements FromCollection,
             'หน่วยงาน',
             'จังหวัด',
             'วันที่สร้าง',
+            'เวลา',
             'สถานะ',
             'กระทำ',
             // เพิ่มหัวตารางอื่น ๆ ตามต้องการ

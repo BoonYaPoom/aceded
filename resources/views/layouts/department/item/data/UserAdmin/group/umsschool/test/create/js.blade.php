@@ -9,8 +9,53 @@
 
             var extender4 = {!! $extender4 !!};
             var provin = $('#provin');
+            var distrit = $('#distrits');
+            var subdistrits = $('#subdistrits');
+            var distritdata = {!! $districts !!};
+            var subdistritsdata = {!! $subdistricts !!};
             $('#extender_id').select2();
             provin.select2();
+
+
+            $('#provin').on('change', function() {
+                var selectedprovinId = $(this).val();
+                var foundMatchprovin = false;
+                distrit.select2();
+                distrit.empty();
+                distrit.append('<option value="" selected disabled>-- เลือกอำเภอ --</option>');
+                console.log(selectedprovinId)
+                $.each(distritdata, function(index, dis) {
+                    if (dis.province_id == selectedprovinId) {
+                        distrit.append($('<option></option>')
+                            .attr('value', dis.id)
+                            .text(dis.name_in_thai));
+                        foundMatchprovin = true;
+                        $('#distri').show();
+                    }
+                });
+
+            });
+
+            $('#distrits').on('change', function() {
+                var selecteddistritId = $(this).val();
+                var foundMatchdistrit = false;
+                subdistrits.select2();
+                subdistrits.empty();
+                subdistrits.append('<option value="" selected disabled>-- เลือกตำบล --</option>');
+                console.log(selecteddistritId)
+                $.each(subdistritsdata, function(index, subdis) {
+                    if (subdis.district_id == selecteddistritId) {
+                        subdistrits.append($('<option></option>')
+                            .attr('value', subdis.id)
+                            .text(subdis.name_in_thai));
+                        foundMatchdistrit = true;
+                        $('#subdis').show();
+                    }
+                });
+
+            });
+
+
             $('#extender_id').on('change', function() {
                 var selectedExtenderId = $(this).val();
                 var foundMatch = false;
@@ -33,6 +78,7 @@
                             sch3Div.hide();
                             $('#textsch3').hide();
                             $('#textsch4').hide();
+                            $('#school_div').show();
 
                         } else {
                             extender_id2.append($('<option></option>')
@@ -44,7 +90,7 @@
                             sch3Div.hide();
                             $('#textsch3').hide();
                             $('#textsch4').hide();
-
+                            $('#school_div').hide();
                         }
                     }
 
@@ -72,6 +118,8 @@
                             $('#textsch4').hide();
 
                             sch3Div.hide();
+                            $('#school_div').show();
+
                         } else {
                             extender_id3.append($('<option></option>')
                                 .attr('value', ext3.extender_id)
@@ -80,7 +128,7 @@
                             sch3Div.show();
                             $('#textsch3').hide();
                             $('#textsch4').hide();
-
+                            $('#school_div').hide();
                         }
                     }
 

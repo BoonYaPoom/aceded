@@ -13,7 +13,6 @@
                 "fadeIn": 250,
                 "positionClass": 'toast-top-right',
 
-
             }
             toastr.success("{{ Session::get('message') }}");
         </script>
@@ -218,11 +217,11 @@
         </div>
     </div>
 
-    {{-- @if (($data->user_role == 1 && $depart->department_id == 1) || $depart->department_id == 2 || $depart->department_id == 3 || $depart->department_id == 4 || ($data->user_role == 8 && $depart->department_id == 1) || $depart->department_id == 2 || $depart->department_id == 3 || $depart->department_id == 4)
+    @if (($data->user_role == 1 && $depart->department_id == 1) || $depart->department_id == 2 || $depart->department_id == 3 || $depart->department_id == 4 || ($data->user_role == 8 && $depart->department_id == 1) || $depart->department_id == 2 || $depart->department_id == 3 || $depart->department_id == 4)
         <header class="page-title-bar">
             <button type="button" class=" btn btn-success btn-floated btn-addums"
                 onclick="window.location='{{ route('addextender', ['department_id' => $depart->department_id]) }}'"
                 data-toggle="tooltip" title="เพิ่ม"><span class="fas fa-plus"></span></button>
         </header>
-    @endif --}}
+    @endif
 @endsection

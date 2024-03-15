@@ -71,21 +71,73 @@ class UserDepartExport implements
 
             if ($this->department_id > 5) {
                 if ($item->organization > 0) {
-                    $extender2 = DB::table('users_extender2')->where('extender_id', $item->organization)->value('name') ?? '-';
+                    $exten2 = DB::table('users_extender2')->where('extender_id', $item->organization)->value('name') ?? '-';
                     $aff = $item->user_affiliation;
                     $proviUser = DB::table('provinces')->where('id', $item->province_id)->value('name_in_thai') ?? '-';
                 } elseif ($item->organization == 0) {
-                    $extender2 = $item->user_affiliation;
+                    $exten2 = $item->user_affiliation;
                     $aff = '-';
                     $proviUser = DB::table('provinces')->where('id', $item->province_id)->value('name_in_thai') ?? '-';
                 }
             } else {
                 if ($item->province_id > 0) {
-                    $extender2 = DB::table('users_extender2')->where('extender_id', $item->organization)->value('name') ?? '-';
+                    $exten = DB::table('users_extender2')->where('extender_id', $item->organization)
+                        ->join('provinces', 'provinces.id', '=', 'users_extender2.school_province')
+                        ->join('districts', 'districts.id', '=', 'users_extender2.school_district')
+                        ->join('subdistricts', 'subdistricts.id', '=', 'users_extender2.school_subdistrict')
+                        ->select(
+                            'users_extender2.item_parent_id as item_parent_id',
+                            'users_extender2.name as exten_name',
+                            'provinces.name_in_thai as provinces',
+                            'districts.name_in_thai as districts',
+                            'subdistricts.name_in_thai as subdistricts',
+                        )
+                        ->first();
+                    if ($exten) {
+                        $extender2 = DB::table('users_extender2')->where('extender_id', $exten->item_parent_id)->value('name') ?? '-';
+                        $exten_name =  $exten->exten_name;
+                        $subdistricts = $exten->subdistricts;
+                        $districts = $exten->districts;
+                        $provinces = $exten->provinces;
+                    } else {
+                        $extender2 = '-';
+                        $exten_name = '-';
+                        $subdistricts = '-';
+                        $districts = '-';
+                        $provinces = '-';
+                    }
+
+                    $exten2 = $exten_name .  ' / ' .  $extender2  .  ' / ' . $subdistricts . ' / ' . $districts  . ' / ' . $provinces;
                     $aff = $item->user_affiliation;
                     $proviUser = DB::table('provinces')->where('id', $item->province_id)->value('name_in_thai') ?? '-';
                 } elseif ($item->province_id == 0) {
-                    $extender2 = DB::table('users_extender2')->where('extender_id', $item->organization)->value('name') ?? '-';
+                    $exten = DB::table('users_extender2')->where('extender_id', $item->organization)
+                        ->join('provinces', 'provinces.id', '=', 'users_extender2.school_province')
+                        ->join('districts', 'districts.id', '=', 'users_extender2.school_district')
+                        ->join('subdistricts', 'subdistricts.id', '=', 'users_extender2.school_subdistrict')
+                        ->select(
+                            'users_extender2.item_parent_id as item_parent_id',
+                            'users_extender2.name as exten_name',
+                            'provinces.name_in_thai as provinces',
+                            'districts.name_in_thai as districts',
+                            'subdistricts.name_in_thai as subdistricts',
+                        )
+                        ->first();
+                    if ($exten) {
+                        $extender2 = DB::table('users_extender2')->where('extender_id', $exten->item_parent_id)->value('name') ?? '-';
+                        $exten_name =  $exten->exten_name;
+                        $subdistricts = $exten->subdistricts;
+                        $districts = $exten->districts;
+                        $provinces = $exten->provinces;
+                    } else {
+                        $extender2 = '-';
+                        $exten_name = '-';
+                        $subdistricts = '-';
+                        $districts = '-';
+                        $provinces = '-';
+                    }
+
+                    $exten2 = $exten_name .  ' / ' .  $extender2  .  ' / ' . $subdistricts . ' / ' . $districts  . ' / ' . $provinces;
                     $aff = $item->user_affiliation;
                     $proviUser = DB::table('users_extender2')
                         ->join('provinces', 'users_extender2.school_province', '=', 'provinces.id')
@@ -106,7 +158,8 @@ class UserDepartExport implements
             $fullMobile = $part1 . '-' . $part2 . '-' . $part3;
             $createdate = Carbon::createFromFormat('Y-m-d H:i:s', $item->createdate);
 
-            $formattedDate = $createdate->format('d/m/') . ($createdate->year + 543);
+            $formattedDate = $createdate->format('Y/m/d');
+            //  . ($createdate->year + 543);
 
             $formattedTime = ltrim($createdate->format('g.i'), '0')  . ' ' . 'น.';
 
@@ -117,10 +170,11 @@ class UserDepartExport implements
                 'fullname' => $fullname,
                 'mobile' => $fullMobile,
                 'user_affiliation' =>  $aff,
-                'extender2' => $extender2,
+                'extender2' => $exten2,
                 'proviUser' => $proviUser,
-                'createdate' => $TimeDAta,
-                'status' => $item->userstatus,
+                'createdate' => $formattedDate,
+                'formattedTime' => $formattedTime,
+                'status' => $item->userstatus = 1 ? 'เปิดใช้งาน' : 'ปิดใช้งาน',
             ];
         });
 
@@ -140,6 +194,7 @@ class UserDepartExport implements
             'หน่วยงาน',
             'จังหวัด',
             'วันที่สร้าง',
+            'เวลา',
             'สถานะ',
             // เพิ่มหัวตารางอื่น ๆ ตามต้องการ
         ];

@@ -58,6 +58,7 @@ use App\Http\Controllers\Report\Table\T0124Controller;
 use App\Http\Controllers\Report\Table\T0125Controller;
 use App\Http\Controllers\ReportAllController;
 use App\Http\Controllers\ReportDepartment\ReportADPController;
+use App\Http\Controllers\ReportDepartment\ReportBDPController;
 use App\Http\Controllers\ReportDepartment\Table\T0101DPController;
 use App\Http\Controllers\ReportDepartment\Table\T0103DPController;
 use App\Http\Controllers\ReportDepartment\Table\T0116DPController;
@@ -536,12 +537,12 @@ Route::group(['middleware' => 'IsLoggedIn'], function () {
                     Route::get('{department_id}/T0118DP', [T0118DPController::class, 'T0118DP'])->name('T0118DP');
                     Route::get('{department_id}/T0119DP', [T0119DPController::class, 'T0119DP'])->name('T0119DP');
                     Route::get('{department_id}/T0120DP', [T0120DPController::class, 'T0120DP'])->name('T0120DP');
-                    Route::get('{department_id}/home/dashboard', [DepartReportController::class, 'ReportB'])->name('Departdashboard');
+  
                 });
                 Route::get('rplDP/{department_id}', [ReportADPController::class, 'Reportview'])->name('DepartReportviewDp');
                 Route::prefix('rplDP')->group(function () {
                     Route::get('{department_id}/A0100DP', [ReportADPController::class, 'ReportA'])->name('A0100DP');
-                    
+                    Route::get('{department_id}/B0100DP', [ReportBDPController::class, 'ReportB'])->name('B0100DP');
                 });
             });
 
