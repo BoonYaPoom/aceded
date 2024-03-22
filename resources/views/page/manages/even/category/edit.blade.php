@@ -3,32 +3,32 @@
     <div class="page-inner">
 
         <div class="page-section">
+            <form action="{{ route('updatecat', ['department_id' => $depart, 'web_id' => $webs]) }}" method="post"
+                enctype="multipart/form-data">
+                @csrf
+                @method('PUT')
 
-            <div class="card card-fluid">
-                <div class="card-header bg-muted">
-                    @if ($category->category_type == 2)
-                        <a href="{{ route('manage', ['department_id' => $depart]) }}"
-                            style="text-decoration: underline;">จัดการเว็บ</a> / <a
-                            href="{{ route('Webpage', ['department_id' => $depart]) }}"
-                            style="text-decoration: underline;">กิจกรรม</a> / <a
-                            href="{{ route('acteven', ['department_id' => $depart]) }}"
-                            style="text-decoration: underline;">{{ $category->category_th }}</a> /
-                    @elseif ($category->category_type == 1)
-                        <a href="{{ route('manage', ['department_id' => $depart]) }}"
-                            style="text-decoration: underline;">จัดการเว็บ</a> / <a
-                            href="{{ route('Webpage', ['department_id' => $depart]) }}"
-                            style="text-decoration: underline;">ข่าว</a> / <a
-                            href="{{ route('evenpage', ['department_id' => $depart]) }}"
-                            style="text-decoration: underline;"><i> {{ $category->category_th }}</i></a> /
-                    @endif
-                    <a href="{{ route('catpage', [$depart, $category]) }}" style="text-decoration: underline;"><i>แก้ไข
-                            {{ $webs->web_th }}</i> </a>
-                </div><!-- /.card-header -->
+                <div class="card card-fluid">
+                    <div class="card-header bg-muted">
+                        @if ($category->category_type == 2)
+                            <a href="{{ route('manage', ['department_id' => $depart]) }}"
+                                style="text-decoration: underline;">จัดการเว็บ</a> / <a
+                                href="{{ route('Webpage', ['department_id' => $depart]) }}"
+                                style="text-decoration: underline;">กิจกรรม</a> / <a
+                                href="{{ route('acteven', ['department_id' => $depart]) }}"
+                                style="text-decoration: underline;">{{ $category->category_th }}</a> /
+                        @elseif ($category->category_type == 1)
+                            <a href="{{ route('manage', ['department_id' => $depart]) }}"
+                                style="text-decoration: underline;">จัดการเว็บ</a> / <a
+                                href="{{ route('Webpage', ['department_id' => $depart]) }}"
+                                style="text-decoration: underline;">ข่าว</a> / <a
+                                href="{{ route('evenpage', ['department_id' => $depart]) }}"
+                                style="text-decoration: underline;"><i> {{ $category->category_th }}</i></a> /
+                        @endif
+                        <a href="{{ route('catpage', [$depart, $category]) }}" style="text-decoration: underline;"><i>แก้ไข
+                                {{ $webs->web_th }}</i> </a>
+                    </div><!-- /.card-header -->
 
-                <form action="{{ route('updatecat', ['department_id' => $depart, 'web_id' => $webs]) }}" method="post"
-                    enctype="multipart/form-data">
-                    @csrf
-                    @method('PUT')
 
                     <div class="card-body">
 
@@ -61,7 +61,7 @@
                             <label for="detail_th">รายละเอียด (ไทย)</label>
 
                             <textarea class="editor" data-placeholder="รายละเอียด (ไทย)" data-height="200" name="detail_th" id="detail_th">
-{{ $webs->detail_th }}
+                                    {{ $webs->detail_th }}
                         </textarea>
                         </div>
 
@@ -69,7 +69,7 @@
                             <label for="detail_en">รายละเอียด (อังกฤษ)</label>
 
                             <textarea class="editor" data-placeholder="รายละเอียด (อังกฤษ)" data-height="200" name="detail_en" id="detail_en">
-  {{ $webs->detail_en }}
+                                    {{ $webs->detail_en }}
                         </textarea>
                         </div>
 
@@ -155,18 +155,14 @@
                                     class="switcher-indicator"></span>
                                 <span class="switcher-label-on">ON</span> <span
                                     class="switcher-label-off text-red">OFF</span></label>
-                        </div><!-- /.form-group -->
-                    </div><!-- /.card-body -->
-
-            </div><!-- /.card -->
-
-        </div><!-- /.page-section -->
-    </div><!-- /.page-inner -->
-    <!-- .form-actions -->
-    <div class="form-actions">
-        <button class="btn btn-lg btn-primary ml-auto" type="submit"><i class="far fa-save"></i>
-            บันทึก</button>
-    </div><!-- /.form-actions -->
-    </form>
-    </div><!-- /.card -->
+                        </div>
+                    </div>
+                </div>
+                <div class="form-actions">
+                    <button class="btn btn-lg btn-primary ml-auto" type="submit"><i class="far fa-save"></i>
+                        บันทึก</button>
+                </div>
+            </form>
+        </div>
+    </div>
 @endsection

@@ -7,14 +7,19 @@
             <!-- form column -->
             <div class="col-md-1"><span class="mt-1 ">ปี</span></div>
             <div class="col-md-3">
-                <div class=""><select id="selectyear" name="selectyear" class="form-control" data-toggle="select2"
-                        data-placeholder="ปี" data-allow-clear="false">
-                        <option value="2566"> 2566 </option>
-                        <option value="2567" selected> 2567 </option>
-                        <option value="2568"> 2568 </option>
+                @php
+                use Carbon\Carbon;
+            @endphp
+            <div class=""><select id="selectyear" name="selectyear" class="form-control" data-toggle="select2"
+                    data-placeholder="ปี" data-allow-clear="false">
+                    @for ($i = Carbon::now()->year + 543 - 2; $i <= Carbon::now()->year + 543 + 2; $i++)
+                        <option value="{{ $i }}" {{ $i == Carbon::now()->year + 543 ? 'selected' : '' }}>
+                            {{ $i }}
+                        </option>
+                    @endfor
 
-                    </select>
-                </div>
+                </select>
+            </div>
             </div>
 
             <div class="col-md-1 text-right"><button type="button" class="btn btn-light btn-icon d-xl-none"

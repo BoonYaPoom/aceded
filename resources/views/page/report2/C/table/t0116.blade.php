@@ -142,8 +142,8 @@
                     row.append($('<td >').text(item.firstname + ' ' + item.lastname));
                     row.append($('<td >').text(item.exten_name));
                     row.append($('<td >').text(item.course_th));
-                    row.append($('<td class="text-center">').text(item.congratulation == 0 ? 'N' : (item
-                        .congratulation == 1 ? 'N/A' : '')));
+                    row.append($('<td class="text-center">').text(item.congratulation == 0 ? 'N/A' : (item
+                        .congratulation == 1 ? 'P' : '')));
                     // เพิ่มแถวลงใน tbody
                     $('#learend').append(row);
                 });

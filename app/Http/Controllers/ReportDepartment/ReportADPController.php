@@ -131,6 +131,20 @@ class ReportADPController extends Controller
                     ->groupBy(DB::raw('LTRIM(TO_CHAR(course_learner.registerdate, \'MM\'), \'0\')'))
                     ->groupBy(DB::raw('EXTRACT(YEAR FROM course_learner.registerdate)'))
                     ->get();
+                $monthsYear = DB::table('users')
+                    ->join('users_department', 'users.user_id', '=', 'users_department.user_id')
+                    ->where('users_department.department_id', '=', $department_id)
+                    ->where('users.user_role', '=', 4)
+                    ->select(
+                        DB::raw('EXTRACT(YEAR FROM users.createdate)  + 543  as year'),
+                        DB::raw('TO_CHAR(users.createdate, \'MM\') as month'),
+                        DB::raw('COUNT(DISTINCT users.user_id) as user_count')
+                    )
+                    ->groupBy(
+                        DB::raw('TO_CHAR(users.createdate, \'MM\')')
+                    )
+                    ->groupBy(DB::raw('EXTRACT(YEAR FROM users.createdate)'))
+                    ->get();
             } elseif ($data->user_role == 7) {
                 $users_extender2 = DB::table('users_extender2')
                     ->where('school_province', $provins)
@@ -204,10 +218,10 @@ class ReportADPController extends Controller
                     ->join('course_learner', 'users.user_id', '=', 'course_learner.user_id')
                     ->join('users_department', 'users.user_id', '=', 'users_department.user_id')
                     ->where('users_department.department_id', '=', $department_id)
-                    ->where('course_learner.learner_status', '=', 1)
-                    ->where('course_learner.congratulation', '=', 1)
                     ->whereIn('users.organization', $users_extender2)
                     ->where('users.user_role', 4)
+                    ->where('course_learner.learner_status', '=', 1)
+                    ->where('course_learner.congratulation', '=', 1)
                     ->select(
                         DB::raw('EXTRACT(YEAR FROM course_learner.registerdate)  + 543  as year'),
                         DB::raw('LTRIM(TO_CHAR(course_learner.registerdate, \'MM\'), \'0\') as month'), // Remove leading zeros
@@ -215,6 +229,22 @@ class ReportADPController extends Controller
                     )
                     ->groupBy(DB::raw('LTRIM(TO_CHAR(course_learner.registerdate, \'MM\'), \'0\')'))
                     ->groupBy(DB::raw('EXTRACT(YEAR FROM course_learner.registerdate)'))
+                    ->get();
+
+                $monthsYear = DB::table('users')
+                    ->join('users_department', 'users.user_id', '=', 'users_department.user_id')
+                    ->where('users_department.department_id', '=', $department_id)
+                    ->whereIn('users.organization', $users_extender2)
+                    ->where('users.user_role', '=', 4)
+                    ->select(
+                        DB::raw('EXTRACT(YEAR FROM users.createdate)  + 543  as year'),
+                        DB::raw('TO_CHAR(users.createdate, \'MM\') as month'),
+                        DB::raw('COUNT(DISTINCT users.user_id) as user_count')
+                    )
+                    ->groupBy(
+                        DB::raw('TO_CHAR(users.createdate, \'MM\')')
+                    )
+                    ->groupBy(DB::raw('EXTRACT(YEAR FROM users.createdate)'))
                     ->get();
             } elseif ($data->user_role == 6) {
                 $count1->where('users.organization', '=', $orgs);
@@ -280,9 +310,10 @@ class ReportADPController extends Controller
                     ->join('course_learner', 'users.user_id', '=', 'course_learner.user_id')
                     ->join('users_department', 'users.user_id', '=', 'users_department.user_id')
                     ->where('users_department.department_id', '=', $department_id)
+                    ->where('users.organization', '=', $orgs)
                     ->where('course_learner.learner_status', '=', 1)
                     ->where('course_learner.congratulation', '=', 1)
-                    ->where('users.organization', '=', $orgs)
+             
                     ->where('users.user_role', 4)
                     ->select(
                         DB::raw('EXTRACT(YEAR FROM course_learner.registerdate)  + 543  as year'),
@@ -291,6 +322,21 @@ class ReportADPController extends Controller
                     )
                     ->groupBy(DB::raw('LTRIM(TO_CHAR(course_learner.registerdate, \'MM\'), \'0\')'))
                     ->groupBy(DB::raw('EXTRACT(YEAR FROM course_learner.registerdate)'))
+                    ->get();
+                $monthsYear = DB::table('users')
+                    ->join('users_department', 'users.user_id', '=', 'users_department.user_id')
+                    ->where('users_department.department_id', '=', $department_id)
+                    ->where('users.organization', '=', $orgs)
+                    ->where('users.user_role', '=', 4)
+                    ->select(
+                        DB::raw('EXTRACT(YEAR FROM users.createdate)  + 543  as year'),
+                        DB::raw('TO_CHAR(users.createdate, \'MM\') as month'),
+                        DB::raw('COUNT(DISTINCT users.user_id) as user_count')
+                    )
+                    ->groupBy(
+                        DB::raw('TO_CHAR(users.createdate, \'MM\')')
+                    )
+                    ->groupBy(DB::raw('EXTRACT(YEAR FROM users.createdate)'))
                     ->get();
             } elseif ($data->user_role == 9) {
                 $zones = DB::table('user_admin_zone')->where('user_id', $data->user_id)->pluck('province_id')->toArray();
@@ -370,6 +416,21 @@ class ReportADPController extends Controller
                     ->groupBy(DB::raw('LTRIM(TO_CHAR(course_learner.registerdate, \'MM\'), \'0\')'))
                     ->groupBy(DB::raw('EXTRACT(YEAR FROM course_learner.registerdate)'))
                     ->get();
+                $monthsYear = DB::table('users')
+                    ->join('users_department', 'users.user_id', '=', 'users_department.user_id')
+                    ->where('users_department.department_id', '=', $department_id)
+                    ->whereIn('users.province_id',  $zones)
+                    ->where('users.user_role', '=', 4)
+                    ->select(
+                        DB::raw('EXTRACT(YEAR FROM users.createdate)  + 543  as year'),
+                        DB::raw('TO_CHAR(users.createdate, \'MM\') as month'),
+                        DB::raw('COUNT(DISTINCT users.user_id) as user_count')
+                    )
+                    ->groupBy(
+                        DB::raw('TO_CHAR(users.createdate, \'MM\')')
+                    )
+                    ->groupBy(DB::raw('EXTRACT(YEAR FROM users.createdate)'))
+                    ->get();
             }
 
             $dateAll = ['ม.ค.', 'ก.พ.', 'มี.ค.', 'เม.ย.', 'พ.ค.', 'มิ.ย.', 'ก.ค.', 'ส.ค.', 'ก.ย.', 'ต.ค.', 'พ.ย.', 'ธ.ค.'];
@@ -380,8 +441,25 @@ class ReportADPController extends Controller
                     'month' => $month,
                 ];
             }, $dateAll, array_keys($dateAll));
+
+
+
+            $dataMonthWithId = [
+                ['id' => 1, 'month' => 'มกราคม', 'sort' => 4],
+                ['id' => 2, 'month' => 'กุมภาพันธ์', 'sort' => 5],
+                ['id' => 3, 'month' => 'มีนาคม', 'sort' => 6],
+                ['id' => 4, 'month' => 'เมษายน', 'sort' => 7],
+                ['id' => 5, 'month' => 'พฤษภาคม', 'sort' => 8],
+                ['id' => 6, 'month' => 'มิถุนายน', 'sort' => 9],
+                ['id' => 7, 'month' => 'กรกฎาคม', 'sort' => 10],
+                ['id' => 8, 'month' => 'สิงหาคม', 'sort' => 11],
+                ['id' => 9, 'month' => 'กันยายน', 'sort' => 12],
+                ['id' => 10, 'month' => 'ตุลาคม', 'sort' => 1],
+                ['id' => 11, 'month' => 'พฤศจิกายน', 'sort' => 2],
+                ['id' => 12, 'month' => 'ธันวาคม', 'sort' => 3],
+            ];
         }
 
-        return view('layouts.department.item.data.report2.reporta', compact('depart', 'dateAll', 'dateAllWithId', 'monthscon', 'monthsconno', 'count1', 'count3', 'count4', 'learn', 'con', 'conno'));
+        return view('layouts.department.item.data.report2.reporta', compact('monthsYear', 'dataMonthWithId', 'depart', 'dateAll', 'dateAllWithId', 'monthscon', 'monthsconno', 'count1', 'count3', 'count4', 'learn', 'con', 'conno'));
     }
 }

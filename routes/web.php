@@ -520,11 +520,12 @@ Route::group(['middleware' => 'IsLoggedIn'], function () {
                     Route::post('{department_id}/{extender_id}/saveExtender_umsform', [ExtenderController::class, 'saveExtender'])->name('saveExtender_umsform');
 
                     Route::get('{department_id}/addextender', [ExtenderController::class, 'addextender'])->name('addextender');
-
+      
                     Route::post('{department_id}/addextendersubmit', [ExtenderController::class, 'addextendersubmit'])->name('addextendersubmit');
 
                     Route::get('{department_id}/umsSchoolDP2', [ExtenderController::class, 'testumsschool2'])->name('testumsschool2');
                     Route::get('{department_id}/getUserCount', [ExtenderController::class, 'getUserCount'])->name('getUserCount');
+                    Route::get('{department_id}/{extender_id}/deleteAllUser', [ExtenderController::class, 'deleteAllUser'])->name('deleteAllUser');
                 });
 
                 Route::get('{department_id}/TableCDP', [T0101DPController::class, 'ReportC'])->name('TableCDP');

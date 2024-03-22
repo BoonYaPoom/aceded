@@ -68,9 +68,9 @@ class t0116All implements
             $congratulation = $item->congratulation;
             $department_name = $item->department_name;
             if ($congratulation == 0) {
-                $cons = 'N';
-            } elseif ($congratulation == 1) {
                 $cons = 'N/A';
+            } elseif ($congratulation == 1) {
+                $cons = 'P';
             }
 
             return [

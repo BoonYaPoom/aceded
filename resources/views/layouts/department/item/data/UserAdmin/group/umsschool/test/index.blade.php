@@ -132,7 +132,6 @@
                                                     var user_dataLogin = {!! json_encode($data->user_role) !!};
                                                     var extender_id = data.EXTENDER_ID;
                                                     var depart = {!! json_encode($depart->department_id) !!};
-
                                                     var edituser =
                                                         "{{ route('umsschoolDP_add', ['department_id' => ':depart', 'extender_id' => ':extender_id']) }}";
                                                     edituser = edituser.replace(':depart', depart).replace(':extender_id',

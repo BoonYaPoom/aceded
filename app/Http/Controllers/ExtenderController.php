@@ -86,7 +86,7 @@ class ExtenderController extends Controller
                 'school_lv3' => 'required_without_all:school_lv2,school_lv4',
                 'school_lv4' => 'required_without_all:school_lv2,school_lv3',
             ],
-        
+
             [
                 'school_lv2.required_without_all' => 'กรุณากรอกชื่อสถานศึกษา',
                 'school_lv3.required_without_all' => '',
@@ -355,4 +355,29 @@ class ExtenderController extends Controller
 
         return view('layouts.department.item.data.UserAdmin.group.umsschool.test2.index', compact('depart'));
     }
+
+
+    function deleteAllUser(Request $request, $department_id,  $extender_id)
+    {
+        if ($request->has('user_data') && is_array($request->user_data)) {
+            $user_data = $request->user_data;
+            foreach ($user_data as $data) {
+                $users = DB::table('users')->where('user_id', $data)->first();
+                
+                if ($users) {
+                    DB::table('users')->where('user_id', $data)->delete();
+                    $user_department = DB::table('users_department')
+                    ->where('user_id', $data)
+                        ->first();
+                    if ($user_department) {
+                        DB::table('users_department')
+                            ->where('user_id', $data)
+                            ->delete();
+                    }
+                }
+            }
+        }
+        return redirect()->back()->with('message', 'การลบข้อมูลผู้ใช้เสร็จสมบูรณ์');
+    }
+
 }

@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\API\ApiTofontController;
 use App\Http\Controllers\ApiController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -20,5 +21,8 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 
-    Route::get('/departmentapi', [ApiController::class, 'apiDepartment']);
+Route::get('/departmentapi', [ApiController::class, 'apiDepartment']);
 Route::get('/apiUsers', [ApiController::class, 'apiUsers']);
+Route::post('/web/provinces', [ApiTofontController::class, 'provinces']);
+Route::post('/web/districts', [ApiTofontController::class, 'districts']);
+Route::post('/web/subdistricts', [ApiTofontController::class, 'subdistricts']);

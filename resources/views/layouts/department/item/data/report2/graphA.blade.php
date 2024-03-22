@@ -18,7 +18,9 @@
             var dateAllWithId = {!! json_encode($dateAllWithId) !!};
             var monthsconno = {!! json_encode($monthsconno) !!};
             var monthscon = {!! json_encode($monthscon) !!};
+            var monthsYear = {!! json_encode($monthsYear) !!};
 
+            var dataMonthWithId = {!! json_encode($dataMonthWithId) !!};
             $(document).ready(function() {
                 $('#selectyear').on('change', function() {
                     var selectedYear = $('#selectyear').val();
@@ -27,6 +29,31 @@
                     var selectedYearDataConno = chartDataConno.find(data => data.year == selectedYear);
 
 
+
+                      var yearAll
+                    yearAll = selectedYear
+                    const xAxisCategories = dataMonthWithId
+                        .sort((a, b) => a.sort - b.sort)
+                        .map(monthObj => {
+                            let adjustedYear = yearAll;
+                            if (monthObj.sort >= 1 && monthObj.sort <= 3) {
+                                adjustedYear -= 1; // ปีลบ 1 เมื่อเป็นเงื่อนไขที่กำหนด
+                            }
+                            return {
+                                id: monthObj.id,
+                                month: monthObj.month,
+                                year: parseInt(adjustedYear)
+                            };
+                        });
+
+                    const StudentsRegisterget = (monthId, monthyear) => {
+                        var matchingmonthsYear;
+                        var totalUsermonthsYear = 0;
+
+                        matchingmonthsYear = monthscon.find(data => data.month == monthId && data
+                            .year == monthyear );
+                        return matchingmonthsYear ? parseInt(matchingmonthsYear.user_count) : 0;
+                    };
                     if (selectedYear) {
 
                         Highcharts.chart("chartcongratulation", {
@@ -187,6 +214,51 @@
                             name: 'ผู้สำเร็จการเรียน',
                             data: dateAllWithId.map(monthObj => getNumberOfCompletedStudents(
                                 monthObj.id)),
+                        }],
+                    });
+
+                    Highcharts.chart("chartyearregister2", {
+                        chart: {
+                            type: 'line',
+                            style: {
+                                fontFamily: 'prompt'
+                            }
+                        },
+                           title: {
+                            text: 'จำนวนการลงทะเบียนผู้ใช้งาน (ปีงบประมาณ)'
+                        },
+                        subtitle: {
+                            text: 'จำนวนผู้ใช้งาน (ปีงบประมาณ)'
+                        },
+                        yAxis: {
+                            title: {
+                                text: 'จำนวน'
+                            }
+                        },
+                        xAxis: {
+                            categories: xAxisCategories.map(monthObj => monthObj.month + ' ' + monthObj
+                                .year),
+                        },
+                        legend: {
+                            layout: 'vertical',
+                            align: 'right',
+                            verticalAlign: 'middle'
+                        },
+                        plotOptions: {
+                            line: {
+                                allowPointSelect: false,
+                                cursor: 'pointer',
+                                dataLabels: {
+                                    enabled: true
+                                }
+                            }
+                        },
+
+                        series: [{
+                            name: 'ปีงบฯ ' + selectedYear,
+                            data: xAxisCategories.map(monthObj => StudentsRegisterget(monthObj
+                                .id,
+                                monthObj.year)),
                         }],
                     });
                 });

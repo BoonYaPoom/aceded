@@ -68,7 +68,7 @@ class ExcelController extends Controller
     public function exportT0101($department_id, $provin_name, $year)
     {
 
-        return Excel::download(new t0101($department_id, $provin_name, $year), 'T0101 ของจังหวัด' . $provin_name.  ' ปี' . $year . ' .xlsx');
+        return Excel::download(new t0101($department_id, $provin_name, $year), 'T0101 ของจังหวัด' . $provin_name .  ' ปี' . $year . ' .xlsx');
     }
     public function exportT0116($department_id, $provin_name, $year)
     {
@@ -140,7 +140,7 @@ class ExcelController extends Controller
     {
         return Excel::download(new AllT0000(), 'AllT0000.xlsx');
     }
-    
+
     public function ReportExp()
     {
         return Excel::download(new ReportExport(), 'Administrator Management Report.xlsx');
@@ -726,10 +726,15 @@ class ExcelController extends Controller
 
                 $existingUsernames = [];
                 $duplicateUsernames = [];
-  
+
                 foreach ($Fields as $field) {
+
                     if (in_array($field['username'], $existingUsernames)) {
                         $duplicateUsernames[] = 'ชื่อผู้ใช้ที่ซ้ำในไฟล์ xlsx: ' .  $field['username'];
+                    } elseif (strlen($field['username']) < 8) {
+                        $duplicateUsernames[] = 'ชื่อไม่ต่ำกว่า 8 ตัวอักษรในไฟล์ xlsx: ' .  $field['username'];
+                    } elseif (preg_match('/[ก-๙]/u', $field['username'])) {
+                        $duplicateUsernames[] = 'ชื่อต้องไม่เป็นภาษาไทยในไฟล์ xlsx: ' .  $field['username'];
                     } else {
                         $existingUsernames[] = $field['username'];
                     }
@@ -739,13 +744,11 @@ class ExcelController extends Controller
                     } else {
                         $existingUsernames[] = $field['citizen'];
                     }
-
                     if (empty($field['citizen'])) {
                         $duplicateUsernames[] = 'รหัสประจำตัวประชาชนไม่สามารถเป็นค่าว่างได้';
                     } else {
                         $existingUsernames[] = $field['citizen'];
                     }
-
                     if (DB::table('users')
                         ->where('username', $field['username'])->exists()
                     ) {
@@ -753,7 +756,6 @@ class ExcelController extends Controller
                     } else {
                         $existingUsernames[] = $field['username'];
                     }
-
                     if (DB::table('users')
                         ->where('citizen_id', $field['citizen'])->exists()
                     ) {

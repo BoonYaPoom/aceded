@@ -52,6 +52,10 @@
                                             onclick="$('#clientUploadModal').modal('toggle');">
                                             <i class="fas fa-user-plus"></i> นำเข้าผู้ใช้งาน
                                         </button>
+                                        <button type="button" class="btn btn-danger btn-md"
+                                            onclick="$('#clientDeleteModal').modal('toggle');">
+                                            <i class="fas fa-user-plus"></i> ลบผู้ใช้งาน
+                                        </button>
                                     </div>
                                     <div>
                                         <label>ค้นหา
@@ -153,18 +157,121 @@
                         <button type="button" class="btn btn-light" data-dismiss="modal">ยกเลิก</button>
                     </div><!-- /.modal-footer -->
                 </div><!-- /.modal-content -->
-            </div><!-- /.modal-dialog -->
+            </div>
         </form>
     </div>
+
+    <!--  Model  -->
+    <div class="modal fade show has-shown" id="clientDeleteModal" tabindex="-1" user_role="dialog"
+        aria-labelledby="clientDeleteModalLabel" aria-modal="true" style="padding-right: 17px;">
+        <div class="modal-dialog modal-xl" user_role="document">
+            <div class="modal-content">
+                <div class="modal-header " style="background-color: {{ $depart->color }};">
+                    <h6 id="clientDeleteModalLabel" class="modal-title">
+                        <span class="sr-only">"Warning</span> <span><i class="fas fa-question-circle fa-lg "></i>
+                            ลบผู้ใช้งาน</span>
+                    </h6>
+                </div>
+                <form action="{{ route('deleteAllUser', ['department_id' => $depart->department_id, 'extender_id' => $extender->extender_id]) }}"  enctype="multipart/form-data">
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <div class="form-label-group">
+                                <div class="table-responsive">
+                                    <table id="exam0" class="table w3-hoverable showexam "
+                                        style="width:100% display:none;">
+                                        <thead>
+                                            <tr class="bg-infohead">
+                                                <th class="align-middle" style="width:10%">
+                                                    เลือก
+                                                </th>
+                                                <th class="align-middle" style="width:45%">รหัสผู้ใช้งาน</th>
+                                                <th class="align-middle" style="width:10%">ชื่อ สกุล</th>
+                                                <th class="align-middle" style="width:10%">ระดับ</th>
+                                                <th class="align-middle" style="width:35%">สถานศึกษา</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="dataexam0" class="dataexam">
+                                            @foreach ($usersnotnull->sortBy('user_id') as $unotnull)
+                                                <tr>
+                                                    <td>
+                                                        <div class="form-group">
+                                                            <div class="custom-control custom-checkbox">
+                                                                <input type="checkbox" class="custom-control-input"
+                                                                    name="user_data[]"
+                                                                    id="user_data{{ $unotnull->user_id }}"
+                                                                    value="{{ $unotnull->user_id }}">
+                                                                <label class="custom-control-label"
+                                                                    for="user_data{{ $unotnull->user_id }}"></label>
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                    <td>{{ $unotnull->username }}</td>
+                                                    <td>{{ $unotnull->firstname }} {{ $unotnull->lastname }}</td>
+                                                    <td>{{ $unotnull->user_affiliation }}</td>
+                                                    <td>{{ $extender->name }}</td>
+                                                </tr>
+                                            @endforeach
+                                        </tbody>
+                                    </table>
+
+                                </div>
+                            </div>
+                        </div><!-- /.form-group -->
+                    </div><!-- /.modal-body -->
+                    <!-- .modal-footer -->
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-danger"><i class="fas fa-user-plus"></i>
+                            ลบผู้ใช้งาน</button>
+                        <button type="button" class="btn btn-light" data-dismiss="modal">ยกเลิก</button>
+                    </div><!-- /.modal-footer -->
+                </form>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div>
     <div>
+        <script>
+            $(document).ready(function() {
+                var table01 = $('#exam0').DataTable({
+                    lengthChange: false,
+                    responsive: true,
+                    info: false,
+                    pageLength: 10,
+                    language: {
+                        info: "ลำดับที่ _START_ ถึง _END_ จากทั้งหมด _TOTAL_ รายการ",
+                        infoEmpty: "ไม่พบรายการ",
+                        infoFiltered: "(ค้นหาจากทั้งหมด _MAX_ รายการ)",
+                        paginate: {
+                            first: "หน้าแรก",
+                            last: "หน้าสุดท้าย",
+                            previous: "ก่อนหน้า",
+                            next: "ถัดไป"
+                        }
+                    },
+                });
+                // $("#checkall").click(function() {
+                //     var isChecked = $(this).prop('checked');
+                //     // ทำการตรวจสอบทุกรายการที่แสดงใน DataTables และกำหนดสถานะ checked
+                //     table01.rows().nodes().to$().find('.custom-control-input').prop('checked', isChecked);
+                // });
+                // $('#userselectdata').click(function(e) {
+                //     e.preventDefault();
+                //     var all_qusr = [];
+                //     table.rows().nodes().to$().find("input:checkbox[name='user_data[]']:checked").each(
+                //         function() {
+                //             all_qusr.push($(this).val());
+                //         });
+                //     var all_less = [];
+                //     console.log(all_qusr);
+                // });
+            });
+        </script>
+
         <script>
             $(document).ready(function() {
                 $('#uploadForm').on('submit', function(e) {
                     e.preventDefault();
                     $('#loadingSpinner').show();
-
                     var formData = new FormData(this);
-
                     $.ajax({
                         url: '{{ route('UsersDepartSchoolImport', ['department_id' => $depart->department_id, 'extender_id' => $extender->extender_id]) }}',
                         type: 'POST',
@@ -182,7 +289,8 @@
                             if (response.message) {
                                 Swal.fire({
                                     title: 'User Successful',
-                                    text: 'ข้อมูล User ถูกบันทึกเรียบร้อย จำนวน ' + response.inserted_count + ' รายการ',
+                                    text: 'ข้อมูล User ถูกบันทึกเรียบร้อย จำนวน ' + response
+                                        .inserted_count + ' รายการ',
                                     icon: 'success',
                                     confirmButtonText: 'OK'
                                 }).then(function(result) {
