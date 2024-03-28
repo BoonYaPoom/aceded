@@ -28,12 +28,14 @@ class ReportAController extends Controller
         $user_role1 = DB::table('users')->where('user_role', 1)->first();
         $user_role3 = DB::table('users')->where('user_role', 3)->first();
         $user_role4 = DB::table('users')->where('user_role', 4)->first();
+
         $learn = DB::table('users')
             ->join('course_learner', 'users.user_id', '=', 'course_learner.user_id')
             ->join('provinces', 'users.province_id', '=', 'provinces.id')
             ->where('course_learner.learner_status', '=', 1)
             ->where('users.user_role', 4)
             ->select(
+                'provinces.id as province_id',
                 'provinces.name_in_thai as province_name',
                 DB::raw('EXTRACT(YEAR FROM course_learner.registerdate)  + 543  as year'),
                 DB::raw('COUNT(DISTINCT course_learner.user_id) as user_count')
@@ -52,6 +54,7 @@ class ReportAController extends Controller
             ->where('course_learner.congratulation', '=', 1)
             ->where('users.user_role', 4)
             ->select(
+                'provinces.id as province_id',
                 'provinces.name_in_thai as province_name',
                 DB::raw('EXTRACT(YEAR FROM course_learner.registerdate)  + 543  as year'),
                 DB::raw('COUNT(DISTINCT course_learner.user_id) as user_count')
@@ -85,6 +88,7 @@ class ReportAController extends Controller
             ->where('course_learner.learner_status', '=', 1)
             ->where('course_learner.congratulation', '=', 0)
             ->select(
+                'provinces.id as province_id',
                 'provinces.name_in_thai as province_name',
                 DB::raw('EXTRACT(YEAR FROM course_learner.registerdate)  + 543  as year'),
                 DB::raw('TO_CHAR(course_learner.registerdate, \'MM\') as month'),
@@ -103,6 +107,7 @@ class ReportAController extends Controller
             ->where('course_learner.learner_status', '=', 1)
             ->where('course_learner.congratulation', '=', 1)
             ->select(
+                'provinces.id as province_id',
                 'provinces.name_in_thai as province_name',
                 DB::raw('EXTRACT(YEAR FROM course_learner.registerdate)  + 543  as year'),
                 DB::raw('TO_CHAR(course_learner.registerdate, \'MM\') as month'),
@@ -115,38 +120,56 @@ class ReportAController extends Controller
             )
             ->groupBy(DB::raw('EXTRACT(YEAR FROM course_learner.registerdate)'))
             ->get();
-
-        $monthsYear = DB::table('users')
+        $registerdate = DB::table('users')
             ->join('provinces', 'users.province_id', '=', 'provinces.id')
             ->where('users.user_role', '=', 4)
+
             ->select(
+                'provinces.id as province_id',
                 'provinces.name_in_thai as province_name',
                 DB::raw('EXTRACT(YEAR FROM users.createdate)  + 543  as year'),
-                DB::raw('TO_CHAR(users.createdate, \'MM\') as month'),
-                DB::raw('COUNT(DISTINCT users.user_id) as user_count')
+                DB::raw('COUNT(users.user_id) as user_count')
             )
             ->groupBy(
                 'provinces.id',
                 'provinces.name_in_thai',
-                DB::raw('TO_CHAR(users.createdate, \'MM\')')
+                DB::raw('EXTRACT(YEAR FROM users.createdate)')
             )
-            ->groupBy(DB::raw('EXTRACT(YEAR FROM users.createdate)'))
             ->get();
 
-        // dd($monthsYear);
+        $monthsYear = DB::table('users')
+            ->join('provinces', 'users.province_id', '=', 'provinces.id')
+            ->where('users.user_role', '=', 4)
+            ->where('provinces.id', '=', 2)
+            ->select(
+                'provinces.id as province_id',
+                'provinces.name_in_thai as province_name',
+                DB::raw('EXTRACT(YEAR FROM users.createdate)  + 543  as year'),
+                DB::raw('TO_CHAR(users.createdate, \'MM\') as month'),
+                DB::raw('COUNT(users.user_id) as user_count')
+            )
+            ->groupBy(
+                'provinces.id',
+                'provinces.name_in_thai',
+                DB::raw('TO_CHAR(users.createdate, \'MM\')'),
+                DB::raw('EXTRACT(YEAR FROM users.createdate)')
+            )
+            ->get();
+                // dd($monthsYear);
+
         $dataMonthWithId = [
             ['id' => 1, 'month' => 'มกราคม', 'sort' => 4],
             ['id' => 2, 'month' => 'กุมภาพันธ์', 'sort' => 5],
             ['id' => 3, 'month' => 'มีนาคม', 'sort' => 6],
-            ['id' => 4, 'month' => 'เมษายน', 'sort' =>7],
-            ['id' => 5, 'month' => 'พฤษภาคม', 'sort' =>8],
-            ['id' => 6, 'month' => 'มิถุนายน', 'sort' =>9],
-            ['id' => 7, 'month' => 'กรกฎาคม', 'sort' =>10],
-            ['id' => 8, 'month' => 'สิงหาคม', 'sort' =>11],
-            ['id' => 9, 'month' => 'กันยายน', 'sort' =>12],
-            ['id' => 10, 'month' => 'ตุลาคม', 'sort' =>1],
-            ['id' => 11, 'month' => 'พฤศจิกายน', 'sort' =>2],
-            ['id' => 12, 'month' => 'ธันวาคม', 'sort' =>3],
+            ['id' => 4, 'month' => 'เมษายน', 'sort' => 7],
+            ['id' => 5, 'month' => 'พฤษภาคม', 'sort' => 8],
+            ['id' => 6, 'month' => 'มิถุนายน', 'sort' => 9],
+            ['id' => 7, 'month' => 'กรกฎาคม', 'sort' => 10],
+            ['id' => 8, 'month' => 'สิงหาคม', 'sort' => 11],
+            ['id' => 9, 'month' => 'กันยายน', 'sort' => 12],
+            ['id' => 10, 'month' => 'ตุลาคม', 'sort' => 1],
+            ['id' => 11, 'month' => 'พฤศจิกายน', 'sort' => 2],
+            ['id' => 12, 'month' => 'ธันวาคม', 'sort' => 3],
         ];
 
 
@@ -164,7 +187,7 @@ class ReportAController extends Controller
 
         return view(
             'page.report2.A.reporta',
-            compact('monthsYear','dateAll',  'dataMonthWithId', 'provin', 'dateAllWithId', 'monthscon', 'monthsconno', 'count1', 'count3', 'count4', 'learn', 'con', 'conno')
+            compact('registerdate', 'monthsYear', 'dateAll',  'dataMonthWithId', 'provin', 'dateAllWithId', 'monthscon', 'monthsconno', 'count1', 'count3', 'count4', 'learn', 'con', 'conno')
         );
     }
 }

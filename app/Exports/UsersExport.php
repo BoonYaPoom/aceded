@@ -30,28 +30,27 @@ class UsersExport implements
     public function collection()
     {
         $users = DB::table('users')
-            ->whereNotIn('users.user_role', [1, 6, 7, 8, 9])->select(
-                'user_id',
-                'username',
-                'firstname',
-                'lastname',
-                'createdate',
-                'province_id',
-                'mobile',
-                'organization',
-                'user_affiliation',
-                'userstatus'
+            ->whereNotIn('user_role', [1, 6, 7, 8, 9])
+            ->select(
+                'users.username',
+                'users.firstname',
+                'users.lastname',
+                'users.createdate',
+                'users.province_id',
+                'users.mobile',
+                'users.organization',
+                'users.user_affiliation',
+                'users.userstatus'
             )->groupBy(
-                'user_id',
-                'username',
-                'firstname',
-                'lastname',
-                'createdate',
-                'province_id',
-                'mobile',
-                'organization',
-                'user_affiliation',
-                'userstatus'
+                'users.username',
+                'users.firstname',
+                'users.lastname',
+                'users.createdate',
+                'users.province_id',
+                'users.mobile',
+                'users.organization',
+                'users.user_affiliation',
+                'users.userstatus'
             )
             ->get();
         $i = 1;

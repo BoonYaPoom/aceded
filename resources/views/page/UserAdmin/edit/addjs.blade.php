@@ -21,10 +21,10 @@
           var extender5 = {!! $extender5 !!};
 
 
-          var extender_1 = {!! $extender_1 !!};
-          var extender_2 = {!! $extender_2 !!};
-          var extender_3 = {!! $extender_3 !!};
-          var organization = {!! $usermanages->organization !!};
+          var extender_1 = {!! $extender_1 !!}
+          var extender_2 = {!! $extender_2 !!}
+          var extender_3 = {!! $extender_3 !!}
+
 
           var user_affiliation = $('#user_affiliation');
           extender_id1.select2();
@@ -169,10 +169,9 @@
                                   .text(exten4.name));
                               foundMatch4 = true;
                           }
-                      });
+                      })
                       user_affiliation.show();
                       sch4Div.show();
-                      sch4Div.hide();
                       sch5Div.hide();
                   }
                   if (!foundMatch4) {

@@ -32,7 +32,7 @@
                             <label for="user_role" class="col-md-3 text-right mt-1">เลือกประเภทผู้ใช้งาน</label>
                             <div class="col-md-6 mb-3">
                                 <select id="user_role" name="user_role" class="form-control form-control-sm"
-                                    data-toggle="select2" data-allow-clear="false">
+                                    data-toggle="select2" data-allow-clear="false" >
                                     <option value="">ทั้งหมด</option>
                                     @php
                                         $roles = \App\Models\UserRole::all();
@@ -66,7 +66,8 @@
                         (($depart->department_id == 1 ||
                             $depart->department_id == 2 ||
                             $depart->department_id == 3 ||
-                            $depart->department_id == 4) &&
+                            $depart->department_id == 4 ||
+                            $depart->department_id == 5) &&
                             $data->user_role == 1) ||
                             $data->user_role == 6 ||
                             $data->user_role == 7 ||
@@ -79,7 +80,8 @@
                         ($depart->department_id == 1 ||
                             $depart->department_id == 2 ||
                             $depart->department_id == 3 ||
-                            $depart->department_id == 4) &&
+                            $depart->department_id == 4 ||
+                            $depart->department_id == 5) &&
                             $data->user_role == 7)
                         <a class="ml-1 btn btn-info btn-md " style="color:#fff"
                             href="{{ route('testumsschool', [$depart]) }}"><i class="fas fa-users"></i>
@@ -140,6 +142,33 @@
                                                 ไฟล์ตัวอย่าง
                                                 (.xlsx)</a>
                                         </small>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="provin" class="col-md-3">จังหวัด </label>
+                                        <span class="badge badge-warning">Required</span></label>
+                                        <select class="form-control " name="provin" id="provin" required>
+                                            <option value="0" selected disabled>-- เลือกจังหวัด --</option>
+                                            @foreach ($provin as $pro)
+                                                <option value="{{ $pro->id }}">{{ $pro->name_in_thai }}
+                                                </option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+
+                                    <div class="form-group" id='distri' style="display: none;">
+                                        <label for="distrits" class="col-md-3">อำเภอ </label>
+                                        <span class="badge badge-warning">Required</span></label>
+                                        <select class="form-control " name="distrits" id="distrits" required>
+                                            <option value="" selected disabled>-- เลือกอำเภอ --</option>
+                                        </select>
+                                    </div>
+
+                                    <div class="form-group" id='subdis' style="display: none;">
+                                        <label for="subdistrits" class="col-md-3">ตำบล </label>
+                                        <span class="badge badge-warning">Required</span></label>
+                                        <select class="form-control " name="subdistrits" id="subdistrits" required>
+                                            <option value="" selected disabled>-- เลือกตำบล --</option>
+                                        </select>
                                     </div>
                                 </div><!-- /.modal-body -->
                                 <!-- .modal-footer -->
@@ -278,7 +307,7 @@
                                             <span>Excel</span>
                                         </button>
                                     @endif
-                                &nbsp;&nbsp;&nbsp;
+                                    &nbsp;&nbsp;&nbsp;
                                     @if ($data->user_role == 7)
                                         <button class="btn btn-secondary buttons-excel buttons-html5" tabindex="0"
                                             aria-controls="datatable" type="button"
@@ -374,4 +403,60 @@
             </header>
         @endif
     </div><!-- /.page-inner -->
+
+        <script>
+        $(document).ready(function() {
+         
+            var provin = $('#provin');
+            var distrit = $('#distrits');
+            var subdistrits = $('#subdistrits');
+            var distritdata = {!! $districts !!};
+            var subdistritsdata = {!! $subdistricts !!};
+
+            provin.select2();
+
+
+            $('#provin').on('change', function() {
+                var selectedprovinId = $(this).val();
+                var foundMatchprovin = false;
+                distrit.select2();
+                distrit.empty();
+                distrit.append('<option value="" selected disabled>-- เลือกอำเภอ --</option>');
+                console.log(selectedprovinId)
+                $.each(distritdata, function(index, dis) {
+                    if (dis.province_id == selectedprovinId) {
+                        distrit.append($('<option></option>')
+                            .attr('value', dis.id)
+                            .text(dis.name_in_thai));
+                        foundMatchprovin = true;
+                        $('#distri').show();
+                    }
+                });
+
+            });
+
+            $('#distrits').on('change', function() {
+                var selecteddistritId = $(this).val();
+                var foundMatchdistrit = false;
+                subdistrits.select2();
+                subdistrits.empty();
+                subdistrits.append('<option value="" selected disabled>-- เลือกตำบล --</option>');
+                console.log(selecteddistritId)
+                $.each(subdistritsdata, function(index, subdis) {
+                    if (subdis.district_id == selecteddistritId) {
+                        subdistrits.append($('<option></option>')
+                            .attr('value', subdis.id)
+                            .text(subdis.name_in_thai));
+                        foundMatchdistrit = true;
+                        $('#subdis').show();
+                    }
+                });
+
+            });
+
+
+           
+        });
+    </script>
+
 @endsection

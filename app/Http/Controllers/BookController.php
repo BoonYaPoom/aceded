@@ -59,7 +59,7 @@ class BookController extends Controller
         $books->book_status = $request->input('book_status', 0);
         $books->book_option = '';
 
-        $books->recommended = 0;
+        $books->recommended = $request->input('recommended', 0);
         $books->category_id = (int) $category_id;
         $books->book_member = 0;
         $books->book_year = date('Y');
@@ -238,7 +238,7 @@ class BookController extends Controller
 
         $books = Book::findOrFail($book_id);
         $books->book_name = $request->book_name;
-
+        $books->recommended = $request->input('recommended', 0);
         if ($request->book_author) {
             $books->book_author = $request->book_author;
         } 

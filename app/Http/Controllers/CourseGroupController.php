@@ -20,6 +20,7 @@ class CourseGroupController extends Controller
     public function create($department_id)
     {
         $depart  = Department::findOrFail($department_id);
+     
         return view('page.manage.group.create', compact('depart'));
     }
     public function store(Request $request, $department_id)

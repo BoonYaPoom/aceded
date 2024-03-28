@@ -812,165 +812,50 @@
                             <legend>รูปแบบใบประกาศนียบัตร</legend> <!-- .form-group -->
                             <!-- grid row -->
                             <div class="row">
-                                <!-- grid column -->
+                               
+                             @foreach ($cers as $ce)
+                                            @if($ce['id_cer'] < 8  && $depart->department_id < 10013)
+                                                <div class="col-xl-4 col-lg-4 col-sm-6">
+                                                <!-- .card -->
+                                                <div class="card card-figure">
+                                                    <!-- .card-figure -->
+                                                    <figure class="figure">
+                                                        <img class="img-fluser_id" src="{{ asset($ce['path_cer']) }}" alt="ใบประกาศนียบัตร {{$ce['id_cer']}} " style="cursor:zoom-in" onclick="$('#previewimage').prop('src',$(this).prop('src'));$('#modal01').css('display','block');">
+                                                        <!-- .figure-caption -->
+                                                        <figcaption class="figure-caption">
+                                                            <h6 class="figure-title">ใบประกาศนียบัตร {{$ce['id_cer']}}</h6>
+                                                            <p class="text-muted mb-0 ">
+                                                            <div class="custom-control custom-radio text-center">
+                                                                <input type="radio" class="custom-control-input"
+                                                                 name="templete_certificate" id="certificate{{$ce['id_cer']}}"
+                                                                  value="{{$ce['id_cer']}}" {{ $cour->templete_certificate ==  $ce['id_cer'] ? 'checked' : '' }}> <label class="custom-control-label" for="certificate{{$ce['id_cer']}}"></label></div>
+                                                            </p>
+                                                        </figcaption><!-- /.figure-caption -->
+                                                    </figure><!-- /.card-figure -->
+                                                </div><!-- /.card -->
+                                            </div><!-- /grid column -->
 
-                                <!-- grid column -->
-                                <div class="col-xl-4 col-lg-4 col-sm-6">
-                                    <!-- .card -->
-                                    <div class="card card-figure">
-                                        <!-- .card-figure -->
-                                        <figure class="figure">
-                                            <img class="img-fluser_id" src="{{ asset('uploads/cer/CER1.png') }}"
-                                                alt="ใบประกาศนียบัตร 1 " style="cursor:zoom-in"
-                                                onclick="$('#previewimage').prop('src',$(this).prop('src'));$('#modal01').css('display','block');">
-                                            <!-- .figure-caption -->
-                                            <figcaption class="figure-caption">
-                                                <h6 class="figure-title">ใบประกาศนียบัตร 1</h6>
-                                                <p class="text-muted mb-0 ">
-                                                <div class="custom-control custom-radio text-center"><input type="radio"
-                                                        class="custom-control-input" name="templete_certificate"
-                                                        id="certificate1" value="1"
-                                                        {{ $cour->templete_certificate == 1 ? 'checked' : '' }}> <label
-                                                        class="custom-control-label" for="certificate1"></label></div>
-                                                </p>
-                                            </figcaption><!-- /.figure-caption -->
-                                        </figure><!-- /.card-figure -->
-                                    </div><!-- /.card -->
-                                </div><!-- /grid column -->
-                                <div class="col-xl-4 col-lg-4 col-sm-6">
-                                    <!-- .card -->
-                                    <div class="card card-figure">
-                                        <!-- .card-figure -->
-                                        <figure class="figure">
-                                            <img class="img-fluser_id" src="{{ asset('uploads/cer/CER2.png') }}"
-                                                alt="ใบประกาศนียบัตร 2 " style="cursor:zoom-in"
-                                                onclick="$('#previewimage').prop('src',$(this).prop('src'));$('#modal01').css('display','block');">
-                                            <!-- .figure-caption -->
-                                            <figcaption class="figure-caption">
-                                                <h6 class="figure-title">ใบประกาศนียบัตร 2</h6>
-                                                <p class="text-muted mb-0 ">
-                                                <div class="custom-control custom-radio text-center"><input type="radio"
-                                                        class="custom-control-input" name="templete_certificate"
-                                                        id="certificate2" value="2"
-                                                        {{ $cour->templete_certificate == 2 ? 'checked' : '' }}> <label
-                                                        class="custom-control-label" for="certificate2"></label></div>
-                                                </p>
-                                            </figcaption><!-- /.figure-caption -->
-                                        </figure><!-- /.card-figure -->
-                                    </div><!-- /.card -->
-                                </div><!-- /grid column -->
-                                <div class="col-xl-4 col-lg-4 col-sm-6">
-                                    <!-- .card -->
-                                    <div class="card card-figure">
-                                        <!-- .card-figure -->
-                                        <figure class="figure">
-                                            <img class="img-fluser_id" src="{{ asset('uploads/cer/CER2.png') }}"
-                                                alt="ใบประกาศนียบัตร 3 " style="cursor:zoom-in"
-                                                onclick="$('#previewimage').prop('src',$(this).prop('src'));$('#modal01').css('display','block');">
-                                            <!-- .figure-caption -->
-                                            <figcaption class="figure-caption">
-                                                <h6 class="figure-title">ใบประกาศนียบัตร 3</h6>
-                                                <p class="text-muted mb-0 ">
-                                                <div class="custom-control custom-radio text-center"><input type="radio"
-                                                        class="custom-control-input" name="templete_certificate"
-                                                        id="certificate3" value="3"
-                                                        {{ $cour->templete_certificate == 3 ? 'checked' : '' }}> <label
-                                                        class="custom-control-label" for="certificate3"></label></div>
-                                                </p>
-                                            </figcaption><!-- /.figure-caption -->
-                                        </figure><!-- /.card-figure -->
-                                    </div><!-- /.card -->
-                                </div><!-- /grid column -->
-                                <div class="col-xl-4 col-lg-4 col-sm-6">
-                                    <!-- .card -->
-                                    <div class="card card-figure">
-                                        <!-- .card-figure -->
-                                        <figure class="figure">
-                                            <img class="img-fluser_id" src="{{ asset('uploads/cer/CER4.png') }}"
-                                                alt="ใบประกาศนียบัตร 4 " style="cursor:zoom-in"
-                                                onclick="$('#previewimage').prop('src',$(this).prop('src'));$('#modal01').css('display','block');">
-                                            <!-- .figure-caption -->
-                                            <figcaption class="figure-caption">
-                                                <h6 class="figure-title">ใบประกาศนียบัตร 4</h6>
-                                                <p class="text-muted mb-0 ">
-                                                <div class="custom-control custom-radio text-center"><input type="radio"
-                                                        class="custom-control-input" name="templete_certificate"
-                                                        id="certificate4" value="4"
-                                                        {{ $cour->templete_certificate == 4 ? 'checked' : '' }}> <label
-                                                        class="custom-control-label" for="certificate4"></label></div>
-                                                </p>
-                                            </figcaption><!-- /.figure-caption -->
-                                        </figure><!-- /.card-figure -->
-                                    </div><!-- /.card -->
-                                </div><!-- /grid column -->
-                                <div class="col-xl-4 col-lg-4 col-sm-6">
-                                    <!-- .card -->
-                                    <div class="card card-figure">
-                                        <!-- .card-figure -->
-                                        <figure class="figure">
-                                            <img class="img-fluser_id" src="{{ asset('uploads/cer/CER5.png') }}"
-                                                alt="ใบประกาศนียบัตร 5 " style="cursor:zoom-in"
-                                                onclick="$('#previewimage').prop('src',$(this).prop('src'));$('#modal01').css('display','block');">
-                                            <!-- .figure-caption -->
-                                            <figcaption class="figure-caption">
-                                                <h6 class="figure-title">ใบประกาศนียบัตร 5</h6>
-                                                <p class="text-muted mb-0 ">
-                                                <div class="custom-control custom-radio text-center"><input type="radio"
-                                                        class="custom-control-input" name="templete_certificate"
-                                                        id="certificate5" value="5"
-                                                        {{ $cour->templete_certificate == 5 ? 'checked' : '' }}> <label
-                                                        class="custom-control-label" for="certificate5"></label></div>
-                                                </p>
-                                            </figcaption><!-- /.figure-caption -->
-                                        </figure><!-- /.card-figure -->
-                                    </div><!-- /.card -->
-                                </div><!-- /grid column -->
-                                <div class="col-xl-4 col-lg-4 col-sm-6">
-                                    <!-- .card -->
-                                    <div class="card card-figure">
-                                        <!-- .card-figure -->
-                                        <figure class="figure">
-                                            <img class="img-fluser_id" src="{{ asset('uploads/cer/CER6.png') }}"
-                                                alt="ใบประกาศนียบัตร 6 " style="cursor:zoom-in"
-                                                onclick="$('#previewimage').prop('src',$(this).prop('src'));$('#modal01').css('display','block');">
-                                            <!-- .figure-caption -->
-                                            <figcaption class="figure-caption">
-                                                <h6 class="figure-title">ใบประกาศนียบัตร 6</h6>
-                                                <p class="text-muted mb-0 ">
-                                                <div class="custom-control custom-radio text-center"><input type="radio"
-                                                        class="custom-control-input" name="templete_certificate"
-                                                        id="certificate6" value="6"
-                                                        {{ $cour->templete_certificate == 6 ? 'checked' : '' }}> <label
-                                                        class="custom-control-label" for="certificate6"></label></div>
-                                                </p>
-                                            </figcaption><!-- /.figure-caption -->
-                                        </figure><!-- /.card-figure -->
-                                    </div><!-- /.card -->
-                                </div><!-- /grid column -->
-                                <div class="col-xl-4 col-lg-4 col-sm-6">
-                                    <!-- .card -->
-                                    <div class="card card-figure">
-                                        <!-- .card-figure -->
-                                        <figure class="figure">
-                                            <img class="img-fluser_id" src="{{ asset('uploads/cer/CER7.png') }}"
-                                                alt="ใบประกาศนียบัตร 7 " style="cursor:zoom-in"
-                                                onclick="$('#previewimage').prop('src',$(this).prop('src'));$('#modal01').css('display','block');">
-                                            <!-- .figure-caption -->
-                                            <figcaption class="figure-caption">
-                                                <h6 class="figure-title">ใบประกาศนียบัตร 7</h6>
-                                                <p class="text-muted mb-0 ">
-                                                <div class="custom-control custom-radio text-center"><input type="radio"
-                                                        class="custom-control-input" name="templete_certificate"
-                                                        id="certificate7" value="7"
-                                                        {{ $cour->templete_certificate == 7 ? 'checked' : '' }}> <label
-                                                        class="custom-control-label" for="certificate7"></label></div>
-                                                </p>
-                                            </figcaption><!-- /.figure-caption -->
-                                        </figure><!-- /.card-figure -->
-                                    </div><!-- /.card -->
-                                </div><!-- /grid column -->
-
-                                <!-- grid column -->
+                                            @elseif($ce['id_cer'] >  7 && $depart->department_id == 10013)
+                                            <div class="col-xl-4 col-lg-4 col-sm-6">
+                                                <!-- .card -->
+                                                <div class="card card-figure">
+                                                    <!-- .card-figure -->
+                                                    <figure class="figure">
+                                                        <img class="img-fluser_id" src="{{ asset($ce['path_cer']) }}" alt="ใบประกาศนียบัตร {{$ce['id_cer']}} " style="cursor:zoom-in" onclick="$('#previewimage').prop('src',$(this).prop('src'));$('#modal01').css('display','block');">
+                                                        <!-- .figure-caption -->
+                                                        <figcaption class="figure-caption">
+                                                            <h6 class="figure-title">ใบประกาศนียบัตร {{$ce['id_cer']}}</h6>
+                                                            <p class="text-muted mb-0 ">
+                                                            <div class="custom-control custom-radio text-center"><input type="radio" class="custom-control-input"
+                                                                 name="templete_certificate" id="certificate{{$ce['id_cer']}}" value="{{$ce['id_cer']}}"
+                                                                   {{ $cour->templete_certificate ==  $ce['id_cer'] ? 'checked' : '' }}> <label class="custom-control-label" for="certificate{{$ce['id_cer']}}"></label></div>
+                                                            </p>
+                                                        </figcaption><!-- /.figure-caption -->
+                                                    </figure><!-- /.card-figure -->
+                                                </div><!-- /.card -->
+                                            </div><!-- /grid column -->
+                                            @endif
+                                            @endforeach
                             </div><!-- /grid row -->
 
                             <div id="modal01" class="w3-modal" onclick="this.style.display='none'">

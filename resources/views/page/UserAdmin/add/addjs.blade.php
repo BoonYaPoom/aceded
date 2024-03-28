@@ -159,7 +159,7 @@
                       '<option value="" selected disabled>-- เลือกหน่วยงานย่อย --</option>');
                   if (selectedExtenderId4 && selectedepartment == 1 || selectedepartment == 2) {
                       $.each(extender4, function(index, exten4) {
-                          if (selectedExtenderId4 === exten4.item_parent_id) {
+                          if (selectedExtenderId4 == exten4.item_parent_id) {
                               extender_id4.append($('<option></option>')
                                   .attr('value', exten4.extender_id)
                                   .text(exten4.name));
@@ -167,7 +167,7 @@
                           }
                       });
                       sch4Div.show();
-                      sch4Div.hide();
+    
                       sch5Div.hide();
                   }
                   if (!foundMatch4) {

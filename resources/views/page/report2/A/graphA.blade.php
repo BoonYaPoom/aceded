@@ -18,6 +18,7 @@
             var monthscon = {!! json_encode($monthscon) !!};
             var dateAll = {!! json_encode($dateAll) !!};
             var dateAllWithId = {!! json_encode($dateAllWithId) !!};
+            var registerdate = {!! json_encode($registerdate) !!};
             var modifiedDateAll = dateAllWithId.map(function(element) {
                 return element.id;
             });
@@ -33,7 +34,7 @@
                     var pro = $('#provin').val();
 
                     var selectedYear = $('#selectyear').val();
-
+                    console.log(pro)
                     var selectedYearchartDataRe;
                     var selectedYearDataCon;
                     var selectedYearDataConno;
@@ -41,13 +42,13 @@
                     if (pro == 0) {
                         //กราฟวงกลม
                         //รวมทั้งหมด
-                        var totalUserCount3 = 0;
-                        var filteredData3 = chartDataRe.filter(data => data.year == selectedYear && pro == 0);
-                        filteredData3.forEach(data => {
-                            totalUserCount3 += parseInt(data.user_count);
+                        var totalUserCount4 = 0;
+                        var filteredData4 = registerdate.filter(data => data.year == selectedYear && pro == 0);
+                        filteredData4.forEach(data => {
+                            totalUserCount4 += parseInt(data.user_count);
                         });
-                        selectedYearchartDataRe = totalUserCount3;
-                        //กำลังเรียน
+                        selectedYearchartDataRe = totalUserCount4;
+                      
                         var totalUserCount2 = 0;
                         var filteredData2 = chartDataCon2.filter(data => data.year == selectedYear && pro == 0);
                         filteredData2.forEach(data => {
@@ -66,7 +67,7 @@
                     } else {
                         //กราฟวงกลม
                         //รวมทั้งหมด
-                        selectedYearchartDataRe = chartDataRe.find(data => data.year == selectedYear && data
+                        selectedYearchartDataRe = registerdate.find(data => data.year == selectedYear && data
                             .province_name == pro);
                         selectedYearchartDataRe = selectedYearchartDataRe ? parseInt(selectedYearchartDataRe
                             .user_count) : 0;
@@ -115,6 +116,7 @@
                         } else {
                             matchingMonthData = monthscon.find(data => data.month == monthId && data.year ==
                                 selectedYear && data.province_name == pro);
+                                
                             return matchingMonthData ? parseInt(matchingMonthData.user_count) : 0;
                         }
 
@@ -149,7 +151,7 @@
                             matchingmonthsYear = totalUsermonthsYear
                             return matchingmonthsYear = totalUsermonthsYear;
                         } else {
-                            matchingmonthsYear = monthscon.find(data => data.month == monthId && data
+                            matchingmonthsYear = monthsYear.find(data => data.month == monthId && data
                                 .year == monthyear && data.province_name == pro);
                             return matchingmonthsYear ? parseInt(matchingmonthsYear.user_count) : 0;
                         }

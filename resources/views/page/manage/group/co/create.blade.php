@@ -721,255 +721,181 @@
                                 </div>
 
                                 <div class="col-md-6 showdiscount d-none" ">
-                                                            <div class=" form-group">
-                                                <label for="discount_code">รหัสส่วนลด </label>
-                                                <input type="text" class="form-control" name="discount_code" id="discount_code" placeholder="รหัสส่วนลด" value="0" />
+                                                                <div class=" form-group">
+                                                    <label for="discount_code">รหัสส่วนลด </label>
+                                                    <input type="text" class="form-control" name="discount_code" id="discount_code" placeholder="รหัสส่วนลด" value="0" />
+                                                </div>
                                             </div>
-                                        </div>
-                                </div>
-
-
-                                </fieldset>
-                                <fieldset class=" showpayment d-none">
-                                    <legend>ข้อมูลบัญชีธนาคาร</legend>
-                                    <div class="row">
-                                        <div class="col-md-6 d-none">
-                                            <div class="form-group">
-                                                <label class="control-label" for>ธนาคาร</label> <select id="bank" name="bank" class="form-control" data-toggle="select2" data-placeholder="ธนาคาร" data-allow-clear="false">
-                                                    <option value>เลือกธนาคาร </option>
-                                                    <option value="ktb">ธนาคารกรุงไทย </option>
-                                                </select>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label for="person_type">Comp Code </label>
-                                                <input type="text" class="form-control number" name="compcode" id="compcode" placeholder="Comp Code" value="0" />
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label for="person_type">Tax ID </label>
-                                                <input type="text" class="form-control number" name="taxid" id="taxid" placeholder="Tax ID" value="0" />
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label for="person_type">Suffix Code</label>
-                                                <input type="text" class="form-control number" name="suffixcode" id="suffixcode" placeholder="Suffix Code" value="0" />
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label for="person_type">Prompt Pay / Account Book</label>
-                                                <input type="text" class="form-control number" name="accountbook" id="accountbook" placeholder="Account Book" value="0" />
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label for="person_type">Prompt Name / Account Name</label>
-                                                <input type="text" class="form-control" name="accountname" id="accountname" placeholder="Account Name" value="0" />
-                                            </div>
-                                        </div>
                                     </div>
-                                </fieldset>
 
 
-                                <!-- .fieldset -->
-                                <fieldset>
-                                    <legend>รูปแบบใบประกาศนียบัตร</legend> <!-- .form-group -->
-                                    <div class="row">
+                                    </fieldset>
+                                    <fieldset class=" showpayment d-none">
+                                        <legend>ข้อมูลบัญชีธนาคาร</legend>
+                                        <div class="row">
+                                            <div class="col-md-6 d-none">
+                                                <div class="form-group">
+                                                    <label class="control-label" for>ธนาคาร</label> <select id="bank" name="bank" class="form-control" data-toggle="select2" data-placeholder="ธนาคาร" data-allow-clear="false">
+                                                        <option value>เลือกธนาคาร </option>
+                                                        <option value="ktb">ธนาคารกรุงไทย </option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label for="person_type">Comp Code </label>
+                                                    <input type="text" class="form-control number" name="compcode" id="compcode" placeholder="Comp Code" value="0" />
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label for="person_type">Tax ID </label>
+                                                    <input type="text" class="form-control number" name="taxid" id="taxid" placeholder="Tax ID" value="0" />
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label for="person_type">Suffix Code</label>
+                                                    <input type="text" class="form-control number" name="suffixcode" id="suffixcode" placeholder="Suffix Code" value="0" />
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label for="person_type">Prompt Pay / Account Book</label>
+                                                    <input type="text" class="form-control number" name="accountbook" id="accountbook" placeholder="Account Book" value="0" />
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label for="person_type">Prompt Name / Account Name</label>
+                                                    <input type="text" class="form-control" name="accountname" id="accountname" placeholder="Account Name" value="0" />
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </fieldset>
+
+
+                                    <!-- .fieldset -->
+                                    <fieldset>
+                                        <legend>รูปแบบใบประกาศนียบัตร</legend> <!-- .form-group -->
+                                        <div class="row">
+                                            @foreach ($cers as $ce)
+                                            @if($ce['id_cer'] < 8  && $depart->department_id < 10013)
+                                                <div class="col-xl-4 col-lg-4 col-sm-6">
+                                                <!-- .card -->
+                                                <div class="card card-figure">
+                                                    <!-- .card-figure -->
+                                                    <figure class="figure">
+                                                        <img class="img-fluser_id" src="{{ asset($ce['path_cer']) }}" alt="ใบประกาศนียบัตร {{$ce['id_cer']}} " style="cursor:zoom-in" onclick="$('#previewimage').prop('src',$(this).prop('src'));$('#modal01').css('display','block');">
+                                                        <!-- .figure-caption -->
+                                                        <figcaption class="figure-caption">
+                                                            <h6 class="figure-title">ใบประกาศนียบัตร {{$ce['id_cer']}}</h6>
+                                                            <p class="text-muted mb-0 ">
+                                                            <div class="custom-control custom-radio text-center"><input type="radio" class="custom-control-input" name="templete_certificate" id="certificate{{$ce['id_cer']}}" value="{{$ce['id_cer']}}" checked> <label class="custom-control-label" for="certificate{{$ce['id_cer']}}"></label></div>
+                                                            </p>
+                                                        </figcaption><!-- /.figure-caption -->
+                                                    </figure><!-- /.card-figure -->
+                                                </div><!-- /.card -->
+                                            </div><!-- /grid column -->
+
+                                            @elseif($ce['id_cer'] >  7 && $depart->department_id == 10013)
+                                            <div class="col-xl-4 col-lg-4 col-sm-6">
+                                                <!-- .card -->
+                                                <div class="card card-figure">
+                                                    <!-- .card-figure -->
+                                                    <figure class="figure">
+                                                        <img class="img-fluser_id" src="{{ asset($ce['path_cer']) }}" alt="ใบประกาศนียบัตร {{$ce['id_cer']}} " style="cursor:zoom-in" onclick="$('#previewimage').prop('src',$(this).prop('src'));$('#modal01').css('display','block');">
+                                                        <!-- .figure-caption -->
+                                                        <figcaption class="figure-caption">
+                                                            <h6 class="figure-title">ใบประกาศนียบัตร {{$ce['id_cer']}}</h6>
+                                                            <p class="text-muted mb-0 ">
+                                                            <div class="custom-control custom-radio text-center"><input type="radio" class="custom-control-input" name="templete_certificate" id="certificate{{$ce['id_cer']}}" value="{{$ce['id_cer']}}" checked> <label class="custom-control-label" for="certificate{{$ce['id_cer']}}"></label></div>
+                                                            </p>
+                                                        </figcaption><!-- /.figure-caption -->
+                                                    </figure><!-- /.card-figure -->
+                                                </div><!-- /.card -->
+                                            </div><!-- /grid column -->
+                                            @endif
+                                            @endforeach
+                                            
+                                           
+                                            <!-- grid column -->
+                                        </div><!-- /grid row -->
+                                        <div id="modal01" class="w3-modal" onclick="this.style.display='none'">
+                                            <span class="w3-button w3-hover-red w3-xlarge w3-display-topright">×</span>
+                                            <div class="w3-modal-content w3-animate-zoom">
+                                                <img src="{{ asset('upload/cer/certificate_1.png') }}" style="width:100%" id="previewimage">
+                                            </div>
+                                        </div>
                                         <!-- grid column -->
-                                        <div class="col-xl-4 col-lg-4 col-sm-6">
+                                        {{-- <div class="col-xl-4 col-lg-4 col-sm-6  d-none">
                                             <!-- .card -->
                                             <div class="card card-figure">
                                                 <!-- .card-figure -->
-                                                <figure class="figure">
-                                                    <img class="img-fluser_id" src="{{ asset('uploads/cer/CER1.png') }}" alt="ใบประกาศนียบัตร 1 " style="cursor:zoom-in" onclick="$('#previewimage').prop('src',$(this).prop('src'));$('#modal01').css('display','block');">
+                                                <figure class="figure"><img class="img-fluser_id" src="https://aced.dlex.ai/childhood/admin/" alt="ใบประกาศนียบัตร  6 " style="cursor:zoom-in" onclick="$('#previewimage').prop('src',$(this).prop('src'));$('#modal01').css('display','block');">
                                                     <!-- .figure-caption -->
                                                     <figcaption class="figure-caption">
-                                                        <h6 class="figure-title">ใบประกาศนียบัตร 1</h6>
-                                                        <p class="text-muted mb-0 ">
-                                                        <div class="custom-control custom-radio text-center"><input type="radio" class="custom-control-input" name="templete_certificate" id="certificate1" value="1" checked> <label class="custom-control-label" for="certificate1"></label></div>
-                                                        </p>
-                                                    </figcaption><!-- /.figure-caption -->
-                                                </figure><!-- /.card-figure -->
-                                            </div><!-- /.card -->
-                                        </div><!-- /grid column -->
-                                        <!-- grid column -->
-                                        <div class="col-xl-4 col-lg-4 col-sm-6">
-                                            <!-- .card -->
-                                            <div class="card card-figure">
-                                                <!-- .card-figure -->
-                                                <figure class="figure">
-                                                    <img class="img-fluser_id" src="{{ asset('uploads/cer/CER2.png') }}" alt="ใบประกาศนียบัตร 2 " style="cursor:zoom-in" onclick="$('#previewimage').prop('src',$(this).prop('src'));$('#modal01').css('display','block');">
-                                                    <!-- .figure-caption -->
-                                                    <figcaption class="figure-caption">
-                                                        <h6 class="figure-title">ใบประกาศนียบัตร 2</h6>
-                                                        <p class="text-muted mb-0 ">
-                                                        <div class="custom-control custom-radio text-center"><input type="radio" class="custom-control-input" name="templete_certificate" id="certificate2" value="2"> <label class="custom-control-label" for="certificate2"></label></div>
-                                                        </p>
-                                                    </figcaption><!-- /.figure-caption -->
-                                                </figure><!-- /.card-figure -->
-                                            </div><!-- /.card -->
-                                        </div><!-- /grid column -->
-                                        <div class="col-xl-4 col-lg-4 col-sm-6">
-                                            <!-- .card -->
-                                            <div class="card card-figure">
-                                                <!-- .card-figure -->
-                                                <figure class="figure">
-                                                    <img class="img-fluser_id" src="{{ asset('uploads/cer/CER3.png') }}" alt="ใบประกาศนียบัตร 3 " style="cursor:zoom-in" onclick="$('#previewimage').prop('src',$(this).prop('src'));$('#modal01').css('display','block');">
-                                                    <!-- .figure-caption -->
-                                                    <figcaption class="figure-caption">
-                                                        <h6 class="figure-title">ใบประกาศนียบัตร 3</h6>
-                                                        <p class="text-muted mb-0 ">
-                                                        <div class="custom-control custom-radio text-center"><input type="radio" class="custom-control-input" name="templete_certificate" id="certificate3" value="3"> <label class="custom-control-label" for="certificate3"></label></div>
-                                                        </p>
-                                                    </figcaption><!-- /.figure-caption -->
-                                                </figure><!-- /.card-figure -->
-                                            </div><!-- /.card -->
-                                        </div><!-- /grid column -->
-                                        <div class="col-xl-4 col-lg-4 col-sm-6">
-                                            <!-- .card -->
-                                            <div class="card card-figure">
-                                                <!-- .card-figure -->
-                                                <figure class="figure">
-                                                    <img class="img-fluser_id" src="{{ asset('uploads/cer/CER4.png') }}" alt="ใบประกาศนียบัตร 4 " style="cursor:zoom-in" onclick="$('#previewimage').prop('src',$(this).prop('src'));$('#modal01').css('display','block');">
-                                                    <!-- .figure-caption -->
-                                                    <figcaption class="figure-caption">
-                                                        <h6 class="figure-title">ใบประกาศนียบัตร 4</h6>
-                                                        <p class="text-muted mb-0 ">
-                                                        <div class="custom-control custom-radio text-center"><input type="radio" class="custom-control-input" name="templete_certificate" id="certificate4" value="4"> <label class="custom-control-label" for="certificate4"></label></div>
-                                                        </p>
-                                                    </figcaption><!-- /.figure-caption -->
-                                                </figure><!-- /.card-figure -->
-                                            </div><!-- /.card -->
-                                        </div><!-- /grid column -->
-                                        <div class="col-xl-4 col-lg-4 col-sm-6">
-                                            <!-- .card -->
-                                            <div class="card card-figure">
-                                                <!-- .card-figure -->
-                                                <figure class="figure">
-                                                    <img class="img-fluser_id" src="{{ asset('uploads/cer/CER5.png') }}" alt="ใบประกาศนียบัตร 5 " style="cursor:zoom-in" onclick="$('#previewimage').prop('src',$(this).prop('src'));$('#modal01').css('display','block');">
-                                                    <!-- .figure-caption -->
-                                                    <figcaption class="figure-caption">
-                                                        <h6 class="figure-title">ใบประกาศนียบัตร 5</h6>
-                                                        <p class="text-muted mb-0 ">
-                                                        <div class="custom-control custom-radio text-center"><input type="radio" class="custom-control-input" name="templete_certificate" id="certificate5" value="5"> <label class="custom-control-label" for="certificate5"></label></div>
-                                                        </p>
-                                                    </figcaption><!-- /.figure-caption -->
-                                                </figure><!-- /.card-figure -->
-                                            </div><!-- /.card -->
-                                        </div><!-- /grid column -->
-                                        <div class="col-xl-4 col-lg-4 col-sm-6">
-                                            <!-- .card -->
-                                            <div class="card card-figure">
-                                                <!-- .card-figure -->
-                                                <figure class="figure">
-                                                    <img class="img-fluser_id" src="{{ asset('uploads/cer/CER6.png') }}" alt="ใบประกาศนียบัตร 6 " style="cursor:zoom-in" onclick="$('#previewimage').prop('src',$(this).prop('src'));$('#modal01').css('display','block');">
-                                                    <!-- .figure-caption -->
-                                                    <figcaption class="figure-caption">
-                                                        <h6 class="figure-title">ใบประกาศนียบัตร 6</h6>
+                                                        <h6 class="figure-title"> ใบประกาศนียบัตรกำหนดเอง </h6>
                                                         <p class="text-muted mb-0 ">
                                                         <div class="custom-control custom-radio text-center"><input type="radio" class="custom-control-input" name="templete_certificate" id="certificate6" value="6"> <label class="custom-control-label" for="certificate6"></label></div>
                                                         </p>
                                                     </figcaption><!-- /.figure-caption -->
                                                 </figure><!-- /.card-figure -->
                                             </div><!-- /.card -->
-                                        </div><!-- /grid column -->
-                                              <div class="col-xl-4 col-lg-4 col-sm-6">
-                                            <!-- .card -->
-                                            <div class="card card-figure">
-                                                <!-- .card-figure -->
-                                                <figure class="figure">
-                                                    <img class="img-fluser_id" src="{{ asset('uploads/cer/CER7.png') }}" alt="ใบประกาศนียบัตร 7 " style="cursor:zoom-in" onclick="$('#previewimage').prop('src',$(this).prop('src'));$('#modal01').css('display','block');">
-                                                    <!-- .figure-caption -->
-                                                    <figcaption class="figure-caption">
-                                                        <h6 class="figure-title">ใบประกาศนียบัตร 7</h6>
-                                                        <p class="text-muted mb-0 ">
-                                                        <div class="custom-control custom-radio text-center"><input type="radio" class="custom-control-input" name="templete_certificate" id="certificate7" value="7"> <label class="custom-control-label" for="certificate7"></label></div>
-                                                        </p>
-                                                    </figcaption><!-- /.figure-caption -->
-                                                </figure><!-- /.card-figure -->
-                                            </div><!-- /.card -->
-                                        </div><!-- /grid column -->
+                                        </div><!-- /grid column --> --}}
                                         <!-- grid column -->
-                                    </div><!-- /grid row -->
-                                    <div id="modal01" class="w3-modal" onclick="this.style.display='none'">
-                                        <span class="w3-button w3-hover-red w3-xlarge w3-display-topright">×</span>
-                                        <div class="w3-modal-content w3-animate-zoom">
-                                            <img src="{{ asset('upload/cer/certificate_1.png') }}" style="width:100%" id="previewimage">
+                                        <!-- /grid row -->
+                                        <div class="form-group">
+                                            <label for="cert_custom">เพิ่มรูปแบบใบประกาศนียบัตร <small class="form-text text-muted">ขนาด 2261x1589 png (เท่านั้น)</small></label> <input type="file" class="form-control" id="cert_custom" name="cert_custom" placeholder="ใบประกาศนียบัตร	" accept="image/*">
+                                        </div><!-- /.form-group -->
+                                    </fieldset><!-- /.fieldset -->
+                                    <fieldset>
+                                        <legend>ข้อมูลใบประกาศนียบัตร</legend>
+                                               <div class="form-group">
+                                            <label for="cert_subject">ชื่อหลักสูตร
+                                                      <small class="form-text text-muted">ถ้าไม่ระบุ จะดึงชื่อหลักสูตรมาแสดงบนใบประกาศ</small>
+                                            </label>
+                                            <input type="text" class="form-control" id="cert_subject" name="cert_subject" placeholder="ชื่อหลักสูตร" value="">
                                         </div>
-                                    </div>
-                                    <!-- grid column -->
-                                    <div class="col-xl-4 col-lg-4 col-sm-6  d-none">
-                                        <!-- .card -->
-                                        <div class="card card-figure">
-                                            <!-- .card-figure -->
-                                            <figure class="figure"><img class="img-fluser_id" src="https://aced.dlex.ai/childhood/admin/" alt="ใบประกาศนียบัตร  6 " style="cursor:zoom-in" onclick="$('#previewimage').prop('src',$(this).prop('src'));$('#modal01').css('display','block');">
-                                                <!-- .figure-caption -->
-                                                <figcaption class="figure-caption">
-                                                    <h6 class="figure-title"> ใบประกาศนียบัตรกำหนดเอง </h6>
-                                                    <p class="text-muted mb-0 ">
-                                                    <div class="custom-control custom-radio text-center"><input type="radio" class="custom-control-input" name="templete_certificate" id="certificate6" value="6"> <label class="custom-control-label" for="certificate6"></label></div>
-                                                    </p>
-                                                </figcaption><!-- /.figure-caption -->
-                                            </figure><!-- /.card-figure -->
-                                        </div><!-- /.card -->
-                                    </div><!-- /grid column -->
-                                    <!-- grid column -->
-                                    <!-- /grid row -->
-                                    <div class="form-group">
-                                        <label for="cert_custom">เพิ่มรูปแบบใบประกาศนียบัตร <small class="form-text text-muted">ขนาด 2261x1589 png (เท่านั้น)</small></label> <input type="file" class="form-control" id="cert_custom" name="cert_custom" placeholder="ใบประกาศนียบัตร	" accept="image/*">
-                                    </div><!-- /.form-group -->
-                                </fieldset><!-- /.fieldset -->
-                                <fieldset>
-                                    <legend>ข้อมูลใบประกาศนียบัตร</legend>
-                                           <div class="form-group">
-                                        <label for="cert_subject">ชื่อหลักสูตร
-                                                  <small class="form-text text-muted">ถ้าไม่ระบุ จะดึงชื่อหลักสูตรมาแสดงบนใบประกาศ</small>
-                                        </label>
-                                        <input type="text" class="form-control" id="cert_subject" name="cert_subject" placeholder="ชื่อหลักสูตร" value="">
-                                    </div>
-                                    <div class="row ">
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label class="control-label" for="days">ชื่อ-นามสกุล</label> <input type="text" class="form-control" name="signature_name" id="signature_name" placeholder="ชื่อ-นามสกุล" value="" />
-                                            </div>
-                                        </div><!-- /grid column -->
-                                        <!-- grid column -->
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label class="control-label" for="hours">ตำแหน่ง</label> <input type="text" class="form-control" name="signature_position" id="signature_position" placeholder="ตำแหน่ง" value="" />
-                                            </div>
-                                        </div><!-- /grid column -->
-                                    </div><!-- /grid row -->
-                                    <div class="form-group">
-                                        <label for="signature">ลายเซ็นต์  <small class="form-text text-muted">ขนาดความสูง 60px (เท่านั้น) .png (เท่านั้น)</small></label> <input type="file" class="form-control" id="signature" name="signature" placeholder="ลายเซ็นต์" accept="image/*">
-                                    </div><!-- /.form-group -->
-                                </fieldset><!-- /.fieldset -->
-                            </div><!-- /.card-body -->
-                        </div><!-- /.card -->
+                                        <div class="row ">
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label class="control-label" for="days">ชื่อ-นามสกุล</label> <input type="text" class="form-control" name="signature_name" id="signature_name" placeholder="ชื่อ-นามสกุล" value="" />
+                                                </div>
+                                            </div><!-- /grid column -->
+                                            <!-- grid column -->
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label class="control-label" for="hours">ตำแหน่ง</label> <input type="text" class="form-control" name="signature_position" id="signature_position" placeholder="ตำแหน่ง" value="" />
+                                                </div>
+                                            </div><!-- /grid column -->
+                                        </div><!-- /grid row -->
+                                        <div class="form-group">
+                                            <label for="signature">ลายเซ็นต์  <small class="form-text text-muted">ขนาดความสูง 60px (เท่านั้น) .png (เท่านั้น)</small></label> <input type="file" class="form-control" id="signature" name="signature" placeholder="ลายเซ็นต์" accept="image/*">
+                                        </div><!-- /.form-group -->
+                                    </fieldset><!-- /.fieldset -->
+                                </div><!-- /.card-body -->
+                            </div><!-- /.card -->
 
-                        <!-- .form-actions -->
-                        <div class="form-actions ">
-                            <button class="btn btn-lg btn-primary ml-auto" type="submit"><i class="far fa-save"></i>
-                                บันทึก</button>
-                        </div><!-- /.form-actions -->
-                    </div><!-- /.page-section -->
-                    </div><!-- /.page-inner -->
-                </form>
-                <script>
-                    document.addEventListener("DOMContentLoaded", function() {
-                        // Get all elements with the "discount-code-input" class
-                        const discountCodeInputs = document.querySelectorAll(".number");
+                            <!-- .form-actions -->
+                            <div class="form-actions ">
+                                <button class="btn btn-lg btn-primary ml-auto" type="submit"><i class="far fa-save"></i>
+                                    บันทึก</button>
+                            </div><!-- /.form-actions -->
+                        </div><!-- /.page-section -->
+                        </div><!-- /.page-inner -->
+                    </form>
+                    <script>
+                        document.addEventListener("DOMContentLoaded", function() {
+                            // Get all elements with the "discount-code-input" class
+                            const discountCodeInputs = document.querySelectorAll(".number");
 
-                        // Loop through all the input fields
-                        discountCodeInputs.forEach(function(discountCodeInput) {
-                            discountCodeInput.addEventListener("input", function(event) {
-                                this.value = this.value.replace(/\D/g, ""); // Allow only numeric values
+                            // Loop through all the input fields
+                            discountCodeInputs.forEach(function(discountCodeInput) {
+                                discountCodeInput.addEventListener("input", function(event) {
+                                    this.value = this.value.replace(/\D/g, ""); // Allow only numeric values
+                                });
                             });
                         });
-                    });
-                </script>
+                    </script>
 @endsection

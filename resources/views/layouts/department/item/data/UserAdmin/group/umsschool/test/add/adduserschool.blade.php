@@ -172,7 +172,9 @@
                             ลบผู้ใช้งาน</span>
                     </h6>
                 </div>
-                <form action="{{ route('deleteAllUser', ['department_id' => $depart->department_id, 'extender_id' => $extender->extender_id]) }}"  enctype="multipart/form-data">
+                <form
+                    action="{{ route('deleteAllUser', ['department_id' => $depart->department_id, 'extender_id' => $extender->extender_id]) }}"
+                    enctype="multipart/form-data">
                     <div class="modal-body">
                         <div class="form-group">
                             <div class="form-label-group">
@@ -182,7 +184,11 @@
                                         <thead>
                                             <tr class="bg-infohead">
                                                 <th class="align-middle" style="width:10%">
-                                                    เลือก
+                                                    <div class="custom-control custom-checkbox"> <input type="checkbox"
+                                                            class="custom-control-input" name="checkall1" value="1"
+                                                            id="checkall1"><label class="custom-control-label"
+                                                            for="checkall1">
+                                                            เลือกทั้งหมด</label></div>
                                                 </th>
                                                 <th class="align-middle" style="width:45%">รหัสผู้ใช้งาน</th>
                                                 <th class="align-middle" style="width:10%">ชื่อ สกุล</th>
@@ -248,21 +254,12 @@
                         }
                     },
                 });
-                // $("#checkall").click(function() {
-                //     var isChecked = $(this).prop('checked');
-                //     // ทำการตรวจสอบทุกรายการที่แสดงใน DataTables และกำหนดสถานะ checked
-                //     table01.rows().nodes().to$().find('.custom-control-input').prop('checked', isChecked);
-                // });
-                // $('#userselectdata').click(function(e) {
-                //     e.preventDefault();
-                //     var all_qusr = [];
-                //     table.rows().nodes().to$().find("input:checkbox[name='user_data[]']:checked").each(
-                //         function() {
-                //             all_qusr.push($(this).val());
-                //         });
-                //     var all_less = [];
-                //     console.log(all_qusr);
-                // });
+                $("#checkall1").click(function() {
+                    var isChecked = $(this).prop('checked');
+                    // ทำการตรวจสอบทุกรายการที่แสดงใน DataTables และกำหนดสถานะ checked
+                    table01.rows().nodes().to$().find('.custom-control-input').prop('checked', isChecked);
+                });
+
             });
         </script>
 
@@ -351,14 +348,7 @@
                 });
             });
         </script>
-        <script>
-            $(function() {
-                $("#checkall").click(function() {
-                    $('.custom-control-input').prop('checked', $(this).prop('checked'));
-                });
-
-            });
-        </script>
+        <script></script>
         <script>
             $(document).ready(function() {
                 var table = $('#datatable').DataTable({
@@ -404,6 +394,11 @@
                     table2.columns(2).search(this.value).draw();
                 });
 
+                $("#checkall").click(function() {
+                    var isChecked = $(this).prop('checked');
+                    // ทำการตรวจสอบทุกรายการที่แสดงใน DataTables และกำหนดสถานะ checked
+                    table2.rows().nodes().to$().find('.custom-control-input').prop('checked', isChecked);
+                });
 
             });
         </script>

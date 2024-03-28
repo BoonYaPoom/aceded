@@ -81,8 +81,7 @@
                             <textarea class="editor" data-placeholder="เนื้อหาโดยย่อ" data-height="200" name="contents"
                                 value="{{ $books->contents }}">{{ $books->contents }}</textarea>
                         </div><!-- /.form-group -->
-                        <!-- .form-group -->
-                        <div class="form-group">
+                         <div class="form-group">
                             <label for="book_status">สถานะ </label>
                             <label class="switcher-control switcher-control-success switcher-control-lg">
                                 <input type="checkbox" class="switcher-input" name="book_status" id="book_status"
@@ -91,7 +90,7 @@
                                 <span class="switcher-label-off text-red">OFF</span>
                             </label>
                         </div>
-                        <!-- /.form-group -->
+                        
                     </div><!-- /.card-body -->
 
             </div><!-- /.card -->

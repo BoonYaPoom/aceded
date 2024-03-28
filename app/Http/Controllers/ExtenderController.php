@@ -36,6 +36,7 @@ class ExtenderController extends Controller
         $usersnotnull = DB::table('users')
             ->join('users_department', 'users.user_id', '=', 'users_department.user_id')
             ->where('users_department.department_id', '=', $department_id)
+            ->where('users.user_role', '=', 4)
             ->where('organization', $extender_id)
             ->get();
 
@@ -43,6 +44,7 @@ class ExtenderController extends Controller
             DB::table('users')
             ->join('users_department', 'users.user_id', '=', 'users_department.user_id')
             ->where('users_department.department_id', '=', $department_id)
+            ->where('users.user_role', '=', 4)
             ->where('organization', null)
             ->get();
 
@@ -51,8 +53,6 @@ class ExtenderController extends Controller
             ['depart' => $depart,  'extender' => $extender, 'usersnull' => $usersnull, 'usersnotnull' => $usersnotnull]
         );
     }
-
-
 
     public function addextender($department_id)
     {
@@ -187,7 +187,7 @@ class ExtenderController extends Controller
                         break;
                     case 6:
                         $query->join('provinces', 'users_extender2.school_province', '=', 'provinces.id')
-                            ->where('users_extender2.item_lv', 3)
+                            ->whereIn('users_extender2.item_lv', [3, 4])
                             ->whereIn('users_extender2.item_group_id', [3, 4])
                             ->select('provinces.*', 'users_extender2.*')
                             ->get();

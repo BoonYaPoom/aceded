@@ -21,8 +21,12 @@ class DepartUsersController extends Controller
 
     public function DPUserManage(Request $request, $department_id, $user_role = null)
     {
+
+        $provin = DB::table('provinces')->get();
+        $districts = DB::table('districts')->get();
+        $subdistricts = DB::table('subdistricts')->get();
         $depart = Department::findOrFail($department_id);
-        return view('layouts.department.item.data.UserAdmin.indexview', compact('depart'));
+        return view('layouts.department.item.data.UserAdmin.indexview', compact('depart', 'provin', 'districts', 'subdistricts'));
     }
 
     public function DPUserManagejson(Request $request, $department_id, $user_role = null)

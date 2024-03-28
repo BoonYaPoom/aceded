@@ -502,7 +502,7 @@ class ExcelController extends Controller
             return response()->json(['error' => 'No file uploaded']);
         }
     }
-    public function UsersDepartImport(Request $request, $department_id)
+    public function UsersDepartImports(Request $request, $department_id)
     {
         $UserDepartimport = new UserDepartimport($department_id);
 
@@ -692,6 +692,203 @@ class ExcelController extends Controller
             return response()->json(['error' => 'No file uploaded']);
         }
     }
+    public function UsersDepartImport(Request $request, $department_id)
+    {
+
+        if ($request->hasFile('fileexcel')) {
+            $UserDepartimport = new UserDepartimport($department_id);
+
+            $importedDataUser = Excel::toArray($UserDepartimport, $request->file('fileexcel'));
+            if (count($importedDataUser) > 0 && count($importedDataUser[0]) > 0) {
+                // มีข้อมูลที่นำเข้า
+                $Fields = [];
+
+                foreach ($importedDataUser[0] as $rowsss) {
+                    if ($rowsss[0] == 'ลำดับ') {
+                        continue;
+                    }
+                    if ($rowsss[0] >= 1) {
+                        $username = trim($rowsss[1]);
+                        $username = preg_replace('/[ก-๙]+/u', '', $username);
+                        $field = [
+                            'username' => $username,
+                            'password' =>  strval($rowsss[2]),
+                            'firstname' => $rowsss[3],
+                            'lastname' => $rowsss[4],
+                            'tele' => trim($rowsss[5]),
+                            'email' => $rowsss[6],
+                            'citizen' => strval(trim($rowsss[7])),
+                            'gerder' => $rowsss[8],
+                            'pro' => $rowsss[9],
+                            'province' => $request->input('provin'),
+                            'distrits' => $request->input('distrits'),
+                            'subdistrits' => $request->input('subdistrits'),
+                        ];
+
+                        $Fields[] = $field;
+                    }
+                }
+
+                $existingUsernames = [];
+                $duplicateUsernames = [];
+
+                foreach ($Fields as $field) {
+
+
+                    if (in_array($field['username'], $existingUsernames)) {
+                        $duplicateUsernames[] = 'ชื่อผู้ใช้ที่ซ้ำในไฟล์ xlsx: ' .  $field['username'];
+                    } elseif (strlen($field['username']) < 8) {
+                        $duplicateUsernames[] = 'ชื่อไม่ต่ำกว่า 8 ตัวอักษรในไฟล์ xlsx: ' .  $field['username'];
+                    } elseif (preg_match('/[ก-๙]/u', $field['username'])) {
+                        $duplicateUsernames[] = 'ชื่อต้องไม่เป็นภาษาไทยในไฟล์ xlsx: ' .  $field['username'];
+                    } else {
+                        $existingUsernames[] = $field['username'];
+                    }
+
+
+                    if (in_array($field['citizen'], $existingUsernames)) {
+
+                        $duplicateUsernames[] = 'รหัสประจำตัวประชาชนซ้ำ ในไฟล์ xlsx: ' .  $field['citizen'];
+                    } else {
+                        $existingUsernames[] = $field['citizen'];
+                    }
+                    if (empty($field['citizen'])) {
+                        $duplicateUsernames[] = 'รหัสประจำตัวประชาชนไม่สามารถเป็นค่าว่างได้';
+                    } else {
+                        $existingUsernames[] = $field['citizen'];
+                    }
+                    if (DB::table('users')
+                        ->where('username', $field['username'])->exists()
+                    ) {
+                        $duplicateUsernames[] = 'ชื่อผู้ใช้ซ้ำในระบบ: ' . $field['username'];
+                    } else {
+                        $existingUsernames[] = $field['username'];
+                    }
+                    if (DB::table('users')
+                        ->where('citizen_id', $field['citizen'])->exists()
+                    ) {
+                        $duplicateUsernames[] = 'รหัสประจำตัวประชาชนซ้ำ ระบบ: ' .  $field['citizen'];
+                    } else {
+                        $existingUsernames[] = $field['citizen'];
+                    }
+                }
+
+                if (!empty($duplicateUsernames)) {
+                    return response()->json(['error' => 'ข้อมูลซ้ำกัน: ' . implode("\n", $duplicateUsernames)], 200);
+                } else {
+                    $Usertimestamp =  now()->timestamp . '00';
+                    $insertedCount = 0;
+                    foreach ($Fields as $row) {
+
+
+                        $user_role = 4;
+                        $prefix = null;
+                        $per_id = null;
+                        $permission = null;
+                        $ldap = 0;
+                        $userstatus = 1;
+                        $createdate = now();
+                        $createby = 2;
+                        $avatar = '';
+                        $user_position = '';
+                        $workplace = '';
+                        $telephone = '';
+                        $socialnetwork = '';
+                        $experience = null;
+                        $recommened = null;
+                        $templete = null;
+                        $nickname = '';
+                        $introduce = '';
+                        $bgcustom = '';
+                        $pay = '';
+                        $education = '';
+                        $teach = '';
+                        $modern = '';
+                        $other = '';
+                        $profiles = null;
+                        $editflag = null;
+                        $pos_level = 0;
+                        $pos_name = '';
+                        $sector_id = 0;
+                        $office_id = 0;
+                        $user_type = null;
+
+                        $recoverpassword = null;
+                        $employeecode = null;
+
+                        $Usertimestamp += 1;
+
+                        $newUsers = new Users([
+                            'user_id' => $Usertimestamp,
+                            'username' => $row['username'],
+                            'password' => Hash::make(strval($row['password'])),
+                            'firstname' => $row['firstname'],
+                            'lastname' => $row['lastname'],
+                            'mobile' => $row['tele'],
+                            'email' => $row['email'],
+                            'citizen_id' =>   strval($row['citizen']),
+                            'gender' => $row['gender'] ?? null,
+                            'prefix' =>  $prefix,
+                            'user_role' => $user_role,
+                            'per_id' => $per_id,
+                            'department_id' => $department_id,
+                            'permission' => $permission,
+                            'ldap' => $ldap,
+                            'userstatus' => $userstatus,
+                            'createdate' => $createdate,
+                            'createby' => $createby,
+                            'avatar' => $avatar,
+                            'user_position' =>  $user_position,
+                            'workplace' =>  $workplace,
+                            'telephone' =>  $telephone,
+                            'socialnetwork' =>  $socialnetwork,
+                            'experience' =>  $experience,
+                            'recommened' => $recommened,
+                            'templete' => $templete,
+                            'nickname' =>  $nickname,
+                            'introduce' => $introduce,
+                            'bgcustom' =>  $bgcustom,
+                            'pay' =>  $pay,
+                            'education' => $education,
+                            'teach' => $teach,
+                            'modern' => $modern,
+                            'other' => $other,
+                            'profiles' =>  $profiles,
+                            'editflag' => $editflag,
+                            'pos_level' => $pos_level,
+                            'pos_name' => $pos_name,
+                            'sector_id' =>  $sector_id,
+                            'office_id' => $office_id,
+                            'user_type' => $user_type,
+                            'province_id' => 0,
+                            'district_id' => 0,
+                            'subdistrict_id' =>  0,
+                            'recoverpassword' =>  $recoverpassword,
+                            'employeecode' =>  $employeecode,
+                            'organization' =>  0,
+                            'user_affiliation' =>  $row['pro'] ?? null,
+                            'user_type_card' =>  0,
+                            'birthday' => null,
+                        ]);
+                        $newUsers->save();
+                        $insertedCount++;
+                        $UserDepartment =  new UserDepartment([
+                            'user_department_id' =>  $Usertimestamp,
+                            'user_id' =>    $newUsers->user_id,
+                            'department_id' => $department_id,
+                        ]);
+                        $UserDepartment->save();
+                    }
+
+                    return response()->json(['message' => 'Import successfully', 'inserted_count' => $insertedCount], 200);
+                }
+            } else {
+                return response()->json(['error' => 'No data found in the imported file']);
+            }
+        } else {
+            return response()->json(['error' => 'No file uploaded']);
+        }
+    }
     public function UsersDepartSchoolImport(Request $request, $department_id,  $extender_id)
     {
 
@@ -708,14 +905,16 @@ class ExcelController extends Controller
                         continue;
                     }
                     if ($rowsss[0] >= 1) {
+                        $username = trim($rowsss[1]);
+                        $username = preg_replace('/[ก-๙]+/u', '', $username);
                         $field = [
-                            'username' => trim($rowsss[1]),
-                            'password' => $rowsss[2],
+                            'username' => $username,
+                            'password' =>  strval($rowsss[2]),
                             'firstname' => $rowsss[3],
                             'lastname' => $rowsss[4],
                             'tele' => trim($rowsss[5]),
                             'email' => $rowsss[6],
-                            'citizen' => trim($rowsss[7]),
+                            'citizen' => strval(trim($rowsss[7])),
                             'gerder' => $rowsss[8],
                             'pro' => $rowsss[9],
                         ];
@@ -731,9 +930,16 @@ class ExcelController extends Controller
 
                     if (in_array($field['username'], $existingUsernames)) {
                         $duplicateUsernames[] = 'ชื่อผู้ใช้ที่ซ้ำในไฟล์ xlsx: ' .  $field['username'];
-                    } elseif (strlen($field['username']) < 8) {
+                    } else {
+                        $existingUsernames[] = $field['username'];
+                    }
+
+                    if (strlen($field['username']) < 8) {
                         $duplicateUsernames[] = 'ชื่อไม่ต่ำกว่า 8 ตัวอักษรในไฟล์ xlsx: ' .  $field['username'];
-                    } elseif (preg_match('/[ก-๙]/u', $field['username'])) {
+                    } else {
+                        $existingUsernames[] = $field['username'];
+                    }
+                    if (preg_match('/[ก-๙]/u', $field['username'])) {
                         $duplicateUsernames[] = 'ชื่อต้องไม่เป็นภาษาไทยในไฟล์ xlsx: ' .  $field['username'];
                     } else {
                         $existingUsernames[] = $field['username'];
@@ -815,12 +1021,12 @@ class ExcelController extends Controller
                         $newUsers = new Users([
                             'user_id' => $Usertimestamp,
                             'username' => $row['username'],
-                            'password' => Hash::make($row['password']),
+                            'password' => Hash::make(strval($row['password'])),
                             'firstname' => $row['firstname'],
                             'lastname' => $row['lastname'],
                             'mobile' => $row['tele'],
                             'email' => $row['email'],
-                            'citizen_id' =>   $row['citizen'],
+                            'citizen_id' =>   strval($row['citizen']),
                             'gender' => $row['gender'] ?? null,
                             'prefix' =>  $prefix,
                             'user_role' => $user_role,

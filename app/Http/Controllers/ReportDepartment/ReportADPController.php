@@ -66,6 +66,8 @@ class ReportADPController extends Controller
                 $count1;
                 $count3;
                 $count4;
+
+             
                 $learn = DB::table('users')
                     ->join('course_learner', 'users.user_id', '=', 'course_learner.user_id')
                     ->join('users_department', 'users.user_id', '=', 'users_department.user_id')
@@ -131,6 +133,19 @@ class ReportADPController extends Controller
                     ->groupBy(DB::raw('LTRIM(TO_CHAR(course_learner.registerdate, \'MM\'), \'0\')'))
                     ->groupBy(DB::raw('EXTRACT(YEAR FROM course_learner.registerdate)'))
                     ->get();
+
+                $register = DB::table('users')
+                    ->join('users_department', 'users.user_id', '=', 'users_department.user_id')
+                    ->where('users_department.department_id', '=', $department_id)
+                    ->where('users.user_role', '=', 4)
+                    ->select(
+                        DB::raw('EXTRACT(YEAR FROM users.createdate)  + 543  as year'),
+                        DB::raw('COUNT(DISTINCT users.user_id) as user_count')
+                    )
+                    ->groupBy(
+                        DB::raw('EXTRACT(YEAR FROM users.createdate)')
+                    )
+                    ->get();
                 $monthsYear = DB::table('users')
                     ->join('users_department', 'users.user_id', '=', 'users_department.user_id')
                     ->where('users_department.department_id', '=', $department_id)
@@ -159,7 +174,22 @@ class ReportADPController extends Controller
                     $count3->where('users.province_id', $provins);
                     $count4->where('users.province_id', $provins);
                 }
+                $register = DB::table('users')
 
+                    ->join('users_department', 'users.user_id', '=', 'users_department.user_id')
+                    ->where('users_department.department_id', '=', $department_id)
+                    ->whereIn('users.organization', $users_extender2)
+                    ->where('users.user_role', 4)
+                    ->select(
+
+                        DB::raw('EXTRACT(YEAR FROM users.createdate)  + 543  as year'),
+                        DB::raw('COUNT(DISTINCT users.user_id) as user_count')
+                    )
+                    ->groupBy(
+
+                        DB::raw('EXTRACT(YEAR FROM users.createdate)')
+                    )
+                    ->get();
                 $learn = DB::table('users')
                     ->join('course_learner', 'users.user_id', '=', 'course_learner.user_id')
                     ->join('users_department', 'users.user_id', '=', 'users_department.user_id')
@@ -250,6 +280,22 @@ class ReportADPController extends Controller
                 $count1->where('users.organization', '=', $orgs);
                 $count3->where('users.organization', '=', $orgs);
                 $count4->where('users.organization', '=', $orgs);
+                $register = DB::table('users')
+
+                    ->join('users_department', 'users.user_id', '=', 'users_department.user_id')
+                    ->where('users_department.department_id', '=', $department_id)
+                    ->where('users.organization', '=', $orgs)
+                    ->where('users.user_role', 4)
+                    ->select(
+
+                        DB::raw('EXTRACT(YEAR FROM users.createdate)  + 543  as year'),
+                        DB::raw('COUNT(DISTINCT users.user_id) as user_count')
+                    )
+                    ->groupBy(
+
+                        DB::raw('EXTRACT(YEAR FROM users.createdate)')
+                    )
+                    ->get();
                 $learn = DB::table('users')
                     ->join('course_learner', 'users.user_id', '=', 'course_learner.user_id')
                     ->join('users_department', 'users.user_id', '=', 'users_department.user_id')
@@ -313,7 +359,7 @@ class ReportADPController extends Controller
                     ->where('users.organization', '=', $orgs)
                     ->where('course_learner.learner_status', '=', 1)
                     ->where('course_learner.congratulation', '=', 1)
-             
+
                     ->where('users.user_role', 4)
                     ->select(
                         DB::raw('EXTRACT(YEAR FROM course_learner.registerdate)  + 543  as year'),
@@ -343,6 +389,22 @@ class ReportADPController extends Controller
                 $count1->whereIn('users.province_id',  $zones);
                 $count3->whereIn('users.province_id',  $zones);
                 $count4->whereIn('users.province_id',  $zones);
+                $register = DB::table('users')
+
+                    ->join('users_department', 'users.user_id', '=', 'users_department.user_id')
+                    ->where('users_department.department_id', '=', $department_id)
+                    ->whereIn('users.province_id',  $zones)
+                    ->where('users.user_role', 4)
+                    ->select(
+
+                        DB::raw('EXTRACT(YEAR FROM users.createdate)  + 543  as year'),
+                        DB::raw('COUNT(DISTINCT users.user_id) as user_count')
+                    )
+                    ->groupBy(
+
+                        DB::raw('EXTRACT(YEAR FROM users.createdate)')
+                    )
+                    ->get();
                 $learn = DB::table('users')
                     ->join('course_learner', 'users.user_id', '=', 'course_learner.user_id')
                     ->join('users_department', 'users.user_id', '=', 'users_department.user_id')
@@ -460,6 +522,6 @@ class ReportADPController extends Controller
             ];
         }
 
-        return view('layouts.department.item.data.report2.reporta', compact('monthsYear', 'dataMonthWithId', 'depart', 'dateAll', 'dateAllWithId', 'monthscon', 'monthsconno', 'count1', 'count3', 'count4', 'learn', 'con', 'conno'));
+        return view('layouts.department.item.data.report2.reporta', compact('register', 'monthsYear', 'dataMonthWithId', 'depart', 'dateAll', 'dateAllWithId', 'monthscon', 'monthsconno', 'count1', 'count3', 'count4', 'learn', 'con', 'conno'));
     }
 }

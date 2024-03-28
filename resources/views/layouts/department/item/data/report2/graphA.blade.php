@@ -19,18 +19,19 @@
             var monthsconno = {!! json_encode($monthsconno) !!};
             var monthscon = {!! json_encode($monthscon) !!};
             var monthsYear = {!! json_encode($monthsYear) !!};
+            var register = {!! json_encode($register) !!};
 
             var dataMonthWithId = {!! json_encode($dataMonthWithId) !!};
             $(document).ready(function() {
                 $('#selectyear').on('change', function() {
                     var selectedYear = $('#selectyear').val();
-                    var selectedYearchartDataRe = chartDataRe.find(data => data.year == selectedYear);
+                    var selectedYearchartDataRe = register.find(data => data.year == selectedYear);
                     var selectedYearDataCon = chartDataCon2.find(data => data.year == selectedYear);
                     var selectedYearDataConno = chartDataConno.find(data => data.year == selectedYear);
 
 
 
-                      var yearAll
+                    var yearAll
                     yearAll = selectedYear
                     const xAxisCategories = dataMonthWithId
                         .sort((a, b) => a.sort - b.sort)
@@ -50,8 +51,8 @@
                         var matchingmonthsYear;
                         var totalUsermonthsYear = 0;
 
-                        matchingmonthsYear = monthscon.find(data => data.month == monthId && data
-                            .year == monthyear );
+                        matchingmonthsYear = monthsYear.find(data => data.month == monthId && data
+                            .year == monthyear);
                         return matchingmonthsYear ? parseInt(matchingmonthsYear.user_count) : 0;
                     };
                     if (selectedYear) {
@@ -119,10 +120,10 @@
                             type: 'pie'
                         },
                         title: {
-                            text: 'ผู้สมัครเรียน  ปี ' + selectedYear
+                            text: 'ผู้สมัคร  ปี ' + selectedYear
                         },
                         subtitle: {
-                            text: 'รายงานจำนวนผู้สมัครเรียนจำแนกกลุ่มผู้ใช้งาน'
+                            text: 'รายงานจำนวนผู้สมัครจำแนกกลุ่มผู้ใช้งาน'
                         },
                         tooltip: {
                             pointFormat: '{series.name}: <b>{point.y}</b>'
@@ -145,7 +146,7 @@
                         series: [{
                             name: 'จำนวน',
                             data: [{
-                                    name: 'จำนวนผู้เรียนทั้งหมด',
+                                    name: 'จำนวนผู้สมัครทั้งหมด',
                                     y: selectedYearchartDataRe ? parseInt(
                                         selectedYearchartDataRe.user_count) : 0,
                                 },
@@ -224,7 +225,7 @@
                                 fontFamily: 'prompt'
                             }
                         },
-                           title: {
+                        title: {
                             text: 'จำนวนการลงทะเบียนผู้ใช้งาน (ปีงบประมาณ)'
                         },
                         subtitle: {
