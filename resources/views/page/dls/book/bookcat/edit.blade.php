@@ -79,7 +79,7 @@
                         <div class="form-group">
                             <label for="contents">เนื้อหาโดยย่อ</label>
                             <textarea class="editor" data-placeholder="เนื้อหาโดยย่อ" data-height="200" name="contents"
-                                value="{{ $books->contents }}">{{ $books->contents }}</textarea>
+                                value="{{ $books->contents }}">{{  html_entity_decode($books->contents, ENT_QUOTES, 'UTF-8') }}</textarea>
                         </div><!-- /.form-group -->
                          <div class="form-group">
                             <label for="book_status">สถานะ </label>

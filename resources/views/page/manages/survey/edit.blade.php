@@ -33,7 +33,7 @@
                         <div class="form-group">
                             <label for="detail_th">รายละเอียด </label>
                             <textarea class="editor" data-placeholder="รายละเอียด" data-height="200" name="detail_th"
-                                value="{{ $sur->detail_th }}">{{ $sur->detail_th }}</textarea>
+                                value="{{ $sur->detail_th }}">  {{  html_entity_decode($sur->detail_th, ENT_QUOTES, 'UTF-8') }}</textarea>
                         </div><!-- /.form-group -->
                         @error('detail_th')
                             <span class="badge badge-danger">{{ $message }}</span>

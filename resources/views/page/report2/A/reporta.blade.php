@@ -16,7 +16,6 @@
                             {{ $i }}
                         </option>
                     @endfor
-
                 </select>
             </div>
         </div>

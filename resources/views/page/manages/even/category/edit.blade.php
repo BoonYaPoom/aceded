@@ -61,7 +61,7 @@
                             <label for="detail_th">รายละเอียด (ไทย)</label>
 
                             <textarea class="editor" data-placeholder="รายละเอียด (ไทย)" data-height="200" name="detail_th" id="detail_th">
-                                    {{ $webs->detail_th }}
+                                    {{  html_entity_decode($webs->detail_th, ENT_QUOTES, 'UTF-8') }}
                         </textarea>
                         </div>
 
@@ -69,7 +69,7 @@
                             <label for="detail_en">รายละเอียด (อังกฤษ)</label>
 
                             <textarea class="editor" data-placeholder="รายละเอียด (อังกฤษ)" data-height="200" name="detail_en" id="detail_en">
-                                    {{ $webs->detail_en }}
+                                    {{  html_entity_decode($webs->detail_en, ENT_QUOTES, 'UTF-8') }}
                         </textarea>
                         </div>
 

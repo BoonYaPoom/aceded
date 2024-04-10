@@ -88,16 +88,14 @@
                                 <label for="username" class="col-md-2">Username <span
                                         class="badge badge-warning">Required</span></label>
                                 <div class="col-md-9 mb-3">
-                                    <input type="text" class="form-control inputuname bg-muted" id="username"
+                                    <input type="text" class="form-control inputuname " id="username"
                                         name="username" placeholder="username" value="{{ $usermanages->username }}"
                                         minlength="5" maxlength="20" readonly required=""><small
                                         class="form-text text-muted">ตัวอักษรอังกฤษหรืออีเมล
                                         ความยาว 5-20 ตัวอักษร</small>
                                 </div>
                             </div>
-                            <!-- /form row -->
-
-                            <!-- form row -->
+           
                             <div class="form-row">
                                 <label for="password" class="col-md-2"> รหัสผ่าน</label>
                                 <div class="col-md-9 mb-3">
@@ -106,19 +104,15 @@
                                     <small class="form-text text-muted">ตัวอักษรอังกฤษและตัวเลขความยาว 8-20 ตัวอักษร</small>
                                 </div>
                             </div>
-                            <!-- /form row -->
-
-                            <!-- form row -->
+        
                             <div class="form-row">
                                 <label for="citizen_id" class="col-md-2">เลขประจำตัวประชาชน</label>
                                 <div class="col-md-9 mb-3">
                                     <input type="text" class="form-control " id="citizen_id" name="citizen_id"
-                                        placeholder="เลขประจำตัวประชาชน" value="{{ $usermanages->citizen_id }}" disabled>
+                                        placeholder="เลขประจำตัวประชาชน" value="{{ $usermanages->citizen_id }}" >
                                 </div>
                             </div>
-                            <!-- /form row -->
-
-                            <!-- form row -->
+                   
                             <div class="form-row">
                                 <label for="input04" class="col-md-2">เพศ</label>
                                 <div class="col-md-9 mb-3">

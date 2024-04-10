@@ -44,12 +44,12 @@
                         <!-- .form-group -->
                         <div class="form-group">
                             <label for="detail_th">รายละเอียด (ไทย)</label>
-                            <textarea class="editor" data-placeholder="รายละเอียด (ไทย)" data-height="200" name="detail_th">{{ $suruy->detail_th }}</textarea>
+                            <textarea class="editor" data-placeholder="รายละเอียด (ไทย)" data-height="200" name="detail_th">{{  html_entity_decode($suruy->detail_th, ENT_QUOTES, 'UTF-8') }}</textarea>
                         </div><!-- /.form-group -->
                         <!-- .form-group -->
                         <div class="form-group">
                             <label for="detail_en">รายละเอียด (อังกฤษ)</label>
-                            <textarea class="editor" data-placeholder="รายละเอียด (อังกฤษ)" data-height="200" name="detail_en">{{ $suruy->detail_en }}</textarea>
+                            <textarea class="editor" data-placeholder="รายละเอียด (อังกฤษ)" data-height="200" name="detail_en">{{  html_entity_decode($suruy->detail_en, ENT_QUOTES, 'UTF-8') }}</textarea>
                         </div><!-- /.form-group -->
                         <!-- .form-group -->
                         <div class="form-group">

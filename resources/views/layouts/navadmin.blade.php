@@ -9,7 +9,7 @@
                                 class="menu-icon fas fa-home "></span>
                             หน้าแรก</a>
                         
-                        @if ($data->user_role == 1||$data->user_role == 8)
+                        @if ($data->user_role == 1||$data->user_role == 8||$data->user_role == 7 ||$data->user_role == 9)
                         <a class="nav-link  font-weight-bold {{ Str::startsWith(request()->url(), route('DepartReportview')) || request()->is('rpl', 'rpl/*')
                             ? ' active text-info'
                             : '' }}"

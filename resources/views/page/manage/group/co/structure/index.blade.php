@@ -50,45 +50,53 @@
                         <div class="form-group">
                             <label for="description">คำอธิบายหลักสูตร (ไทย)</label>
                             <textarea id="description_th" class="editor" data-placeholder="คำอธิบายหลักสูตร" data-height="200" name="description_th">
-                                {{ $cour->description_th }}</textarea>
+      
+                               {{  html_entity_decode($cour->description_th, ENT_QUOTES, 'UTF-8') }}</textarea>
                         </div><!-- /.form-group -->
                         <div class="form-group">
                             <label  id="description_en" for="description">คำอธิบายหลักสูตร (อังกฤษ)</label>
                             <textarea class="editor" data-placeholder="คำอธิบายหลักสูตร" data-height="200" name="description_en">
-                                {{ $cour->description_en }}</textarea>
+                              
+                               {{  html_entity_decode($cour->description_en, ENT_QUOTES, 'UTF-8') }}</textarea>
                         </div><!-- /.form-group -->
                         <!-- .form-group -->
                         <div class="form-group">
                             <label for="objectives">วัตถุประสงค์การเรียนรู้ (ไทย)</label>
                             <textarea id="objectives_th"  class="editor" data-placeholder="วัตถุประสงค์การเรียนรู้" data-height="200" name="objectives_th">
-                                    {{ $cour->objectives_th }}</textarea>
+                          
+                                   {{  html_entity_decode($cour->objectives_th, ENT_QUOTES, 'UTF-8') }}</textarea>
                         </div><!-- /.form-group -->
                         <div class="form-group">
                             <label for="objectives">วัตถุประสงค์การเรียนรู้ (อังกฤษ)</label>
                             <textarea id="objectives_en"  class="editor" data-placeholder="วัตถุประสงค์การเรียนรู้" data-height="200" name="objectives_en">   
-                                 {{ $cour->objectives_en }}</textarea>
+                
+                                   {{  html_entity_decode($cour->objectives_en, ENT_QUOTES, 'UTF-8') }}</textarea>
                         </div><!-- /.form-group -->
                         <!-- .form-group -->
                         <div class="form-group">
                             <label for="qualification">คุณสมบัติผู้เข้าอบรม (ไทย)</label>
                             <textarea id="qualification_th" class="editor" data-placeholder="คุณสมบัติผู้เข้าอบรม" data-height="200" name="qualification_th">
-                                    {{ $cour->qualification_th }}</textarea>
+                               
+                                   {{  html_entity_decode($cour->qualification_th, ENT_QUOTES, 'UTF-8') }}</textarea>
                         </div><!-- /.form-group -->
                         <div class="form-group">
                             <label for="qualification">คุณสมบัติผู้เข้าอบรม (อังกฤษ)</label>
                             <textarea id="qualification_en" class="editor" data-placeholder="คุณสมบัติผู้เข้าอบรม" data-height="200" name="qualification_en"> 
-                                   {{ $cour->qualification_en }}</textarea>
+                               
+                                   {{  html_entity_decode($cour->qualification_en, ENT_QUOTES, 'UTF-8') }}</textarea>
                         </div><!-- /.form-group -->
                         <!-- .form-group -->
                         <div class="form-group">
                             <label for="evaluation">การประเมินผล (ไทย)</label>
                             <textarea id="evaluation_th" class="editor" data-placeholder="การประเมินผล" data-height="200" name="evaluation_th">   
-                                 {{ $cour->evaluation_th }}</textarea>
+                 
+                                   {{  html_entity_decode($cour->evaluation_th, ENT_QUOTES, 'UTF-8') }}</textarea>
                         </div><!-- /.form-group -->
                         <div class="form-group">
                             <label for="evaluation">การประเมินผล (อังกฤษ)</label>
                             <textarea id="evaluation_en" class="editor" data-placeholder="การประเมินผล" data-height="200" name="evaluation_en">  
-                                  {{ $cour->evaluation_en }}</textarea>
+             
+                                   {{  html_entity_decode($cour->evaluation_en, ENT_QUOTES, 'UTF-8') }}</textarea>
                         </div><!-- /.form-group -->
                     </div><!-- /.card-body -->
                 </div><!-- /.card -->

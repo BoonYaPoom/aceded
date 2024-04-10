@@ -36,7 +36,7 @@
                         <!-- .form-group -->
                         <div class="form-group">
                             <label for="resultlesson">สิ่งที่ได้รับจากบทเรียน</label>
-                            <textarea class="editor" data-placeholder="สิ่งที่ได้รับจากบทเรียน" data-height="200" name="resultlesson">{{$lessons->resultlesson}}</textarea>
+                            <textarea class="editor" data-placeholder="สิ่งที่ได้รับจากบทเรียน" data-height="200" name="resultlesson"> {{  html_entity_decode($lessons->resultlesson , ENT_QUOTES, 'UTF-8') }}</textarea>
                         </div>
                         <!-- /.form-group -->
                         <!-- .form-group -->
@@ -50,8 +50,7 @@
                                 @endforeach
                             </select>
                         </div>
-                        <!-- /.form-group -->
-                        <!-- .form-group -->
+               
                         <div class="form-group">
                             <label for="lesson_status">สถานะหัวข้อ </label>
                             <label class="switcher-control switcher-control-success switcher-control-lg">
@@ -61,8 +60,7 @@
                                 <span class="switcher-label-on">ON</span> <span
                                     class="switcher-label-off text-red">OFF</span></label>
                         </div>
-                        <!-- /.form-group -->
-                        <!-- .form-group -->
+                  
                         <div class="form-group">
                             <label for="exercise">แบบฝึกหัดท้ายบท </label>
                             <label class="switcher-control switcher-control-success switcher-control-lg">

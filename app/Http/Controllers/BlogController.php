@@ -61,6 +61,7 @@ class BlogController extends Controller
         }
         if ($request->has('detail')) {
             $detail = $request->detail;
+     
             $decodedText = '';
             if (!empty($detail)) {
                 $de_th = new DOMDocument();
@@ -84,7 +85,8 @@ class BlogController extends Controller
                     }
                 }
                 $detail = $de_th->saveHTML();
-                $decodedText = html_entity_decode($detail, ENT_QUOTES, 'UTF-8');
+                $details = html_entity_decode($detail, ENT_QUOTES, 'UTF-8');
+                $decodedText = htmlentities($details); 
             }
 
             $blogs->detail = $decodedText;
@@ -186,14 +188,13 @@ class BlogController extends Controller
         }
         if ($request->has('detail')) {
             $detail = $request->detail;
+      
             $decodedText = '';
             if (!empty($detail)) {
                 $de_th = new DOMDocument();
                 $de_th->encoding = 'UTF-8'; // กำหนด encoding เป็น UTF-8
                 $detail = mb_convert_encoding($detail, 'HTML-ENTITIES', 'UTF-8');
-                $detail = preg_replace('/<figure\b[^>]*>(.*?)<\/figure>/is', '$1', $detail);
-                $detail = preg_replace('/<p\b[^>]*>/', '', $detail);
-                $detail = preg_replace('/<\/p>/', '', $detail);
+     
                 libxml_use_internal_errors(true);
                 $de_th->loadHTML($detail, LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
                 libxml_clear_errors();
@@ -212,10 +213,13 @@ class BlogController extends Controller
                         $img->setAttribute('src', $newImageUrl);
                     }
                 }
-                $detail = $de_th->saveHTML();
-                $decodedText = html_entity_decode($detail, ENT_QUOTES, 'UTF-8');
-            }
+                $detail = html_entity_decode($de_th->saveHTML(), ENT_QUOTES, 'UTF-8');
+                $decodedText = htmlentities($detail);
 
+              //     $decodedText = htmlentities($detail, ENT_QUOTES, 'UTF-8'); 
+            //  $decodedText = htmlspecialchars($detail, ENT_QUOTES); 
+            }
+      
             $blogs->detail = $decodedText;
         }
         $blogs->detail_en =  0;

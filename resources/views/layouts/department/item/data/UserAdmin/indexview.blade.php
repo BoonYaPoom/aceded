@@ -314,6 +314,12 @@
                                             onclick="window.location='{{ route('exportUserProvicAll', ['provicValue' => $provicValue]) }}'">
                                             <span>Excel รายชื่อทั้งจังหวัด</span>
                                         </button>
+                                    @elseif ($data->user_role == 9)
+                                        <button class="btn btn-secondary buttons-excel buttons-html5" tabindex="0"
+                                            aria-controls="datatable" type="button"
+                                            onclick="window.location='{{ route('exportUserDataZone') }}'">
+                                            <span>Excel รายชื่อทั้งภาค</span>
+                                        </button>
                                     @endif
                                 </div>
 

@@ -666,7 +666,7 @@ class ExamController extends Controller
         $decodedTextquestion = html_entity_decode($question, ENT_QUOTES, 'UTF-8');
       }
 
-
+      dd($decodedTextquestion);
       $ques->question = $decodedTextquestion;
     }
     if ($ques->question_type == 5) {
@@ -977,7 +977,7 @@ class ExamController extends Controller
               $image_name8 = '/upload/Que/ck/' . time() . $key8 . '.png'; // ใส่ .png เพื่อให้เป็นนามสกุลไฟล์ถูกต้อง
               file_put_contents(public_path() . $image_name8, $data8);
               $img8->removeAttribute('src');
-              $newImageUrl8 = asset($image_name);
+              $newImageUrl8 = asset($image_name8);
               $img8->setAttribute('src', $newImageUrl8);
             }
           }

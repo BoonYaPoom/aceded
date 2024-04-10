@@ -42,7 +42,7 @@
                     <!-- .form-group -->
                     <div class="form-group ">
                         <label for="detail">รายละเอียด </label>
-                        <textarea class="editor" data-placeholder="รายละเอียด" data-height="200" name="detail">{{$act->detail}}</textarea>
+                        <textarea class="editor" data-placeholder="รายละเอียด" data-height="200" name="detail">{{  html_entity_decode($act->detail, ENT_QUOTES, 'UTF-8') }}</textarea>
                     </div><!-- /.form-group -->
                     <div class="form-group">
                         <label for="activity_status">สถานะ </label> <label

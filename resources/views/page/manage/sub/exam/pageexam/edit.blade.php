@@ -109,8 +109,8 @@
                         <div class="form-group">
                             <label for="question">คำถาม <span class="badge badge-warning">Required</span></label>
                             <textarea class="editor" data-placeholder="คำถาม" data-height="150" name="question" id="question">
-                                {{ $ques->question }}
-                        </textarea>
+                    {{  html_entity_decode( $ques->question, ENT_QUOTES, 'UTF-8') }}
+                            </textarea>
                         </div><!-- /.form-group -->
                         <!-- .form-group -->
                         @error('question')
@@ -151,7 +151,8 @@
                                     <textarea class="editor" data-placeholder="ตัวเลือกที่ {{ $i }}" data-height="120"
                                         name="CHOICE{{ $i }}" id="CHOICE{{ $i }}">
                                     <figure><figcaption></figcaption></figure>
-                                    {{ $ques['choice' . $i] ?? '' }}
+                         
+                                        {{  html_entity_decode( $ques['choice' . $i] ?? '', ENT_QUOTES, 'UTF-8') }}
                                 </textarea>
 
                                 </div><!-- /.form-group -->
@@ -523,7 +524,7 @@
                         <div class="form-group">
                             <label for="explain">คำอธิบาย </label>
                             <textarea class="editor" data-placeholder="คำอธิบาย" data-height="150" name="explain" id="explain">
-                                {{ $ques->explain }}
+                             {{  html_entity_decode( $ques->explain, ENT_QUOTES, 'UTF-8') }}
                             </textarea>
                         </div><!-- /.form-group -->
 

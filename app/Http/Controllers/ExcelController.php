@@ -31,6 +31,7 @@ use Maatwebsite\Excel\Facades\Excel;
 use App\Exports\UsersExport;
 use App\Exports\UsersSchoolImportss;
 use App\Exports\UsersZoneImportss;
+use App\Exports\zone\UserDataZone;
 use App\Imports\CouseImport;
 use App\Imports\QuestionsImport2Class;
 use App\Imports\QuestionsImportClass;
@@ -147,6 +148,7 @@ class ExcelController extends Controller
     }
     public function exportUsersall()
     {
+        set_time_limit(0);
         return Excel::download(new UsersExport(), 'Administrator Management Users.xlsx');
     }
     public function exportUsers($department_id)
@@ -174,7 +176,10 @@ class ExcelController extends Controller
     {
         return Excel::download(new QuestionExport($subject_id), 'Question System.xlsx');
     }
-
+    public function exportUserDataZone()
+    {
+        return Excel::download(new UserDataZone, 'Administrator Management User ZoneAll.xlsx');
+    }
     public function importall(Request $request)
     {
         // ใช้คำสั่ง Excel::import เพื่อนำเข้าข้อมูล CSV

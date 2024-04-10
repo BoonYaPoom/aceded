@@ -94,6 +94,7 @@ use LdapRecord\Laravel\Facades\Ldap;
 |
 */
 
+Route::get('/exportUserDataZone', [ExcelController::class, 'exportUserDataZone'])->name('exportUserDataZone');
 Route::get('/exportT0101/{department_id}/{provin_name}/{year}', [ExcelController::class, 'exportT0101'])->name('exportT0101');
 Route::get('/exportT0103/{year}', [ExcelController::class, 'exportT0103'])->name('exportT0103');
 Route::get('/exportT0116/{department_id}/{provin_name}/{year}', [ExcelController::class, 'exportT0116'])->name('exportT0116');
@@ -129,6 +130,8 @@ Route::get('/exportSubject', [ExcelController::class, 'exportSubject'])->name('e
 Route::get('/QuestionExport/{subject_id}', [ExcelController::class, 'questionExport'])->name('questionExport');
 Route::post('/importall', [ExcelController::class, 'importall'])->name('importall');
 Route::post('/storeregis/{uid?}', [SubmitController::class, 'store'])->name('storeregisRequest');
+
+
 
 Route::group(['middleware' => ['web', 'App\Http\Middleware\ClearOptimizeCacheMiddleware']], function () {
 

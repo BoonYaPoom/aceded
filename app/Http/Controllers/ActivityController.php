@@ -83,7 +83,8 @@ class ActivityController extends Controller
                     }
                 }
                 $detail = $de_th->saveHTML();
-                $decodedText = html_entity_decode($detail, ENT_QUOTES, 'UTF-8');
+                $decodedText  =  htmlentities($detail);
+          
             }
 
             $act->detail = $decodedText;
@@ -148,7 +149,7 @@ class ActivityController extends Controller
                     }
                 }
                 $detail = $de_th->saveHTML();
-                $decodedText = html_entity_decode($detail, ENT_QUOTES, 'UTF-8');
+                $decodedText  =  htmlentities($detail);
             }
 
             $act->detail = $decodedText;
@@ -240,7 +241,7 @@ class ActivityController extends Controller
                         }
                     }
                     $detail = $de_th->saveHTML();
-                    $decodedText = html_entity_decode($detail, ENT_QUOTES, 'UTF-8');
+                    $decodedText =  htmlentities($detail);
                 }
 
                 $act->detail = $decodedText;
@@ -313,7 +314,7 @@ class ActivityController extends Controller
                     }
                 }
                 $detail = $de_th->saveHTML();
-                $decodedText = html_entity_decode($detail, ENT_QUOTES, 'UTF-8');
+                $decodedText = htmlentities($detail);
             }
 
             $act->detail = $decodedText;

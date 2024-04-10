@@ -42,8 +42,8 @@
                         <div class="form-group">
                             <label for="detail_th">รายละเอียด (ไทย)</label>
                             <textarea class="editor" data-placeholder="รายละเอียด (ไทย)" data-height="200" name="detail_th">
-
-                            {{ $catac->detail_th }}
+{{  html_entity_decode($catac->detail_th , ENT_QUOTES, 'UTF-8') }}
+             
                         </textarea>
                         </div><!-- /.form-group -->
                         <!-- .form-group -->

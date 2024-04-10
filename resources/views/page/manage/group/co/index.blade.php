@@ -43,7 +43,7 @@
                                     <th class="align-middle" style="width:10%"> รหัสหลักสูตร </th>
                                     <th class="align-middle" style="width:30%"> หลักสูตร (ไทย) </th>
                                     <th class="align-middle" style="width:30%"> หลักสูตร (อังกฤษ) </th>
-                                    <th class="align-middle" style="width:10%"> แนะนำ </th>
+                                    <th class="align-middle" style="width:10%"> สถานะ </th>
                                     <th class="align-middle" style="width:20%">กระทำ</th>
                                 </tr>
                             </thead><!-- /thead -->

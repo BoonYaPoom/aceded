@@ -90,14 +90,19 @@
                         var Admina =
                             ' <a data-toggle="modal" data-target="" title="กำหนดสิทธิ์"><i class="fas fa-user-shield text-bg-muted "></i></a>';
 
+                        var users =
+                            ' <i class="fas fa-user text-primary"></i>';
                         // ตรวจสอบเงื่อนไข
-                        if (row.user_role == 1 || row.user_role == 8) {
+                        if (row.user_role == 1 || row.user_role == 8 ) {
                             return Admina + (user_dataLogin == 1 || user_dataLogin == 8 ?
-                                linkedituser : '');
+                                linkedituser + linklogusers + linkdeleteuser : '');
                         } else {
-                            return linkedituser + linklogusers +
-                                linkdeleteuser;
+                            return users + (user_dataLogin == 1 || user_dataLogin == 8 ||
+                                user_dataLogin == 6 ||
+                                user_dataLogin == 7 ?
+                                linkedituser + linkdeleteuser: '');
                         }
+                      
                     },
                 },
             ],

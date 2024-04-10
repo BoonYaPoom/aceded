@@ -656,7 +656,7 @@
                                         <label class="control-label" for="paymentdetail">ข้อมูลการชำระเงิน</label>
                                         <textarea class="editor" data-placeholder="ข้อมูลการชำระเงิน" data-height="200" id="paymentdetail"
                                             name="paymentdetail">
-                                    {{ $cour->paymentdetail }}
+                                     {{  html_entity_decode($cour->paymentdetail, ENT_QUOTES, 'UTF-8') }}
                                     </textarea>
                                     </div>
                                 </div><!-- /grid column -->

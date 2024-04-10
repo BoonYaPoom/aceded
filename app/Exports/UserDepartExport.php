@@ -82,9 +82,9 @@ class UserDepartExport implements
             } else {
                 if ($item->province_id > 0) {
                     $exten = DB::table('users_extender2')->where('extender_id', $item->organization)
-                        ->join('provinces', 'provinces.id', '=', 'users_extender2.school_province')
-                        ->join('districts', 'districts.id', '=', 'users_extender2.school_district')
-                        ->join('subdistricts', 'subdistricts.id', '=', 'users_extender2.school_subdistrict')
+                        ->leftJoin('provinces', 'provinces.id', '=', 'users_extender2.school_province')
+                        ->leftJoin('districts', 'districts.id', '=', 'users_extender2.school_district')
+                        ->leftJoin('subdistricts', 'subdistricts.id', '=', 'users_extender2.school_subdistrict')
                         ->select(
                             'users_extender2.item_parent_id as item_parent_id',
                             'users_extender2.name as exten_name',
@@ -112,9 +112,9 @@ class UserDepartExport implements
                     $proviUser = DB::table('provinces')->where('id', $item->province_id)->value('name_in_thai') ?? '-';
                 } elseif ($item->province_id == 0) {
                     $exten = DB::table('users_extender2')->where('extender_id', $item->organization)
-                        ->join('provinces', 'provinces.id', '=', 'users_extender2.school_province')
-                        ->join('districts', 'districts.id', '=', 'users_extender2.school_district')
-                        ->join('subdistricts', 'subdistricts.id', '=', 'users_extender2.school_subdistrict')
+                        ->leftJoin('provinces', 'provinces.id', '=', 'users_extender2.school_province')
+                        ->leftJoin('districts', 'districts.id', '=', 'users_extender2.school_district')
+                        ->leftJoin('subdistricts', 'subdistricts.id', '=', 'users_extender2.school_subdistrict')
                         ->select(
                             'users_extender2.item_parent_id as item_parent_id',
                             'users_extender2.name as exten_name',

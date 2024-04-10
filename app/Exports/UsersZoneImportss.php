@@ -33,7 +33,7 @@ class UsersZoneImportss implements
         if (Session::has('loginId')) {
             $data = DB::table('users')->where('user_id', Session::get('loginId'))->first();
             $zones = DB::table('user_admin_zone')->where('user_id', $data->user_id)->pluck('province_id')->toArray();
-            $zones = DB::table('user_admin_zone')->where('user_id', $data->user_id)->pluck('province_id')->toArray();
+          
             $users_extender2 = DB::table('users_extender2')
                 ->whereIn('school_province', $zones)
                 ->pluck('extender_id');

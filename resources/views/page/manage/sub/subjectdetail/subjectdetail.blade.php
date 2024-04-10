@@ -27,14 +27,14 @@
         <div class="form-group">
             <label for="description_th">คำอธิบายวิชา (ไทย)</label>
             <textarea class="editor" data-placeholder="คำอธิบายวิชา" data-height="200" name="description_th">
-                  {{$subs->description_th}}
+             {{  html_entity_decode($subs->description_th , ENT_QUOTES, 'UTF-8') }}
 
             </textarea>
         </div><!-- /.form-group -->
         <div class="form-group">
             <label for="description_en">คำอธิบายวิชา (อังกฤษ)</label>
             <textarea class="editor" data-placeholder="คำอธิบายวิชา" data-height="200" name="description_en">
-              {{$subs->description_en}}
+           {{  html_entity_decode($subs->description_en , ENT_QUOTES, 'UTF-8') }}
 
             </textarea>
         </div><!-- /.form-group -->
@@ -43,13 +43,13 @@
             <label for="objectives_th">วัตถุประสงค์การเรียนรู้ (ไทย)</label>
             <textarea class="editor" data-placeholder="วัตถุประสงค์การเรียนรู้" data-height="200" name="objectives_th">
 
-              {{$subs->objectives_th}}
+                  {{  html_entity_decode($subs->objectives_th , ENT_QUOTES, 'UTF-8') }}
             </textarea>
         </div><!-- /.form-group -->
         <div class="form-group">
             <label for="objectives_en">วัตถุประสงค์การเรียนรู้ (อังกฤษ)</label>
             <textarea class="editor" data-placeholder="วัตถุประสงค์การเรียนรู้" data-height="200" name="objectives_en">
-              {{$subs->objectives_en}}
+          {{  html_entity_decode($subs->objectives_en , ENT_QUOTES, 'UTF-8') }}
 
             </textarea>
         </div><!-- /.form-group -->
@@ -57,7 +57,7 @@
         <div class="form-group">
             <label for="evaluation_th">การประเมินผล (ไทย)</label>
             <textarea class="editor" data-placeholder="การประเมินผล" data-height="200" name="evaluation_th">
-              {{$subs->evaluation_th}}
+        {{  html_entity_decode($subs->evaluation_th , ENT_QUOTES, 'UTF-8') }}
 
             </textarea>
         </div><!-- /.form-group -->
@@ -65,21 +65,20 @@
             <label for="evaluation_en">การประเมินผล (อังกฤษ)</label>
             <textarea class="editor" data-placeholder="การประเมินผล" data-height="200" name="evaluation_en">
 
-              {{$subs->evaluation_en}}
+      {{  html_entity_decode($subs->evaluation_en , ENT_QUOTES, 'UTF-8') }}
             </textarea>
         </div><!-- /.form-group -->
         <!-- .form-group -->
         <div class="form-group">
             <label for="schedule_th">ตารางเรียน (ไทย)</label>
             <textarea class="editor" data-placeholder="ตารางเรียน" data-height="200" name="schedule_th">
-              {{$subs->schedule_th}}
-
+      {{  html_entity_decode($subs->schedule_th , ENT_QUOTES, 'UTF-8') }}
             </textarea>
         </div><!-- /.form-group -->
         <div class="form-group">
             <label for="schedule_en">ตารางเรียน (อังกฤษ)</label>
             <textarea class="editor" data-placeholder="ตารางเรียน" data-height="200" name="schedule_en">
-              {{$subs->schedule_en}}
+               {{  html_entity_decode($subs->schedule_en , ENT_QUOTES, 'UTF-8') }}
 
             </textarea>
         </div><!-- /.form-group -->
