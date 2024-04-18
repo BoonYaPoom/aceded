@@ -22,7 +22,7 @@ class ClassroomController extends Controller
             ->where('course_learner.user_id', '=', $user_id)
             ->where('course_group.department_id', '=', $department_id)
             ->get();
-   
+
         $courseIds = [];
         $data_lesson = [];
         foreach ($user_data as $row) {
@@ -51,7 +51,7 @@ class ClassroomController extends Controller
                 $banner =   $res->banner;
                 $firstPart = DB::table('exam')
                     ->select(
-                      
+
                         DB::raw('COALESCE(
                 (SELECT CASE 
                     WHEN s.fullscore IS NOT NULL THEN 1 
@@ -81,7 +81,7 @@ class ClassroomController extends Controller
                     })
                     ->where('t1.subject_id', $pageID)
                     ->where('t1.lesson_status', '1')
-                    ->select( DB::raw('CAST(t2.status AS NUMBER) AS STATUS'));
+                    ->select(DB::raw('CAST(t2.status AS NUMBER) AS STATUS'));
 
                 $emresult = $firstPart->union($secondPart)->get();
 
@@ -101,21 +101,19 @@ class ClassroomController extends Controller
                     ) {
                         $process_cal = 100;
                     }
-
-              
                 }
-                 $data_lesson[] = [
+                $data_lesson[] = [
                     'id' => $pageID,
                     'subject' => $subject_th,
                     'process' => $process_cal,
                     'course_th' => $course_th,
                     'course_id' => $course_id,
                     'banner' => $banner
-                 ];
+                ];
             }
         }
-        // dd($data_lesson);
-
+        //  dd(count($data_lesson));
+      
         return view('layouts.department.item.data.UserAdmin.group.classroom.index', compact('depart', 'user_data', 'data_lesson'));
     }
 }
