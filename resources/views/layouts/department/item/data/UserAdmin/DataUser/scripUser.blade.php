@@ -75,6 +75,10 @@
                             "{{ route('DPeditUser', ['department_id' => ':depart', 'user_id' => ':user_id']) }}";
                         edituser = edituser.replace(':depart', depart).replace(':user_id',
                             user_id);
+                        var classroom =
+                            "{{ route('classroom_user', ['department_id' => ':depart', 'user_id' => ':user_id']) }}";
+                        classroom = classroom.replace(':depart', depart).replace(':user_id',
+                            user_id);
 
                         // สร้างตัวแปรเก็บhtml stype
                         var linkedituser = '<a href="' + edituser +
@@ -84,8 +88,10 @@
                             '" onclick="deleteRecord(event)" rel="" class="switcher-delete" data-toggle="tooltip" title="ลบข้อมูล"><i class="fas fa-trash-alt text-warning "></i></a>';
 
                         var linklogusers = '<a href="' + logusers +
-                            '" data-toggle="tooltip" title="ดูประวัติการใช้งาน"><i class="fas fa-history text-info"></i></a>';
+                            '" data-toggle="tooltip" title="ดูประวัติการใช้งาน"><i class="fas fa-history text-info"></i></a> ';
 
+                        var classroom = '<a href="' + classroom +
+                            '" data-toggle="tooltip" title="ดูประวัติการใช้งาน"><i class="fas fa-book text-info"></i></a> &nbsp;';
                         var modelPass =
                             '<button class="btn sendtemppwd " data-toggle="modal" data-target="#clientWarningModal-' +
                             user_id +
@@ -97,17 +103,17 @@
                             '" title="กำหนดสิทธิ์"><i class="fas fa-user-shield text-danger"></i></a>';
 
                         var Admina =
-                            ' <a data-toggle="modal" data-target="" title="กำหนดสิทธิ์"><i class="fas fa-user-shield text-bg-muted "></i></a>';
+                            ' <a data-toggle="modal" data-target="" title="กำหนดสิทธิ์"><i class="fas fa-user-shield text-bg-muted "></i></a> &nbsp;';
                         var users =
-                            ' <i class="fas fa-user text-primary"></i>';
+                            ' <i class="fas fa-user text-primary"></i> &nbsp;';
                         // ตรวจสอบเงื่อนไข
                         if (row.user_role == 1 || row.user_role == 8 || row.user_role == 7) {
-                            return Admina + (user_dataLogin == 1 || user_dataLogin == 8 ?
+                            return Admina + classroom + (user_dataLogin == 1 || user_dataLogin == 8 ?
                                 linkedituser + linklogusers + linkdeleteuser : '');
                         } else {
-                            return users + (user_dataLogin == 1 || user_dataLogin == 8 ||
+                            return users + classroom + (user_dataLogin == 1 || user_dataLogin == 8 ||
                                 user_dataLogin == 6 ?
-                                linkedituser + linkdeleteuser: '');
+                                linkedituser + linkdeleteuser : '');
                         }
                     },
                 },

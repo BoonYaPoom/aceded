@@ -11,6 +11,7 @@ use App\Http\Controllers\BookController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\CategoryTopicController;
 use App\Http\Controllers\ClaimUserController;
+use App\Http\Controllers\ClassRoom\ClassroomController;
 use App\Http\Controllers\CourseClassAddController;
 use App\Http\Controllers\CourseClassController;
 use App\Http\Controllers\CourseController;
@@ -514,7 +515,7 @@ Route::group(['middleware' => 'IsLoggedIn'], function () {
                     Route::get('{department_id}/DPSchoolcreateUser_umsschoolform/{school_code}', [DepartUsersController::class, 'DPSchoolcreateUser'])->name('DPSchoolcreateUser');
                     Route::post('{department_id}/{school_code}/DPSchoolstoreUser_umsschoolform', [DepartUsersController::class, 'DPSchoolstoreUser'])->name('DPSchoolstoreUser');
 
-
+                    Route::get('{department_id}/classroom_user/{user_id}', [ClassroomController::class, 'classroom_user'])->name('classroom_user');
 
                     Route::get('{department_id}/{extender_id}/umsschoolDP_add/', [ExtenderController::class, 'adduser'])->name('umsschoolDP_add');
                     Route::get('{department_id}/umsSchoolDP', [ExtenderController::class, 'testumsschool'])->name('testumsschool');
