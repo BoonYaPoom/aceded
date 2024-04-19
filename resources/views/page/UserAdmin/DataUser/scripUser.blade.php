@@ -67,6 +67,10 @@
                         var edituser = "{{ route('editUser', ['user_id' => 'user_id']) }}";
                         edituser = edituser.replace('user_id', user_id);
 
+                        var classroom =
+                            "{{ route('classroom_all', ['user_id' => ':user_id']) }}";
+                        classroom = classroom.replace(':user_id',
+                            user_id);
                         // สร้างตัวแปรเก็บhtml stype
                         var linkedituser = '<a href="' + edituser +
                             '" data-toggle="tooltip" title="แก้ไข"><i class="far fa-edit text-success mr-1"></i></a>';
@@ -88,21 +92,24 @@
                             '" title="กำหนดสิทธิ์"><i class="fas fa-user-shield text-danger"></i></a>';
 
                         var Admina =
-                            ' <a data-toggle="modal" data-target="" title="กำหนดสิทธิ์"><i class="fas fa-user-shield text-bg-muted "></i></a>';
+                            ' <a data-toggle="modal" data-target="" title="กำหนดสิทธิ์"><i class="fas fa-user-shield text-bg-muted "></i></a>  &nbsp;';
 
                         var users =
-                            ' <i class="fas fa-user text-primary"></i>';
+                            ' <i class="fas fa-user text-primary"></i> &nbsp;';
+
+                        var classroom = '<a href="' + classroom +
+                            '" data-toggle="tooltip" title="ดูประวัติการใช้งาน"><i class="fas fa-book text-info"></i></a> &nbsp;';
                         // ตรวจสอบเงื่อนไข
-                        if (row.user_role == 1 || row.user_role == 8 ) {
+                        if (row.user_role == 1 || row.user_role == 8) {
                             return Admina + (user_dataLogin == 1 || user_dataLogin == 8 ?
-                                linkedituser + linklogusers + linkdeleteuser : '');
+                               classroom +  linkedituser + linklogusers + linkdeleteuser : '');
                         } else {
-                            return users + (user_dataLogin == 1 || user_dataLogin == 8 ||
+                            return users +   (user_dataLogin == 1 || user_dataLogin == 8 ||
                                 user_dataLogin == 6 ||
                                 user_dataLogin == 7 ?
-                                linkedituser + linkdeleteuser: '');
+                              classroom +   linkedituser + linkdeleteuser : '');
                         }
-                      
+
                     },
                 },
             ],

@@ -603,6 +603,9 @@ Route::group(['middleware' => 'IsLoggedIn'], function () {
 
                 Route::get('/umsschooluser/{school_code}', [SchoolController::class, 'adduser'])->name('umsschooluser');
                 Route::post('{school_code}/saveSelectedSchool_umsschoolform', [SchoolController::class, 'saveSelectedSchool'])->name('saveSelectedSchool');
+
+                Route::get('classroom_all/{user_id}', [ClassroomController::class, 'classroom_all'])->name('classroom_all');
+
             });
 
 
@@ -678,8 +681,6 @@ Route::group(['middleware' => 'IsLoggedIn'], function () {
 
                 Route::get('updateTeacherStatus', [CourseTeacherController::class, 'update'])->name('TeacherStatus');
                 Route::get('delete_surveyquestionform/{question_id}', [SurveyQuestionController::class, 'destory'])->name('destoryReport');
-
-
                 Route::get('/ActivityChangeStatus', [ActivityCategoryController::class, 'changeStatus'])->name('ActivityChangeStatus');
                 Route::get('/ActChangeStatus', [ActivityController::class, 'changeStatus'])->name('ActChangeStatus');
                 Route::get('/delete_blogform/{blog_id}', [BlogController::class, 'destory'])->name('destoryblog');
@@ -715,12 +716,12 @@ Route::group(['middleware' => 'IsLoggedIn'], function () {
                 Route::get('/changeStatusWeb', [WebController::class, 'changeStatus'])->name('changeStatusWeb');
                 Route::get('/changeSortWeb', [WebController::class, 'changeSortWeb'])->name('changeSortWeb');
                 Route::get('/changeStatuBook', [BookController::class, 'changeStatus'])->name('changeStatuBook');
-
-
                 Route::get('/{topic_id}/topic_destroy', [CategoryTopicController::class, 'destroy'])->name('topic_destroy');
                 Route::get('/changeStatuCategoryTopic', [CategoryTopicController::class, 'changeStatuCategoryTopic'])->name('changeStatuCategoryTopic');
                 Route::get('/schooldepart_delete/{school_id}', [SchoolDepartController::class, 'delete'])->name('deleteschoolDepart');
                 Route::get('/department_delete/{department_id}', [DepartmentController::class, 'destroy'])->name('deleteDepart');
+                Route::get('{user_id}/classroom_user_status/{course_id}/{certificate_file_id}', [ClassroomController::class, 'classroom_user_status'])->name('classroom_user_status');
+                
             });
         });
     });

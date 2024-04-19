@@ -10,8 +10,6 @@
                 "fadeOut": 250,
                 "fadeIn": 250,
                 "positionClass": 'toast-top-right',
-
-
             }
             toastr.success("{{ Session::get('message') }}");
         </script>

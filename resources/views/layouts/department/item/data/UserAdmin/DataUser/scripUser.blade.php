@@ -108,12 +108,12 @@
                             ' <i class="fas fa-user text-primary"></i> &nbsp;';
                         // ตรวจสอบเงื่อนไข
                         if (row.user_role == 1 || row.user_role == 8 || row.user_role == 7) {
-                            return Admina + classroom + (user_dataLogin == 1 || user_dataLogin == 8 ?
-                                linkedituser + linklogusers + linkdeleteuser : '');
+                            return Admina + (user_dataLogin == 1 || user_dataLogin == 8 ?
+                              classroom +  linkedituser + linklogusers + linkdeleteuser : '');
                         } else {
-                            return users + classroom + (user_dataLogin == 1 || user_dataLogin == 8 ||
+                            return users +  (user_dataLogin == 1 || user_dataLogin == 8 ||
                                 user_dataLogin == 6 ?
-                                linkedituser + linkdeleteuser : '');
+                                classroom + linkedituser + linkdeleteuser : '');
                         }
                     },
                 },

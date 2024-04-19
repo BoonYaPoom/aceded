@@ -1,5 +1,5 @@
-@extends('layouts.department.layout.departmenthome')
-@section('contentdepartment')
+@extends('layouts.adminhome')
+@section('content')
     @if (Session::has('message'))
         <script>
             toastr.options = {
@@ -20,7 +20,7 @@
             <div class="card card-fluid">
                 <div class="card-header bg-muted"></div>
                 <div class="col-lg">
-                    <h6 class="card-header"> ข้อมูลการเรียน ของ  {{ ' ' .$db_user->firstname . ' ' . $db_user->lastname}} </h6>
+                    <h6 class="card-header"> ข้อมูลการเรียน ของ  {{ ' ' .$db_user->firstname . ' ' . $db_user->lastname}}</h6>
                     <div class="card-body">
                         @if (count($data_lesson) > 0)
                             @php
