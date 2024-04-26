@@ -49,55 +49,6 @@ class BookCategoryController extends Controller
 
             $book->save();
 
-
-
-            if (Session::has('loginId')) {
-                $loginId = Session::get('loginId');
-
-                $userAgent = $request->header('User-Agent');
-            }
-            $conditions = [
-                'Windows' => 'Windows',
-                'Mac' => 'Macintosh|Mac OS',
-                'Linux' => 'Linux',
-                'Android' => 'Android',
-                'iOS' => 'iPhone|iPad|iPod',
-            ];
-
-            $os = '';
-
-            foreach ($conditions as $osName => $pattern) {
-                if (preg_match("/$pattern/i", $userAgent)) {
-                    $os = $osName;
-                    break;
-                }
-            }
-            if (preg_match('/(Chrome|Firefox|Safari|Opera|Edge|IE|Edg)[\/\s](\d+\.\d+)/i', $userAgent, $matches)) {
-                $browser = $matches[1];
-            }
-
-
-            if ($loginId) {
-                $loginLog = Log::where('user_id', $loginId)->where('logaction', 2)->first();
-
-                $loginLog = new Log;
-                $loginLog->logid = 2;
-                $loginLog->logaction = 2;
-                $loginLog->logdetail = '';
-                $loginLog->idref  = 1;
-                $loginLog->subject_id  = 1;
-                $loginLog->duration = 1;
-                $loginLog->status  = 0;
-                $loginLog->user_id = $loginId;
-                $loginLog->logagents = $browser;
-                $loginLog->logip = $request->ip();
-
-                $loginLog->logdate = now()->format('Y-m-d H:i:s');
-                $loginLog->logplatform = $os;
-            }
-
-
-            $loginLog->save();
         } catch (\Exception $e) {
       
             return redirect()->back()->with('error', 'เกิดข้อผิดพลาดในการบันทึกข้อมูล');
