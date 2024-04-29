@@ -27,25 +27,30 @@
                             </thead><!-- /thead -->
                             <!-- tbody -->
                             <tbody>
-                                <!-- tr -->
-
-
-
+                              
                                 <tr>
                                     <td>1</td>
                                     <td><i class="fas fa-folder-plus fa-lg text-primary"></i> <a
                                             href="{{ route('suppage', ['department_id' => $depart->department_id]) }}">จัดการวิชา</a>
                                     </td>
                                     </td>
-                                </tr><!-- /tr -->
-                                <!-- tr -->
+                                </tr>
+                           
                                 <tr>
                                     <td>2</td>
                                     <td><i class="fas fa-folder-plus fa-lg text-primary"></i> <a
                                             href="{{ route('courgroup', ['department_id' => $depart->department_id]) }}">จัดการหลักสูตร</a>
                                     </td>
                                     </td>
-                                </tr><!-- /tr -->
+                                </tr>
+                              
+                                   <tr>
+                                    <td>3</td>
+                                    <td><i class="fas fa-folder-plus fa-lg text-primary"></i> <a
+                                            href="{{ route('cer', ['department_id' => $depart->department_id]) }}">จัดการใบประกาศ</a>
+                                    </td>
+                                    </td>
+                                </tr>
                           <!--      <tr>
                                     <td>3</td>
                                     <td><i class="fas fa-folder-plus fa-lg text-primary"></i> <a

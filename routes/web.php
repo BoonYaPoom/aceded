@@ -10,6 +10,7 @@ use App\Http\Controllers\BookCategoryController;
 use App\Http\Controllers\BookController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\CategoryTopicController;
+use App\Http\Controllers\Cer\CerController;
 use App\Http\Controllers\ClaimUserController;
 use App\Http\Controllers\ClassRoom\ClassroomController;
 use App\Http\Controllers\CourseClassAddController;
@@ -468,6 +469,13 @@ Route::group(['middleware' => 'IsLoggedIn'], function () {
                         Route::post('{department_id}/{subject_id}/add_questionform', [ExamController::class, 'store'])->name('add_questionform');
                     });
                     Route::get('/booktable', [BookController::class, 'table'])->name('book.table');
+
+                    Route::get('{department_id}/cer', [CerController::class, 'index'])->name('cer');
+                     Route::prefix('cer')->group(function () {
+                    
+                    
+                    });
+                                
                 });
 
 
