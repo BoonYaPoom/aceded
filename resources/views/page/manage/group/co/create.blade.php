@@ -798,7 +798,7 @@
                                                 </div><!-- /.card -->
                                             </div><!-- /grid column -->
 
-                                            @elseif($ce['id_cer'] >  7 && $depart->department_id == 10013)
+                                            @elseif($ce['id_cer'] > 11 && $depart->department_id == 10013)
                                             <div class="col-xl-4 col-lg-4 col-sm-6">
                                                 <!-- .card -->
                                                 <div class="card card-figure">

@@ -50,7 +50,10 @@ class CourseController extends Controller
             ['id_cer' => 9, 'path_cer' => 'uploads/cer/CER9.png'],
             ['id_cer' => 10, 'path_cer' => 'uploads/cer/CER10.png'],
             ['id_cer' => 11, 'path_cer' => 'uploads/cer/CER11.png'],
-          
+            ['id_cer' => 12, 'path_cer' => 'uploads/cer/CER12.png'],
+            ['id_cer' => 13, 'path_cer' => 'uploads/cer/CER13.png'],
+            ['id_cer' => 14, 'path_cer' => 'uploads/cer/CER14.png'],
+            ['id_cer' => 15, 'path_cer' => 'uploads/cer/CER15.png'],
         ];
 
         return view('page.manage.group.co.create', compact('courses', 'subs', 'pertype', 'depart', 'cers'));
@@ -349,7 +352,10 @@ class CourseController extends Controller
             ['id_cer' => 9, 'path_cer' => 'uploads/cer/CER9.png'],
             ['id_cer' => 10, 'path_cer' => 'uploads/cer/CER10.png'],
             ['id_cer' => 11, 'path_cer' => 'uploads/cer/CER11.png'],
-
+            ['id_cer' => 12, 'path_cer' => 'uploads/cer/CER12.png'],
+            ['id_cer' => 13, 'path_cer' => 'uploads/cer/CER13.png'],
+            ['id_cer' => 14, 'path_cer' => 'uploads/cer/CER14.png'],
+            ['id_cer' => 15, 'path_cer' => 'uploads/cer/CER15.png'],
         ];
         return view('page.manage.group.co.edit', compact('cour', 'cers', 'subs', 'pertype', 'courses', 'depart'));
     }
