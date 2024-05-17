@@ -10,8 +10,7 @@
                 <th class="align-middle" style="width:10%"> สถานะ </th>
                 <th class="align-middle" style="width:10%"> กระทำ </th>
             </tr>
-        </thead><!-- /thead -->
-        <!-- tbody -->
+        </thead>
         <tbody>
             @php
                 $c = 1;
@@ -23,8 +22,8 @@
                 <tr>
                     <td>{{ $c++ }}</td>
                     <td>{{ $users->firstname }} {{ $users->lastname }}</td>
-                    <td><img onerror="this.onerror=null;this.src={{'https://aced-fn2.nacc.go.th/' . $cer->certificate_file_path}};" src="{{ 'https://aced.nacc.go.th/' . $cer->certificate_file_path }}" width="100"
-                            height="100" alt=""
+                    <td><img onerror="this.onerror=null; this.src='{{ asset('/uploads/cer/errorcer1.png') }}';" src="{{ 'https://aced.nacc.go.th/' . $cer->certificate_file_path }}" width="100px"
+                            height="100px" alt=""
                             onclick="$('#previewimage').prop('src',$(this).prop('src'));$('#modal01').css('display','block');">
                     </td>
                     <td>ขอแก้ไข</td>

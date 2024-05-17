@@ -135,10 +135,11 @@
                                 คำตอบถูกต้อง
                             </label>
                         </div>
-         
-                        <textarea class="editor" data-placeholder="ตัวเลือกที่ {{ $i }}" data-height="150"  name="CHOICE{{ $i }}" id="CHOICE{{ $i }}">
+
+                        <textarea class="editor" data-placeholder="ตัวเลือกที่ {{ $i }}" data-height="150"
+                            name="CHOICE{{ $i }}" id="CHOICE{{ $i }}">
                         </textarea>
-                        
+
                     </div><!-- /.form-group -->
                 @endfor
 
@@ -162,13 +163,14 @@
             <div id="data3" style="display:none;">
                 <div class="form-group qtype3 ">
                     <label class="d-block">คำตอบ</label>
-                    <div class="custom-control custom-control-inline custom-radio">
-                        <input type="radio" class="custom-control-input" name="checktruefalse" id="radio1"
-                            value="1"> <label class="custom-control-label" for="radio1">ถูก</label>
+
+                    <div class="form-check form-check-inline">
+                        <input type="radio" class="form-check-input" name="checktruefalse" id="radio1" value="1">
+                        <label class="form-check-label" for="radio1">ถูก</label>
                     </div>
-                    <div class="custom-control custom-control-inline custom-radio">
-                        <input type="radio" class="custom-control-input" name="checktruefalse" id="radio2"
-                            value="2"> <label class="custom-control-label" for="radio2">ผิด</label>
+                    <div class="form-check form-check-inline">
+                        <input type="radio" class="form-check-input" name="checktruefalse" id="radio2" value="2">
+                        <label class="form-check-label" for="radio2">ผิด</label>
                     </div>
                 </div><!-- /.form-group -->
             </div>

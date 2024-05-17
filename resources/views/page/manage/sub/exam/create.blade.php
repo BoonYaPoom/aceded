@@ -66,8 +66,7 @@
                         @endfor
 
                     </select>
-                </div><!-- /.form-group -->
-                <!-- .form-group -->
+                </div>
 
                 <div class="col-md-6 mb-3">
                     <label for="score_pass">คะแนนผ่าน (เปอร์เซ็นต์) </label> <select id="score_pass" name="score_pass"

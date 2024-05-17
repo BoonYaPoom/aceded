@@ -166,73 +166,47 @@
         aria-labelledby="clientDeleteModalLabel" aria-modal="true" style="padding-right: 17px;">
         <div class="modal-dialog modal-xl" user_role="document">
             <div class="modal-content">
-                <div class="modal-header " style="background-color: {{ $depart->color }};">
-                    <h6 id="clientDeleteModalLabel" class="modal-title">
-                        <span class="sr-only">"Warning</span> <span><i class="fas fa-question-circle fa-lg "></i>
-                            ลบผู้ใช้งาน</span>
-                    </h6>
-                </div>
                 <form
                     action="{{ route('deleteAllUser', ['department_id' => $depart->department_id, 'extender_id' => $extender->extender_id]) }}"
                     enctype="multipart/form-data">
+                    <div class="modal-header " style="background-color: {{ $depart->color }};">
+                        <h6 id="clientDeleteModalLabel" class="modal-title text-light">
+                            <i class="fas fa-question-circle fa-lg "></i>
+                            ลบผู้ใช้งาน
+                        </h6>
+                        <div class="modal-footer">
+                            <button type="submit" class="btn btn-danger"><i class="fas fa-user-plus"></i>
+                                ลบผู้ใช้งาน</button>
+                            <button type="button" class="btn btn-success" data-dismiss="modal">ยกเลิก</button>
+                        </div>
+                    </div>
                     <div class="modal-body">
                         <div class="form-group">
                             <div class="form-label-group">
                                 <div class="table-responsive">
-                                    <table id="exam0" class="table w3-hoverable showexam "
-                                        style="width:100% display:none;">
-                                        <thead>
-                                            <tr class="bg-infohead">
-                                                <th class="align-middle" style="width:10%">
-                                                    <div class="custom-control custom-checkbox"> <input type="checkbox"
-                                                            class="custom-control-input" name="checkall1" value="1"
-                                                            id="checkall1"><label class="custom-control-label"
-                                                            for="checkall1">
-                                                            เลือกทั้งหมด</label></div>
-                                                </th>
-                                                <th class="align-middle" style="width:45%">รหัสผู้ใช้งาน</th>
-                                                <th class="align-middle" style="width:10%">ชื่อ สกุล</th>
-                                                <th class="align-middle" style="width:10%">ระดับ</th>
-                                                <th class="align-middle" style="width:35%">สถานศึกษา</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody id="dataexam0" class="dataexam">
-                                            @foreach ($usersnotnull->sortBy('user_id') as $unotnull)
-                                                <tr>
-                                                    <td>
-                                                        <div class="form-group">
-                                                            <div class="custom-control custom-checkbox">
-                                                                <input type="checkbox" class="custom-control-input"
-                                                                    name="user_data[]"
-                                                                    id="user_data{{ $unotnull->user_id }}"
-                                                                    value="{{ $unotnull->user_id }}">
-                                                                <label class="custom-control-label"
-                                                                    for="user_data{{ $unotnull->user_id }}"></label>
-                                                            </div>
-                                                        </div>
-                                                    </td>
-                                                    <td>{{ $unotnull->username }}</td>
-                                                    <td>{{ $unotnull->firstname }} {{ $unotnull->lastname }}</td>
-                                                    <td>{{ $unotnull->user_affiliation }}</td>
-                                                    <td>{{ $extender->name }}</td>
-                                                </tr>
-                                            @endforeach
-                                        </tbody>
-                                    </table>
-
+                                    <p>จำนวน Users ที่ต้องการลบ: {{ $usersnotnull->count() }}</p>
+                                    <!-- แสดงรายการผู้ใช้งาน -->
+                                    <div class="row">
+                                        @php($i = 1)
+                                        @foreach ($usersnotnull->sortBy('user_id') as $index => $unotnull)
+                                            @if ($i % 30 === 1)
+                                    </div>
+                                    <div class="row">
+                                        @endif
+                                        <div class="col-md-4"> <!-- แบ่ง grid 3 คอลัมน์ สำหรับแสดงข้อมูลของผู้ใช้งาน -->
+                                            <li>{{ $i++ . '.' }} {{ $unotnull->firstname }} {{ $unotnull->lastname }}
+                                            </li>
+                                            <input type="hidden" name="user_data[]" value="{{ $unotnull->user_id }}">
+                                        </div>
+                                        @endforeach
+                                    </div>
                                 </div>
                             </div>
-                        </div><!-- /.form-group -->
-                    </div><!-- /.modal-body -->
-                    <!-- .modal-footer -->
-                    <div class="modal-footer">
-                        <button type="submit" class="btn btn-danger"><i class="fas fa-user-plus"></i>
-                            ลบผู้ใช้งาน</button>
-                        <button type="button" class="btn btn-light" data-dismiss="modal">ยกเลิก</button>
-                    </div><!-- /.modal-footer -->
+                        </div>
+                    </div>
                 </form>
-            </div><!-- /.modal-content -->
-        </div><!-- /.modal-dialog -->
+            </div>
+        </div>
     </div>
     <div>
         <script>

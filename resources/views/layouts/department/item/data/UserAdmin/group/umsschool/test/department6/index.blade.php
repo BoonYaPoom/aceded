@@ -23,61 +23,13 @@
                 <div class="card-body">
                     <div class="table-responsive">
                         <table id="datatable" class="table w3-hoverable">
-                            <div class=" text-left">
-                                @if (
-                                    (($depart->department_id == 1 ||
-                                        $depart->department_id == 2 ||
-                                        $depart->department_id == 3 ||
-                                        $depart->department_id == 4 ||
-                                        $depart->department_id == 5) &&
-                                        $data->user_role == 1) ||
-                                        $data->user_role == 6 ||
-                                        $data->user_role == 7 ||
-                                        $data->user_role == 8 ||
-                                        $data->user_role == 9)
-                                    <a class="ml-1 btn btn-info btn-md " style="color:#fff"
-                                        href="{{ route('exportExtender', [$depart]) }}"><i class="fas fa-users"></i>
-                                        จัดการสถานศึกษา</a>
-                                @endif
-                            </div>
+                    
                             <div class="dataTables_filter text-right">
 
                                 <label>ค้นหา
                                     <input type="search" id="myInput" class="form-control" placeholder=""
                                         aria-controls="datatable">
                                 </label>
-                                @php
-                                    $Provinces = \App\Models\Provinces::all();
-
-                                    $zones = DB::table('user_admin_zone')
-                                        ->where('user_id', $data->user_id)
-                                        ->pluck('province_id')
-                                        ->toArray();
-                                    $zonesad = DB::table('provinces')->whereIn('id', $zones)->get();
-                                @endphp
-                                @if ($data->user_role == 1 || $data->user_role == 8)
-                                    <label>จังหวัด
-                                        <select id="drop2" name="drop2" class="form-control form-control"
-                                            data-allow-clear="false">
-                                            <option value="0"selected>ทั้งหมด</option>
-                                            @foreach ($Provinces as $provin)
-                                                <option value="{{ $provin->name_in_thai }}" style="font-size: 16px;">
-                                                    {{ $provin->name_in_thai }}</option>
-                                            @endforeach
-                                        </select>
-                                    </label>
-                                @elseif($data->user_role == 9)
-                                    <label>จังหวัด
-                                        <select id="drop2" name="drop2" class="form-control form-control"
-                                            data-allow-clear="false">
-                                            <option value="0"selected>ทั้งหมด</option>
-                                            @foreach ($zonesad as $provin)
-                                                <option value="{{ $provin->name_in_thai }}" style="font-size: 16px;">
-                                                    {{ $provin->name_in_thai }}</option>
-                                            @endforeach
-                                        </select>
-                                    </label>
-                                @endif
 
                             </div>
                             <thead>
@@ -94,14 +46,6 @@
                             <tbody>
 
                             </tbody>
-                            {{-- <tbody>
-
-                                <tr>
-                                    <td colspan="6" class="text-center" style="font-size: 18px;">* คลิกเพื่อแสดงจำนวน
-                                        <i class="fas fa-users"></i> (-) *
-                                    </td>
-                                </tr>
-                            </tbody> --}}
                             <script>
                                 $(document).ready(function() {
                                     var table = $('#datatable').DataTable({
@@ -110,8 +54,6 @@
                                             type: 'GET',
                                             data: function(d) {
                                                 d.myInput = $('#myInput').val();
-                                                d.drop2 = $('#drop2').val();
-
                                             },
                                         },
                                         serverSide: true,
@@ -192,15 +134,7 @@
                                     $('#myInput').on('keyup', function() {
                                         table.search(this.value).draw();
                                     });
-                                    $('#drop2').on('change', function() {
-                                        var selectedDrop2Id = $(this).val();
-                                        console.log(selectedDrop2Id);
-                                        if (selectedDrop2Id == 0) {
-                                            table.column(3).search('').draw();
-                                        } else {
-                                            table.column(3).search(selectedDrop2Id).draw();
-                                        }
-                                    });
+                                  
 
                                 });
 
@@ -232,19 +166,5 @@
         </div>
     </div>
 
-    @if (
-        ($data->user_role == 1 && $depart->department_id == 1) ||
-            $depart->department_id == 2 ||
-            $depart->department_id == 3 ||
-            $depart->department_id == 4 ||
-            ($data->user_role == 8 && $depart->department_id == 1) ||
-            $depart->department_id == 2 ||
-            $depart->department_id == 3 ||
-            $depart->department_id == 4)
-        <header class="page-title-bar">
-            <button type="button" class=" btn btn-success btn-floated btn-addums"
-                onclick="window.location='{{ route('addextender', ['department_id' => $depart->department_id]) }}'"
-                data-toggle="tooltip" title="เพิ่ม"><span class="fas fa-plus"></span></button>
-        </header>
-    @endif
+   
 @endsection

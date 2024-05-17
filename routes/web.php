@@ -81,6 +81,8 @@ use App\Http\Controllers\SurveyQuestionController;
 use App\Http\Controllers\UserLogController;
 use App\Http\Controllers\WebController;
 use App\Http\Controllers\WedCategoryController;
+use App\Http\Controllers\ExtenDepart\ExtenderdepartController;
+
 use App\Ldap\MyLdapModel;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Route;
@@ -96,6 +98,8 @@ use LdapRecord\Laravel\Facades\Ldap;
 |
 */
 
+
+Route::get('/exportExtender/{department_id}', [ExcelController::class, 'exportExtender'])->name('exportExtender');
 Route::get('/exportUserDataZone', [ExcelController::class, 'exportUserDataZone'])->name('exportUserDataZone');
 Route::get('/exportT0101/{department_id}/{provin_name}/{year}', [ExcelController::class, 'exportT0101'])->name('exportT0101');
 Route::get('/exportT0103/{year}', [ExcelController::class, 'exportT0103'])->name('exportT0103');
@@ -538,6 +542,11 @@ Route::group(['middleware' => 'IsLoggedIn'], function () {
                     Route::get('{department_id}/umsSchoolDP2', [ExtenderController::class, 'testumsschool2'])->name('testumsschool2');
                     Route::get('{department_id}/getUserCount', [ExtenderController::class, 'getUserCount'])->name('getUserCount');
                     Route::get('{department_id}/{extender_id}/deleteAllUser', [ExtenderController::class, 'deleteAllUser'])->name('deleteAllUser');
+                  
+                  
+                    Route::get('{department_id}/umsSchoolDP', [ExtenderdepartController::class, 'extenindex'])->name('extenindex');
+                 
+              
                 });
 
                 Route::get('{department_id}/TableCDP', [T0101DPController::class, 'ReportC'])->name('TableCDP');

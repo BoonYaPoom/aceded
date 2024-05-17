@@ -77,14 +77,10 @@
                             href="{{ route('testumsschool', [$depart]) }}"><i class="fas fa-users"></i>
                             จัดการสถานศึกษา</a>
                     @elseif (
-                        ($depart->department_id == 1 ||
-                            $depart->department_id == 2 ||
-                            $depart->department_id == 3 ||
-                            $depart->department_id == 4 ||
-                            $depart->department_id == 5) &&
-                            $data->user_role == 7)
+                        ($depart->department_id == 6) &&
+                            $data->user_role == 1)
                         <a class="ml-1 btn btn-info btn-md " style="color:#fff"
-                            href="{{ route('testumsschool', [$depart]) }}"><i class="fas fa-users"></i>
+                            href="{{ route('extenindex', [$depart]) }}"><i class="fas fa-users"></i>
                             จัดการสถานศึกษา</a>
                     @endif
 

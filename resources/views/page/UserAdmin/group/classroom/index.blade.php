@@ -63,7 +63,7 @@
                                                 <p class="text-center">ยังไม่จบ</p>
                                             @else
                                                 @if ($course['certificate_file_role_status'] == 0)
-                                                    <p class="text-center">รอใบประกาศ</p>
+                                                    <p class="text-center">รอสร้างใบประกาศ</p>
                                                 @else
                                                     <p class="text-center">ดาวโหลดใบประกาศ หรือ รีเซ็ตใหม่</p>
                                                 @endif

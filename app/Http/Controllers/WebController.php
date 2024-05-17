@@ -82,7 +82,7 @@ class WebController extends Controller
         if (!file_exists(public_path('/upload/Web/ck/'))) {
             mkdir(public_path('/upload/Web/ck/'), 0755, true);
         }
-        
+
         if ($request->has('detail_th')) {
             $detail_th = $request->detail_th;
             $decodedTextdetail_th = '';
@@ -107,11 +107,12 @@ class WebController extends Controller
                         $img->setAttribute('src', $newImageUrl);
                     }
                 }
-                $detail_th = $de_th->saveHTML();
-                $decodedTextdetail_th = html_entity_decode($detail_th, ENT_QUOTES, 'UTF-8');
+
+                $decodedTextdetail_th = html_entity_decode($de_th->saveHTML(), ENT_QUOTES, 'UTF-8');
+                $decodedText_th = htmlentities($decodedTextdetail_th);
             }
 
-            $webs->detail_th = $decodedTextdetail_th;
+            $webs->detail_th = $decodedText_th;
         }
 
         if ($request->has('detail_en')) {
@@ -138,12 +139,13 @@ class WebController extends Controller
                         $img->setAttribute('src', $newImageUrl);
                     }
                 }
-                $detail_en = $de_en->saveHTML();
-                $decodedTextdetail_en = html_entity_decode($detail_en, ENT_QUOTES, 'UTF-8');
+
+                $decodedTextdetail_en = html_entity_decode($de_en->saveHTML(), ENT_QUOTES, 'UTF-8');
+                $decodedText_en = htmlentities($decodedTextdetail_en);
             }
 
 
-            $webs->detail_en = $decodedTextdetail_en;
+            $webs->detail_en = $decodedText_en;
         }
 
         $webs->save();
@@ -166,7 +168,7 @@ class WebController extends Controller
             $webs->save();
         }
 
-   
+
         DB::commit();
 
         return redirect()->route('catpage', ['department_id' => $department_id, 'category_id' => $webs->category_id])->with('message', 'Data create successfully');
@@ -244,11 +246,12 @@ class WebController extends Controller
                 }
 
                 libxml_clear_errors(); // ล้างข้อผิดพลาดที่เกิดขึ้น
-                $detail_th = $de_th->saveHTML();
-                $decodedTextdetail_th = html_entity_decode($detail_th, ENT_QUOTES, 'UTF-8');
+
+                $decodedTextdetail_th = html_entity_decode($de_th->saveHTML(), ENT_QUOTES, 'UTF-8');
+                $decodedText_th = htmlentities($decodedTextdetail_th);
             }
 
-            $webs->detail_th = $decodedTextdetail_th;
+            $webs->detail_th = $decodedText_th;
         }
 
         if ($request->has('detail_en')) {
@@ -278,11 +281,12 @@ class WebController extends Controller
                 }
 
                 libxml_clear_errors(); // ล้างข้อผิดพลาดที่เกิดขึ้น
-                $detail_en = $de_en->saveHTML();
-                $decodedTextdetail_en = html_entity_decode($detail_en, ENT_QUOTES, 'UTF-8');
+
+                $decodedTextdetail_en = html_entity_decode($de_en->saveHTML(), ENT_QUOTES, 'UTF-8');
+                $decodedText_en = htmlentities($decodedTextdetail_en);
             }
 
-            $webs->detail_en = $decodedTextdetail_en;
+            $webs->detail_en = $decodedText_en;
         }
 
         $webs->save();

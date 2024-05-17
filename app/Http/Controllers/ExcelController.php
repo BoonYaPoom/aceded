@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\Extender_AllExport;
 use App\Exports\LearnerExport;
 use App\Exports\QuestionExport;
 use App\Exports\report\AllT0000;
@@ -179,6 +180,10 @@ class ExcelController extends Controller
     public function exportUserDataZone()
     {
         return Excel::download(new UserDataZone, 'Administrator Management User ZoneAll.xlsx');
+    }
+    public function exportExtender($department_id)
+    {
+        return Excel::download(new Extender_AllExport($department_id), 'Extender.xlsx');
     }
     public function importall(Request $request)
     {

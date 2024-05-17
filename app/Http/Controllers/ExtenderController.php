@@ -229,7 +229,9 @@ class ExtenderController extends Controller
                         $query->where('extender_id', $orgs)->join('provinces', 'users_extender2.school_province', '=', 'provinces.id')->select('provinces.*', 'users_extender2.*');
                         break;
                     case 6:
-                        $query->where('extender_id', $orgs)->join('provinces', 'users_extender2.school_province', '=', 'provinces.id')->select('provinces.*', 'users_extender2.*');
+                        $query->where('extender_id', $orgs)
+                        ->join('provinces', 'users_extender2.school_province', '=', 'provinces.id')
+                        ->select('provinces.*', 'users_extender2.*');
 
                         break;
                     default:
@@ -361,6 +363,8 @@ class ExtenderController extends Controller
     {
         if ($request->has('user_data') && is_array($request->user_data)) {
             $user_data = $request->user_data;
+         
+
             foreach ($user_data as $data) {
                 $users = DB::table('users')->where('user_id', $data)->first();
                 
