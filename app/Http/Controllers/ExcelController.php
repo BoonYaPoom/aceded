@@ -6,6 +6,10 @@ use App\Exports\Extender_AllExport;
 use App\Exports\LearnerExport;
 use App\Exports\QuestionExport;
 use App\Exports\report\AllT0000;
+use App\Exports\report\p0101;
+use App\Exports\report\p0101Zone;
+use App\Exports\report\p0116;
+use App\Exports\report\p0116Zone;
 use App\Exports\report\t0101All;
 use App\Exports\report\t0103All;
 use App\Exports\report\t0116All;
@@ -47,6 +51,7 @@ use App\Models\Log;
 use App\Models\Question;
 use App\Models\UserDepartment;
 use App\Models\Users;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log as FacadesLog;
@@ -66,6 +71,22 @@ class ExcelController extends Controller
     public function exportUserProvicAll($provicValue)
     {
         return Excel::download(new UserProvicAll($provicValue), 'Administrator Management Users Province.xlsx');
+    }
+    public function exportP0101($department_id, $year)
+    {
+        return Excel::download(new p0101($department_id, $year), 'รายงานข้อมูลรายชื่อผู้เรียนทั้งหมด และแยกตามหลักสูตร ปี' . $year . ' .xlsx');
+    }
+    public function exportP0101Zone($department_id, $year)
+    {
+        return Excel::download(new p0101Zone($department_id, $year), 'รายงานข้อมูลรายชื่อผู้เรียนทั้งหมด และแยกตามหลักสูตร ปี' . $year . ' .xlsx');
+    }
+    public function exportP0116($department_id, $year)
+    {
+        return Excel::download(new p0116($department_id, $year), 'รายงานสถานะผู้เข้าเรียน และจบการศึกษา (รายบุคคล) ปี' . $year . ' .xlsx');
+    }
+    public function exportP0116Zone($department_id, $year)
+    {
+        return Excel::download(new p0116Zone($department_id, $year), 'รายงานสถานะผู้เข้าเรียน และจบการศึกษา (รายบุคคล) ปี' . $year . ' .xlsx');
     }
     public function exportT0101($department_id, $provin_name, $year)
     {
@@ -412,7 +433,7 @@ class ExcelController extends Controller
                         $permission = null;
                         $ldap = 0;
                         $userstatus = 1;
-                        $createdate = now();
+                        $createdate = Carbon::now('Asia/Bangkok');
                         $createby = 2;
                         $avatar = '';
                         $user_position = '';
@@ -466,6 +487,7 @@ class ExcelController extends Controller
                             'ldap' => $ldap,
                             'userstatus' => $userstatus,
                             'createdate' => $createdate,
+                            'modifieddate' => $createdate,
                             'createby' => $createby,
                             'avatar' => $avatar,
                             'user_position' =>  $user_position,
@@ -570,7 +592,7 @@ class ExcelController extends Controller
                         $permission = null;
                         $ldap = 0;
                         $userstatus = 1;
-                        $createdate = now();
+                        $createdate = Carbon::now('Asia/Bangkok');
                         $createby = 2;
                         $avatar = '';
                         $user_position = '';
@@ -625,6 +647,7 @@ class ExcelController extends Controller
                             'ldap' => $ldap,
                             'userstatus' => $userstatus,
                             'createdate' => $createdate,
+                            'modifieddate' => $createdate,
                             'createby' => $createby,
                             'avatar' => $avatar,
                             'user_position' =>  $user_position,
@@ -797,7 +820,7 @@ class ExcelController extends Controller
                         $permission = null;
                         $ldap = 0;
                         $userstatus = 1;
-                        $createdate = now();
+                        $createdate = Carbon::now('Asia/Bangkok');
                         $createby = 2;
                         $avatar = '';
                         $user_position = '';
@@ -846,6 +869,7 @@ class ExcelController extends Controller
                             'ldap' => $ldap,
                             'userstatus' => $userstatus,
                             'createdate' => $createdate,
+                            'modifieddate' => $createdate,
                             'createby' => $createby,
                             'avatar' => $avatar,
                             'user_position' =>  $user_position,
@@ -995,7 +1019,7 @@ class ExcelController extends Controller
                         $permission = null;
                         $ldap = 0;
                         $userstatus = 1;
-                        $createdate = now();
+                        $createdate = Carbon::now('Asia/Bangkok');
                         $createby = 2;
                         $avatar = '';
                         $user_position = '';
@@ -1046,6 +1070,7 @@ class ExcelController extends Controller
                             'ldap' => $ldap,
                             'userstatus' => $userstatus,
                             'createdate' => $createdate,
+                            'modifieddate' => $createdate,
                             'createby' => $createby,
                             'avatar' => $avatar,
                             'user_position' =>  $user_position,

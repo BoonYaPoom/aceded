@@ -20,7 +20,8 @@
             <div class="card card-fluid">
                 <div class="card-header bg-muted"></div>
                 <div class="col-lg">
-                    <h6 class="card-header"> ข้อมูลการเรียน ของ  {{ ' ' .$db_user->firstname . ' ' . $db_user->lastname}} </h6>
+                    <h6 class="card-header"> ข้อมูลการเรียน ของ {{ ' ' . $db_user->firstname . ' ' . $db_user->lastname }}
+                    </h6>
                     <div class="card-body">
                         @if (count($data_lesson) > 0)
                             @php
@@ -41,11 +42,15 @@
                                             'realcongratulationdate' => $les['realcongratulationdate'],
                                             'subjects' => [],
                                             'process' => [],
+                                            'score' => [],
+                                            'fullscore' => [],
                                         ];
                                     }
                                     $sortedData[$courseId]['subjects'][] = $les['subject'];
                                     // เพิ่ม process เข้าไปใน array เดียวกับ subject
                                     $sortedData[$courseId]['process'][] = $les['process'];
+                                    $sortedData[$courseId]['score'][] = $les['score'];
+                                    $sortedData[$courseId]['fullscore'][] = $les['fullscore'];
                                 }
                             @endphp
                             @foreach ($sortedData as $course)
@@ -105,13 +110,14 @@
                                         </label>
                                         <div class="col-md-9">
                                             <div class="form-row">
-                                                <label for="subject" class="col-md-9">ชื่อวิชา </label>
-                                                <p for="process" class="col-md-3 text-center">สถานะรายวิชา </p>
+                                                <label for="subject" class="col-md-8">ชื่อวิชา </label>
+                                                <p for="process" class="col-md-2 text-center">สถานะรายวิชา </p>
+                                                <p for="process" class="col-md-2 text-center">คะแนนสอบ </p>
                                             </div>
                                             @foreach ($course['subjects'] as $key => $subject)
                                                 <div class="form-row">
-                                                    <p class="col-md-9">{{ '* ' . $subject }}</p>
-                                                    <p class="col-md-3 text-center">
+                                                    <p class="col-md-8">{{ '* ' . $subject }}</p>
+                                                    <p class="col-md-2 text-center">
 
                                                         @if ($course['congratulation'] == 1)
                                                             จบแล้ว
@@ -123,10 +129,18 @@
                                                             @endif
                                                         @endif
                                                     </p>
+                                                    <p class="col-md-2 text-center">
+
+                                                        @if ($course['score'][$key] != null)
+                                                            {{ $course['score'][$key] . '/' . $course['fullscore'][$key] . ' คะแนน' }}
+                                                        @else
+                                                            -
+                                                        @endif
+                                                    </p>
                                                 </div>
                                             @endforeach
                                         </div>
-
+                                   
                                     </div>
                                 </fieldset>
                             @endforeach

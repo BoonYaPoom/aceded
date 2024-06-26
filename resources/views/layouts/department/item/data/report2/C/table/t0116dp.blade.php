@@ -128,7 +128,7 @@
                     row.append($('<td >').text(item.firstname + ' ' + item.lastname));
                     row.append($('<td >').text(item.exten_name));
                     row.append($('<td >').text(item.course_th));
-                    row.append($('<td class="text-center">').text(item.congratulation == 0 ? 'N' : (item
+                    row.append($('<td class="text-center">').text(item.congratulation == 0 ? 'P' : (item
                         .congratulation == 1 ? 'N/A' : '')));
                     // เพิ่มแถวลงใน tbody
                     $('#learend').append(row);

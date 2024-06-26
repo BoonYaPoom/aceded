@@ -361,27 +361,32 @@ class ExtenderController extends Controller
 
     function deleteAllUser(Request $request, $department_id,  $extender_id)
     {
-        if ($request->has('user_data') && is_array($request->user_data)) {
-            $user_data = $request->user_data;
-         
+        if ($department_id && $extender_id) {
+            if ($request->has('user_data') && is_array($request->user_data)) {
+                $user_data = $request->user_data;
 
-            foreach ($user_data as $data) {
-                $users = DB::table('users')->where('user_id', $data)->first();
-                
-                if ($users) {
-                    DB::table('users')->where('user_id', $data)->delete();
-                    $user_department = DB::table('users_department')
-                    ->where('user_id', $data)
-                        ->first();
-                    if ($user_department) {
-                        DB::table('users_department')
+
+                foreach ($user_data as $data) {
+                    $users = DB::table('users')->where('user_id', $data)->first();
+
+                    if ($users) {
+                        DB::table('users')->where('user_id', $data)->delete();
+                        $user_department = DB::table('users_department')
                             ->where('user_id', $data)
-                            ->delete();
+                            ->first();
+                        if ($user_department) {
+                            DB::table('users_department')
+                                ->where('user_id', $data)
+                                ->delete();
+                        }
                     }
                 }
             }
+            return redirect()->back()->with('message', 'การลบข้อมูลผู้ใช้เสร็จสมบูรณ์');
+        }else{
+            return redirect()->back()->with('error', 'ไม่มีค่าส่งมา');
         }
-        return redirect()->back()->with('message', 'การลบข้อมูลผู้ใช้เสร็จสมบูรณ์');
+     
     }
 
 }

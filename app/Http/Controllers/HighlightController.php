@@ -167,8 +167,20 @@ class HighlightController extends Controller
             $hights->highlight_path = 'upload/Highlight/Department/' . $image_name;
         }
 
+        // $uploadPath = 'light/aainss/' . $image_name;
+        // // ตรวจสอบและสร้างโฟลเดอร์ถ้ายังไม่มี
+        // if (!Storage::disk('sftp')->exists('light/aainss/')) {
+        //     Storage::disk('sftp')->makeDirectory('light/aainss/');
+        // }
+        // // ตรวจสอบว่ามีไฟล์เดิมอยู่หรือไม่ ถ้ามีให้ลบออก
+        // if (Storage::disk('sftp')->exists($uploadPath)) {
+        //     Storage::disk('sftp')->delete($uploadPath);
+        // }
 
+        // // อัพโหลดไฟล์ไปยัง FTP
+        // Storage::disk('sftp')->put($uploadPath, file_get_contents($request->highlight_path->getRealPath()));
 
+        // $hights->highlight_path = $uploadPath;
         $hights->highlight_link = $request->highlight_link;
         $hights->highlight_status = $request->input('links_status', 0);
         $hights->department_id = (int)$department_id;

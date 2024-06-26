@@ -214,12 +214,13 @@
                         <table id="datatable" class="table w3-hoverable">
                             <div class="d-flex justify-content-between align-items-center">
                                 <div class="dt-buttons btn-group">
-                                    <button class="btn btn-secondary buttons-excel buttons-html5" tabindex="0"
+                                    <a class="btn btn-secondary buttons-excel buttons-html5" tabindex="0"
                                         aria-controls="datatable" type="button"
-                                        onclick="window.location='{{ route('exportUsersall') }}'">
+                                        href="{{ route('exportUsersall') }}" target="_blank">
                                         <span>Excel</span>
-                                    </button>
+                                    </a>
                                 </div>
+                        
 
                                 <div class="dataTables_filter ">
                                     <label>ค้นหา

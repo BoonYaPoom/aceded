@@ -523,7 +523,8 @@
 
                         <div class="form-group">
                             <label for="explain">คำอธิบาย </label>
-                            <textarea class="editor" data-placeholder="คำอธิบาย" data-height="150" name="explain" id="explain">
+                            <textarea class="editor" data-placeholder="คำอธิบาย" data-height="150"
+                             name="explain" id="explain">
                              {{  html_entity_decode( $ques->explain, ENT_QUOTES, 'UTF-8') }}
                             </textarea>
                         </div><!-- /.form-group -->

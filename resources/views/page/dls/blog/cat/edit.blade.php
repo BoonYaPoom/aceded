@@ -34,22 +34,28 @@
 
                         <div class="form-group ">
                             <label for="detail">รายละเอียด (ไทย)</label>
-                            <textarea class="editor" data-placeholder="รายละเอียด" data-height="200" name="detail">{{ html_entity_decode($blogs->detail, ENT_QUOTES, 'UTF-8') }}</textarea>
+                            <textarea class="editor" data-placeholder="รายละเอียด" data-height="200"
+                             name="detail">
+                                {{ html_entity_decode($blogs->detail, ENT_QUOTES, 'UTF-8') }}</textarea>
                         </div><!-- /.form-group -->
-                       
+
                         @error('detail')
                             <span class="badge badge-warning">{{ $message }}</span>
                         @enderror
                         <!-- .form-group -->
 
                         <div class="form-group">
-                            <label for="blog_status">สถานะ </label> <label
-                                class="switcher-control switcher-control-success switcher-control-lg"><input type="checkbox"
-                                    class="switcher-input" name="blog_status" id="blog_status" value="1"> <span
-                                    class="switcher-indicator"></span> <span class="switcher-label-on">ON</span> <span
-                                    class="switcher-label-off text-red">OFF</span></label>
-                        </div><!-- /.form-group -->
-                    </div><!-- /.card-body -->
+                            <label for="blog_status">สถานะ </label>
+                            <label class="switcher-control switcher-control-success switcher-control-lg">
+                                <input type="checkbox" class="switcher-input" name="blog_status" id="blog_status"
+                                    value="{{ $blogs->blog_status }}" @if ($blogs->blog_status) checked @endif>
+                                <span class="switcher-indicator"></span>
+                                <span class="switcher-label-on">ON</span>
+                                <span class="switcher-label-off text-red">OFF</span>
+                            </label>
+                        </div>
+
+                    </div>
 
             </div><!-- /.card -->
 

@@ -22,7 +22,7 @@ class CourseController extends Controller
     public function courpag($department_id, $group_id)
     {
         $courses = CourseGroup::findOrFail($group_id);
-        $cour = $courses->group()->where('group_id', $group_id)->get();
+        $cour = $courses->group()->where('group_id', $group_id)->whereNot('course_status', "=", 2)->get();
         $department_id = $courses->department_id;
         $depart = Department::find($department_id);
         return view('page.manage.group.co.index', compact('courses', 'cour', 'depart'));
@@ -67,7 +67,7 @@ class CourseController extends Controller
             'course_code' => 'required',
             'course_th' => 'required',
             'templete_certificate' => 'required'
-            
+
         ]);
 
         if ($validator->fails()) {
@@ -235,7 +235,7 @@ class CourseController extends Controller
             $cour->save();
         }
         if ($request->templete_certificate) {
-            if (File::exists(public_path('uploads/cer/CER'. $request->templete_certificate .'.png'))) {
+            if (File::exists(public_path('uploads/cer/CER' . $request->templete_certificate . '.png'))) {
                 // ตรวจสอบว่าไดเรกทอรีปลายทางสำหรับการบันทึกใหม่มีอยู่หรือไม่
                 $uploadDirectory = public_path('upload/Course/cert_custom/');
                 if (!File::exists($uploadDirectory)) {
@@ -786,10 +786,10 @@ class CourseController extends Controller
         return redirect()->route('courpag', [$department_id, 'group_id' => $cour->group_id])->with('message', 'CourseGroup บันทึกข้อมูลสำเร็จ');
     }
 
-    public function destroy($department_id, $course_id)
+    public function destroy(Request $request, $department_id, $course_id)
     {
         $cour = Course::findOrFail($course_id);
-
+        $cour->course_status = $request->input('course_status', 2);
         $cour->delete();
         return redirect()->back()->with('message', 'Course ลบข้อมูลสำเร็จ');
     }

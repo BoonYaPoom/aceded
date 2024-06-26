@@ -14,7 +14,7 @@ class CourseGroupController extends Controller
     {
 
         $depart  = Department::findOrFail($department_id);
-        $courses = $depart->degroup()->where('department_id', $department_id)->get();
+        $courses = $depart->degroup()->where('department_id', $department_id)->whereNot('group_status',"=",2)->get();
         return view('page.manage.group.index', compact('courses', 'depart'));
     }
     public function create($department_id)
@@ -78,11 +78,13 @@ class CourseGroupController extends Controller
     }
 
 
-    public function destroy($department_id,$group_id)
+    public function destroy(Request $request, $department_id,$group_id)
     {
-        $depart  = Department::findOrFail($department_id);
         $courses = CourseGroup::findOrFail($group_id);
-        $courses->delete();
+        $courses->group_status  = $request->input('group_status ', 2);
+        $courses->save();
+
+
         return redirect()->back()->with('message', 'CourseGroup ลบข้อมูลสำเร็จ');
     }
     public function changeStatus(Request $request)

@@ -232,7 +232,7 @@ class ExamController extends Controller
       $decodedTextquestion = '';
       if (!empty($question)) {
         $de_th = new DOMDocument();
-        $de_th->encoding = 'UTF-8'; // กำหนด encoding เป็น UTF-8
+        $de_th->encoding = 'UTF-8'; 
         $question = mb_convert_encoding($question, 'HTML-ENTITIES', 'UTF-8');
         $question = preg_replace('/<figure\b[^>]*>(.*?)<\/figure>/is', '$1', $question);
         $de_th->loadHTML($question, LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
@@ -241,7 +241,7 @@ class ExamController extends Controller
         foreach ($images_des_th as $key => $img) {
           if (strpos($img->getAttribute('src'), 'data:image/') === 0) {
             $data = base64_decode(explode(',', explode(';', $img->getAttribute('src'))[1])[1]);
-            $image_name = '/upload/Que/ck/' . time() . $key . '.png'; // ใส่ .png เพื่อให้เป็นนามสกุลไฟล์ถูกต้อง
+            $image_name = '/upload/Que/ck/' . time() . $key . '.png'; 
             file_put_contents(public_path() . $image_name, $data);
             $img->removeAttribute('src');
             $newImageUrl = asset($image_name);

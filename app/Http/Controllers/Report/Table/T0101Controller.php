@@ -63,7 +63,6 @@ class T0101Controller extends Controller
         ->where('course_learner.learner_status', '=', 1)
         ->where('users.user_role', 4)
         ->where('course_learner.course_id', '>', 0)
-
         ->select(
             'users.username',
             'users.firstname',

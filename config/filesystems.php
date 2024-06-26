@@ -55,8 +55,35 @@ return [
             'use_path_style_endpoint' => env('AWS_USE_PATH_STYLE_ENDPOINT', false),
             'throw' => false,
         ],
+        'ftp' => [
+            'driver' => 'ftp',
+            'host' => env('FTP_HOST'),
+            'username' => env('FTP_USERNAME'),
+            'password' => env('FTP_PASSWORD'),
+            'port' => (int) env('FTP_PORT', 22),
+            'root' => '',
+            'passive' => true,
+            'ssl' => false,
+            'timeout' => 30,
+        ],
+        'sftp' => [
+            'driver' => 'sftp',
+            'host' => env('SFTP_HOST'),
+            'username' => env('SFTP_USERNAME'),
+            'password' => env('SFTP_PASSWORD'),
+            'port' => (int) env('SFTP_PORT', 22),
+            'root' => env('SFTP_ROOT', ''),
+            'timeout' => 30,
 
-        
+            // // Optional settings:
+            // // If you are using a private key for authentication instead of a password
+            // 'privateKey' => env('SFTP_PRIVATE_KEY_PATH'),
+            // 'passphrase' => env('SFTP_PASSPHRASE'),
+
+            // // If you need to connect via a specific key from the SSH agent
+            // 'useAgent' => env('SFTP_USE_AGENT', false),
+        ],
+
        
     ],
 

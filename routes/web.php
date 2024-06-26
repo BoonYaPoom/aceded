@@ -99,6 +99,10 @@ use LdapRecord\Laravel\Facades\Ldap;
 */
 
 
+Route::get('/exportP0101/{department_id}/{year}', [ExcelController::class, 'exportP0101'])->name('exportP0101');
+Route::get('/exportP0101Zone/{department_id}/{year}', [ExcelController::class, 'exportP0101Zone'])->name('exportP0101Zone');
+Route::get('/exportP0116/{department_id}/{year}', [ExcelController::class, 'exportP0116'])->name('exportP0116');
+Route::get('/exportP0116Zone/{department_id}/{year}', [ExcelController::class, 'exportP0116Zone'])->name('exportP0116Zone');
 Route::get('/exportExtender/{department_id}', [ExcelController::class, 'exportExtender'])->name('exportExtender');
 Route::get('/exportUserDataZone', [ExcelController::class, 'exportUserDataZone'])->name('exportUserDataZone');
 Route::get('/exportT0101/{department_id}/{provin_name}/{year}', [ExcelController::class, 'exportT0101'])->name('exportT0101');
@@ -544,7 +548,6 @@ Route::group(['middleware' => 'IsLoggedIn'], function () {
                     Route::get('{department_id}/{extender_id}/deleteAllUser', [ExtenderController::class, 'deleteAllUser'])->name('deleteAllUser');
                   
                   
-                    Route::get('{department_id}/umsSchoolDP', [ExtenderdepartController::class, 'extenindex'])->name('extenindex');
                  
               
                 });
@@ -559,7 +562,9 @@ Route::group(['middleware' => 'IsLoggedIn'], function () {
                     Route::get('{department_id}/T0118DP', [T0118DPController::class, 'T0118DP'])->name('T0118DP');
                     Route::get('{department_id}/T0119DP', [T0119DPController::class, 'T0119DP'])->name('T0119DP');
                     Route::get('{department_id}/T0120DP', [T0120DPController::class, 'T0120DP'])->name('T0120DP');
-  
+
+                    Route::get('{department_id}/P0101DP', [T0101DPController::class, 'P0101DP'])->name('P0101DP');
+                    Route::get('{department_id}/P0116DP', [T0116DPController::class, 'P0116DP'])->name('P0116DP');
                 });
                 Route::get('rplDP/{department_id}', [ReportADPController::class, 'Reportview'])->name('DepartReportviewDp');
                 Route::prefix('rplDP')->group(function () {
@@ -738,7 +743,8 @@ Route::group(['middleware' => 'IsLoggedIn'], function () {
                 Route::get('/schooldepart_delete/{school_id}', [SchoolDepartController::class, 'delete'])->name('deleteschoolDepart');
                 Route::get('/department_delete/{department_id}', [DepartmentController::class, 'destroy'])->name('deleteDepart');
                 Route::get('{user_id}/classroom_user_status/{course_id}/{certificate_file_id}', [ClassroomController::class, 'classroom_user_status'])->name('classroom_user_status');
-                
+                Route::get('{user_id}/con_user_status/{course_id}/{learner_id}', [ClassroomController::class, 'con_user_status'])->name('con_user_status');
+                   
             });
         });
     });

@@ -70,7 +70,7 @@ class t0116 implements
             $congratulation = $item->congratulation;
 
             if ($congratulation == 0) {
-                $cons = 'N';
+                $cons = 'P';
             } elseif ($congratulation == 1) {
                 $cons = 'N/A';
             }

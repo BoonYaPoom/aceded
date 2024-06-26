@@ -26,3 +26,4 @@ Route::get('/apiUsers', [ApiController::class, 'apiUsers']);
 Route::post('/web/provinces', [ApiTofontController::class, 'provinces']);
 Route::post('/web/districts', [ApiTofontController::class, 'districts']);
 Route::post('/web/subdistricts', [ApiTofontController::class, 'subdistricts']);
+Route::get('/usersapina', [ApiTofontController::class, 'usersapina']);

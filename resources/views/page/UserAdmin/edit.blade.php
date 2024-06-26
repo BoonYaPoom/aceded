@@ -402,7 +402,7 @@
                                                 style="font-size: 22px;">
                                         @elseif ($usermanages->organization == 0)
                                             <input type="text" class="form-control " id="seraas" name="seraas"
-                                                value="{{ $user_affiliation->content_name }}" disabled
+                                                value="{{ $user_affiliation->content_name ?? $usermanages->user_affiliation }}" disabled
                                                 placeholder="หน่วยงาน" style="font-size: 22px;">
                                         @endif
                                     </div>

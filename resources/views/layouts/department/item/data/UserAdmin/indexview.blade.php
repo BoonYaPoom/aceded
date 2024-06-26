@@ -67,7 +67,8 @@
                             $depart->department_id == 2 ||
                             $depart->department_id == 3 ||
                             $depart->department_id == 4 ||
-                            $depart->department_id == 5) &&
+                            $depart->department_id == 5||
+                            $depart->department_id == 6) &&
                             $data->user_role == 1) ||
                             $data->user_role == 6 ||
                             $data->user_role == 7 ||
@@ -76,12 +77,16 @@
                         <a class="ml-1 btn btn-info btn-md " style="color:#fff"
                             href="{{ route('testumsschool', [$depart]) }}"><i class="fas fa-users"></i>
                             จัดการสถานศึกษา</a>
-                    @elseif (
-                        ($depart->department_id == 6) &&
+                    {{-- @elseif (
+                        ($depart->department_id == 1 ||
+                            $depart->department_id == 2 ||
+                            $depart->department_id == 3 ||
+                            $depart->department_id == 4 ||
+                            $depart->department_id == 5) &&
                             $data->user_role == 1)
                         <a class="ml-1 btn btn-info btn-md " style="color:#fff"
                             href="{{ route('extenindex', [$depart]) }}"><i class="fas fa-users"></i>
-                            จัดการสถานศึกษา</a>
+                            จัดการสถานศึกษา</a> --}}
                     @endif
 
 
@@ -279,17 +284,19 @@
                             <div class="d-flex justify-content-between align-items-center">
                                 <div class="dt-buttons btn-group">
                                     @if ($data->user_role == 1 || $data->user_role == 8)
-                                        <button class="btn btn-secondary buttons-excel buttons-html5" tabindex="0"
-                                            aria-controls="datatable" type="button"
-                                            onclick="window.location='{{ route('UsersExport', ['department_id' => $depart]) }}'">
-                                            <span>Excel</span>
-                                        </button>
+                              
+                                           <a class="btn btn-secondary buttons-excel buttons-html5" tabindex="0"
+                                        aria-controls="datatable" type="button"
+                                        href="{{ route('UsersExport', ['department_id' => $depart]) }}" target="_blank">
+                                        <span>Excel</span>
+                                    </a>
                                     @elseif ($data->user_role == 7)
-                                        <button class="btn btn-secondary buttons-excel buttons-html5" tabindex="0"
-                                            aria-controls="datatable" type="button"
-                                            onclick="window.location='{{ route('exportUsersPro', ['department_id' => $depart, 'provicValue' => $provicValue]) }}'">
-                                            <span>Excel</span>
-                                        </button>
+
+                                        <a class="btn btn-secondary buttons-excel buttons-html5" tabindex="0"
+                                        aria-controls="datatable" type="button"
+                                        href="{{ route('exportUsersPro', ['department_id' => $depart, 'provicValue' => $provicValue]) }}" target="_blank">
+                                        <span>Excel</span>
+                                    </a>
                                     @elseif ($data->user_role == 6)
                                         <button class="btn btn-secondary buttons-excel buttons-html5" tabindex="0"
                                             aria-controls="datatable" type="button"
@@ -305,17 +312,18 @@
                                     @endif
                                     &nbsp;&nbsp;&nbsp;
                                     @if ($data->user_role == 7)
-                                        <button class="btn btn-secondary buttons-excel buttons-html5" tabindex="0"
-                                            aria-controls="datatable" type="button"
-                                            onclick="window.location='{{ route('exportUserProvicAll', ['provicValue' => $provicValue]) }}'">
-                                            <span>Excel รายชื่อทั้งจังหวัด</span>
-                                        </button>
+                                          <a class="btn btn-secondary buttons-excel buttons-html5" tabindex="0"
+                                        aria-controls="datatable" type="button"
+                                        href="{{ route('exportUserProvicAll', ['provicValue' => $provicValue]) }}" target="_blank">
+                                        <span>Excel รายชื่อทั้งจังหวัด</span>
+                                    </a>
                                     @elseif ($data->user_role == 9)
-                                        <button class="btn btn-secondary buttons-excel buttons-html5" tabindex="0"
-                                            aria-controls="datatable" type="button"
-                                            onclick="window.location='{{ route('exportUserDataZone') }}'">
-                                            <span>Excel รายชื่อทั้งภาค</span>
-                                        </button>
+                                      <a class="btn btn-secondary buttons-excel buttons-html5" tabindex="0"
+                                        aria-controls="datatable" type="button"
+                                        href="{{ route('exportUserDataZone') }}" target="_blank">
+                                        <span>Excel รายชื่อทั้งจังหวัด</span>
+                                    </a>
+                                 
                                     @endif
                                 </div>
 

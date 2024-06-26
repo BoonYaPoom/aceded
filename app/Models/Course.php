@@ -29,7 +29,7 @@ class Course extends Model
       }
       public static function generateCourseCode($group_id)
       {
-        $code = Course::where('group_id', $group_id)->count() + 1;
+        $code = Course::where('group_id', $group_id)->where('course_status','<', 2)->count() + 1;
         
           return $code;
       }

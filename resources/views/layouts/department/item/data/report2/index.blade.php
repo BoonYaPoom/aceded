@@ -95,10 +95,11 @@
                             {{ Str::startsWith(request()->url(), route('B0100DP', $depart)) || request()->is('B0100DP', 'B0100DP/*')
                                 ? ' bg-muted'
                                 : '' }}">
-                                <span><i class="fas fa-chart-bar text-teal mr-2"></i> <a href="{{ route('B0100DP', $depart) }}"
-                                        class="small">รายงานเสรุปเชิงกราฟฟิค (Dashboard)</a></span>
+                                <span><i class="fas fa-chart-bar text-teal mr-2"></i> <a
+                                        href="{{ route('B0100DP', $depart) }}" class="small">รายงานเสรุปเชิงกราฟฟิค
+                                        (Dashboard)</a></span>
                             </div>
-                            @if ($data->user_role == 1 || $data->user_role == 8)
+                            @if ($data->user_role == 1 || $data->user_role == 8 || $data->user_role == 7 || $data->user_role == 9)
                                 <div
                                     class="list-group-item justify-content-between align-items-center 
                             {{ Str::startsWith(request()->url(), route('TableCDP', $depart)) || request()->is('TableCDP', 'TableCDP/*') ? ' bg-muted' : '' }}">
