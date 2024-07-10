@@ -273,12 +273,15 @@
 
         </div><!-- /.page-section -->
         <!-- .page-title-bar -->
-        <header class="page-title-bar">
+        @if ($data->user_role == 1 || $data->user_role == 8)
+             <header class="page-title-bar">
             <!-- floating action -->
             <button type="button" class="btn btn-success btn-floated btn-addums"
                 onclick="window.location='{{ route('createUser') }}'" id="add_umsform" data-toggle="tooltip"
                 title="เพิ่ม"><span class="fas fa-plus"></span></button>
             <!-- /floating action -->
         </header><!-- /.page-title-bar -->
+        @endif
+       
     </div><!-- /.page-inner -->
 @endsection

@@ -160,9 +160,13 @@ class CourseController extends Controller
 
         set_time_limit(0);
         libxml_use_internal_errors(true);
-        if (!file_exists(public_path('/uplade'))) {
-            mkdir(public_path('/uplade'), 0755, true);
+        // if (!file_exists(public_path('/uplade'))) {
+        //     mkdir(public_path('/uplade'), 0755, true);
+        // }
+        if (!Storage::disk('sftp')->exists('/uplade/ck/')) {
+            Storage::disk('sftp')->makeDirectory('/uplade/ck/');
         }
+       
         if ($request->has('paymentdetail')) {
             $paymentdetail = $request->input('paymentdetail');
             $decodedTextpaymentdetail = '';
@@ -178,9 +182,9 @@ class CourseController extends Controller
                     if (strpos($img->getAttribute('src'), 'data:image/') === 0) {
                         $data = base64_decode(explode(',', explode(';', $img->getAttribute('src'))[1])[1]);
                         $image_name = '/uplade/' . time() . $key . '.png'; // ใส่ .png เพื่อให้เป็นนามสกุลไฟล์ถูกต้อง
-                        file_put_contents(public_path() . $image_name, $data);
+                        Storage::disk('sftp')->put($image_name, $data);
                         $img->removeAttribute('src');
-                        $newImageUrl = asset($image_name);
+                        $newImageUrl = env('URL_FILE_SFTP') . $image_name;
                         $img->setAttribute('src', $newImageUrl);
                     }
                 }
@@ -201,13 +205,25 @@ class CourseController extends Controller
 
         if ($request->hasFile('cover')) {
             $image_name = 'cover' . $cour->course_id . '.' . $request->cover->getClientOriginalExtension();
-            $uploadDirectory = public_path('upload/Course/images/');
-            if (!file_exists($uploadDirectory)) {
-                mkdir($uploadDirectory, 0755, true);
-            }
-            if (file_exists($uploadDirectory)) {
+            // $uploadDirectory = public_path('upload/Course/images/');
+            // if (!file_exists($uploadDirectory)) {
+            //     mkdir($uploadDirectory, 0755, true);
+            // }
+            // if (file_exists($uploadDirectory)) {
 
-                file_put_contents(public_path('upload/Course/images/' . $image_name), file_get_contents($request->cover));
+            //     file_put_contents(public_path('upload/Course/images/' . $image_name), file_get_contents($request->cover));
+            //     $cour->cover = 'upload/Course/images/' . 'cover' . $cour->course_id . '.' . $request->cover->getClientOriginalExtension();
+            //     $cour->save();
+            // }
+
+            $uploadDirectory = 'Course/images/' . $cour->course_id;
+            if (!Storage::disk('sftp')->exists($uploadDirectory)) {
+                Storage::disk('sftp')->makeDirectory($uploadDirectory);
+            }
+            if (Storage::disk('sftp')->exists($uploadDirectory)) {
+                // ตรวจสอบว่ามีไฟล์เดิมอยู่หรือไม่ ถ้ามีให้ลบออก
+                Storage::disk('sftp')->delete($uploadDirectory);
+                Storage::disk('sftp')->put($uploadDirectory . '/' . $image_name, file_get_contents($request->cover->getRealPath()));
                 $cour->cover = 'upload/Course/images/' . 'cover' . $cour->course_id . '.' . $request->cover->getClientOriginalExtension();
                 $cour->save();
             }
@@ -219,14 +235,26 @@ class CourseController extends Controller
 
         if ($request->hasFile('signature')) {
             $image_signature = 'signature' . $cour->course_id . '.' . $request->signature->getClientOriginalExtension();
-            $uploadDirectory = public_path('upload/Course/signature/');
-            if (!file_exists($uploadDirectory)) {
-                mkdir($uploadDirectory, 0755, true);
-            }
-            if (file_exists($uploadDirectory)) {
+            // $uploadDirectory = public_path('upload/Course/signature/');
+            // if (!file_exists($uploadDirectory)) {
+            //     mkdir($uploadDirectory, 0755, true);
+            // }
+            // if (file_exists($uploadDirectory)) {
 
-                file_put_contents(public_path('upload/Course/signature/' . $image_signature), file_get_contents($request->signature));
-                $cour->signature = 'upload/Course/signature/' .   'signature' . $cour->course_id . '.' . $request->signature->getClientOriginalExtension();
+            //     file_put_contents(public_path('upload/Course/signature/' . $image_signature), file_get_contents($request->signature));
+            //     $cour->signature = 'upload/Course/signature/' .   'signature' . $cour->course_id . '.' . $request->signature->getClientOriginalExtension();
+            //     $cour->save();
+            // }
+
+            $uploadDirectory = 'Course/signature/' . $cour->course_id;
+            if (!Storage::disk('sftp')->exists($uploadDirectory)) {
+                Storage::disk('sftp')->makeDirectory($uploadDirectory);
+            }
+            if (Storage::disk('sftp')->exists($uploadDirectory)) {
+                // ตรวจสอบว่ามีไฟล์เดิมอยู่หรือไม่ ถ้ามีให้ลบออก
+                Storage::disk('sftp')->delete($uploadDirectory);
+                Storage::disk('sftp')->put($uploadDirectory . '/' . $image_signature, file_get_contents($request->signature->getRealPath()));
+                $cour->signature = 'upload/Course/signature/' . 'signature' . $cour->course_id . '.' . $request->signature->getClientOriginalExtension();
                 $cour->save();
             }
         } else {
@@ -235,32 +263,43 @@ class CourseController extends Controller
             $cour->save();
         }
         if ($request->templete_certificate) {
-            if (File::exists(public_path('uploads/cer/CER' . $request->templete_certificate . '.png'))) {
+            if (Storage::disk('sftp')->exists('cer/CER' . $request->templete_certificate . '.png')) {
                 // ตรวจสอบว่าไดเรกทอรีปลายทางสำหรับการบันทึกใหม่มีอยู่หรือไม่
-                $uploadDirectory = public_path('upload/Course/cert_custom/');
-                if (!File::exists($uploadDirectory)) {
-                    File::makeDirectory($uploadDirectory, 0755, true);
+                $uploadDirectory = 'Course/cert_custom/';
+                if (!Storage::disk('sftp')->exists($uploadDirectory)) {
+                    Storage::disk('sftp')->makeDirectory($uploadDirectory, 0755, true);
                 }
-
                 // กําหนดชื่อไฟล์ใหม่และคัดลอกไฟล์รูปภาพ
                 $newImageName = 'cert_custom' . $cour->course_id . '.png'; // ตั้งชื่อใหม่ตามต้องการ
-                File::copy(public_path('uploads/cer/CER' . $request->templete_certificate . '.png'), $uploadDirectory . $newImageName);
-
+                Storage::disk('sftp')->copy('cer/CER' . $request->templete_certificate . '.png', $uploadDirectory . $newImageName);
                 // บันทึกชื่อไฟล์ใหม่ในฐานข้อมูล
-                $cour->cert_custom = 'upload/Course/cert_custom/' . $newImageName;
+                $cour->cert_custom ='upload/Course/cert_custom/' . $newImageName;
                 $cour->save();
             }
+
         } elseif ($request->hasFile('cert_custom')) {
             $image_cert_custom = 'cert_custom' . $cour->course_id . '.' . $request->cert_custom->getClientOriginalExtension();
-            $uploadDirectory = public_path('upload/Course/cert_custom/');
-            if (!file_exists($uploadDirectory)) {
-                mkdir($uploadDirectory, 0755, true);
-            }
-            if (file_exists($uploadDirectory)) {
+            // $uploadDirectory = public_path('upload/Course/cert_custom/');
+            // if (!file_exists($uploadDirectory)) {
+            //     mkdir($uploadDirectory, 0755, true);
+            // }
+            // if (file_exists($uploadDirectory)) {
 
-                file_put_contents(public_path('upload/Course/cert_custom/' . $image_cert_custom), file_get_contents($request->cert_custom));
-                $cour->cert_custom = 'upload/Course/cert_custom/' .   'cert_custom' . $cour->course_id . '.' . $request->cert_custom->getClientOriginalExtension();
-                $cour->templete_certificate == 0;
+            //     file_put_contents(public_path('upload/Course/cert_custom/' . $image_cert_custom), file_get_contents($request->cert_custom));
+            //     $cour->cert_custom = 'upload/Course/cert_custom/' .   'cert_custom' . $cour->course_id . '.' . $request->cert_custom->getClientOriginalExtension();
+            //     $cour->templete_certificate == 0;
+            //     $cour->save();
+            // }
+
+            $uploadDirectory = 'Course/cert_custom/' . $cour->course_id;
+            if (!Storage::disk('sftp')->exists($uploadDirectory)) {
+                Storage::disk('sftp')->makeDirectory($uploadDirectory);
+            }
+            if (Storage::disk('sftp')->exists($uploadDirectory)) {
+                // ตรวจสอบว่ามีไฟล์เดิมอยู่หรือไม่ ถ้ามีให้ลบออก
+                Storage::disk('sftp')->delete($uploadDirectory);
+                Storage::disk('sftp')->put($uploadDirectory . '/' . $image_cert_custom, file_get_contents($request->cert_custom->getRealPath()));
+                $cour->cert_custom = 'upload/Course/cert_custom/' . 'cert_custom' . $cour->course_id . '.' . $request->cert_custom->getClientOriginalExtension();
                 $cour->save();
             }
         } else {
@@ -361,6 +400,10 @@ class CourseController extends Controller
     }
     public function update(Request $request, $department_id, $course_id)
     {
+
+       
+
+
         $cour = Course::findOrFail($course_id);
 
         $cour->course_th = $request->input('course_th');
@@ -416,9 +459,11 @@ class CourseController extends Controller
             $cour->promptpay = $request->input('promptpay', 0);
             set_time_limit(0);
             libxml_use_internal_errors(true);
-            if (!file_exists(public_path('/uplade'))) {
-                mkdir(public_path('/uplade'), 0755, true);
+     
+            if (!Storage::disk('sftp')->exists('/uplade/ck/')) {
+                Storage::disk('sftp')->makeDirectory('/uplade/ck/');
             }
+        
             if ($request->has('paymentdetail')) {
                 $paymentdetail = $request->input('paymentdetail');
                 $decodedTextpaymentdetail = '';
@@ -434,9 +479,9 @@ class CourseController extends Controller
                         if (strpos($img->getAttribute('src'), 'data:image/') === 0) {
                             $data = base64_decode(explode(',', explode(';', $img->getAttribute('src'))[1])[1]);
                             $image_name = '/uplade/' . time() . $key . '.png'; // ใส่ .png เพื่อให้เป็นนามสกุลไฟล์ถูกต้อง
-                            file_put_contents(public_path() . $image_name, $data);
+                            Storage::disk('sftp')->put($image_name, $data);
                             $img->removeAttribute('src');
-                            $newImageUrl = asset($image_name);
+                            $newImageUrl = env('URL_FILE_SFTP') . $image_name;
                             $img->setAttribute('src', $newImageUrl);
                         }
                     }
@@ -461,71 +506,97 @@ class CourseController extends Controller
         }
 
 
-
-
-
-
         $cour->save();
-
         if ($request->hasFile('cover')) {
             $image_name = 'cover' . $cour->course_id . '.' . $request->cover->getClientOriginalExtension();
-            $uploadDirectory = public_path('upload/Course/images/');
-            if (!file_exists($uploadDirectory)) {
-                mkdir($uploadDirectory, 0755, true);
-            }
-            if (file_exists($uploadDirectory)) {
+            // $uploadDirectory = public_path('upload/Course/images/');
+            // if (!file_exists($uploadDirectory)) {
+            //     mkdir($uploadDirectory, 0755, true);
+            // }
+            // if (file_exists($uploadDirectory)) {
 
-                file_put_contents(public_path('upload/Course/images/' . $image_name), file_get_contents($request->cover));
+            //     file_put_contents(public_path('upload/Course/images/' . $image_name), file_get_contents($request->cover));
+            //     $cour->cover = 'upload/Course/images/' . 'cover' . $cour->course_id . '.' . $request->cover->getClientOriginalExtension();
+            //     $cour->save();
+            // }
+
+            $uploadDirectory = 'Course/images/' . $cour->course_id;
+            if (!Storage::disk('sftp')->exists($uploadDirectory)) {
+                Storage::disk('sftp')->makeDirectory($uploadDirectory);
+            }
+            if (Storage::disk('sftp')->exists($uploadDirectory)) {
+                // ตรวจสอบว่ามีไฟล์เดิมอยู่หรือไม่ ถ้ามีให้ลบออก
+                Storage::disk('sftp')->delete($uploadDirectory);
+                Storage::disk('sftp')->put($uploadDirectory . '/' . $image_name, file_get_contents($request->cover->getRealPath()));
                 $cour->cover = 'upload/Course/images/' . 'cover' . $cour->course_id . '.' . $request->cover->getClientOriginalExtension();
                 $cour->save();
             }
-        }
+        } 
         if ($request->hasFile('signature')) {
             $image_signature = 'signature' . $cour->course_id . '.' . $request->signature->getClientOriginalExtension();
-            $uploadDirectory = public_path('upload/Course/signature/');
-            if (!file_exists($uploadDirectory)) {
-                mkdir($uploadDirectory, 0755, true);
-            }
-            if (file_exists($uploadDirectory)) {
+            // $uploadDirectory = public_path('upload/Course/signature/');
+            // if (!file_exists($uploadDirectory)) {
+            //     mkdir($uploadDirectory, 0755, true);
+            // }
+            // if (file_exists($uploadDirectory)) {
 
-                file_put_contents(public_path('upload/Course/signature/' . $image_signature), file_get_contents($request->signature));
-                $cour->signature = 'upload/Course/signature/' .   'signature' . $cour->course_id . '.' . $request->signature->getClientOriginalExtension();
+            //     file_put_contents(public_path('upload/Course/signature/' . $image_signature), file_get_contents($request->signature));
+            //     $cour->signature = 'upload/Course/signature/' .   'signature' . $cour->course_id . '.' . $request->signature->getClientOriginalExtension();
+            //     $cour->save();
+            // }
+
+            $uploadDirectory = 'Course/signature/' . $cour->course_id;
+            if (!Storage::disk('sftp')->exists($uploadDirectory)) {
+                Storage::disk('sftp')->makeDirectory($uploadDirectory);
+            }
+            if (Storage::disk('sftp')->exists($uploadDirectory)) {
+                // ตรวจสอบว่ามีไฟล์เดิมอยู่หรือไม่ ถ้ามีให้ลบออก
+                Storage::disk('sftp')->delete($uploadDirectory);
+                Storage::disk('sftp')->put($uploadDirectory . '/' . $image_signature, file_get_contents($request->signature->getRealPath()));
+                $cour->signature = 'upload/Course/signature/' . 'signature' . $cour->course_id . '.' . $request->signature->getClientOriginalExtension();
                 $cour->save();
             }
-        }
-
+        } 
         if ($request->templete_certificate) {
-            if (File::exists(public_path('uploads/cer/CER' . $request->templete_certificate . '.png'))) {
+            if (Storage::disk('sftp')->exists('cer/CER' . $request->templete_certificate . '.png')) {
                 // ตรวจสอบว่าไดเรกทอรีปลายทางสำหรับการบันทึกใหม่มีอยู่หรือไม่
-                $uploadDirectory = public_path('upload/Course/cert_custom/');
-                if (!File::exists($uploadDirectory)) {
-                    File::makeDirectory($uploadDirectory, 0755, true);
+                $uploadDirectory = 'Course/cert_custom/';
+                if (!Storage::disk('sftp')->exists($uploadDirectory)) {
+                    Storage::disk('sftp')->makeDirectory($uploadDirectory, 0755, true);
                 }
-
                 // กําหนดชื่อไฟล์ใหม่และคัดลอกไฟล์รูปภาพ
                 $newImageName = 'cert_custom' . $cour->course_id . '.png'; // ตั้งชื่อใหม่ตามต้องการ
-                File::copy(public_path('uploads/cer/CER' . $request->templete_certificate . '.png'), $uploadDirectory . $newImageName);
-
+                Storage::disk('sftp')->copy('cer/CER' . $request->templete_certificate . '.png', $uploadDirectory . $newImageName);
                 // บันทึกชื่อไฟล์ใหม่ในฐานข้อมูล
                 $cour->cert_custom = 'upload/Course/cert_custom/' . $newImageName;
                 $cour->save();
             }
         } elseif ($request->hasFile('cert_custom')) {
             $image_cert_custom = 'cert_custom' . $cour->course_id . '.' . $request->cert_custom->getClientOriginalExtension();
-            $uploadDirectory = public_path('upload/Course/cert_custom/');
-            if (!file_exists($uploadDirectory)) {
-                mkdir($uploadDirectory, 0755, true);
-            }
-            if (file_exists($uploadDirectory)) {
+            // $uploadDirectory = public_path('upload/Course/cert_custom/');
+            // if (!file_exists($uploadDirectory)) {
+            //     mkdir($uploadDirectory, 0755, true);
+            // }
+            // if (file_exists($uploadDirectory)) {
 
-                file_put_contents(public_path('upload/Course/cert_custom/' . $image_cert_custom), file_get_contents($request->cert_custom));
-                $cour->cert_custom = 'upload/Course/cert_custom/' .   'cert_custom' . $cour->course_id . '.' . $request->cert_custom->getClientOriginalExtension();
-                $cour->templete_certificate == 0;
+            //     file_put_contents(public_path('upload/Course/cert_custom/' . $image_cert_custom), file_get_contents($request->cert_custom));
+            //     $cour->cert_custom = 'upload/Course/cert_custom/' .   'cert_custom' . $cour->course_id . '.' . $request->cert_custom->getClientOriginalExtension();
+            //     $cour->templete_certificate == 0;
+            //     $cour->save();
+            // }
+
+            $uploadDirectory = 'Course/cert_custom/' . $cour->course_id;
+            if (!Storage::disk('sftp')->exists($uploadDirectory)) {
+                Storage::disk('sftp')->makeDirectory($uploadDirectory);
+            }
+            if (Storage::disk('sftp')->exists($uploadDirectory)) {
+                // ตรวจสอบว่ามีไฟล์เดิมอยู่หรือไม่ ถ้ามีให้ลบออก
+                Storage::disk('sftp')->delete($uploadDirectory);
+                Storage::disk('sftp')->put($uploadDirectory . '/' . $image_cert_custom, file_get_contents($request->cert_custom->getRealPath()));
+                $cour->cert_custom = 'upload/Course/cert_custom/' . 'cert_custom' . $cour->course_id . '.' . $request->cert_custom->getClientOriginalExtension();
                 $cour->save();
             }
         }
-
-
         DB::table('course_subjectlist')
             ->where('course_id', $course_id)
             ->delete();
@@ -537,8 +608,6 @@ class CourseController extends Controller
                 'subject_status' => 1,
             ]);
         }
-
-
 
         return redirect()->route('courpag', [$department_id, 'group_id' => $cour->group_id])->with('message', 'CourseGroup บันทึกข้อมูลสำเร็จ');
     }
@@ -558,10 +627,13 @@ class CourseController extends Controller
 
         set_time_limit(0);
         libxml_use_internal_errors(true);
-        if (!file_exists(public_path('/uplade'))) {
-            mkdir(public_path('/uplade'), 0755, true);
+        // if (!file_exists(public_path('/uplade'))) {
+        //     mkdir(public_path('/uplade'), 0755, true);
+        // }
+        if (!Storage::disk('sftp')->exists('/uplade/ck/')) {
+            Storage::disk('sftp')->makeDirectory('/uplade/ck/');
         }
-
+      
         $cour = Course::findOrFail($course_id);
         if ($request->has('description_th')) {
             $description_th = $request->description_th;
@@ -578,9 +650,9 @@ class CourseController extends Controller
                     if (strpos($img->getAttribute('src'), 'data:image/') === 0) {
                         $data = base64_decode(explode(',', explode(';', $img->getAttribute('src'))[1])[1]);
                         $image_name = '/uplade/' . time() . $key . '.png'; // ใส่ .png เพื่อให้เป็นนามสกุลไฟล์ถูกต้อง
-                        file_put_contents(public_path() . $image_name, $data);
+                        Storage::disk('sftp')->put($image_name, $data);
                         $img->removeAttribute('src');
-                        $newImageUrl = asset($image_name);
+                        $newImageUrl = env('URL_FILE_SFTP') . $image_name;
                         $img->setAttribute('src', $newImageUrl);
                     }
                 }
@@ -606,9 +678,9 @@ class CourseController extends Controller
                     if (strpos($img->getAttribute('src'), 'data:image/') === 0) {
                         $data = base64_decode(explode(',', explode(';', $img->getAttribute('src'))[1])[1]);
                         $image_name = '/uplade/' . time() . $key . '.png'; // ใส่ .png เพื่อให้เป็นนามสกุลไฟล์ถูกต้อง
-                        file_put_contents(public_path() . $image_name, $data);
+                        Storage::disk('sftp')->put($image_name, $data);
                         $img->removeAttribute('src');
-                        $newImageUrl = asset($image_name);
+                        $newImageUrl = env('URL_FILE_SFTP') . $image_name;
                         $img->setAttribute('src', $newImageUrl);
                     }
                 }
@@ -633,9 +705,9 @@ class CourseController extends Controller
                     if (strpos($img->getAttribute('src'), 'data:image/') === 0) {
                         $data = base64_decode(explode(',', explode(';', $img->getAttribute('src'))[1])[1]);
                         $image_name = '/uplade/' . time() . $key . '.png'; // ใส่ .png เพื่อให้เป็นนามสกุลไฟล์ถูกต้อง
-                        file_put_contents(public_path() . $image_name, $data);
+                        Storage::disk('sftp')->put($image_name, $data);
                         $img->removeAttribute('src');
-                        $newImageUrl = asset($image_name);
+                        $newImageUrl = env('URL_FILE_SFTP') . $image_name;
                         $img->setAttribute('src', $newImageUrl);
                     }
                 }
@@ -659,9 +731,9 @@ class CourseController extends Controller
                     if (strpos($img->getAttribute('src'), 'data:image/') === 0) {
                         $data = base64_decode(explode(',', explode(';', $img->getAttribute('src'))[1])[1]);
                         $image_name = '/uplade/' . time() . $key . '.png'; // ใส่ .png เพื่อให้เป็นนามสกุลไฟล์ถูกต้อง
-                        file_put_contents(public_path() . $image_name, $data);
+                        Storage::disk('sftp')->put($image_name, $data);
                         $img->removeAttribute('src');
-                        $newImageUrl = asset($image_name);
+                        $newImageUrl = env('URL_FILE_SFTP') . $image_name;
                         $img->setAttribute('src', $newImageUrl);
                     }
                 }
@@ -686,9 +758,9 @@ class CourseController extends Controller
                     if (strpos($img->getAttribute('src'), 'data:image/') === 0) {
                         $data = base64_decode(explode(',', explode(';', $img->getAttribute('src'))[1])[1]);
                         $image_name = '/uplade/' . time() . $key . '.png'; // ใส่ .png เพื่อให้เป็นนามสกุลไฟล์ถูกต้อง
-                        file_put_contents(public_path() . $image_name, $data);
+                        Storage::disk('sftp')->put($image_name, $data);
                         $img->removeAttribute('src');
-                        $newImageUrl = asset($image_name);
+                        $newImageUrl = env('URL_FILE_SFTP') . $image_name;
                         $img->setAttribute('src', $newImageUrl);
                     }
                 }
@@ -713,9 +785,9 @@ class CourseController extends Controller
                     if (strpos($img->getAttribute('src'), 'data:image/') === 0) {
                         $data = base64_decode(explode(',', explode(';', $img->getAttribute('src'))[1])[1]);
                         $image_name = '/uplade/' . time() . $key . '.png'; // ใส่ .png เพื่อให้เป็นนามสกุลไฟล์ถูกต้อง
-                        file_put_contents(public_path() . $image_name, $data);
+                        Storage::disk('sftp')->put($image_name, $data);
                         $img->removeAttribute('src');
-                        $newImageUrl = asset($image_name);
+                        $newImageUrl = env('URL_FILE_SFTP') . $image_name;
                         $img->setAttribute('src', $newImageUrl);
                     }
                 }
@@ -740,9 +812,9 @@ class CourseController extends Controller
                     if (strpos($img->getAttribute('src'), 'data:image/') === 0) {
                         $data = base64_decode(explode(',', explode(';', $img->getAttribute('src'))[1])[1]);
                         $image_name = '/uplade/' . time() . $key . '.png'; // ใส่ .png เพื่อให้เป็นนามสกุลไฟล์ถูกต้อง
-                        file_put_contents(public_path() . $image_name, $data);
+                        Storage::disk('sftp')->put($image_name, $data);
                         $img->removeAttribute('src');
-                        $newImageUrl = asset($image_name);
+                        $newImageUrl = env('URL_FILE_SFTP') . $image_name;
                         $img->setAttribute('src', $newImageUrl);
                     }
                 }
@@ -767,9 +839,9 @@ class CourseController extends Controller
                     if (strpos($img->getAttribute('src'), 'data:image/') === 0) {
                         $data = base64_decode(explode(',', explode(';', $img->getAttribute('src'))[1])[1]);
                         $image_name = '/uplade/' . time() . $key . '.png'; // ใส่ .png เพื่อให้เป็นนามสกุลไฟล์ถูกต้อง
-                        file_put_contents(public_path() . $image_name, $data);
+                        Storage::disk('sftp')->put($image_name, $data);
                         $img->removeAttribute('src');
-                        $newImageUrl = asset($image_name);
+                        $newImageUrl = env('URL_FILE_SFTP') . $image_name;
                         $img->setAttribute('src', $newImageUrl);
                     }
                 }

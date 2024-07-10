@@ -8,13 +8,13 @@
                         <a class="nav-link    font-weight-bold " href="{{ route('departmentwmspage') }}"><span
                                 class="menu-icon fas fa-home "></span>
                             หน้าแรก</a>
-                        
-                        @if ($data->user_role == 1||$data->user_role == 8||$data->user_role == 7 ||$data->user_role == 9)
-                        <a class="nav-link  font-weight-bold {{ Str::startsWith(request()->url(), route('DepartReportview')) || request()->is('rpl', 'rpl/*')
+                            <a class="nav-link  font-weight-bold {{ Str::startsWith(request()->url(), route('DepartReportview')) || request()->is('rpl', 'rpl/*')
                             ? ' active text-info'
                             : '' }}"
                             href="{{ route('A0100') }}"><span class="menu-icon fas fa-chart-bar  "></span>
                             รายงาน</a>
+                        @if ($data->user_role == 1||$data->user_role == 8)
+                    
                             <a class="nav-link  font-weight-bold {{ Str::startsWith(request()->url(), route('UserManage')) || request()->is('ums', 'ums/*')
                                 ? ' active text-info'
                                 : '' }}"

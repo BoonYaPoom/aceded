@@ -37,20 +37,29 @@ class EditProfileController extends Controller
             if ($request->hasFile('avatar')) {
                 $image_name = 'avatar' . $users->user_id . '.' . $request->avatar->getClientOriginalExtension();
                 $image = Image::make($request->avatar)->resize(400, 400);
-                $uploadDirectory = public_path('upload/Profile/' . $image_name);
-                
-                if (!file_exists(dirname($uploadDirectory))) {
-                    mkdir(dirname($uploadDirectory), 0755, true);
+                // $uploadDirectory = public_path('upload/Profile/' . $image_name);
+
+                // if (!file_exists(dirname($uploadDirectory))) {
+                //     mkdir(dirname($uploadDirectory), 0755, true);
+                // }
+
+                // $image->save($uploadDirectory);
+                $uploadDirectory = 'Profile/';
+                if (!Storage::disk('sftp')->exists($uploadDirectory)) {
+                    Storage::disk('sftp')->makeDirectory($uploadDirectory);
                 }
-            
-                $image->save($uploadDirectory);
-                $users->avatar = 'https://aced-bn.nacc.go.th/' . 'upload/Profile/' . 'avatar' . $users->user_id . '.' . $request->avatar->getClientOriginalExtension();
+                if (Storage::disk('sftp')->exists($uploadDirectory)) {
+                    // ตรวจสอบว่ามีไฟล์เดิมอยู่หรือไม่ ถ้ามีให้ลบออก
+                    Storage::disk('sftp')->delete($uploadDirectory);
+                    Storage::disk('sftp')->put($uploadDirectory . '/' . $image, file_get_contents($request->avatar->getRealPath()));
+                }
+                $users->avatar = 'https://aced-content.nacc.go.th/' . 'upload/Profile/' . 'avatar' . $users->user_id . '.' . $request->avatar->getClientOriginalExtension();
             } 
             $users->username = $request->username;
             $users->firstname = $request->firstname;
             $users->lastname = $request->lastname;
             if ($request->password) {
-                $users->password = Hash::make($request->password);
+                $users->password = Hash::make(trim($request->password));
             }
             
             

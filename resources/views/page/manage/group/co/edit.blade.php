@@ -68,7 +68,7 @@
                         </div><!-- /.form-group -->
                         <div class="form-group">
                             <div class="col-lg-10">
-                                <img src="{{ asset($cour->cover) }}" alt="{{ $cour->cover }}" style="width:50%">
+                                <img src="{{ env('URL_FILE_SFTP') . $cour->cover }}" alt="{{ $cour->cover }}" style="width:50%">
                             </div>
                         </div><!-- /.form-group -->
 
@@ -943,8 +943,39 @@
                                     class="form-control" id="signature" name="signature" placeholder="ลายเซ็นต์"
                                     accept="image/*">
                             </div><!-- /.form-group -->
-                            <a href="{{ 'https://aced-bn.nacc.go.th/' . $cour->signature }}"  target="_blank">
-                                <small class="form-text text-muted">คลิกเพื่อดู รูปลายเซ็น</small></a>
+                            @if ($cour->signature == null)
+                                <div>
+
+                                </div>
+                            @else
+                                <div class="d-flex " style="gap: 20px;">
+                                    <a href="{{ 'https://aced-bn.nacc.go.th/' . $cour->signature }}" target="_blank">
+                                        <small class="form-text text-muted">คลิกเพื่อดู รูปลายเซ็น</small></a>
+                                    <div id="signatureStatus" name="signature_status" data-status="0">
+    
+                                        <i class="fas fa-trash-alt"></i>
+                                    </div>
+                                    <input type="hidden" id="statusInput" name="signature_status" value="0">
+                                    <script>
+                                        $(document).ready(function() {
+                                            $('#signatureStatus').on('click', function() {
+                                                let currentStatus = parseInt($(this).attr('data-status'));
+                                                let newStatus = currentStatus === 0 ? 1 : 0;
+                                                $(this).attr('data-status', newStatus);
+                                                $('#statusInput').val(newStatus);
+
+                                                if (newStatus === 1) {
+                                                    $(this).addClass('text-danger');
+                                                } else {
+                                                    $(this).removeClass('text-danger');
+                                                }
+
+                                                console.log('Status:', newStatus);
+                                            });
+                                        });
+                                    </script>
+                                </div>
+                            @endif
                         </fieldset><!-- /.fieldset -->
                     </div><!-- /.card-body -->
                 </div><!-- /.card -->

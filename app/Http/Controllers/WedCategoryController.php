@@ -78,13 +78,25 @@ class WedCategoryController extends Controller
 
             if ($request->hasFile('cover')) {
                 $file_name = 'cover' . $wed->category_id . '.' . $request->cover->getClientOriginalExtension();
-                $uploadDirectory = public_path('upload/webcategory/');
-                if (!file_exists($uploadDirectory)) {
-                    mkdir($uploadDirectory, 0755, true);
-                }
-                if (file_exists($uploadDirectory)) {
+                // $uploadDirectory = public_path('upload/webcategory/');
+                // if (!file_exists($uploadDirectory)) {
+                //     mkdir($uploadDirectory, 0755, true);
+                // }
+                // if (file_exists($uploadDirectory)) {
 
-                    file_put_contents(public_path('upload/webcategory/' . $file_name), file_get_contents($request->cover));
+                //     file_put_contents(public_path('upload/webcategory/' . $file_name), file_get_contents($request->cover));
+                //     $wed->cover = 'upload/webcategory/' . $file_name;
+                //     $wed->save();
+                // }
+
+                $uploadDirectory = 'webcategory/';
+                if (!Storage::disk('sftp')->exists($uploadDirectory)) {
+                    Storage::disk('sftp')->makeDirectory($uploadDirectory);
+                }
+                if (Storage::disk('sftp')->exists($uploadDirectory)) {
+                    // ตรวจสอบว่ามีไฟล์เดิมอยู่หรือไม่ ถ้ามีให้ลบออก
+                    Storage::disk('sftp')->delete($uploadDirectory);
+                    Storage::disk('sftp')->put($uploadDirectory . '/' . $file_name, file_get_contents($request->cover->getRealPath()));
                     $wed->cover = 'upload/webcategory/' . $file_name;
                     $wed->save();
                 }
@@ -130,13 +142,24 @@ class WedCategoryController extends Controller
 
             if ($request->hasFile('cover')) {
                 $file_name = 'cover' . $wed->category_id . '.' . $request->cover->getClientOriginalExtension();
-                $uploadDirectory = public_path('upload/webcategory/');
-                if (!file_exists($uploadDirectory)) {
-                    mkdir($uploadDirectory, 0755, true);
-                }
-                if (file_exists($uploadDirectory)) {
+                // $uploadDirectory = public_path('upload/webcategory/');
+                // if (!file_exists($uploadDirectory)) {
+                //     mkdir($uploadDirectory, 0755, true);
+                // }
+                // if (file_exists($uploadDirectory)) {
 
-                    file_put_contents(public_path('upload/webcategory/' . $file_name), file_get_contents($request->cover));
+                //     file_put_contents(public_path('upload/webcategory/' . $file_name), file_get_contents($request->cover));
+                //     $wed->cover = 'upload/webcategory/' . $file_name;
+                //     $wed->save();
+                // }
+                $uploadDirectory = 'webcategory/';
+                if (!Storage::disk('sftp')->exists($uploadDirectory)) {
+                    Storage::disk('sftp')->makeDirectory($uploadDirectory);
+                }
+                if (Storage::disk('sftp')->exists($uploadDirectory)) {
+                    // ตรวจสอบว่ามีไฟล์เดิมอยู่หรือไม่ ถ้ามีให้ลบออก
+                    Storage::disk('sftp')->delete($uploadDirectory);
+                    Storage::disk('sftp')->put($uploadDirectory . '/' . $file_name, file_get_contents($request->cover->getRealPath()));
                     $wed->cover = 'upload/webcategory/' . $file_name;
                     $wed->save();
                 }

@@ -54,8 +54,8 @@
 
                         <div class="form-group"></div>
                             <div class="form-group">
-                                <label for="banner"><img src="{{ asset($subs->banner) }}"
-                                        alt="{{ $subs->banner }}" width="70%" >
+                                <label for="banner"><img src="{{ env('URL_FILE_SFTP') . $subs->banner }}"
+                                        alt="{{ env('URL_FILE_SFTP') . $subs->banner }}" width="70%" >
                             </div>
                             <label for="banner">ภาพแบนเนอร์ </label>
                             <input type="file" class="form-control" id="banner" name="banner"

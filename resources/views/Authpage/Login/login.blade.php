@@ -141,7 +141,7 @@ try {
 
           <!-- Icon -->
           <div class="fadeIn first">
-              <img src="{{ asset('LOGO/logo.png') }}" id="icon" alt="User Icon" />
+              <img src="{{env('URL_FILE_SFTP') . "LOGO/logo.png"}}" id="icon" alt="User Icon" />
           </div>
           <br>
           <!-- Login Form -->

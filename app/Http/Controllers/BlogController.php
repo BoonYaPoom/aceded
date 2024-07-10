@@ -11,6 +11,7 @@ use DOMDocument;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 
 class BlogController extends Controller
@@ -54,11 +55,6 @@ class BlogController extends Controller
         $blogs->title = $request->title;
         $blogs->title_en = $request->title;
 
-
-
-        if (!file_exists(public_path('/upload/Blog/ck/'))) {
-            mkdir(public_path('/upload/Blog/ck/'), 0755, true);
-        }
         if ($request->has('detail')) {
             $detail = $request->detail;
 
@@ -70,20 +66,24 @@ class BlogController extends Controller
                 $detail = mb_convert_encoding($detail, 'HTML-ENTITIES', 'UTF-8');
                 $detail = preg_replace('/<figure\b[^>]*>(.*?)<\/figure>/is', '$1', $detail);
                 $de_th->loadHTML($detail, LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
-           
-                libxml_use_internal_errors(false);
                 $images_des_th = $de_th->getElementsByTagName('img');
-
+                if (!Storage::disk('sftp')->exists('/upload/Blog/ck/')) {
+                    Storage::disk('sftp')->makeDirectory('/upload/Blog/ck/');
+                }
+                
+                libxml_use_internal_errors(false);
                 foreach ($images_des_th as $key => $img) {
                     if (strpos($img->getAttribute('src'), 'data:image/') === 0) {
                         $data = base64_decode(explode(',', explode(';', $img->getAttribute('src'))[1])[1]);
-                        $image_name = '/upload/Blog/ck/' . time() . $key . '.png'; 
-                        file_put_contents(public_path() . $image_name, $data);
+                        $image_name = '/upload/Blog/ck/' . time() . $key . '.png'; // ใส่ .png เพื่อให้เป็นนามสกุลไฟล์ถูกต้อง
+                        Storage::disk('sftp')->put($image_name, $data);
                         $img->removeAttribute('src');
-                        $newImageUrl = asset($image_name);
+                        $newImageUrl = env('URL_FILE_SFTP') . $image_name;
                         $img->setAttribute('src', $newImageUrl);
+                        $img->removeAttribute('data-filename');
                     }
                 }
+                
                 $detail_full = html_entity_decode($de_th->saveHTML(), ENT_QUOTES, 'UTF-8');
                 $decodedText = htmlentities($detail_full);
                 $detail_fullaaa = strip_tags($detail_full);
@@ -136,9 +136,6 @@ class BlogController extends Controller
 
         $blogs->title = $request->title;
 
-        if (!file_exists(public_path('/upload/Blog/ck/'))) {
-            mkdir(public_path('/upload/Blog/ck/'), 0755, true);
-        }
         if ($request->has('detail')) {
             $detail = $request->detail;
 
@@ -153,16 +150,19 @@ class BlogController extends Controller
                 libxml_clear_errors();
 
                 $images_des_th = $de_th->getElementsByTagName('img');
-
+                if (!Storage::disk('sftp')->exists('/upload/Blog/ck/')) {
+                    Storage::disk('sftp')->makeDirectory('/upload/Blog/ck/');
+                }
+            
 
                 libxml_use_internal_errors(false);
                 foreach ($images_des_th as $key => $img) {
                     if (strpos($img->getAttribute('src'), 'data:image/') === 0) {
                         $data = base64_decode(explode(',', explode(';', $img->getAttribute('src'))[1])[1]);
                         $image_name = '/upload/Blog/ck/' . time() . $key . '.png'; // ใส่ .png เพื่อให้เป็นนามสกุลไฟล์ถูกต้อง
-                        file_put_contents(public_path() . $image_name, $data);
+                        Storage::disk('sftp')->put($image_name, $data);
                         $img->removeAttribute('src');
-                        $newImageUrl = asset($image_name);
+                        $newImageUrl = env('URL_FILE_SFTP') . $image_name;
                         $img->setAttribute('src', $newImageUrl);
                         $img->removeAttribute('data-filename');
                     }
@@ -177,9 +177,6 @@ class BlogController extends Controller
             $blogs->detail = $decodedText;
             $blogs->plaintext = $detail_fullaaa;
         }
-
-
-
 
         $blogs->plaintext_en =  null;
         $blogs->detail_en =  0;

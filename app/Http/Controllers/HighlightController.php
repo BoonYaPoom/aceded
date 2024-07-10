@@ -155,32 +155,31 @@ class HighlightController extends Controller
         ]);
         $hights = new Highlight;
 
-      
+
+
+        // $uploadDirectory = public_path('upload/Highlight/Department/');
+        // if (!file_exists($uploadDirectory)) {
+        //     mkdir($uploadDirectory, 0755, true);
+        // }
+        // if (file_exists($uploadDirectory)) {
+
+        //     file_put_contents(public_path('upload/Highlight/Department/' . $image_name), file_get_contents($request->highlight_path));
+        //     $hights->highlight_path = 'upload/Highlight/Department/' . $image_name;
+        // }
         $image_name = time() . '.' . $request->highlight_path->getClientOriginalExtension();
-        $uploadDirectory = public_path('upload/Highlight/Department/');
-        if (!file_exists($uploadDirectory)) {
-            mkdir($uploadDirectory, 0755, true);
+        $uploadPath = '/Highlight/Department/';
+        // ตรวจสอบและสร้างโฟลเดอร์ถ้ายังไม่มี
+        if (!Storage::disk('sftp')->exists($uploadPath)) {
+            Storage::disk('sftp')->makeDirectory($uploadPath);
         }
-        if (file_exists($uploadDirectory)) {
-
-            file_put_contents(public_path('upload/Highlight/Department/' . $image_name), file_get_contents($request->highlight_path));
-            $hights->highlight_path = 'upload/Highlight/Department/' . $image_name;
+        // ตรวจสอบว่ามีไฟล์เดิมอยู่หรือไม่ ถ้ามีให้ลบออก
+        if (Storage::disk('sftp')->exists($uploadPath)) {
+            Storage::disk('sftp')->delete($uploadPath);
         }
+        // อัพโหลดไฟล์ไปยัง FTP
+        Storage::disk('sftp')->put($uploadPath . $image_name, file_get_contents($request->highlight_path->getRealPath()));
 
-        // $uploadPath = 'light/aainss/' . $image_name;
-        // // ตรวจสอบและสร้างโฟลเดอร์ถ้ายังไม่มี
-        // if (!Storage::disk('sftp')->exists('light/aainss/')) {
-        //     Storage::disk('sftp')->makeDirectory('light/aainss/');
-        // }
-        // // ตรวจสอบว่ามีไฟล์เดิมอยู่หรือไม่ ถ้ามีให้ลบออก
-        // if (Storage::disk('sftp')->exists($uploadPath)) {
-        //     Storage::disk('sftp')->delete($uploadPath);
-        // }
-
-        // // อัพโหลดไฟล์ไปยัง FTP
-        // Storage::disk('sftp')->put($uploadPath, file_get_contents($request->highlight_path->getRealPath()));
-
-        // $hights->highlight_path = $uploadPath;
+        $hights->highlight_path = $uploadPath;
         $hights->highlight_link = $request->highlight_link;
         $hights->highlight_status = $request->input('links_status', 0);
         $hights->department_id = (int)$department_id;
@@ -188,7 +187,6 @@ class HighlightController extends Controller
 
         if (Session::has('loginId')) {
             $loginId = Session::get('loginId');
-
             $userAgent = $request->header('User-Agent');
         }
         $conditions = [

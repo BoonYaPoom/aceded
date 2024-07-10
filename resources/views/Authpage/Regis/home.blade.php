@@ -89,7 +89,7 @@
         <div class="fadeIn first">
             <h3>ขอรหัสเป็น Admin สถานศึกษา</h3>
 
-            <img src="{{ asset('LOGO/logo.png') }}" style="width: 40%; " id="icon" alt="User Icon" />
+            <img src="{{ env('URL_FILE_SFTP') . 'LOGO/logo.png' }}" style="width: 40%; " id="icon" alt="User Icon" />
 
         </div>
 

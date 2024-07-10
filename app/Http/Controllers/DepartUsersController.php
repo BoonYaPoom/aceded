@@ -317,7 +317,7 @@ class DepartUsersController extends Controller
         $usermanages->firstname = $request->firstname;
         $usermanages->lastname = $request->lastname;
         if ($request->password) {
-            $usermanages->password = Hash::make($request->password);
+            $usermanages->password = Hash::make(trim($request->password));
         }
 
 
@@ -386,7 +386,7 @@ class DepartUsersController extends Controller
         $usermanages->username = $request->username;
         $usermanages->firstname = $request->firstname;
         $usermanages->lastname = $request->lastname;
-        $usermanages->password = Hash::make($request->password);
+        $usermanages->password = Hash::make(trim($request->password));
         $usermanages->citizen_id = $request->citizen_id;
         $usermanages->prefix  = '';
         $usermanages->gender = $request->input('gender', 0);
@@ -493,7 +493,7 @@ class DepartUsersController extends Controller
         $usermanages->username = $request->username;
         $usermanages->firstname = $request->firstname;
         $usermanages->lastname = $request->lastname;
-        $usermanages->password = Hash::make($request->password);
+        $usermanages->password = Hash::make(trim($request->password));
         $usermanages->citizen_id = $request->citizen_id;
         $usermanages->prefix  = '';
         $usermanages->gender = $request->input('gender', 0);

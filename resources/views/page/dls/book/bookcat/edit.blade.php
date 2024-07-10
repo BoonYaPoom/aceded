@@ -52,7 +52,7 @@
 
                         <!-- .form-group -->
                         <div class="form-group">
-                            <label for="cover"><img src="{{ asset($books->cover) }}" alt="{{ $books->cover }}"
+                            <label for="cover"><img src="{{ env('URL_FILE_SFTP') . $books->cover }}" alt="{{ $books->cover }}"
                                     style="height:300px">
                         </div>
                         <div class="form-group">

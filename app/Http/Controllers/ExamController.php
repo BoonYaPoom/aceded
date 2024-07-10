@@ -12,6 +12,7 @@ use App\Models\SurveyQuestion;
 use DOMDocument;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 
 class ExamController extends Controller
@@ -224,9 +225,14 @@ class ExamController extends Controller
     $ques->question_status = $request->input('question_status', 0);
 
     libxml_use_internal_errors(true);
-    if (!file_exists(public_path('/upload/Que/ck/'))) {
-      mkdir(public_path('/upload/Que/ck/'), 0755, true);
+    // if (!file_exists(public_path('/upload/Que/ck/'))) {
+    //   mkdir(public_path('/upload/Que/ck/'), 0755, true);
+    // }
+    if (!Storage::disk('sftp')->exists('/upload/Que/ck/')) {
+      Storage::disk('sftp')->makeDirectory('/upload/Que/ck/');
     }
+
+
     if ($request->has('question')) {
       $question = $request->question;
       $decodedTextquestion = '';
@@ -241,10 +247,10 @@ class ExamController extends Controller
         foreach ($images_des_th as $key => $img) {
           if (strpos($img->getAttribute('src'), 'data:image/') === 0) {
             $data = base64_decode(explode(',', explode(';', $img->getAttribute('src'))[1])[1]);
-            $image_name = '/upload/Que/ck/' . time() . $key . '.png'; 
-            file_put_contents(public_path() . $image_name, $data);
+            $image_name = '/upload/Que/ck/' . time() . $key . '.png';
+            Storage::disk('sftp')->put($image_name, $data);
             $img->removeAttribute('src');
-            $newImageUrl = asset($image_name);
+            $newImageUrl = env('URL_FILE_SFTP') . $image_name;
             $img->setAttribute('src', $newImageUrl);
           }
         }
@@ -269,16 +275,17 @@ class ExamController extends Controller
           $choice1 = preg_replace('/<figure\b[^>]*>(.*?)<\/figure>/is', '$1', $choice1);
           $choice_1->loadHTML($choice1, LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
           $images_choice_1 = $choice_1->getElementsByTagName('img');
-          if (!file_exists(public_path('/upload/Que/ck/qu1/'))) {
-            mkdir(public_path('/upload/Que/ck/qu1/'), 0755, true);
+
+          if (!Storage::disk('sftp')->exists('/upload/Que/ck/qu1/')) {
+            Storage::disk('sftp')->makeDirectory('/upload/Que/ck/qu1/');
           }
           foreach ($images_choice_1 as $key1 => $img1) {
             if (strpos($img1->getAttribute('src'), 'data:image/') === 0) {
               $data1 = base64_decode(explode(',', explode(';', $img1->getAttribute('src'))[1])[1]);
               $image_name1 = '/upload/Que/ck/qu1/' . time() . $key1 . '.png'; // ใส่ .png เพื่อให้เป็นนามสกุลไฟล์ถูกต้อง
-              file_put_contents(public_path() . $image_name1, $data1);
+              Storage::disk('sftp')->put($image_name1, $data1);
               $img1->removeAttribute('src');
-              $newImageUrl1 = asset($image_name1);
+              $newImageUrl1 = env('URL_FILE_SFTP') . $image_name1;
               $img1->setAttribute('src', $newImageUrl1);
             }
           }
@@ -300,16 +307,16 @@ class ExamController extends Controller
           $choice2 = preg_replace('/<figure\b[^>]*>(.*?)<\/figure>/is', '$1', $choice2);
           $choice_2->loadHTML($choice2, LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
           $images_choice_2 = $choice_2->getElementsByTagName('img');
-          if (!file_exists(public_path('/upload/Que/ck/qu2/'))) {
-            mkdir(public_path('/upload/Que/ck/qu2/'), 0755, true);
+          if (!Storage::disk('sftp')->exists('/upload/Que/ck/qu2/')) {
+            Storage::disk('sftp')->makeDirectory('/upload/Que/ck/qu2/');
           }
           foreach ($images_choice_2 as $key2 => $img2) {
             if (strpos($img2->getAttribute('src'), 'data:image/') === 0) {
               $data2 = base64_decode(explode(',', explode(';', $img2->getAttribute('src'))[1])[1]);
               $image_name2 = '/upload/Que/ck/qu2/' . time() . $key2 . '.png'; // ใส่ .png เพื่อให้เป็นนามสกุลไฟล์ถูกต้อง
-              file_put_contents(public_path() . $image_name2, $data2);
+              Storage::disk('sftp')->put($image_name2, $data2);
               $img2->removeAttribute('src');
-              $newImageUrl2 = asset($image_name2);
+              $newImageUrl2 = env('URL_FILE_SFTP') . $image_name2;
               $img2->setAttribute('src', $newImageUrl2);
             }
           }
@@ -330,16 +337,16 @@ class ExamController extends Controller
           $choice3 = preg_replace('/<figure\b[^>]*>(.*?)<\/figure>/is', '$1', $choice3);
           $choice_3->loadHTML($choice3, LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
           $images_choice_3 = $choice_3->getElementsByTagName('img');
-          if (!file_exists(public_path('/upload/Que/ck/qu3/'))) {
-            mkdir(public_path('/upload/Que/ck/qu3/'), 0755, true);
+          if (!Storage::disk('sftp')->exists('/upload/Que/ck/qu3/')) {
+            Storage::disk('sftp')->makeDirectory('/upload/Que/ck/qu3/');
           }
           foreach ($images_choice_3 as $key3 => $img3) {
             if (strpos($img3->getAttribute('src'), 'data:image/') === 0) {
               $data3 = base64_decode(explode(',', explode(';', $img3->getAttribute('src'))[1])[1]);
               $image_name3 = '/upload/Que/ck/qu3/' . time() . $key3 . '.png'; // ใส่ .png เพื่อให้เป็นนามสกุลไฟล์ถูกต้อง
-              file_put_contents(public_path() . $image_name3, $data3);
+              Storage::disk('sftp')->put($image_name3, $data3);
               $img3->removeAttribute('src');
-              $newImageUrl3 = asset($image_name3);
+              $newImageUrl3 = env('URL_FILE_SFTP') . $image_name3;
               $img3->setAttribute('src', $newImageUrl3);
             }
           }
@@ -363,16 +370,16 @@ class ExamController extends Controller
           $choice4 = preg_replace('/<figure\b[^>]*>(.*?)<\/figure>/is', '$1', $choice4);
           $choice_4->loadHTML($choice4, LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
           $images_choice_4 = $choice_4->getElementsByTagName('img');
-          if (!file_exists(public_path('/upload/Que/ck/qu4/'))) {
-            mkdir(public_path('/upload/Que/ck/qu4/'), 0755, true);
+          if (!Storage::disk('sftp')->exists('/upload/Que/ck/qu4/')) {
+            Storage::disk('sftp')->makeDirectory('/upload/Que/ck/qu4/');
           }
           foreach ($images_choice_4 as $key4 => $img4) {
             if (strpos($img4->getAttribute('src'), 'data:image/') === 0) {
               $data4 = base64_decode(explode(',', explode(';', $img4->getAttribute('src'))[1])[1]);
               $image_name4 = '/upload/Que/ck/qu4/' . time() . $key4 . '.png'; // ใส่ .png เพื่อให้เป็นนามสกุลไฟล์ถูกต้อง
-              file_put_contents(public_path() . $image_name4, $data4);
+              Storage::disk('sftp')->put($image_name4, $data4);
               $img4->removeAttribute('src');
-              $newImageUrl4 = asset($image_name4);
+              $newImageUrl4 = env('URL_FILE_SFTP') . $image_name4;
               $img4->setAttribute('src', $newImageUrl4);
             }
           }
@@ -395,16 +402,16 @@ class ExamController extends Controller
           $choice5 = preg_replace('/<figure\b[^>]*>(.*?)<\/figure>/is', '$1', $choice5);
           $choice_5->loadHTML($choice5, LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
           $images_choice_5 = $choice_5->getElementsByTagName('img');
-          if (!file_exists(public_path('/upload/Que/ck/qu5/'))) {
-            mkdir(public_path('/upload/Que/ck/qu5/'), 0755, true);
+          if (!Storage::disk('sftp')->exists('/upload/Que/ck/qu5/')) {
+            Storage::disk('sftp')->makeDirectory('/upload/Que/ck/qu5/');
           }
           foreach ($images_choice_5 as $key5 => $img5) {
             if (strpos($img5->getAttribute('src'), 'data:image/') === 0) {
               $data5 = base64_decode(explode(',', explode(';', $img5->getAttribute('src'))[1])[1]);
               $image_name5 = '/upload/Que/ck/qu5/' . time() . $key5 . '.png'; // ใส่ .png เพื่อให้เป็นนามสกุลไฟล์ถูกต้อง
-              file_put_contents(public_path() . $image_name5, $data5);
+              Storage::disk('sftp')->put($image_name5, $data5);
               $img5->removeAttribute('src');
-              $newImageUrl5 = asset($image_name5);
+              $newImageUrl5 = env('URL_FILE_SFTP') . $image_name5;
               $img5->setAttribute('src', $newImageUrl5);
             }
           }
@@ -424,16 +431,16 @@ class ExamController extends Controller
           $choice6 = preg_replace('/<figure\b[^>]*>(.*?)<\/figure>/is', '$1', $choice6);
           $choice_6->loadHTML($choice6, LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
           $images_choice_6 = $choice_6->getElementsByTagName('img');
-          if (!file_exists(public_path('/upload/Que/ck/qu6/'))) {
-            mkdir(public_path('/upload/Que/ck/qu6/'), 0755, true);
+          if (!Storage::disk('sftp')->exists('/upload/Que/ck/qu6/')) {
+            Storage::disk('sftp')->makeDirectory('/upload/Que/ck/qu6/');
           }
           foreach ($images_choice_6 as $key6 => $img6) {
             if (strpos($img6->getAttribute('src'), 'data:image/') === 0) {
               $data6 = base64_decode(explode(',', explode(';', $img6->getAttribute('src'))[1])[1]);
               $image_name6 = '/upload/Que/ck/qu6/' . time() . $key6 . '.png'; // ใส่ .png เพื่อให้เป็นนามสกุลไฟล์ถูกต้อง
-              file_put_contents(public_path() . $image_name6, $data6);
+              Storage::disk('sftp')->put($image_name6, $data6);
               $img6->removeAttribute('src');
-              $newImageUrl6 = asset($image_name6);
+              $newImageUrl6 = env('URL_FILE_SFTP') . $image_name6;
               $img6->setAttribute('src', $newImageUrl6);
             }
           }
@@ -454,16 +461,16 @@ class ExamController extends Controller
           $choice7 = preg_replace('/<figure\b[^>]*>(.*?)<\/figure>/is', '$1', $choice7);
           $choice_7->loadHTML($choice7, LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
           $images_choice_7 = $choice_7->getElementsByTagName('img');
-          if (!file_exists(public_path('/upload/Que/ck/qu7/'))) {
-            mkdir(public_path('/upload/Que/ck/qu7/'), 0755, true);
+          if (!Storage::disk('sftp')->exists('/upload/Que/ck/qu7/')) {
+            Storage::disk('sftp')->makeDirectory('/upload/Que/ck/qu7/');
           }
           foreach ($images_choice_7 as $key7 => $img7) {
             if (strpos($img7->getAttribute('src'), 'data:image/') === 0) {
               $data7 = base64_decode(explode(',', explode(';', $img7->getAttribute('src'))[1])[1]);
               $image_name7 = '/upload/Que/ck/qu7/' . time() . $key7 . '.png'; // ใส่ .png เพื่อให้เป็นนามสกุลไฟล์ถูกต้อง
-              file_put_contents(public_path() . $image_name7, $data7);
+              Storage::disk('sftp')->put($image_name7, $data7);
               $img7->removeAttribute('src');
-              $newImageUrl7 = asset($image_name7);
+              $newImageUrl7 = env('URL_FILE_SFTP') . $image_name7;
               $img7->setAttribute('src', $newImageUrl7);
             }
           }
@@ -484,16 +491,16 @@ class ExamController extends Controller
           $choice8 = preg_replace('/<figure\b[^>]*>(.*?)<\/figure>/is', '$1', $choice8);
           $choice_8->loadHTML($choice8, LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
           $images_choice_8 = $choice_8->getElementsByTagName('img');
-          if (!file_exists(public_path('/upload/Que/ck/qu8/'))) {
-            mkdir(public_path('/upload/Que/ck/qu8/'), 0755, true);
+          if (!Storage::disk('sftp')->exists('/upload/Que/ck/qu8/')) {
+            Storage::disk('sftp')->makeDirectory('/upload/Que/ck/qu8/');
           }
           foreach ($images_choice_8 as $key8 => $img8) {
             if (strpos($img8->getAttribute('src'), 'data:image/') === 0) {
               $data8 = base64_decode(explode(',', explode(';', $img8->getAttribute('src'))[1])[1]);
               $image_name8 = '/upload/Que/ck/qu8/' . time() . $key8 . '.png'; // ใส่ .png เพื่อให้เป็นนามสกุลไฟล์ถูกต้อง
-              file_put_contents(public_path() . $image_name8, $data8);
+              Storage::disk('sftp')->put($image_name8, $data8);
               $img8->removeAttribute('src');
-              $newImageUrl8 = asset($image_name);
+              $newImageUrl8 = env('URL_FILE_SFTP') . $image_name8;
               $img8->setAttribute('src', $newImageUrl8);
             }
           }
@@ -583,16 +590,16 @@ class ExamController extends Controller
         $explain = preg_replace('/<figure\b[^>]*>(.*?)<\/figure>/is', '$1', $explain);
         $choice_explain->loadHTML($explain, LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
         $images_choice_explain = $choice_explain->getElementsByTagName('img');
-        if (!file_exists(public_path('/upload/Que/ck/exp/'))) {
-          mkdir(public_path('/upload/Que/ck/exp/'), 0755, true);
+        if (!Storage::disk('sftp')->exists('/upload/Que/ck/exp/')) {
+          Storage::disk('sftp')->makeDirectory('/upload/Que/ck/exp/');
         }
         foreach ($images_choice_explain as $exp => $imgexp) {
           if (strpos($imgexp->getAttribute('src'), 'data:image/') === 0) {
             $dataexp = base64_decode(explode(',', explode(';', $imgexp->getAttribute('src'))[1])[1]);
             $image_nameexp = '/upload/Que/ck/exp/' . time() . $exp . '.png'; // ใส่ .png เพื่อให้เป็นนามสกุลไฟล์ถูกต้อง
-            file_put_contents(public_path() . $image_nameexp, $dataexp);
+            Storage::disk('sftp')->put($image_nameexp, $dataexp);
             $imgexp->removeAttribute('src');
-            $newImageUrlexp = asset($image_nameexp);
+            $newImageUrlexp = env('URL_FILE_SFTP') . $image_nameexp;
             $imgexp->setAttribute('src', $newImageUrlexp);
           }
         }
@@ -637,9 +644,14 @@ class ExamController extends Controller
     $ques->question_status = $request->input('question_status', 0);
 
     libxml_use_internal_errors(true);
-    if (!file_exists(public_path('/upload/Que/ck/'))) {
-      mkdir(public_path('/upload/Que/ck/'), 0755, true);
+    // if (!file_exists(public_path('/upload/Que/ck/'))) {
+    //   mkdir(public_path('/upload/Que/ck/'), 0755, true);
+    // }
+
+    if (!Storage::disk('sftp')->exists('/upload/Que/ck/')) {
+      Storage::disk('sftp')->makeDirectory('/upload/Que/ck/');
     }
+
     if ($request->has('question')) {
       $question = $request->question;
       $decodedTextquestion = '';
@@ -655,9 +667,9 @@ class ExamController extends Controller
           if (strpos($img->getAttribute('src'), 'data:image/') === 0) {
             $data = base64_decode(explode(',', explode(';', $img->getAttribute('src'))[1])[1]);
             $image_name = '/upload/Que/ck/' . time() . $key . '.png'; // ใส่ .png เพื่อให้เป็นนามสกุลไฟล์ถูกต้อง
-            file_put_contents(public_path() . $image_name, $data);
+            Storage::disk('sftp')->put($image_name, $data);
             $img->removeAttribute('src');
-            $newImageUrl = asset($image_name);
+            $newImageUrl = env('URL_FILE_SFTP') . $image_name;
             $img->setAttribute('src', $newImageUrl);
           }
         }
@@ -745,16 +757,17 @@ class ExamController extends Controller
           $choice1 = preg_replace('/<figure\b[^>]*>(.*?)<\/figure>/is', '$1', $choice1);
           $choice_1->loadHTML($choice1, LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
           $images_choice_1 = $choice_1->getElementsByTagName('img');
-          if (!file_exists(public_path('/upload/Que/ck/qu1/'))) {
-            mkdir(public_path('/upload/Que/ck/qu1/'), 0755, true);
+          if (!Storage::disk('sftp')->exists('/upload/Que/ck/qu1/')) {
+            Storage::disk('sftp')->makeDirectory('/upload/Que/ck/qu1/');
           }
+          
           foreach ($images_choice_1 as $key1 => $img1) {
             if (strpos($img1->getAttribute('src'), 'data:image/') === 0) {
               $data1 = base64_decode(explode(',', explode(';', $img1->getAttribute('src'))[1])[1]);
               $image_name1 = '/upload/Que/ck/qu1/' . time() . $key1 . '.png'; // ใส่ .png เพื่อให้เป็นนามสกุลไฟล์ถูกต้อง
-              file_put_contents(public_path() . $image_name1, $data1);
+              Storage::disk('sftp')->put($image_name1, $data1);
               $img1->removeAttribute('src');
-              $newImageUrl1 = asset($image_name1);
+              $newImageUrl1 = env('URL_FILE_SFTP') . $image_name1;
               $img1->setAttribute('src', $newImageUrl1);
             }
           }
@@ -777,16 +790,17 @@ class ExamController extends Controller
           $choice2 = preg_replace('/<figure\b[^>]*>(.*?)<\/figure>/is', '$1', $choice2);
           $choice_2->loadHTML($choice2, LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
           $images_choice_2 = $choice_2->getElementsByTagName('img');
-          if (!file_exists(public_path('/upload/Que/ck/qu2/'))) {
-            mkdir(public_path('/upload/Que/ck/qu2/'), 0755, true);
+          if (!Storage::disk('sftp')->exists('/upload/Que/ck/qu2/')) {
+            Storage::disk('sftp')->makeDirectory('/upload/Que/ck/qu2/');
           }
+       
           foreach ($images_choice_2 as $key2 => $img2) {
             if (strpos($img2->getAttribute('src'), 'data:image/') === 0) {
               $data2 = base64_decode(explode(',', explode(';', $img2->getAttribute('src'))[1])[1]);
               $image_name2 = '/upload/Que/ck/qu2/' . time() . $key2 . '.png'; // ใส่ .png เพื่อให้เป็นนามสกุลไฟล์ถูกต้อง
-              file_put_contents(public_path() . $image_name2, $data2);
+              Storage::disk('sftp')->put($image_name2, $data2);
               $img2->removeAttribute('src');
-              $newImageUrl2 = asset($image_name2);
+              $newImageUrl2 = env('URL_FILE_SFTP') . $image_name2;
               $img2->setAttribute('src', $newImageUrl2);
             }
           }
@@ -808,16 +822,16 @@ class ExamController extends Controller
           $choice3 = preg_replace('/<figure\b[^>]*>(.*?)<\/figure>/is', '$1', $choice3);
           $choice_3->loadHTML($choice3, LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
           $images_choice_3 = $choice_3->getElementsByTagName('img');
-          if (!file_exists(public_path('/upload/Que/ck/qu3/'))) {
-            mkdir(public_path('/upload/Que/ck/qu3/'), 0755, true);
+          if (!Storage::disk('sftp')->exists('/upload/Que/ck/qu3/')) {
+            Storage::disk('sftp')->makeDirectory('/upload/Que/ck/qu3/');
           }
           foreach ($images_choice_3 as $key3 => $img3) {
             if (strpos($img3->getAttribute('src'), 'data:image/') === 0) {
               $data3 = base64_decode(explode(',', explode(';', $img3->getAttribute('src'))[1])[1]);
               $image_name3 = '/upload/Que/ck/qu3/' . time() . $key3 . '.png'; // ใส่ .png เพื่อให้เป็นนามสกุลไฟล์ถูกต้อง
-              file_put_contents(public_path() . $image_name3, $data3);
+              Storage::disk('sftp')->put($image_name3, $data3);
               $img3->removeAttribute('src');
-              $newImageUrl3 = asset($image_name3);
+              $newImageUrl3 = env('URL_FILE_SFTP') . $image_name3;
               $img3->setAttribute('src', $newImageUrl3);
             }
           }
@@ -841,16 +855,16 @@ class ExamController extends Controller
           $choice4 = preg_replace('/<figure\b[^>]*>(.*?)<\/figure>/is', '$1', $choice4);
           $choice_4->loadHTML($choice4, LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
           $images_choice_4 = $choice_4->getElementsByTagName('img');
-          if (!file_exists(public_path('/upload/Que/ck/qu4/'))) {
-            mkdir(public_path('/upload/Que/ck/qu4/'), 0755, true);
+          if (!Storage::disk('sftp')->exists('/upload/Que/ck/qu4/')) {
+            Storage::disk('sftp')->makeDirectory('/upload/Que/ck/qu4/');
           }
           foreach ($images_choice_4 as $key4 => $img4) {
             if (strpos($img4->getAttribute('src'), 'data:image/') === 0) {
               $data4 = base64_decode(explode(',', explode(';', $img4->getAttribute('src'))[1])[1]);
               $image_name4 = '/upload/Que/ck/qu4/' . time() . $key4 . '.png'; // ใส่ .png เพื่อให้เป็นนามสกุลไฟล์ถูกต้อง
-              file_put_contents(public_path() . $image_name4, $data4);
+              Storage::disk('sftp')->put($image_name4, $data4);
               $img4->removeAttribute('src');
-              $newImageUrl4 = asset($image_name4);
+              $newImageUrl4 = env('URL_FILE_SFTP') . $image_name4;
               $img4->setAttribute('src', $newImageUrl4);
             }
           }
@@ -875,16 +889,16 @@ class ExamController extends Controller
           $choice5 = preg_replace('/<figure\b[^>]*>(.*?)<\/figure>/is', '$1', $choice5);
           $choice_5->loadHTML($choice5, LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
           $images_choice_5 = $choice_5->getElementsByTagName('img');
-          if (!file_exists(public_path('/upload/Que/ck/qu5/'))) {
-            mkdir(public_path('/upload/Que/ck/qu5/'), 0755, true);
+          if (!Storage::disk('sftp')->exists('/upload/Que/ck/qu5/')) {
+            Storage::disk('sftp')->makeDirectory('/upload/Que/ck/qu5/');
           }
           foreach ($images_choice_5 as $key5 => $img5) {
             if (strpos($img5->getAttribute('src'), 'data:image/') === 0) {
               $data5 = base64_decode(explode(',', explode(';', $img5->getAttribute('src'))[1])[1]);
               $image_name5 = '/upload/Que/ck/qu5/' . time() . $key5 . '.png'; // ใส่ .png เพื่อให้เป็นนามสกุลไฟล์ถูกต้อง
-              file_put_contents(public_path() . $image_name5, $data5);
+              Storage::disk('sftp')->put($image_name5, $data5);
               $img5->removeAttribute('src');
-              $newImageUrl5 = asset($image_name5);
+              $newImageUrl5 = env('URL_FILE_SFTP') . $image_name5;
               $img5->setAttribute('src', $newImageUrl5);
             }
           }
@@ -906,16 +920,16 @@ class ExamController extends Controller
           $choice6 = preg_replace('/<figure\b[^>]*>(.*?)<\/figure>/is', '$1', $choice6);
           $choice_6->loadHTML($choice6, LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
           $images_choice_6 = $choice_6->getElementsByTagName('img');
-          if (!file_exists(public_path('/upload/Que/ck/qu6/'))) {
-            mkdir(public_path('/upload/Que/ck/qu6/'), 0755, true);
+          if (!Storage::disk('sftp')->exists('/upload/Que/ck/qu6/')) {
+            Storage::disk('sftp')->makeDirectory('/upload/Que/ck/qu6/');
           }
           foreach ($images_choice_6 as $key6 => $img6) {
             if (strpos($img6->getAttribute('src'), 'data:image/') === 0) {
               $data6 = base64_decode(explode(',', explode(';', $img6->getAttribute('src'))[1])[1]);
               $image_name6 = '/upload/Que/ck/qu6/' . time() . $key6 . '.png'; // ใส่ .png เพื่อให้เป็นนามสกุลไฟล์ถูกต้อง
-              file_put_contents(public_path() . $image_name6, $data6);
+              Storage::disk('sftp')->put($image_name6, $data6);
               $img6->removeAttribute('src');
-              $newImageUrl6 = asset($image_name6);
+              $newImageUrl6 = env('URL_FILE_SFTP') . $image_name6;
               $img6->setAttribute('src', $newImageUrl6);
             }
           }
@@ -937,16 +951,16 @@ class ExamController extends Controller
           $choice7 = preg_replace('/<figure\b[^>]*>(.*?)<\/figure>/is', '$1', $choice7);
           $choice_7->loadHTML($choice7, LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
           $images_choice_7 = $choice_7->getElementsByTagName('img');
-          if (!file_exists(public_path('/upload/Que/ck/qu7/'))) {
-            mkdir(public_path('/upload/Que/ck/qu7/'), 0755, true);
+          if (!Storage::disk('sftp')->exists('/upload/Que/ck/qu7/')) {
+            Storage::disk('sftp')->makeDirectory('/upload/Que/ck/qu7/');
           }
           foreach ($images_choice_7 as $key7 => $img7) {
             if (strpos($img7->getAttribute('src'), 'data:image/') === 0) {
               $data7 = base64_decode(explode(',', explode(';', $img7->getAttribute('src'))[1])[1]);
               $image_name7 = '/upload/Que/ck/qu7/' . time() . $key7 . '.png'; // ใส่ .png เพื่อให้เป็นนามสกุลไฟล์ถูกต้อง
-              file_put_contents(public_path() . $image_name7, $data7);
+              Storage::disk('sftp')->put($image_name7, $data7);
               $img7->removeAttribute('src');
-              $newImageUrl7 = asset($image_name7);
+              $newImageUrl7 = env('URL_FILE_SFTP') . $image_name7;
               $img7->setAttribute('src', $newImageUrl7);
             }
           }
@@ -968,16 +982,16 @@ class ExamController extends Controller
           $choice8 = preg_replace('/<figure\b[^>]*>(.*?)<\/figure>/is', '$1', $choice8);
           $choice_8->loadHTML($choice8, LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
           $images_choice_8 = $choice_8->getElementsByTagName('img');
-          if (!file_exists(public_path('/upload/Que/ck/qu8/'))) {
-            mkdir(public_path('/upload/Que/ck/qu8/'), 0755, true);
+          if (!Storage::disk('sftp')->exists('/upload/Que/ck/qu8/')) {
+            Storage::disk('sftp')->makeDirectory('/upload/Que/ck/qu8/');
           }
           foreach ($images_choice_8 as $key8 => $img8) {
             if (strpos($img8->getAttribute('src'), 'data:image/') === 0) {
               $data8 = base64_decode(explode(',', explode(';', $img8->getAttribute('src'))[1])[1]);
               $image_name8 = '/upload/Que/ck/' . time() . $key8 . '.png'; // ใส่ .png เพื่อให้เป็นนามสกุลไฟล์ถูกต้อง
-              file_put_contents(public_path() . $image_name8, $data8);
+              Storage::disk('sftp')->put($image_name8, $data8);
               $img8->removeAttribute('src');
-              $newImageUrl8 = asset($image_name8);
+              $newImageUrl8 = env('URL_FILE_SFTP') . $image_name8;
               $img8->setAttribute('src', $newImageUrl8);
             }
           }
@@ -1002,17 +1016,17 @@ class ExamController extends Controller
         $explain = preg_replace('/<figure\b[^>]*>(.*?)<\/figure>/is', '$1', $explain);
         $choice_explain->loadHTML($explain, LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
         $images_choice_explain = $choice_explain->getElementsByTagName('img');
-
-        if (!file_exists(public_path('/upload/Que/ck/exp/'))) {
-          mkdir(public_path('/upload/Que/ck/exp/'), 0755, true);
+        if (!Storage::disk('sftp')->exists('/upload/Que/ck/exp/')) {
+          Storage::disk('sftp')->makeDirectory('/upload/Que/ck/exp/');
         }
+        
         foreach ($images_choice_explain as $exp => $imgexp) {
           if (strpos($imgexp->getAttribute('src'), 'data:image/') === 0) {
             $dataexp = base64_decode(explode(',', explode(';', $imgexp->getAttribute('src'))[1])[1]);
             $image_nameexp = '/upload/Que/ck/exp/' . time() . $exp . '.png'; // ใส่ .png เพื่อให้เป็นนามสกุลไฟล์ถูกต้อง
-            file_put_contents(public_path() . $image_nameexp, $dataexp);
+            Storage::disk('sftp')->put($image_nameexp, $dataexp);
             $imgexp->removeAttribute('src');
-            $newImageUrlexp = asset($image_nameexp);
+            $newImageUrlexp = env('URL_FILE_SFTP') . $image_nameexp;
             $imgexp->setAttribute('src', $newImageUrlexp);
           }
         }

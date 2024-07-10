@@ -13,7 +13,7 @@
     <meta name="description" content="">
     <meta property="og:description" content="">
     <link rel="canonical" href="">
-    <link rel="icon" type="image/png" href="{{ asset('LOGO/logo.png') }}">
+    <link rel="icon" type="image/png" href="{{ env('URL_FILE_SFTP') . 'LOGO/logo.png' }}">
     <meta property="og:url" content="">
     <meta property="og:site_name" content="">
     <script type="application/ld+json">

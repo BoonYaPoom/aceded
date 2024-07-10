@@ -29,91 +29,23 @@
         </div><!-- /form row -->
 
         <div class="row mt-3">
-            <!-- grid column -->
             <div class="col-12 col-lg-12 col-xl-6">
-                <!-- .card -->
                 <div class="card card-fluid">
-                    <!-- .card-body -->
                     <div class="card-body">
-                        <div id="graphlearner" style="min-width: 310px; height: 450px; margin: 0 auto">
-
-
-
+                        <div id="graphCer" style="min-width: 310px; height: 450px; margin: 0 auto">
                         </div>
-                    </div><!-- /.card-body -->
-                </div><!-- /.card -->
-            </div><!-- /grid column -->
-
-
-            <div class="col-12 col-lg-12 col-xl-6">
-                <!-- .card -->
+                    </div>
+                </div>
+            </div>
+             <div class="col-12 col-lg-12 col-xl-6">
                 <div class="card card-fluid">
-                    <!-- .card-body -->
                     <div class="card-body">
-                        <div id="courserating" style="min-width: 310px; height: 450px; margin: 0 auto">
-
+                        <div id="graphRegis" style="min-width: 310px; height: 450px; margin: 0 auto">
                         </div>
-                    </div><!-- /.card-body -->
-                </div><!-- /.card -->
-            </div><!-- /grid column -->
-
-
-            <div class="col-12 col-lg-12 col-xl-6">
-                <!-- .card -->
-                <div class="card card-fluid">
-                    <!-- .card-body -->
-
-                    <div class="card-body">
-                        <div id="courselogin" style="min-width: 310px; height: 450px; margin: 0 auto">
-
-
-                        </div>
-                    </div><!-- /.card-body -->
-                </div><!-- /.card -->
-            </div><!-- /grid column -->
-
-            {{-- <div class="col-12 col-lg-12 col-xl-6 ">
-                <!-- .card -->
-                <div class="card card-fluid">
-                    <!-- .card-body -->
-                    <div class="card-body">
-                        <div id="coursemulti" style="min-width: 310px; height: 450px; margin: 0 auto">
-
-                        </div>
-                    </div><!-- /.card-body -->
-                </div><!-- /.card -->
-            </div><!-- /grid column -->
-            <div class="col-12 col-lg-12 col-xl-6">
-                <!-- .card -->
-                <div class="card card-fluid">
-                    <!-- .card-body -->
-                    <div class="card-body">
-                        <div id="coursesearch" style="min-width: 310px; height: 450px; margin: 0 auto">
-
-                        </div>
-                    </div><!-- /.card-body -->
-                </div><!-- /.card -->
-            </div><!-- /grid column -->
-            <div class="col-12 col-lg-12 col-xl-6">
-                <!-- .card -->
-                <div class="card card-fluid">
-                    <!-- .card-body -->
-                    <div class="card-body">
-                        <div id="coursedoc" style="min-width: 310px; height: 450px; margin: 0 auto">
-
-
-                        </div>
-                    </div><!-- /.card-body -->
-                </div><!-- /.card -->
-            </div><!-- /grid column --> --}}
-
-        </div><!-- .page-title-bar -->
-
-
-
-
-
-
-        @include('page.report2.B.graphB')
+                    </div>
+                </div>
+            </div>
+        </div>
+        @include('page.report2.B.JsgrapB')
     </div><!-- /.page-inner -->
 @endsection

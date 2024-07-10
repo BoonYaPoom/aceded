@@ -65,10 +65,6 @@ class BookController extends Controller
         $books->book_year = date('Y');
 
 
-        if (!file_exists(public_path('/upload/Book/ck/'))) {
-            mkdir(public_path('/upload/Book/ck/'), 0755, true);
-        }
-
         if ($request->has('contents')) {
             $contents = $request->contents;
             $decodedText = '';
@@ -81,14 +77,17 @@ class BookController extends Controller
                 $de_th->loadHTML($contents, LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
                 libxml_clear_errors(); // Clear any accumulated errors
                 $images_des_th = $de_th->getElementsByTagName('img');
-
+                if (!Storage::disk('sftp')->exists('/book/ck/')) {
+                    Storage::disk('sftp')->makeDirectory('/book/ck/');
+                }
+             
                 foreach ($images_des_th as $key => $img) {
                     if (strpos($img->getAttribute('src'), 'data:image/') === 0) {
                         $data = base64_decode(explode(',', explode(';', $img->getAttribute('src'))[1])[1]);
-                        $image_name = '/upload/Book/ck/' . time() . $key . '.png'; // ใส่ .png เพื่อให้เป็นนามสกุลไฟล์ถูกต้อง
-                        file_put_contents(public_path() . $image_name, $data);
+                        $image_name = 'Book/ck/' . time() . $key . '.png'; // ใส่ .png เพื่อให้เป็นนามสกุลไฟล์ถูกต้อง
+                        Storage::disk('sftp')->put($image_name, $data);
                         $img->removeAttribute('src');
-                        $newImageUrl = asset($image_name);
+                        $newImageUrl = env('URL_FILE_SFTP') . $image_name;
                         $img->setAttribute('src', $newImageUrl);
                     }
                 }
@@ -100,19 +99,18 @@ class BookController extends Controller
         }
         $books->save();
 
-
-        if ($request->hasFile('cover')) {
-            $image_name = 'cover' . '.' . $request->cover->getClientOriginalExtension();
-            $uploadDirectory = public_path('upload/Book/' . $books->book_id);
-            if (!file_exists($uploadDirectory)) {
-                mkdir($uploadDirectory, 0755, true);
+        if ($request->cover) {
+            $image_name = 'cover.' . $request->cover->getClientOriginalExtension();
+            $uploadDirectory = 'book/' . $books->book_id;
+            // ตรวจสอบและสร้างโฟลเดอร์ถ้ายังไม่มี
+            if (!Storage::disk('sftp')->exists($uploadDirectory)) {
+                Storage::disk('sftp')->makeDirectory($uploadDirectory);
             }
-            if (file_exists($uploadDirectory)) {
-                file_put_contents(public_path('upload/Book/' . $books->book_id . '/' . $image_name), file_get_contents($request->cover));
-                // สร้างและบันทึกชื่อ cover ลงในโมเดล
-                $books->cover = 'upload/Book/' . $books->book_id . '/' . 'cover' . '.' . $request->cover->getClientOriginalExtension();
-                $books->save();
-            }
+            // อัปโหลดไฟล์ cover ไปยัง SFTP
+            Storage::disk('sftp')->put($uploadDirectory . '/' . $image_name, file_get_contents($request->cover->getRealPath()));
+            // บันทึกที่อยู่ของ cover ลงในฐานข้อมูล
+            $books->cover = 'upload/' .  $uploadDirectory . '/' . $image_name;
+            $books->save();
         } else {
             $image_name = '';
             $books->cover = $image_name;
@@ -125,6 +123,7 @@ class BookController extends Controller
         ini_set('pcre.backtrack_limit', 5000000);
 
 
+   
         if ($request->hasFile('bookfile')) {
             // บันทึกไฟล์ PDF และแปลงเป็นรูปภาพ
             if ($request->book_type == 0) {
@@ -145,7 +144,6 @@ class BookController extends Controller
                     if (!File::exists($newDirectoryPath)) {
                         File::makeDirectory($newDirectoryPath, 0777, true, true);
                     }
-
                     // คัดลอกและบันทึกไฟล์ใหม่
                     $newFileName = $file->getFilename();
                     $fileContents = File::get($file->getPathname());
@@ -153,16 +151,12 @@ class BookController extends Controller
                 }
                 $file_path = public_path('upload/Book/' . $books->book_id) . '/' . $file_namess;
                 $file_name->move(public_path('upload/Book/' . $books->book_id), $file_namess);
-
                 // Check if the PDF file exists
                 if (file_exists($file_path)) {
                     // สร้างโฟลเดอร์เพื่อเก็บรูปภาพที่แปลง
                     $outputPath = public_path('upload/Book/' . $books->book_id);
-
                     // Construct the folder name based on the count
                     $folderName = 'page';
-
-
                     $newFolder = $outputPath . '/' . $folderName . '/large';
                     File::makeDirectory($newFolder, $mode = 0777, true, true);
                     $newFolder1 = $outputPath . '/' . $folderName . '/thumb';
@@ -201,25 +195,165 @@ class BookController extends Controller
                         $htmlContent = view('flipbook.flipbook', ['pages' => $pages, 'pageLCount' => $pageLCount])->render();
                         file_put_contents($htmlPath, $htmlContent);
                     }
+
+                    $localPath = public_path('upload/book/' . $books->book_id);
+
+                    if (file_exists($localPath)) {
+                        $files = File::allFiles($localPath);
+                        foreach ($files as $file) {
+                            // หาชื่อโฟลเดอร์เดิมที่อยู่ในชื่อไฟล์
+                            $originalDirectoryName = pathinfo($file->getRelativePathname(), PATHINFO_DIRNAME);
+                            // สร้างโฟลเดอร์ปลายทางในกรณีที่ยังไม่มี
+                            $newDirectoryPath = 'Book/' . $books->book_id . '/' . $originalDirectoryName;
+                            if (!Storage::disk('sftp')->exists($newDirectoryPath)) {
+                                Storage::disk('sftp')->makeDirectory($newDirectoryPath, 0777, true, true);
+                            }
+
+                            // คัดลอกและบันทึกไฟล์ใหม่
+                            $newFileName = $file->getFilename();
+                            $fileContents = File::get($file->getPathname());
+                            Storage::disk('sftp')->put($newDirectoryPath . '/' . $newFileName, $fileContents);
+                        }
+                        // ลบโฟลเดอร์ใน local path
+                        File::deleteDirectory($localPath);
+                    }
+ 
                     $books->bookfile =  'upload/Book/' . $books->book_id . '/' . 'index.html';
                     $books->save();
                 }
             } elseif ($request->book_type == 1) {
                 if ($request->hasFile('bookfile')) {
                     $image_bookfile = 'book' . '.' . $request->bookfile->getClientOriginalExtension();
-                    $uploadDirectory = public_path('upload/Book/' . $books->book_id);
-                    if (!file_exists($uploadDirectory)) {
-                        mkdir($uploadDirectory, 0755, true);
+                    $uploadDirectory = 'Book/' . $books->book_id;
+                    if (!Storage::disk('sftp')->exists($uploadDirectory)) {
+                        Storage::disk('sftp')->makeDirectory($uploadDirectory);
                     }
-                    if (file_exists($uploadDirectory)) {
-
-                        file_put_contents(public_path('upload/Book/' . $books->book_id  . '/' . $image_bookfile), file_get_contents($request->bookfile));
-                    }
+                    Storage::disk('sftp')->put($uploadDirectory . '/' . $image_name, file_get_contents($request->cover->getRealPath()));
                     $books->bookfile = 'upload/Book/' . $books->book_id . '/' . $image_bookfile;
                     $books->save();
+
                 }
             }
         }
+        // if ($request->hasFile('cover')) {
+        //     $image_name = 'cover' . '.' . $request->cover->getClientOriginalExtension();
+        //     $uploadDirectory = public_path('upload/Book/' . $books->book_id);
+        //     if (!file_exists($uploadDirectory)) {
+        //         mkdir($uploadDirectory, 0755, true);
+        //     }
+        //     if (file_exists($uploadDirectory)) {
+        //         file_put_contents(public_path('upload/Book/' . $books->book_id . '/' . $image_name), file_get_contents($request->cover));
+        //         // สร้างและบันทึกชื่อ cover ลงในโมเดล
+        //         $books->cover = 'upload/Book/' . $books->book_id . '/' . 'cover' . '.' . $request->cover->getClientOriginalExtension();
+        //         $books->save();
+        //     }
+        // } else {
+        //     $image_name = '';
+        //     $books->cover = $image_name;
+        //     $books->save();
+        // }
+
+
+        // set_time_limit(0);
+        // ini_set('max_execution_time', 300);
+        // ini_set('pcre.backtrack_limit', 5000000);
+
+
+        // if ($request->hasFile('bookfile')) {
+        //     // บันทึกไฟล์ PDF และแปลงเป็นรูปภาพ
+        //     if ($request->book_type == 0) {
+        //         $file_name = $request->file('bookfile');
+        //         $file_namess = 'book' . '.' . $request->bookfile->getClientOriginalExtension();
+        //         $sourceDirectory = public_path('uploads/book');
+        //         $destinationDirectory = public_path('upload/Book/' . $books->book_id);
+        //         if (!File::exists($destinationDirectory)) {
+        //             File::makeDirectory($destinationDirectory, 0777, true, true);
+        //         }
+        //         $files = File::allFiles($sourceDirectory);
+        //         foreach ($files as $file) {
+        //             // หาชื่อโฟลเดอร์เดิมที่อยู่ในชื่อไฟล์
+        //             $originalDirectoryName = pathinfo($file->getRelativePathname(), PATHINFO_DIRNAME);
+
+        //             // สร้างโฟลเดอร์ปลายทางในกรณีที่ยังไม่มี
+        //             $newDirectoryPath = $destinationDirectory . '/' . $originalDirectoryName;
+        //             if (!File::exists($newDirectoryPath)) {
+        //                 File::makeDirectory($newDirectoryPath, 0777, true, true);
+        //             }
+
+        //             // คัดลอกและบันทึกไฟล์ใหม่
+        //             $newFileName = $file->getFilename();
+        //             $fileContents = File::get($file->getPathname());
+        //             File::put($newDirectoryPath . '/' . $newFileName, $fileContents);
+        //         }
+        //         $file_path = public_path('upload/Book/' . $books->book_id) . '/' . $file_namess;
+        //         $file_name->move(public_path('upload/Book/' . $books->book_id), $file_namess);
+
+        //         // Check if the PDF file exists
+        //         if (file_exists($file_path)) {
+        //             // สร้างโฟลเดอร์เพื่อเก็บรูปภาพที่แปลง
+        //             $outputPath = public_path('upload/Book/' . $books->book_id);
+
+        //             // Construct the folder name based on the count
+        //             $folderName = 'page';
+
+
+        //             $newFolder = $outputPath . '/' . $folderName . '/large';
+        //             File::makeDirectory($newFolder, $mode = 0777, true, true);
+        //             $newFolder1 = $outputPath . '/' . $folderName . '/thumb';
+        //             File::makeDirectory($newFolder1, $mode = 0777, true, true);
+
+        //             $pdf = new Pdf($file_path);
+
+        //             $pages = array();
+        //             $pagesCount = $pdf->getNumberOfPages();
+
+        //             for ($page = 1; $page <= $pagesCount; $page++) {
+        //                 $imageFilename = "book-{$page}.png";
+        //                 $imageFilename1 = "book-thumb-{$page}.png";
+
+        //                 $pdf->setPage($page)->saveImage($newFolder . '/' . $imageFilename);
+        //                 $pdf->setPage($page)->saveImage($newFolder1 . '/' . $imageFilename1);
+
+        //                 // โหลดรูปภาพ
+        //                 $img = Image::make($newFolder . '/' . $imageFilename);
+
+        //                 // ปรับขนาดรูปภาพ
+        //                 $img->resize(600, 849);
+
+
+        //                 // เซฟรูปภาพที่ปรับขนาดลงในไฟล์เดิม
+        //                 $img->save($newFolder . '/' . $imageFilename);
+        //                 $img->save($newFolder1 . '/' . $imageFilename1);
+        //                 $pages[] = array(
+        //                     'l' =>  'page/large/' . $imageFilename,
+        //                     't' => 'page/thumb/' . $imageFilename1
+        //                 );
+
+        //                 $pageLCount = count($pages);
+        //                 $htmlPath = public_path('upload/Book/' . $books->book_id . '/index.html');
+
+        //                 $htmlContent = view('flipbook.flipbook', ['pages' => $pages, 'pageLCount' => $pageLCount])->render();
+        //                 file_put_contents($htmlPath, $htmlContent);
+        //             }
+        //             $books->bookfile =  'upload/Book/' . $books->book_id . '/' . 'index.html';
+        //             $books->save();
+        //         }
+        //     } elseif ($request->book_type == 1) {
+        //         if ($request->hasFile('bookfile')) {
+        //             $image_bookfile = 'book' . '.' . $request->bookfile->getClientOriginalExtension();
+        //             $uploadDirectory = public_path('upload/Book/' . $books->book_id);
+        //             if (!file_exists($uploadDirectory)) {
+        //                 mkdir($uploadDirectory, 0755, true);
+        //             }
+        //             if (file_exists($uploadDirectory)) {
+
+        //                 file_put_contents(public_path('upload/Book/' . $books->book_id  . '/' . $image_bookfile), file_get_contents($request->bookfile));
+        //             }
+        //             $books->bookfile = 'upload/Book/' . $books->book_id . '/' . $image_bookfile;
+        //             $books->save();
+        //         }
+        //     }
+        // }
 
         return redirect()->route('bookcatpage', [$department_id, 'category_id' => $category_id])->with('message', 'book สร้างเรียบร้อยแล้ว');
     }
@@ -241,13 +375,10 @@ class BookController extends Controller
         $books->recommended = $request->input('recommended', 0);
         if ($request->book_author) {
             $books->book_author = $request->book_author;
-        } 
-        
-        libxml_use_internal_errors(true);
-        if (!file_exists(public_path('/upload/Book/ck/'))) {
-            mkdir(public_path('/upload/Book/ck/'), 0755, true);
         }
 
+        libxml_use_internal_errors(true);
+   
 
         if ($request->has('contents')) {
             $contents = $request->contents;
@@ -261,14 +392,17 @@ class BookController extends Controller
                 $de_th->loadHTML($contents, LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
                 libxml_clear_errors();
                 $images_des_th = $de_th->getElementsByTagName('img');
-
+                if (!Storage::disk('sftp')->exists('/book/ck/')) {
+                    Storage::disk('sftp')->makeDirectory('/book/ck/');
+                }
+               
                 foreach ($images_des_th as $key => $img) {
                     if (strpos($img->getAttribute('src'), 'data:image/') === 0) {
                         $data = base64_decode(explode(',', explode(';', $img->getAttribute('src'))[1])[1]);
-                        $image_name = '/upload/Book/ck/' . time() . $key . '.png'; // ใส่ .png เพื่อให้เป็นนามสกุลไฟล์ถูกต้อง
-                        file_put_contents(public_path() . $image_name, $data);
+                        $image_name = 'Book/ck/' . time() . $key . '.png'; // ใส่ .png เพื่อให้เป็นนามสกุลไฟล์ถูกต้อง
+                        Storage::disk('sftp')->put($image_name, $data);
                         $img->removeAttribute('src');
-                        $newImageUrl = asset($image_name);
+                        $newImageUrl = env('URL_FILE_SFTP') . $image_name;
                         $img->setAttribute('src', $newImageUrl);
                     }
                 }
@@ -288,15 +422,15 @@ class BookController extends Controller
         set_time_limit(0);
         if ($request->hasFile('cover')) {
             $image_name = 'cover' . '.' . $request->cover->getClientOriginalExtension();
-            $uploadDirectory = public_path('upload/Book/' . $books->book_id);
-            if (!file_exists($uploadDirectory)) {
-                mkdir($uploadDirectory, 0755, true);
+
+            $uploadDirectory = 'Book/' . $books->book_id;
+            if (!Storage::disk('sftp')->exists($uploadDirectory)) {
+                Storage::disk('sftp')->makeDirectory($uploadDirectory);
             }
-            if (file_exists($uploadDirectory)) {
-                file_put_contents(public_path('upload/Book/' . $books->book_id . '/' . $image_name), file_get_contents($request->cover));
-                // สร้างและบันทึกชื่อ cover ลงในโมเดล
+
+                Storage::disk('sftp')->put($uploadDirectory . '/' . $image_name, file_get_contents($request->cover->getRealPath()));
                 $books->cover = 'upload/Book/' . $books->book_id . '/' . 'cover' . '.' . $request->cover->getClientOriginalExtension();
-            }
+        
         }
 
         set_time_limit(0);
@@ -381,22 +515,41 @@ class BookController extends Controller
                         $htmlContent = view('flipbook.flipbook', ['pages' => $pages, 'pageLCount' => $pageLCount])->render();
                         file_put_contents($htmlPath, $htmlContent);
                     }
+                    $localPath = public_path('upload/book/' . $books->book_id);
+
+                    if (file_exists($localPath)) {
+                        $files = File::allFiles($localPath);
+                        foreach ($files as $file) {
+                            // หาชื่อโฟลเดอร์เดิมที่อยู่ในชื่อไฟล์
+                            $originalDirectoryName = pathinfo($file->getRelativePathname(), PATHINFO_DIRNAME);
+                            // สร้างโฟลเดอร์ปลายทางในกรณีที่ยังไม่มี
+                            $newDirectoryPath = 'Book/' . $books->book_id . '/' . $originalDirectoryName;
+                            if (!Storage::disk('sftp')->exists($newDirectoryPath)) {
+                                Storage::disk('sftp')->makeDirectory($newDirectoryPath, 0777, true, true);
+                            }
+
+                            // คัดลอกและบันทึกไฟล์ใหม่
+                            $newFileName = $file->getFilename();
+                            $fileContents = File::get($file->getPathname());
+                            Storage::disk('sftp')->put($newDirectoryPath . '/' . $newFileName, $fileContents);
+                        }
+                        // ลบโฟลเดอร์ใน local path
+                        File::deleteDirectory($localPath);
+                    }
                     $books->bookfile =  'upload/Book/' . $books->book_id . '/' . 'index.html';
+                    
                 }
             } elseif ($request->book_type == 1) {
                 if ($request->hasFile('bookfile')) {
                     $image_bookfile = 'book' . '.' . $request->bookfile->getClientOriginalExtension();
-                    $uploadDirectory = public_path('upload/Book/' . $books->book_id);
-
-                    if (!file_exists($uploadDirectory)) {
-                        mkdir($uploadDirectory, 0755, true);
+                    $uploadDirectory = 'book/' . $books->book_id;
+                    if (!Storage::disk('sftp')->exists($uploadDirectory)) {
+                        Storage::disk('sftp')->makeDirectory($uploadDirectory);
                     }
-
-                    if (file_exists($uploadDirectory)) {
-
-                        file_put_contents(public_path('upload/Book/' . $books->book_id  . '/' . $image_bookfile), file_get_contents($request->bookfile));
-                    }
-                    $books->bookfile = 'upload/Book/' . $books->book_id . '/' . $image_bookfile;
+                        Storage::disk('sftp')->put($uploadDirectory . '/' . $image_name, file_get_contents($request->bookfile->getRealPath()));
+                        $books->bookfile = 'upload/Book/' . $books->book_id . '/' . $image_bookfile;
+            
+       
                 }
             }
         }

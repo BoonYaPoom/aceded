@@ -28,17 +28,25 @@ class GenaralController extends Controller
         if ($request->hasFile('detail')) {
 
             $filename = 'logo' . '.' . $request->detail->getClientOriginalExtension();
-            $uploadDirectory = public_path('upload/LOGO/');
-            if (!file_exists($uploadDirectory)) {
-                mkdir($uploadDirectory, 0755, true);
-            }
-            if (file_exists($uploadDirectory)) {
+            // $uploadDirectory = public_path('upload/LOGO/');
+            // if (!file_exists($uploadDirectory)) {
+            //     mkdir($uploadDirectory, 0755, true);
+            // }
+            // if (file_exists($uploadDirectory)) {
 
-                file_put_contents(public_path('upload/LOGO/' . $filename), file_get_contents($request->detail));
-                $genaral->detail = 'upload/LOGO/' . 'logo' . '.' . $request->detail->getClientOriginalExtension();
-            }
+            //     file_put_contents(public_path('upload/LOGO/' . $filename), file_get_contents($request->detail));
+            //     $genaral->detail = 'upload/LOGO/' . 'logo' . '.' . $request->detail->getClientOriginalExtension();
+            // }
             // อัปเดตข้อมูลในตาราง 'General'
-
+            $uploadDirectory = 'LOGO/';
+            if (!Storage::disk('sftp')->exists($uploadDirectory)) {
+                Storage::disk('sftp')->makeDirectory($uploadDirectory);
+            }
+            if (Storage::disk('sftp')->exists($uploadDirectory)) {
+                // ตรวจสอบว่ามีไฟล์เดิมอยู่หรือไม่ ถ้ามีให้ลบออก
+                Storage::disk('sftp')->delete($uploadDirectory);
+                Storage::disk('sftp')->put($uploadDirectory . '/' . $filename, file_get_contents($request->detail->getRealPath()));
+            }
             $genaral->title = 'logo';
         }
 
@@ -118,17 +126,25 @@ class GenaralController extends Controller
         if ($request->hasFile('detail')) {
 
             $filename = 'logo' .  $department_id . '.' . $request->detail->getClientOriginalExtension();
-            $uploadDirectory = public_path('upload/LOGO/' .  $department_id . '/');
-            if (!file_exists($uploadDirectory)) {
-                mkdir($uploadDirectory, 0755, true);
-            }
-            if (file_exists($uploadDirectory)) {
+            // $uploadDirectory = public_path('upload/LOGO/' .  $department_id . '/');
+            // if (!file_exists($uploadDirectory)) {
+            //     mkdir($uploadDirectory, 0755, true);
+            // }
+            // if (file_exists($uploadDirectory)) {
 
-                file_put_contents(public_path('upload/LOGO/' . $department_id . '/'  . $filename), file_get_contents($request->detail));
-                $genaral->detail = 'upload/LOGO/' .   $department_id . '/'  . $filename;
-            }
+            //     file_put_contents(public_path('upload/LOGO/' . $department_id . '/'  . $filename), file_get_contents($request->detail));
+            //     $genaral->detail = 'upload/LOGO/' .   $department_id . '/'  . $filename;
+            // }
             // อัปเดตข้อมูลในตาราง 'General'
-
+            $uploadDirectory = 'LOGO/';
+            if (!Storage::disk('sftp')->exists($uploadDirectory)) {
+                Storage::disk('sftp')->makeDirectory($uploadDirectory);
+            }
+            if (Storage::disk('sftp')->exists($uploadDirectory)) {
+                // ตรวจสอบว่ามีไฟล์เดิมอยู่หรือไม่ ถ้ามีให้ลบออก
+                Storage::disk('sftp')->delete($uploadDirectory);
+                Storage::disk('sftp')->put($uploadDirectory . '/' . $filename, file_get_contents($request->detail->getRealPath()));
+            }
             $genaral->title = 'logo';
         }
 

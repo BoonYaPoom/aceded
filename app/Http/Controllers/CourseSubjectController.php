@@ -88,14 +88,26 @@ class CourseSubjectController extends Controller
 
             if ($request->hasFile('banner')) {
                 $image_name = 'banner' . $subs->subject_id . '.' . $request->banner->getClientOriginalExtension();
-                $uploadDirectory = public_path('upload/Subject/SubBanner/');
-                if (!file_exists($uploadDirectory)) {
-                    mkdir($uploadDirectory, 0755, true);
-                }
-                if (file_exists($uploadDirectory)) {
+                // $uploadDirectory = public_path('upload/Subject/SubBanner/');
+                // if (!file_exists($uploadDirectory)) {
+                //     mkdir($uploadDirectory, 0755, true);
+                // }
+                // if (file_exists($uploadDirectory)) {
 
-                    file_put_contents(public_path('upload/Subject/SubBanner/' . $image_name), file_get_contents($request->banner));
-                    $subs->banner = 'upload/Subject/SubBanner/' .  'banner' . $subs->subject_id . '.' . $request->banner->getClientOriginalExtension();
+                //     file_put_contents(public_path('upload/Subject/SubBanner/' . $image_name), file_get_contents($request->banner));
+                //     $subs->banner = 'upload/Subject/SubBanner/' .  'banner' . $subs->subject_id . '.' . $request->banner->getClientOriginalExtension();
+                //     $subs->save();
+                // }
+
+                $uploadDirectory = 'Subject/SubBanner/' . $subs->subject_id;
+                if (!Storage::disk('sftp')->exists($uploadDirectory)) {
+                    Storage::disk('sftp')->makeDirectory($uploadDirectory);
+                }
+                if (Storage::disk('sftp')->exists($uploadDirectory)) {
+                    // ตรวจสอบว่ามีไฟล์เดิมอยู่หรือไม่ ถ้ามีให้ลบออก
+                    Storage::disk('sftp')->delete($uploadDirectory);
+                    Storage::disk('sftp')->put($uploadDirectory . '/' . $image_name, file_get_contents($request->banner->getRealPath()));
+                    $subs->banner = 'upload/Subject/SubBanner/'  . $subs->subject_id . '.' . $request->banner->getClientOriginalExtension();
                     $subs->save();
                 }
             } else {
@@ -286,14 +298,26 @@ class CourseSubjectController extends Controller
 
         if ($request->hasFile('banner')) {
             $image_name = 'banner' . $subs->subject_id . '.' . $request->banner->getClientOriginalExtension();
-            $uploadDirectory = public_path('upload/Subject/SubBanner/');
-            if (!file_exists($uploadDirectory)) {
-                mkdir($uploadDirectory, 0755, true);
-            }
-            if (file_exists($uploadDirectory)) {
+            // $uploadDirectory = public_path('upload/Subject/SubBanner/');
+            // if (!file_exists($uploadDirectory)) {
+            //     mkdir($uploadDirectory, 0755, true);
+            // }
+            // if (file_exists($uploadDirectory)) {
 
-                file_put_contents(public_path('upload/Subject/SubBanner/' . $image_name), file_get_contents($request->banner));
-                $subs->banner = 'upload/Subject/SubBanner/' .  'banner' . $subs->subject_id . '.' . $request->banner->getClientOriginalExtension();
+            //     file_put_contents(public_path('upload/Subject/SubBanner/' . $image_name), file_get_contents($request->banner));
+            //     $subs->banner = 'upload/Subject/SubBanner/' .  'banner' . $subs->subject_id . '.' . $request->banner->getClientOriginalExtension();
+            //     $subs->save();
+            // }
+
+            $uploadDirectory = 'Subject/SubBanner/' . $subs->subject_id;
+            if (!Storage::disk('sftp')->exists($uploadDirectory)) {
+                Storage::disk('sftp')->makeDirectory($uploadDirectory);
+            }
+            if (Storage::disk('sftp')->exists($uploadDirectory)) {
+                // ตรวจสอบว่ามีไฟล์เดิมอยู่หรือไม่ ถ้ามีให้ลบออก
+                Storage::disk('sftp')->delete($uploadDirectory);
+                Storage::disk('sftp')->put($uploadDirectory . '/' . $image_name, file_get_contents($request->banner->getRealPath()));
+                $subs->banner = 'upload/Subject/SubBanner/' . $subs->subject_id . '.' . $request->banner->getClientOriginalExtension();
                 $subs->save();
             }
         }
@@ -320,15 +344,15 @@ class CourseSubjectController extends Controller
 
     public function updatedetail(Request $request, $department_id, $subject_id)
     {
-
-
-
         $subs = CourseSubject::findOrFail($subject_id);
 
         set_time_limit(0);
 
-        if (!file_exists(public_path('/uplade'))) {
-            mkdir(public_path('/uplade'), 0755, true);
+        // if (!file_exists(public_path('/uplade'))) {
+        //     mkdir(public_path('/uplade'), 0755, true);
+        // }
+        if (!Storage::disk('sftp')->exists('/uplade/subject/')) {
+            Storage::disk('sftp')->makeDirectory('/uplade/subject/');
         }
 
 
@@ -347,10 +371,10 @@ class CourseSubjectController extends Controller
                 foreach ($images_des_th as $key => $img) {
                     if (strpos($img->getAttribute('src'), 'data:image/') === 0) {
                         $data = base64_decode(explode(',', explode(';', $img->getAttribute('src'))[1])[1]);
-                        $image_name = '/uplade/' . time() . $key . '.png'; // ใส่ .png เพื่อให้เป็นนามสกุลไฟล์ถูกต้อง
-                        file_put_contents(public_path() . $image_name, $data);
+                        $image_name = '/uplade/subject/' . time() . $key . '.png'; // ใส่ .png เพื่อให้เป็นนามสกุลไฟล์ถูกต้อง
+                        Storage::disk('sftp')->put($image_name, $data);
                         $img->removeAttribute('src');
-                        $newImageUrl = asset($image_name);
+                        $newImageUrl = env('URL_FILE_SFTP') . $image_name;
                         $img->setAttribute('src', $newImageUrl);
                     }
                 }
@@ -376,10 +400,10 @@ class CourseSubjectController extends Controller
                 foreach ($images_des_en as $key => $img) {
                     if (strpos($img->getAttribute('src'), 'data:image/') === 0) {
                         $data = base64_decode(explode(',', explode(';', $img->getAttribute('src'))[1])[1]);
-                        $image_name = '/uplade/' . time() . $key . '.png'; // ใส่ .png เพื่อให้เป็นนามสกุลไฟล์ถูกต้อง
-                        file_put_contents(public_path() . $image_name, $data);
+                        $image_name = '/uplade/subject/' . time() . $key . '.png'; // ใส่ .png เพื่อให้เป็นนามสกุลไฟล์ถูกต้อง
+                        Storage::disk('sftp')->put($image_name, $data);
                         $img->removeAttribute('src');
-                        $newImageUrl = asset($image_name);
+                        $newImageUrl = env('URL_FILE_SFTP') . $image_name;
                         $img->setAttribute('src', $newImageUrl);
                     }
                 }
@@ -404,10 +428,10 @@ class CourseSubjectController extends Controller
                 foreach ($images_ob_th as $key => $img) {
                     if (strpos($img->getAttribute('src'), 'data:image/') === 0) {
                         $data = base64_decode(explode(',', explode(';', $img->getAttribute('src'))[1])[1]);
-                        $image_name = '/uplade/' . time() . $key . '.png'; // ใส่ .png เพื่อให้เป็นนามสกุลไฟล์ถูกต้อง
-                        file_put_contents(public_path() . $image_name, $data);
+                        $image_name = '/uplade/subject/' . time() . $key . '.png'; // ใส่ .png เพื่อให้เป็นนามสกุลไฟล์ถูกต้อง
+                        Storage::disk('sftp')->put($image_name, $data);
                         $img->removeAttribute('src');
-                        $newImageUrl = asset($image_name);
+                        $newImageUrl = env('URL_FILE_SFTP') . $image_name;
                         $img->setAttribute('src', $newImageUrl);
                     }
                 }
@@ -431,10 +455,10 @@ class CourseSubjectController extends Controller
                 foreach ($images_ob_en as $key => $img) {
                     if (strpos($img->getAttribute('src'), 'data:image/') === 0) {
                         $data = base64_decode(explode(',', explode(';', $img->getAttribute('src'))[1])[1]);
-                        $image_name = '/uplade/' . time() . $key . '.png'; // ใส่ .png เพื่อให้เป็นนามสกุลไฟล์ถูกต้อง
-                        file_put_contents(public_path() . $image_name, $data);
+                        $image_name = '/uplade/subject/' . time() . $key . '.png'; // ใส่ .png เพื่อให้เป็นนามสกุลไฟล์ถูกต้อง
+                        Storage::disk('sftp')->put($image_name, $data);
                         $img->removeAttribute('src');
-                        $newImageUrl = asset($image_name);
+                        $newImageUrl = env('URL_FILE_SFTP') . $image_name;
                         $img->setAttribute('src', $newImageUrl);
                     }
                 }
@@ -459,10 +483,10 @@ class CourseSubjectController extends Controller
                 foreach ($images_qua_th as $key => $img) {
                     if (strpos($img->getAttribute('src'), 'data:image/') === 0) {
                         $data = base64_decode(explode(',', explode(';', $img->getAttribute('src'))[1])[1]);
-                        $image_name = '/uplade/' . time() . $key . '.png'; // ใส่ .png เพื่อให้เป็นนามสกุลไฟล์ถูกต้อง
-                        file_put_contents(public_path() . $image_name, $data);
+                        $image_name = '/uplade/subject/' . time() . $key . '.png'; // ใส่ .png เพื่อให้เป็นนามสกุลไฟล์ถูกต้อง
+                        Storage::disk('sftp')->put($image_name, $data);
                         $img->removeAttribute('src');
-                        $newImageUrl = asset($image_name);
+                        $newImageUrl = env('URL_FILE_SFTP') . $image_name;
                         $img->setAttribute('src', $newImageUrl);
                     }
                 }
@@ -487,10 +511,10 @@ class CourseSubjectController extends Controller
                 foreach ($images_qua_en as $key => $img) {
                     if (strpos($img->getAttribute('src'), 'data:image/') === 0) {
                         $data = base64_decode(explode(',', explode(';', $img->getAttribute('src'))[1])[1]);
-                        $image_name = '/uplade/' . time() . $key . '.png'; // ใส่ .png เพื่อให้เป็นนามสกุลไฟล์ถูกต้อง
-                        file_put_contents(public_path() . $image_name, $data);
+                        $image_name = '/uplade/subject/' . time() . $key . '.png'; // ใส่ .png เพื่อให้เป็นนามสกุลไฟล์ถูกต้อง
+                        Storage::disk('sftp')->put($image_name, $data);
                         $img->removeAttribute('src');
-                        $newImageUrl = asset($image_name);
+                        $newImageUrl = env('URL_FILE_SFTP') . $image_name;
                         $img->setAttribute('src', $newImageUrl);
                     }
                 }
@@ -516,10 +540,10 @@ class CourseSubjectController extends Controller
                 foreach ($images_eva_th as $key => $img) {
                     if (strpos($img->getAttribute('src'), 'data:image/') === 0) {
                         $data = base64_decode(explode(',', explode(';', $img->getAttribute('src'))[1])[1]);
-                        $image_name = '/uplade/' . time() . $key . '.png'; // ใส่ .png เพื่อให้เป็นนามสกุลไฟล์ถูกต้อง
-                        file_put_contents(public_path() . $image_name, $data);
+                        $image_name = '/uplade/subject/' . time() . $key . '.png'; // ใส่ .png เพื่อให้เป็นนามสกุลไฟล์ถูกต้อง
+                        Storage::disk('sftp')->put($image_name, $data);
                         $img->removeAttribute('src');
-                        $newImageUrl = asset($image_name);
+                        $newImageUrl = env('URL_FILE_SFTP') . $image_name;
                         $img->setAttribute('src', $newImageUrl);
                     }
                 }
@@ -544,10 +568,10 @@ class CourseSubjectController extends Controller
                 foreach ($images_eva_en as $key => $img) {
                     if (strpos($img->getAttribute('src'), 'data:image/') === 0) {
                         $data = base64_decode(explode(',', explode(';', $img->getAttribute('src'))[1])[1]);
-                        $image_name = '/uplade/' . time() . $key . '.png'; // ใส่ .png เพื่อให้เป็นนามสกุลไฟล์ถูกต้อง
-                        file_put_contents(public_path() . $image_name, $data);
+                        $image_name = '/uplade/subject/' . time() . $key . '.png'; // ใส่ .png เพื่อให้เป็นนามสกุลไฟล์ถูกต้อง
+                        Storage::disk('sftp')->put($image_name, $data);
                         $img->removeAttribute('src');
-                        $newImageUrl = asset($image_name);
+                        $newImageUrl = env('URL_FILE_SFTP') . $image_name;
                         $img->setAttribute('src', $newImageUrl);
                     }
                 }

@@ -60,13 +60,24 @@ class LinkController extends Controller
 
             if ($request->hasFile('cover')) {
                 $filename = 'cover' . $links->link_id . '.' . $request->cover->getClientOriginalExtension();
-                $uploadDirectory = public_path('upload/Links/');
-                if (!file_exists($uploadDirectory)) {
-                    mkdir($uploadDirectory, 0755, true);
-                }
-                if (file_exists($uploadDirectory)) {
+                // $uploadDirectory = public_path('upload/Links/');
+                // if (!file_exists($uploadDirectory)) {
+                //     mkdir($uploadDirectory, 0755, true);
+                // }
+                // if (file_exists($uploadDirectory)) {
 
-                    file_put_contents(public_path('upload/Links/' . $filename), file_get_contents($request->cover));
+                //     file_put_contents(public_path('upload/Links/' . $filename), file_get_contents($request->cover));
+                //     $links->cover = 'upload/Links/' .   'cover' . $links->link_id . '.' . $request->cover->getClientOriginalExtension();
+                //     $links->save();
+                // }
+                $uploadDirectory = 'Links/';
+                if (!Storage::disk('sftp')->exists($uploadDirectory)) {
+                    Storage::disk('sftp')->makeDirectory($uploadDirectory);
+                }
+                if (Storage::disk('sftp')->exists($uploadDirectory)) {
+                    // ตรวจสอบว่ามีไฟล์เดิมอยู่หรือไม่ ถ้ามีให้ลบออก
+                    Storage::disk('sftp')->delete($uploadDirectory);
+                    Storage::disk('sftp')->put($uploadDirectory . '/' . $filename, file_get_contents($request->cover->getRealPath()));
                     $links->cover = 'upload/Links/' .   'cover' . $links->link_id . '.' . $request->cover->getClientOriginalExtension();
                     $links->save();
                 }
@@ -157,15 +168,26 @@ class LinkController extends Controller
 
         if ($request->hasFile('cover')) {
             $filename = 'cover' . $links_id . '.' . $request->cover->getClientOriginalExtension();
-            $uploadDirectory = public_path('upload/Links/');
-            if (!file_exists($uploadDirectory)) {
-                mkdir($uploadDirectory, 0755, true);
+            // $uploadDirectory = public_path('upload/Links/');
+            // if (!file_exists($uploadDirectory)) {
+            //     mkdir($uploadDirectory, 0755, true);
+            // }
+            // if (file_exists($uploadDirectory)) {
+
+            //     file_put_contents(public_path('upload/Links/' . $filename), file_get_contents($request->cover));
+            //     $links->cover = 'upload/Links/' .   'cover' . $links_id . '.' . $request->cover->getClientOriginalExtension();
+
+            // }
+            $uploadDirectory = 'Links/';
+            if (!Storage::disk('sftp')->exists($uploadDirectory)) {
+                Storage::disk('sftp')->makeDirectory($uploadDirectory);
             }
-            if (file_exists($uploadDirectory)) {
-
-                file_put_contents(public_path('upload/Links/' . $filename), file_get_contents($request->cover));
-                $links->cover = 'upload/Links/' .   'cover' . $links_id . '.' . $request->cover->getClientOriginalExtension();
-
+            if (Storage::disk('sftp')->exists($uploadDirectory)) {
+                // ตรวจสอบว่ามีไฟล์เดิมอยู่หรือไม่ ถ้ามีให้ลบออก
+                Storage::disk('sftp')->delete($uploadDirectory);
+                Storage::disk('sftp')->put($uploadDirectory . '/' . $filename, file_get_contents($request->cover->getRealPath()));
+                $links->cover = 'upload/Links/' .   'cover' . $links->link_id . '.' . $request->cover->getClientOriginalExtension();
+                $links->save();
             }
         } 
 

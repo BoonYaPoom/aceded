@@ -8,6 +8,7 @@ use App\Models\General;
 use App\Models\Users;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 
 class DepartmentController extends Controller
 {
@@ -83,8 +84,19 @@ class DepartmentController extends Controller
             if ($request->hasFile('name_short_th')) {
                 $image = $request->file('name_short_th');
                 $imageName =  $image->getClientOriginalName();
-                $image->move(public_path('upload/Department/'), $imageName);
-                $depart->name_short_th = 'upload/Department/' . $imageName;
+                // $image->move(public_path('upload/Department/'), $imageName);
+               
+                $uploadDirectory = 'Department/';
+                if (!Storage::disk('sftp')->exists($uploadDirectory)) {
+                    Storage::disk('sftp')->makeDirectory($uploadDirectory);
+                }
+                if (Storage::disk('sftp')->exists($uploadDirectory)) {
+                    // ตรวจสอบว่ามีไฟล์เดิมอยู่หรือไม่ ถ้ามีให้ลบออก
+                    Storage::disk('sftp')->delete($uploadDirectory);
+                    Storage::disk('sftp')->put($uploadDirectory . '/' . $imageName, file_get_contents($request->name_short_th->getRealPath()));
+                    $depart->name_short_th = 'upload/Department/' . $imageName;
+
+                }
             }
 
 
@@ -127,17 +139,27 @@ class DepartmentController extends Controller
             if ($request->hasFile('detail')) {
 
                 $filename = 'logo' . $depart->department_id . '.' . $request->detail->getClientOriginalExtension();
-                $uploadDirectory = public_path('upload/LOGO/');
-                if (!file_exists($uploadDirectory)) {
-                    mkdir($uploadDirectory, 0755, true);
-                }
-                if (file_exists($uploadDirectory)) {
+                // $uploadDirectory = public_path('upload/LOGO/');
+                // if (!file_exists($uploadDirectory)) {
+                //     mkdir($uploadDirectory, 0755, true);
+                // }
+                // if (file_exists($uploadDirectory)) {
 
-                    file_put_contents(public_path('upload/LOGO/' . $filename), file_get_contents($request->detail));
-                    $genaral->detail = 'upload/LOGO/' . 'logo' . $depart->department_id . '.' . $request->detail->getClientOriginalExtension();
-                }
+                //     file_put_contents(public_path('upload/LOGO/' . $filename), file_get_contents($request->detail));
+                //     $genaral->detail = 'upload/LOGO/' . 'logo' . $depart->department_id . '.' . $request->detail->getClientOriginalExtension();
+                // }
                 // อัปเดตข้อมูลในตาราง 'General'
-
+                $uploadDirectory = 'LOGO/';
+                if (!Storage::disk('sftp')->exists($uploadDirectory)) {
+                    Storage::disk('sftp')->makeDirectory($uploadDirectory);
+                }
+                if (Storage::disk('sftp')->exists($uploadDirectory)) {
+                    // ตรวจสอบว่ามีไฟล์เดิมอยู่หรือไม่ ถ้ามีให้ลบออก
+                    Storage::disk('sftp')->delete($uploadDirectory);
+                    Storage::disk('sftp')->put($uploadDirectory . '/' . $filename, file_get_contents($request->detail->getRealPath()));
+                    $genaral->path = 'upload/LOGO/' . 'logo' . $depart->department_id . '.' . $request->detail->getClientOriginalExtension();
+               
+                }
                 $genaral->title = 'logo';
                 $genaral->status = 1;
                 $genaral->department_id =  $depart->department_id;
@@ -202,7 +224,17 @@ class DepartmentController extends Controller
         if ($request->hasFile('name_short_th')) {
             $image = $request->file('name_short_th');
             $imageName =  $image->getClientOriginalName();
-            $image->move(public_path('upload/Department/'), $imageName);
+            // $image->move(public_path('upload/Department/'), $imageName);
+            $uploadDirectory = 'Department/';
+            if (!Storage::disk('sftp')->exists($uploadDirectory)) {
+                Storage::disk('sftp')->makeDirectory($uploadDirectory);
+            }
+            if (Storage::disk('sftp')->exists($uploadDirectory)) {
+                // ตรวจสอบว่ามีไฟล์เดิมอยู่หรือไม่ ถ้ามีให้ลบออก
+                Storage::disk('sftp')->delete($uploadDirectory);
+                Storage::disk('sftp')->put($uploadDirectory . '/' . $imageName, file_get_contents($request->name_short_th->getRealPath()));
+            
+            }
             $depart->name_short_th = 'upload/Department/' . $imageName;
         }
         $depart->color = $request->color;

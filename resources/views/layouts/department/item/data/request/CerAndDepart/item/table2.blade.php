@@ -22,7 +22,8 @@
                 <tr>
                     <td>{{ $c++ }}</td>
                     <td>{{ $users->firstname }} {{ $users->lastname }}</td>
-                    <td><img onerror="this.onerror=null; this.src='{{ asset('/uploads/cer/errorcer1.png') }}';" src="{{ 'https://aced.nacc.go.th/' . $cer->certificate_file_path }}" width="100px"
+                    <td><img onerror="this.onerror=null; this.src='{{ asset('/uploads/cer/errorcer1.png') }}';" 
+                        src="{{ 'https://aced.nacc.go.th/' . $cer->certificate_file_path }}" width="100px"
                             height="100px" alt=""
                             onclick="$('#previewimage').prop('src',$(this).prop('src'));$('#modal01').css('display','block');">
                     </td>
@@ -43,7 +44,7 @@
 <div id="modal01" class="w3-modal" onclick="this.style.display='none'">
     <span class="w3-button w3-hover-red w3-xlarge w3-display-topright">×</span>
     <div class="w3-modal-content w3-animate-zoom">
-        <img src="{{ asset('uploads/cer02_0.png') }}" style="width:100%" id="previewimage">
+        <img src="{{ env('URL_FILE_SFTP') . 'uploads/cer02_0.png' }}" style="width:100%" id="previewimage">
     </div>
 </div>
 <script>

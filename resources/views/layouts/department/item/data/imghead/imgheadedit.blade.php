@@ -40,8 +40,8 @@
                                     <div class="row mb-5">
                                  
                                         <div class="col-lg-10">
-                                            <img src="{{ asset($highlight->highlight_path) }}"
-                                                alt="{{ $highlight->highlight_path }}" style="width:100%">
+                                            <img src="{{ env('URL_FILE_SFTP') . $highlight->highlight_path }}"
+                                                alt="{{ env('URL_FILE_SFTP') . $highlight->highlight_path }}" style="width:100%">
                                             <img src="" style="width:100%">
                                         </div>
 

@@ -37,14 +37,24 @@ class ManualController extends Controller
             $manuals->manual = $request->manual;
             if ($request->hasFile('manual_path')) {
                 $filename = time()  . '.' . $request->manual_path->getClientOriginalExtension();
-                $uploadDirectory = public_path('upload/Manual/documents/');
-                if (!file_exists($uploadDirectory)) {
-                    mkdir($uploadDirectory, 0755, true);
-                }
-                if (file_exists($uploadDirectory)) {
+                // $uploadDirectory = public_path('upload/Manual/documents/');
+                // if (!file_exists($uploadDirectory)) {
+                //     mkdir($uploadDirectory, 0755, true);
+                // }
+                // if (file_exists($uploadDirectory)) {
 
-                    file_put_contents(public_path('upload/Manual/documents/' . $filename), file_get_contents($request->manual_path));
-                    $manuals->manual_path = 'upload/Manual/documents/' .   $filename;
+                //     file_put_contents(public_path('upload/Manual/documents/' . $filename), file_get_contents($request->manual_path));
+                //     $manuals->manual_path = 'upload/Manual/documents/' .   $filename;
+                // }
+                $uploadDirectory = 'Manual/documents/';
+                if (!Storage::disk('sftp')->exists($uploadDirectory)) {
+                    Storage::disk('sftp')->makeDirectory($uploadDirectory);
+                }
+                if (Storage::disk('sftp')->exists($uploadDirectory)) {
+                    // ตรวจสอบว่ามีไฟล์เดิมอยู่หรือไม่ ถ้ามีให้ลบออก
+                    Storage::disk('sftp')->delete($uploadDirectory);
+                    Storage::disk('sftp')->put($uploadDirectory . '/' . $filename, file_get_contents($request->manual_path->getRealPath()));
+                    $manuals->manual_path = 'upload/Manual/documents/' . $filename;
                 }
             }
 
@@ -55,14 +65,24 @@ class ManualController extends Controller
             $manuals->save();
             if ($request->hasFile('cover')) {
                 $image_name = 'cover' .  $manuals->manual_id . '.' . $request->cover->getClientOriginalExtension();
-                $uploadDirectory = public_path('upload/Manual/image/');
-                if (!file_exists($uploadDirectory)) {
-                    mkdir($uploadDirectory, 0755, true);
-                }
-                if (file_exists($uploadDirectory)) {
+                // $uploadDirectory = public_path('upload/Manual/image/');
+                // if (!file_exists($uploadDirectory)) {
+                //     mkdir($uploadDirectory, 0755, true);
+                // }
+                // if (file_exists($uploadDirectory)) {
     
-                    file_put_contents(public_path('upload/Manual/image/' . $image_name), file_get_contents($request->cover));
-                    $manuals->cover = 'upload/Manual/image/' .   $image_name;
+                //     file_put_contents(public_path('upload/Manual/image/' . $image_name), file_get_contents($request->cover));
+                //     $manuals->cover = 'upload/Manual/image/' .   $image_name;
+                // }
+                $uploadDirectory = 'Manual/image/';
+                if (!Storage::disk('sftp')->exists($uploadDirectory)) {
+                    Storage::disk('sftp')->makeDirectory($uploadDirectory);
+                }
+                if (Storage::disk('sftp')->exists($uploadDirectory)) {
+                    // ตรวจสอบว่ามีไฟล์เดิมอยู่หรือไม่ ถ้ามีให้ลบออก
+                    Storage::disk('sftp')->delete($uploadDirectory);
+                    Storage::disk('sftp')->put($uploadDirectory . '/' . $image_name, file_get_contents($request->cover->getRealPath()));
+                    $manuals->cover = 'upload/Manual/image/' . $image_name;
                 }
                 $manuals->save();
             } else {
@@ -150,26 +170,46 @@ class ManualController extends Controller
         $manuals->manual = $request->manual;
         if ($request->hasFile('cover')) {
             $image_name = 'cover' .  $manual_id . '.' . $request->cover->getClientOriginalExtension();
-            $uploadDirectory = public_path('upload/Manual/image/');
-            if (!file_exists($uploadDirectory)) {
-                mkdir($uploadDirectory, 0755, true);
-            }
-            if (file_exists($uploadDirectory)) {
+            // $uploadDirectory = public_path('upload/Manual/image/');
+            // if (!file_exists($uploadDirectory)) {
+            //     mkdir($uploadDirectory, 0755, true);
+            // }
+            // if (file_exists($uploadDirectory)) {
 
-                file_put_contents(public_path('upload/Manual/image/' . $image_name), file_get_contents($request->cover));
-                $manuals->cover = 'upload/Manual/image/' .   $image_name;
+            //     file_put_contents(public_path('upload/Manual/image/' . $image_name), file_get_contents($request->cover));
+            //     $manuals->cover = 'upload/Manual/image/' .   $image_name;
+            // }
+            $uploadDirectory = 'Manual/image/';
+            if (!Storage::disk('sftp')->exists($uploadDirectory)) {
+                Storage::disk('sftp')->makeDirectory($uploadDirectory);
+            }
+            if (Storage::disk('sftp')->exists($uploadDirectory)) {
+                // ตรวจสอบว่ามีไฟล์เดิมอยู่หรือไม่ ถ้ามีให้ลบออก
+                Storage::disk('sftp')->delete($uploadDirectory);
+                Storage::disk('sftp')->put($uploadDirectory . '/' . $image_name, file_get_contents($request->cover->getRealPath()));
+                $manuals->cover = 'upload/Manual/image/' . $image_name;
             }
         } 
 
         if ($request->hasFile('manual_path')) {
             $filename = 'manual_path' .  $manual_id . '.' . $request->manual_path->getClientOriginalExtension();
-            $uploadDirectory = public_path('upload/Manual/documents/');
-            if (!file_exists($uploadDirectory)) {
-                mkdir($uploadDirectory, 0755, true);
-            }
-            if (file_exists($uploadDirectory)) {
+            // $uploadDirectory = public_path('upload/Manual/documents/');
+            // if (!file_exists($uploadDirectory)) {
+            //     mkdir($uploadDirectory, 0755, true);
+            // }
+            // if (file_exists($uploadDirectory)) {
 
-                file_put_contents(public_path('upload/Manual/documents/' . $filename), file_get_contents($request->manual_path));
+            //     file_put_contents(public_path('upload/Manual/documents/' . $filename), file_get_contents($request->manual_path));
+            // }
+            $uploadDirectory = 'Manual/documents/';
+            if (!Storage::disk('sftp')->exists($uploadDirectory)) {
+                Storage::disk('sftp')->makeDirectory($uploadDirectory);
+            }
+            if (Storage::disk('sftp')->exists($uploadDirectory)) {
+                // ตรวจสอบว่ามีไฟล์เดิมอยู่หรือไม่ ถ้ามีให้ลบออก
+                Storage::disk('sftp')->delete($uploadDirectory);
+                Storage::disk('sftp')->put($uploadDirectory . '/' . $filename, file_get_contents($request->manual_path->getRealPath()));
+                $manuals->manual_path = 'upload/Manual/documents/' . $filename;
             }
         }
         $manuals->detail = '';

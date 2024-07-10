@@ -34,7 +34,7 @@
                   @if ($item->id == 1)
                     <div class="form-group">
                         <div class="col-lg-10">
-                            <img src="{{ asset($item->detail) }}" style="width:80%">
+                            <img src="{{ env('URL_FILE_SFTP') . $item->detail }}" style="width:80%">
                         </div>
 
                     </div>

@@ -60,7 +60,7 @@
 
                         <div class="form-group">
                             <div class="form-group">
-                                <label for="cover"><img src="{{ asset($depart->name_short_th) }}"
+                                <label for="cover"><img src="{{ env('URL_FILE_SFTP') . $depart->name_short_th }}"
                                         alt="{{ $depart->name_short_th }}" style="height:350px">
                             </div>
                             <label for="name_short_th">ภาพปก <small

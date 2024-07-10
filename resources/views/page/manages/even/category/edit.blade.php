@@ -33,7 +33,7 @@
                     <div class="card-body">
 
                         <div class="form-group">
-                            <label for="cover"><img src="{{ asset($webs->cover) }}" alt="{{ $webs->cover }}"
+                            <label for="cover"><img src="{{ env('URL_FILE_SFTP') . $webs->cover }}" alt="{{ env('URL_FILE_SFTP') . $webs->cover }}"
                                     style="height:350px">
                         </div>
 

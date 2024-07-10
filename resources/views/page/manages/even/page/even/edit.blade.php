@@ -44,7 +44,7 @@
 
                         </div><!-- /.card-body -->
                         <div class="form-group">
-                            <label for="cover"><img src="{{ asset($wed->cover) }}" alt="{{ $wed->cover }}"
+                            <label for="cover"><img src="{{ env('URL_FILE_SFTP') . $wed->cover }}" alt="{{ $wed->cover }}"
                                     style="height:400px">
                         </div>
                 </div><!-- /.card -->

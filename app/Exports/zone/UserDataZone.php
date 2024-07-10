@@ -206,7 +206,7 @@ WHERE
                     $newexten4 =  "-";
                     $newexten5 =  "-";        
                 }
-                if ($item->department_id > 5) {
+                if ($item->department_stay > 5) {
                     $fromExten = $item->extennoname;
                     $newexten1 = $item->extennoname;
                     $newexten2 = "-";

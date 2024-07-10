@@ -18,14 +18,14 @@
                     <!-- .card-body -->
                     <div class="card-body">
                         <div class="form-group">
-                            <label for="cover"><img src="{{ asset($links->cover) }} " style="width:50%"
-                                    alt="{{ $links->cover }}">
+                            <label for="cover"><img src="{{ env('URL_FILE_SFTP') . $links->cover }} " style="width:50%"
+                                    alt="{{env('URL_FILE_SFTP') .  $links->cover }}">
                         </div>
                         <!-- .form-group -->
                         <div class="form-group">
                             <label for="cover">ภาพปก </label>
                             <input type="file" class="form-control" name="cover" placeholder="ภาพปก" accept=" image/jpeg, image/png"
-                                value="{{ $links->cover }}">
+                                value="{{ env('URL_FILE_SFTP') . $links->cover }}">
                         </div><!-- /.form-group -->
                         <!-- .form-group -->
                         <div class="form-group">

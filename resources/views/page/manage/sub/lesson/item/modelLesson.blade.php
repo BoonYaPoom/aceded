@@ -24,12 +24,12 @@
                             @if ($contentType)
                                 @if ($contentType->content_type === 1)
                                     <h1>video</h1> <a
-                                        href="{{ asset($item->content_path) }}"
+                                        href="{{env('URL_FILE_SFTP') . $item->content_path }}"
                                         class="btn " style="background-color: {{ $depart->color }};" download>ดาวน์โหลดไฟล์</a>
                                     <div class="showcontent show-video">
                                         <video width="80%" id="videoplayer" controls="">
                                             <source
-                                                src="{{ asset($item->content_path) }}"
+                                                src="{{ env('URL_FILE_SFTP') . $item->content_path }}"
                                                 alt="{{ $item->content_path }}" type="video/mp4"
                                                 size="720" id="sourcevideo"
                                                 class="sourcecontent">
@@ -66,10 +66,10 @@
                                     </div>
                                 @elseif ($contentType->content_type === 8)
                                     <h1>Image</h1> <a
-                                        href="{{ asset($item->content_path) }}"
+                                        href="{{ env('URL_FILE_SFTP') . $item->content_path }}"
                                         class="btn btn-primary" download>ดาวน์โหลดไฟล์</a>
                                     <div class="showcontent show-image "><img id="sourceimage"
-                                            src="{{ asset($item->content_path) }}"
+                                            src="{{ env('URL_FILE_SFTP') . $item->content_path }}"
                                             alt="{{ $item->content_path }}" width="80%"
                                             height="510px">
                                         <p>{{ $item->content_path }}</p>
@@ -104,10 +104,10 @@
                                     </div>
                                 @elseif ($contentType->content_type === 4)
                                     <h1>document</h1><a
-                                        href="{{ asset($item->content_path) }}"
+                                        href="{{ env('URL_FILE_SFTP') . $item->content_path }}"
                                         class="btn btn-primary" download>ดาวน์โหลดไฟล์</a>
                                     <div class="showcontent show-document "><object
-                                            data="{{ asset($item->content_path) }}"
+                                            data="{{ env('URL_FILE_SFTP') . $item->content_path }}"
                                             width="100%" height="200px">
                                             <p>{{ $item->content_path }}</p>
 
@@ -144,12 +144,12 @@
                                     </div>
                                 @elseif ($contentType->content_type === 7)
                                     <h1>sound</h1><a
-                                        href="{{ asset($item->content_path) }}"
+                                        href="{{ env('URL_FILE_SFTP') .$item->content_path }}"
                                         class="btn btn-primary" download>ดาวน์โหลดไฟล์</a>
                                     <div class="showcontent show-sound "><audio id="soundplayer"
                                             controls="">
                                             <source
-                                                src="{{ asset($item->content_path) }}"
+                                                src="{{ env('URL_FILE_SFTP') . $item->content_path }}"
                                                 alt="{{ $item->content_path }}" type="audio/mp3"
                                                 id="sourcesounce" class="sourcecontent">
 
@@ -188,7 +188,7 @@
                                 @elseif ($contentType->content_type === 9)
                                     <h1>{{ $contentType->content_th }} zip</h1>
                                     <div class="showcontent show-zip "><object
-                                            src="{{ asset($item->content_path . '/index.html') }}"
+                                            src="{{ env('URL_FILE_SFTP') . $item->content_path . '/index.html' }}"
                                             alt="{{ $item->content_path . '/index.html'}}" id="sourcezip"
                                             width="100%" height="200px" data="">
                                         </object>
@@ -226,7 +226,7 @@
                                     @elseif ($contentType->content_type === 10)
                                     <h1>{{ $contentType->content_th }}  zip </h1>
                                     <div class="showcontent show-zip "><object
-                                            src="{{ asset($item->content_path . '/index.html') }}"
+                                            src="{{ env('URL_FILE_SFTP') . $item->content_path . '/index.html' }}"
                                             alt="{{ $item->content_path . '/index.html'}}" id="sourcezip"
                                             width="100%" height="200px" data="">
                                         </object>
@@ -265,7 +265,7 @@
                                     @elseif ($contentType->content_type === 11)
                                     <h1>{{ $contentType->content_th }}  zip </h1>
                                     <div class="showcontent show-zip "><object
-                                            src="{{ asset($item->content_path . '/index.html') }}"
+                                            src="{{ env('URL_FILE_SFTP') . $item->content_path . '/index.html' }}"
                                             alt="{{ $item->content_path . '/index.html'}}" id="sourcezip"
                                             width="100%" height="200px" data="">
                                         </object>
@@ -305,7 +305,7 @@
                                 @elseif ($contentType->content_type === 12)
                                 <h1>{{ $contentType->content_th }}  zip </h1>
                                 <div class="showcontent show-zip "><object
-                                        src="{{ asset($item->content_path . '/index.html') }}"
+                                        src="{{ env('URL_FILE_SFTP') . $item->content_path . '/index.html' }}"
                                         alt="{{ $item->content_path . '/index.html'}}" id="sourcezip"
                                         width="100%" height="200px" data="">
                                     </object>
@@ -344,7 +344,7 @@
                                 @elseif ($contentType->content_type === 13)
                                 <h1>{{ $contentType->content_th }}  zip </h1>
                                 <div class="showcontent show-zip "><object
-                                        src="{{ asset($item->content_path . '/index.html') }}"
+                                        src="{{ env('URL_FILE_SFTP') . $item->content_path . '/index.html' }}"
                                         alt="{{ $item->content_path . '/index.html'}}" id="sourcezip"
                                         width="100%" height="200px" data="">
                                     </object>

@@ -68,16 +68,29 @@ class CourseSupplymentaryController extends Controller
             if ($supplys->supplymentary_type == 3) {
                 if ($request->hasFile('path')) {
                     $image_name = 'path' . '.' . $request->path->getClientOriginalExtension();
-                    $uploadDirectory = public_path('upload/Subject/Supplys/');
-                    if (!file_exists($uploadDirectory)) {
-                        mkdir($uploadDirectory, 0755, true);
-                    }
-                    if (file_exists($uploadDirectory)) {
+                    // $uploadDirectory = public_path('upload/Subject/Supplys/');
+                    // if (!file_exists($uploadDirectory)) {
+                    //     mkdir($uploadDirectory, 0755, true);
+                    // }
+                    // if (file_exists($uploadDirectory)) {
 
-                        file_put_contents(public_path('upload/Subject/Supplys/' . $image_name), file_get_contents($request->path));
-                        $supplys->path = 'upload/Subject/Supplys/' . 'path' . '.' . $request->path->getClientOriginalExtension();
+                    //     file_put_contents(public_path('upload/Subject/Supplys/' . $image_name), file_get_contents($request->path));
+                    //     $supplys->path = 'upload/Subject/Supplys/' . 'path' . '.' . $request->path->getClientOriginalExtension();
+                    // }
+                    $uploadDirectory = 'Subject/Supplys/' . $subject_id;
+                    if (!Storage::disk('sftp')->exists($uploadDirectory)) {
+                        Storage::disk('sftp')->makeDirectory($uploadDirectory);
                     }
+                    if (Storage::disk('sftp')->exists($uploadDirectory)) {
+                        // ตรวจสอบว่ามีไฟล์เดิมอยู่หรือไม่ ถ้ามีให้ลบออก
+                        Storage::disk('sftp')->delete($uploadDirectory);
+                        Storage::disk('sftp')->put($uploadDirectory . '/' . $image_name, file_get_contents($request->path->getRealPath()));
+                        $supplys->path = 'upload/Subject/Supplys/' . $subject_id . 'path' . '.' . $request->path->getClientOriginalExtension();
+                        $supplys->save();
+                    }
+                    
                 }
+               
             }
 
 
@@ -187,6 +200,29 @@ class CourseSupplymentaryController extends Controller
                         $supplys->path =  'upload/Subject/Supplys/' .  $supplys->supplymentary_id . '/' . 'index.html';
                         $supplys->save();
                     }
+
+                    $localPath = public_path('upload/Subject/Supplys/' . $supplys->supplymentary_id);
+
+                    if (file_exists($localPath)) {
+                        $files = File::allFiles($localPath);
+                        foreach ($files as $file) {
+                            // หาชื่อโฟลเดอร์เดิมที่อยู่ในชื่อไฟล์
+                            $originalDirectoryName = pathinfo($file->getRelativePathname(), PATHINFO_DIRNAME);
+                            // สร้างโฟลเดอร์ปลายทางในกรณีที่ยังไม่มี
+                            $newDirectoryPath = 'Subject/Supplys/' . $supplys->supplymentary_id . '/' . $originalDirectoryName;
+                            if (!Storage::disk('sftp')->exists($newDirectoryPath)) {
+                                Storage::disk('sftp')->makeDirectory($newDirectoryPath, 0777, true, true);
+                            }
+
+                            // คัดลอกและบันทึกไฟล์ใหม่
+                            $newFileName = $file->getFilename();
+                            $fileContents = File::get($file->getPathname());
+                            Storage::disk('sftp')->put($newDirectoryPath . '/' . $newFileName, $fileContents);
+                        }
+                        // ลบโฟลเดอร์ใน local path
+                        File::deleteDirectory($localPath);
+                    }
+ 
                 }
 
             }
@@ -226,14 +262,25 @@ class CourseSupplymentaryController extends Controller
         if ($supplys->supplymentary_type == 3) {
             if ($request->hasFile('path')) {
                 $image_name = 'path' . '.' . $request->path->getClientOriginalExtension();
-                $uploadDirectory = public_path('upload/Subject/Supplys/');
-                if (!file_exists($uploadDirectory)) {
-                    mkdir($uploadDirectory, 0755, true);
-                }
-                if (file_exists($uploadDirectory)) {
+                // $uploadDirectory = public_path('upload/Subject/Supplys/');
+                // if (!file_exists($uploadDirectory)) {
+                //     mkdir($uploadDirectory, 0755, true);
+                // }
+                // if (file_exists($uploadDirectory)) {
 
-                    file_put_contents(public_path('upload/Subject/Supplys/' . $image_name), file_get_contents($request->path));
-                    $supplys->path = 'upload/Subject/Supplys/' . 'path' . '.' . $request->path->getClientOriginalExtension();
+                //     file_put_contents(public_path('upload/Subject/Supplys/' . $image_name), file_get_contents($request->path));
+                //     $supplys->path = 'upload/Subject/Supplys/' . 'path' . '.' . $request->path->getClientOriginalExtension();
+                // }
+                $uploadDirectory = 'Subject/Supplys/' . $subject_id;
+                if (!Storage::disk('sftp')->exists($uploadDirectory)) {
+                    Storage::disk('sftp')->makeDirectory($uploadDirectory);
+                }
+                if (Storage::disk('sftp')->exists($uploadDirectory)) {
+                    // ตรวจสอบว่ามีไฟล์เดิมอยู่หรือไม่ ถ้ามีให้ลบออก
+                    Storage::disk('sftp')->delete($uploadDirectory);
+                    Storage::disk('sftp')->put($uploadDirectory . '/' . $image_name, file_get_contents($request->path->getRealPath()));
+                    $supplys->path = 'upload/Subject/Supplys/' . $subject_id . 'path' . '.' . $request->path->getClientOriginalExtension();
+                    $supplys->save();
                 }
             }
         }
@@ -339,6 +386,27 @@ class CourseSupplymentaryController extends Controller
 
                     $supplys->path =  'upload/Subject/Supplys/' .  $supplys->supplymentary_id . '/' . 'index.html';
                     $supplys->save();
+            
+                    $localPath = public_path('upload/Subject/Supplys/' . $supplys->supplymentary_id);
+                    if (file_exists($localPath)) {
+                        $files = File::allFiles($localPath);
+                        foreach ($files as $file) {
+                            // หาชื่อโฟลเดอร์เดิมที่อยู่ในชื่อไฟล์
+                            $originalDirectoryName = pathinfo($file->getRelativePathname(), PATHINFO_DIRNAME);
+                            // สร้างโฟลเดอร์ปลายทางในกรณีที่ยังไม่มี
+                            $newDirectoryPath = 'Subject/Supplys/' . $supplys->supplymentary_id . '/' . $originalDirectoryName;
+                            if (!Storage::disk('sftp')->exists($newDirectoryPath)) {
+                                Storage::disk('sftp')->makeDirectory($newDirectoryPath, 0777, true, true);
+                            }
+
+                            // คัดลอกและบันทึกไฟล์ใหม่
+                            $newFileName = $file->getFilename();
+                            $fileContents = File::get($file->getPathname());
+                            Storage::disk('sftp')->put($newDirectoryPath . '/' . $newFileName, $fileContents);
+                        }
+                        // ลบโฟลเดอร์ใน local path
+                        File::deleteDirectory($localPath);
+                    }
                 }
             }
 
@@ -418,14 +486,25 @@ class CourseSupplymentaryController extends Controller
         if ($supplys->supplymentary_type == 3) {
             if ($request->hasFile('path')) {
                 $image_name = 'path' . '.' . $request->path->getClientOriginalExtension();
-                $uploadDirectory = public_path('upload/Subject/Lesson/Supplymentary/');
-                if (!file_exists($uploadDirectory)) {
-                    mkdir($uploadDirectory, 0755, true);
-                }
-                if (file_exists($uploadDirectory)) {
+                // $uploadDirectory = public_path('upload/Subject/Lesson/Supplymentary/');
+                // if (!file_exists($uploadDirectory)) {
+                //     mkdir($uploadDirectory, 0755, true);
+                // }
+                // if (file_exists($uploadDirectory)) {
 
-                    file_put_contents(public_path('upload/Subject/Lesson/Supplymentary/' . $image_name), file_get_contents($request->path));
-                    $supplys->path = 'upload/Subject/Lesson/Supplymentary/' . 'path' . '.' . $request->path->getClientOriginalExtension();
+                //     file_put_contents(public_path('upload/Subject/Lesson/Supplymentary/' . $image_name), file_get_contents($request->path));
+                //     $supplys->path = 'upload/Subject/Lesson/Supplymentary/' . 'path' . '.' . $request->path->getClientOriginalExtension();
+                // }
+                $uploadDirectory = 'Subject/Supplys/' . $subject_id;
+                if (!Storage::disk('sftp')->exists($uploadDirectory)) {
+                    Storage::disk('sftp')->makeDirectory($uploadDirectory);
+                }
+                if (Storage::disk('sftp')->exists($uploadDirectory)) {
+                    // ตรวจสอบว่ามีไฟล์เดิมอยู่หรือไม่ ถ้ามีให้ลบออก
+                    Storage::disk('sftp')->delete($uploadDirectory);
+                    Storage::disk('sftp')->put($uploadDirectory . '/' . $image_name, file_get_contents($request->path->getRealPath()));
+                    $supplys->path = 'upload/Subject/Supplys/' . $subject_id . 'path' . '.' . $request->path->getClientOriginalExtension();
+                    $supplys->save();
                 }
             }
         }
@@ -531,6 +610,27 @@ class CourseSupplymentaryController extends Controller
 
                     $supplys->path =  'upload/Subject/Lesson/Supplymentary/' .  $supplys->supplymentary_id . '/' . 'index.html';
                     $supplys->save();
+                }
+                $localPath = public_path('upload/Subject/Supplys/' . $supplys->supplymentary_id);
+
+                if (file_exists($localPath)) {
+                    $files = File::allFiles($localPath);
+                    foreach ($files as $file) {
+                        // หาชื่อโฟลเดอร์เดิมที่อยู่ในชื่อไฟล์
+                        $originalDirectoryName = pathinfo($file->getRelativePathname(), PATHINFO_DIRNAME);
+                        // สร้างโฟลเดอร์ปลายทางในกรณีที่ยังไม่มี
+                        $newDirectoryPath = 'Subject/Supplys/' . $supplys->supplymentary_id . '/' . $originalDirectoryName;
+                        if (!Storage::disk('sftp')->exists($newDirectoryPath)) {
+                            Storage::disk('sftp')->makeDirectory($newDirectoryPath, 0777, true, true);
+                        }
+
+                        // คัดลอกและบันทึกไฟล์ใหม่
+                        $newFileName = $file->getFilename();
+                        $fileContents = File::get($file->getPathname());
+                        Storage::disk('sftp')->put($newDirectoryPath . '/' . $newFileName, $fileContents);
+                    }
+                    // ลบโฟลเดอร์ใน local path
+                    File::deleteDirectory($localPath);
                 }
             }
 
@@ -569,14 +669,25 @@ class CourseSupplymentaryController extends Controller
         if ($supplys->supplymentary_type == 3) {
             if ($request->hasFile('path')) {
                 $image_name = 'path' . '.' . $request->path->getClientOriginalExtension();
-                $uploadDirectory = public_path('upload/Subject/Lesson/Supplymentary/');
-                if (!file_exists($uploadDirectory)) {
-                    mkdir($uploadDirectory, 0755, true);
-                }
-                if (file_exists($uploadDirectory)) {
+                // $uploadDirectory = public_path('upload/Subject/Lesson/Supplymentary/');
+                // if (!file_exists($uploadDirectory)) {
+                //     mkdir($uploadDirectory, 0755, true);
+                // }
+                // if (file_exists($uploadDirectory)) {
 
-                    file_put_contents(public_path('upload/Subject/Lesson/Supplymentary/' . $image_name), file_get_contents($request->path));
-                    $supplys->path = 'upload/Subject/Lesson/Supplymentary/' . 'path' . '.' . $request->path->getClientOriginalExtension();
+                //     file_put_contents(public_path('upload/Subject/Lesson/Supplymentary/' . $image_name), file_get_contents($request->path));
+                //     $supplys->path = 'upload/Subject/Lesson/Supplymentary/' . 'path' . '.' . $request->path->getClientOriginalExtension();
+                // }
+                $uploadDirectory = 'Subject/Supplys/' . $subject_id;
+                if (!Storage::disk('sftp')->exists($uploadDirectory)) {
+                    Storage::disk('sftp')->makeDirectory($uploadDirectory);
+                }
+                if (Storage::disk('sftp')->exists($uploadDirectory)) {
+                    // ตรวจสอบว่ามีไฟล์เดิมอยู่หรือไม่ ถ้ามีให้ลบออก
+                    Storage::disk('sftp')->delete($uploadDirectory);
+                    Storage::disk('sftp')->put($uploadDirectory . '/' . $image_name, file_get_contents($request->path->getRealPath()));
+                    $supplys->path = 'upload/Subject/Supplys/' . $subject_id . 'path' . '.' . $request->path->getClientOriginalExtension();
+                    $supplys->save();
                 }
             }
         }
@@ -682,6 +793,27 @@ class CourseSupplymentaryController extends Controller
 
                     $supplys->path =  'upload/Subject/Lesson/Supplymentary/' .  $supplys->supplymentary_id . '/' . 'index.html';
                     $supplys->save();
+                }
+                $localPath = public_path('upload/Subject/Supplys/' . $supplys->supplymentary_id);
+
+                if (file_exists($localPath)) {
+                    $files = File::allFiles($localPath);
+                    foreach ($files as $file) {
+                        // หาชื่อโฟลเดอร์เดิมที่อยู่ในชื่อไฟล์
+                        $originalDirectoryName = pathinfo($file->getRelativePathname(), PATHINFO_DIRNAME);
+                        // สร้างโฟลเดอร์ปลายทางในกรณีที่ยังไม่มี
+                        $newDirectoryPath = 'Subject/Supplys/' . $supplys->supplymentary_id . '/' . $originalDirectoryName;
+                        if (!Storage::disk('sftp')->exists($newDirectoryPath)) {
+                            Storage::disk('sftp')->makeDirectory($newDirectoryPath, 0777, true, true);
+                        }
+
+                        // คัดลอกและบันทึกไฟล์ใหม่
+                        $newFileName = $file->getFilename();
+                        $fileContents = File::get($file->getPathname());
+                        Storage::disk('sftp')->put($newDirectoryPath . '/' . $newFileName, $fileContents);
+                    }
+                    // ลบโฟลเดอร์ใน local path
+                    File::deleteDirectory($localPath);
                 }
             }
 

@@ -191,14 +191,26 @@ class EditManageUserController extends Controller
         if (!empty($request->hasFile('avatar'))) {
             $image_name = 'avatar' .  $user_id . '.' . $request->avatar->getClientOriginalExtension();
             $image = Image::make($request->avatar)->resize(400, 400);
-            $uploadDirectory = public_path('upload/Profile/' . $image_name);
+            // $uploadDirectory = public_path('upload/Profile/' . $image_name);
 
-            if (!file_exists(dirname($uploadDirectory))) {
-                mkdir(dirname($uploadDirectory), 0755, true);
+            // if (!file_exists(dirname($uploadDirectory))) {
+            //     mkdir(dirname($uploadDirectory), 0755, true);
+            // }
+
+            // $image->save($uploadDirectory);
+
+            $uploadDirectory = 'Profile/';
+            if (!Storage::disk('sftp')->exists($uploadDirectory)) {
+                Storage::disk('sftp')->makeDirectory($uploadDirectory);
             }
-
-            $image->save($uploadDirectory);
-            $usermanages->avatar = 'https://aced-bn.nacc.go.th/' . 'upload/Profile/' . 'avatar' .  $user_id . '.' . $request->avatar->getClientOriginalExtension();
+            if (Storage::disk('sftp')->exists($uploadDirectory)) {
+                // ตรวจสอบว่ามีไฟล์เดิมอยู่หรือไม่ ถ้ามีให้ลบออก
+                Storage::disk('sftp')->delete($uploadDirectory);
+                Storage::disk('sftp')->put($uploadDirectory . '/' . $image, file_get_contents($request->avatar->getRealPath()));
+            }
+            $usermanages->avatar = 'https://aced-content.nacc.go.th/' . 'upload/Profile/' . 'avatar' .  $user_id . '.' . $request->avatar->getClientOriginalExtension();
+       
+       
         }
 
         // ... อัปเดตฟิลด์อื่น ๆ ตามต้องการ
@@ -422,7 +434,7 @@ class EditManageUserController extends Controller
         $usermanages->username = $request->username;
         $usermanages->firstname = $request->firstname;
         $usermanages->lastname = $request->lastname;
-        $usermanages->password = Hash::make($request->password);
+        $usermanages->password = Hash::make(trim($request->password));
         $usermanages->citizen_id = $request->citizen_id;
         $usermanages->prefix  = '';
         $usermanages->gender = $request->input('gender', 0);

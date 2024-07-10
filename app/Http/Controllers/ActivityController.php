@@ -10,6 +10,7 @@ use DOMDocument;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 
 class ActivityController extends Controller
@@ -84,7 +85,6 @@ class ActivityController extends Controller
                 }
                 $detail = $de_th->saveHTML();
                 $decodedText  =  htmlentities($detail);
-          
             }
 
             $act->detail = $decodedText;
@@ -123,8 +123,11 @@ class ActivityController extends Controller
 
         $act->activity_status = $request->input('activity_status', 0);
         libxml_use_internal_errors(true);
-        if (!file_exists(public_path('/upload/act/ck/'))) {
-            mkdir(public_path('/upload/act/ck/'), 0755, true);
+        // if (!file_exists(public_path('/upload/act/ck/'))) {
+        //     mkdir(public_path('/upload/act/ck/'), 0755, true);
+        // }
+        if (!Storage::disk('sftp')->exists('/upload/act/ck/')) {
+            Storage::disk('sftp')->makeDirectory('/upload/act/ck/');
         }
         if ($request->has('detail')) {
             $detail = $request->detail;
@@ -142,7 +145,7 @@ class ActivityController extends Controller
                     if (strpos($img->getAttribute('src'), 'data:image/') === 0) {
                         $data = base64_decode(explode(',', explode(';', $img->getAttribute('src'))[1])[1]);
                         $image_name = '/upload/act/ck/' . time() . $key . '.png'; // ใส่ .png เพื่อให้เป็นนามสกุลไฟล์ถูกต้อง
-                        file_put_contents(public_path() . $image_name, $data);
+                        Storage::disk('sftp')->put($image_name, $data);
                         $img->removeAttribute('src');
                         $newImageUrl = asset($image_name);
                         $img->setAttribute('src', $newImageUrl);
@@ -216,8 +219,8 @@ class ActivityController extends Controller
             $act->options = null;
             $act->activity_status = $request->input('activity_status', 0);
             libxml_use_internal_errors(true);
-            if (!file_exists(public_path('/upload/act/ck/'))) {
-                mkdir(public_path('/upload/act/ck/'), 0755, true);
+            if (!Storage::disk('sftp')->exists('/upload/act/ck/')) {
+                Storage::disk('sftp')->makeDirectory('/upload/act/ck/');
             }
             if ($request->has('detail')) {
                 $detail = $request->detail;
@@ -234,7 +237,7 @@ class ActivityController extends Controller
                         if (strpos($img->getAttribute('src'), 'data:image/') === 0) {
                             $data = base64_decode(explode(',', explode(';', $img->getAttribute('src'))[1])[1]);
                             $image_name = '/upload/act/ck/' . time() . $key . '.png'; // ใส่ .png เพื่อให้เป็นนามสกุลไฟล์ถูกต้อง
-                            file_put_contents(public_path() . $image_name, $data);
+                            Storage::disk('sftp')->put($image_name, $data);
                             $img->removeAttribute('src');
                             $newImageUrl = asset($image_name);
                             $img->setAttribute('src', $newImageUrl);
@@ -289,8 +292,8 @@ class ActivityController extends Controller
         $act->enddate = now();
         $act->activity_status = $request->input('activity_status', 0);
         libxml_use_internal_errors(true);
-        if (!file_exists(public_path('/upload/act/ck/'))) {
-            mkdir(public_path('/upload/act/ck/'), 0755, true);
+        if (!Storage::disk('sftp')->exists('/upload/act/ck/')) {
+            Storage::disk('sftp')->makeDirectory('/upload/act/ck/');
         }
         if ($request->has('detail')) {
             $detail = $request->detail;
@@ -307,9 +310,9 @@ class ActivityController extends Controller
                     if (strpos($img->getAttribute('src'), 'data:image/') === 0) {
                         $data = base64_decode(explode(',', explode(';', $img->getAttribute('src'))[1])[1]);
                         $image_name = '/upload/act/ck/' . time() . $key . '.png'; // ใส่ .png เพื่อให้เป็นนามสกุลไฟล์ถูกต้อง
-                        file_put_contents(public_path() . $image_name, $data);
+                        Storage::disk('sftp')->put($image_name, $data);
                         $img->removeAttribute('src');
-                        $newImageUrl = asset($image_name);
+                        $newImageUrl = env('URL_FILE_SFTP') . $image_name;
                         $img->setAttribute('src', $newImageUrl);
                     }
                 }

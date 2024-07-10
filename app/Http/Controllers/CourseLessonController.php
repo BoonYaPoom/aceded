@@ -48,7 +48,6 @@ class CourseLessonController extends Controller
         $content_types = ContentType::where('status', 1)->get(['content_type', 'content_th']);
         $department_id =  $subs->department_id;
         $count1 = ContentType::all()->count();
-
         $depart = Department::findOrFail($department_id);
         return view('page.manage.sub.lesson.create', compact('subs', 'content_types', 'depart'));
     }
@@ -81,9 +80,13 @@ class CourseLessonController extends Controller
 
             set_time_limit(0);
        
-            if (!file_exists(public_path('/uplade/lesson'))) {
-                mkdir(public_path('/uplade/lesson'), 0755, true);
+            // if (!file_exists(public_path('/uplade/lesson'))) {
+            //     mkdir(public_path('/uplade/lesson'), 0755, true);
+            // }
+            if (!Storage::disk('sftp')->exists('/uplade/lesson/')) {
+                Storage::disk('sftp')->makeDirectory('/uplade/lesson/');
             }
+           
             if ($request->has('resultlesson')) {
                 $resultlesson = $request->resultlesson;
                 $decodedTextresultlesson = '';
@@ -101,9 +104,9 @@ class CourseLessonController extends Controller
                         if (strpos($img->getAttribute('src'), 'data:image/') === 0) {
                             $data = base64_decode(explode(',', explode(';', $img->getAttribute('src'))[1])[1]);
                             $image_name = '/uplade/lesson/' . time() . $key . '.png'; // ใส่ .png เพื่อให้เป็นนามสกุลไฟล์ถูกต้อง
-                            file_put_contents(public_path() . $image_name, $data);
+                            Storage::disk('sftp')->put($image_name, $data);
                             $img->removeAttribute('src');
-                            $newImageUrl = asset($image_name);
+                            $newImageUrl = env('URL_FILE_SFTP') . $image_name;
                             $img->setAttribute('src', $newImageUrl);
                         }
                     }
@@ -156,10 +159,13 @@ class CourseLessonController extends Controller
         $lessons->lesson_en = $request->lesson_en;
         set_time_limit(0);
         
-            if (!file_exists(public_path('/uplade/lesson'))) {
-                mkdir(public_path('/uplade/lesson'), 0755, true);
-            }
-    
+            // if (!file_exists(public_path('/uplade/lesson'))) {
+            //     mkdir(public_path('/uplade/lesson'), 0755, true);
+            // }
+        if (!Storage::disk('sftp')->exists('/uplade/lesson/')) {
+            Storage::disk('sftp')->makeDirectory('/uplade/lesson/');
+        }
+      
         
             if ($request->has('resultlesson')) {
                 $resultlesson = $request->resultlesson;
@@ -178,9 +184,9 @@ class CourseLessonController extends Controller
                         if (strpos($img->getAttribute('src'), 'data:image/') === 0) {
                             $data = base64_decode(explode(',', explode(';', $img->getAttribute('src'))[1])[1]);
                             $image_name = '/uplade/lesson/' . time() . $key . '.png'; // ใส่ .png เพื่อให้เป็นนามสกุลไฟล์ถูกต้อง
-                            file_put_contents(public_path() . $image_name, $data);
+                            Storage::disk('sftp')->put($image_name, $data);
                             $img->removeAttribute('src');
-                            $newImageUrl = asset($image_name);
+                            $newImageUrl = env('URL_FILE_SFTP') . $image_name;
                             $img->setAttribute('src', $newImageUrl);
                         }
                     }
@@ -235,28 +241,21 @@ class CourseLessonController extends Controller
                         mkdir($destinationFolder, 0755, true);
                     }
                     // ย้ายไฟล์ zip ไปยังโฟลเดอร์ปลายทาง
-
-
-
                     $uploadedFile->move($destinationFolder, $uploadedFile->getClientOriginalName());
                     $zipFilePath = $destinationFolder . '/' . $uploadedFile->getClientOriginalName();
                     // ตรวจสอบว่าไฟล์ zip ถูกเปิดเรียบร้อย
                     $zip = new ZipArchive;
-
                     // เปิดไฟล์ ZIP
                     if ($zip->open($zipFilePath) === TRUE) {
                         // ตรวจสอบว่าไฟล์ ZIP ถูกเปิดเรียบร้อย
                         // กำหนดโฟลเดอร์ปลายทางสำหรับการแตกไฟล์
                         $extractPath = $destinationFolder;
-
                         // สร้างโฟลเดอร์ปลายทางหากยังไม่มี
                         if (!file_exists($extractPath)) {
                             mkdir($extractPath, 0755, true);
                         }
-
                         // แตกไฟล์ ZIP ไปยังโฟลเดอร์ปลายทาง
                         $zip->extractTo($extractPath);
-
                         // ปิดไฟล์ ZIP
                         $zip->close();
                     }
@@ -268,18 +267,13 @@ class CourseLessonController extends Controller
 
                 if ($uploadedFile->getClientOriginalExtension() == 'zip') {
                     $directory = 'upload/Subject/Lesson/alld/AICC/';
-
                     $folderName = 'lesson_' .  $lesson_id;
-
                     // ตรวจสอบว่าโฟลเดอร์ปลายทางมีอยู่หรือไม่ หากไม่มีให้สร้าง
                     $destinationFolder = public_path($directory . $folderName);
                     if (!file_exists($destinationFolder)) {
                         mkdir($destinationFolder, 0755, true);
                     }
                     // ย้ายไฟล์ zip ไปยังโฟลเดอร์ปลายทาง
-
-
-
                     $uploadedFile->move($destinationFolder, $uploadedFile->getClientOriginalName());
                     $zipFilePath = $destinationFolder . '/' . $uploadedFile->getClientOriginalName();
                     // ตรวจสอบว่าไฟล์ zip ถูกเปิดเรียบร้อย
@@ -295,10 +289,8 @@ class CourseLessonController extends Controller
                         if (!file_exists($extractPath)) {
                             mkdir($extractPath, 0755, true);
                         }
-
                         // แตกไฟล์ ZIP ไปยังโฟลเดอร์ปลายทาง
                         $zip->extractTo($extractPath);
-
                         // ปิดไฟล์ ZIP
                         $zip->close();
                     }
@@ -310,18 +302,13 @@ class CourseLessonController extends Controller
 
                 if ($uploadedFile->getClientOriginalExtension() == 'zip') {
                     $directory = 'upload/Subject/Lesson/alld/Scorm1.2/';
-
                     $folderName = 'lesson_' .  $lesson_id;
-
                     // ตรวจสอบว่าโฟลเดอร์ปลายทางมีอยู่หรือไม่ หากไม่มีให้สร้าง
                     $destinationFolder = public_path($directory . $folderName);
                     if (!file_exists($destinationFolder)) {
                         mkdir($destinationFolder, 0755, true);
                     }
                     // ย้ายไฟล์ zip ไปยังโฟลเดอร์ปลายทาง
-
-
-
                     $uploadedFile->move($destinationFolder, $uploadedFile->getClientOriginalName());
                     $zipFilePath = $destinationFolder . '/' . $uploadedFile->getClientOriginalName();
                     // ตรวจสอบว่าไฟล์ zip ถูกเปิดเรียบร้อย
@@ -433,11 +420,44 @@ class CourseLessonController extends Controller
                 }
             } else {
 
-                // บันทึกไฟล์ใน public_path โดยใช้ public_path()
-                file_put_contents(public_path('upload/Subject/Lesson/alld/' . $image_name), file_get_contents($request->content_path));
-
-                $lessons->content_path =  'upload/Subject/Lesson/alld/' . $image_name;
+                // บันทึกไฟล์โดยใช้ disk 'sftp'
+                Storage::disk('sftp')->put('Subject/Lesson/alld/' . $image_name, file_get_contents($request->content_path));
+                // กำหนด path ให้กับ $lessons->content_path
+                $lessons->content_path = 'upload/Subject/Lesson/alld/' . $image_name;
             }
+        }
+
+        $localPath = $destinationFolder;
+        $remotepath = '';
+        if($content_type == 9 ){
+            $remotepath = 'Html';
+        }elseif($content_type == 10){
+            $remotepath = 'AICC';     
+        }elseif($content_type == 11){
+            $remotepath = 'Scorm1.2';  
+        }elseif($content_type == 12){
+            $remotepath = 'Scorm200';     
+        }elseif($content_type == 13){
+            $remotepath = 'xAPI';     
+        }
+        if (file_exists($localPath)) {
+            $files = FacadesFile::allFiles($localPath);
+            foreach ($files as $file) {
+                // หาชื่อโฟลเดอร์เดิมที่อยู่ในชื่อไฟล์
+                $originalDirectoryName = pathinfo($file->getRelativePathname(), PATHINFO_DIRNAME);
+                // สร้างโฟลเดอร์ปลายทางในกรณีที่ยังไม่มี
+                $newDirectoryPath = 'Subject/Lesson/alld/'. $remotepath . '/' . $folderName . '/' . $originalDirectoryName;
+                if (!Storage::disk('sftp')->exists($newDirectoryPath)) {
+                    Storage::disk('sftp')->makeDirectory($newDirectoryPath, 0777, true, true);
+                }
+
+                // คัดลอกและบันทึกไฟล์ใหม่
+                $newFileName = $file->getFilename();
+                $fileContents = FacadesFile::get($file->getPathname());
+                Storage::disk('sftp')->put($newDirectoryPath . '/' . $newFileName, $fileContents);
+            }
+            // ลบโฟลเดอร์ใน local path
+            FacadesFile::deleteDirectory($localPath);
         }
 
         $lessons->save(); // เพิ่มบรรทัดนี้เพื่อบันทึกข้อมูล
@@ -485,11 +505,13 @@ class CourseLessonController extends Controller
         $lessons->description = '';
         set_time_limit(0);
         libxml_use_internal_errors(true);
-        if (!file_exists(public_path('/uplade/lesson'))) {
-            mkdir(public_path('/uplade/lesson'), 0755, true);
+        // if (!file_exists(public_path('/uplade/lesson'))) {
+        //     mkdir(public_path('/uplade/lesson'), 0755, true);
+        // }
+        if (!Storage::disk('sftp')->exists('/uplade/lesson/')) {
+            Storage::disk('sftp')->makeDirectory('/uplade/lesson/');
         }
-
-    
+      
         if ($request->has('resultlesson')) {
             $resultlesson = $request->resultlesson;
             $decodedTextresultlesson = '';
@@ -505,9 +527,9 @@ class CourseLessonController extends Controller
                     if (strpos($img->getAttribute('src'), 'data:image/') === 0) {
                         $data = base64_decode(explode(',', explode(';', $img->getAttribute('src'))[1])[1]);
                         $image_name = '/uplade/lesson/' . time() . $key . '.png'; // ใส่ .png เพื่อให้เป็นนามสกุลไฟล์ถูกต้อง
-                        file_put_contents(public_path() . $image_name, $data);
+                        Storage::disk('sftp')->put($image_name, $data);
                         $img->removeAttribute('src');
-                        $newImageUrl = asset($image_name);
+                        $newImageUrl = env('URL_FILE_SFTP') . $image_name;
                         $img->setAttribute('src', $newImageUrl);
                     }
                 }
@@ -554,11 +576,14 @@ class CourseLessonController extends Controller
         $lessons->description = '';
         set_time_limit(0);
         libxml_use_internal_errors(true);
-        if (!file_exists(public_path('/uplade/lesson'))) {
-            mkdir(public_path('/uplade/lesson'), 0755, true);
-        }
+        // if (!file_exists(public_path('/uplade/lesson'))) {
+        //     mkdir(public_path('/uplade/lesson'), 0755, true);
+        // }
 
-    
+        if (!Storage::disk('sftp')->exists('/uplade/lesson/')) {
+            Storage::disk('sftp')->makeDirectory('/uplade/lesson/');
+        }
+      
         if ($request->has('resultlesson')) {
             $resultlesson = $request->resultlesson;
             $decodedTextresultlesson = '';
@@ -574,9 +599,9 @@ class CourseLessonController extends Controller
                     if (strpos($img->getAttribute('src'), 'data:image/') === 0) {
                         $data = base64_decode(explode(',', explode(';', $img->getAttribute('src'))[1])[1]);
                         $image_name = '/uplade/lesson/' . time() . $key . '.png'; // ใส่ .png เพื่อให้เป็นนามสกุลไฟล์ถูกต้อง
-                        file_put_contents(public_path() . $image_name, $data);
+                        Storage::disk('sftp')->put($image_name, $data);
                         $img->removeAttribute('src');
-                        $newImageUrl = asset($image_name);
+                        $newImageUrl = env('URL_FILE_SFTP') . $image_name;
                         $img->setAttribute('src', $newImageUrl);
                     }
                 }

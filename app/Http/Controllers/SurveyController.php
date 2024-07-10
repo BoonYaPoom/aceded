@@ -11,6 +11,7 @@ use DOMDocument;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\File;
+
 class SurveyController extends Controller
 {
    public function surveypage($department_id)
@@ -42,18 +43,22 @@ class SurveyController extends Controller
       $sur->survey_id = $newSurveyId;
       $sur->survey_th = $request->survey_th;
       $sur->survey_en = 0;
-      
-      if (!file_exists(public_path('/upload/suy/ck/'))) {
-         mkdir(public_path('/upload/suy/ck/'), 0755, true);
+
+      // if (!file_exists(public_path('/upload/suy/ck/'))) {
+      //    mkdir(public_path('/upload/suy/ck/'), 0755, true);
+      // }
+      if (!Storage::disk('sftp')->exists('/suy/ck/')) {
+         Storage::disk('sftp')->makeDirectory('/suy/ck/');
       }
+     
       if ($request->has('detail_th')) {
          $detail_th = $request->detail_th;
-         $decodedTextdetail_th ='' ;
+         $decodedTextdetail_th = '';
          if (!empty($detail_th)) {
             $de_th = new DOMDocument();
             $de_th->encoding = 'UTF-8'; // กำหนด encoding เป็น UTF-8
             $detail_th = mb_convert_encoding($detail_th, 'HTML-ENTITIES', 'UTF-8');
-        
+
             $de_th->loadHTML($detail_th, LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
             libxml_use_internal_errors(true);
             $images_des_th = $de_th->getElementsByTagName('img');
@@ -62,9 +67,9 @@ class SurveyController extends Controller
                if (strpos($img->getAttribute('src'), 'data:image/') === 0) {
                   $data = base64_decode(explode(',', explode(';', $img->getAttribute('src'))[1])[1]);
                   $image_name = '/upload/suy/ck/' . time() . $key . '.png'; // ใส่ .png เพื่อให้เป็นนามสกุลไฟล์ถูกต้อง
-                  file_put_contents(public_path() . $image_name, $data);
+                  Storage::disk('sftp')->put($image_name, $data);
                   $img->removeAttribute('src');
-                  $newImageUrl = asset($image_name);
+                  $newImageUrl = env('URL_FILE_SFTP') . $image_name;
                   $img->setAttribute('src', $newImageUrl);
                }
             }
@@ -87,24 +92,35 @@ class SurveyController extends Controller
       $saveSuccess = $sur->save();
 
       $dataqr = QrCode::size(512)
-      ->format('png')
-      ->merge(public_path('/LOGO/logo.png'), 0.5, true) 
-      ->errorCorrection('Q')
-      ->generate(url('https://aced-lb.nacc.go.th/' . $depart->name_short_en . '/survey/assessment/' . $sur->survey_id));
+         ->format('png')
+         ->merge(public_path('/LOGO/logo.png'), 0.5, true)
+         ->errorCorrection('Q')
+         ->generate(url('https://aced-lb.nacc.go.th/' . $depart->name_short_en . '/survey/assessment/' . $sur->survey_id));
 
 
-      $filename =  $request->survey_id . '.png';
-      $uploadDirectory = public_path('upload/suy/qr/');
-      
-      if (!File::exists($uploadDirectory)) {
-          mkdir($uploadDirectory, 0755, true);
+      // $filename =  $request->survey_id . '.png';
+      // $uploadDirectory = public_path('upload/suy/qr/');
+
+      // if (!File::exists($uploadDirectory)) {
+      //     mkdir($uploadDirectory, 0755, true);
+      // }
+
+      // if (File::exists($uploadDirectory)) {
+      //    file_put_contents(public_path('upload/suy/qr/' . $filename), $dataqr);
+      //    $sur->cover = 'upload/suy/qr/' . $filename;
+      //     $sur->save();
+      // }
+      $filename = $request->survey_id . '.png';
+      $uploadDirectory = 'suy/qr/';
+
+      if (!Storage::disk('sftp')->exists($uploadDirectory)) {
+         Storage::disk('sftp')->makeDirectory($uploadDirectory);
       }
-      
-      if (File::exists($uploadDirectory)) {
-         file_put_contents(public_path('upload/suy/qr/' . $filename), $dataqr);
-         $sur->cover = 'upload/suy/qr/' . $filename;
-          $sur->save();
-      }
+
+      Storage::disk('sftp')->put($uploadDirectory . $filename, $dataqr);
+
+      $sur->cover = 'upload/' .$uploadDirectory . $filename;
+      $sur->save();
 
       if ($saveSuccess) {
          return redirect()->route('surveypage', ['department_id' => $sur->department_id])->with('message', 'Survey บันทึกข้อมูลสำเร็จ');
@@ -127,34 +143,38 @@ class SurveyController extends Controller
       $depart = Department::findOrFail($department_id);
       $request->validate([
          'survey_th' => 'required',
-  
+
       ]);
       $sur = Survey::findOrFail($survey_id);
       $sur->survey_th = $request->survey_th;
       $sur->survey_en = $request->survey_th;
-  
-      if (!file_exists(public_path('/upload/suy/ck/'))) {
-         mkdir(public_path('/upload/suy/ck/'), 0755, true);
+
+      // if (!file_exists(public_path('/upload/suy/ck/'))) {
+      //    mkdir(public_path('/upload/suy/ck/'), 0755, true);
+      // }
+      if (!Storage::disk('sftp')->exists('/upload/suy/ck/')) {
+         Storage::disk('sftp')->makeDirectory('/upload/suy/ck/');
       }
+     
       if ($request->has('detail_th')) {
          $detail_th = $request->detail_th;
-         $decodedTextdetail_th ='' ;
+         $decodedTextdetail_th = '';
          if (!empty($detail_th)) {
             $de_th = new DOMDocument();
             $de_th->encoding = 'UTF-8'; // กำหนด encoding เป็น UTF-8
             $detail_th = mb_convert_encoding($detail_th, 'HTML-ENTITIES', 'UTF-8');
-       
+
             $de_th->loadHTML($detail_th, LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
-               libxml_use_internal_errors(true);
+            libxml_use_internal_errors(true);
             $images_des_th = $de_th->getElementsByTagName('img');
 
             foreach ($images_des_th as $key => $img) {
                if (strpos($img->getAttribute('src'), 'data:image/') === 0) {
                   $data = base64_decode(explode(',', explode(';', $img->getAttribute('src'))[1])[1]);
                   $image_name = '/upload/suy/ck/' . time() . $key . '.png'; // ใส่ .png เพื่อให้เป็นนามสกุลไฟล์ถูกต้อง
-                  file_put_contents(public_path() . $image_name, $data);
+                  Storage::disk('sftp')->put($image_name, $data);
                   $img->removeAttribute('src');
-                  $newImageUrl = asset($image_name);
+                  $newImageUrl = env('URL_FILE_SFTP') . $image_name;
                   $img->setAttribute('src', $newImageUrl);
                }
             }
@@ -169,30 +189,32 @@ class SurveyController extends Controller
       $sur->survey_lang = $request->survey_lang;
       $sur->recommended = null;
       $sur->class_id = null;
-    
+
       $sur->save();
 
 
-      
+
       $dataqr = QrCode::size(512)
-      ->format('png')
-      ->merge(public_path('/LOGO/logo.png'), 0.5, true) 
-      ->errorCorrection('Q')
-      ->generate(url('https://aced-lb.nacc.go.th/' . $depart->name_short_en . '/survey/assessment/' . $sur->survey_id));
+         ->format('png')
+         ->merge(public_path('/LOGO/logo.png'), 0.5, true)
+         ->errorCorrection('Q')
+         ->generate(url('https://aced-lb.nacc.go.th/' . $depart->name_short_en . '/survey/assessment/' . $sur->survey_id));
 
 
       $filename =  $request->survey_id . '.png';
       $uploadDirectory = public_path('upload/suy/qr/');
-      
-      if (!File::exists($uploadDirectory)) {
-          mkdir($uploadDirectory, 0755, true);
+
+      $filename = $request->survey_id . '.png';
+      $uploadDirectory = 'suy/qr/';
+
+      if (!Storage::disk('sftp')->exists($uploadDirectory)) {
+         Storage::disk('sftp')->makeDirectory($uploadDirectory);
       }
-      
-      if (File::exists($uploadDirectory)) {
-         file_put_contents(public_path('upload/suy/qr/' . $filename), $dataqr);
-         $sur->cover = 'upload/suy/qr/' . $filename;
-          $sur->save();
-      }
+
+      Storage::disk('sftp')->put($uploadDirectory . $filename, $dataqr);
+
+      $sur->cover = 'upload/' . $uploadDirectory . $filename;
+      $sur->save();
 
       return redirect()->route('surveypage', ['department_id' => $sur->department_id])->with('message', 'Survey บันทึกข้อมูลสำเร็จ');
    }
@@ -229,8 +251,8 @@ class SurveyController extends Controller
    public function storesuySupject(Request $request, $department_id, $subject_id)
    {
       $depart = Department::findOrFail($department_id);
-     
-     
+
+
       $request->validate([
          'survey_th' => 'required',
          'detail_th' => 'required'
@@ -243,29 +265,33 @@ class SurveyController extends Controller
       $sur->survey_id = $newSurveyId;
       $sur->survey_th = $request->survey_th;
       $sur->survey_en = $request->survey_en;
-      
-      if (!file_exists(public_path('/upload/suy/Dp/ck/'))) {
-         mkdir(public_path('/upload/suy/Dp/ck/'), 0755, true);
+
+      // if (!file_exists(public_path('/upload/suy/Dp/ck/'))) {
+      //    mkdir(public_path('/upload/suy/Dp/ck/'), 0755, true);
+      // }
+      if (!Storage::disk('sftp')->exists('/upload/suy/ck/')) {
+         Storage::disk('sftp')->makeDirectory('/upload/suy/ck/');
       }
+  
       if ($request->has('detail_th')) {
          $detail_th = $request->detail_th;
-         $decodedTextdetail_th ='' ;
+         $decodedTextdetail_th = '';
          if (!empty($detail_th)) {
             $de_th = new DOMDocument();
             $de_th->encoding = 'UTF-8'; // กำหนด encoding เป็น UTF-8
             $detail_th = mb_convert_encoding($detail_th, 'HTML-ENTITIES', 'UTF-8');
             $detail_th = preg_replace('/<figure\b[^>]*>(.*?)<\/figure>/is', '$1', $detail_th);
             $de_th->loadHTML($detail_th, LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
-               libxml_use_internal_errors(true);
+            libxml_use_internal_errors(true);
             $images_des_th = $de_th->getElementsByTagName('img');
 
             foreach ($images_des_th as $key => $img) {
                if (strpos($img->getAttribute('src'), 'data:image/') === 0) {
                   $data = base64_decode(explode(',', explode(';', $img->getAttribute('src'))[1])[1]);
                   $image_name = '/upload/suy/Dp/ck/' . time() . $key . '.png'; // ใส่ .png เพื่อให้เป็นนามสกุลไฟล์ถูกต้อง
-                  file_put_contents(public_path() . $image_name, $data);
+                  Storage::disk('sftp')->put($image_name, $data);
                   $img->removeAttribute('src');
-                  $newImageUrl = asset($image_name);
+                  $newImageUrl = env('URL_FILE_SFTP') . $image_name;
                   $img->setAttribute('src', $newImageUrl);
                }
             }
@@ -275,25 +301,27 @@ class SurveyController extends Controller
 
          $sur->detail_th = $decodedTextdetail_th;
       }
+    
+
       if ($request->has('detail_en')) {
          $detail_en = $request->detail_en;
-         $decodedTextdetail_en ='' ;
+         $decodedTextdetail_en = '';
          if (!empty($detail_en)) {
             $de_e = new DOMDocument();
             $de_e->encoding = 'UTF-8'; // กำหนด encoding เป็น UTF-8
             $detail_en = mb_convert_encoding($detail_en, 'HTML-ENTITIES', 'UTF-8');
             $detail_en = preg_replace('/<figure\b[^>]*>(.*?)<\/figure>/is', '$1', $detail_en);
             $de_e->loadHTML($detail_en, LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
-               libxml_use_internal_errors(true);
+            libxml_use_internal_errors(true);
             $images_de_e = $de_e->getElementsByTagName('img');
 
             foreach ($images_de_e as $key => $img) {
                if (strpos($img->getAttribute('src'), 'data:image/') === 0) {
                   $data = base64_decode(explode(',', explode(';', $img->getAttribute('src'))[1])[1]);
                   $image_name = '/upload/suy/Dp/ck/' . time() . $key . '.png'; // ใส่ .png เพื่อให้เป็นนามสกุลไฟล์ถูกต้อง
-                  file_put_contents(public_path() . $image_name, $data);
+                  Storage::disk('sftp')->put($image_name, $data);
                   $img->removeAttribute('src');
-                  $newImageUrl = asset($image_name);
+                  $newImageUrl = env('URL_FILE_SFTP') . $image_name;
                   $img->setAttribute('src', $newImageUrl);
                }
             }
@@ -334,20 +362,24 @@ class SurveyController extends Controller
       $suruy  = Survey::findOrFail($survey_id);
       $suruy->survey_th = $request->survey_th;
       $suruy->survey_en = $request->survey_en;
-     
-      if (!file_exists(public_path('/upload/suy/Dp/ck/'))) {
-         mkdir(public_path('/upload/suy/Dp/ck/'), 0755, true);
+
+      // if (!file_exists(public_path('/upload/suy/Dp/ck/'))) {
+      //    mkdir(public_path('/upload/suy/Dp/ck/'), 0755, true);
+      // }
+      if (!Storage::disk('sftp')->exists('/upload/suy/ck/')) {
+         Storage::disk('sftp')->makeDirectory('/upload/suy/ck/');
       }
+  
       if ($request->has('detail_th')) {
          $detail_th = $request->detail_th;
-         $decodedTextdetail_th ='' ;
+         $decodedTextdetail_th = '';
          if (!empty($detail_th)) {
             $de_th = new DOMDocument();
             $de_th->encoding = 'UTF-8'; // กำหนด encoding เป็น UTF-8
             $detail_th = mb_convert_encoding($detail_th, 'HTML-ENTITIES', 'UTF-8');
             $detail_th = preg_replace('/<figure\b[^>]*>(.*?)<\/figure>/is', '$1', $detail_th);
             $de_th->loadHTML($detail_th, LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
-      
+
             libxml_use_internal_errors(true);
             $images_des_th = $de_th->getElementsByTagName('img');
 
@@ -355,9 +387,9 @@ class SurveyController extends Controller
                if (strpos($img->getAttribute('src'), 'data:image/') === 0) {
                   $data = base64_decode(explode(',', explode(';', $img->getAttribute('src'))[1])[1]);
                   $image_name = '/upload/suy/Dp/ck/' . time() . $key . '.png'; // ใส่ .png เพื่อให้เป็นนามสกุลไฟล์ถูกต้อง
-                  file_put_contents(public_path() . $image_name, $data);
+                  Storage::disk('sftp')->put($image_name, $data);
                   $img->removeAttribute('src');
-                  $newImageUrl = asset($image_name);
+                  $newImageUrl = env('URL_FILE_SFTP') . $image_name;
                   $img->setAttribute('src', $newImageUrl);
                }
             }
@@ -370,7 +402,7 @@ class SurveyController extends Controller
       }
       if ($request->has('detail_en')) {
          $detail_en = $request->detail_en;
-         $decodedTextdetail_en ='' ;
+         $decodedTextdetail_en = '';
          if (!empty($detail_en)) {
             $de_e = new DOMDocument();
             $de_e->encoding = 'UTF-8'; // กำหนด encoding เป็น UTF-8
@@ -383,9 +415,9 @@ class SurveyController extends Controller
                if (strpos($img->getAttribute('src'), 'data:image/') === 0) {
                   $data = base64_decode(explode(',', explode(';', $img->getAttribute('src'))[1])[1]);
                   $image_name = '/upload/suy/Dp/ck/' . time() . $key . '.png'; // ใส่ .png เพื่อให้เป็นนามสกุลไฟล์ถูกต้อง
-                  file_put_contents(public_path() . $image_name, $data);
+                  Storage::disk('sftp')->put($image_name, $data);
                   $img->removeAttribute('src');
-                  $newImageUrl = asset($image_name);
+                  $newImageUrl = env('URL_FILE_SFTP') . $image_name;
                   $img->setAttribute('src', $newImageUrl);
                }
             }
@@ -394,7 +426,6 @@ class SurveyController extends Controller
          }
 
          $suruy->detail_en = $decodedTextdetail_en;
-
       }
       $suruy->survey_update = now();
 

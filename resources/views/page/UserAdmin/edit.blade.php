@@ -15,7 +15,7 @@
                             <div class="media mb-3">
                                 <div class="user-avatar user-avatar-xl fileinput-button">
                                     <div class="fileinput-button-label"> Change photo </div>
-                                    <img src="{{ asset($usermanages->avatar) }}" alt="{{ $usermanages->avatar }}">
+                                    <img src="{{ $usermanages->avatar }}" alt="{{  $usermanages->avatar }}">
 
                                     <input id="fileupload-avatar" type="file" name="avatar" accept="image/*">
                                 </div>

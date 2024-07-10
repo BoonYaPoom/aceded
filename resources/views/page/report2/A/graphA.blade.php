@@ -24,6 +24,7 @@
             });
             var monthsYear = {!! json_encode($monthsYear) !!};
 
+            var regisandconData = {!! json_encode($regisandcon) !!};
             var dataMonthWithId = {!! json_encode($dataMonthWithId) !!};
 
 
@@ -34,30 +35,32 @@
                     var pro = $('#provin').val();
 
                     var selectedYear = $('#selectyear').val();
-                    console.log(pro)
+
                     var selectedYearchartDataRe;
                     var selectedYearDataCon;
                     var selectedYearDataConno;
+
+
 
                     if (pro == 0) {
                         //กราฟวงกลม
                         //รวมทั้งหมด
                         var totalUserCount4 = 0;
-                        var filteredData4 = registerdate.filter(data => data.year == selectedYear && pro == 0);
+                        var filteredData4 = registerdate.filter(data => data.year == selectedYear);
                         filteredData4.forEach(data => {
                             totalUserCount4 += parseInt(data.user_count);
                         });
                         selectedYearchartDataRe = totalUserCount4;
-                      
+
                         var totalUserCount2 = 0;
-                        var filteredData2 = chartDataCon2.filter(data => data.year == selectedYear && pro == 0);
+                        var filteredData2 = chartDataCon2.filter(data => data.year == selectedYear);
                         filteredData2.forEach(data => {
                             totalUserCount2 += parseInt(data.user_count);
                         });
                         selectedYearDataCon = totalUserCount2;
                         //เรียนจบแล้ว
                         var totalUserCount = 0;
-                        var filteredData = chartDataConno.filter(data => data.year == selectedYear && pro == 0);
+                        var filteredData = chartDataConno.filter(data => data.year == selectedYear);
                         filteredData.forEach(data => {
                             totalUserCount += parseInt(data.user_count);
                         });
@@ -65,6 +68,7 @@
 
                         //กราฟตามเดือน
                     } else {
+
                         //กราฟวงกลม
                         //รวมทั้งหมด
                         selectedYearchartDataRe = registerdate.find(data => data.year == selectedYear && data
@@ -90,7 +94,7 @@
                         if (pro == 0) {
                             var totalUserCountConno = 0;
                             var filteredDataConno = monthsconno.filter(data => data.month == monthId && data
-                                .year == selectedYear && pro == 0);
+                                .year == selectedYear);
                             filteredDataConno.forEach(data => {
                                 totalUserCountConno += parseInt(data.user_count);
                             });
@@ -108,7 +112,7 @@
                         if (pro == 0) {
                             var totalUserCountCon = 0;
                             var filteredDataCon = monthscon.filter(data => data.month == monthId && data
-                                .year == selectedYear && pro == 0);
+                                .year == selectedYear);
                             filteredDataCon.forEach(data => {
                                 totalUserCountCon += parseInt(data.user_count);
                             });
@@ -116,7 +120,7 @@
                         } else {
                             matchingMonthData = monthscon.find(data => data.month == monthId && data.year ==
                                 selectedYear && data.province_name == pro);
-                                
+
                             return matchingMonthData ? parseInt(matchingMonthData.user_count) : 0;
                         }
 
@@ -144,7 +148,7 @@
                         var totalUsermonthsYear = 0;
                         if (pro == 0) {
                             var filteredmonthsYear = monthsYear.filter(data => data.month == monthId && data
-                                .year == monthyear && pro == 0);
+                                .year == monthyear);
                             filteredmonthsYear.forEach(data => {
                                 totalUsermonthsYear += parseInt(data.user_count);
                             });
@@ -158,16 +162,115 @@
 
                     };
 
+                    const RegisAndConm = (selectedYear, statuscon) => {
+                        var RegisAndConmonthsYear;
+                        var matchingMonthData6
+                        var totalUserCount5 = 0;
+                        let siteCounts = {};
+                        if (pro == 0) {
+                            var filteredData5 = regisandconData.filter(data => data.year == selectedYear &&
+                                pro == 0 && data.congrat == statuscon);
+                            filteredData5.sort((a, b) => b.user_count - a.user_count);
+                        } else {
+                            var filteredData5 = regisandconData.filter(data => data.year == selectedYear &&
+                                data.congrat == statuscon && pro == data.pro_name);
+                            filteredData5.sort((a, b) => b.user_count - a.user_count);
+                        }
+                        filteredData5.forEach(data => {
+                            const siteName = data.name_site;
+                            const userCount = parseInt(data.user_count);
+
+                            if (!siteCounts[siteName]) {
+                                siteCounts[siteName] = userCount;
+                            } else {
+                                siteCounts[siteName] += userCount;
+                            }
+                        });
+                        const constatus = Object.keys(siteCounts).map(siteName => ({
+                            site: siteName,
+                            count: siteCounts[siteName]
+                        }));
+                        return constatus;
+                    }
+                    const regisDataca = RegisAndConm(selectedYear, 0);
+                    const ConDataca = RegisAndConm(selectedYear, 1);
+
+
+                    var regisLearn = {!! json_encode($regisLearn) !!};
+
+
+                    const RegisLearns = (statuscon) => {
+                        var regisLearnYear;
+                        let siteCounts = {};
+                        if (pro == 0) {
+                            var filteredData5 = regisLearn.filter(data =>
+                                pro == 0 && data.congrat == statuscon);
+                        } else {
+                            var filteredData5 = regisLearn.filter(data =>
+                                data.congrat == statuscon && pro == data.pro_name);
+                        }
+
+                        filteredData5.forEach(data => {
+                            const siteName = data.year;
+                            const userCount = parseInt(data.user_count);
+
+                            if (!siteCounts[siteName]) {
+                                siteCounts[siteName] = userCount;
+                            } else {
+                                siteCounts[siteName] += userCount;
+                            }
+                        });
+                        const Restatus = Object.keys(siteCounts).map(siteName => ({
+                            site: parseInt(siteName),
+                            count: siteCounts[siteName]
+                        }));
+                        Restatus.sort((a, b) => a.site - b.site);
+                        return Restatus;
+                    }
+                    const RegisLearnsData = RegisLearns(0);
+                    const ConLearnsData = RegisLearns(1);
+
+                    var regisAll = {!! json_encode($regisAll) !!};
+                    const regisAlls = () => {
+                        var regisLearnYear;
+                        let siteCounts = {};
+                        if (pro == 0) {
+                            var filteredData5 = regisAll;
+                        } else {
+                            var filteredData5 = regisAll.filter(data => pro == data.pro_name);
+                        }
+
+                        filteredData5.forEach(data => {
+                            const siteName = data.year;
+                            const userCount = parseInt(data.user_count);
+
+                            if (!siteCounts[siteName]) {
+                                siteCounts[siteName] = userCount;
+                            } else {
+                                siteCounts[siteName] += userCount;
+                            }
+                        });
+                        const Restatus = Object.keys(siteCounts).map(siteName => ({
+                            site: parseInt(siteName),
+                            count: siteCounts[siteName]
+                        }));
+                        Restatus.sort((a, b) => a.site - b.site);
+                        return Restatus;
+                    }
+                    const regisAllsData = regisAlls();
+
                     updateChart(selectedYear, pro, selectedYearDataCon, selectedYearDataConno,
                         selectedYearchartDataRe, getNumberOfStudents, getNumberOfCompletedStudents,
-                        StudentsRegisterget,
-                        xAxisCategories, yearAll);
+                        StudentsRegisterget, xAxisCategories, regisDataca, ConDataca, RegisLearnsData,
+                        ConLearnsData,regisAllsData);
                 });
 
 
                 function updateChart(selectedYear, pro, selectedYearDataCon, selectedYearDataConno,
                     selectedYearchartDataRe, getNumberOfStudents, getNumberOfCompletedStudents, StudentsRegisterget,
-                    xAxisCategories) {
+                    xAxisCategories, regisDataca, ConDataca, RegisLearnsData, ConLearnsData,regisAllsData) {
+
+
                     Highcharts.chart("chartcongratulation", {
                         chart: {
                             style: {
@@ -358,6 +461,144 @@
                                 monthObj.year)),
                         }],
                     });
+
+                    Highcharts.chart("graphCer", {
+                        chart: {
+                            type: 'column'
+                        },
+                        title: {
+                            text: 'ภาพรวมผู้ลงทะเบียนเรียนกับผู้เรียนจบและได้รับใบประกาศนียบัตร (ตามกลุ่มเป้าหมาย)'
+                        },
+                        xAxis: {
+                            type: 'category',
+                            labels: {
+                                rotation: -45,
+                            }
+                        },
+                        yAxis: {
+                            title: {
+                                text: ''
+                            }
+                        },
+                        credits: {
+                            enabled: true,
+                            text: 'กลุ่มเป้าหมาย',
+                            style: {
+                                fontSize: '16px',
+                                color: '#000000',
+                                cursor: 'default'
+                            }
+                        },
+                        legend: {
+                            enabled: true,
+                            symbolHeight: 10,
+                            symbolWidth: 10,
+                            symbolRadius: 0,
+
+                        },
+                        plotOptions: {
+                            series: {
+                                borderWidth: 0,
+                                dataLabels: {
+                                    enabled: true,
+                                    format: '{point.y}'
+                                }
+                            }
+                        },
+                        tooltip: {
+                            headerFormat: '<span style="font-size:12px">{series.name}</span><br>',
+                            pointFormat: '<span>{point.name}</span> : <b>{point.y}</b> คน<br/>'
+                        },
+                        series: [{
+                            name: 'ผู้ลงทะเบียนเรียน',
+                            color: '#4B70F5',
+                            data: regisDataca.map(item => ({
+                                name: item.site,
+                                y: item.count,
+                                color: '#4B70F5'
+                            }))
+                        }, {
+                            name: 'ผู้เรียนจบและได้รับใบประกาศนียบัตร',
+                            color: '#FF7F3E',
+                            data: ConDataca.map(item => ({
+                                name: item.site,
+                                y: item.count,
+                                color: '#FF7F3E'
+                            }))
+                        }]
+                    });
+
+                    Highcharts.chart("graphRegis", {
+                        chart: {
+                            type: 'column'
+                        },
+                        title: {
+                            text: 'ภาพรวมย้อนหลังสถิติผู้สมัครเข้าใช้งานระบบแพลตฟอร์มฯ'
+                        },
+                        xAxis: {
+                            type: 'category'
+                        },
+                        yAxis: {
+                            title: {
+                                text: 'จำนวน (คน)'
+                            }
+                        },
+                        legend: {
+                            enabled: true,
+                            symbolHeight: 10, // กำหนดความสูงของสัญลักษณ์
+                            symbolWidth: 10, // กำหนดความกว้างของสัญลักษณ์
+                            symbolRadius: 0, // กำหนดรัศมีของมุมสัญลักษณ์ให้เป็น 0 เพื่อให้เป็นสี่เหลี่ยม
+                            align: 'right', // จัดชิดด้านขวา
+                            verticalAlign: 'middle', // จัดกึ่งกลางในแนวตั้ง
+                            layout: 'vertical' // จัดเรียงในแนวตั้ง
+                        },
+                        plotOptions: {
+                            lang: {
+                                thousandsSep: ','
+                            },
+                            series: {
+                                borderWidth: 0,
+                                dataLabels: {
+                                    enabled: true,
+                                    data: '{point.y}'
+                                }
+                            }
+                        },
+                        tooltip: {
+                            headerFormat: '<span style="font-size:12px">{series.name}</span><br>',
+                            pointFormat: '<span>{point.name}</span> : <b>{point.y}</b> คน<br/>'
+                        },
+
+                        series: [{
+                                name: 'ผู้สมัครสมาชิค',
+                                color: '#4B70F5',
+                                data: regisAllsData.map(item => ({
+                                    name: item.site,
+                                    y: item.count,
+                                    color: '#4B70F5'
+                                })),
+                            },
+                            {
+                                name: 'ผู้เรียนจบ',
+                                color: '#FF7F3E',
+                                data: ConLearnsData.map(item => ({
+                                    name: item.site,
+                                    y: item.count,
+                                    color: '#FF7F3E'
+                                })),
+                            },
+                            {
+                                name: 'ผู้ลงทะเบียนเรียน',
+                                color: '#758694',
+                                data: RegisLearnsData.map(item => ({
+                                    name: item.site,
+                                    y: item.count,
+                                    color: '#758694'
+                                })),
+                            }
+                        ]
+                    });
+
                 }
                 $('#selectyear').trigger('change');
                 $('#provin').trigger('change');
