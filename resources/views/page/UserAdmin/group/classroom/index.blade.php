@@ -98,7 +98,7 @@
                                                                 src="https://aced.nacc.go.th/images/icon_page_learn-06.png">
                                                         </a>
                                                         &nbsp;
-                                                        <a href="{{ route('classroom_user_status', [$user_id, $course['course_id'], $course['certificate_file_id']]) }}"
+                                                        <a href="{{ route('classroom_user_status', [$user_id, $course['learner_id'], $course['course_id'], $course['certificate_file_id']]) }}"
                                                             onclick="resetcer(event)" target="_blank" data-toggle="tooltip"
                                                             data-placement="top" style="margin-top: 5px;"
                                                             aria-label="รีเซ็ตใบประกาศ"

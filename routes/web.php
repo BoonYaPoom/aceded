@@ -742,7 +742,7 @@ Route::group(['middleware' => 'IsLoggedIn'], function () {
                 Route::get('/changeStatuCategoryTopic', [CategoryTopicController::class, 'changeStatuCategoryTopic'])->name('changeStatuCategoryTopic');
                 Route::get('/schooldepart_delete/{school_id}', [SchoolDepartController::class, 'delete'])->name('deleteschoolDepart');
                 Route::get('/department_delete/{department_id}', [DepartmentController::class, 'destroy'])->name('deleteDepart');
-                Route::get('{user_id}/classroom_user_status/{course_id}/{certificate_file_id}', [ClassroomController::class, 'classroom_user_status'])->name('classroom_user_status');
+                Route::get('{user_id}/classroom_user_status/{learner_id}/{course_id}/{certificate_file_id}', [ClassroomController::class, 'classroom_user_status'])->name('classroom_user_status');
                 Route::get('{user_id}/con_user_status/{course_id}/{learner_id}', [ClassroomController::class, 'con_user_status'])->name('con_user_status');
                    
             });

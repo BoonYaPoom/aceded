@@ -93,7 +93,7 @@
                             <tr>
                                 <td align="center">5</td>
                                 <td>รายงานสถิติการเข้าใช้งานรายเดือน
-                                    (ผู้ใช้งานใหม่)
+                                    (ยอด View)
                                 </td>
                                 <td align="center"><a href="{{ route('T0118') }}"><i
                                             class="fas fa-chart-bar text-teal mr-2"></i></a>
@@ -106,7 +106,7 @@
                             <tr>
                                 <td align="center">6</td>
                                 <td>รายงานสถิติการเข้าใช้งานรายไตรมาส
-                                    (ผู้ใช้งานใหม่)
+                                    (ยอด View)
                                 </td>
                                 <td align="center"><a href="{{ route('T0119') }}"><i
                                             class="fas fa-chart-bar text-teal mr-2"></i></a>
@@ -119,7 +119,7 @@
                             <tr>
                                 <td align="center">7</td>
                                 <td> รายงานสถิติการเข้าใช้งานรายปี
-                                    (ผู้ใช้งานใหม่)
+                                    (ยอด View)
                                 </td>
                                 <td align="center"><a href="{{ route('T0120') }}"><i
                                             class="fas fa-chart-bar text-teal mr-2"></i></a>

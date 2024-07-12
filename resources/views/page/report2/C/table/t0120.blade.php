@@ -39,7 +39,7 @@
         <div class="card-header bg-muted">
             <div class="d-flex align-items-center">
                 <span class="mr-auto">รายงานสถิติการเข้าใช้งานรายปี
-                    (ผู้ใช้งานใหม่)</span>
+                    (ยอด View)</span>
 
                 <a href="#" class="btn btn-icon btn-outline-primary download-excel"><i
                         class="fa fa-file-excel"></i></a>
@@ -66,12 +66,12 @@
                     <thead>
                         <tr>
                             <th class="text-center" colspan="6">รายงานสถิติการเข้าใช้งานรายปี
-                                (ผู้ใช้งานใหม่)</th>
+                                (ยอด View)</th>
                         </tr>
                         <tr class="text-center">
                             <th align="center" width="5%">ลำดับ</th>
                             <th align="center">ปี</th>
-                            <th align="center" width="15%">จำนวนรายการ (คน)</th>
+                            <th align="center" width="15%">จำนวนรายการ</th>
                         </tr>
 
                     <tbody id="learend">

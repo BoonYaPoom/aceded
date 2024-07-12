@@ -235,9 +235,9 @@ WHERE
 
             $newexten1 = $item->newnameexten;
             $newexten2 = $item->newparentname;
-            $newexten3 =  $item->newuserprovinceexten ??  $item->provinces_name;
-            $newexten4 =  $item->newdistrictsexten ?? $item->districts_name;
-            $newexten5 =  $item->newsubdistrictsexten ?? $item->subdistricts_name;
+            $newexten3 =  $item->newuserprovinceexten ??  $item->provinces_name ?? "-";
+            $newexten4 =  $item->newdistrictsexten ?? $item->districts_name ?? "-";
+            $newexten5 =  $item->newsubdistrictsexten ?? $item->subdistricts_name ?? "-";
             if ($item->newnameexten == null) {
                 $newexten1 = "-";
                 $newexten2 = "-";
@@ -253,7 +253,6 @@ WHERE
                 $newexten4 =  "-";
                 $newexten5 =  "-";
             }
-
             return [
                 'i' => $i++,
                 'username' => $item->username,

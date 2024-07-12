@@ -268,8 +268,8 @@ class ClassroomController extends Controller
                             'certificate_file.certificate_file_path',
                             'certificate_file.certificate_full_no',
                             'certificate_file.certificate_file_id',
-                        'certificate_file.file_name'
-                        )->orderBy('certificate_file.file_name') 
+                            'certificate_file.file_name'
+                        )->orderBy('certificate_file.file_name')
                         ->first();
                 } else {
                     $certificate = '';
@@ -301,20 +301,40 @@ class ClassroomController extends Controller
                     'certificate_file_id' => $certificate->certificate_file_id  ?? null
                 ];
             }
-
         }
         $db_user =
             DB::table('users')->where('user_id', '=', $user_id)->select('user_id', 'firstname', 'lastname')->first();
         return view('page.UserAdmin.group.classroom.index', compact('user_data', 'data_lesson', 'user_id', 'db_user'));
     }
-    public function classroom_user_status($user_id, $course_id, $certificate_file_id)
+    public function classroom_user_status($user_id, $learner_id, $course_id, $certificate_file_id)
     {
         // ตรวจสอบว่ามีค่า $user_id, $course_id, และ $certificate_file_id ถูกส่งมาหรือไม่
-        if ($user_id && $course_id && $certificate_file_id) {
+        if ($user_id && $learner_id && $course_id && $certificate_file_id) {
+
+            $sql = "SELECT * FROM certificate_file WHERE user_id = :user_id AND learner_id = :learner_id AND course_id = :course_id";
+            $cer = DB::select($sql, [
+                'user_id' => $user_id,
+                'learner_id' => $learner_id,
+                'course_id' => $course_id
+            ]);
+        
+            $cer_cat = collect($cer);
+            if ($cer_cat) {
+                foreach ($cer_cat as $cr) {
+                    if ($cr->certificate_file_role_status != 2) {
+                        DB::table('certificate_file')
+                            ->where('user_id', $user_id)
+                            ->where('learner_id', $learner_id)
+                            ->where('course_id', $course_id)
+                            ->where('certificate_file_role_status', '!=', 2)
+                            ->delete();
+                    }
+                }
+            }
             // อัปเดตสถานะไฟล์ใบรับรอง
             DB::table('certificate_file')
-                ->where('certificate_file.course_id', '=', $course_id)
-                ->where('certificate_file.certificate_file_id', '=', $certificate_file_id)
+            ->where('certificate_file.course_id', '=', $course_id)
+            ->where('certificate_file.certificate_file_id', '=', $certificate_file_id)
                 ->where('certificate_file.user_id', '=', $user_id)
                 ->update(['certificate_file_role_status' => 0]);
             return redirect()->back()->with('success', 'รีเซ็ตสำเร็จเรียบร้อย');
@@ -330,8 +350,8 @@ class ClassroomController extends Controller
             // อัปเดตสถานะไฟล์ใบรับรอง
             DB::table('course_learner')
                 ->where('course_learner.user_id', '=', $user_id)
-            ->where('course_learner.course_id', '=', $course_id)
-            ->where('course_learner.learner_id', '=', $learner_id)
+                ->where('course_learner.course_id', '=', $course_id)
+                ->where('course_learner.learner_id', '=', $learner_id)
                 ->update([
                     'congratulation' => 1,
                     'realcongratulationdate' => Carbon::now('Asia/Bangkok')

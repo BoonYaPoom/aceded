@@ -332,12 +332,12 @@
                             type: 'pie'
                         },
                         title: {
-                            text: 'ผู้ลงทะเบียนผู้ใช้งาน  ปี ' + selectedYear + (pro == 0 ? ' ' :
+                            text: 'ผู้ลงทะเบียนสมาชิก  ปี ' + selectedYear + (pro == 0 ? ' ' :
                                 ' ของ จังหวัด ' + pro)
 
                         },
                         subtitle: {
-                            text: 'รายงานจำนวนผู้สมัครเรียนจำแนกกลุ่มผู้ใช้งาน'
+                            text: 'รายงานจำนวนผู้ลงทะเบียนสมาชิกจำแนกกลุ่มผู้ใช้งาน'
                         },
                         tooltip: {
                             pointFormat: '{series.name}: <b>{point.y}</b>'
@@ -360,13 +360,11 @@
                         series: [{
                             name: 'จำนวน',
                             data: [{
-                                    name: 'จำนวนผู้เรียนทั้งหมด',
+                                    name: 'จำนวนสมาชิกทั้งหมด',
                                     y: selectedYearchartDataRe,
                                 },
-
                             ],
                         }],
-
                     });
 
 
