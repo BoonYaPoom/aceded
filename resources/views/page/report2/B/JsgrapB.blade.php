@@ -3,9 +3,17 @@
           $('#selectyear').on('change', function() {
 
               var selectedYear = $('#selectyear').val();
+              var TopTenRegis = {!! json_encode($TopTenRegis) !!};
+              const StudentsRegisterTopTenget = (selectedYear) => {
+                  var filterTopTenRegis = TopTenRegis.filter(data => data.year == selectedYear);
+                  filterTopTenRegis.sort((a, b) => b.user_count - a.user_count);
+                  var Top10Regis = filterTopTenRegis.slice(0, 10);
+                  return Top10Regis;
+              };
+              var topTenData = StudentsRegisterTopTenget(selectedYear);
 
-
-              Highcharts.chart("graphCer", {
+              console.log(topTenData);
+              Highcharts.chart("graphTopTenRegis", {
                   chart: {
                       type: 'column'
                   },
@@ -24,9 +32,9 @@
                       }
                   },
                   legend: {
-                      enabled: false,
+                      enabled: true,
                       labelFormatter: function() {
-                          return 'ข้อมูลจากกรมการศึกษา'; // ข้อความที่ต้องการแสดงแทนสัญลักษณ์
+                          return 'จังหวัด'; 
                       }
                   },
                   plotOptions: {
@@ -43,70 +51,46 @@
                       pointFormat: '<span>{point.name}</span> : <b>{point.y}</b> คน<br/>'
                   },
                   series: [{
-                      name: 'ผู้ลงทะเบียนเรียน',
+                      name: 'จังหวัด',
                       color: '#4B70F5',
-                      data: [{
-                          name: 'ระดับปฐมวัย',
-                          y: 20,
+                      data: topTenData.map(item => ({
+                          name: item.pro_name,
+                          y: Number(item.user_count), 
                           color: '#4B70F5'
-                      }, {
-                          name: 'ระดับปฐมศึกษา',
-                          y: 30,
-                          color: '#4B70F5'
-                      }, {
-                          name: 'ระดับมัธยมศึกษา',
-                          y: 25,
-                          color: '#4B70F5'
-                      }, {
-                          name: 'ระดับอาชีวศึกษา',
-                          y: 25,
-                          color: '#4B70F5'
-                      }, {
-                          name: 'ระดับอุดมศึกษา',
-                          y: 5,
-                          color: '#4B70F5'
-                      }, {
-                          name: 'ภาครัฐวิสาหกิจ',
-                          y: 35,
-                          color: '#4B70F5'
-                      }, {
-                          name: 'ประชาชนทั่วไป',
-                          y: 15,
-                          color: '#4B70F5'
-                      }]
+                      }))
                   }]
               });
 
               Highcharts.chart("graphRegis", {
-                  chart: {
+                   chart: {
                       type: 'column'
                   },
                   title: {
-                      text: 'ภาพรวมย้อนหลังสถิติผู้สมัครเข้าใช้งานระบบแพลตฟอร์มฯ'
+                      text: '10 อันดับผู้เรียนจบและได้รับใบประกาศนียบัตรสูงสุด (รวมทุกหลักสูตร)'
                   },
                   xAxis: {
-                      type: 'category'
+                      type: 'category',
+                      labels: {
+                          rotation: -45,
+                      }
                   },
                   yAxis: {
                       title: {
-                          text: 'จำนวน (คน)'
+                          text: ''
                       }
                   },
                   legend: {
                       enabled: true,
-                      symbolHeight: 10, // กำหนดความสูงของสัญลักษณ์
-                      symbolWidth: 10, // กำหนดความกว้างของสัญลักษณ์
-                      symbolRadius: 0, // กำหนดรัศมีของมุมสัญลักษณ์ให้เป็น 0 เพื่อให้เป็นสี่เหลี่ยม
+                      labelFormatter: function() {
+                          return 'จังหวัด'; 
+                      }
                   },
                   plotOptions: {
-                      lang: {
-                          thousandsSep: ','
-                      },
                       series: {
                           borderWidth: 0,
                           dataLabels: {
                               enabled: true,
-                              data: '{point.y}'
+                              format: '{point.y}'
                           }
                       }
                   },
@@ -115,58 +99,16 @@
                       pointFormat: '<span>{point.name}</span> : <b>{point.y}</b> คน<br/>'
                   },
                   series: [{
-                          name: 'ผู้สมัครสมาชิค',
-                          color: '#4B70F5',
-                          data: [{
-                              name: '2566',
-                              y: 20,
-                              color: '#4B70F5'
-                          }, {
-                              name: '2567',
-                              y: 10,
-                              color: '#4B70F5'
-                          }, {
-                              name: '2568',
-                              y: 50,
-                              color: '#4B70F5'
-                          }],
-                      },
-                      {
-                          name: 'ผู้เรียนจบ',
-                          color: '#FF7F3E',
-                          data: [{
-                              name: '2566',
-                              y: 10,
-                              color: '#FF7F3E'
-                          }, {
-                              name: '2567',
-                              y: 20,
-                              color: '#FF7F3E'
-                          }, {
-                              name: '2568',
-                              y: 4,
-                              color: '#FF7F3E'
-                          }],
-                      },
-                      {
-                          name: 'ผู้ลงทะเบียนเรียน',
-                          color: '#758694',
-                          data: [{
-                              name: '2566',
-                              y: 2,
-                              color: '#758694'
-                          }, {
-                              name: '2567',
-                              y: 20,
-                              color: '#758694'
-                          }, {
-                              name: '2568',
-                              y: 30,
-                              color: '#758694'
-                          }],
-                      }
-                  ]
+                      name: 'จังหวัด',
+                      color: '#399918',
+                      data: topTenData.map(item => ({
+                          name: item.pro_name,
+                          y: Number(item.user_count), 
+                          color: '#399918'
+                      }))
+                  }]
               });
+
 
           });
           $('#selectyear').trigger('change');

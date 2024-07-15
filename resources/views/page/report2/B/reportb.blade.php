@@ -32,7 +32,7 @@
             <div class="col-12 col-lg-12 col-xl-6">
                 <div class="card card-fluid">
                     <div class="card-body">
-                        <div id="graphCer" style="min-width: 310px; height: 450px; margin: 0 auto">
+                        <div id="graphTopTenRegis" style="min-width: 310px; height: 450px; margin: 0 auto">
                         </div>
                     </div>
                 </div>

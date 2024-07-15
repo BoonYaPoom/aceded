@@ -112,7 +112,6 @@
                                             ;
                                         window.location.href = url;
                                     });
-
                                 });
                                 $('#selectyear').trigger('change');
                                 $('#depa').trigger('change');

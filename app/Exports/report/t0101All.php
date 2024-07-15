@@ -66,9 +66,9 @@ class t0101All implements
 
                             AND EXTRACT(YEAR FROM course_learner.registerdate) + 543 = :year
                         ";
-        $bindings = ['year' => $this->year];
+        $years = ['year' => $this->year];
 
-        $rows = collect(DB::select($sql, $bindings));
+        $rows = collect(DB::select($sql, $years));
 
 
         $i = 1;
@@ -79,10 +79,12 @@ class t0101All implements
             $register_date = $item->register_date;
             $realcongratulationdate = $item->realcongratulationdate;
             $department_name = $item->department_name;
+            $provin = $item->province_name;
             return [
                 'i' => $i++,
                 'fullname' => $fullname,
                 'exten2' => $exten2,
+                'provin' => $provin,
                 'department_name' =>  $department_name,
                 'course_th' =>  $course_th,
                 'register_date' => $register_date,
@@ -100,8 +102,9 @@ class t0101All implements
             'ลำดับ',
             'ชื่อ-นามสกุล',
             'สังกัด',
+            'จังหวัด',
             'ระดับ',
-            'หลักสูตร',
+            'หลักสูตร',   
             'วันที่ลงทะเบียนเรียน',
             'วันที่จบหลักสูตร',
         ];

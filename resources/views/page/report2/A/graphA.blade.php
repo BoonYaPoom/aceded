@@ -568,7 +568,7 @@
                         },
 
                         series: [{
-                                name: 'ผู้สมัครสมาชิค',
+                                name: 'ผู้สมัครสมาชิก',
                                 color: '#4B70F5',
                                 data: regisAllsData.map(item => ({
                                     name: item.site,

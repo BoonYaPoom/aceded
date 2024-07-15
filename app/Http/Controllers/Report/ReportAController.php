@@ -139,7 +139,6 @@ class ReportAController extends Controller
         $monthsYear = DB::table('users')
             ->join('provinces', 'users.province_id', '=', 'provinces.id')
             ->where('users.user_role', '=', 4)
-            ->where('provinces.id', '=', 2)
             ->select(
                 'provinces.id as province_id',
                 'provinces.name_in_thai as province_name',
