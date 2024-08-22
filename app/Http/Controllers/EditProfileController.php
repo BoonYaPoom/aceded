@@ -49,8 +49,6 @@ class EditProfileController extends Controller
                     Storage::disk('sftp')->makeDirectory($uploadDirectory);
                 }
                 if (Storage::disk('sftp')->exists($uploadDirectory)) {
-                    // ตรวจสอบว่ามีไฟล์เดิมอยู่หรือไม่ ถ้ามีให้ลบออก
-                    Storage::disk('sftp')->delete($uploadDirectory);
                     Storage::disk('sftp')->put($uploadDirectory . '/' . $image, file_get_contents($request->avatar->getRealPath()));
                 }
                 $users->avatar = 'https://aced-content.nacc.go.th/' . 'upload/Profile/' . 'avatar' . $users->user_id . '.' . $request->avatar->getClientOriginalExtension();

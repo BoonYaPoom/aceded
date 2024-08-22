@@ -77,7 +77,7 @@ class DepartmentController extends Controller
             $depart = new Department;
             $depart->name_th = $request->name_th;
             $depart->name_en = $request->name_en;
-
+            $depart->home_status = $request->input('home_status', 0);
             $depart->name_short_en = $request->name_short_en;
             $depart->department_id_ref = $request->department_id_ref;
             $depart->department_status = $request->input('department_status', 0);
@@ -92,7 +92,6 @@ class DepartmentController extends Controller
                 }
                 if (Storage::disk('sftp')->exists($uploadDirectory)) {
                     // ตรวจสอบว่ามีไฟล์เดิมอยู่หรือไม่ ถ้ามีให้ลบออก
-                    Storage::disk('sftp')->delete($uploadDirectory);
                     Storage::disk('sftp')->put($uploadDirectory . '/' . $imageName, file_get_contents($request->name_short_th->getRealPath()));
                     $depart->name_short_th = 'upload/Department/' . $imageName;
 
@@ -149,13 +148,12 @@ class DepartmentController extends Controller
                 //     $genaral->detail = 'upload/LOGO/' . 'logo' . $depart->department_id . '.' . $request->detail->getClientOriginalExtension();
                 // }
                 // อัปเดตข้อมูลในตาราง 'General'
-                $uploadDirectory = 'LOGO/';
+                $uploadDirectory = 'LOGO/' . $filename;
                 if (!Storage::disk('sftp')->exists($uploadDirectory)) {
                     Storage::disk('sftp')->makeDirectory($uploadDirectory);
                 }
                 if (Storage::disk('sftp')->exists($uploadDirectory)) {
-                    // ตรวจสอบว่ามีไฟล์เดิมอยู่หรือไม่ ถ้ามีให้ลบออก
-                    Storage::disk('sftp')->delete($uploadDirectory);
+
                     Storage::disk('sftp')->put($uploadDirectory . '/' . $filename, file_get_contents($request->detail->getRealPath()));
                     $genaral->path = 'upload/LOGO/' . 'logo' . $depart->department_id . '.' . $request->detail->getClientOriginalExtension();
                
@@ -169,8 +167,9 @@ class DepartmentController extends Controller
         } catch (\Exception $e) {
 
             DB::rollBack();
-
-            return response()->view('error.error-500', [], 500);
+            return response()->json([
+                'message' => $e->getMessage(),
+            ], 500);
         }
         $from = request('from');
         if ($from === 'lms') {
@@ -218,7 +217,7 @@ class DepartmentController extends Controller
         $depart->name_th = $request->name_th;
         $depart->name_en = $request->name_en;
 
-
+        $depart->home_status = $request->input('home_status', 0);
         $depart->department_id_ref = $request->department_id_ref;
         $depart->department_status = $request->input('department_status', 0);
         if ($request->hasFile('name_short_th')) {
@@ -231,7 +230,6 @@ class DepartmentController extends Controller
             }
             if (Storage::disk('sftp')->exists($uploadDirectory)) {
                 // ตรวจสอบว่ามีไฟล์เดิมอยู่หรือไม่ ถ้ามีให้ลบออก
-                Storage::disk('sftp')->delete($uploadDirectory);
                 Storage::disk('sftp')->put($uploadDirectory . '/' . $imageName, file_get_contents($request->name_short_th->getRealPath()));
             
             }

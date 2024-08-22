@@ -16,11 +16,7 @@ class UserLogController extends Controller
         $logss = $users->loguser()->where('user_id', $user_id)->get();
         return view('page.UserAdmin.group.umsloguser.index', compact('users', 'logss'));
     }
-    public function error500()
-    {
 
-        return response()->view('error.error-500', [], 500);
-    }
     public function signaturereport(Request $request)
     {
 

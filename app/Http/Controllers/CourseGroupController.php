@@ -40,7 +40,9 @@ class CourseGroupController extends Controller
 
             DB::rollBack();
 
-            return response()->view('error.error-500', [], 500);
+            return response()->json([
+                'message' => $e->getMessage(),
+            ], 500);
         }
         return redirect()->route('courgroup', ['department_id' => $department_id])->with('message', 'CourseGroup บันทึกข้อมูลสำเร็จ');
     }

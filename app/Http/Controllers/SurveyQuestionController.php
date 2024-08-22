@@ -156,8 +156,9 @@ class SurveyQuestionController extends Controller
     } catch (\Exception $e) {
 
       DB::rollBack();
-
-      return response()->view('error.error-500', [], 500);
+      return response()->json([
+        'message' => $e->getMessage(),
+      ], 500);
     }
     return redirect()->route('questionpage', [$department_id, 'survey_id' => $survey_id])->with('message', 'surveyreport update successfully');
   }

@@ -29,47 +29,6 @@ class UsersExport implements
      */
     public function collection()
     {
-        // $users = DB::table('users')
-        //     ->join('users_department', 'users.user_id', '=', 'users_department.user_id')
-        //     ->where('users.user_role', 4)
-        //     ->leftJoin('provinces', 'provinces.id', '=', 'users.province_id')
-        //     ->leftJoin('districts', 'districts.id', '=', 'users.district_id')
-        //     ->leftJoin('subdistricts', 'subdistricts.id', '=', 'users.subdistrict_id')
-        //     ->select(
-        //         'users_department.department_id',
-        //         'users_department.user_id',
-        //         'users.username',
-        //         'users.firstname',
-        //         'users.lastname',
-        //         'users.createdate',
-        //         'users.province_id',
-        //         'provinces.name_in_thai as provinces_name',
-        //         'districts.name_in_thai as districts_name',
-        //         'subdistricts.name_in_thai as subdistricts_name',
-        //         'users.mobile',
-        //         'users.organization',
-        //         'users.user_affiliation',
-        //         'users.userstatus',
-        //         DB::raw('EXTRACT(YEAR FROM users.createdate)  + 543  as year'),
-        //     )->groupBy(
-        //         'users_department.department_id',
-        //         'users_department.user_id',
-        //         'users.username',
-        //         'users.firstname',
-        //         'users.lastname',
-        //         'users.createdate',
-        //         'users.province_id',
-        //         'provinces.name_in_thai',
-        //         'districts.name_in_thai',
-        //         'subdistricts.name_in_thai',
-        //         'users.mobile',
-        //         'users.organization',
-        //         'users.user_affiliation',
-        //         'users.userstatus',
-        //         // DB::raw('EXTRACT(YEAR FROM users.createdate)  + 543 '),
-        //     )
-        //     // ->whereRaw('EXTRACT(YEAR FROM users.createdate) + 543 = ?', 2567)
-        //     ->get();
 
         $sql = "WITH DepartmentCheck AS (
     SELECT 
@@ -230,9 +189,7 @@ WHERE
         $i = 1;
         $datauser = $rows->map(function ($item) use (&$i) {
             $full_name = $item->firstname . ' ' . $item->lastname;
-            $from = 'จังหวัด ' . $item->provinces_name . ' / อำเภอ ' . $item->districts_name . ' / ตำบล ' . $item->subdistricts_name;
-            $fromExten = $item->newnameexten .  $item->newparentname . ' / ตำบล ' . $item->subdistricts_name . ' / อำเภอ ' . $item->districts_name  . ' / จังหวัด ' . $item->provinces_name;
-
+       
             $newexten1 = $item->newnameexten;
             $newexten2 = $item->newparentname;
             $newexten3 =  $item->newuserprovinceexten ??  $item->provinces_name ?? "-";
@@ -246,7 +203,7 @@ WHERE
                 $newexten5 =  "-";
             }
             if ($item->department_stay > 5) {
-                $fromExten = $item->extennoname;
+      
                 $newexten1 = $item->extennoname;
                 $newexten2 = "-";
                 $newexten3 = "-";

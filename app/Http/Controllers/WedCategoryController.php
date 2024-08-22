@@ -95,7 +95,6 @@ class WedCategoryController extends Controller
                 }
                 if (Storage::disk('sftp')->exists($uploadDirectory)) {
                     // ตรวจสอบว่ามีไฟล์เดิมอยู่หรือไม่ ถ้ามีให้ลบออก
-                    Storage::disk('sftp')->delete($uploadDirectory);
                     Storage::disk('sftp')->put($uploadDirectory . '/' . $file_name, file_get_contents($request->cover->getRealPath()));
                     $wed->cover = 'upload/webcategory/' . $file_name;
                     $wed->save();
@@ -110,8 +109,9 @@ class WedCategoryController extends Controller
         } catch (\Exception $e) {
 
             DB::rollBack();
-
-            return response()->view('error.error-500', [], 500);
+            return response()->json([
+                    'message' => $e->getMessage(),
+                ], 500);
         }
 
         return redirect()->route('evenpage', ['department_id' => $department_id])->with('message', 'Data saved successfully');
@@ -158,7 +158,6 @@ class WedCategoryController extends Controller
                 }
                 if (Storage::disk('sftp')->exists($uploadDirectory)) {
                     // ตรวจสอบว่ามีไฟล์เดิมอยู่หรือไม่ ถ้ามีให้ลบออก
-                    Storage::disk('sftp')->delete($uploadDirectory);
                     Storage::disk('sftp')->put($uploadDirectory . '/' . $file_name, file_get_contents($request->cover->getRealPath()));
                     $wed->cover = 'upload/webcategory/' . $file_name;
                     $wed->save();
@@ -169,8 +168,9 @@ class WedCategoryController extends Controller
         } catch (\Exception $e) {
 
             DB::rollBack();
-
-            return response()->view('error.error-500', [], 500);
+            return response()->json([
+                    'message' => $e->getMessage(),
+                ], 500);
         }
         return redirect()->route('acteven', ['department_id' => $department_id])->with('message', 'Data saved successfully');
     }

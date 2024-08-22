@@ -3,6 +3,7 @@
 namespace App\Exceptions;
 
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use Illuminate\Support\Facades\Log;
 use Throwable;
 
 class Handler extends ExceptionHandler
@@ -33,7 +34,13 @@ class Handler extends ExceptionHandler
             $statusCode = $exception->getStatusCode();
             
             if ($statusCode == 500) {
-                return response()->view('error.error-500', [], 500);
+                Log::error('Internal Server Error: ' . $exception->getMessage(), [
+                    'exception' => $exception,
+                    'request' => $request->all(), // บันทึกข้อมูล request ถ้าต้องการ
+                ]);
+                return response()->json([
+                    'message' => Log::error($exception->getMessage()),
+                ], 500);
             }
         }
 

@@ -76,7 +76,7 @@ class LinkController extends Controller
                 }
                 if (Storage::disk('sftp')->exists($uploadDirectory)) {
                     // ตรวจสอบว่ามีไฟล์เดิมอยู่หรือไม่ ถ้ามีให้ลบออก
-                    Storage::disk('sftp')->delete($uploadDirectory);
+     
                     Storage::disk('sftp')->put($uploadDirectory . '/' . $filename, file_get_contents($request->cover->getRealPath()));
                     $links->cover = 'upload/Links/' .   'cover' . $links->link_id . '.' . $request->cover->getClientOriginalExtension();
                     $links->save();
@@ -144,8 +144,9 @@ class LinkController extends Controller
         } catch (\Exception $e) {
 
             DB::rollBack();
-
-            return response()->view('error.error-500', [], 500);
+            return response()->json([
+                'message' => $e->getMessage(),
+            ], 500);
         }
         return redirect()->route('linkpage', ['department_id' => $department_id])->with('message', 'links บันทึกข้อมูลสำเร็จ');
     }
@@ -178,7 +179,7 @@ class LinkController extends Controller
             //     $links->cover = 'upload/Links/' .   'cover' . $links_id . '.' . $request->cover->getClientOriginalExtension();
 
             // }
-            $uploadDirectory = 'Links/';
+            $uploadDirectory = 'Links/' . $filename;
             if (!Storage::disk('sftp')->exists($uploadDirectory)) {
                 Storage::disk('sftp')->makeDirectory($uploadDirectory);
             }

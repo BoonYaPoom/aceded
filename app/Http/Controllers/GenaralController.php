@@ -44,7 +44,6 @@ class GenaralController extends Controller
             }
             if (Storage::disk('sftp')->exists($uploadDirectory)) {
                 // ตรวจสอบว่ามีไฟล์เดิมอยู่หรือไม่ ถ้ามีให้ลบออก
-                Storage::disk('sftp')->delete($uploadDirectory);
                 Storage::disk('sftp')->put($uploadDirectory . '/' . $filename, file_get_contents($request->detail->getRealPath()));
             }
             $genaral->title = 'logo';
@@ -142,7 +141,6 @@ class GenaralController extends Controller
             }
             if (Storage::disk('sftp')->exists($uploadDirectory)) {
                 // ตรวจสอบว่ามีไฟล์เดิมอยู่หรือไม่ ถ้ามีให้ลบออก
-                Storage::disk('sftp')->delete($uploadDirectory);
                 Storage::disk('sftp')->put($uploadDirectory . '/' . $filename, file_get_contents($request->detail->getRealPath()));
             }
             $genaral->title = 'logo';

@@ -9,6 +9,7 @@ use App\Models\Users;
 use DOMDocument;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
@@ -258,7 +259,9 @@ class ActivityController extends Controller
 
             DB::rollBack();
 
-            return response()->view('error.error-500', [], 500);
+            return response()->json([
+                'message' => $e->getMessage(),
+            ], 500);
         }
         return redirect()->route('activiList', [$department_id, 'category_id' => $category_id])->with('message', 'Success Acti');
     }

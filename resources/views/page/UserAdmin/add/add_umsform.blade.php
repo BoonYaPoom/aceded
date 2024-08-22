@@ -274,7 +274,7 @@
                             </div>
 
                             <!-- form row -->
-                            <div class="form-row d-none " id="set_workplace">
+                            <div class="form-row" id="set_workplace">
                                 <label for="workplace" class="col-md-2">ที่อยู่</label>
                                 <div class="col-md-9 mb-3">
                                     <textarea type="text" class="form-control form-control-sm" rows="6" id="workplace" name="workplace"
@@ -283,50 +283,98 @@
                             </div>
 
                             <div class="form-row " id="set_province_id">
-                                <label for="province_id" class="col-md-2">จังหวัด</label>
+                                <label for="provin" class="col-md-2">จังหวัด</label>
                                 <div class="col-md-9 mb-3">
-                                    <select id="province_id" name="province_id" class="form-control "
-                                        data-toggle="select2" data-allow-clear="false">
+                                    <select id="provin" name="provin" class="form-control " data-toggle="select2"
+                                        data-allow-clear="false">
                                         <option value="0">โปรดเลือกจังหวัด</option>
-                                        @php
-                                            $Provinces = \App\Models\Provinces::all();
-                                        @endphp
-                                        @foreach ($Provinces as $provin)
-                                            <option value="{{ $provin->code }}"> {{ $provin->name_in_thai }} </option>
+                                        @foreach ($provinces as $provin)
+                                            <option value="{{ $provin->id }}"> {{ $provin->name_in_thai }} </option>
                                         @endforeach
                                     </select>
                                 </div>
                             </div>
-
-
-                            <!-- form row -->
-                            <div class="form-row d-none " id="set_district_id">
+                            <div class="form-row" id="set_district_id" style="display: none;">
                                 <label for="district_id" class="col-md-2">เขต/อำเภอ </label>
                                 <div class="col-md-9 mb-3">
                                     <select id="district_id" name="district_id" class="form-control form-control-sm"
                                         data-toggle="select2" data-allow-clear="false">
-                                        <option value="0">โปรดเลือกเขต/อำเภอ</option>
+                                        <option value="" selected disabled>-- เลือกอำเภอ --</option>
                                     </select>
                                 </div>
                             </div>
 
-                            <div class="form-row d-none " id="set_subdistrict_id">
+                            <div class="form-row" id="set_subdistrict_id" style="display: none;">
                                 <label for="subdistrict_id" class="col-md-2">แขวง/ตำบล </label>
                                 <div class="col-md-9 mb-3">
                                     <select id="subdistrict_id" name="subdistrict_id"
                                         class="form-control form-control-sm" data-toggle="select2"
                                         data-allow-clear="false">
-                                        <option value="0">โปรดเลือกแขวง/ตำบล</option>
+                                        <option value="" selected disabled>-- เลือกตำบล --</option>
                                     </select>
                                 </div>
                             </div>
+                            <script>
+                                $(document).ready(function() {
+                                    var provin = $('#provin');
+                                    var distrit = $('#district_id');
+                                    var subdistrits = $('#subdistrict_id');
+                                    var distritdata = {!! $districts !!};
+                                    var subdistritsdata = {!! $subdistricts !!};
+                                    $('#extender_id').select2();
+                                    provin.select2();
+
+                                    $('#provin').on('change', function() {
+                                        var selectedprovinId = $(this).val();
+                                        var foundMatchprovin = false;
+                                        distrit.select2();
+                                        $('#district_id').val(0).trigger('change');
+                                        if ($('#district_id').val(0)) {
+                                            $('#set_subdistrict_id').hide();
+                                        }
+                                        distrit.empty();
+                                        distrit.append('<option value="" selected disabled>-- เลือกอำเภอ --</option>');
+                                        $.each(distritdata, function(index, dis) {
+                                            if (dis.province_id == selectedprovinId) {
+                                                distrit.append($('<option></option>')
+                                                    .attr('value', dis.id)
+                                                    .text(dis.name_in_thai));
+                                                foundMatchprovin = true;
+                                                $('#set_district_id').show();
+                                            }
+                                        });
+                                    });
+
+                                    $('#district_id').on('change', function() {
+                                        var selecteddistritId = $(this).val();
+                                        var foundMatchdistrit = false;
+                                        subdistrits.select2();
+                                        subdistrits.empty();
+                                        subdistrits.append('<option value="" selected disabled>-- เลือกตำบล --</option>');
+                                        $.each(subdistritsdata, function(index, subdis) {
+                                            if (subdis.district_id == selecteddistritId) {
+                                                subdistrits.append($('<option></option>')
+                                                    .attr('value', subdis.id)
+                                                    .text(subdis.name_in_thai));
+                                                foundMatchdistrit = true;
+                                                $('#set_subdistrict_id').show();
+                                            }
+                                        });
+
+                                    });
+                                });
+                            </script>
+
+
+                            <!-- form row -->
+
                             <div class="form-row " id="set_pos_name">
                                 <label for="pos_name" class="col-md-2">ตำแหน่ง</label>
                                 <div class="col-md-9 mb-3">
                                     <input type="text" class="form-control " id="pos_name" name="pos_name"
                                         value="" placeholder="ตำแหน่ง">
                                     <!-- <select id="pos_namexx" name="pos_namexx" class="form-control form-control-sm" data-toggle="select2" data-allow-clear="false">
-                                                                                                                                                                                                                                                                                                                                                    </select> -->
+                                                                                                                                                                                                                                                                                                                                                                    </select> -->
                                 </div>
                             </div>
                             @error('pos_name')

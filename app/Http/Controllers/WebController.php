@@ -83,8 +83,8 @@ class WebController extends Controller
         //     mkdir(public_path('/upload/Web/ck/'), 0755, true);
         // }
 
-        if (!Storage::disk('sftp')->exists('/upload/suyQue/ck/')) {
-            Storage::disk('sftp')->makeDirectory('/upload/suyQue/ck/');
+        if (!Storage::disk('sftp')->exists('Web/ck/')) {
+            Storage::disk('sftp')->makeDirectory('Web/ck/');
         }
     
         if ($request->has('detail_th')) {
@@ -104,7 +104,7 @@ class WebController extends Controller
                 foreach ($images_des_th as $key => $img) {
                     if (strpos($img->getAttribute('src'), 'data:image/') === 0) {
                         $data = base64_decode(explode(',', explode(';', $img->getAttribute('src'))[1])[1]);
-                        $image_name = '/upload/Web/ck/' . time() . $key . '.png'; // ใส่ .png เพื่อให้เป็นนามสกุลไฟล์ถูกต้อง
+                        $image_name = 'Web/ck/' . time() . $key . '.png'; // ใส่ .png เพื่อให้เป็นนามสกุลไฟล์ถูกต้อง
                         Storage::disk('sftp')->put($image_name, $data);
                         $img->removeAttribute('src');
                         $newImageUrl = env('URL_FILE_SFTP') . $image_name;
@@ -136,7 +136,7 @@ class WebController extends Controller
                 foreach ($images_de_en as $key => $img) {
                     if (strpos($img->getAttribute('src'), 'data:image/') === 0) {
                         $data = base64_decode(explode(',', explode(';', $img->getAttribute('src'))[1])[1]);
-                        $image_name = '/upload/Web/ck/' . time() . $key . '.png'; // ใส่ .png เพื่อให้เป็นนามสกุลไฟล์ถูกต้อง
+                        $image_name = 'Web/ck/' . time() . $key . '.png'; // ใส่ .png เพื่อให้เป็นนามสกุลไฟล์ถูกต้อง
                         Storage::disk('sftp')->put($image_name, $data);
                         $img->removeAttribute('src');
                         $newImageUrl = env('URL_FILE_SFTP') . $image_name;
@@ -156,13 +156,25 @@ class WebController extends Controller
 
         if ($request->hasFile('cover')) {
             $file_name = 'cover' .  $webs->web_id  . '.' . $request->cover->getClientOriginalExtension();
-            $uploadDirectory = public_path('upload/Web/');
-            if (!file_exists($uploadDirectory)) {
-                mkdir($uploadDirectory, 0755, true);
-            }
-            if (file_exists($uploadDirectory)) {
+            // $uploadDirectory = public_path('upload/Web/');
+            // if (!file_exists($uploadDirectory)) {
+            //     mkdir($uploadDirectory, 0755, true);
+            // }
+            // if (file_exists($uploadDirectory)) {
 
-                file_put_contents(public_path('upload/Web/' . $file_name), file_get_contents($request->cover));
+            //     file_put_contents(public_path('upload/Web/' . $file_name), file_get_contents($request->cover));
+            //     $webs->cover = 'upload/Web/' . $file_name;
+            //     $webs->save();
+            // }
+
+            $uploadDirectory = 'Web/';
+            if (!Storage::disk('sftp')->exists($uploadDirectory)) {
+                Storage::disk('sftp')->makeDirectory($uploadDirectory);
+            }
+            if (Storage::disk('sftp')->exists($uploadDirectory)) {
+                // ตรวจสอบว่ามีไฟล์เดิมอยู่หรือไม่ ถ้ามีให้ลบออก
+
+                Storage::disk('sftp')->put($uploadDirectory . '/' . $file_name, file_get_contents($request->cover->getRealPath()));
                 $webs->cover = 'upload/Web/' . $file_name;
                 $webs->save();
             }
@@ -196,13 +208,14 @@ class WebController extends Controller
         $webs = Web::findOrFail($web_id);
         if ($request->hasFile('cover')) {
             $file_name = 'cover' .  $web_id  . '.' . $request->cover->getClientOriginalExtension();
-            $uploadDirectory = public_path('upload/Web/');
-            if (!file_exists($uploadDirectory)) {
-                mkdir($uploadDirectory, 0755, true);
+            $uploadDirectory = 'Web/';
+            if (!Storage::disk('sftp')->exists($uploadDirectory)) {
+                Storage::disk('sftp')->makeDirectory($uploadDirectory);
             }
-            if (file_exists($uploadDirectory)) {
-
-                file_put_contents(public_path('upload/Web/' . $file_name), file_get_contents($request->cover));
+            if (Storage::disk('sftp')->exists($uploadDirectory)) {
+                // ตรวจสอบว่ามีไฟล์เดิมอยู่หรือไม่ ถ้ามีให้ลบออก
+                Storage::disk('sftp')->delete($uploadDirectory . $file_name);
+                Storage::disk('sftp')->put($uploadDirectory . '/' . $file_name, file_get_contents($request->cover->getRealPath()));
                 $webs->cover = 'upload/Web/' . $file_name;
             }
         }
@@ -223,8 +236,8 @@ class WebController extends Controller
         // if (!file_exists(public_path('/upload/Web/ck/'))) {
         //     mkdir(public_path('/upload/Web/ck/'), 0755, true);
         // }
-        if (!Storage::disk('sftp')->exists('/upload/suyQue/ck/')) {
-            Storage::disk('sftp')->makeDirectory('/upload/suyQue/ck/');
+        if (!Storage::disk('sftp')->exists('Web/ck/1/')) {
+            Storage::disk('sftp')->makeDirectory('Web/ck/1/');
         }
 
         if ($request->has('detail_th')) {
@@ -245,10 +258,10 @@ class WebController extends Controller
                 foreach ($images_des_th as $key => $img) {
                     if (strpos($img->getAttribute('src'), 'data:image/') === 0) {
                         $data = base64_decode(explode(',', explode(';', $img->getAttribute('src'))[1])[1]);
-                        $image_name = '/upload/Web/ck/' . time() . $key . '.png'; // ใส่ .png เพื่อให้เป็นนามสกุลไฟล์ถูกต้อง
+                        $image_name = 'Web/ck/1/' . time() . $key . '.png'; // ใส่ .png เพื่อให้เป็นนามสกุลไฟล์ถูกต้อง
                         Storage::disk('sftp')->put($image_name, $data);
                         $img->removeAttribute('src');
-                        $newImageUrl = env('URL_FILE_SFTP') . $image_name;
+                        $newImageUrl = env('URL_FILE_SFTP') . 'upload/' . $image_name;
                         $img->setAttribute('src', $newImageUrl);
                     }
                 }
@@ -279,12 +292,12 @@ class WebController extends Controller
 
                 foreach ($images_de_en as $key2 => $img2) {
                     if (strpos($img2->getAttribute('src'), 'data:image/') === 0) {
-                        $data = base64_decode(explode(',', explode(';', $img2->getAttribute('src'))[1])[1]);
-                        $image_name = '/upload/Web/ck/' . time() . $key2 . '.png'; // ใส่ .png เพื่อให้เป็นนามสกุลไฟล์ถูกต้อง
-                        Storage::disk('sftp')->put($image_name, $data);
-                        $img->removeAttribute('src');
-                        $newImageUrl = env('URL_FILE_SFTP') . $image_name;
-                        $img2->setAttribute('src', $newImageUrl);
+                        $data2 = base64_decode(explode(',', explode(';', $img2->getAttribute('src'))[1])[1]);
+                        $image_name2 = 'Web/ck/1/' . time() . $key2 . '.png'; // ใส่ .png เพื่อให้เป็นนามสกุลไฟล์ถูกต้อง
+                        Storage::disk('sftp')->put($image_name2, $data2);
+                        $img2->removeAttribute('src');
+                        $newImageUrl2 = env('URL_FILE_SFTP') . 'upload/' . $image_name2;
+                        $img2->setAttribute('src', $newImageUrl2);
                     }
                 }
 
@@ -298,9 +311,6 @@ class WebController extends Controller
         }
 
         $webs->save();
-
-
-
         return redirect()->route('catpage', ['department_id' => $department_id, 'category_id' => $webs->category_id])->with('message', 'Data update successfully');
     }
 

@@ -43,14 +43,14 @@
                                     </td>
                                     </td>
                                 </tr>
-                              
+{{--                               
                                    <tr>
                                     <td>3</td>
                                     <td><i class="fas fa-folder-plus fa-lg text-primary"></i> <a
                                             href="{{ route('cer', ['department_id' => $depart->department_id]) }}">จัดการใบประกาศ</a>
                                     </td>
                                     </td>
-                                </tr>
+                                </tr> --}}
                           <!--      <tr>
                                     <td>3</td>
                                     <td><i class="fas fa-folder-plus fa-lg text-primary"></i> <a

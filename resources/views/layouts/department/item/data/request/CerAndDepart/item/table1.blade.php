@@ -18,34 +18,32 @@
                 $i = 1;
             @endphp
             @foreach ($claimuser as $c)
-                @if ($c->claim_status < 2)
-                    @if ($c->claim_user_id > 0)
-                        @php
-                            $users2 = \App\Models\Users::where('user_id', $c->claim_user_id)->first();
-                        @endphp
-                        @if ($users2)
-                            <tr>
-                                <td>{{ $i++ }}</td>
-                                <td>{{ $users2->firstname }} {{ $users2->lastname }}</td>
-                                <td><i class="fa fas fa-eye text-success pointer" style="cursor:pointer" id="icon1"
-                                        onclick="showModal('{{ $c->claim_user_id }}')"></i>
-                                    @include(
-                                        'layouts.department.item.data.request.CerAndDepart.item.modeleditDpart',
-                                        [
-                                            'claimUserId' => $c->claim_user_id,
-                                        ]
-                                    )
-                                </td>
-                                <td>
-                                    <a href="{{ route('updateuserdeyes', $c->claim_user_id) }}"
-                                        onclick="updateceryes(event)"><i class="fas fa-check fa-lg text-success"
-                                            data-toggle="tooltip" title="อนุมัติผ่าน"></i></a>
-                                    <a href="{{ route('updateuserdeno', $c->claim_user_id) }}"
-                                        onclick="updatecerno(event)"><i class="fas fa-times fa-lg text-danger"
-                                            data-toggle="tooltip" title="อนุมัติไม่ผ่าน"></i></a>
-                                </td>
-                            </tr>
-                        @endif
+                @if ($c->claim_user_id > 0)
+                    @php
+                        $users2 = \App\Models\Users::where('user_id', $c->claim_user_id)->first();
+                    @endphp
+                    @if ($users2)
+                        <tr>
+                            <td>{{ $i++ }}</td>
+                            <td>{{ $users2->firstname }} {{ $users2->lastname }}</td>
+                            <td><i class="fa fas fa-eye text-success pointer" style="cursor:pointer" id="icon1"
+                                    onclick="showModal('{{ $c->claim_user_id }}')"></i>
+                                @include(
+                                    'layouts.department.item.data.request.CerAndDepart.item.modeleditDpart',
+                                    [
+                                        'claimUserId' => $c->claim_user_id,
+                                    ]
+                                )
+                            </td>
+                            <td>
+                                <a href="{{ route('updateuserdeyes', $c->claim_user_id) }}"
+                                    onclick="updateceryes(event)"><i class="fas fa-check fa-lg text-success"
+                                        data-toggle="tooltip" title="อนุมัติผ่าน"></i></a>
+                                <a href="{{ route('updateuserdeno', $c->claim_user_id) }}"
+                                    onclick="updatecerno(event)"><i class="fas fa-times fa-lg text-danger"
+                                        data-toggle="tooltip" title="อนุมัติไม่ผ่าน"></i></a>
+                            </td>
+                        </tr>
                     @endif
                 @endif
             @endforeach
@@ -63,7 +61,7 @@
             lengthChange: false,
             responsive: true,
             info: true,
-            pageLength: 10,
+            pageLength: 20,
             language: {
                 info: "ลำดับที่ _START_ ถึง _END_ จากทั้งหมด _TOTAL_ รายการ",
                 infoEmpty: "ไม่พบรายการ",
@@ -72,7 +70,6 @@
                     first: "หน้าแรก",
                     last: "หน้าสุดท้าย",
                     previous: "ก่อนหน้า",
-
                     next: "ถัดไป"
                 }
             },

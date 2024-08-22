@@ -48,17 +48,17 @@ class t0101All implements
                         FROM
                             users
                         JOIN
-                            course_learner ON TO_NUMBER(users.user_id) = TO_NUMBER(course_learner.user_id)
+                            course_learner ON users.user_id = course_learner.user_id
                         JOIN
-                            users_department ON TO_NUMBER(users.user_id) = TO_NUMBER(users_department.user_id)
+                            users_department ON users.user_id = users_department.user_id
                         JOIN
-                            department ON TO_NUMBER(users_department.department_id) = TO_NUMBER(department.department_id)
+                            department ON users_department.department_id = department.department_id
                         JOIN
-                            provinces ON TO_NUMBER(users.province_id) = TO_NUMBER(provinces.id)
+                            provinces ON users.province_id = provinces.id
                         JOIN
-                            course ON TO_NUMBER(course_learner.course_id) = TO_NUMBER(course.course_id)
+                            course ON course_learner.course_id = course.course_id
                             LEFT JOIN
-                            users_extender2 ON users_department.department_id < 5 AND TO_NUMBER(users.organization) = TO_NUMBER(users_extender2.extender_id)
+                            users_extender2 ON users_department.department_id < 5 AND users.organization = users_extender2.extender_id
                         WHERE
                             course_learner.learner_status = 1
                             AND users.user_role = 4

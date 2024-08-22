@@ -42,7 +42,6 @@ class t0101 implements
             ->where('course_learner.learner_status', '=', 1)
             ->where('users.user_role', 4)
             ->where('course_learner.course_id', '>', 0)
-            ->where('users_department.department_id', '=', $this->department_id)
             ->where('provinces.name_in_thai', '=', $this->provin_name)
             ->select(
                 'users.username',
@@ -57,9 +56,17 @@ class t0101 implements
                 DB::raw("TO_CHAR(course_learner.realcongratulationdate , 'DD Month YYYY ', 'NLS_DATE_LANGUAGE=THAI') as realcongratulationdate"),
                 DB::raw('EXTRACT(YEAR FROM course_learner.registerdate)  + 543  as year'),
             );
-        $datauser = $learner->whereRaw('EXTRACT(YEAR FROM course_learner.registerdate) + 543 = ?', [$this->year])
+            if($this->department_id == 0){
+            $datauser = $learner->whereRaw('EXTRACT(YEAR FROM course_learner.registerdate) + 543 = ?', [$this->year])
             ->distinct()
             ->get();
+            }else{
+            $datauser = $learner->whereRaw('EXTRACT(YEAR FROM course_learner.registerdate) + 543 = ?', [$this->year])
+                ->where('users_department.department_id', '=', $this->department_id)
+                ->distinct()
+                ->get();
+            }
+     
 
 
         $i = 1;

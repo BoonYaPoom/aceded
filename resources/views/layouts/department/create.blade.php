@@ -93,21 +93,28 @@
                         <div class="form-group">
                             <label for="detail">logo <span class="badge badge-warning">Required</span><small
                                     class="text-muted">( ขนาด 585px * 350px )</small> </label>
-                            <input type="file" class="form-control" name="detail" placeholder="logo" accept=" image/jpeg, image/png"
-                                required="">
+                            <input type="file" class="form-control" name="detail" placeholder="logo"
+                                accept=" image/jpeg, image/png" required="">
                         </div><!-- /.form-group -->
                         @error('detail')
                             <span class="badge badge-warning">{{ $message }}</span>
                         @enderror
-                        <!-- .form-actions -->
+
                         <div class="form-group">
-                            <label for="department_status">สถานะ </label> <label
+                            <label for="department_status">ไม่แสดงที่หน้าหลัก </label> <label
                                 class="switcher-control switcher-control-success switcher-control-lg"><input type="checkbox"
                                     class="switcher-input" name="department_status" id="department_status" value="1">
                                 <span class="switcher-indicator"></span> <span class="switcher-label-on">ON</span> <span
                                     class="switcher-label-off text-red">OFF</span></label>
-                        </div><!-- /.form-group -->
-                    </div><!-- /.card-body -->
+                        </div>
+                        <div class="form-group">
+                            <label for="home_status">ไม่แสดงบนหน้าเว็ป </label> <label
+                                class="switcher-control switcher-control-success switcher-control-lg"><input type="checkbox"
+                                    class="switcher-input" name="home_status" id="home_status" value="1">
+                                <span class="switcher-indicator"></span> <span class="switcher-label-on">ON</span> <span
+                                    class="switcher-label-off text-red">OFF</span></label>
+                        </div>
+                    </div>
                     <div class="container mt-2">
                         <div class="form-group">
                             <label for="color">Select a color:</label>

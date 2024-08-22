@@ -147,12 +147,12 @@ class EditManageUserController extends Controller
             })
 
             ->filter(function ($userdata) use ($request) {
-
+                $searchTerm = '%' . $request->myInput . '%';
                 if ($request->has('myInput') && !empty($request->myInput)) {
-                    $userdata->where('username', 'like', '%' . $request->myInput . '%')
-                        ->orwhere('firstname', 'like', '%' . $request->myInput . '%')
-                        ->orWhere('lastname', 'like', '%' . $request->myInput . '%')
-                        ->orWhere('citizen_id', 'like', '%' . $request->myInput . '%');
+                    $userdata->where('username', 'like', $searchTerm)
+                        ->orWhere('firstname', 'like', $searchTerm)
+                        ->orWhere('lastname', 'like', $searchTerm)
+                        ->orWhere('citizen_id', 'like', $searchTerm);
                 }
             })
             ->filterColumn('name_in_thai', function ($userdata) use ($request) {
@@ -170,6 +170,9 @@ class EditManageUserController extends Controller
     {
         $usermanages = Users::findOrFail($user_id);
         $role = UserRole::all();
+        $provinces = DB::table('provinces')->get();
+        $districts = DB::table('districts')->get();
+        $subdistricts = DB::table('subdistricts')->get();
         $extender_1 = DB::table('users_extender')->where('department', 6)->where('department_lv', 0)->where('status', 1)->get();
         $extender_2 = DB::table('users_extender')->where('department', 6)->where('department_lv', 1)->where('status', 1)->get();
         $extender_3 = DB::table('users_extender')->where('department', 6)->where('department_lv', 2)->where('status', 1)->get();
@@ -178,7 +181,7 @@ class EditManageUserController extends Controller
         $extender3 = DB::table('users_extender2')->where('item_lv', 3)->get();
         $extender4 = DB::table('users_extender2')->where('item_lv', 4)->get();
         $extender5 = DB::table('users_extender2')->where('item_lv', 5)->get();
-        return view('page.UserAdmin.edit', compact('usermanages', 'role', 'extender1', 'extender2', 'extender3', 'extender4', 'extender5', 'extender_1', 'extender_2', 'extender_3'));
+        return view('page.UserAdmin.edit', compact('provinces', 'districts', 'subdistricts', 'usermanages', 'role', 'extender1', 'extender2', 'extender3', 'extender4', 'extender5', 'extender_1', 'extender_2', 'extender_3'));
     }
 
 
@@ -205,12 +208,9 @@ class EditManageUserController extends Controller
             }
             if (Storage::disk('sftp')->exists($uploadDirectory)) {
                 // ตรวจสอบว่ามีไฟล์เดิมอยู่หรือไม่ ถ้ามีให้ลบออก
-                Storage::disk('sftp')->delete($uploadDirectory);
                 Storage::disk('sftp')->put($uploadDirectory . '/' . $image, file_get_contents($request->avatar->getRealPath()));
             }
             $usermanages->avatar = 'https://aced-content.nacc.go.th/' . 'upload/Profile/' . 'avatar' .  $user_id . '.' . $request->avatar->getClientOriginalExtension();
-       
-       
         }
 
         // ... อัปเดตฟิลด์อื่น ๆ ตามต้องการ
@@ -227,7 +227,10 @@ class EditManageUserController extends Controller
         $usermanages->modifieddate = now();
         $usermanages->birthday = $request->birthday;
 
-        $usermanages->province_id = $request->province_id;
+        $usermanages->province_id = $request->provin;
+        $usermanages->district_id = $request->district_id;
+        $usermanages->subdistrict_id = $request->subdistrict_id;
+
         $usermanages->department_id = $request->department_id;
         $usermanages->mobile = $request->mobile;
 
@@ -335,7 +338,9 @@ class EditManageUserController extends Controller
     {
 
         $school = School::all();
-        $provinces = Provinces::all();
+        $provinces = DB::table('provinces')->get();
+        $districts = DB::table('districts')->get();
+        $subdistricts = DB::table('subdistricts')->get();
         $role = UserRole::all();
         $extender_1 = DB::table('users_extender')->where('department', 6)->where('department_lv', 0)->where('status', 1)->get();
         $extender_2 = DB::table('users_extender')->where('department', 6)->where('department_lv', 1)->where('status', 1)->get();
@@ -345,7 +350,7 @@ class EditManageUserController extends Controller
         $extender3 = DB::table('users_extender2')->where('item_lv', 3)->get();
         $extender4 = DB::table('users_extender2')->where('item_lv', 4)->get();
         $extender5 = DB::table('users_extender2')->where('item_lv', 5)->get();
-        return view('page.UserAdmin.add.add_umsform', compact('role', 'school', 'provinces', 'extender1', 'extender2', 'extender3', 'extender4', 'extender5', 'extender_1', 'extender_2', 'extender_3'));
+        return view('page.UserAdmin.add.add_umsform', compact('role', 'school', 'provinces', 'districts', 'subdistricts', 'extender1', 'extender2', 'extender3', 'extender4', 'extender5', 'extender_1', 'extender_2', 'extender_3'));
     }
 
 
@@ -402,7 +407,7 @@ class EditManageUserController extends Controller
 
             'username' => 'required|unique:users',
             'firstname' => 'required',
-            'password' => 'required|min:3|max:20',
+            'password' => 'required|min:8|max:20',
             'citizen_id' => 'required|unique:users',
             'email' => 'required|email|unique:users',
             'gender' => 'required',
@@ -413,7 +418,7 @@ class EditManageUserController extends Controller
             'username.unique' => 'มี username ซ้ำในระบบกรุณาเปลี่ยน',
             'firstname.required' => 'กรุณากรอก ชื่อจริง',
             'password.required' => 'กรุณากรอก password',
-            'password.min' => 'password น้อยเกินไป ต้องมากกว่า 3 ตัวอักษร',
+            'password.min' => 'password น้อยเกินไป ต้องมากกว่า 8 ตัวอักษร',
             'password.max' => 'password เยอะเกินไป ไม่เกิน 20 ตัวอักษร',
             'citizen_id.required' => 'กรุณากรอกเลขบัตรประชาชน หรือ passport',
             'citizen_id.unique' => 'มีเลขบัตรประชาชน หรือ passport ซ้ำในระบบ',
@@ -474,12 +479,11 @@ class EditManageUserController extends Controller
         $usermanages->birthday = $request->birthday;
 
         $usermanages->user_type = null;
-        $usermanages->province_id = $request->province_id;
+
         $usermanages->user_type_card =  $request->input('user_type_card', 0);
-
-
-        $usermanages->district_id = null;
-        $usermanages->subdistrict_id = null;
+        $usermanages->province_id = $request->provin;
+        $usermanages->district_id = $request->district_id;
+        $usermanages->subdistrict_id = $request->subdistrict_id;
 
         if (
             $request->departmentselect == 1 ||
@@ -534,7 +538,7 @@ class EditManageUserController extends Controller
         $usermanages->save();
 
 
-       
+
         $maxUserDepartmentId = DB::table('users_department')->max('user_department_id');
         $department_data = $request->department_data;
         if (!empty($department_data)) {

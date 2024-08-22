@@ -9,6 +9,7 @@ use App\Models\Users;
 use Closure;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log as FacadesLog;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\View as FacadesView;
 use Symfony\Component\HttpFoundation\Response;
@@ -22,7 +23,6 @@ class CheckUserLogin
      */
     public function handle(Request $request, Closure $next): Response
     {
-        try {
             if (Session::has('loginId')) {
                 $loginId = Session::get('loginId');
                 $data = Users::where('user_id', '=', $loginId)->first();
@@ -44,9 +44,6 @@ class CheckUserLogin
                 $this->saveLoginLog($loginId, $ip, $loginTime, $os, $browser);
 
             }
-        } catch (\Exception $e) {
-            return response()->view('error.error-500', [], 500);
-        }
             
         return $next($request);
     }

@@ -8,14 +8,15 @@
         <div class="page-inner">
             <div class="page-section">
                 <div class="card card-fluid">
-                    <div class="card-header bg-muted"><a href="{{ route('UserManage') }}">ผู้ใช้งาน</a> / ข้อมูลส่วนตัว ของ {{ $usermanages->firstname }} {{ $usermanages->lastname }}</div>
+                    <div class="card-header bg-muted"><a href="{{ route('UserManage') }}">ผู้ใช้งาน</a> / ข้อมูลส่วนตัว ของ
+                        {{ $usermanages->firstname }} {{ $usermanages->lastname }}</div>
                     <div class="col-lg">
                         <h6 class="card-header"> ข้อมูลส่วนตัว </h6>
                         <div class="card-body">
                             <div class="media mb-3">
                                 <div class="user-avatar user-avatar-xl fileinput-button">
                                     <div class="fileinput-button-label"> Change photo </div>
-                                    <img src="{{ $usermanages->avatar }}" alt="{{  $usermanages->avatar }}">
+                                    <img src="{{ $usermanages->avatar }}" alt="{{ $usermanages->avatar }}">
 
                                     <input id="fileupload-avatar" type="file" name="avatar" accept="image/*">
                                 </div>
@@ -88,14 +89,14 @@
                                 <label for="username" class="col-md-2">Username <span
                                         class="badge badge-warning">Required</span></label>
                                 <div class="col-md-9 mb-3">
-                                    <input type="text" class="form-control inputuname " id="username"
-                                        name="username" placeholder="username" value="{{ $usermanages->username }}"
-                                        minlength="5" maxlength="20" readonly required=""><small
+                                    <input type="text" class="form-control inputuname " id="username" name="username"
+                                        placeholder="username" value="{{ $usermanages->username }}" minlength="5"
+                                        maxlength="20" readonly required=""><small
                                         class="form-text text-muted">ตัวอักษรอังกฤษหรืออีเมล
                                         ความยาว 5-20 ตัวอักษร</small>
                                 </div>
                             </div>
-           
+
                             <div class="form-row">
                                 <label for="password" class="col-md-2"> รหัสผ่าน</label>
                                 <div class="col-md-9 mb-3">
@@ -104,15 +105,15 @@
                                     <small class="form-text text-muted">ตัวอักษรอังกฤษและตัวเลขความยาว 8-20 ตัวอักษร</small>
                                 </div>
                             </div>
-        
+
                             <div class="form-row">
                                 <label for="citizen_id" class="col-md-2">เลขประจำตัวประชาชน</label>
                                 <div class="col-md-9 mb-3">
                                     <input type="text" class="form-control " id="citizen_id" name="citizen_id"
-                                        placeholder="เลขประจำตัวประชาชน" value="{{ $usermanages->citizen_id }}" >
+                                        placeholder="เลขประจำตัวประชาชน" value="{{ $usermanages->citizen_id }}">
                                 </div>
                             </div>
-                   
+
                             <div class="form-row">
                                 <label for="input04" class="col-md-2">เพศ</label>
                                 <div class="col-md-9 mb-3">
@@ -207,72 +208,132 @@
                             <!-- /form row -->
 
                             <!-- form row -->
-                            <div class="form-row d-none " id="set_workplace">
+                            <div class="form-row" id="set_workplace">
                                 <label for="workplace" class="col-md-2">ที่อยู่</label>
                                 <div class="col-md-9 mb-3">
                                     <textarea type="text" class="form-control form-control-sm" rows="6" id="workplace" name="workplace"
-                                        placeholder="ที่อยู่">123</textarea>
+                                        placeholder="ที่อยู่"></textarea>
                                 </div>
                             </div>
-                            <!-- /form row -->
 
-                            <!-- form row -->
                             <div class="form-row " id="set_province_id">
-                                <label for="province_id" class="col-md-2">จังหวัด </label>
+                                <label for="provin" class="col-md-2">จังหวัด</label>
                                 <div class="col-md-9 mb-3">
-                                    <select id="province_id" name="province_id" class="form-control form-control-sm"
-                                        data-toggle="select2" data-allow-clear="false">
+                                    <select id="provin" name="provin" class="form-control " data-toggle="select2"
+                                        data-allow-clear="false">
                                         <option value="0">โปรดเลือกจังหวัด</option>
-                                        @php
-                                            $Provinces = \App\Models\Provinces::all();
-                                        @endphp
-                                        @foreach ($Provinces as $provin)
-                                            <option
-                                                value="{{ $provin->id }}"{{ $usermanages->province_id == $provin->id ? 'selected' : '0' }}>
+                                        @foreach ($provinces as $provin)
+                                            <option value="{{ $provin->id }}"
+                                                {{ $usermanages->province_id == $provin->id ? 'selected' : '0' }}>
                                                 {{ $provin->name_in_thai }} </option>
                                         @endforeach
                                     </select>
                                 </div>
                             </div>
-                            <!-- /form row -->
-
-                            <!-- form row -->
-                            <div class="form-row d-none " id="set_district_id">
+                            <div class="form-row" id="set_district_id">
                                 <label for="district_id" class="col-md-2">เขต/อำเภอ </label>
                                 <div class="col-md-9 mb-3">
                                     <select id="district_id" name="district_id" class="form-control form-control-sm"
                                         data-toggle="select2" data-allow-clear="false">
-                                        <option value="86"> เมืองอ่างทอง </option>
-                                        <option value="87"> ไชโย </option>
-                                        <option value="88" selected> ป่าโมก </option>
-                                        <option value="89"> โพธิ์ทอง </option>
-                                        <option value="90"> แสวงหา </option>
-                                        <option value="91"> วิเศษชัยชาญ </option>
-                                        <option value="92"> สามโก้ </option>
+                                        <option value="" disabled>-- เลือกอำเภอ --</option>
                                     </select>
                                 </div>
                             </div>
-                            <!-- /form row -->
 
-                            <!-- form row -->
-                            <div class="form-row d-none " id="set_subdistrict_id">
+                            <div class="form-row" id="set_subdistrict_id">
                                 <label for="subdistrict_id" class="col-md-2">แขวง/ตำบล </label>
                                 <div class="col-md-9 mb-3">
                                     <select id="subdistrict_id" name="subdistrict_id"
                                         class="form-control form-control-sm" data-toggle="select2"
                                         data-allow-clear="false">
-                                        <option value="547"> บางปลากด </option>
-                                        <option value="548" selected> ป่าโมก </option>
-                                        <option value="549"> สายทอง </option>
-                                        <option value="550"> โรงช้าง </option>
-                                        <option value="551"> บางเสด็จ </option>
-                                        <option value="552"> นรสิงห์ </option>
-                                        <option value="553"> เอกราช </option>
-                                        <option value="554"> โผงเผง </option>
+                                        <option value="" disabled>-- เลือกตำบล --</option>
                                     </select>
                                 </div>
                             </div>
-                            <!-- /form row -->
+                            <script>
+                                $(document).ready(function() {
+                                    var provin = $('#provin');
+                                    var distrit = $('#district_id');
+                                    var subdistrits = $('#subdistrict_id');
+                                    var distritdata = {!! json_encode($districts) !!};
+                                    var subdistritsdata = {!! json_encode($subdistricts) !!};
+                                    const userDistrit = {!! json_encode($usermanages->district_id) !!};
+                                    const userSubDistrit = {!! json_encode($usermanages->subdistrict_id) !!};
+            
+                                    provin.select2();
+                                    distrit.select2();
+                                    subdistrits.select2();
+
+                                    function populateDistricts(selectedprovinId, userDistrit) {
+                                        distrit.empty();
+                                        distrit.append('<option value=""  disabled>-- เลือกอำเภอ --</option>');
+                                        var foundMatchprovin = false;
+
+                                        $.each(distritdata, function(index, dis) {
+                                            if (dis.province_id == selectedprovinId) {
+                                                let option = $('<option></option>')
+                                                    .attr('value', dis.id)
+                                                    .text(dis.name_in_thai);
+
+                                                if (dis.id == userDistrit) {
+                                                    option.attr('selected', 'selected');
+                                                    $('#set_district_id').show();
+                                                    $('#set_subdistrict_id').show();
+                                                    populateSubdistricts(userDistrit, userSubDistrit);
+                                                }
+
+                                                distrit.append(option);
+                                                foundMatchprovin = true;
+                                            }
+                                        });
+                                    }
+
+                                    function populateSubdistricts(selecteddistritId, userSubDistrit) {
+                                        subdistrits.empty();
+                                        subdistrits.append('<option value=""  disabled>-- เลือกตำบล --</option>');
+                                        var foundMatchdistrit = false;
+
+                                        $.each(subdistritsdata, function(index, subdis) {
+                                            if (subdis.district_id == selecteddistritId) {
+                                                let option = $('<option></option>')
+                                                    .attr('value', subdis.id)
+                                                    .text(subdis.name_in_thai);
+
+                                                if (subdis.id == userSubDistrit) {
+                                                    option.attr('selected', 'selected');
+                                                    $('#set_subdistrict_id').show();
+                                                }
+
+                                                subdistrits.append(option);
+                                                foundMatchdistrit = true;
+                                            }
+                                        });
+                                    }
+
+
+                                    provin.on('change', function() {
+                                        var selectedprovinId = $(this).val();
+                                        populateDistricts(selectedprovinId, null);
+                                        distrit.trigger('change');
+                                    });
+
+
+                                    distrit.on('change', function() {
+                                        var selecteddistritId = $(this).val();
+                                        populateSubdistricts(selecteddistritId,
+                                            null);
+                                        subdistrits.trigger('change');
+                                    });
+
+                                    if (userDistrit) {
+                                        populateDistricts(provin.val(), userDistrit);
+                                    }
+                                    if (userSubDistrit) {
+                                        populateSubdistricts(distrit.val(), userSubDistrit);
+                                    }
+                                });
+                            </script>
+
 
 
                             <div class="form-row " id="set_pos_name">
@@ -402,8 +463,8 @@
                                                 style="font-size: 22px;">
                                         @elseif ($usermanages->organization == 0)
                                             <input type="text" class="form-control " id="seraas" name="seraas"
-                                                value="{{ $user_affiliation->content_name ?? $usermanages->user_affiliation }}" disabled
-                                                placeholder="หน่วยงาน" style="font-size: 22px;">
+                                                value="{{ $user_affiliation->content_name ?? $usermanages->user_affiliation }}"
+                                                disabled placeholder="หน่วยงาน" style="font-size: 22px;">
                                         @endif
                                     </div>
                                 </div>
@@ -418,8 +479,8 @@
                                                 placeholder="หน่วยงาน" style="font-size: 22px;">
                                         @elseif ($usermanages->organization == 0)
                                             <input type="text" class="form-control " id="seraas" name="seraas"
-                                                value="{{ isset($af1->content_name) ? $af1->content_name : '' }}"
-                                                disabled placeholder="หน่วยงาน" style="font-size: 22px;">
+                                                value="{{ isset($af1->content_name) ? $af1->content_name : '' }}" disabled
+                                                placeholder="หน่วยงาน" style="font-size: 22px;">
                                         @endif
                                     </div>
                                 </div>
@@ -434,8 +495,8 @@
                                                 placeholder="หน่วยงาน" style="font-size: 22px;">
                                         @elseif ($usermanages->organization == 0)
                                             <input type="text" class="form-control " id="seraas" name="seraas"
-                                                value="{{ isset($af2->content_name) ? $af2->content_name : '' }}"
-                                                disabled placeholder="หน่วยงาน" style="font-size: 22px;">
+                                                value="{{ isset($af2->content_name) ? $af2->content_name : '' }}" disabled
+                                                placeholder="หน่วยงาน" style="font-size: 22px;">
                                         @endif
                                     </div>
                                 </div>

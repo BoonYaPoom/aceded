@@ -52,7 +52,7 @@ class ManualController extends Controller
                 }
                 if (Storage::disk('sftp')->exists($uploadDirectory)) {
                     // ตรวจสอบว่ามีไฟล์เดิมอยู่หรือไม่ ถ้ามีให้ลบออก
-                    Storage::disk('sftp')->delete($uploadDirectory);
+
                     Storage::disk('sftp')->put($uploadDirectory . '/' . $filename, file_get_contents($request->manual_path->getRealPath()));
                     $manuals->manual_path = 'upload/Manual/documents/' . $filename;
                 }
@@ -80,7 +80,7 @@ class ManualController extends Controller
                 }
                 if (Storage::disk('sftp')->exists($uploadDirectory)) {
                     // ตรวจสอบว่ามีไฟล์เดิมอยู่หรือไม่ ถ้ามีให้ลบออก
-                    Storage::disk('sftp')->delete($uploadDirectory);
+      
                     Storage::disk('sftp')->put($uploadDirectory . '/' . $image_name, file_get_contents($request->cover->getRealPath()));
                     $manuals->cover = 'upload/Manual/image/' . $image_name;
                 }
@@ -95,8 +95,9 @@ class ManualController extends Controller
         } catch (\Exception $e) {
     
             DB::rollBack();
-            
-            return response()->view('error.error-500', [], 500);
+            return response()->json([
+                'message' => $e->getMessage(),
+            ], 500);
         }
     
    
@@ -179,7 +180,7 @@ class ManualController extends Controller
             //     file_put_contents(public_path('upload/Manual/image/' . $image_name), file_get_contents($request->cover));
             //     $manuals->cover = 'upload/Manual/image/' .   $image_name;
             // }
-            $uploadDirectory = 'Manual/image/';
+            $uploadDirectory = 'Manual/image/' .  $image_name;
             if (!Storage::disk('sftp')->exists($uploadDirectory)) {
                 Storage::disk('sftp')->makeDirectory($uploadDirectory);
             }
@@ -201,7 +202,7 @@ class ManualController extends Controller
 
             //     file_put_contents(public_path('upload/Manual/documents/' . $filename), file_get_contents($request->manual_path));
             // }
-            $uploadDirectory = 'Manual/documents/';
+            $uploadDirectory = 'Manual/documents/' . $filename;
             if (!Storage::disk('sftp')->exists($uploadDirectory)) {
                 Storage::disk('sftp')->makeDirectory($uploadDirectory);
             }

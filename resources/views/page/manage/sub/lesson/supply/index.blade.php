@@ -80,9 +80,6 @@
                                             </label>
                                         </td>
 
-
-                                        <script src="{{ asset('/javascript/vendor/jquery/jquery.min.js') }}"></script>
-
                                         <script>
                                             $(document).ready(function() {
                                                 $(document).on('change', '.switcher-input.switcher-edit', function() {

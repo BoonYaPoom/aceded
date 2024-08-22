@@ -50,8 +50,10 @@ class BookCategoryController extends Controller
             $book->save();
 
         } catch (\Exception $e) {
-      
-            return redirect()->back()->with('error', 'เกิดข้อผิดพลาดในการบันทึกข้อมูล');
+            return response()->json([
+                'message' => $e->getMessage(),
+            ], 500);
+       
         }
 
         return redirect()->route('bookpage', ['department_id' => $book->department_id])->with('message', 'book สร้างเรียบร้อยแล้ว');

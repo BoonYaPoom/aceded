@@ -193,15 +193,16 @@ class ReportAController extends Controller
                 FROM
                     users
                 JOIN
-                    course_learner ON TO_NUMBER(users.user_id) = TO_NUMBER(course_learner.user_id)
+                    course_learner ON users.user_id = course_learner.user_id
                 JOIN
-                    users_department ON TO_NUMBER(users.user_id) = TO_NUMBER(users_department.user_id)
+                    users_department ON users.user_id = users_department.user_id
                 JOIN
-                    department ON TO_NUMBER(users_department.department_id) = TO_NUMBER(department.department_id)
+                    department ON users_department.department_id = department.department_id
                 JOIN
-                    provinces ON TO_NUMBER(users.province_id) = TO_NUMBER(provinces.id)
+                    provinces ON users.province_id = provinces.id
                 LEFT JOIN
-                    certificate_file ON TO_NUMBER(users.user_id) = TO_NUMBER(certificate_file.user_id) AND TO_NUMBER(certificate_file.learner_id) = TO_NUMBER(course_learner.learner_id)  AND  course_learner.congratulation = 1  AND certificate_file.file_name IS NOT NULL AND certificate_file.certificate_file_role_status = 1
+                    certificate_file ON users.user_id = certificate_file.user_id AND certificate_file.learner_id = course_learner.learner_id  
+                    AND  course_learner.congratulation = 1  AND certificate_file.file_name IS NOT NULL AND certificate_file.certificate_file_role_status = 1
                 WHERE
                     course_learner.learner_status = 1
                     AND users.user_role = 4
@@ -230,7 +231,7 @@ class ReportAController extends Controller
                 FROM
                     users
                 JOIN
-                    provinces ON TO_NUMBER(users.province_id) = TO_NUMBER(provinces.id)
+                    provinces ON users.province_id = provinces.id
                 WHERE
                     users.user_role = 4
                     AND users.userstatus = 1
@@ -252,9 +253,9 @@ class ReportAController extends Controller
                 FROM
                     users
                 JOIN
-                    course_learner ON TO_NUMBER(users.user_id) = TO_NUMBER(course_learner.user_id) 
+                    course_learner ON users.user_id = course_learner.user_id
                 JOIN
-                    provinces ON TO_NUMBER(users.province_id) = TO_NUMBER(provinces.id)
+                    provinces ON users.province_id = provinces.id
                 WHERE
                     course_learner.learner_status = 1
                     AND users.user_role = 4

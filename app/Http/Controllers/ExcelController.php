@@ -173,6 +173,17 @@ class ExcelController extends Controller
         set_time_limit(0);
         return Excel::download(new UsersExport(), 'Administrator Management Users.xlsx');
     }
+    public function exportUserDownload()
+    {
+        set_time_limit(0);
+
+
+        
+        return Excel::download(new UsersExport(), 'Administrator Management Users.xlsx');
+
+
+
+    }
     public function exportUsers($department_id)
     {
         return Excel::download(new UserDepartExport($department_id), 'Administrator Management Users Department.xlsx');

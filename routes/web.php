@@ -130,7 +130,7 @@ Route::get('/upload-image', [PDFcreateController::class, 'upload_image'])->name(
 Route::get('/generatePdfT0101', [PDFcreateController::class, 'generatePdfT0101'])->name('generatePdfT0101');
 Route::get('/generatePdf', [PDFcreateController::class, 'generatePdf'])->name('generatePdf');
 Route::get('/ReportExp', [ExcelController::class, 'ReportExp'])->name('ReportExp');
-Route::get('/exportUsersall', [ExcelController::class, 'exportUsersall'])->name('exportUsersall');
+Route::get('/LoadexportUsers', [ExcelController::class, 'exportUsersall'])->name('LoadexportUsers');
 Route::get('/UsersExportDepart/{department_id}', [ExcelController::class, 'exportUsers'])->name('UsersExport');
 Route::get('/exportUsersPro/{department_id}/{provicValue}', [ExcelController::class, 'exportUsersPro'])->name('exportUsersPro');
 
@@ -204,8 +204,6 @@ Route::group(['middleware' => 'IsLoggedIn'], function () {
                     Route::get('{department_id}/hight-Dep', [HighlightController::class, 'hightDep'])->name('hightDep');
                     Route::post('{department_id}/storeDep', [HighlightController::class, 'storeDep'])->name('storeDep');
                     Route::put('{department_id}/updateLinkDep/{highlight_id}', [HighlightController::class, 'updateLinkDep'])->name('updateLinkDep');
-
-
 
                     Route::get('{department_id}/Webpage', [WedCategoryController::class, 'Webpage'])->name('Webpage');
                     Route::get('{department_id}/webcategory', [WedCategoryController::class, 'evenpage'])->name('evenpage');
@@ -717,6 +715,8 @@ Route::group(['middleware' => 'IsLoggedIn'], function () {
                 Route::get('/delete_linksform/{links_id}', [LinkController::class, 'destory'])->name('destorylink');
                 Route::get('/changeStatusLinks', [LinkController::class, 'changeStatus'])->name('changeStatusLinks');
                 Route::get('/changeSortIink', [LinkController::class, 'changeSortIink'])->name('changeSortIink');
+                Route::get('/changeSortbooks', [BookController::class, 'changeSortbooks'])->name('changeSortbooks');
+                
                 Route::get('{department_id}/destorysub/{subject_id}', [CourseSubjectController::class, 'destory'])->name('destorysub');
 
                 Route::get('/changeStatusSubject', [CourseSubjectController::class, 'changeStatus'])->name('changeStatusSubject');

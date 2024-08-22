@@ -34,7 +34,6 @@ class HighlightController extends Controller
             mkdir($uploadDirectory, 0755, true);
         }
         if (file_exists($uploadDirectory)) {
-
             file_put_contents(public_path('upload/Highlight/Main/' . $image_name), file_get_contents($request->highlight_path));
             $hights->highlight_path = 'upload/Highlight/Main/' . $image_name;
         }
@@ -98,8 +97,9 @@ class HighlightController extends Controller
     } catch (\Exception $e) {
 
         DB::rollBack();
-
-        return response()->view('error.error-500', [], 500);
+            return response()->json([
+                    'message' => $e->getMessage(),
+                ], 500);
     }
 
         return redirect()->route('hightpage')->with('message', 'hightpage บันทึกข้อมูลสำเร็จ');
@@ -172,10 +172,7 @@ class HighlightController extends Controller
         if (!Storage::disk('sftp')->exists($uploadPath)) {
             Storage::disk('sftp')->makeDirectory($uploadPath);
         }
-        // ตรวจสอบว่ามีไฟล์เดิมอยู่หรือไม่ ถ้ามีให้ลบออก
-        if (Storage::disk('sftp')->exists($uploadPath)) {
-            Storage::disk('sftp')->delete($uploadPath);
-        }
+
         // อัพโหลดไฟล์ไปยัง FTP
         Storage::disk('sftp')->put($uploadPath . $image_name, file_get_contents($request->highlight_path->getRealPath()));
 

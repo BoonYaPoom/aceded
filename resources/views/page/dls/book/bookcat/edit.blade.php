@@ -52,8 +52,8 @@
 
                         <!-- .form-group -->
                         <div class="form-group">
-                            <label for="cover"><img src="{{ env('URL_FILE_SFTP') . $books->cover }}" alt="{{ $books->cover }}"
-                                    style="height:300px">
+                            <label for="cover"><img src="{{ env('URL_FILE_SFTP') . $books->cover }}"
+                                    alt="{{ $books->cover }}" style="height:300px">
                         </div>
                         <div class="form-group">
                             <label for="cover">ภาพปก </label>
@@ -79,9 +79,18 @@
                         <div class="form-group">
                             <label for="contents">เนื้อหาโดยย่อ</label>
                             <textarea class="editor" data-placeholder="เนื้อหาโดยย่อ" data-height="200" name="contents"
-                                value="{{ $books->contents }}">{{  html_entity_decode($books->contents, ENT_QUOTES, 'UTF-8') }}</textarea>
-                        </div><!-- /.form-group -->
-                         <div class="form-group">
+                                value="{{ $books->contents }}">{{ html_entity_decode($books->contents, ENT_QUOTES, 'UTF-8') }}</textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="recommended">หนังสือแนะนำ </label>
+                            <label class="switcher-control switcher-control-success switcher-control-lg">
+                                <input type="checkbox" class="switcher-input" name="recommended" id="recommended"
+                                    value="1" {{ $books->recommended == 1 ? 'checked' : '' }}>
+                                <span class="switcher-indicator"></span> <span class="switcher-label-on">ON</span>
+                                <span class="switcher-label-off text-red">OFF</span>
+                            </label>
+                        </div>
+                        <div class="form-group">
                             <label for="book_status">สถานะ </label>
                             <label class="switcher-control switcher-control-success switcher-control-lg">
                                 <input type="checkbox" class="switcher-input" name="book_status" id="book_status"
@@ -90,7 +99,7 @@
                                 <span class="switcher-label-off text-red">OFF</span>
                             </label>
                         </div>
-                        
+
                     </div><!-- /.card-body -->
 
             </div><!-- /.card -->

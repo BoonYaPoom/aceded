@@ -75,7 +75,7 @@ class BlogController extends Controller
                 foreach ($images_des_th as $key => $img) {
                     if (strpos($img->getAttribute('src'), 'data:image/') === 0) {
                         $data = base64_decode(explode(',', explode(';', $img->getAttribute('src'))[1])[1]);
-                        $image_name = '/upload/Blog/ck/' . time() . $key . '.png'; // ใส่ .png เพื่อให้เป็นนามสกุลไฟล์ถูกต้อง
+                        $image_name = 'upload/Blog/ck/' . time() . $key . '.png'; // ใส่ .png เพื่อให้เป็นนามสกุลไฟล์ถูกต้อง
                         Storage::disk('sftp')->put($image_name, $data);
                         $img->removeAttribute('src');
                         $newImageUrl = env('URL_FILE_SFTP') . $image_name;
@@ -159,7 +159,7 @@ class BlogController extends Controller
                 foreach ($images_des_th as $key => $img) {
                     if (strpos($img->getAttribute('src'), 'data:image/') === 0) {
                         $data = base64_decode(explode(',', explode(';', $img->getAttribute('src'))[1])[1]);
-                        $image_name = '/upload/Blog/ck/' . time() . $key . '.png'; // ใส่ .png เพื่อให้เป็นนามสกุลไฟล์ถูกต้อง
+                        $image_name = 'upload/Blog/ck/' . time() . $key . '.png'; // ใส่ .png เพื่อให้เป็นนามสกุลไฟล์ถูกต้อง
                         Storage::disk('sftp')->put($image_name, $data);
                         $img->removeAttribute('src');
                         $newImageUrl = env('URL_FILE_SFTP') . $image_name;

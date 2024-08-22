@@ -14,7 +14,8 @@
                         href="{{ route('bookpage', ['department_id' => $depart]) }}" style="text-decoration: underline;">
                         หนังสืออิเล็กทรอนิกส์</a> / <a
                         href="{{ route('bookcatpage', [$depart, 'category_id' => $bookcat->category_id]) }}"
-                        style="text-decoration: underline;"> {{$bookcat->category_th}}</a> / <i> เพิ่มคลังข้อมูลและความรู้</i>
+                        style="text-decoration: underline;"> {{ $bookcat->category_th }}</a> / <i>
+                        เพิ่มคลังข้อมูลและความรู้</i>
                 </div><!-- /.card-header -->
                 <!-- .card-body -->
                 <form action="{{ route('bookcatstore', [$depart, 'category_id' => $bookcat]) }}" method="post"
@@ -65,7 +66,15 @@
                             <label for="contents">เนื้อหาโดยย่อ</label>
                             <textarea class="editor" data-placeholder="เนื้อหาโดยย่อ" data-height="200" name="contents"></textarea>
                         </div><!-- /.form-group -->
-
+                        <div class="form-group">
+                            <label for="recommended">หนังสือแนะนำ </label>
+                            <label class="switcher-control switcher-control-success switcher-control-lg">
+                                <input type="checkbox" class="switcher-input" name="recommended" id="recommended"
+                                    value="1">
+                                <span class="switcher-indicator"></span> <span class="switcher-label-on">ON</span>
+                                <span class="switcher-label-off text-red">OFF</span>
+                            </label>
+                        </div>
 
                         <div class="form-group">
                             <label for="book_status">สถานะ </label>

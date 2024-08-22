@@ -23,12 +23,12 @@
 
                 <div><select id="depa" name="depa" class="form-control" data-toggle="select2"
                         data-placeholder="หลักสูตร" data-allow-clear="false">
-
+                        <option value="0" selected>รวมทั้งหมด </option>
                         @php
                             $depart = DB::table('department')->where('department_status', 1)->get();
                         @endphp
                         @foreach ($depart->sortBy('department_id') as $de)
-                            <option value="{{ $de->department_id }}" {{ $de->department_id == 1 ? 'selected' : '' }}>
+                            <option value="{{ $de->department_id }}">
                                 {{ $de->name_th }} </option>
                         @endforeach
                     </select></div>
@@ -58,10 +58,10 @@
                             class="fa fa-file-excel"></i></a>
                     &nbsp;
 
-                 <a class="btn btn-icon btn-outline-success print-button"><i class="fa fa-print"></i></a>
+                    <a class="btn btn-icon btn-outline-success print-button"><i class="fa fa-print"></i></a>
                 </div>
             </div><!-- /.card-header -->
-           <script>
+            <script>
                 $(document).ready(function() {
                     $(".print-button").on("click", function() {
                         var printableTable = $("#section-to-print").clone();
@@ -100,16 +100,18 @@
                                     var selectedYear = $('#selectyear').val();
                                     var provin = $('#provin').val();
                                     var filteredLearner = learner.filter(function(data) {
-                                        return data.year == selectedYear && data.department_id == depa && data
-                                            .province_name == provin;
+                                        if (depa == 0) {
+                                            return data.year == selectedYear && data.province_name == provin;
+                                        } else {
+                                            return data.year == selectedYear && data.department_id == depa && data.province_name == provin;
+                                        }
                                     });
                                     displayDataInTable(filteredLearner);
                                     $(".download-excel").on("click", function() {
                                         var url = "{{ route('exportT0101', [':depa', ':provin', ':selectedYear']) }}"
                                             .replace(':depa', depa)
                                             .replace(':provin', provin)
-                                            .replace(':selectedYear', selectedYear)
-                                            ;
+                                            .replace(':selectedYear', selectedYear);
                                         window.location.href = url;
                                     });
                                 });
@@ -125,11 +127,9 @@
                                     var i = 1
                                     $.each(data, function(index, item) {
                                         // สร้างแถวใน tbody
-
                                         var row = $('<tr>');
                                         // เพิ่มข้อมูลลงในแถว
                                         row.append($('<td class="text-center">').text(i++));
-
                                         row.append($('<td >').text(item.firstname + ' ' + item.lastname));
                                         row.append($('<td >').text(item.exten_name));
                                         row.append($('<td >').text(item.course_th));

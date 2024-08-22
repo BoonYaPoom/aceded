@@ -862,7 +862,7 @@ class CourseController extends Controller
     {
         $cour = Course::findOrFail($course_id);
         $cour->course_status = $request->input('course_status', 2);
-        $cour->delete();
+        $cour->save();
         return redirect()->back()->with('message', 'Course ลบข้อมูลสำเร็จ');
     }
 

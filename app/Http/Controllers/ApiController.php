@@ -9,7 +9,8 @@ use Illuminate\Support\Facades\Storage;
 
 class ApiController extends Controller
 {
-    public function apiDepartment(){
+    public function apiDepartment()
+    {
         $this->middleware('auth:api');
         $departapi = Department::all();
         return response()->json($departapi);
@@ -30,10 +31,16 @@ class ApiController extends Controller
     }
 
 
-    public function apiUsers(){
-        $usersApi = DB::table('users')->select('user_id','username','password','firstname','lastname')->get();
+    public function apiUsers()
+    {
+        // $usersApi = DB::table('users')->select('user_id','username','password','firstname','lastname')->get();
 
+
+        $sql = "SELECT
+            user_id,username,firstname,lastname FROM
+            users";
+
+        $usersApi = collect(DB::select($sql));
         return response()->json($usersApi);
     }
-    
 }

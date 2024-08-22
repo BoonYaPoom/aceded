@@ -45,6 +45,22 @@
                     </div>
                 </div>
             </div>
+              <div class="col-12 col-lg-12 col-xl-6">
+                <div class="card card-fluid">
+                    <div class="card-body">
+                        <div id="graphTopTenRegisHigh" style="min-width: 310px; height: 450px; margin: 0 auto">
+                        </div>
+                    </div>
+                </div>
+            </div>
+             <div class="col-12 col-lg-12 col-xl-6">
+                <div class="card card-fluid">
+                    <div class="card-body">
+                        <div id="graphRegisHigh" style="min-width: 310px; height: 450px; margin: 0 auto">
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
         @include('page.report2.B.JsgrapB')
     </div><!-- /.page-inner -->

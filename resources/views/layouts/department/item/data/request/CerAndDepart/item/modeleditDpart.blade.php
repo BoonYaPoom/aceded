@@ -41,20 +41,19 @@
                                 url: '/admin/req/get-claim-data/' + claimUserId,
                                 success: function(data) {
                                     console.log(data);
-                                    var html = '';
-                                    var num = 1;
-                                    for (var i = 0; i < data.claimData.length; i++) {
-                             
+                                        var html = '';
+                                        var num = 1;
+                                        for (var i = 0; i < data.claimData.length; i++) {
+
                                             html += '<tr>';
                                             html += '<td>' + (num++) + '</td>';
                                             html += '<td>' + data.claimData[i].department_name + '</td>';
-                                            html += '<td>' + (data.claimData[i].claim_status == 0 ? 'ไม่ต้องการ' : (data.claimData[i]
+                                            html += '<td>' + (data.claimData[i].claim_status == 0 ? 'ไม่ต้องการ' : (data
+                                                .claimData[i]
                                                 .claim_status == 1 ? 'ขอรับสิทธิ์' : 'Unknown Status')) + '</td>';
-
                                             html += '</tr>';
-                                        
-
-                                    }
+                                        }
+                                   
                                     // นำ HTML ไปแทรกในตาราง
                                     $('#modalTable-' + claimUserId).html(html);
                                 },
@@ -65,12 +64,14 @@
                         }
                     </script>
                 </div>
-
+                <div class="d-flex justify-content-center">
+                    <p class="text-danger">*ถ้าแสดงไม่ครบทุกกลุ่มการเรียนรู้ โปรดยกเลิก !!!</p>
+                </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-primary" data-dismiss="modal">ปิด</button>
                 </div><!--/.modal-footer-->
             </div><!-- /.modal-content -->
         </div><!-- /.modal-dialog -->
     </form>
-  
+
 </div>

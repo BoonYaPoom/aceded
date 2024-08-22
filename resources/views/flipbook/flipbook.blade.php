@@ -16,8 +16,10 @@
       name="keywords" content><title>E-BOOK</title><style type="text/css">html{height:100%;width:100%;}</style><link
       rel="stylesheet" href="style/phoneTemplate.css" /><link
       rel="stylesheet" href="style/style.css" /><link rel="stylesheet"
-      href="style/player.css" /><script
-      src="javascript/jquery-1.9.1.min.js"></script></head><body> <script>
+      href="style/player.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+      </head><body> 
+        <script>
                 var bookConfig = {
         FlipSound: "No",
         QRCode: "Hide",

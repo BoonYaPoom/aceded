@@ -63,8 +63,8 @@
                                 <label for="cover"><img src="{{ env('URL_FILE_SFTP') . $depart->name_short_th }}"
                                         alt="{{ $depart->name_short_th }}" style="height:350px">
                             </div>
-                            <label for="name_short_th">ภาพปก <small
-                                class="text-muted">( ขนาด 337px * 48px )</small> </label>
+                            <label for="name_short_th">ภาพปก <small class="text-muted">( ขนาด 337px * 48px )</small>
+                            </label>
                             <input type="file" class="form-control" name="name_short_th" placeholder="ภาพปก"
                                 accept=" image/jpeg, image/png">
                         </div><!-- /.form-group -->
@@ -76,33 +76,43 @@
                                     class="switcher-input" name="department_status" id="department_status" value="1"
                                     {{ $depart->department_status == 1 ? 'checked' : '' }}>
                                 <span class="switcher-indicator"></span> <span class="switcher-label-on">ON</span>
-                                 <span class="switcher-label-off text-red">OFF</span></label>
+                                <span class="switcher-label-off text-red">OFF</span></label>
                         </div><!-- /.form-group -->
 
+                        <div class="form-group">
+                            <label for="home_status">ไม่แสดงที่หน้าหลัก </label> <label
+                                class="switcher-control switcher-control-success switcher-control-lg"><input type="checkbox"
+                                    class="switcher-input" name="home_status" id="home_status" value="1"
+                                    {{ $depart->home_status == 1 ? 'checked' : '' }}>
+                                <span class="switcher-indicator"></span> <span class="switcher-label-on">ON</span> <span
+                                    class="switcher-label-off text-red">OFF</span></label>
+                        </div>
                         <div class="container mt-2">
 
 
-                        
+
                             <div class="form-group">
                                 <label for="color">Select a color:</label>
-                                <input type="color" id="colorPicker" class="form-control"  value="{{ $depart->color }}" data-mdb-color-picker oninput="updateColorCode()">
-                                <input type="text" id="colorCode" class="form-control" name="color"  value="{{ $depart->color }}" oninput="updateColorPicker()">
+                                <input type="color" id="colorPicker" class="form-control" value="{{ $depart->color }}"
+                                    data-mdb-color-picker oninput="updateColorCode()">
+                                <input type="text" id="colorCode" class="form-control" name="color"
+                                    value="{{ $depart->color }}" oninput="updateColorPicker()">
                             </div>
-                            
+
                             <script>
-                            function updateColorCode() {
-                                var colorPicker = document.getElementById('colorPicker');
-                                var colorCodeInput = document.getElementById('colorCode');
-                                var colorCode = colorPicker.value;
-                                colorCodeInput.value = colorCode;
-                            }
-                            
-                            function updateColorPicker() {
-                                var colorPicker = document.getElementById('colorPicker');
-                                var colorCodeInput = document.getElementById('colorCode');
-                                var colorCode = colorCodeInput.value;
-                                colorPicker.value = colorCode;
-                            }
+                                function updateColorCode() {
+                                    var colorPicker = document.getElementById('colorPicker');
+                                    var colorCodeInput = document.getElementById('colorCode');
+                                    var colorCode = colorPicker.value;
+                                    colorCodeInput.value = colorCode;
+                                }
+
+                                function updateColorPicker() {
+                                    var colorPicker = document.getElementById('colorPicker');
+                                    var colorCodeInput = document.getElementById('colorCode');
+                                    var colorCode = colorCodeInput.value;
+                                    colorPicker.value = colorCode;
+                                }
                             </script>
 
                         </div>

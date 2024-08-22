@@ -28,8 +28,8 @@
                 <div class="card-header bg-muted">
                     <a href="{{ route('dls', ['department_id' => $bookcat->department_id]) }}"
                         style="text-decoration: underline;"> จัดการข้อมูลและความรู้</a> / <a
-                        href="{{route('bookpage', ['department_id' => $depart])}}"
-                        style="text-decoration: underline;"> หนังสืออิเล็กทรอนิกส์</a> /<i>
+                        href="{{ route('bookpage', ['department_id' => $depart]) }}" style="text-decoration: underline;">
+                        หนังสืออิเล็กทรอนิกส์</a> /<i>
                         {{ $bookcat->category_th }}</i>
                 </div><!-- /.card-header -->
                 <!-- .card-body -->
@@ -45,13 +45,13 @@
                                     <th class="align-middle" style="width:40%"> เรื่อง </th>
                                     <th class="align-middle" style="width:30%"> ผู้แต่ง </th>
                                     <th class="align-middle" style="width:10%"> สถานะ </th>
+                                    <th class="align-middle" style="width:10%"> ตำแหน่ง </th>
                                     <th class="align-middle" style="width:10%"> กระทำ</th>
                                 </tr>
-                            </thead><!-- /thead -->
-                            <!-- tbody -->
+                            </thead>
                             <tbody>
                                 @php($i = 1)
-                                @foreach ($books as $item)
+                                @foreach ($books->sortBy('book_sort') as $item)
                                     <tr>
                                         <td><a>{{ $i++ }}</a></td>
                                         <td>{{ $item->book_name }}</td>
@@ -91,8 +91,42 @@
                                                     });
                                                 });
                                             });
+                                            $(document).ready(function() {
+                                                $(document).on('change', '#book_sort', function() {
+                                                    var book_sort = $(this).val();
+                                                    var bookId = $(this).data('book-id');
+                                                    console.log('book_sort:', book_sort);
+                                                    console.log('book ID:', bookId);
+                                                    $.ajax({
+                                                        type: "GET",
+                                                        dataType: "json",
+                                                        url: '{{ route('changeSortbooks') }}',
+                                                        data: {
+                                                            'book_sort': book_sort,
+                                                            'book_id': bookId
+                                                        },
+                                                        success: function(data) {
+                                                            console.log(data.message); // Display the returned message
+                                                            location.reload();
+                                                        },
+                                                        error: function(xhr, status, error) {
+                                                            console.log('An error occurred.');
+                                                        }
+                                                    });
+                                                });
+                                            });
                                         </script>
-
+                                        <td><select name="book_sort" id="book_sort" class="form-control"
+                                                data-toggle="select2" data-placeholder="เรียงลำดับ" data-allow-clear="false"
+                                                data-book-id="{{ $item->book_id }}">
+                                                <option value="{{ $item->book_sort }}" selected disabled>
+                                                    {{ $item->book_sort }}
+                                                </option>
+                                                @for ($i = 1; $i <= count($books); $i++)
+                                                    <option value="{{ $i }}">{{ $i }}</option>
+                                                @endfor
+                                            </select>
+                                        </td>
                                         <td class="align-middle">
                                             <a href="{{ route('editcatbook', [$depart, 'book_id' => $item]) }}"
                                                 title="แก้ไข"><i class="far fa-edit fa-lg text-success"></i></a>

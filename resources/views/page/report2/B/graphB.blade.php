@@ -5,7 +5,7 @@
               var selectedYear = $('#selectyear').val();
 
               //graphlearner
-              var learn = {!! json_encode($learn) !!};
+   
               var filteredData = learn.filter((data) => data.year == selectedYear);
               // เรียงลำดับข้อมูลตาม user_count จากมากไปน้อย
               filteredData.sort((a, b) => b.user_count - a.user_count);
@@ -18,7 +18,7 @@
                       item
                       .user_count) : 0,
               }));
-
+              
               //courserating
               var organ = {!! json_encode($organization) !!};
               var filteredOrgan = organ.filter((data) => data.year == selectedYear);
