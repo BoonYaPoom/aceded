@@ -185,13 +185,16 @@ Route::group(['middleware' => 'IsLoggedIn'], function () {
 
         Route::get('/department', [NavController::class, 'homedepartment'])->name('adminhomedepartment');
         Route::prefix('admin')->group(function () {
+            Route::get('/general/{id}', [GenaralController::class, 'destroy'])->name('general.destroy');
+            Route::get('/changeStatusGenPop', [GenaralController::class, 'changeStatus'])->name('changeStatusGenPop');
             Route::get('/changeStatusDepart', [DepartmentController::class, 'changeStatus'])->name('changeStatusDepart');
             Route::get('/general', [NavController::class, 'imghead'])->name('imghead');
             Route::get('/logo', [GenaralController::class, 'logo'])->name('logo');
             Route::put('/edit/{id}', [GenaralController::class, 'update'])->name('updategen');
             Route::post('/create', [GenaralController::class, 'create'])->name('creategen');
             Route::get('/highlight', [HighlightController::class, 'hightpage'])->name('hightpage');
-
+            Route::post('/create_popup', [GenaralController::class, 'CreatePopup'])->name('CreatePopup');
+            
             Route::get('/wms', [DepartmentController::class, 'departmentwmspage'])->name('departmentwmspage');
             Route::get('/lms', [DepartmentController::class, 'departmentLearnpage'])->name('departmentLearnpage');
             Route::get('/bss', [DepartmentController::class, 'bookif'])->name('bookif');

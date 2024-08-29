@@ -21,7 +21,7 @@
         <div class="page-section">
             <div class="card card-fluid">
                 <div class="card-header bg-muted"><span class="menu-icon fas fa-globe  "></span>
-                    จัดการเว็บ</div>
+                    จัดการกลุ่มการเรียนรู้</div>
                 <div class="card-body">
                     <!-- .table-responsive -->
                     <div class="table-responsive">
@@ -36,20 +36,7 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @if ($data->user_role == 1 || $data->user_role == 8)
-                                    <tr>
-                                        <td>
-                                        </td>
-                                        <td><a href="{{ route('imghead') }}">
-                                                จัดการ Popup</a>
-                                        </td>
-                                        <td>
-                                        </td>
-                                        <td>
-                                        </td>
 
-                                    </tr>
-                                @endif
                                 @foreach ($department->sortBy('department_id') as $depart)
                                     @php
                                         $userdepart = \App\Models\UserDepartment::where('user_id', $data->user_id)
@@ -139,12 +126,43 @@
                                     @endif
                                 @endforeach
 
-                            </tbody><!-- /tbody -->
-                        </table><!-- /.table -->
-                    </div><!-- /.table-responsive -->
-                </div><!-- /.card-body -->
-            </div><!-- /.card -->
-        </div><!-- /.page-section -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="card card-fluid">
+                <div class="card-header bg-muted">
+                    จัดการเว็บ
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table id="datatable2" class="table w3-hoverable">
+                            <thead>
+                                <tr class="bg-infohead">
+                                    <th class="align-middle" style="width:10%"> </th>
+                                    <th class="align-middle" style="width:90%"> กิจกรรม </th>
+
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @if ($data->user_role == 1 || $data->user_role == 8)
+                                    <tr>
+                                        <td>
+                                        </td>
+                                        <td><a href="{{ route('imghead') }}" class="">
+                                                จัดการ Popup</a>
+                                        </td>
+
+                                    </tr>
+                                @endif
+                            </tbody>
+                        </table>
+                    </div>
+
+                </div>
+            </div>
+        </div>
         @if ($data->user_role == 1 || $data->user_role == 8)
             <header class="page-title-bar">
                 <button type="button" class="btn btn-success btn-floated btn-add"
@@ -152,6 +170,6 @@
                     title="เพิ่ม"><span class="fas fa-plus"></span></button>
             </header>
         @endif
-        <!-- .page-title-bar -->
-    </div><!-- /.page-inner -->
+     
+    </div>
 @endsection

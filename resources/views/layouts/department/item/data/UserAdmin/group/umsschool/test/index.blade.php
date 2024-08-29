@@ -115,7 +115,6 @@
                                             },
                                         },
                                         serverSide: true,
-
                                         columns: [{
                                                 data: 'num'
                                             },
@@ -179,8 +178,8 @@
                                             infoEmpty: "ไม่พบรายการ",
                                             infoFiltered: "(ค้นหาจากทั้งหมด _MAX_ รายการ)",
                                             processing: "<span class='fa-stack fa-lg'>\n\
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    <i class='fa fa-spinner fa-spin fa-stack-2x fa-fw'></i>\n\
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               </span>&emsp;กรุณารอสักครู่",
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                <i class='fa fa-spinner fa-spin fa-stack-2x fa-fw'></i>\n\
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           </span>&emsp;กรุณารอสักครู่",
                                             paginate: {
                                                 first: "หน้าแรก",
                                                 last: "หน้าสุดท้าย",
@@ -190,7 +189,13 @@
                                         }
                                     });
                                     $('#myInput').on('keyup', function() {
-                                        table.search(this.value).draw();
+                                        const inputValue = this.value;
+                                        // ตรวจสอบว่าข้อความมีความยาวมากกว่า 3 ตัวอักษร
+                                        if (inputValue.length > 3) {
+                                            table.search(inputValue).draw();
+                                        } else if(inputValue.length = 0){
+                                            table.search('').draw();
+                                        }
                                     });
                                     $('#drop2').on('change', function() {
                                         var selectedDrop2Id = $(this).val();
@@ -204,26 +209,6 @@
 
                                 });
 
-                                // function handleClick(id) {
-                                //     console.log('ID: ', id);
-                                // }
-
-                                // function getUserCount(extenderId) {
-                                //     $.ajax({
-                                //         url: '{{ route('getUserCount', $depart) }}',
-                                //         type: 'GET',
-                                //         data: {
-                                //             extender_id: extenderId
-                                //         },
-                                //         success: function(response) {
-                                //             $('a[data-extenderid="' + extenderId + '"]').html('<i class="fas fa-users"></i> (' +
-                                //                 response.count + ')');
-                                //         },
-                                //         error: function(error) {
-                                //             console.error('เกิดข้อผิดพลาดในการดึงข้อมูล:', error);
-                                //         }
-                                //     });
-                                // }
                             </script>
                         </table>
                     </div>

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Department;
 use App\Models\General;
 use App\Models\Log;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Storage;
@@ -154,25 +155,88 @@ class GenaralController extends Controller
             'detail' => 'required'
         ]);
         $genaral = new General;
-
         $genaral->startdate = $request->startdate;
-        $genaral->enddate = $request->enddate;
+        $genaral->enddate =  $request->enddate;
         $genaral->title = 'popup';
+        $genaral->status = 0;
+        $genaral->createdate = now();
+        $genaral->modifieddate = now();
+        $genaral->department_id = 0;
+
+        $genaral->save();
         if ($request->hasFile('detail')) {
-            $filename = 'popup' . '.' . $request->detail->getClientOriginalExtension();
-            $uploadDirectory = 'LOGO/';
+            $image = $request->file('detail');
+            // $fileSize = $image->getSize(); // ขนาดไฟล์ในหน่วย bytes
+            //  ดึงขนาดรูปภาพ (ความกว้างและความสูง)
+            $imageSize = getimagesize($image);
+            $width = $imageSize[0]; // ความกว้าง
+            $height = $imageSize[1]; // ความสูง
+            // สร้างอาร์เรย์ของข้อมูลความกว้างและความสูง
+            $HW = [
+                'width' => $width,
+                'height' => $height
+            ];
+
+            // แปลงอาร์เรย์เป็น JSON
+            $HWJson = json_encode($HW);
+            $genaral->image_property = $HWJson;
+            $filename = 'popup' . $genaral->id . '.' . $request->detail->getClientOriginalExtension();
+            $uploadDirectory = 'popup/';
             if (!Storage::disk('sftp')->exists($uploadDirectory)) {
                 Storage::disk('sftp')->makeDirectory($uploadDirectory);
             }
             if (Storage::disk('sftp')->exists($uploadDirectory)) {
                 // ตรวจสอบว่ามีไฟล์เดิมอยู่หรือไม่ ถ้ามีให้ลบออก
-                Storage::disk('sftp')->put($uploadDirectory . '/'  . $filename, file_get_contents($request->detail->getRealPath()));
-                $genaral->detail = $uploadDirectory . '/'  . $filename;
+                Storage::disk('sftp')->put($uploadDirectory   . $filename, file_get_contents($request->detail->getRealPath()));
+                $genaral->detail = 'upload/'  . $uploadDirectory  . $filename;
             }
             $genaral->title = 'popup';
         }
-
+        $genaral->detail = 'upload/'  . $uploadDirectory   . $filename;
         $genaral->save();
+
         return redirect()->back()->with('message', 'logo บันทึกข้อมูลสำเร็จ');
+    }
+    public function changeStatus(Request $request)
+    {
+        $Generals = General::find($request->id);
+
+        if ($Generals) {
+            $Generals->status = $request->status;
+            $Generals->save();
+            if ($request->status == 1) {
+                $updatedIds = General::where('id', '!=', $request->id)
+                    ->where('title', 'popup')
+                    ->pluck('id')
+                    ->toArray();
+
+                General::whereIn('id', $updatedIds)
+                    ->update(['status' => 0]);
+            }
+
+            return response()->json([
+                'message' => 'Status updated successfully.',
+                'updated_ids' => $updatedIds
+            ]);
+        } else {
+            return response()->json(['message' => 'General not found.'], 404);
+        }
+    }
+    public function destroy($id)
+    {
+        // ค้นหา General ตาม ID
+        $general = General::findOrFail($id);
+        // กำหนดพาธไฟล์ที่เก็บอยู่ใน detail
+        $fullFilePath = $general->detail;
+        // ตัด `upload/` ออกจากพาธไฟล์เพื่อให้ตรงกับไฟล์ที่เก็บไว้ใน SFTP
+        $filePath = str_replace('upload/', '', $fullFilePath);
+        // เช็คและลบไฟล์จาก SFTP
+        if (Storage::disk('sftp')->exists($filePath)) {
+            Storage::disk('sftp')->delete($filePath);
+        }
+        // ลบข้อมูลจากฐานข้อมูล
+        $general->delete();
+        // ส่งข้อความยืนยันการลบข้อมูล
+        return redirect()->back()->with('message', 'ลบข้อมูลสำเร็จ');
     }
 }
