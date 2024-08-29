@@ -32,7 +32,7 @@
                             <label for="user_role" class="col-md-3 text-right mt-1">เลือกประเภทผู้ใช้งาน</label>
                             <div class="col-md-6 mb-3">
                                 <select id="user_role" name="user_role" class="form-control form-control-sm"
-                                    data-toggle="select2" data-allow-clear="false" >
+                                    data-toggle="select2" data-allow-clear="false">
                                     <option value="">ทั้งหมด</option>
                                     @php
                                         $roles = \App\Models\UserRole::all();
@@ -67,7 +67,7 @@
                             $depart->department_id == 2 ||
                             $depart->department_id == 3 ||
                             $depart->department_id == 4 ||
-                            $depart->department_id == 5||
+                            $depart->department_id == 5 ||
                             $depart->department_id == 6) &&
                             $data->user_role == 1) ||
                             $data->user_role == 6 ||
@@ -77,7 +77,7 @@
                         <a class="ml-1 btn btn-info btn-md " style="color:#fff"
                             href="{{ route('testumsschool', [$depart]) }}"><i class="fas fa-users"></i>
                             จัดการสถานศึกษา</a>
-                    {{-- @elseif (
+                        {{-- @elseif (
                         ($depart->department_id == 1 ||
                             $depart->department_id == 2 ||
                             $depart->department_id == 3 ||
@@ -139,7 +139,8 @@
                                         <input type="file" class="form-control" id="uploaduser" name="fileexcel"
                                             accept=".xlsx" required>
                                         <small class="form-text text-muted"><a
-                                                href="{{ env('URL_FILE_SFTP') . 'uplade/testuserschool.xlsx' }}" target="_blank">
+                                                href="{{ env('URL_FILE_SFTP') . 'uplade/testuserschool.xlsx' }}"
+                                                target="_blank">
                                                 ไฟล์ตัวอย่าง
                                                 (.xlsx)</a>
                                         </small>
@@ -284,19 +285,19 @@
                             <div class="d-flex justify-content-between align-items-center">
                                 <div class="dt-buttons btn-group">
                                     @if ($data->user_role == 1 || $data->user_role == 8)
-                              
-                                           <a class="btn btn-secondary buttons-excel buttons-html5" tabindex="0"
-                                        aria-controls="datatable" type="button"
-                                        href="{{ route('UsersExport', ['department_id' => $depart]) }}" target="_blank">
-                                        <span>Excel</span>
-                                    </a>
-                                    @elseif ($data->user_role == 7)
-
                                         <a class="btn btn-secondary buttons-excel buttons-html5" tabindex="0"
-                                        aria-controls="datatable" type="button"
-                                        href="{{ route('exportUsersPro', ['department_id' => $depart, 'provicValue' => $provicValue]) }}" target="_blank">
-                                        <span>Excel</span>
-                                    </a>
+                                            aria-controls="datatable" type="button"
+                                            href="{{ route('UsersExport', ['department_id' => $depart]) }}"
+                                            target="_blank">
+                                            <span>Excel</span>
+                                        </a>
+                                    @elseif ($data->user_role == 7)
+                                        <a class="btn btn-secondary buttons-excel buttons-html5" tabindex="0"
+                                            aria-controls="datatable" type="button"
+                                            href="{{ route('exportUsersPro', ['department_id' => $depart, 'provicValue' => $provicValue]) }}"
+                                            target="_blank">
+                                            <span>Excel</span>
+                                        </a>
                                     @elseif ($data->user_role == 6)
                                         <button class="btn btn-secondary buttons-excel buttons-html5" tabindex="0"
                                             aria-controls="datatable" type="button"
@@ -312,21 +313,22 @@
                                     @endif
                                     &nbsp;&nbsp;&nbsp;
                                     @if ($data->user_role == 7)
-                                          <a class="btn btn-secondary buttons-excel buttons-html5" tabindex="0"
-                                        aria-controls="datatable" type="button"
-                                        href="{{ route('exportUserProvicAll', ['provicValue' => $provicValue]) }}" target="_blank">
-                                        <span>Excel รายชื่อทั้งจังหวัด</span>
-                                    </a>
+                                        <a class="btn btn-secondary buttons-excel buttons-html5" tabindex="0"
+                                            aria-controls="datatable" type="button"
+                                            href="{{ route('exportUserProvicAll', ['provicValue' => $provicValue]) }}"
+                                            target="_blank">
+                                            <span>Excel รายชื่อทั้งจังหวัด</span>
+                                        </a>
                                     @elseif ($data->user_role == 9)
-                                      <a class="btn btn-secondary buttons-excel buttons-html5" tabindex="0"
-                                        aria-controls="datatable" type="button"
-                                        href="{{ route('exportUserDataZone') }}" target="_blank">
-                                        <span>Excel รายชื่อทั้งจังหวัด</span>
-                                    </a>
-                                 
+                                        <a class="btn btn-secondary buttons-excel buttons-html5" tabindex="0"
+                                            aria-controls="datatable" type="button"
+                                            href="{{ route('exportUserDataZone') }}" target="_blank">
+                                            <span>Excel รายชื่อทั้งจังหวัด</span>
+                                        </a>
                                     @endif
                                 </div>
 
+                     
 
 
                                 <div class="dataTables_filter ">
@@ -414,9 +416,9 @@
         @endif
     </div><!-- /.page-inner -->
 
-        <script>
+    <script>
         $(document).ready(function() {
-         
+
             var provin = $('#provin');
             var distrit = $('#distrits');
             var subdistrits = $('#subdistrits');
@@ -465,7 +467,7 @@
             });
 
 
-           
+
         });
     </script>
 

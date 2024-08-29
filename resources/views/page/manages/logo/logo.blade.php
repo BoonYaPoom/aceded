@@ -24,7 +24,7 @@
             <div class="card card-fluid">
                 <!-- .card-header -->
                 <div class="card-header bg-muted"><a href="{{ route('departmentwmspage') }}"
-                        style="text-decoration: underline;">จัดการเว็บ</a> / <a href="{{ route('dataci') }}"
+                        style="text-decoration: underline;">จัดการเว็บ</a> / <a href="{{ route('logoDP',$depart) }}"
                         style="text-decoration: underline;"> โลโก้</a> /<i> แก้ไขข้อมูล</i></div><!-- /.card-header -->
                 <!-- .card-body -->
                 <div class="card-body">
@@ -46,7 +46,7 @@
                             @error('detail')
                                 <span class="badge badge-warning">{{ $message }}</span>
                             @enderror
-                </div><!-- /.form-group -->
+                </div>
                 @endforeach
             </div>
             <div class="form-actions">

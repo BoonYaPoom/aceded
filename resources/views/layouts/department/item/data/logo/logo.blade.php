@@ -1,23 +1,21 @@
 @extends('layouts.adminhome')
 @section('content')
+    @if (Session::has('message'))
+        <script>
+            toastr.options = {
+                "progressBar": true,
+                "positionClass": 'toast-top-full-width',
+                "extendedTimeOut ": 0,
+                "timeOut": 3000,
+                "fadeOut": 250,
+                "fadeIn": 250,
+                "positionClass": 'toast-top-right',
 
-@if (Session::has('message'))
-<script>
-  toastr.options ={
-      "progressBar" : true,
-      "positionClass" : 'toast-top-full-width',
-      "extendedTimeOut " : 0,
-      "timeOut" : 3000,
-      "fadeOut" : 250,
-      "fadeIn" : 250,
-      "positionClass" : 'toast-top-right',
-      
 
-  } 
-    toastr.success("{{ Session::get('message')}}");
-
-</script>
-@endif
+            }
+            toastr.success("{{ Session::get('message') }}");
+        </script>
+    @endif
 
     <div class="page-inner">
 
@@ -30,32 +28,27 @@
                         style="text-decoration: underline;"> โลโก้</a> /<i> แก้ไขข้อมูล</i></div><!-- /.card-header -->
                 <!-- .card-body -->
                 <div class="card-body">
-                  @foreach ($genaral as $item)
-                  @if ($item->id == 1)
-                    <div class="form-group">
-                        <div class="col-lg-10">
-                            <img src="{{ env('URL_FILE_SFTP') . $item->detail }}" style="width:80%">
-                        </div>
+                    @foreach ($genaral as $item)
+                        @if ($item->id == 1)
+                            <div class="form-group">
+                                <div class="col-lg-10">
+                                    <img src="{{ env('URL_FILE_SFTP') . $item->detail }}" style="width:80%">
+                                </div>
 
-                    </div>
+                            </div>
 
-                    <form method="POST" action="{{ route('updategen' , $item->id) }}" enctype="multipart/form-data">
-                        @csrf
-                        @method('PUT')
-                        
-                        <label for="detail">โลโก้ </label> <input type="file" class="form-control" id="detail"
-                            name="detail" placeholder="โลโก้" accept=" image/jpeg, image/png">
-                            @error('detail')
-                            <span class="badge badge-warning">{{$message}}</span>
-                            
-                            @enderror
-                </div><!-- /.form-group -->
-         
-                
+                            <form method="POST" action="{{ route('updategen', $item->id) }}"
+                                enctype="multipart/form-data">
+                                @csrf
+                                @method('PUT')
+
+                                <label for="detail">โลโก้ </label> <input type="file" class="form-control"
+                                    id="detail" name="detail" placeholder="โลโก้" accept=" image/jpeg, image/png">
+                                @error('detail')
+                                    <span class="badge badge-warning">{{ $message }}</span>
+                                @enderror
+                </div>
                 @endif
-
-
-
                 @endforeach
             </div>
             <div class="form-actions">
@@ -66,5 +59,4 @@
             </form>
         </div>
     </div>
-    
 @endsection

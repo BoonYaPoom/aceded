@@ -36,13 +36,12 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                {{-- @if ($data->user_role == 1)
+                                @if ($data->user_role == 1 || $data->user_role == 8)
                                     <tr>
-                                        <td><a href="{{ route('dataci') }}">
-                                                DPM</a>
+                                        <td>
                                         </td>
-                                        <td><a href="{{ route('dataci') }}">
-                                                จัดการDepartment LOGO / IMAGE</a>
+                                        <td><a href="{{ route('imghead') }}">
+                                                จัดการ Popup</a>
                                         </td>
                                         <td>
                                         </td>
@@ -50,7 +49,7 @@
                                         </td>
 
                                     </tr>
-                                @endif --}}
+                                @endif
                                 @foreach ($department->sortBy('department_id') as $depart)
                                     @php
                                         $userdepart = \App\Models\UserDepartment::where('user_id', $data->user_id)
@@ -59,7 +58,11 @@
                                     @endphp
                                     @if (
                                         ($userdepart &&
-                                            ($data->user_role == 3 || $data->user_role == 6 || $data->user_role == 7 || $data->user_role == 8 || $data->user_role == 9)) ||
+                                            ($data->user_role == 3 ||
+                                                $data->user_role == 6 ||
+                                                $data->user_role == 7 ||
+                                                $data->user_role == 8 ||
+                                                $data->user_role == 9)) ||
                                             $data->user_role == 1)
                                         <tr>
                                             @if ($userdepart && ($data->user_role == 3 || $data->user_role == 6 || $data->user_role == 7 || $data->user_role == 9))

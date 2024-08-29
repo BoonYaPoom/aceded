@@ -27,101 +27,140 @@
             <div class="card card-fluid">
                 <!-- .card-header -->
                 <div class="card-header bg-muted"><a href="{{ route('departmentwmspage') }}"
-                        style="text-decoration: underline;">จัดการเว็บ</a> / <a href="{{ route('dataci') }}"
-                        style="text-decoration: underline;"> ภาพประชาสัมพันธ์ </a> /<i> แก้ไขข้อมูล</i></div>
+                        style="text-decoration: underline;">จัดการเว็บ</a> / <i> แก้ไขข้อมูล</i></div>
                 <!-- /.card-header -->
                 <!-- .card-body -->
                 <div class="card-body">
                     <!-- .form-group -->
                     <div class="form-group">
-                        @foreach ($hights as $highlight)
-                            @if ($highlight->department_id == 0)
+                        @foreach ($genarals as $genaral)
+                            @if ($genaral->title === 'popup')
                                 <div class="form-group">
                                     <div class="row mb-5">
-                                 
-                                        <div class="col-lg-10">
-                                            <img src="{{ env('URL_FILE_SFTP') . $highlight->highlight_path }}"
-                                                alt="{{ env('URL_FILE_SFTP') . $highlight->highlight_path }}" style="width:100%">
-                                            <img src="" style="width:100%">
+
+                                        <div class="col-lg-6">
+                                            <img src="{{ env('URL_FILE_SFTP') . $genaral->detail }}"
+                                                alt="{{ env('URL_FILE_SFTP') . $genaral->detail }}" style="width:100%">
                                         </div>
 
-                                        <div class="col-lg-1">
-                                            <label class="switcher-control switcher-control-success switcher-control-lg">
-                                                <input type="checkbox" class="switcher-input switcher-edit"
-                                                    {{ $highlight->highlight_status == 1 ? 'checked' : '' }}
-                                                    data-highlight-id="{{ $highlight->highlight_id }}">
-                                                <span class="switcher-indicator"></span>
-                                                <span class="switcher-label-on" data-on="ON">เปิด</span>
-                                                <span class="switcher-label-off text-red" data-off="OFF">ปิด</span>
-                                            </label>
-                                        </div>
+                                        <div class="col-lg-6">
+                                            <div class="form-row">
+                                                <div class="col-md-6 mb-3">
+                                                    <label for="flatpickr03">วันที่เริ่ม</label>
+                                                    <input type="text" class="form-control" name="startdate"
+                                                        id="flatpickr03" value="" />
+                                                </div>
 
-                                        <script>
-                                            $(document).ready(function() {
-                                                $(document).on('change', '.switcher-input.switcher-edit', function() {
-                                                    var highlight_status = $(this).prop('checked') ? 1 : 0;
-                                                    var highlight_id = $(this).data('highlight-id');
-                                                    console.log('highlight_status:', highlight_status);
-                                                    console.log('highlight_id:', highlight_id);
-                                                    $.ajax({
-                                                        type: "GET",
-                                                        dataType: "json",
-                                                        url: '{{ route('changeStatus') }}',
-                                                        data: {
-                                                            'highlight_status': highlight_status,
-                                                            'highlight_id': highlight_id
-                                                        },
-                                                        success: function(data) {
-                                                            console.log(data.message); // แสดงข้อความที่ส่งกลับ
-                                                        },
-                                                        error: function(xhr, status, error) {
-                                                            console.log('ข้อผิดพลาด');
-                                                        }
-                                                    });
-                                                });
-                                            });
-                                        </script>
-                                        
-                                        <div class="col-lg-1">
-                                            <a href="{{ route('destoryban', ['highlight_id' => $highlight->highlight_id]) }}"
-                                                onclick="deleteRecord(event)" rel="ภาพประชาสัมพันธ์" class="switcher-delete"
-                                                data-toggle="tooltip" title="ลบ"><i
-                                                    class="fas fa-trash-alt fa-lg text-warning "></i></a>
-                                        </div>
+                                                <div class="col-md-6 mb-3">
+                                                    <label for="flatpickr04">วันที่สิ้นสุด</label>
+                                                    <input type="text" class="form-control" name="enddate"
+                                                        id="flatpickr04" value="" />
+                                                </div>
+                                            </div>
 
+                                            <div class="form-group">
+                                                <label for="status">สถานะ </label> <label
+                                                    class="switcher-control switcher-control-success switcher-control-lg">
+                                                    <input type="checkbox" class="switcher-input switcher-edit"
+                                                        {{ $genaral->status == 1 ? 'checked' : '' }}
+                                                        data-id="{{ $genaral->id }}">
+                                                    <span class="switcher-indicator"></span>
+                                                    <span class="switcher-label-on" data-on="ON">เปิด</span>
+                                                    <span class="switcher-label-off text-red" data-off="OFF">ปิด</span>
+                                            </div>
+
+                                        </div>
                                     </div>
-                                 
+
                                     <br>
                                     <div style="border-bottom: 1px solid #e7d8d5;">
 
                                     </div>
-                                </div><!-- .form-group -->
+                                </div>
                             @endif
                         @endforeach
-                    </div><!-- .form-group -->
+                    </div>
+                    <fieldset>
+                        <legend>สร้าง</legend>
+                        <form method="POST" action="" enctype="multipart/form-data">
+                            @csrf
+                            @method('PUT')
 
-                    <form action="{{ route('storeban') }}" method="post" enctype="multipart/form-data">
-                        @csrf
-                        <div class="form-group">
-                            <label for="highlight_path">ภาพประชาสัมพันธ์ </label> <input type="file" class="form-control"
-                                id="highlight_path" accept=" image/jpeg, image/png" name="highlight_path" placeholder="ภาพประชาสัมพันธ์"
-                                accept="banner/*">
-                        </div><!-- /.form-group -->
-                        
-                        @error('highlight_path')
-                            <span class="badge badge-warning">{{ $message }}</span>
-                        @enderror
+                            <label for="detail">โลโก้ ( ขนาด 450x65 px )</label> <input type="file"
+                                class="form-control" id="detail" name="detail" placeholder="โลโก้" accept="image/*">
+                            @error('detail')
+                                <span class="badge badge-warning">{{ $message }}</span>
+                            @enderror
+                            <div class="form-row mt-3">
+                                <div class="col-md-6 mb-3">
+                                    <label for="flatpickr03">วันที่เริ่ม</label>
+                                    <input type="text" class="form-control" name="startdate" id="flatpickr03"
+                                        value="" />
+                                </div>
 
-                        <!-- .form-group -->
-                </div><!-- /.card-body -->
-            </div><!-- /.card -->
-            <!-- .form-actions -->
-            <div class="form-actions">
-                <button class="btn btn-lg btn-primary ml-auto" type="submit"><i class="far fa-save"></i>
-                    บันทึก</button>
-            </div><!-- /.form-actions -->
-            </form>
+                                <div class="col-md-6 mb-3">
+                                    <label for="flatpickr04">วันที่สิ้นสุด</label>
+                                    <input type="text" class="form-control" name="enddate" id="flatpickr04"
+                                        value="" />
+                                </div>
+                            </div>
 
-        </div><!-- /.page-section -->
-    </div><!-- /.page-inner -->
+                        </form>
+                        <div class="form-actions">
+                            <button class="btn btn-lg btn-primary ml-auto" type="submit"><i class="far fa-save"></i>
+                                บันทึก</button>
+                        </div>
+                    </fieldset>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            flatpickr("#flatpickr03", {
+                altInput: true,
+                altFormat: "j F, Y",
+                dateFormat: "Y-m-d",
+                locale: {
+                    firstDayOfWeek: 1, // Monday
+                    weekdays: {
+                        shorthand: ["อา", "จ", "อ", "พ", "พฤ", "ศ", "ส"],
+                        longhand: ["อาทิตย์", "จันทร์", "อังคาร", "พุธ", "พฤหัสบดี", "ศุกร์", "เสาร์"]
+                    },
+                    months: {
+                        shorthand: ["ม.ค.", "ก.พ.", "มี.ค.", "เม.ย.", "พ.ค.", "มิ.ย.", "ก.ค.", "ส.ค.",
+                            "ก.ย.", "ต.ค.", "พ.ย.", "ธ.ค."
+                        ],
+                        longhand: [
+                            "มกราคม", "กุมภาพันธ์", "มีนาคม", "เมษายน", "พฤษภาคม", "มิถุนายน",
+                            "กรกฎาคม", "สิงหาคม", "กันยายน", "ตุลาคม", "พฤศจิกายน", "ธันวาคม"
+                        ]
+                    }
+                }
+            });
+            flatpickr("#flatpickr04", {
+                altInput: true,
+                altFormat: "j F, Y",
+                dateFormat: "Y-m-d",
+                locale: {
+                    firstDayOfWeek: 1,
+                    weekdays: {
+                        shorthand: ["อา", "จ", "อ", "พ", "พฤ", "ศ", "ส"],
+                        longhand: ["อาทิตย์", "จันทร์", "อังคาร", "พุธ", "พฤหัสบดี", "ศุกร์", "เสาร์"]
+                    },
+                    months: {
+                        shorthand: ["ม.ค.", "ก.พ.", "มี.ค.", "เม.ย.", "พ.ค.", "มิ.ย.", "ก.ค.", "ส.ค.",
+                            "ก.ย.", "ต.ค.", "พ.ย.", "ธ.ค."
+                        ],
+                        longhand: [
+                            "มกราคม", "กุมภาพันธ์", "มีนาคม", "เมษายน", "พฤษภาคม", "มิถุนายน",
+                            "กรกฎาคม", "สิงหาคม", "กันยายน", "ตุลาคม", "พฤศจิกายน", "ธันวาคม"
+                        ]
+                    }
+                }
+            });
+        });
+    </script>
 @endsection

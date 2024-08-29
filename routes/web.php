@@ -99,6 +99,8 @@ use LdapRecord\Laravel\Facades\Ldap;
 */
 
 
+Route::get('download-downloadUsers', [ExcelController::class, 'downloadUsers'])->name('downloadUsers.file');
+Route::get('download-users', [ExcelController::class, 'getLatestFile'])->name('latest.file');
 Route::get('/exportP0101/{department_id}/{year}', [ExcelController::class, 'exportP0101'])->name('exportP0101');
 Route::get('/exportP0101Zone/{department_id}/{year}', [ExcelController::class, 'exportP0101Zone'])->name('exportP0101Zone');
 Route::get('/exportP0116/{department_id}/{year}', [ExcelController::class, 'exportP0116'])->name('exportP0116');
@@ -184,7 +186,7 @@ Route::group(['middleware' => 'IsLoggedIn'], function () {
         Route::get('/department', [NavController::class, 'homedepartment'])->name('adminhomedepartment');
         Route::prefix('admin')->group(function () {
             Route::get('/changeStatusDepart', [DepartmentController::class, 'changeStatus'])->name('changeStatusDepart');
-            Route::get('/general', [NavController::class, 'dataci'])->name('dataci');
+            Route::get('/general', [NavController::class, 'imghead'])->name('imghead');
             Route::get('/logo', [GenaralController::class, 'logo'])->name('logo');
             Route::put('/edit/{id}', [GenaralController::class, 'update'])->name('updategen');
             Route::post('/create', [GenaralController::class, 'create'])->name('creategen');
@@ -642,6 +644,7 @@ Route::group(['middleware' => 'IsLoggedIn'], function () {
                 Route::put('admin/rad/storeAdminreq2/{submit_id}', [SubmitController::class, 'storeAdminreq2'])->name('storeAdminreq2');
 
                 Route::get('/get-department-name/{departmentId}', [ClaimUserController::class, 'getDepartmentName'])->name('getDepartmentName');
+                Route::post('/get-claim-allup', [ClaimUserController::class, 'Allupdateuserdeyes'])->name('Allupdateuserdeyes');
                 Route::get('/get-claim-data/{claimUserId}', [ClaimUserController::class, 'getClaimData'])->name('getClaimData');
                 Route::get('/cau', [ClaimUserController::class, 'Certanddepart'])->name('Certanddepart');
                 Route::get('/updateceryes/{certificate_file_id}', [ClaimUserController::class, 'updateyes'])->name('updateceryes');

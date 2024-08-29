@@ -100,16 +100,15 @@
                                                 (.xlsx)</a>
                                         </small>
                                     </div>
-                                </div><!-- /.modal-body -->
-                                <!-- .modal-footer -->
+                                </div>
                                 <div class="modal-footer">
                                     <button type="submit" class="btn btn-success" id="btnsetuser_role"><i
                                             class="fas fa-user-plus"></i> นำเข้าผู้ใช้งาน</button>
                                     <button type="button" class="btn btn-light" data-dismiss="modal">ยกเลิก</button>
-                                </div><!-- /.modal-footer -->
+                                </div>
 
-                            </div><!-- /.modal-content -->
-                        </div><!-- /.modal-dialog -->
+                            </div>
+                        </div>
                     </form>
 
                 </div>
@@ -215,12 +214,47 @@
                             <div class="d-flex justify-content-between align-items-center">
                                 <div class="dt-buttons btn-group">
                                     <a class="btn btn-secondary buttons-excel buttons-html5" tabindex="0"
-                                        aria-controls="datatable" type="button"
-                                        href="{{ route('LoadexportUsers') }}" target="_blank">
+                                        aria-controls="datatable" type="button" href="{{ route('downloadUsers.file') }}"
+                                        target="_blank">
                                         <span>Excel</span>
                                     </a>
                                 </div>
-                        
+                                {{-- @if ($data->user_role == 1)
+                                  
+
+                                    <div class="container mt-5">
+                                        <!-- Export button -->
+                                        <button id="exportButton" class="btn btn-primary">Update (Export) Users to
+                                            Excel</button>
+                                        <div class="progress mt-3" style="display: none;" id="progressBarContainer">
+                                            <div id="progressBar"
+                                                class="progress-bar progress-bar-striped progress-bar-animated"
+                                                role="progressbar" style="width: 0%;">
+                                                0%
+                                            </div>
+                                        </div>
+                                    </div>
+                                @endif --}}
+
+                                <script>
+                                    $(document).ready(function() {
+                                        // Handle export button click
+                                        $('#exportButton').click(function() {
+                                            $('#loadingSpinner1').show();
+                                            $.ajax({
+                                                url: '{{ route('latest.file') }}',
+                                                type: 'GET',
+                                                success: function(response) {
+                                                    window.location.reload();
+                                                },
+                                                error: function(xhr) {
+                                                    $('#loadingSpinner1').hide();
+                                                    console.error(xhr.responseText);
+                                                }
+                                            });
+                                        });
+                                    });
+                                </script>
 
                                 <div class="dataTables_filter ">
                                     <label>ค้นหา
@@ -228,8 +262,8 @@
                                             aria-controls="datatable">
                                     </label>
                                     <label>จังหวัด
-                                        <select id="drop2" name="drop2" class="form-control" data-allow-clear="false"
-                                            aria-controls="datatable">
+                                        <select id="drop2" name="drop2" class="form-control"
+                                            data-allow-clear="false" aria-controls="datatable">
                                             <option value="0"selected>ทั้งหมด</option>
                                             @php
                                                 $Provinces = \App\Models\Provinces::all();
@@ -274,14 +308,14 @@
         </div><!-- /.page-section -->
         <!-- .page-title-bar -->
         @if ($data->user_role == 1 || $data->user_role == 8)
-             <header class="page-title-bar">
-            <!-- floating action -->
-            <button type="button" class="btn btn-success btn-floated btn-addums"
-                onclick="window.location='{{ route('createUser') }}'" id="add_umsform" data-toggle="tooltip"
-                title="เพิ่ม"><span class="fas fa-plus"></span></button>
-            <!-- /floating action -->
-        </header><!-- /.page-title-bar -->
+            <header class="page-title-bar">
+                <!-- floating action -->
+                <button type="button" class="btn btn-success btn-floated btn-addums"
+                    onclick="window.location='{{ route('createUser') }}'" id="add_umsform" data-toggle="tooltip"
+                    title="เพิ่ม"><span class="fas fa-plus"></span></button>
+                <!-- /floating action -->
+            </header><!-- /.page-title-bar -->
         @endif
-       
+
     </div><!-- /.page-inner -->
 @endsection

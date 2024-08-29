@@ -34,7 +34,6 @@
                         function showModal(claimUserId) {
                             // เปิด Modal ด้วย claimUserId
                             $('#clientUploadModal-' + claimUserId).modal('show');
-
                             // ดึงข้อมูล claim_user_id จากตาราง 'department_claim'
                             $.ajax({
                                 type: 'GET',

@@ -67,15 +67,15 @@ class BlogController extends Controller
                 $detail = preg_replace('/<figure\b[^>]*>(.*?)<\/figure>/is', '$1', $detail);
                 $de_th->loadHTML($detail, LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
                 $images_des_th = $de_th->getElementsByTagName('img');
-                if (!Storage::disk('sftp')->exists('/upload/Blog/ck/')) {
-                    Storage::disk('sftp')->makeDirectory('/upload/Blog/ck/');
+                if (!Storage::disk('sftp')->exists('Blog/ck/')) {
+                    Storage::disk('sftp')->makeDirectory('Blog/ck/');
                 }
                 
                 libxml_use_internal_errors(false);
                 foreach ($images_des_th as $key => $img) {
                     if (strpos($img->getAttribute('src'), 'data:image/') === 0) {
                         $data = base64_decode(explode(',', explode(';', $img->getAttribute('src'))[1])[1]);
-                        $image_name = 'upload/Blog/ck/' . time() . $key . '.png'; // ใส่ .png เพื่อให้เป็นนามสกุลไฟล์ถูกต้อง
+                        $image_name = 'Blog/ck/' . time() . $key . '.png'; // ใส่ .png เพื่อให้เป็นนามสกุลไฟล์ถูกต้อง
                         Storage::disk('sftp')->put($image_name, $data);
                         $img->removeAttribute('src');
                         $newImageUrl = env('URL_FILE_SFTP') . $image_name;
@@ -90,7 +90,8 @@ class BlogController extends Controller
             }
 
             $blogs->detail = $decodedText;
-            $blogs->plaintext = $detail_fullaaa;
+            $blogs->plaintext = substr($detail_fullaaa, 0, 800);
+
         }
 
 
@@ -150,8 +151,8 @@ class BlogController extends Controller
                 libxml_clear_errors();
 
                 $images_des_th = $de_th->getElementsByTagName('img');
-                if (!Storage::disk('sftp')->exists('/upload/Blog/ck/')) {
-                    Storage::disk('sftp')->makeDirectory('/upload/Blog/ck/');
+                if (!Storage::disk('sftp')->exists('Blog/ck/')) {
+                    Storage::disk('sftp')->makeDirectory('Blog/ck/');
                 }
             
 
@@ -159,7 +160,7 @@ class BlogController extends Controller
                 foreach ($images_des_th as $key => $img) {
                     if (strpos($img->getAttribute('src'), 'data:image/') === 0) {
                         $data = base64_decode(explode(',', explode(';', $img->getAttribute('src'))[1])[1]);
-                        $image_name = 'upload/Blog/ck/' . time() . $key . '.png'; // ใส่ .png เพื่อให้เป็นนามสกุลไฟล์ถูกต้อง
+                        $image_name = 'Blog/ck/' . time() . $key . '.png'; // ใส่ .png เพื่อให้เป็นนามสกุลไฟล์ถูกต้อง
                         Storage::disk('sftp')->put($image_name, $data);
                         $img->removeAttribute('src');
                         $newImageUrl = env('URL_FILE_SFTP') . $image_name;

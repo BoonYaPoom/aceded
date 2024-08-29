@@ -224,7 +224,7 @@ class CourseController extends Controller
                 // ตรวจสอบว่ามีไฟล์เดิมอยู่หรือไม่ ถ้ามีให้ลบออก
                 Storage::disk('sftp')->delete($uploadDirectory);
                 Storage::disk('sftp')->put($uploadDirectory . '/' . $image_name, file_get_contents($request->cover->getRealPath()));
-                $cour->cover = 'upload/Course/images/' . 'cover' . $cour->course_id . '.' . $request->cover->getClientOriginalExtension();
+                $cour->cover = 'upload/' . $uploadDirectory . '/' .  'cover' . $cour->course_id . '.' . $request->cover->getClientOriginalExtension();
                 $cour->save();
             }
         } else {
@@ -254,7 +254,7 @@ class CourseController extends Controller
                 // ตรวจสอบว่ามีไฟล์เดิมอยู่หรือไม่ ถ้ามีให้ลบออก
                 Storage::disk('sftp')->delete($uploadDirectory);
                 Storage::disk('sftp')->put($uploadDirectory . '/' . $image_signature, file_get_contents($request->signature->getRealPath()));
-                $cour->signature = 'upload/Course/signature/' . 'signature' . $cour->course_id . '.' . $request->signature->getClientOriginalExtension();
+                $cour->signature = 'upload/' . $uploadDirectory . '/' .  'signature' . $cour->course_id . '.' . $request->signature->getClientOriginalExtension();
                 $cour->save();
             }
         } else {
@@ -299,7 +299,7 @@ class CourseController extends Controller
                 // ตรวจสอบว่ามีไฟล์เดิมอยู่หรือไม่ ถ้ามีให้ลบออก
                 Storage::disk('sftp')->delete($uploadDirectory);
                 Storage::disk('sftp')->put($uploadDirectory . '/' . $image_cert_custom, file_get_contents($request->cert_custom->getRealPath()));
-                $cour->cert_custom = 'upload/Course/cert_custom/' . 'cert_custom' . $cour->course_id . '.' . $request->cert_custom->getClientOriginalExtension();
+                $cour->cert_custom = 'upload/' . $uploadDirectory . '/' . 'cert_custom' . $cour->course_id . '.' . $request->cert_custom->getClientOriginalExtension();
                 $cour->save();
             }
         } else {
@@ -528,7 +528,7 @@ class CourseController extends Controller
                 // ตรวจสอบว่ามีไฟล์เดิมอยู่หรือไม่ ถ้ามีให้ลบออก
                 Storage::disk('sftp')->delete($uploadDirectory);
                 Storage::disk('sftp')->put($uploadDirectory . '/' . $image_name, file_get_contents($request->cover->getRealPath()));
-                $cour->cover = 'upload/Course/images/' . 'cover' . $cour->course_id . '.' . $request->cover->getClientOriginalExtension();
+                $cour->cover = 'upload/' . $uploadDirectory . '/' . 'cover' . $cour->course_id . '.' . $request->cover->getClientOriginalExtension();
                 $cour->save();
             }
         } 
@@ -553,7 +553,7 @@ class CourseController extends Controller
                 // ตรวจสอบว่ามีไฟล์เดิมอยู่หรือไม่ ถ้ามีให้ลบออก
                 Storage::disk('sftp')->delete($uploadDirectory);
                 Storage::disk('sftp')->put($uploadDirectory . '/' . $image_signature, file_get_contents($request->signature->getRealPath()));
-                $cour->signature = 'upload/Course/signature/' . 'signature' . $cour->course_id . '.' . $request->signature->getClientOriginalExtension();
+                $cour->signature = 'upload/' . $uploadDirectory . '/' .  'signature' . $cour->course_id . '.' . $request->signature->getClientOriginalExtension();
                 $cour->save();
             }
         } 
@@ -593,7 +593,7 @@ class CourseController extends Controller
                 // ตรวจสอบว่ามีไฟล์เดิมอยู่หรือไม่ ถ้ามีให้ลบออก
                 Storage::disk('sftp')->delete($uploadDirectory);
                 Storage::disk('sftp')->put($uploadDirectory . '/' . $image_cert_custom, file_get_contents($request->cert_custom->getRealPath()));
-                $cour->cert_custom = 'upload/Course/cert_custom/' . 'cert_custom' . $cour->course_id . '.' . $request->cert_custom->getClientOriginalExtension();
+                $cour->cert_custom = 'upload/' . $uploadDirectory . '/' . 'cert_custom' . $cour->course_id . '.' . $request->cert_custom->getClientOriginalExtension();
                 $cour->save();
             }
         }

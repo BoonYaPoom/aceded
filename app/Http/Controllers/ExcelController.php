@@ -55,6 +55,7 @@ use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log as FacadesLog;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 
 class ExcelController extends Controller
@@ -62,8 +63,7 @@ class ExcelController extends Controller
     public function exportClass()
     {
         // You can customize the response here, but for this example, you can just return an empty response.
-        return response()->stream(function () {
-        }, 200, [
+        return response()->stream(function () {}, 200, [
             'Content-Type' => 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
             'Content-Disposition' => 'attachment; filename="exported_data.xlsx"',
         ]);
@@ -178,11 +178,8 @@ class ExcelController extends Controller
         set_time_limit(0);
 
 
-        
+
         return Excel::download(new UsersExport(), 'Administrator Management Users.xlsx');
-
-
-
     }
     public function exportUsers($department_id)
     {
@@ -224,6 +221,88 @@ class ExcelController extends Controller
 
         return back()->with('message', 'Imported successfully');
     }
+    public function getLatestFile()
+    {
+        $files = Storage::files('public/exports');
+
+        // ใช้ Carbon เพื่อรับวันและเวลาปัจจุบัน
+        $now = Carbon::now();
+
+        $locale = 'th_TH';
+        Carbon::setLocale($locale);
+        $thaiMonths = [
+            '01' => 'มกราคม',
+            '02' => 'กุมภาพันธ์',
+            '03' => 'มีนาคม',
+            '04' => 'เมษายน',
+            '05' => 'พฤษภาคม',
+            '06' => 'มิถุนายน',
+            '07' => 'กรกฎาคม',
+            '08' => 'สิงหาคม',
+            '09' => 'กันยายน',
+            '10' => 'ตุลาคม',
+            '11' => 'พฤศจิกายน',
+            '12' => 'ธันวาคม'
+        ];
+        // ดึงวันที่, เดือน, และปี
+        $day = $now->format('d'); // วันที่
+        $month = $thaiMonths[$now->format('m')]; // เดือน
+        $year = $now->format('Y') + 543; // ปี พ.ศ.
+
+        // สร้างชื่อไฟล์ใหม่ด้วยวันที่, เดือน, และปี
+        $fileName = 'Management Users ' . ' วันที่ ' . $day . ' ' . $month . ' ' . ' ปี ' . $year . '.xlsx';
+
+        // สร้างพาธสำหรับไฟล์ใหม่
+        $filePath = 'exports/' . $fileName;
+
+        // บันทึกไฟล์ใหม่
+        Excel::store(new UsersExport(), $filePath, 'public');
+
+        // หาไฟล์ที่มีการเปลี่ยนแปลงล่าสุด
+        $latestFile = collect($files)->sortByDesc(function ($file) {
+            return Storage::lastModified($file);
+        })->first();
+
+        // ข้อมูลเกี่ยวกับไฟล์ล่าสุด
+        $fileInfo = [
+            'name' => basename($latestFile),
+            'path' => Storage::url($latestFile),
+            'last_modified' => date('Y-m-d H:i:s', Storage::lastModified($latestFile))
+        ];
+
+        return response()->json([
+            'message' => 'Latest file retrieved successfully',
+            'file_info' => $fileInfo
+        ]);
+    }
+    public function downloadUsers()
+    {
+        // ดึงไฟล์ทั้งหมดจากโฟลเดอร์ exports
+        $files = Storage::files('public/exports');
+
+        // ตรวจสอบว่าไม่มีไฟล์
+        if (empty($files)) {
+            return response()->json(['message' => 'No files found.'], 404);
+        }
+
+        // หาไฟล์ที่มีการเปลี่ยนแปลงล่าสุด
+        $latestFile = collect($files)->sortByDesc(function ($file) {
+            return Storage::lastModified($file);
+        })->first();
+
+        // ตรวจสอบว่าได้ไฟล์ล่าสุดหรือไม่
+        if (!$latestFile) {
+            return response()->json(['message' => 'Failed to retrieve the latest file.'], 404);
+        }
+
+        // เตรียมข้อมูลสำหรับดาวน์โหลดไฟล์
+        $fileName = basename($latestFile);
+        $filePath = storage_path('app/' . $latestFile); // Path to the file
+
+        // ส่งไฟล์ให้ดาวน์โหลด
+        return response()->download($filePath, $fileName)->deleteFileAfterSend(true);
+    }
+
     public function Questionimport(Request $request, $department_id, $subject_id)
     {
         $questionsImport = new QuestionsImportClass($subject_id);

@@ -2,6 +2,7 @@
 <html lang="en">
 
 <head>
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"><!-- End Required meta tags -->
@@ -90,7 +91,7 @@
         unusedLink.setAttribute('disabled', true);
     </script>
 
-       <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.css" />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
     <script src="{{ asset('/javascript/vendor/bootstrap/js/popper.min.js') }}"></script>
@@ -127,6 +128,7 @@
     <script src="{{ asset('/javascript/datatables.net/js/vfs_fonts.js?v=1.10.20') }}"></script>
     <script src="{{ asset('/javascript/datatables.net/js/buttons.colVis.min.js?v=1.10.19') }}"></script>
     <script src="{{ asset('/javascript/datatables.net/js/dataTables.fixedHeader.min.js?v=1.10.19') }}"></script>
+
     <script src="{{ asset('/javascript/theme/pages/dataTables.bootstrap.js') }}"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.12/dist/sweetalert2.all.min.js"></script>
     <!-- Google Fonts -->
@@ -155,6 +157,7 @@
                     }
                 });
         }
+
         function createRecord(ev) {
             ev.preventDefault();
             var urlToredirect = ev.currentTarget.getAttribute('href');
@@ -167,7 +170,7 @@
                 })
                 .then((confirm) => {
                     if (confirm) {
-                        window.location.href = urlToredirect; 
+                        window.location.href = urlToredirect;
                     } else {
                         swal("คุญได้ยกเลิกการสร้าง Admin สถานศึกษา !");
                     }
@@ -178,7 +181,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js"
         integrity="sha512-AA1Bzp5Q0K1KanKKmvN/4d3IRKVlv9PYgwFPvm32nPO6QS8yH1HO7LbgB1pgiOxPtfeg5zEn2ba64MUcqJx6CA=="
         crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-   
+
 </head>
 
 <body>
@@ -192,52 +195,93 @@
 
     @include('layouts.footer')
 
-    
-<div id="loadingSpinner" style="display: none;">
-    <div class="spinner"></div>
-</div>
-<style>
-    #loadingSpinner {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        height: 100vh;
-        /* Adjust the height as needed */
-        position: fixed;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        background-color: rgba(255, 255, 255, 0.7);
-        /* Semi-transparent white background */
-        z-index: 9999;
-        /* Make sure it's above other elements */
-    }
 
-    .spinner {
-        width: 40px;
-        /* Adjust the size as needed */
-        height: 40px;
-        /* Adjust the size as needed */
-        border-radius: 50%;
-        border: 4px solid rgba(0, 0, 0, 0.1);
-        /* Light border color */
-        border-top: 4px solid #3498db;
-        /* Spinner color */
-        animation: spin 1s linear infinite;
-        /* Rotation animation */
-    }
-
-    @keyframes spin {
-        0% {
-            transform: rotate(0deg);
+    <div id="loadingSpinner" style="display: none;">
+        <div class="spinner"></div>
+        <div id="counter">
+            <p> กำลังตรวจสอบข้อมูลโปรด กรุณารอสักครู่ </p>
+            <p id="couter">0/0</p>
+        </div>
+    </div>
+       <div id="loadingSpinner1" style="display: none;">
+        <div class="spinner1"></div>
+        <div id="counter1">
+            <p> กำลังโหลดข้อมูล กรุณารอสักครู่</p>
+        </div>
+    </div>
+    <style>
+        #loadingSpinner {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(255, 255, 255, 0.87);
+            z-index: 9999;
         }
 
-        100% {
-            transform: rotate(360deg);
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            border: 4px solid rgba(0, 0, 0, 0.1);
+            border-top: 4px solid #3498db;
+            animation: spin 1s linear infinite;
         }
-    }
-</style>
+
+        #loadingSpinner #counter {
+            margin-top: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+  #loadingSpinner1 {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(255, 255, 255, 0.87);
+            z-index: 9999;
+        }
+
+        .spinner1 {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            border: 4px solid rgba(0, 0, 0, 0.1);
+            border-top: 4px solid #3498db;
+            animation: spin 1s linear infinite;
+        }
+  #loadingSpinner1 #counter1 {
+            margin-top: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+    </style>
 </body>
 
 </html>

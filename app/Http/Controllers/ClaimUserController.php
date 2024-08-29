@@ -94,6 +94,41 @@ class ClaimUserController extends Controller
 
         return redirect()->back()->with('message', 'การบันทึกเสร็จสมบูรณ์');
     }
+
+    public function Allupdateuserdeyes(Request $request)
+    {
+        $result = $request->input('datauser');
+        if ($result) {
+
+            foreach ($result as $depart) {
+                $users = DB::table('department_claim')
+                    ->where('claim_user_id', $depart)->get();
+                DB::table('department_claim')
+                    ->where('claim_user_id', $depart)
+                    ->update(['claim_status' => 2]);
+                DB::table('users_department')
+                    ->where('user_id', $depart)
+                    ->delete();
+                $maxUserDepartmentId = DB::table('users_department')->max('user_department_id');
+                foreach ($users as $departmentId) {
+                    if ($departmentId->claim_status == 1) {
+                        $newUserDepartmentId = $maxUserDepartmentId + 1;
+                        DB::table('users_department')->insert([
+                            'user_department_id' => $newUserDepartmentId,
+                            'user_id' =>  $depart,
+                            'department_id' => $departmentId->claim_department_id,
+                        ]);
+                        $maxUserDepartmentId = $newUserDepartmentId;
+                    }
+                }
+            }
+
+
+            return response()->json(['success' => true]);
+        } else {
+            return response()->json(['success' => false]);
+        }
+    }
     public function updateuserdeno($claim_user_id)
     {
         DB::table('department_claim')

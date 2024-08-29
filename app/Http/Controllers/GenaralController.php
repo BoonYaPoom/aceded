@@ -99,9 +99,6 @@ class GenaralController extends Controller
             $loginLog->logplatform = $os;
         }
 
-
-
-
         $loginLog->save();
 
         return redirect()->route('logo')->with('message', 'logo บันทึกข้อมูลสำเร็จ');
@@ -141,9 +138,38 @@ class GenaralController extends Controller
             }
             if (Storage::disk('sftp')->exists($uploadDirectory)) {
                 // ตรวจสอบว่ามีไฟล์เดิมอยู่หรือไม่ ถ้ามีให้ลบออก
-                Storage::disk('sftp')->put($uploadDirectory . '/' . $filename, file_get_contents($request->detail->getRealPath()));
+                Storage::disk('sftp')->put($uploadDirectory . '/'  . $department_id . '/'  . $filename, file_get_contents($request->detail->getRealPath()));
+                $genaral->detail = 'upload/LOGO/' .   $department_id . '/'  . $filename;
             }
             $genaral->title = 'logo';
+        }
+
+        $genaral->save();
+        return redirect()->back()->with('message', 'logo บันทึกข้อมูลสำเร็จ');
+    }
+
+    public function CreatePopup(Request $request)
+    {
+        $request->validate([
+            'detail' => 'required'
+        ]);
+        $genaral = new General;
+
+        $genaral->startdate = $request->startdate;
+        $genaral->enddate = $request->enddate;
+        $genaral->title = 'popup';
+        if ($request->hasFile('detail')) {
+            $filename = 'popup' . '.' . $request->detail->getClientOriginalExtension();
+            $uploadDirectory = 'LOGO/';
+            if (!Storage::disk('sftp')->exists($uploadDirectory)) {
+                Storage::disk('sftp')->makeDirectory($uploadDirectory);
+            }
+            if (Storage::disk('sftp')->exists($uploadDirectory)) {
+                // ตรวจสอบว่ามีไฟล์เดิมอยู่หรือไม่ ถ้ามีให้ลบออก
+                Storage::disk('sftp')->put($uploadDirectory . '/'  . $filename, file_get_contents($request->detail->getRealPath()));
+                $genaral->detail = $uploadDirectory . '/'  . $filename;
+            }
+            $genaral->title = 'popup';
         }
 
         $genaral->save();

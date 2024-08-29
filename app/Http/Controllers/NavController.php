@@ -21,7 +21,6 @@ class NavController extends Controller
 
     public function dataci()
     {
-
         $genaral = General::all();
         return view('layouts.department.item.data.dataci', compact('genaral'));
     }
@@ -30,8 +29,8 @@ class NavController extends Controller
 
     public function imghead()
     {
-
-        return view('layouts.department.item.data.imghead.imgheadedit');
+        $genarals = General::all();
+        return view('layouts.department.item.data.imghead.imgheadedit',compact('genarals'));
     }
     public function dls($department_id)
     {
