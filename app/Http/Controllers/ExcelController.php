@@ -223,11 +223,13 @@ class ExcelController extends Controller
     }
     public function getLatestFile()
     {
-        $files = Storage::files('public/exports');
+        // ใช้ disk SFTP เพื่อดึงรายชื่อไฟล์ในโฟลเดอร์ exports
+        $files = Storage::disk('sftp')->files('exports');
 
         // ใช้ Carbon เพื่อรับวันและเวลาปัจจุบัน
         $now = Carbon::now();
 
+        // กำหนดโลเคลเป็นภาษาไทย
         $locale = 'th_TH';
         Carbon::setLocale($locale);
         $thaiMonths = [
@@ -244,41 +246,41 @@ class ExcelController extends Controller
             '11' => 'พฤศจิกายน',
             '12' => 'ธันวาคม'
         ];
+
         // ดึงวันที่, เดือน, และปี
         $day = $now->format('d'); // วันที่
         $month = $thaiMonths[$now->format('m')]; // เดือน
         $year = $now->format('Y') + 543; // ปี พ.ศ.
 
-        // สร้างชื่อไฟล์ใหม่ด้วยวันที่, เดือน, และปี
+        // สร้างชื่อไฟล์ใหม่ด้วยวันที่ปัจจุบัน
         $fileName = 'Management Users ' . ' วันที่ ' . $day . ' ' . $month . ' ' . ' ปี ' . $year . '.xlsx';
 
-        // สร้างพาธสำหรับไฟล์ใหม่
+        // กำหนดพาธสำหรับไฟล์ใหม่
         $filePath = 'exports/' . $fileName;
 
-        // บันทึกไฟล์ใหม่
-        Excel::store(new UsersExport(), $filePath, 'public');
+        // บันทึกไฟล์ใหม่โดยใช้ disk SFTP
+        Excel::store(new UsersExport(), $filePath, 'sftp');
 
         // หาไฟล์ที่มีการเปลี่ยนแปลงล่าสุด
         $latestFile = collect($files)->sortByDesc(function ($file) {
-            return Storage::lastModified($file);
+            return Storage::disk('sftp')->lastModified($file);
         })->first();
 
         // ข้อมูลเกี่ยวกับไฟล์ล่าสุด
         $fileInfo = [
             'name' => basename($latestFile),
-            'path' => Storage::url($latestFile),
-            'last_modified' => date('Y-m-d H:i:s', Storage::lastModified($latestFile))
         ];
 
         return response()->json([
-            'message' => 'Latest file retrieved successfully',
+            'message' => 'ดึงไฟล์ล่าสุดสำเร็จ',
             'file_info' => $fileInfo
         ]);
     }
+
     public function downloadUsers()
     {
-        // ดึงไฟล์ทั้งหมดจากโฟลเดอร์ exports
-        $files = Storage::files('public/exports');
+        // ดึงไฟล์ทั้งหมดจากโฟลเดอร์ 'exports' บน disk SFTP
+        $files = Storage::disk('sftp')->files('exports');
 
         // ตรวจสอบว่าไม่มีไฟล์
         if (empty($files)) {
@@ -287,7 +289,7 @@ class ExcelController extends Controller
 
         // หาไฟล์ที่มีการเปลี่ยนแปลงล่าสุด
         $latestFile = collect($files)->sortByDesc(function ($file) {
-            return Storage::lastModified($file);
+            return Storage::disk('sftp')->lastModified($file);
         })->first();
 
         // ตรวจสอบว่าได้ไฟล์ล่าสุดหรือไม่
@@ -295,13 +297,16 @@ class ExcelController extends Controller
             return response()->json(['message' => 'Failed to retrieve the latest file.'], 404);
         }
 
-        // เตรียมข้อมูลสำหรับดาวน์โหลดไฟล์
+        // ดึงข้อมูลไฟล์จาก SFTP
+        $fileContent = Storage::disk('sftp')->get($latestFile);
         $fileName = basename($latestFile);
-        $filePath = storage_path('app/' . $latestFile); // Path to the file
 
-        // ส่งไฟล์ให้ดาวน์โหลด
-        return response()->download($filePath, $fileName)->deleteFileAfterSend(true);
+        // ส่งไฟล์ให้ดาวน์โหลดโดยตรงจากข้อมูลในหน่วยความจำ
+        return response()->streamDownload(function () use ($fileContent) {
+            echo $fileContent;
+        }, $fileName);
     }
+
 
     public function Questionimport(Request $request, $department_id, $subject_id)
     {

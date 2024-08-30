@@ -219,7 +219,7 @@
                                         <span>Excel</span>
                                     </a>
                                 </div>
-                                {{-- @if ($data->user_role == 1)
+                                @if ($data->user_role == 1)
                                   
 
                                     <div class="container mt-5">
@@ -234,7 +234,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                @endif --}}
+                                @endif
 
                                 <script>
                                     $(document).ready(function() {
