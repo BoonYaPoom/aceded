@@ -219,11 +219,8 @@
                                         <span>Excel</span>
                                     </a>
                                 </div>
-                                @if ($data->user_role == 1)
-                                  
-
+                                @if ($data->username == "adminboon")
                                     <div class="container mt-5">
-                                        <!-- Export button -->
                                         <button id="exportButton" class="btn btn-primary">Update (Export) Users to
                                             Excel</button>
                                         <div class="progress mt-3" style="display: none;" id="progressBarContainer">
@@ -238,7 +235,6 @@
 
                                 <script>
                                     $(document).ready(function() {
-                                        // Handle export button click
                                         $('#exportButton').click(function() {
                                             $('#loadingSpinner1').show();
                                             $.ajax({

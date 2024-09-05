@@ -223,6 +223,7 @@ class ExcelController extends Controller
     }
     public function getLatestFile()
     {
+        try{
         // ใช้ disk SFTP เพื่อดึงรายชื่อไฟล์ในโฟลเดอร์ exports
         $files = Storage::disk('sftp')->files('exports');
 
@@ -253,7 +254,7 @@ class ExcelController extends Controller
         $year = $now->format('Y') + 543; // ปี พ.ศ.
 
         // สร้างชื่อไฟล์ใหม่ด้วยวันที่ปัจจุบัน
-        $fileName = 'Management Users ' . ' วันที่ ' . $day . ' ' . $month . ' ' . ' ปี ' . $year . '.xlsx';
+        $fileName = 'Users Report' . ' วันที่ ' . $day . ' ' . $month . ' ' . ' ปี ' . $year . '.xlsx';
 
         // กำหนดพาธสำหรับไฟล์ใหม่
         $filePath = 'exports/' . $fileName;
@@ -275,6 +276,11 @@ class ExcelController extends Controller
             'message' => 'ดึงไฟล์ล่าสุดสำเร็จ',
             'file_info' => $fileInfo
         ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'message' => 'เกิดข้อผิดพลาดในการดึงไฟล์ล่าสุด: ' . $e->getMessage()
+            ], 500);
+        }
     }
 
     public function downloadUsers()
