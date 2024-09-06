@@ -285,11 +285,11 @@
                   },
                   series: [{
                       name: 'จังหวัด',
-                      color: '#399918',
+                      color: '#5EF543',
                       data: topTenDataHigh.map(item => ({
                           name: item.pro_name,
                           y: Number(item.user_count),
-                          color: '#399918'
+                          color: '#5EF543'
                       }))
                   }]
               });
@@ -379,11 +379,11 @@
                   },
                   series: [{
                       name: 'จังหวัด',
-                      color: '#399918',
+                      color: '#5EF543',
                       data: topTenDataLow.map(item => ({
                           name: item.pro_name,
                           y: Number(item.user_count),
-                          color: '#399918'
+                          color: '#5EF543'
                       }))
                   }]
               });
@@ -547,11 +547,11 @@
                           },
                           {
                               name: 'ผู้เรียนจบได้รับใบประกาศนียบัตร',
-                              color: '#85E172',
+                              color: '#5EF543',
                               data: CerZoneData[i - 1].map(item => ({
                                   name: item.pro_name,
                                   y: item.user_count,
-                                  color: '#85E172'
+                                  color: '#5EF543'
                               })),
                           },
                       ]
