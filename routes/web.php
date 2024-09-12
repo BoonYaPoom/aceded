@@ -750,7 +750,10 @@ Route::group(['middleware' => 'IsLoggedIn'], function () {
                 Route::get('/department_delete/{department_id}', [DepartmentController::class, 'destroy'])->name('deleteDepart');
                 Route::get('{user_id}/classroom_user_status/{learner_id}/{course_id}/{certificate_file_id}', [ClassroomController::class, 'classroom_user_status'])->name('classroom_user_status');
                 Route::get('{user_id}/con_user_status/{course_id}/{learner_id}', [ClassroomController::class, 'con_user_status'])->name('con_user_status');
-                   
+                Route::get('{user_id}/checkCourseCompletion/{subjectId}/{course_id}', [ClassroomController::class, 'checkCourseCompletion'])->name('checkCourseCompletion');
+                Route::get('/T0101api/{year}/{provin}', [T0101Controller::class, 'T0101api'])->name('T0101api');
+                Route::get('/T0116api/{year}/{provin}', [T0116Controller::class, 'T0116api'])->name('T0116api');
+                
             });
         });
     });

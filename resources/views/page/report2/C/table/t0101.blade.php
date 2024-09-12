@@ -23,7 +23,7 @@
 
                 <div><select id="depa" name="depa" class="form-control" data-toggle="select2"
                         data-placeholder="หลักสูตร" data-allow-clear="false">
-                        <option value="0" selected>รวมทั้งหมด </option>
+                        <option value="0" selected>ทั้งหมด </option>
                         @php
                             $depart = DB::table('department')->where('department_status', 1)->get();
                         @endphp
@@ -38,8 +38,7 @@
                 <select id="provin" name="provin" class="form-control" data-toggle="select2" data-placeholder="หลักสูตร"
                     data-allow-clear="false">
                     @foreach ($provin as $pro)
-                        <option value="{{ $pro->name_in_thai }}"
-                            {{ $pro->name_in_thai == 'กรุงเทพมหานคร' ? 'selected' : '' }}>
+                        <option value="{{ $pro->id }}" {{ $pro->name_in_thai == 'กรุงเทพมหานคร' ? 'selected' : '' }}>
                             {{ $pro->name_in_thai }} </option>
                     @endforeach
                 </select>
@@ -92,59 +91,77 @@
                                 <th align="center" width="10%">วันที่จบหลักสูตร</th>
                             </tr>
                         </thead>
+                        17260445930
                         <script>
                             $(document).ready(function() {
                                 $('#selectyear, #depa, #provin').on('change', function() {
-                                    var learner = {!! json_encode($learner) !!};
                                     var depa = $('#depa').val();
                                     var selectedYear = $('#selectyear').val();
                                     var provin = $('#provin').val();
-                                    var filteredLearner = learner.filter(function(data) {
-                                        if (depa == 0) {
-                                            return data.year == selectedYear && data.province_name == provin;
-                                        } else {
-                                            return data.year == selectedYear && data.department_id == depa && data.province_name == provin;
+                                    var apiUrl = '{{ route('T0101api', ['year', 'provin']) }}'
+                                        .replace('year', selectedYear)
+                                        .replace('provin', provin);
+                                    $.ajax({
+                                        url: apiUrl,
+                                        type: 'GET',
+                                        dataType: 'json',
+                                        success: function(response) {
+                                            var filteredLearner = response.filter(function(data) {
+                                                if (depa == 0) {
+                                                    return data;
+                                                } else {
+                                                    return data.department_id == depa;
+                                                }
+                                            });
+                                            displayDataInTable(filteredLearner);
+                                        },
+                                        error: function(xhr, status, error) {
+                                            console.error('Error fetching data:', xhr, status, error);
+                                            $('#learend').html(
+                                                '<tr><td colspan="6" class="text-center">เกิดข้อผิดพลาดในการดึงข้อมูล</td></tr>'
+                                            );
                                         }
-                                    });
-                                    displayDataInTable(filteredLearner);
-                                    $(".download-excel").on("click", function() {
-                                        var url = "{{ route('exportT0101', [':depa', ':provin', ':selectedYear']) }}"
-                                            .replace(':depa', depa)
-                                            .replace(':provin', provin)
-                                            .replace(':selectedYear', selectedYear);
-                                        window.location.href = url;
                                     });
                                 });
                                 $('#selectyear').trigger('change');
-                                $('#depa').trigger('change');
-                                $('#provin').trigger('change');
+                                $(".download-excel").on("click", function() {
+                                    var depa = $('#depa').val();
+                                    var selectedYear = $('#selectyear').val();
+                                    var provin = $('#provin').val();
+                                    var url = generateExcelDownloadUrl(depa, provin, selectedYear);
+                                    window.location.href = url;
+                                });
                             });
 
+                            function generateExcelDownloadUrl(depa, provin, selectedYear) {
+                                return "{{ route('exportT0101', [':depa', ':provin', ':selectedYear']) }}"
+                                    .replace(':depa', depa)
+                                    .replace(':provin', provin)
+                                    .replace(':selectedYear', selectedYear);
+                            }
+
                             function displayDataInTable(data) {
-                                $('#learend').empty()
+                                $('#learend').empty();
+
                                 if (data && data.length > 0) {
-                                    // วนลูปเพื่อแสดงข้อมูลใน tbody
-                                    var i = 1
+                                    var i = 1;
                                     $.each(data, function(index, item) {
-                                        // สร้างแถวใน tbody
                                         var row = $('<tr>');
-                                        // เพิ่มข้อมูลลงในแถว
                                         row.append($('<td class="text-center">').text(i++));
-                                        row.append($('<td >').text(item.firstname + ' ' + item.lastname));
-                                        row.append($('<td >').text(item.exten_name));
-                                        row.append($('<td >').text(item.course_th));
+                                        row.append($('<td>').text(item.firstname + ' ' + item.lastname));
+                                        row.append($('<td>').text(item.exten_name));
+                                        row.append($('<td>').text(item.course_th));
                                         row.append($('<td class="text-center">').text(item.register_date));
                                         row.append($('<td class="text-center">').text(item.realcongratulationdate));
-                                        // เพิ่มแถวลงใน tbody
                                         $('#learend').append(row);
                                     });
                                 } else {
-                                    // ถ้าไม่มีข้อมูล
-                                    var noDataMessage = $('<tr><td colspan="6" class="text-center">ไม่มีข้อมูลในจังหวัดนี้ </td></tr>');
+                                    var noDataMessage = $('<tr><td colspan="6" class="text-center">ไม่มีข้อมูลในจังหวัดนี้</td></tr>');
                                     $('#learend').append(noDataMessage);
                                 }
                             }
                         </script>
+
 
                         <tbody id="learend">
                         </tbody>

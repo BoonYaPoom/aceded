@@ -45,6 +45,7 @@
                                             'process' => [],
                                             'score' => [],
                                             'fullscore' => [],
+                                            'id' => [],
                                         ];
                                     }
                                     $sortedData[$courseId]['subjects'][] = $les['subject'];
@@ -52,6 +53,7 @@
                                     $sortedData[$courseId]['process'][] = $les['process'];
                                     $sortedData[$courseId]['score'][] = $les['score'];
                                     $sortedData[$courseId]['fullscore'][] = $les['fullscore'];
+                                    $sortedData[$courseId]['id'][] = $les['id'];
                                 }
                             @endphp
                             @foreach ($sortedData as $course)
@@ -111,13 +113,27 @@
                                         </label>
                                         <div class="col-md-9">
                                             <div class="form-row">
-                                                <label for="subject" class="col-md-8">ชื่อวิชา </label>
+                                                <label for="subject" class="col-md-7">ชื่อวิชา </label>
+                                                
+                                                <p for="process" class="col-md-1 text-center">อนุมัติ </p>
                                                 <p for="process" class="col-md-2 text-center">สถานะรายวิชา </p>
                                                 <p for="process" class="col-md-2 text-center">คะแนนสอบ </p>
                                             </div>
                                             @foreach ($course['subjects'] as $key => $subject)
                                                 <div class="form-row">
-                                                    <p class="col-md-8">{{ '* ' . $subject }}</p>
+                                                    <p class="col-md-7">{{ '* ' . $subject }}</p>
+                                                    <p class="col-md-1 text-center">
+                                                        @if ($course['congratulation'] == 1)
+                                                            
+                                                        @else
+                                                            <a class="d-flex justify-content-center align-items-center"
+                                                                onclick="submitlearn(event)"
+                                                                href="{{ route('checkCourseCompletion', [$user_id, $course['id'][$key], $course['course_id']]) }}">
+                                                                <i class="fas fa-user-graduate"></i>
+                                                            </a>
+                                                        @endif
+
+                                                    </p>
                                                     <p class="col-md-2 text-center">
 
                                                         @if ($course['congratulation'] == 1)
@@ -214,6 +230,25 @@
                         window.location.href = urlToredirect;
                     } else {
                         swal("คุญได้ยกเลิกการรีเซ็ตใบประกาศ !");
+                    }
+                });
+        }
+
+        function submitlearn(ev) {
+            ev.preventDefault();
+            var urlToredirect = ev.currentTarget.getAttribute('href');
+            swal({
+                    title: "คุณแน่ใจหรือไม่ที่จะอนุมัติเรียนจบ!",
+                    text: "คุณจะไม่สามารถย้อนกลับได้!",
+                    icon: "warning",
+                    buttons: true,
+                    dangerMode: true,
+                })
+                .then((confirm) => {
+                    if (confirm) {
+                        window.location.href = urlToredirect;
+                    } else {
+                        swal("คุญได้ยกเลิกการอนุมัติเรียนจบ !");
                     }
                 });
         }

@@ -54,11 +54,11 @@ class SurveyQuestionController extends Controller
       $newquestion_id = $maxquestion_id + 1;
       $surques = new SurveyQuestion;
       $surques->question_id = $newquestion_id;
-      // if (!file_exists(public_path('/upload/suyQue/ck/'))) {
-      //   mkdir(public_path('/upload/suyQue/ck/'), 0755, true);
+      // if (!file_exists(public_path('suyQue/ck/'))) {
+      //   mkdir(public_path('suyQue/ck/'), 0755, true);
       // }
-      if (!Storage::disk('sftp')->exists('/upload/suyQue/ck/')) {
-        Storage::disk('sftp')->makeDirectory('/upload/suyQue/ck/');
+      if (!Storage::disk('sftp')->exists('suyQue/ck/')) {
+        Storage::disk('sftp')->makeDirectory('suyQue/ck/');
       }
     
       if ($request->has('question')) {
@@ -76,10 +76,10 @@ class SurveyQuestionController extends Controller
           foreach ($images_des_th as $key => $img) {
             if (strpos($img->getAttribute('src'), 'data:image/') === 0) {
               $data = base64_decode(explode(',', explode(';', $img->getAttribute('src'))[1])[1]);
-              $image_name = '/upload/suyQue/ck/' . time() . $key . '.png'; // ใส่ .png เพื่อให้เป็นนามสกุลไฟล์ถูกต้อง
+              $image_name = 'suyQue/ck/' . time() . $key . '.png'; // ใส่ .png เพื่อให้เป็นนามสกุลไฟล์ถูกต้อง
               Storage::disk('sftp')->put($image_name, $data);
               $img->removeAttribute('src');
-              $newImageUrl = env('URL_FILE_SFTP') . $image_name;
+              $newImageUrl = env('URL_FILE_SFTP') . "upload/" . $image_name;
               $img->setAttribute('src', $newImageUrl);
             }
           }
@@ -179,11 +179,11 @@ class SurveyQuestionController extends Controller
 
 
     libxml_use_internal_errors(true);
-    // if (!file_exists(public_path('/upload/suyQue/ck/'))) {
-    //   mkdir(public_path('/upload/suyQue/ck/'), 0755, true);
+    // if (!file_exists(public_path('suyQue/ck/'))) {
+    //   mkdir(public_path('suyQue/ck/'), 0755, true);
     // }
-    if (!Storage::disk('sftp')->exists('/upload/suyQue/ck/')) {
-      Storage::disk('sftp')->makeDirectory('/upload/suyQue/ck/');
+    if (!Storage::disk('sftp')->exists('suyQue/ck/')) {
+      Storage::disk('sftp')->makeDirectory('suyQue/ck/');
     }
    
     if ($request->has('question')) {
@@ -201,10 +201,10 @@ class SurveyQuestionController extends Controller
         foreach ($images_des_th as $key => $img) {
           if (strpos($img->getAttribute('src'), 'data:image/') === 0) {
             $data = base64_decode(explode(',', explode(';', $img->getAttribute('src'))[1])[1]);
-            $image_name = '/upload/suyQue/ck/' . time() . $key . '.png'; // ใส่ .png เพื่อให้เป็นนามสกุลไฟล์ถูกต้อง
+            $image_name = 'suyQue/ck/' . time() . $key . '.png'; // ใส่ .png เพื่อให้เป็นนามสกุลไฟล์ถูกต้อง
             Storage::disk('sftp')->put($image_name, $data);
             $img->removeAttribute('src');
-            $newImageUrl = env('URL_FILE_SFTP') . $image_name;
+            $newImageUrl = env('URL_FILE_SFTP') . "upload/" . $image_name;
             $img->setAttribute('src', $newImageUrl);
           }
         }
@@ -330,11 +330,11 @@ class SurveyQuestionController extends Controller
     $surques->question_id = $newquestion_id;
 
     libxml_use_internal_errors(true);
-    // if (!file_exists(public_path('/upload/suyQue/Dp/ck/'))) {
-    //   mkdir(public_path('/upload/suyQue/Dp/ck/'), 0755, true);
+    // if (!file_exists(public_path('suyQue/Dp/ck/'))) {
+    //   mkdir(public_path('suyQue/Dp/ck/'), 0755, true);
     // }
-    if (!Storage::disk('sftp')->exists('/upload/suyQue/ck/')) {
-      Storage::disk('sftp')->makeDirectory('/upload/suyQue/ck/');
+    if (!Storage::disk('sftp')->exists('suyQue/ck/')) {
+      Storage::disk('sftp')->makeDirectory('suyQue/ck/');
     }
    
     if ($request->has('question')) {
@@ -352,10 +352,10 @@ class SurveyQuestionController extends Controller
         foreach ($images_des_th as $key => $img) {
           if (strpos($img->getAttribute('src'), 'data:image/') === 0) {
             $data = base64_decode(explode(',', explode(';', $img->getAttribute('src'))[1])[1]);
-            $image_name = '/upload/suyQue/Dp/ck/' . time() . $key . '.png'; // ใส่ .png เพื่อให้เป็นนามสกุลไฟล์ถูกต้อง
+            $image_name = 'suyQue/Dp/ck/' . time() . $key . '.png'; // ใส่ .png เพื่อให้เป็นนามสกุลไฟล์ถูกต้อง
             Storage::disk('sftp')->put($image_name, $data);
             $img->removeAttribute('src');
-            $newImageUrl = env('URL_FILE_SFTP') . $image_name;
+            $newImageUrl = env('URL_FILE_SFTP') . "upload/" . $image_name;
             $img->setAttribute('src', $newImageUrl);
           }
         }
@@ -452,11 +452,11 @@ class SurveyQuestionController extends Controller
     $surques = SurveyQuestion::findOrFail($question_id);
 
     libxml_use_internal_errors(true);
-    // if (!file_exists(public_path('/upload/suyQue/Dp/ck/'))) {
-    //   mkdir(public_path('/upload/suyQue/Dp/ck/'), 0755, true);
+    // if (!file_exists(public_path('suyQue/Dp/ck/'))) {
+    //   mkdir(public_path('suyQue/Dp/ck/'), 0755, true);
     // }
-    if (!Storage::disk('sftp')->exists('/upload/suyQue/ck/')) {
-      Storage::disk('sftp')->makeDirectory('/upload/suyQue/ck/');
+    if (!Storage::disk('sftp')->exists('suyQue/ck/')) {
+      Storage::disk('sftp')->makeDirectory('suyQue/ck/');
     }
     
     if ($request->has('question')) {
@@ -474,10 +474,10 @@ class SurveyQuestionController extends Controller
         foreach ($images_des_th as $key => $img) {
           if (strpos($img->getAttribute('src'), 'data:image/') === 0) {
             $data = base64_decode(explode(',', explode(';', $img->getAttribute('src'))[1])[1]);
-            $image_name = '/upload/suyQue/Dp/ck/' . time() . $key . '.png'; // ใส่ .png เพื่อให้เป็นนามสกุลไฟล์ถูกต้อง
+            $image_name = 'suyQue/Dp/ck/' . time() . $key . '.png'; // ใส่ .png เพื่อให้เป็นนามสกุลไฟล์ถูกต้อง
             Storage::disk('sftp')->put($image_name, $data);
             $img->removeAttribute('src');
-            $newImageUrl = env('URL_FILE_SFTP') . $image_name;
+            $newImageUrl = env('URL_FILE_SFTP') . "upload/" . $image_name;
             $img->setAttribute('src', $newImageUrl);
           }
         }

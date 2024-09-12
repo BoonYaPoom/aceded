@@ -20,12 +20,12 @@
 
                 <div><select id="depa" name="depa" class="form-control" data-toggle="select2"
                         data-placeholder="หลักสูตร" data-allow-clear="false">
-
+                        <option value="0" selected>ทั้งหมด </option>
                         @php
                             $depart = DB::table('department')->where('department_status', 1)->get();
                         @endphp
                         @foreach ($depart->sortBy('department_id') as $de)
-                            <option value="{{ $de->department_id }}" {{ $de->department_id == 1 ? 'selected' : '' }}>
+                            <option value="{{ $de->department_id }}">
                                 {{ $de->name_th }} </option>
                         @endforeach
                     </select></div>
@@ -35,8 +35,7 @@
                 <select id="provin" name="provin" class="form-control" data-toggle="select2" data-placeholder="หลักสูตร"
                     data-allow-clear="false">
                     @foreach ($provin as $pro)
-                        <option value="{{ $pro->name_in_thai }}"
-                            {{ $pro->name_in_thai == 'กรุงเทพมหานคร' ? 'selected' : '' }}>
+                        <option value="{{ $pro->id }}" {{ $pro->name_in_thai == 'กรุงเทพมหานคร' ? 'selected' : '' }}>
                             {{ $pro->name_in_thai }} </option>
                     @endforeach
                 </select>
@@ -51,15 +50,15 @@
                     <span class="mr-auto">ข้อมูล Log File ในรูปแบบรายงานทางสถิติ</span>
                     {{-- <a href="https://aced.dlex.ai/childhood/admin/export/pdf.html"
                         class="btn btn-icon btn-outline-danger"><i class="fa fa-file-pdf"></i></a> --}}
-                        &nbsp;
-            
-                       <a href="#" class="btn btn-icon btn-outline-primary download-excel"><i
+                    &nbsp;
+
+                    <a href="#" class="btn btn-icon btn-outline-primary download-excel"><i
                             class="fa fa-file-excel"></i></a>
-                        &nbsp;
-                            <a class="btn btn-icon btn-outline-success print-button"><i class="fa fa-print"></i></a>
+                    &nbsp;
+                    <a class="btn btn-icon btn-outline-success print-button"><i class="fa fa-print"></i></a>
                 </div>
             </div>
-          <script>
+            <script>
                 $(document).ready(function() {
                     $(".print-button").on("click", function() {
                         var printableTable = $("#section-to-print").clone();
@@ -101,14 +100,10 @@
         <!-- .page-title-bar -->
 
     </div><!-- /.page-inner -->
-    <script>
+    {{-- <script>
         $(document).ready(function() {
             $('#selectyear, #depa, #provin').on('change', function() {
-                var learner = {!! json_encode($learner) !!};
-                var depa = $('#depa').val();
-                var selectedYear = $('#selectyear').val();
-                var provin = $('#provin').val();
-
+       
                 var filteredLearner = learner.filter(function(data) {
                     return data.year == selectedYear && data.department_id == depa && data
                         .province_name == provin;
@@ -127,6 +122,82 @@
             $('#depa').trigger('change');
             $('#provin').trigger('change');
         });
+
+        function displayDataInTable(data) {
+            $('#learend').empty()
+            if (data && data.length > 0) {
+                // วนลูปเพื่อแสดงข้อมูลใน tbody
+                var i = 1;
+                $.each(data, function(index, item) {
+                    // สร้างแถวใน tbody
+                    var row = $('<tr>');
+                    // เพิ่มข้อมูลลงในแถว
+                    row.append($('<td class="text-center">').text(i++));
+
+                    row.append($('<td >').text(item.firstname + ' ' + item.lastname));
+                    row.append($('<td >').text(item.exten_name));
+                    row.append($('<td >').text(item.course_th));
+                    row.append($('<td class="text-center">').text(item.congratulation == 0 ? 'N/A' : (item
+                        .congratulation == 1 ? 'P' : '')));
+                    // เพิ่มแถวลงใน tbody
+                    $('#learend').append(row);
+                });
+            } else {
+                // ถ้าไม่มีข้อมูล
+                var noDataMessage = $('<tr><td colspan="5" class="text-center">ไม่มีข้อมูลในจังหวัดนี้ </td></tr>');
+                $('#learend').append(noDataMessage);
+            }
+        }
+    </script> --}}
+
+    <script>
+        $(document).ready(function() {
+            $('#selectyear, #depa, #provin').on('change', function() {
+                var depa = $('#depa').val();
+                var selectedYear = $('#selectyear').val();
+                var provin = $('#provin').val();
+                var apiUrl = '{{ route('T0116api', ['year', 'provin']) }}'
+                    .replace('year', selectedYear)
+                    .replace('provin', provin);
+                $.ajax({
+                    url: apiUrl,
+                    type: 'GET',
+                    dataType: 'json',
+                    success: function(response) {
+                        var filteredLearner = response.filter(function(data) {
+                            if (depa == 0) {
+                                return data;
+                            } else {
+                                return data.department_id == depa;
+                            }
+                        });
+                        displayDataInTable(filteredLearner);
+                    },
+                    error: function(xhr, status, error) {
+                        console.error('Error fetching data:', xhr, status, error);
+                        $('#learend').html(
+                            '<tr><td colspan="6" class="text-center">เกิดข้อผิดพลาดในการดึงข้อมูล</td></tr>'
+                        );
+                    }
+                });
+            });
+            $('#selectyear').trigger('change');
+            $(".download-excel").on("click", function() {
+                var depa = $('#depa').val();
+                var selectedYear = $('#selectyear').val();
+                var provin = $('#provin').val();
+                var url = generateExcelDownloadUrl(depa, provin, selectedYear);
+                window.location.href = url;
+            });
+        });
+
+        function generateExcelDownloadUrl(depa, provin, selectedYear) {
+            return "{{ route('exportT0116', [':depa', ':provin', ':selectedYear']) }}"
+                .replace(':depa', depa)
+                .replace(':provin', provin)
+                .replace(':selectedYear', selectedYear);
+        }
+
 
         function displayDataInTable(data) {
             $('#learend').empty()

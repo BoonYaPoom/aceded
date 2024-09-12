@@ -86,7 +86,7 @@ class WebController extends Controller
         if (!Storage::disk('sftp')->exists('Web/ck/')) {
             Storage::disk('sftp')->makeDirectory('Web/ck/');
         }
-    
+
         if ($request->has('detail_th')) {
             $detail_th = $request->detail_th;
             $decodedTextdetail_th = '';
@@ -94,20 +94,27 @@ class WebController extends Controller
                 $de_th = new DOMDocument();
                 $de_th->encoding = 'UTF-8'; // Set encoding to UTF-8
                 $detail_th = mb_convert_encoding($detail_th, 'HTML-ENTITIES', 'UTF-8');
+
+                // Suppress errors
+                libxml_use_internal_errors(true);
+
+                // Remove specific unwanted tags
                 $detail_th = preg_replace('/<img\s[^>]*\b0x20\b[^>]*>/', '', $detail_th);
                 $detail_th = preg_replace('/<figure\b[^>]*>(.*?)<\/figure>/is', '$1', $detail_th);
+
                 $de_th->loadHTML($detail_th, LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
 
-                libxml_use_internal_errors(false); // Enable internal error handling
-                libxml_clear_errors(); // Clear any accumulated errors
+                // Clear errors after loading HTML
+                libxml_clear_errors();
+
                 $images_des_th = $de_th->getElementsByTagName('img');
                 foreach ($images_des_th as $key => $img) {
                     if (strpos($img->getAttribute('src'), 'data:image/') === 0) {
                         $data = base64_decode(explode(',', explode(';', $img->getAttribute('src'))[1])[1]);
-                        $image_name = 'Web/ck/' . time() . $key . '.png'; // ใส่ .png เพื่อให้เป็นนามสกุลไฟล์ถูกต้อง
+                        $image_name = 'Web/ck/' . time() . $key . '.png';
                         Storage::disk('sftp')->put($image_name, $data);
                         $img->removeAttribute('src');
-                        $newImageUrl = env('URL_FILE_SFTP') . $image_name;
+                        $newImageUrl = env('URL_FILE_SFTP') ."upload/" . $image_name;
                         $img->setAttribute('src', $newImageUrl);
                     }
                 }
@@ -118,6 +125,7 @@ class WebController extends Controller
 
             $webs->detail_th = $decodedText_th;
         }
+
     
         if ($request->has('detail_en')) {
             $detail_en = $request->detail_en;
@@ -139,7 +147,7 @@ class WebController extends Controller
                         $image_name = 'Web/ck/' . time() . $key . '.png'; // ใส่ .png เพื่อให้เป็นนามสกุลไฟล์ถูกต้อง
                         Storage::disk('sftp')->put($image_name, $data);
                         $img->removeAttribute('src');
-                        $newImageUrl = env('URL_FILE_SFTP') . $image_name;
+                        $newImageUrl = env('URL_FILE_SFTP') . "upload/" . $image_name;
                         $img->setAttribute('src', $newImageUrl);
                     }
                 }
@@ -147,8 +155,6 @@ class WebController extends Controller
                 $decodedTextdetail_en = html_entity_decode($de_en->saveHTML(), ENT_QUOTES, 'UTF-8');
                 $decodedText_en = htmlentities($decodedTextdetail_en);
             }
-
-
             $webs->detail_en = $decodedText_en;
         }
 
@@ -247,26 +253,30 @@ class WebController extends Controller
                 $de_th = new DOMDocument();
                 $de_th->encoding = 'UTF-8'; // Set encoding to UTF-8
                 $detail_th = mb_convert_encoding($detail_th, 'HTML-ENTITIES', 'UTF-8');
+
+                // Suppress errors
+                libxml_use_internal_errors(true);
+
+                // Remove specific unwanted tags
                 $detail_th = preg_replace('/<img\s[^>]*\b0x20\b[^>]*>/', '', $detail_th);
                 $detail_th = preg_replace('/<figure\b[^>]*>(.*?)<\/figure>/is', '$1', $detail_th);
 
-                libxml_use_internal_errors(true); // Enable internal error handling
                 $de_th->loadHTML($detail_th, LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
-                libxml_clear_errors(); // Clear any accumulated errors
-                $images_des_th = $de_th->getElementsByTagName('img');
 
+                // Clear errors after loading HTML
+                libxml_clear_errors();
+
+                $images_des_th = $de_th->getElementsByTagName('img');
                 foreach ($images_des_th as $key => $img) {
                     if (strpos($img->getAttribute('src'), 'data:image/') === 0) {
                         $data = base64_decode(explode(',', explode(';', $img->getAttribute('src'))[1])[1]);
-                        $image_name = 'Web/ck/1/' . time() . $key . '.png'; // ใส่ .png เพื่อให้เป็นนามสกุลไฟล์ถูกต้อง
+                        $image_name = 'Web/ck/' . time() . $key . '.png';
                         Storage::disk('sftp')->put($image_name, $data);
                         $img->removeAttribute('src');
-                        $newImageUrl = env('URL_FILE_SFTP') . 'upload/' . $image_name;
+                        $newImageUrl = env('URL_FILE_SFTP') . "upload/" . $image_name;
                         $img->setAttribute('src', $newImageUrl);
                     }
                 }
-
-                libxml_clear_errors(); // ล้างข้อผิดพลาดที่เกิดขึ้น
 
                 $decodedTextdetail_th = html_entity_decode($de_th->saveHTML(), ENT_QUOTES, 'UTF-8');
                 $decodedText_th = htmlentities($decodedTextdetail_th);
@@ -274,6 +284,7 @@ class WebController extends Controller
 
             $webs->detail_th = $decodedText_th;
         }
+
 
         if ($request->has('detail_en')) {
             $detail_en = $request->detail_en;

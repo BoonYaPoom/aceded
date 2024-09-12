@@ -317,7 +317,7 @@ class ClassroomController extends Controller
                 'learner_id' => $learner_id,
                 'course_id' => $course_id
             ]);
-        
+
             $cer_cat = collect($cer);
             if ($cer_cat) {
                 foreach ($cer_cat as $cr) {
@@ -333,8 +333,8 @@ class ClassroomController extends Controller
             }
             // อัปเดตสถานะไฟล์ใบรับรอง
             DB::table('certificate_file')
-            ->where('certificate_file.course_id', '=', $course_id)
-            ->where('certificate_file.certificate_file_id', '=', $certificate_file_id)
+                ->where('certificate_file.course_id', '=', $course_id)
+                ->where('certificate_file.certificate_file_id', '=', $certificate_file_id)
                 ->where('certificate_file.user_id', '=', $user_id)
                 ->update(['certificate_file_role_status' => 0]);
             return redirect()->back()->with('success', 'รีเซ็ตสำเร็จเรียบร้อย');
@@ -359,6 +359,125 @@ class ClassroomController extends Controller
             return redirect()->back()->with('success', 'อนุมัติเรียบร้อย');
         } else {
             // ถ้าไม่มีข้อมูลที่ถูกส่งมา ให้กลับไปยังหน้าก่อนหน้านี้
+            return redirect()->back()->with('error', 'ไม่มี key ส่งมา');
+        }
+    }
+    function checkCourseCompletion($userId, $subjectId, $course_id)
+    {
+        if ($userId && $subjectId) {
+
+            $lesson = DB::table('course_lesson')->where('subject_id', $subjectId)->where('lesson_status', 1)->get();
+            $allInserted = true;
+            if(count($lesson) >0){
+                foreach ($lesson as $les) {
+                    $addlogs =  DB::table('logs')->insert([
+                        'user_id' => $userId,
+                        'logdate' => now()->format('Y-m-d H:i:s'),
+                        'logip' => '127.0.0.1',
+                        'logagents' => 'admin',
+                        'logplatform' => 'admin',
+                        'logid' => 4,
+                        'logaction' => 1,
+                        'logdetail' => 60,
+                        'idref' => $les->lesson_id,
+                        'subject_id' => $subjectId,
+                        'duration' => 0,
+                        'department' => 0,
+                        'status' => 1
+                    ]);
+
+                    if (!$addlogs) {
+                        $allInserted = false;
+                        break;
+                    }
+                }
+            }
+
+            if ($allInserted) {
+                $lessons = DB::select(
+                    "
+            SELECT LESSON_ID, 
+                   (SELECT STATUS FROM logs 
+                    WHERE user_id = :user_id 
+                      AND SUBJECT_ID = course_lesson.SUBJECT_ID 
+                      AND IDREF = course_lesson.LESSON_ID 
+                      AND STATUS = 1 
+                      AND LESSON_ID = course_lesson.LESSON_ID 
+                      AND ROWNUM <= 1) AS course_status 
+            FROM course_lesson 
+            WHERE course_lesson.SUBJECT_ID = :subject_id 
+              AND LESSON_STATUS = 1 
+            ORDER BY course_status DESC",
+                    ['user_id' => $userId, 'subject_id' => $subjectId]
+                );
+
+                if (count($lessons) >= 1) {
+                    $congratulation = 1;
+                    foreach ($lessons as $lesson) {
+                        if ($lesson->course_status != 1) {
+                            $congratulation = 0;
+                        }
+                    }
+
+                    if ($congratulation == 1) {
+
+                        $exams = DB::select(
+                            "
+                    SELECT EXAM_ID, 
+                           (SELECT SCORE 
+                            FROM (SELECT SCORE 
+                                  FROM SCORE 
+                                  WHERE USER_ID = :user_id 
+                                    AND EXAM_ID = EXAM.EXAM_ID 
+                                  ORDER BY SCORE_ID DESC) 
+                            WHERE ROWNUM <= 1) AS score 
+                    FROM EXAM 
+                    WHERE SUBJECT_ID = :subject_id 
+                      AND EXAM_TYPE = 2 
+                      AND EXAM_STATUS = 1 
+                      AND EXAM_DATA IS NOT NULL",
+                            ['user_id' => $userId, 'subject_id' => $subjectId]
+                        );
+
+                        $congratulationDate = Carbon::now()->format('Y-m-d H:i:s');
+
+                        if (count($exams) >= 1) {
+                            if ($exams[0]->score > 0) {
+                                DB::update(
+                                    "
+                            UPDATE course_learner 
+                            SET congratulation = 1, realcongratulationdate = :congratulationdate 
+                            WHERE user_id = :user_id 
+                              AND course_id = :course_id",
+                                    [
+                                        'congratulationdate' => $congratulationDate,
+                                        'user_id' => $userId,
+                                        'course_id' => $course_id
+                                    ]
+                                );
+                            }
+                        } else { // No exams
+                            DB::update(
+                                "
+                        UPDATE course_learner 
+                        SET congratulation = 1, realcongratulationdate = :congratulationdate 
+                        WHERE user_id = :user_id 
+                          AND course_id = :course_id",
+                                [
+                                    'congratulationdate' => $congratulationDate,
+                                    'user_id' => $userId,
+                                    'course_id' => $course_id
+                                ]
+                            );
+                        }
+                        return redirect()->back()->with('success', 'สำเร็จเรียบร้อย');
+                    }
+                }
+                return redirect()->back()->with('success', 'สำเร็จเรียบร้อย');
+            }
+            return redirect()->back()->with('error', 'ไม่มีข้อมูลที่สมบูรณ์');
+        } else {
+
             return redirect()->back()->with('error', 'ไม่มี key ส่งมา');
         }
     }
